@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron
 // Created On       : Fri Dec  5 16:47:26 2003
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Mar  8 17:37:08 2004
-// Update Count     : 51
+// Last Modified On : Fri Apr  2 14:11:17 2004
+// Update Count     : 52
 // Status           : Unknown.
 // 
 
@@ -14,22 +14,19 @@
 #define _GraphAlgo_h_
 
 
+#include <assert.h>
 #include <iostream>
+#include <limits>
 #include <map>
 #include <vector>
-#include <assert.h>
 
 #include "AbstractGraph.h"
 #include "Path.h"
 
 using namespace std;
 
-#ifndef HAVE_NUMERIC_LIMITS
-#include <values.h>
-#else
 #define MAXFLOAT numeric_limits< float > ().max ()
-#define MAXINT numeric_limits< int > ().max ()
-#endif
+
 
 
 namespace mccore {
@@ -42,7 +39,7 @@ namespace mccore {
    * actual nodes.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: GraphAlgo.h,v 1.2 2004-03-08 22:29:25 larosem Exp $
+   * @version $Id: GraphAlgo.h,v 1.3 2004-04-02 18:59:20 larosem Exp $
    */
   class GraphAlgo 
   {
@@ -75,80 +72,114 @@ namespace mccore {
 
     /**
      * Dijkstra's algorithm for the shortest path in a directed graph.
-     * NOTE: value_type must be a float since we still use gcc-2.95.3
-     * and we can't know the MAX_VALUE of types at runtime.  and it
-     * doesn't implement numeric_limits<T> 
+     * <pre>
+     * NODE v, w;
+     * SET V, S;             both V and S are SETS
+     * int Dist[MAX][MAX];   distance from node v to w
+     * int D[MAX];           current distance from the root
+     * int P[MAX];           backward path towards root
+     * 
+     * S = {ROOT}; 
+     * for (all other nodes w in V-S) {
+     *   D[w] = Dist[ROOT][w];
+     *   P[w] = ROOT;
+     * }
+     * while (S is not yet V) {
+     *   choose node w in V-S such that D[w] is minimum;
+     *   S = S union {w};
+     *   for (each node v in V-S)
+     *     if (D[v] > D[w] + Dist[w][v]) {
+     *       D[v] = D[w] + Dist[w][v];
+     *       P[v] = w;
+     *     }
+     * }
+     * </pre>
      * @param graph a graph.
      * @param source the source node id of the paths.
-     * @return a map of nodes with their paths from the source.
+     * @param paths a collection of Path to fill with the SPT.
      */
     template< class node_type, 
 	      class edge_type,
-	      class node_comparator >
+	      class node_comparator,
+	      class value_type >
     static void 
     shortestPath (AbstractGraph< node_type, edge_type, node_comparator > &graph,
-		  int source, vector< Path< int, float > > &paths)
-    {      
-      typedef float value_type;
-      value_type MAXVALUE = MAXFLOAT;  
-
-      int i;
-      int graphsize = graph.size ();
+		  int source,
+		  vector< Path< int, value_type > > &paths)
+    {
+      const value_type MAXVALUE = numeric_limits< value_type >::max ();
+      unsigned int w;
+      unsigned int graphsize;
+      vector< unsigned int > C;
+      
+      graphsize = graph.size ();
       paths.clear ();
-      paths.resize (graphsize);                     // path description  
-      vector< int > C;                              // node set
-      vector< int >::iterator k;
+      paths.resize (graphsize);
       
       // Initialize ---
-      for  (i=0; i<graphsize; i++) {
-	if  (i == source) { 
-	  paths[i].setValue (0);
-	} else { 
-	  C.push_back (i);
-	  if  (graph.internalAreConnected(source, i)) {
-	    paths[i].setValue (graph.internalGetWeight (source, i));	 
-	    paths[i].push_back (source); 
-	    paths[i].push_back (i);
-	  } else {
-	    paths[i].setValue (MAXVALUE);
-	  }
+      for  (w = 0; w < graphsize; ++w)
+	{
+	  value_type value;
+	  
+	  if  (w == (unsigned int) source)
+	    value = 0;
+	  else
+	    {
+	      C.push_back (w);
+	      if  (graph.internalAreConnected (source, w))
+		{
+		  value = graph.internalGetWeight (source, w);
+		  paths[w].push_back (source); 
+		  paths[w].push_back (w);
+		}
+	      else
+		value = MAXVALUE;
+	    }
+	  paths[w].setValue (value);
 	}
-      }
-    
-      for  (i=0; i<graphsize-2; i++) {
-	vector< int >::iterator min_iter = C.begin();
-	value_type min_value = paths[*min_iter].getValue (); // in C
-	int min_index;
-	
-	for  (k=C.begin(); k!=C.end(); k++) {
-	  if  (paths[*k].getValue () < min_value) {
-	    min_value = paths[*k].getValue ();
-	    min_iter = k;
-	  } 
+      
+      while (! C.empty ())
+	{
+	  vector< unsigned int >::iterator min_iter;
+	  vector< unsigned int >::iterator k;
+	  value_type min_value;
+	  unsigned int min_index;
+
+	  min_iter = C.begin ();
+	  min_value = paths[*min_iter].getValue ();
+	  
+	  for  (k = C.begin (); k != C.end (); ++k)
+	    {
+	      if  (paths[*k].getValue () < min_value)
+		{
+		  min_value = paths[*k].getValue ();
+		  min_iter = k;
+		}
+	    }
+	  w = *min_iter;
+	  C.erase (min_iter);
+	  
+	  if  (min_value == MAXVALUE)
+	    break; // in case there is no better element...
+	  
+	  for (k = C.begin (); C.end () != k; ++k)
+	    {
+	      value_type new_val;
+	      unsigned int v;
+
+	      v = *k;
+	      if (graph.internalAreConnected (w, v)
+		  && paths[v].getValue () > (new_val = min_value + graph.internalGetWeight (w, v)))
+		{
+		  paths[v] = paths[w];
+		  paths[v].push_back (v);
+		  paths[v].setValue (new_val);
+		}
+	    }
 	}
-	min_index = *min_iter;
-	C.erase (min_iter);
-	
-	if  (min_value == MAXVALUE) break; // in case there is no better element...
-	
-	for (k=C.begin(); k!=C.end(); k++) {
-	  value_type old_val = paths[*k].getValue ();
-	  value_type new_val;
-	  if (graph.internalAreConnected (min_index, *k))
-	    new_val = min_value + graph.internalGetWeight (min_index, *k);
-	  else 
-	    new_val = MAXVALUE;
-	  if  (old_val > new_val) {
-	    paths[*k] = paths[ min_index ];
-	    paths[*k].push_back (*k);
-	    paths[*k].setValue (new_val);
-	  }
-	}
-      }
     }
 
 
-    
     
     /**
      * Prim's algorithm for the minimum spanning tree.
