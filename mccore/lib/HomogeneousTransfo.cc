@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.17 $
-// $Id: HomogeneousTransfo.cc,v 1.17 2005-01-07 16:38:19 thibaup Exp $
+// $Revision: 1.18 $
+// $Id: HomogeneousTransfo.cc,v 1.18 2005-01-11 19:39:40 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -537,34 +537,26 @@ namespace mccore
   HomogeneousTransfo 
   HomogeneousTransfo::align (const Vector3D &p1, const Vector3D &p2, const Vector3D &p3) 
   {
-    Vector3D ry;
-    Vector3D rx;
-    Vector3D rz;
-    HomogeneousTransfo rot;
-    HomogeneousTransfo trans;
-    
-    // p1 is placed at the origin
-    // p2 is placed along the y axis
-    // p3 is placed in the y-z plane.
-    ry = p2 - p1;
-    ry = ry.normalize();
-    rx = (p2 - p1).cross(p3 - p1);
-    rx = rx.normalize();
-    rz = rx.cross(ry);
-    
-    rot.set (rx.getX (), rx.getY (), rx.getZ (), 0,
-	     ry.getX (), ry.getY (), ry.getZ (), 0,
-	     rz.getX (), rz.getY (), rz.getZ (), 0,
-	     0, 0, 0, 1);
-	
-    trans.set (1, 0, 0, -p1.getX (),
-	       0, 1, 0, -p1.getY (),
-	       0, 0, 1, -p1.getZ (),
-	       0, 0, 0, 1);
-    
-    return (rot * trans).invert ();
+    Vector3D u, v, w; // the orthonormal basis
+
+    v = (p2 - p1).normalize ();
+    u = ((p2 - p1).cross(p3 - p1)).normalize ();
+    w = (u.cross (v)).normalize ();
+
+    return HomogeneousTransfo::frame (u, v, w, p1);
   }
-  
+
+
+  HomogeneousTransfo 
+  HomogeneousTransfo::frame (const Vector3D& u, const Vector3D& v, const Vector3D& w, const Vector3D& o) 
+  {
+    HomogeneousTransfo tf
+      (u.getX (), v.getX (), w.getX (), o.getX (),
+       u.getY (), v.getY (), w.getY (), o.getY (),
+       u.getZ (), v.getZ (), w.getZ (), o.getZ ());
+    return tf;
+  }
+
 
   ostream &
   HomogeneousTransfo::output (ostream &out) const 

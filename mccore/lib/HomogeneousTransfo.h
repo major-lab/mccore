@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.15 $
+// $Revision: 1.16 $
 //
 // This file is part of mccore.
 // 
@@ -56,7 +56,7 @@ namespace mccore
    * </pre>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: HomogeneousTransfo.h,v 1.15 2005-01-07 16:38:23 thibaup Exp $
+   * @version $Id: HomogeneousTransfo.h,v 1.16 2005-01-11 19:39:39 thibaup Exp $
    */
   class HomogeneousTransfo
   {
@@ -426,17 +426,31 @@ namespace mccore
      * @return the computed distance.
      */
     float squareDistance (const HomogeneousTransfo &m) const;
-    
+
     /**
-     * Returns the transfo needed to align the points p1, p2, p3 with
-     * the Euclidian reference frame centered at (0,0,0).
-     * @param p1 the first vector.
-     * @param p2 the second vector.
-     * @param p3 the third vector.
-     * @return the new aligned HomogeneousTransfo.
+     * Computes the homogeneous transformation matrix that represents the
+     * coordinate frame aligned onto three arbitrary points P1, P2 and P3
+     * in such a manner that P1 is the frame's origin, P2 is on the Y axis 
+     * and P3 is on the YZ plane.
+     * @param p1 point P1.
+     * @param p2 point P2.
+     * @param p3 point P3.
+     * @return the coordinate frame.
      */
     static HomogeneousTransfo align (const Vector3D &p1, const Vector3D &p2, const Vector3D &p3);
     
+    /**
+     * Computes the homogeneous transformation matrix that represents the
+     * coordinate frame <u,v,w> with origin at O in the standard Euclidian
+     * reference frame. Assumes that <u,v,w> is an orthonormal basis of R^3.
+     * @param u normal vector u both orthogonal to v and w.
+     * @param v normal vector v both orthogonal to u and w.
+     * @param w normal vector w both orthogonal to u and v.
+     * @param o point O, the frame's origin.
+     * @return the coordinate frame.
+     */
+    static HomogeneousTransfo frame (const Vector3D& u, const Vector3D& v, const Vector3D& w, const Vector3D& o);
+
     // I/O  -----------------------------------------------------------------
     
     /**
