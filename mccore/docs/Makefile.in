@@ -5,8 +5,8 @@
 ## Author           : Martin Larose
 ## Created On       : Tue Sep 19 18:53:22 2000
 ## Last Modified By : Martin Larose
-## Last Modified On : Fri Sep  7 11:43:46 2001
-## Update Count     : 6
+## Last Modified On : Wed Sep 12 14:27:10 2001
+## Update Count     : 7
 ## Status           : Ok.
 ###############################################################################
 #
@@ -47,57 +47,29 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 .SUFFIXES:
 .SUFFIXES: .tex
 
-MANUAL = McCoreManual
+MANUAL =
 
-DISTFILES = Makefile.in $(MANUAL).tex
+DISTFILES = Makefile.in
 
 
 all static:
 
-doc: $(MANUAL).pdf $(MANUAL).html
-
-$(MANUAL).dvi: $(MANUAL).tex
-	@ latex $<
-	@- makeindex $(MANUAL)
-	@ latex $<
-
-$(MANUAL).ps: $(MANUAL).dvi
-	@ dvips -z -Pcm -o $@ $^
-
-$(MANUAL).pdf: $(MANUAL).ps
-	@ ps2pdf $^ $@
-
-$(MANUAL).html: $(MANUAL).dvi
-	@- ln -s $(srcdir)/$(MANUAL).tex 2> /dev/null
-	@ latex2html -address "<a href=\"mailto:Webmaster <adbit@iro.umontreal.ca>\">Webmaster</a>" -info "" -no_navigation $(MANUAL).tex
-
+doc:
 
 install install-static: doc
-	@ $(srcdir)/../mkinstalldirs $(datadir)/$(PACKAGE)/$(VERSION)/doc
-	@ for file in $(MANUAL).ps $(MANUAL).pdf; do \
-	   $(INSTALL_DATA) $$file $(datadir)/$(PACKAGE)/$(VERSION)/doc; \
-	  done;
 
 uninstall:
-	@ for file in $(MANUAL).ps $(MANUAL).pdf; do \
-	   rm -f $(datadir)/$(PACKAGE)/$(VERSION)/doc/$$file; \
-	  done;
-
 
 mostlyclean:
 	@ rm -f *.aux *.dvi *.log *.toc *.ilg *.ind *.out body.tmp head.tmp
 
 clean: mostlyclean
-	@ rm $(MANUAL).pdf $(MANUAL).ps
-	@ rm -fr $(MANUAL) docbook html texi
 
 distclean: clean
 	@ rm -f Makefile
 
 topclean: distclean
 	@ echo "The project is getting _top_ clean\!"
-
-release:
 
 dist:
 	@ echo "Copying distribution files"
