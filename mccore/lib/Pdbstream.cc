@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.51 $
-// $Id: Pdbstream.cc,v 1.51 2005-02-10 18:49:46 thibaup Exp $
+// $Revision: 1.52 $
+// $Id: Pdbstream.cc,v 1.52 2005-02-18 20:29:44 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -219,7 +219,7 @@ namespace mccore
   void
   iPdbstream::open () 
   { 
-    this->clear ();
+
   }
 
 
@@ -229,6 +229,7 @@ namespace mccore
     this->header.clear ();
     this->use_cached_line = false;
     this->eomFlag = true;
+    if (ratom) delete ratom;
   }
 
 
@@ -545,7 +546,7 @@ namespace mccore
   void
   oPdbstream::open () 
   { 
-    this->clear ();
+
   }
   
 
