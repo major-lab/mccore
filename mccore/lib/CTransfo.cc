@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CTransfo.cc
-// Copyright © 1999, 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron <gendrop@vertigo.IRO.UMontreal.CA>
 // Created On       : Fri Oct  1 18:22:41 1999
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Nov  9 10:45:19 2000
-// Update Count     : 5
+// Last Modified On : Fri Mar 23 17:41:46 2001
+// Update Count     : 6
 // Status           : Ok.
 // 
 
@@ -48,12 +48,6 @@ CTransfo::CTransfo (const CTransfo &right)
   m[3] = right.m[3]; m[4] = right.m[4]; m[5] = right.m[5];
   m[6] = right.m[6]; m[7] = right.m[7]; m[8] = right.m[8];
   m[9] = right.m[9]; m[10] = right.m[10]; m[11] = right.m[11];
-}
-
-
-CTransfo::CTransfo (const CResidue &res)
-{
-  operator= (res.GetTransfo ());
 }
 
 

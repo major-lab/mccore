@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Mar  7 13:47:26 2001
-// Update Count     : 14
+// Last Modified On : Fri Mar 23 17:41:41 2001
+// Update Count     : 15
 // Status           : Ok.
 // 
 
@@ -410,7 +410,7 @@ CResidue::~CResidue ()
 
 
 
-const CResidue&
+CResidue&
 CResidue::operator= (const CResidue &right)
 {
   if (&right != this)
@@ -434,6 +434,20 @@ CResidue::operator= (const CResidue &right)
       mAtomRes.reserve (mAtomRes.size ());
       mTfo = right.mTfo;
     }
+  return *this;
+}
+
+
+
+CResidue&
+CResidue::operator= (const CTransfo &tfo)
+{
+  vector< int >::iterator i;
+  
+  mTfo = tfo; 
+  mAtomRes.clear ();
+  for (i = mAtomResPos.begin (); i != mAtomResPos.end (); ++i)
+    *i = -1;
   return *this;
 }
 
@@ -522,19 +536,6 @@ CResidue::SetResName (const char* nName)
       mResName = new char[strlen (nName) + 1];
       strcpy (mResName, nName);
     }
-}
-
-
-
-void
-CResidue::SetTransfo (const CTransfo &tfo)
-{
-  vector< int >::iterator i;
-  
-  mTfo = tfo; 
-  mAtomRes.clear ();
-  for (i = mAtomResPos.begin (); i != mAtomResPos.end (); ++i)
-    *i = -1;
 }
 
 

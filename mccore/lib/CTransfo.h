@@ -4,8 +4,8 @@
 // Author           : Patrick Gendron <gendrop@IRO.UMontreal.CA>
 // Created On       : Fri Oct  1 18:22:41 1999
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Jan 23 15:02:06 2001
-// Update Count     : 5
+// Last Modified On : Fri Mar 23 17:41:48 2001
+// Update Count     : 6
 // Status           : Ok.
 // 
 
@@ -38,7 +38,7 @@ class oBinstream;
  * Example:
  *
  * To align res2 on res1:
- * res2.SetTransfo (res1.GetTransfo ());
+ * res2 = (const CTransfo&) res1;
  * </pre>
  *
  * @author Patrick Gendron <gendrop@IRO.UMontreal.CA>
@@ -83,12 +83,6 @@ public:
    * @param right the object to copy.
    */
   CTransfo (const CTransfo &right);
-
-  /**
-   * Initializes the transfo with the residue's transfo.
-   * @param res the residue containing the transfo to copy.
-   */
-  CTransfo (const CResidue &res);
 
   /**
    * Destructs the transfo.

@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Thu Sep 28 16:59:32 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Fri Feb  2 14:56:22 2001
-// Update Count     : 11
+// Last Modified On : Fri Mar 23 17:41:44 2001
+// Update Count     : 12
 // Status           : Ok.
 // 
 
@@ -448,7 +448,14 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  const CResidue& operator= (const CResidue &right);
+  CResidue& operator= (const CResidue &right);
+
+  /**
+   * Assigns the transfo.  Only the internal transfo is modified,
+   * the atoms in local referential are erased.
+   * @param tfo the new transfo.
+   */
+  CResidue& operator= (const CTransfo &tfo);
 
   /**
    * Tests if the residues are equals.
@@ -479,6 +486,12 @@ public:
    * @return the reference to the atom in the local referential.
    */
   const CAtom& operator[] (t_Atom *type) const;
+
+  /**
+   * Gets the const reference to the tranfo.
+   * @return the transfo reference.
+   */
+  operator const CTransfo& () const { return mTfo; }
 
   // ACCESS ---------------------------------------------------------------
 
@@ -557,19 +570,6 @@ public:
    * @param type the new residue type.
    */
   void SetType (t_Residue *type) { mType = type; }
-
- /**
-   * Gets the transfo.
-   * @return the transfo.
-   */
-  const CTransfo& GetTransfo () const { return mTfo; }
-
-  /**
-   * Sets the transfo.  Only the internal transfo is modified,
-   * the atoms in local referential are erased.
-   * @param tfo the new transfo.
-   */
-  void SetTransfo (const CTransfo &tfo);
 
   /**
    * Gets the residue name.
