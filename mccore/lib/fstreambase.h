@@ -3,8 +3,8 @@
 // Copyright © 2002-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Fri Jan 25 15:17:28 2002
-// $Revision: 1.1.4.1 $
-// $Id: fstreambase.h,v 1.1.4.1 2003-12-10 14:20:24 larosem Exp $
+// $Revision: 1.1.4.2 $
+// $Id: fstreambase.h,v 1.1.4.2 2003-12-17 19:22:02 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -89,7 +89,7 @@ public:
   {
     clear ();
     if (!buf.open (name, (ios::openmode)mode))
-      clear (ios::badbit);
+      setstate (ios::badbit);
   }
 
   /**
@@ -99,7 +99,7 @@ public:
   {
     if (buf.is_open ())
       if (!buf.close ())
-	clear (ios::badbit);
+	setstate (ios::badbit);
   }
 
   /**

@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : ven 23 jui 1999 13:54:45 EDT
-// $Revision: 1.6.4.1 $
-// $Id: zfPdbstream.h,v 1.6.4.1 2003-12-10 14:20:42 larosem Exp $
+// $Revision: 1.6.4.2 $
+// $Id: zfPdbstream.h,v 1.6.4.2 2003-12-17 19:22:14 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -67,9 +67,11 @@ class izfPdbstream : public zfstreambase, public iPdbstream
    * @param mode the ios mode (default = ios::in).
    */
   izfPdbstream (const char *name, int mode = ios::in)
-    : zfstreambase (name, mode),
+    : zfstreambase (),
       iPdbstream (zfstreambase::rdbuf ())
-  { }
+  {
+    open (name, mode);
+  }
 
   // OPERATORS -----------------------------------------------------
 
@@ -134,9 +136,11 @@ class ozfPdbstream : public zfstreambase, public oPdbstream
    * @param level the compression level (default = Z_BEST_SPEED).
    */
   ozfPdbstream (const char *name, int mode = ios::out, int level = Z_BEST_SPEED)
-    : zfstreambase (name, mode, level),
+    : zfstreambase (),
       oPdbstream (zfstreambase::rdbuf())
-  { }
+  {
+    open (name, mode, level);
+  }
 
   // OPERATORS -----------------------------------------------------
 

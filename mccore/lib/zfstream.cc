@@ -3,8 +3,8 @@
 // Copyright © 2002-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Mon Jan 28 16:58:09 2002
-// $Revision: 1.1.4.1 $
-// $Id: zfstream.cc,v 1.1.4.1 2003-12-10 14:20:46 larosem Exp $
+// $Revision: 1.1.4.2 $
+// $Id: zfstream.cc,v 1.1.4.2 2003-12-17 19:22:17 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -171,17 +171,17 @@ zfstreambuf::sync ()
 
 
 
-zfstreambase::zfstreambase(const char* name, int mode = ios::in, int level)
-{
-  init (&buf);
-  open (name, mode, level);
-}
+// zfstreambase::zfstreambase(const char* name, int mode = ios::in, int level)
+// {
+//   init (&buf);
+//   open (name, mode, level);
+// }
 
 
-zfstreambase::~zfstreambase()
-{
-  close();
-}
+// zfstreambase::~zfstreambase()
+// {
+//   close();
+// }
 
 
 void 
@@ -189,7 +189,7 @@ zfstreambase::open (const char* name, int mode, int level)
 {
   clear ();
   if (!buf.open (name, mode, level))
-    clear (ios::badbit);
+    setstate (ios::badbit);
 }
 
 
@@ -198,6 +198,6 @@ zfstreambase::close ()
 {
   if (buf.is_open ())
     if (!buf.close ())
-      clear (ios::badbit);
+      setstate (ios::badbit);
 }
 

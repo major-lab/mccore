@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created on       : jeu 22 jui 1999 18:24:14 EDT
-// $Revision: 1.7.4.1 $
-// $Id: zfBinstream.h,v 1.7.4.1 2003-12-10 14:20:39 larosem Exp $
+// $Revision: 1.7.4.2 $
+// $Id: zfBinstream.h,v 1.7.4.2 2003-12-17 19:22:10 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -74,9 +74,11 @@ class izfBinstream : public zfstreambase, public iBinstream
    * @param mode the open mode (default ios::in).
    */
   izfBinstream(const char *name, int mode = ios::in)
-      : zfstreambase (name, mode),
-	iBinstream (zfstreambase::rdbuf ())
-  { }
+    : zfstreambase (),
+      iBinstream (zfstreambase::rdbuf ())
+  {
+    open (name, mode);
+  }
 
   // OPERATORS ------------------------------------------------------------
 
@@ -142,9 +144,11 @@ class ozfBinstream : public zfstreambase, public oBinstream
    * @param mode the open mode (default ios::out).
    */
   ozfBinstream (const char *name, int level = Z_BEST_SPEED, int mode = ios::out)
-    : zfstreambase (name, mode, level),
+    : zfstreambase (),
       oBinstream (zfstreambase::rdbuf())
-  { }
+  {
+    open (name, level, mode);
+  }
 
   // OPERATORS ------------------------------------------------------------
 

@@ -5,7 +5,7 @@
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:20:58 EDT
 // $Revision
-// $Id: fBinstream.h,v 1.5.4.1 2003-12-10 14:20:19 larosem Exp $
+// $Id: fBinstream.h,v 1.5.4.2 2003-12-17 19:21:56 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -67,9 +67,11 @@ public:
    * @param mode the open mode (default ios::in).
    */
   ifBinstream (const char *name, int mode=ios::in)
-    : fstreambase (name, mode),
+    : fstreambase (),
       iBinstream (fstreambase::rdbuf ())
-  { }
+  {
+    open (name, mode);
+  }
 
   // OPERATORS ------------------------------------------------------------
 
@@ -129,9 +131,11 @@ public:
    * @param mode the open mode (default ios::out).
    */
   ofBinstream (const char *name, int mode = ios::out)
-    : fstreambase (name, mode),
+    : fstreambase (),
       oBinstream (fstreambase::rdbuf ())
-  { }
+  {
+    open (name, mode);
+  }
 
   // OPERATORS ------------------------------------------------------------
 
@@ -192,9 +196,11 @@ class fBinstream : public fstreambase, public Binstream
    * @param prot the protection (default 0644).
    */
   fBinstream (const char *name, int mode = ios::in)
-    : fstreambase (name, mode),
+    : fstreambase (),
       Binstream (fstreambase::rdbuf ())
-  { }
+  {
+    open (name, mode);
+  }
 
   // OPERATORS ------------------------------------------------------------
 

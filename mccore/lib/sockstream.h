@@ -3,8 +3,8 @@
 // Copyright © 2002-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Thu Jan 31 15:21:36 2002
-// $Revision: 1.1.4.1 $
-// $Id: sockstream.h,v 1.1.4.1 2003-12-10 14:20:35 larosem Exp $
+// $Revision: 1.1.4.2 $
+// $Id: sockstream.h,v 1.1.4.2 2003-12-17 19:22:06 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -213,7 +213,7 @@ public:
   sockstreambase (const char* host, int port) {  
     init (rdbuf ());
     if (!rdbuf ()->open (host, port))
-      clear (rdstate () & ios::badbit);    
+      setstate (ios::badbit);    
   }
   
   /**

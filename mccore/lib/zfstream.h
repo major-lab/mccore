@@ -3,8 +3,8 @@
 // Copyright © 2002-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Mon Jan 28 16:13:00 2002
-// $Revision: 1.5.4.1 $
-// $Id: zfstream.h,v 1.5.4.1 2003-12-10 14:20:49 larosem Exp $
+// $Revision: 1.5.4.2 $
+// $Id: zfstream.h,v 1.5.4.2 2003-12-17 19:22:20 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -154,7 +154,7 @@ public:
   /**
    * Initializes the stream.
    */
-  zfstreambase () { init(rdbuf ()); }
+  zfstreambase () { init (rdbuf ()); }
 
   /**
    * Initializes the stream with a filename.
@@ -162,12 +162,16 @@ public:
    * @param mode the file mode.
    * @param level the compression level (default Z_BEST_SPEED).
    */
-  zfstreambase (const char* name, int mode, int level = Z_BEST_SPEED);
-
+  zfstreambase (const char* name, int mode, int level = Z_BEST_SPEED)
+  {
+    init (rdbuf ());
+    open (name, mode, level);
+  }
+  
   /**
    * Destroys the stream by calling close on it.
    */
-  ~zfstreambase();
+  ~zfstreambase() { close (); }
 
   /**
    * Opens the stream with a file name.
@@ -226,9 +230,11 @@ class izfstream : public zfstreambase, public istream
    * @param mode the file mode.
    */
   izfstream (const char* name, int mode = ios::in)
-    : zfstreambase (name, mode),
+    : zfstreambase (),
       istream (this->rdbuf ())
-  { }
+  {
+    open (name, mode);
+  }
   
   /**
    * Opens the stream with file name.
@@ -273,20 +279,24 @@ class ozfstream : public zfstreambase, public ostream
    * Initializes the stream with filename.
    * @param name the file name.
    * @param mode the file mode.
+   * @param level the compression level (default Z_BEST_SPEED).
    */
-  ozfstream (const char* name, int mode = ios::out)
-    : zfstreambase (name, mode),
+  ozfstream (const char* name, int mode = ios::out, int level = Z_BEST_SPEED)
+    : zfstreambase (),
       ostream (this->rdbuf ())
-  { }
+  {
+    open (name, mode, level);
+  }
 
   /**
    * Opens the stream with file name.
    * @param name the file name.
    * @param mode the file mode.
+   * @param level the compression level (default Z_BEST_SPEED).
    */
-  void open (const char* name, int mode = ios::out)
+  void open (const char* name, int mode = ios::out, int level = Z_BEST_SPEED)
   {
-    zfstreambase::open (name, mode);
+    zfstreambase::open (name, mode, level);
   }
 
   /**

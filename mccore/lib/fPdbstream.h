@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>.
 // Created On       : 
-// $Revision: 1.4.4.1 $
-// $Id: fPdbstream.h,v 1.4.4.1 2003-12-10 14:20:21 larosem Exp $
+// $Revision: 1.4.4.2 $
+// $Id: fPdbstream.h,v 1.4.4.2 2003-12-17 19:21:59 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -62,9 +62,11 @@ public:
    * @param mode the ios mode (default = ios::in).
    */
   ifPdbstream (const char *name, int mode = ios::in)
-    : fstreambase (name, mode),
+    : fstreambase (),
       iPdbstream (fstreambase::rdbuf ())
-  { }
+  {
+    open (name, mode);
+  }
 
   // OPERATORS -----------------------------------------------------
 
@@ -123,9 +125,11 @@ public:
    * @param mode the ios mode (default = ios::out).
    */
   ofPdbstream (const char *name, int mode = ios::out)
-    : fstreambase (name, mode),
+    : fstreambase (),
       oPdbstream (fstreambase::rdbuf ())
-  { }
+  {
+    open (name, mode);
+  }
 
   // OPERATORS -----------------------------------------------------
 
