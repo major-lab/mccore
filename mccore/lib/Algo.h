@@ -4,8 +4,8 @@
 // Author           : Sebastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Wed Feb 14 15:33:58 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Fri May 11 18:01:26 2001
-// Update Count     : 33
+// Last Modified On : Mon Jul 16 12:38:16 2001
+// Update Count     : 34
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -107,9 +107,9 @@ public:
       if (i->GetType ()->is_NucleicAcid ())
 	{
 	  CResidue::iterator j;
-	  ResidueRange< iterator > tmp_X (i, FLT_MAX, -FLT_MAX);
-	  ResidueRange< iterator > tmp_Y (i, FLT_MAX, -FLT_MAX);
-	  ResidueRange< iterator > tmp_Z (i, FLT_MAX, -FLT_MAX);
+	  ResidueRange< iterator > tmp_X (i, HUGE, -HUGE);
+	  ResidueRange< iterator > tmp_Y (i, HUGE, -HUGE);
+	  ResidueRange< iterator > tmp_Z (i, HUGE, -HUGE);
 	  
 	  for (j = i->begin (); j != i->end (); ++j)
 	    {
