@@ -46,7 +46,7 @@ namespace mccore {
    * between any two atoms.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: HBond.h,v 1.4 2004-03-17 20:54:05 larosem Exp $
+   * @version $Id: HBond.h,v 1.5 2004-09-24 22:19:00 larosem Exp $
    */
   class HBond
     {
@@ -158,6 +158,12 @@ namespace mccore {
       const Atom& getDonor (const Residue& r) const;
 
       /**
+       * Gets the donor atom type.
+       * @return the donor atom type.
+       */
+      const AtomType* getDonorType () const { return donor; }
+
+      /**
        * Returns the hydrogen atom.
        * @param r a residue into which to take the atom.  If none is
        * supplied and the HBond was evaluated on a pair of residues,
@@ -166,6 +172,12 @@ namespace mccore {
        */
       const Atom& getHydrogen () const;
       const Atom& getHydrogen (const Residue& r) const;
+
+      /**
+       * Gets the hydrogen atom type.
+       * @return the hydrogen atom type.
+       */
+      const AtomType* getHydrogenType () const { return hydrogen; }
 
       /**
        * Returns the acceptor atom.
@@ -178,6 +190,12 @@ namespace mccore {
       const Atom& getAcceptor (const Residue& r) const;
       
       /**
+       * Gets the acceptor atom type.
+       * @return the acceptor atom type.
+       */
+      const AtomType* getAcceptorType () const { return acceptor; }
+
+      /**
        * Returns the lonepair atom.
        * @param r a residue into which to take the atom.  If none is
        * supplied and the HBond was evaluated on a pair of residues,
@@ -187,7 +205,12 @@ namespace mccore {
       const Atom& getLonePair () const;
       const Atom& getLonePair (const Residue& r) const;
       
-      
+      /**
+       * Gets the lonepair atom type.
+       * @return the lonepair atom type.
+       */
+      const AtomType* getLonePairType () const { return lonepair; }
+
       /**
        * Returns the donor residue, if one is set for this HBond.
        */
@@ -230,12 +253,6 @@ namespace mccore {
       
       // I/O -------------------------------------------------------------------
 
-      /**
-       * Outputs the H-bond in Amber restraint format.
-       * @param os the output stream.
-       */
-      void writeAmberRestraint (ostream &os) const;
-      
       /**
        * Outputs the H-bond in human readable format.
        * @param os the output stream.

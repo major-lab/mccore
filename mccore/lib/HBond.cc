@@ -292,54 +292,28 @@ HBond::evalStatistically (const Residue &ra, const Residue &rb)
     p_h += sProbH[i] * prob;
   }
   return (value = p_h / p_x);
-}
-
-// I/O -------------------------------------------------------------------------
-
-void 
-HBond::writeAmberRestraint (ostream &os) const 
-{
-//   os << " &rst iresid=1," << endl;
-//   os << "      iat(1)=" << ((const CResId&)*mResidueA).GetResNo ()
-//      << ", iat(2)=" << ((const CResId&)*mResidueB).GetResNo() << "," << endl;
-//   os << "      atnam(1)= '" << donor->getAmberRep () << "', "
-//      << "atnam(2)= '" << acceptor->getAmberRep () << "'," << endl;
-//   os << "      r1= 1.0, r2= 1.5, r3= 3.0, r4= 5.0," << endl;
-//   os << "      rk2=0.0, rk3=32.0" << endl;
-//   os << " &end" << endl;
-//   os << " &rst iresid=1," << endl;
-//   os << "      iat(1)=" << ((const CResId&)*mResidueA).GetResNo()
-//      << ", iat(2)=" << ((const CResId&)*mResidueA).GetResNo()
-//      << ", iat(3)=" << ((const CResId&)*mResidueB).GetResNo() << "," << endl;
-//   os << "      atnam(1)= '" << donor->getAmberRep () << "', "
-//      << "atnam(2)= '" << hydrogen->getAmberRep () << "', "
-//      << "atnam(3)= '" << acceptor->getAmberRep () << "'," << endl;
-//   os << "      r1= 150, r2= 170, r3= 190, r4= 210," << endl;
-//   os << "      rk2=20.0, rk3=20.0" << endl;
-//   os << " &end" << endl;
-}
-
-ostream &
-HBond::output (ostream &os) const
-{
-  if (resA != 0 && resD != 0) {
-    os.precision (8);
-    return os << resD->getResId () << " -> " 
-	      << resA->getResId () << "  "
-	      << donor << "-" << hydrogen << " -> " 
-	      << acceptor << " (" << lonepair << ")"
-	      << " [" << value << "]";
-  } else {
-    return os << donor << "-" << hydrogen << " -> " 
-	      << acceptor << " (" << lonepair << ")";  
+ }
+  
+  
+  ostream &
+  HBond::output (ostream &os) const
+  {
+    if (resA != 0 && resD != 0) {
+      os.precision (8);
+      return os << resD->getResId () << " -> " 
+		<< resA->getResId () << "  "
+		<< donor << "-" << hydrogen << " -> " 
+		<< acceptor << " (" << lonepair << ")"
+		<< " [" << value << "]";
+    } else {
+      return os << donor << "-" << hydrogen << " -> " 
+		<< acceptor << " (" << lonepair << ")";  
+    }
   }
-}
-
-
-ostream &operator<< (ostream &os, const HBond &theBond)
-{
-  return theBond.output (os);
-}
-
-
+  
+  
+  ostream &operator<< (ostream &os, const HBond &theBond)
+  {
+    return theBond.output (os);
+  }
 }
