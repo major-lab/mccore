@@ -102,7 +102,8 @@ namespace mccore {
   bool 
   Residue::setIdeal (bool h_lp)
   {
-    if (!type->isNucleicAcid ()) return false;
+    if (!(type->isNucleicAcid () || type->isPhosphate ()))
+      return false;
 
     clear ();
 
