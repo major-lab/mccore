@@ -4,9 +4,9 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Philippe Thibault
-// Last Modified On : Wed Oct  1 11:45:08 2003
-// Update Count     : 26
+// Last Modified By : Patrick Gendron
+// Last Modified On : Fri Oct 17 09:49:57 2003
+// Update Count     : 29
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -37,19 +37,21 @@
 
 #include "CException.h"
 
-
+#ifdef HAVE_NUMERIC_LIMITS
 void terminate_func (void)
 {
   cerr << "An exception was thrown but not caught." << endl
        << "Please send a bug report to 'bug-mcsym@iro.umontreal.ca'." << endl;
   exit(EXIT_FAILURE);
 }
-
+#endif
 
 
 CException::CException ()
 {
+#ifdef HAVE_NUMERIC_LIMITS
   set_terminate(&terminate_func);
+  #endif
 
   mMessage = new char[1];
   mMessage[0] = '\0';
@@ -59,8 +61,9 @@ CException::CException ()
 
 CException::CException (const char *message)
 {
+#ifdef HAVE_NUMERIC_LIMITS
   set_terminate(&terminate_func);
-
+#endif
   mMessage = new char[strlen (message) + 1];
   strcpy (mMessage, message);
 }
