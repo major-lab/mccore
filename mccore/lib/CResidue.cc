@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Sep  6 17:24:36 2001
-// Update Count     : 24
+// Last Modified On : Thu Sep 13 09:58:20 2001
+// Update Count     : 25
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -300,7 +300,7 @@ CResidue::CResidue (t_Residue *type,
 	{
 	  // Create an invalid residue but keep it in misc residues.
 	  gOut(1) << "Residue " << *type << "-" << nId
-		  << " is missing one or more critical atoms. (1)<br>" 
+		  << " is missing one or more critical atoms." 
 		  << endl;
 	  map< const char *, t_Residue*, less_string >::iterator i
 	    = gMiscResidueString.find ((const char*)*mType);
@@ -672,7 +672,7 @@ CResidue::addHydrogens ()
 	    && ref (a_N6) && ref (a_C4)))
 	{
 	  gOut(1) << "Residue " << *mType << "-" << *(CResId*)this
-		  << " is missing one or more critical atoms.<br>" 
+		  << " is missing one or more critical atoms." 
 		  << endl;
 	  // Invalid residue
 	  map< const char *, t_Residue*, less_string >::iterator i
@@ -721,7 +721,7 @@ CResidue::addHydrogens ()
 	    && ref (a_C4) && ref (a_C5) && ref (a_O6)))
 	{
 	  gOut(1) << "Residue " << *mType << "-" << *(CResId*)this
-		  << " is missing one or more critical atoms.<br>" 
+		  << " is missing one or more critical atoms." 
 		  << endl;
 	  // invalid residue
 	  map< const char *, t_Residue*, less_string >::iterator i
@@ -770,7 +770,7 @@ CResidue::addHydrogens ()
 	    && ref (a_C2) && ref (a_O2)))
 	{
 	  gOut(1) << "Residue " << *mType << "-" << *(CResId*)this
-		  << " is missing one or more critical atoms.<br>" 
+		  << " is missing one or more critical atoms." 
 		  << endl;
 	  // invalid residue
 	  map< const char *, t_Residue*, less_string >::iterator i
@@ -818,7 +818,7 @@ CResidue::addHydrogens ()
 	    && ref (a_C6) && ref (a_N1) && ref (a_O2) && ref (a_O4)))
 	{
 	  gOut(1) << "Residue " << *mType << "-" << *(CResId*)this
-		  << " is missing one or more critical atoms.<br>" 
+		  << " is missing one or more critical atoms." 
 		  << endl;
 	  // invalid residue
 	  map< const char *, t_Residue*, less_string >::iterator i
@@ -859,7 +859,7 @@ CResidue::addHydrogens ()
 	    && ref (a_C6) && ref (a_N1) && ref (a_O2) && ref (a_O4)))
 	{
 	  gOut(1) << "Residue " << *mType << "-" << *(CResId*)this
-		  << " is missing one or more critical atoms.<br>" 
+		  << " is missing one or more critical atoms." 
 		  << endl;
 	  // invalid residue
 	  map< const char *, t_Residue*, less_string >::iterator i
@@ -1727,11 +1727,11 @@ operator>> (iPdbstream &ips, CResidue &newResidue)
 		    {
 		      // On rapporte l'"incident" seulement s'il s'agit d'un
 		      // résidue "normal"!
-		      gOut(2) << "Duplicate atoms <i>"
+		      gOut(2) << "Duplicate atoms "
 			      << ips.GetPrevResId () << ":"
 			      << *(it->GetType ())
-			      << "</i> in residue type <b>"
-			      << *ips.GetPrevResType () << "</b><br>"
+			      << " in residue type "
+			      << *ips.GetPrevResType () << "."
 			      << endl;
 		    }
 		}
