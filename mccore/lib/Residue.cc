@@ -42,7 +42,6 @@
 
 namespace mccore {
 
-
   // LIFECYCLE -----------------------------------------------------------------
 
 
@@ -396,8 +395,6 @@ namespace mccore {
   {
     Vector3D *pivot[3];
     HomogeneousTransfo curr;
-
-    cout << ":-|" << endl;
 
     if ((get (AtomType::aN9) != 0 || get (AtomType::aN1) != 0) 
 	&& get (AtomType::aPSY) != 0
@@ -1347,12 +1344,9 @@ namespace mccore {
 	throw exc;
       }
       
-      AtomMap::const_iterator i, j;
-      
-      for (i=atomIndex.begin (), j=resp->atomIndex.begin ();
-	   i!=atomIndex.end () && j!=resp->atomIndex.end ();
-	   ++i, ++j) {
-	*atomGlobal[i->second] = *resp->atomGlobal[j->second];
+      unsigned int i;
+      for (i=0; i<atomGlobal.size (); ++i) {
+	*atomGlobal[i] = *resp->atomGlobal[i];
       }
     }
   }
@@ -1387,10 +1381,10 @@ namespace mccore {
   Residue::output (ostream &os) const 
   {
     os << resId << type;
-//     AtomMap::const_iterator cit;
-//     for (cit=atomIndex.begin (); cit!=atomIndex.end (); ++cit) {
-//       os << endl << *(atomGlobal[cit->second]);
-//     }
+    AtomMap::const_iterator cit;
+    for (cit=atomIndex.begin (); cit!=atomIndex.end (); ++cit) {
+      os << endl << *(atomGlobal[cit->second]);
+    }
     return os;
   }
   
@@ -1471,8 +1465,8 @@ namespace mccore {
 
 
   Residue::ResidueIterator::ResidueIterator (Residue *r,
-						  AtomMap::iterator p,
-						  AtomSet *f)
+					     AtomMap::iterator p,
+					     AtomSet *f)
     : res (r),
       pos (p),
       filter (f)

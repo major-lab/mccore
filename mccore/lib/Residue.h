@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.13 $
+// $Revision: 1.14 $
 //
 //  This file is part of mccore.
 //  
@@ -56,10 +56,12 @@ namespace mccore {
    * the atom types.
    *
    * @author Patrick Gendron <gendrop@iro.umontreal.ca>
-   * @version $Id: Residue.h,v 1.13 2003-10-16 21:55:27 gendrop Exp $
+   * @version $Id: Residue.h,v 1.14 2003-10-28 16:11:44 gendrop Exp $
    */
   class Residue
   {
+    friend class ExtendedResidue;
+
   public:
     
     /**
@@ -430,20 +432,20 @@ namespace mccore {
     virtual ostream& output (ostream &os) const;
     
     /**
-     * Inputs the residue from the stream. Not virtual so that only
-     * the minimum data is transfered.
+     * Inputs the residue from the stream. All residues binary I/O
+     * should be compatible for all inherited classes.
      * @param ibs the input stream.
      * @return the used output stream.
      */
-    iBinstream& input (iBinstream &ibs);
+    virtual iBinstream& input (iBinstream &ibs);
 
     /**
-     * Ouputs the residue to the stream.  Not virtual so that only the
-     * minimum data is transfered.
+     * Ouputs the residue to the stream.  All residues binary I/O
+     * should be compatible for all inherited classes.
      * @param os the output stream.
      * @return the used output stream.
      */
-    oBinstream& output (oBinstream &obs) const;
+    virtual oBinstream& output (oBinstream &obs) const;
 
 
   protected:
