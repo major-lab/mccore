@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -23,6 +23,7 @@ namespace mccore {
 
     stringType["RNA"] = ResidueType::rRNA = new RNA ("(RNA)", "(RNA)");
     stringType["DNA"] = ResidueType::rDNA = new DNA ("(DNA)", "(DNA)");
+    stringType["PO4"] = ResidueType::rPhosphate = new Phosphate ("(PO4)", "(Phosphate)");
     stringType["R"] = ResidueType::rPurine = new Purine ("(R)", "(R)");
     stringType["RR"] = ResidueType::rRPurine = new RPurine ("(RR)", "(RR)");
     stringType["DR"] = ResidueType::rDPurine = new DPurine ("(DR)", "(DR)");

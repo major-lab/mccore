@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 // 
 //  This file is part of mccore.
 //  
@@ -41,7 +41,7 @@ namespace mccore {
    * Repository of residue types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueTypeStore.h,v 1.1 2003-04-03 21:55:55 gendrop Exp $
+   * @version $Id: ResidueTypeStore.h,v 1.2 2003-05-15 13:35:53 thibaup Exp $
    */
   class ResidueTypeStore
   {
@@ -353,6 +353,20 @@ namespace mccore {
       virtual bool isDNA () const { return true; }
       virtual bool describe (const ResidueType* t) const {
 	return dynamic_cast< const DNA* > (t);
+      }
+    };
+
+    /**
+     * Public abstract class for Phosphate residues.
+     */
+    class Phosphate : public virtual NucleicAcid {
+    public:      
+      Phosphate () {}
+      Phosphate (const char* t, const char* lt) : ResidueType (t, lt) {}
+
+      virtual bool isPhosphate () const { return true; }
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const Phosphate* > (t);
       }
     };
     
