@@ -4,8 +4,8 @@
 // Author           : Martin Larose
 // Created On       : Fri Oct 12 18:21:12 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Oct 25 11:15:25 2001
-// Update Count     : 2
+// Last Modified On : Wed Nov 14 16:42:16 2001
+// Update Count     : 3
 // Status           : Unknown.
 // 
 
@@ -960,7 +960,8 @@ AbstractResidue::validate ()
 	    gOut (3) << 'n';
 	}
     }
-  gOut (3) << 'i';
+  else
+    gOut (3) << 'i';
 }
 
 
