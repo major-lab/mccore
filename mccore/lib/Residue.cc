@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.61 $
-// $Id: Residue.cc,v 1.61 2005-01-11 16:40:27 thibaup Exp $
+// $Revision: 1.62 $
+// $Id: Residue.cc,v 1.62 2005-01-11 20:58:26 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -33,7 +33,6 @@
 #include <set>
 
 #include "Binstream.h"
-#include "Exception.h"
 #include "Messagestream.h"
 #include "Pdbstream.h"
 #include "PropertyType.h"
@@ -2000,14 +1999,14 @@ namespace mccore
 
 
   const AtomType*
-  Residue::nitrogenType19 (const ResidueType* rtype)
+  Residue::nitrogenType19 (const ResidueType* rtype) throw (TypeException)
   {
     if (rtype)
     {
       if (rtype->isPurine ())     return AtomType::aN9;
       if (rtype->isPyrimidine ()) return AtomType::aN1;
     }
-    IntLibException ex ("", __FILE__, __LINE__);
+    TypeException ex ("", __FILE__, __LINE__);
     ex << "No terminus nitrogen known for residue type \"" << rtype << "\".";
     throw ex;
     return 0;
@@ -2015,14 +2014,14 @@ namespace mccore
 
 
   const AtomType*
-  Residue::carbonType24 (const ResidueType* rtype)
+  Residue::carbonType24 (const ResidueType* rtype) throw (TypeException)
   {
     if (rtype)
     {
       if (rtype->isPurine ())     return AtomType::aC4;
       if (rtype->isPyrimidine ()) return AtomType::aC2;
     }
-    IntLibException ex ("", __FILE__, __LINE__);
+    TypeException ex ("", __FILE__, __LINE__);
     ex << "No terminus carbon known for residue type \"" << rtype << "\".";
     throw ex;
     return 0;
@@ -2030,14 +2029,14 @@ namespace mccore
 
 
   const AtomType*
-  Residue::carbonType68 (const ResidueType* rtype)
+  Residue::carbonType68 (const ResidueType* rtype) throw (TypeException)
   {
     if (rtype)
     {
       if (rtype->isPurine ())     return AtomType::aC8;
       if (rtype->isPyrimidine ()) return AtomType::aC6;
     }
-    IntLibException ex ("", __FILE__, __LINE__);
+    TypeException ex ("", __FILE__, __LINE__);
     ex << "No terminus carbon known for residue type \"" << rtype << "\".";
     throw ex;
     return 0;
@@ -2093,7 +2092,7 @@ namespace mccore
   
 
   float
-  Residue::getMinRho (const PropertyType* pucker)
+  Residue::getMinRho (const PropertyType* pucker) throw (TypeException)
   {
     if (pucker == PropertyType::pC3p_endo)
       return 0.0;
@@ -2117,7 +2116,7 @@ namespace mccore
       return RAD_324;
     else
     {
-      IntLibException ex ("", __FILE__, __LINE__);
+      TypeException ex ("", __FILE__, __LINE__);
       ex << "unknown pucker type " << pucker;
       throw ex;
     }
@@ -2125,7 +2124,7 @@ namespace mccore
 
   
   float
-  Residue::getMaxRho (const PropertyType* pucker)
+  Residue::getMaxRho (const PropertyType* pucker) throw (TypeException)
   {
     if (pucker == PropertyType::pC3p_endo)
       return RAD_36;
@@ -2149,7 +2148,7 @@ namespace mccore
       return RAD_360;
     else
     {
-      IntLibException ex ("", __FILE__, __LINE__);
+      TypeException ex ("", __FILE__, __LINE__);
       ex << "unknown pucker type " << pucker;
       throw ex;
     }
@@ -2157,7 +2156,7 @@ namespace mccore
 
   
   float
-  Residue::getMinChi (const PropertyType* glycosyl)
+  Residue::getMinChi (const PropertyType* glycosyl) throw (TypeException)
   {
     if (glycosyl == PropertyType::pSyn)
       return -RAD_90;
@@ -2165,7 +2164,7 @@ namespace mccore
       return RAD_90;
     else
     {
-      IntLibException ex ("", __FILE__, __LINE__);
+      TypeException ex ("", __FILE__, __LINE__);
       ex << "unknown glycosyl torsion type " << glycosyl;
       throw ex;
     }
@@ -2173,7 +2172,7 @@ namespace mccore
 
   
   float
-  Residue::getMaxChi (const PropertyType* glycosyl)
+  Residue::getMaxChi (const PropertyType* glycosyl) throw (TypeException)
   {
     if (glycosyl == PropertyType::pSyn)
       return RAD_90;
@@ -2181,7 +2180,7 @@ namespace mccore
       return RAD_270;
     else
     {
-      IntLibException ex ("", __FILE__, __LINE__);
+      TypeException ex ("", __FILE__, __LINE__);
       ex << "unknown glycosyl torsion type " << glycosyl;
       throw ex;
     }
@@ -2244,23 +2243,26 @@ namespace mccore
   Residue::_compute_referential () const
   {
     Vector3D *pivot[3];
+    Vector3D *origin;
 
     try
     {
-      // fetch pivot types
-      if (this->type->isPurine ())
+      // first try to handle a nucleic acid which already has its pseudo atoms
+      // to form an orthonormal base.
+      try
       {
-	pivot[0] = this->_safe_get (AtomType::aN9);
-	pivot[1] = this->_safe_get (AtomType::aPSY);
-	pivot[2] = this->_safe_get (AtomType::aPSZ);
+	origin = this->_safe_get (Residue::nitrogenType19 (this->type));
+	return HomogeneousTransfo::frame (*this->_safe_get (AtomType::aPSX) - *origin,
+					  *this->_safe_get (AtomType::aPSY) - *origin,
+					  *this->_safe_get (AtomType::aPSZ) - *origin,
+					  *origin);
       }
-      else if (this->type->isPyrimidine ())
+      catch (TypeException& ex)
       {
-	pivot[0] = this->_safe_get (AtomType::aN1);
-	pivot[1] = this->_safe_get (AtomType::aPSY);
-	pivot[2] = this->_safe_get (AtomType::aPSZ);
       }
-      else if (this->type->isPhosphate ())
+
+      // fetch pivot types for other types with no pseudo atoms
+      if (this->type->isPhosphate ())
       {
 	pivot[0] = this->_safe_get (AtomType::aP);
 	pivot[1] = this->_safe_get (AtomType::aO3p);

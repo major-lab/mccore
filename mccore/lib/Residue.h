@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.28 $
+// $Revision: 1.29 $
 //
 // This file is part of mccore.
 // 
@@ -36,6 +36,7 @@
 #include "AtomSet.h"
 #include "ResidueType.h"
 #include "HomogeneousTransfo.h"
+#include "Exception.h"
 
 using namespace std;
 
@@ -45,7 +46,6 @@ namespace mccore
 {
   class PropertyType;
   class ResidueFactoryMethod;
-  class Exception;
   class iBinstream;
   class iPdbstream;
   class oBinstream;
@@ -62,7 +62,7 @@ namespace mccore
    * the atom types.
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: Residue.h,v 1.28 2005-01-05 01:50:56 larosem Exp $
+   * @version $Id: Residue.h,v 1.29 2005-01-11 20:58:26 thibaup Exp $
    */
   class Residue
   {
@@ -1005,9 +1005,9 @@ namespace mccore
      * Throws an exception if residue type is neither a purine nor a pyrimide.
      * @param rtype The residue type to analyze.
      * @return The appropriate nitrogen atom type.
-     * @throws IntLibException NoSuchAtomException
+     * @throws TypeException
      */
-    static const AtomType* nitrogenType19 (const ResidueType* rtype);
+    static const AtomType* nitrogenType19 (const ResidueType* rtype) throw (TypeException);
 
     /**
      * Utility method to find appropriate terminus right hand side carbon in
@@ -1015,9 +1015,9 @@ namespace mccore
      * Throws an exception if residue type is neither a purine nor a pyrimide.
      * @param rtype The residue type to analyze.
      * @return The appropriate carbon atom type.
-     * @throws IntLibException NoSuchAtomException
+     * @throws TypeException
      */
-    static const AtomType* carbonType24 (const ResidueType* rtype);
+    static const AtomType* carbonType24 (const ResidueType* rtype) throw (TypeException);
 
     /**
      * Utility method to find appropriate terminus left hand side carbon in
@@ -1025,9 +1025,9 @@ namespace mccore
      * Throws an exception if residue type is neither a purine nor a pyrimide.
      * @param rtype The residue type to analyze.
      * @return The appropriate carbon atom type.
-     * @throws IntLibException NoSuchAtomException
+     * @throws TypeException
      */
-    static const AtomType* carbonType68 (const ResidueType* rtype);
+    static const AtomType* carbonType68 (const ResidueType* rtype) throw (TypeException);
     
     /**
      * Gets the pucker type associated with the specified pseudorotation (rho) value.
@@ -1044,24 +1044,40 @@ namespace mccore
     static const PropertyType* getGlycosylType (float chi);
 
     /**
-     * Gets the range of pseudorotation (rho) values associated with the specified pucker type.
+     * Gets the minimal range of pseudorotation (rho) values associated with the specified pucker type.
      * A @ref LibException is thrown if pucker type is unknown.
      * @param pucker The pucker type.
-     * @return The minimal or maximal pseudorotation (rho) value (rad).
-     * @exception LibException
+     * @return The minimal pseudorotation (rho) value (rad).
+     * @exception TypeException
      */
-    static float getMinRho (const PropertyType* pucker);
-    static float getMaxRho (const PropertyType* pucker);
+    static float getMinRho (const PropertyType* pucker) throw (TypeException);
 
     /**
-     * Gets the range of glycosyl torsion (chi) values associated with the specified glycosyl torsion type.
+     * Gets the maximal range of pseudorotation (rho) values associated with the specified pucker type.
      * A @ref LibException is thrown if pucker type is unknown.
      * @param pucker The pucker type.
-     * @return The minimal or maximal glycosyl torsion (chi) value (rad).
-     * @exception LibException
+     * @return The maximal pseudorotation (rho) value (rad).
+     * @exception TypeException
      */
-    static float getMinChi (const PropertyType* glycosyl);
-    static float getMaxChi (const PropertyType* glycosyl);
+    static float getMaxRho (const PropertyType* pucker) throw (TypeException);
+
+    /**
+     * Gets the minimal range of glycosyl torsion (chi) values associated with the specified glycosyl torsion type.
+     * A @ref LibException is thrown if pucker type is unknown.
+     * @param pucker The pucker type.
+     * @return The minimal glycosyl torsion (chi) value (rad).
+     * @exception TypeException
+     */
+    static float getMinChi (const PropertyType* glycosyl) throw (TypeException);
+
+    /**
+     * Gets the maximal range of glycosyl torsion (chi) values associated with the specified glycosyl torsion type.
+     * A @ref LibException is thrown if pucker type is unknown.
+     * @param pucker The pucker type.
+     * @return The maximal glycosyl torsion (chi) value (rad).
+     * @exception TypeException
+     */
+    static float getMaxChi (const PropertyType* glycosyl) throw (TypeException);
     
     
   protected:
