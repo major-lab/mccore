@@ -5,8 +5,8 @@
 ;; Author           : Martin Larose
 ;; Created On       : Tue Sep 19 18:16:58 2000
 ;; Last Modified By : Martin Larose
-;; Last Modified On : Tue Aug 14 12:33:08 2001
-;; Update Count     : 3
+;; Last Modified On : Wed Sep 12 14:27:36 2001
+;; Update Count     : 4
 ;; Status           : Ok.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -37,7 +37,8 @@ AUTHORS:
 Sébastien Lemieux
 François Major,
 Patrick Gendron,
-Martin Larose.
+Martin Larose,
+Philippe Thibault.
 
 
 BUGS:
