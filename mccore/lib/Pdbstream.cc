@@ -4,8 +4,8 @@
 // Author           : Martin Larose
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Nov  9 10:45:32 2000
-// Update Count     : 2
+// Last Modified On : Wed Nov 22 14:35:23 2000
+// Update Count     : 3
 // Status           : Ok.
 // 
 
@@ -232,6 +232,12 @@ iPdbstream::GetAtomType (char *s)
     return a_CZ3;
   if (strcmp (tmpstr, "H") == 0)
     return a_H;
+  if (strcmp (tmpstr, "1H") == 0)
+    return a_1H;
+  if (strcmp (tmpstr, "2H") == 0)
+    return a_2H;
+  if (strcmp (tmpstr, "3H") == 0)
+    return a_3H;
   if (strcmp (tmpstr, "HA") == 0)
     return a_HA;
   if (strcmp (tmpstr, "1HA") == 0)
@@ -246,9 +252,9 @@ iPdbstream::GetAtomType (char *s)
     return a_HB2;
   if (strcmp (tmpstr, "3HB") == 0)
     return a_HB3;
-  if (strcmp (tmpstr, "1HD") == 0)
+  if (strcmp (tmpstr, "1HD") == 0 || strcmp (tmpstr, "HD1") == 0)
     return a_HD1;
-  if (strcmp (tmpstr, "2HD") == 0)
+  if (strcmp (tmpstr, "2HD") == 0 || strcmp (tmpstr, "HD2") == 0)
     return a_HD2;
   if (strcmp (tmpstr, "HE") == 0)
     return a_HE;
@@ -358,6 +364,8 @@ iPdbstream::GetAtomType (char *s)
     return a_3HG1;
   if (strcmp (tmpstr, "3HG2") == 0)
     return a_3HG2;
+  if (strcmp (tmpstr, "MG") == 0)
+    return a_MG;
   
   // This is an unknown type...
   map< const char *, t_Atom*, less_string >::iterator pos
@@ -668,6 +676,10 @@ oPdbstream::GetAtomStr (const t_Atom *t)
 	  if (t->is_HO3p ()) return "HO3*";
 	  if (t->is_H3T ()) return " H3T";
 	  if (t->is_HXT ()) return " HXT";
+          if (t->is_H ())   return " H  ";
+	  if (t->is_1H ())  return "1H  ";
+	  if (t->is_2H ())  return "2H  ";
+	  if (t->is_3H ())  return "3H  ";
 	}
       else if (t->is_Oxygen ())
 	{
@@ -728,7 +740,6 @@ oPdbstream::GetAtomStr (const t_Atom *t)
 	  if (t->is_2H5M ()) return "2H5M";
 	  if (t->is_2H6 ()) return "2H6 ";
 	  if (t->is_3H5M ()) return "3H5M";
-          if (t->is_H ()) return " H  ";
           if (t->is_HA ()) return " HA ";
           if (t->is_HA1 ()) return "1HA ";
           if (t->is_HA2 ()) return "2HA ";
@@ -819,6 +830,7 @@ oPdbstream::GetAtomStr (const t_Atom *t)
 	  if (t->is_1LP4 ()) return "1LP4";
           if (t->is_SD ()) return " SD ";
           if (t->is_SG ()) return " SG ";
+	  if (t->is_MG ()) return "MG  ";
 	}
     }
   return "????";

@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:14:18 2000
-// Update Count     : 1
+// Last Modified On : Wed Nov 22 14:35:19 2000
+// Update Count     : 2
 // Status           : Ok.
 // 
 
@@ -134,6 +134,12 @@ public:
    * @return if the atom is a sulfur.
    */
   virtual bool is_Sulfur () const { return false; }
+
+  /**
+   * Tells if the atom is a magnesium.
+   * @return if the atom is a magnesium.
+   */
+  virtual bool is_Magnesium () const { return false; }
 
   /**
    * Tells if the atom is a lonepair.
@@ -952,6 +958,24 @@ public:
   virtual bool is_SG () const { return false; }
 
   /**
+   * Tells if the atom is a 1H.
+   * @return false.
+   */
+  virtual bool is_1H () const { return false; }
+
+  /**
+   * Tells if the atom is a 2H.
+   * @return false.
+   */
+  virtual bool is_2H () const { return false; }
+
+  /**
+   * Tells if the atom is a 3H.
+   * @return false.
+   */
+  virtual bool is_3H () const { return false; }
+
+  /**
    * Tells if the atom is a 1HD1.
    * @return if the atom is a 1HD1.
    */
@@ -1058,6 +1082,12 @@ public:
    * @return if the atom is a 3HG2.
    */
   virtual bool is_3HG2 () const { return false; }
+
+  /**
+   * Tells if the atom is a MG.
+   * @return if the atom is a MG.
+   */
+  virtual bool is_MG () const { return false; }
 
   /**
    * Tells if the atom is connected to the type in the residue.
@@ -1879,6 +1909,70 @@ public:
    * @return true.
    */
   virtual bool is_Sulfur () const { return true; }
+
+  // I/O  -----------------------------------------------------------------
+
+  /**
+   * Outputs the type value in the binary stream.
+   * @param obs the binary output stream.
+   */
+  virtual void Binoutput (oBinstream &obs) const;
+};
+
+
+
+/**
+ * @short The general hydrogen atom type.
+ *
+ * @author Martin Larose <larosem@iro.umontreal.ca>
+ */
+class at_Magnesium : public virtual t_Atom
+{
+
+public:
+
+  // LIFECYCLE ------------------------------------------------------------
+
+  /**
+   * Initializes the objet.
+   */
+  at_Magnesium () : t_Atom () { }
+
+  /**
+   * Initializes the objet with the right's content.
+   * @param right the object to copy.
+   */
+  at_Magnesium (const at_Magnesium &right) : t_Atom (right) { }
+  
+  /**
+   * Destructs the object.  Nothing to do.
+   */
+  ~at_Magnesium () { }
+
+  // OPERATORS ------------------------------------------------------------
+
+  /**
+   * Assigns the right's content to the object.
+   * @param right the object to copy.
+   * @return itself.
+   */
+  virtual const at_Magnesium& operator= (const at_Magnesium &right);
+
+  /**
+   * Converts the atom type to a string.
+   * @return "Magnesium".
+   */
+  virtual operator const char* () const { return "Magnesium"; }
+
+  // ACCESS ---------------------------------------------------------------
+
+  // METHODS --------------------------------------------------------------
+
+  /**
+   * Tells if the atom is a magnesium.
+   * @return true.
+   */
+  virtual bool is_Magnesium () const { return true; }
 
   // I/O  -----------------------------------------------------------------
 
@@ -9254,8 +9348,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_H : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+	     public virtual at_Hydrogen,
+	     public virtual at_Backbone
 {
 
 public:
@@ -9265,14 +9359,14 @@ public:
   /**
    * Initializes the objet.
    */
-  at_H () : at_AminoAcid (), at_Hydrogen (), at_SideChain () { }
+  at_H () : at_AminoAcid (), at_Hydrogen (), at_Backbone () { }
 
   /**
    * Initializes the objet with the right's content.
    * @param right the object to copy.
    */
   at_H (const at_H &right)
-    : at_AminoAcid (right), at_Hydrogen (right), at_SideChain (right) { }
+    : at_AminoAcid (right), at_Hydrogen (right), at_Backbone (right) { }
 
   /**
    * Destructs the object.  Nothing to do.
@@ -9317,6 +9411,249 @@ public:
    * @return 0.6.
    */
   virtual float GetVDWR () const { return 0.6; }
+
+  // I/O  -----------------------------------------------------------------
+
+  /**
+   * Outputs the type value in the binary stream.
+   * @param obs the binary output stream.
+   */
+  virtual void Binoutput (oBinstream &obs) const;
+};
+
+
+
+/**
+ * @short The 1H atom type.
+ *
+ * @author Martin Larose <larosem@iro.umontreal.ca>
+ */
+class at_1H : public virtual at_AminoAcid,
+	      public virtual at_Hydrogen,
+	      public virtual at_Backbone
+{
+
+public:
+
+  // LIFECYCLE ------------------------------------------------------------
+
+  /**
+   * Initializes the objet.
+   */
+  at_1H () : at_AminoAcid (), at_Hydrogen (), at_Backbone () { }
+
+  /**
+   * Initializes the objet with the right's content.
+   * @param right the object to copy.
+   */
+  at_1H (const at_1H &right)
+    : at_AminoAcid (right), at_Hydrogen (right), at_Backbone (right) { }
+
+  /**
+   * Destructs the object.  Nothing to do.
+   */
+  ~at_1H () { }
+
+  // OPERATORS ------------------------------------------------------------
+
+  /**
+   * Assigns the right's content to the object.
+   * @param right the object to copy.
+   * @return itself.
+   */
+  virtual const at_1H& operator= (const at_1H &right);
+
+  /**
+   * Converts the atom type to a string.
+   * @return "1H".
+   */
+  virtual operator const char* () const { return "1H"; }
+
+  // ACCESS ---------------------------------------------------------------
+
+  // METHODS --------------------------------------------------------------
+
+  /**
+   * Tells if the atom is a 1H.
+   * @return true.
+   */
+  virtual bool is_1H () const { return true; }
+
+  /**
+   * Tells if the atom is connected to type in res.
+   * @param type the second atom in the connection.
+   * @param res the residue.
+   * @return true if the 2 atoms are connected.
+   */
+  virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
+
+  /**
+   * Gets the Van Der Waals radius value.
+   * @return 0.
+   */
+  virtual float GetVDWR () const { return 0; }
+
+  // I/O  -----------------------------------------------------------------
+
+  /**
+   * Outputs the type value in the binary stream.
+   * @param obs the binary output stream.
+   */
+  virtual void Binoutput (oBinstream &obs) const;
+};
+
+
+
+/**
+ * @short The 2H atom type.
+ *
+ * @author Martin Larose <larosem@iro.umontreal.ca>
+ */
+class at_2H : public virtual at_AminoAcid,
+	      public virtual at_Hydrogen,
+	      public virtual at_Backbone
+{
+
+public:
+
+  // LIFECYCLE ------------------------------------------------------------
+
+  /**
+   * Initializes the objet.
+   */
+  at_2H () : at_AminoAcid (), at_Hydrogen (), at_Backbone () { }
+
+  /**
+   * Initializes the objet with the right's content.
+   * @param right the object to copy.
+   */
+  at_2H (const at_2H &right)
+    : at_AminoAcid (right), at_Hydrogen (right), at_Backbone (right) { }
+
+  /**
+   * Destructs the object.  Nothing to do.
+   */
+  ~at_2H () { }
+
+  // OPERATORS ------------------------------------------------------------
+
+  /**
+   * Assigns the right's content to the object.
+   * @param right the object to copy.
+   * @return itself.
+   */
+  virtual const at_2H& operator= (const at_2H &right);
+
+  /**
+   * Converts the atom type to a string.
+   * @return "2H".
+   */
+  virtual operator const char* () const { return "2H"; }
+
+  // ACCESS ---------------------------------------------------------------
+
+  // METHODS --------------------------------------------------------------
+
+  /**
+   * Tells if the atom is a 2H.
+   * @return true.
+   */
+  virtual bool is_2H () const { return true; }
+
+  /**
+   * Tells if the atom is connected to type in res.
+   * @param type the second atom in the connection.
+   * @param res the residue.
+   * @return true if the 2 atoms are connected.
+   */
+  virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
+
+  /**
+   * Gets the Van Der Waals radius value.
+   * @return 0.
+   */
+  virtual float GetVDWR () const { return 0; }
+
+  // I/O  -----------------------------------------------------------------
+
+  /**
+   * Outputs the type value in the binary stream.
+   * @param obs the binary output stream.
+   */
+  virtual void Binoutput (oBinstream &obs) const;
+};
+
+
+
+/**
+ * @short The 3H atom type.
+ *
+ * @author Martin Larose <larosem@iro.umontreal.ca>
+ */
+class at_3H : public virtual at_AminoAcid,
+	      public virtual at_Hydrogen,
+	      public virtual at_Backbone
+{
+
+public:
+
+  // LIFECYCLE ------------------------------------------------------------
+
+  /**
+   * Initializes the objet.
+   */
+  at_3H () : at_AminoAcid (), at_Hydrogen (), at_Backbone () { }
+
+  /**
+   * Initializes the objet with the right's content.
+   * @param right the object to copy.
+   */
+  at_3H (const at_3H &right)
+    : at_AminoAcid (right), at_Hydrogen (right), at_Backbone (right) { }
+
+  /**
+   * Destructs the object.  Nothing to do.
+   */
+  ~at_3H () { }
+
+  // OPERATORS ------------------------------------------------------------
+
+  /**
+   * Assigns the right's content to the object.
+   * @param right the object to copy.
+   * @return itself.
+   */
+  virtual const at_3H& operator= (const at_3H &right);
+
+  /**
+   * Converts the atom type to a string.
+   * @return "3H".
+   */
+  virtual operator const char* () const { return "3H"; }
+
+  // ACCESS ---------------------------------------------------------------
+
+  // METHODS --------------------------------------------------------------
+
+  /**
+   * Tells if the atom is a 3H.
+   * @return true.
+   */
+  virtual bool is_3H () const { return true; }
+
+  /**
+   * Tells if the atom is connected to type in res.
+   * @param type the second atom in the connection.
+   * @param res the residue.
+   * @return true if the 2 atoms are connected.
+   */
+  virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
+
+  /**
+   * Gets the Van Der Waals radius value.
+   * @return 0.
+   */
+  virtual float GetVDWR () const { return 0; }
 
   // I/O  -----------------------------------------------------------------
 
@@ -14501,6 +14838,86 @@ public:
    * @return 1.49.
    */
   virtual float GetVDWR () const { return 1.49; }
+
+  // I/O  -----------------------------------------------------------------
+
+  /**
+   * Outputs the type value in the binary stream.
+   * @param obs the binary output stream.
+   */
+  virtual void Binoutput (oBinstream &obs) const;
+};
+
+
+
+/**
+ * @short The MG atom type.
+ *
+ * @author Martin Larose <larosem@iro.umontreal.ca>
+ */
+class at_MG : public virtual at_Magnesium
+{
+
+public:
+
+  // LIFECYCLE ------------------------------------------------------------
+
+  /**
+   * Initializes the objet.
+   */
+  at_MG () : at_Magnesium () { }
+
+  /**
+   * Initializes the objet with the right's content.
+   * @param right the object to copy.
+   */
+  at_MG (const at_MG &right)
+    : at_Magnesium (right) { }
+
+  /**
+   * Destructs the object.  Nothing to do.
+   */
+  ~at_MG () { }
+
+  // OPERATORS ------------------------------------------------------------
+
+  /**
+   * Assigns the right's content to the object.
+   * @param right the object to copy.
+   * @return itself.
+   */
+  virtual const at_MG& operator= (const at_MG &right);
+
+  /**
+   * Converts the atom type to a string.
+   * @return "MG".
+   */
+  virtual operator const char* () const { return "MG"; }
+
+  // ACCESS ---------------------------------------------------------------
+
+  // METHODS --------------------------------------------------------------
+
+  /**
+   * Tells if the atom is a MG.
+   * @return true.
+   */
+  virtual bool is_MG () const { return true; }
+
+  /**
+   * Tells if the atom is connected to type in res.
+   * @param type the second atom in the connection.
+   * @param res the residue.
+   * @return true if the 2 atoms are connected.
+   */
+  virtual bool is_connected (const t_Atom *type, const t_Residue *res) const
+  { return false; }
+  
+  /**
+   * Gets the Van Der Waals radius value.
+   * @return 0.
+   */
+  virtual float GetVDWR () const { return 0; }
 
   // I/O  -----------------------------------------------------------------
 

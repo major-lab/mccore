@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:14:15 2000
-// Update Count     : 1
+// Last Modified On : Wed Nov 22 14:35:16 2000
+// Update Count     : 2
 // Status           : Ok.
 // 
 
@@ -186,6 +186,12 @@
 #define AT_3HD2_BIN        162
 #define AT_3HG1_BIN        163
 #define AT_3HG2_BIN        164
+#define AT_MAGNESIUM_BIN   165
+#define AT_MG_BIN          166
+#define AT_1H_BIN          167
+#define AT_2H_BIN          168
+#define AT_3H_BIN          169
+
 
 
 float
@@ -721,6 +727,21 @@ operator>> (iBinstream &ibs, t_Atom *&t)
     case AT_3HG2_BIN:
       t = a_3HG2;
       break;
+    case AT_MAGNESIUM_BIN:
+      t = a_Magnesium;
+      break;
+    case AT_MG_BIN:
+      t = a_MG;
+      break;
+    case AT_1H_BIN:
+      t = a_1H;
+      break;
+    case AT_2H_BIN:
+      t = a_2H;
+      break;
+    case AT_3H_BIN:
+      t = a_3H;
+      break;
     default:
       t = 0;
     }
@@ -959,6 +980,24 @@ void
 at_Sulfur::Binoutput (oBinstream &obs) const
 {
   obs << (unsigned char) AT_SULFUR_BIN;
+}
+
+
+
+const at_Magnesium&
+at_Magnesium::operator= (const at_Magnesium &right)
+{
+  if (this != &right)
+    t_Atom::operator= (right);
+  return *this;
+}
+
+
+
+void
+at_Magnesium::Binoutput (oBinstream &obs) const
+{
+  obs << (unsigned char) AT_MAGNESIUM_BIN;
 }
 
 
@@ -3381,7 +3420,7 @@ bool
 at_CA::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return (type->is_C () || type->is_N () || type->is_CB ()
-	  || type->is_HA () || type->is_HA2 ());
+	  || type->is_HA () || type->is_HA1 () || type->is_HA2 ());
 }
 
 
@@ -3648,8 +3687,8 @@ at_CG::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return (type->is_CB () || type->is_CD () || type->is_HG1 ()
 	  || type->is_HG2 () || type->is_OD1 () || type->is_ND2 ()
-	  || type->is_OD2 () || type->is_ND1 () || type->is_CD2 ()
-	  || type->is_HG () || type->is_SD ());
+	  || type->is_OD2 () || type->is_ND1 () || type->is_CD1 ()
+	  || type->is_CD2 () || type->is_HG () || type->is_SD ());
 }
 
 
@@ -3840,7 +3879,7 @@ at_H::operator= (const at_H &right)
     {
       at_AminoAcid::operator= (right);
       at_Hydrogen::operator= (right);
-      at_SideChain::operator= (right);
+      at_Backbone::operator= (right);
     }
   return *this;
 }
@@ -3849,7 +3888,7 @@ at_H::operator= (const at_H &right)
 bool
 at_H::is_connected (const t_Atom *type, const t_Residue *res) const
 {
-  return false;
+  return type->is_N ();
 }
 
 
@@ -3857,6 +3896,91 @@ void
 at_H::Binoutput (oBinstream &obs) const
 {
   obs << (unsigned char) AT_H_BIN;
+}
+
+
+
+const at_1H&
+at_1H::operator= (const at_1H &right)
+{
+  if (this != &right)
+    {
+      at_AminoAcid::operator= (right);
+      at_Hydrogen::operator= (right);
+      at_Backbone::operator= (right);
+    }
+  return *this;
+}
+
+
+bool
+at_1H::is_connected (const t_Atom *type, const t_Residue *res) const
+{
+  return type->is_N ();
+}
+
+
+void
+at_1H::Binoutput (oBinstream &obs) const
+{
+  obs << (unsigned char) AT_1H_BIN;
+}
+
+
+
+const at_2H&
+at_2H::operator= (const at_2H &right)
+{
+  if (this != &right)
+    {
+      at_AminoAcid::operator= (right);
+      at_Hydrogen::operator= (right);
+      at_Backbone::operator= (right);
+    }
+  return *this;
+}
+
+
+bool
+at_2H::is_connected (const t_Atom *type, const t_Residue *res) const
+{
+  return type->is_N ();
+}
+
+
+void
+at_2H::Binoutput (oBinstream &obs) const
+{
+  obs << (unsigned char) AT_2H_BIN;
+}
+
+
+
+const at_3H&
+at_3H::operator= (const at_3H &right)
+{
+  if (this != &right)
+    {
+      at_AminoAcid::operator= (right);
+      at_Hydrogen::operator= (right);
+      at_Backbone::operator= (right);
+    }
+  return *this;
+}
+
+
+bool
+at_3H::is_connected (const t_Atom *type, const t_Residue *res) const
+{
+  return type->is_N ();
+}
+
+
+
+void
+at_3H::Binoutput (oBinstream &obs) const
+{
+  obs << (unsigned char) AT_3H_BIN;
 }
 
 
@@ -4624,7 +4748,9 @@ bool
 at_N::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return (type->is_CA () || type->is_HN1 () || type->is_HN2 ()
-	  || type->is_HN3 () || (res->is_PRO () && type->is_CD ()));
+	  || type->is_HN3 () || (res->is_PRO () && type->is_CD ())
+	  || type->is_H () || type->is_1H () || type->is_2H ()
+	  || type->is_3H ());
 }
 
 
@@ -4774,8 +4900,8 @@ at_NE2::operator= (const at_NE2 &right)
 bool
 at_NE2::is_connected (const t_Atom *type, const t_Residue *res) const
 {
-  return (type->is_CD () || type->is_1HE2 () || type->is_2HE2 ()
-	  || type->is_CD2 () || type->is_CE1 ());
+  return (type->is_CD () || type->is_HE2 () || type->is_1HE2 ()
+	  || type->is_2HE2 () || type->is_CD2 () || type->is_CE1 ());
 }
 
 
@@ -5745,4 +5871,22 @@ void
 at_3HG2::Binoutput (oBinstream &obs) const
 {
   obs << (unsigned char) AT_3HG2_BIN;
+}
+
+
+
+const at_MG&
+at_MG::operator= (const at_MG &right)
+{
+  if (this != &right)
+    at_Magnesium::operator= (right);
+  return *this;
+}
+
+
+
+void
+at_MG::Binoutput (oBinstream &obs) const
+{
+  obs << (unsigned char) AT_MG_BIN;
 }
