@@ -1,4 +1,4 @@
-2005-01-07  Philippe Thibault  <thibaup@yoda.iro.umontreal.ca>
+2005-01-07  Philippe Thibault  <thibaup@iro.umontreal.ca>
 
 	* lib/Relation.h, lib/Relation.cc:
 	o Member method invert() no longer const! It inverts the current object.
@@ -55,12 +55,12 @@
 
 	* lib/Exception.cc: *** empty log message ***
 
-2005-01-06  Martin Larose  <larosem@yoda.iro.umontreal.ca>
+2005-01-06  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* lib/RnamlReader.cc, lib/Relation.h, lib/Relation.cc, lib/Molecule.h, lib/Molecule.cc, lib/ModelFactoryMethod.h, lib/ModelFactoryMethod.cc, lib/Model.h, lib/Model.cc, lib/Makefile.in, lib/GraphModel.h, lib/GraphModel.cc:
 	ModelFactoryMethods added for GraphModel and Model.  Weird bug on copy constructor corrected in GraphModel and Model.
 
-2005-01-05  Martin Larose  <larosem@yoda.iro.umontreal.ca>
+2005-01-05  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* lib/RnamlWriter.cc: Added the try/catch on getProperty.
 
@@ -88,7 +88,7 @@
 
 	* lib/AbstractModel.cc: *** empty log message ***
 
-2005-01-03  Martin Larose  <larosem@yoda.iro.umontreal.ca>
+2005-01-03  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* ChangeLog: Updated ChangeLog.
 
@@ -100,7 +100,7 @@
 	* lib/AbstractGraph.h, lib/ArrayGraph.h, lib/DirectedGraph.cc, lib/DirectedGraph.h, lib/Graph.cc, lib/SymmetricalMatrix.cc, lib/UndirectedArrayGraph.h:
 	Unneeded file.
 
-2005-01-03  Martin Larose  <larosem@onyx.glyphe.net>
+2005-01-03  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* lib/zstream.h, lib/zstream.cc, lib/Vector3D.h, lib/Vector3D.cc, lib/UndirectedGraph.h, lib/TypeRepresentationTables.h, lib/SymmetricalMatrix.h, lib/stlio.h, lib/SqlReader.h, lib/SqlReader.cc, lib/SqlExtrac.h, lib/SqlExtrac.cc, lib/sockstream.h, lib/sockstream.cc, lib/SocketCommand.h, lib/ServerSocket.h, lib/ServerSocket.cc, lib/Sequence.h, lib/Sequence.cc, lib/RnamlWriter.h, lib/RnamlWriter.cc, lib/RnamlReader.h, lib/RnamlReader.cc, lib/Rmsd.h, lib/Rmsd.cc, lib/ResidueTypeStore.h, lib/ResidueTypeStore.cc, lib/ResidueType.h, lib/ResidueType.cc, lib/ResidueTopology.h, lib/ResidueTopology.cc, lib/Residue.h, lib/ResidueFactoryMethod.h, lib/ResidueFactoryMethod.cc, lib/Residue.cc, lib/ResIdSet.h, lib/ResIdSet.cc, lib/ResId.h, lib/ResId.cc, lib/Relation.h, lib/Relation.cc, lib/PropertyTypeStore.h, lib/PropertyTypeStore.cc, lib/PropertyType.h, lib/PropertyType.cc, lib/Pdbstream.h, lib/PdbFileHeader.h, lib/PdbFileHeader.cc, lib/Path.h, lib/PairingPattern.h, lib/PairingPattern.cc, lib/Molecule.h, lib/Molecule.cc, lib/Model.h, lib/Model.cc, lib/Messagestream.h, lib/Messagestream.cc, lib/MaximumFlowGraph.h, lib/Makefile.in, lib/HomogeneousTransfo.h, lib/HomogeneousTransfo.cc, lib/HBond.h, lib/HBond.cc, lib/Graph.h, lib/GraphAlgo.h, lib/Genbankstream.h, lib/Genbankstream.cc, lib/Fastastream.h, lib/Fastastream.cc, lib/ExtendedResidue.h, lib/ExtendedResidue.cc, lib/Exception.h, lib/Exception.cc, lib/Binstream.h, lib/AtomTypeStore.h, lib/AtomTypeStore.cc, lib/AtomType.h, lib/AtomType.cc, lib/AtomSet.h, lib/AtomSet.cc, lib/Atom.h, lib/Atom.cc, lib/Algo.h, lib/AdjacencyMatrix.h, lib/AbstractModel.h, lib/AbstractModel.cc, docs/Makefile.in, Makefile.in, configure.in, configure, config.h.in, ChangeLog:
 	Merge from GraphModel branch.
@@ -110,7 +110,7 @@
 	* lib/AbstractGraph.h, lib/ArrayGraph.h, lib/DirectedGraph.cc, lib/DirectedGraph.h, lib/Graph.cc, lib/SymmetricalMatrix.cc, lib/UndirectedArrayGraph.h:
 	Unneeded file.
 
-2004-12-29  Martin Larose  <larosem@onyx.glyphe.net>
+2004-12-29  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* lib/Model.h, lib/Model.cc [GraphModel]: Copy constructor and
 	assignment are with AbstractModel instead of only GraphModel.  erase
@@ -133,7 +133,7 @@
 	* lib/AbstractModel.cc [GraphModel]: Bug correction.  Residue
 	pointers are erased by specialized model classes.
 
-2004-12-27  Martin Larose  <larosem@onyx.glyphe.net>
+2004-12-27  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* lib/GraphModel.h, lib/GraphModel.cc [GraphModel]: GraphModel
 	should be complete and ready now.
@@ -186,7 +186,7 @@
 	* lib/AbstractModel.cc [GraphModel]: ostream operator<< put in
 	global namespace.
 
-2004-12-25  Martin Larose  <larosem@onyx.glyphe.net>
+2004-12-25  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* lib/zstream.h, lib/zstream.cc, lib/Vector3D.h, lib/Vector3D.cc, lib/TypeRepresentationTables.h, lib/SymmetricalMatrix.h, lib/stlio.h, lib/SqlReader.h, lib/SqlReader.cc, lib/SqlExtrac.h, lib/SqlExtrac.cc, lib/sockstream.h, lib/sockstream.cc, lib/SocketCommand.h, lib/ServerSocket.h, lib/ServerSocket.cc, lib/Sequence.h, lib/Sequence.cc, lib/RnamlWriter.h, lib/RnamlWriter.cc, lib/RnamlReader.h, lib/RnamlReader.cc, lib/Rmsd.h, lib/Rmsd.cc, lib/ResidueTypeStore.h, lib/ResidueTypeStore.cc, lib/ResidueType.h, lib/ResidueType.cc, lib/ResidueTopology.cc, lib/Residue.h, lib/ResidueFactoryMethod.h, lib/ResidueFactoryMethod.cc, lib/Residue.cc, lib/ResIdSet.h, lib/ResIdSet.cc, lib/ResId.h, lib/ResId.cc, lib/Relation.h, lib/Relation.cc, lib/PropertyTypeStore.h, lib/PropertyTypeStore.cc, lib/PropertyType.h, lib/PropertyType.cc, lib/Pdbstream.h, lib/PdbFileHeader.h, lib/PdbFileHeader.cc, lib/Path.h, lib/PairingPattern.h, lib/PairingPattern.cc, lib/Molecule.h, lib/Molecule.cc, lib/Model.h, lib/Messagestream.h, lib/Messagestream.cc, lib/MaximumFlowGraph.h, lib/Makefile.in, lib/HomogeneousTransfo.h, lib/HomogeneousTransfo.cc, lib/HBond.cc, lib/GraphModel.h, lib/Graph.h, lib/GraphAlgo.h, lib/Genbankstream.h, lib/Genbankstream.cc, lib/Fastastream.h, lib/Fastastream.cc, lib/ExtendedResidue.h, lib/ExtendedResidue.cc, lib/Exception.h, lib/Exception.cc, lib/Binstream.h, lib/AtomTypeStore.h, lib/AtomTypeStore.cc, lib/AtomType.h, lib/AtomType.cc, lib/AtomSet.h, lib/AtomSet.cc, lib/Atom.h, lib/Atom.cc, lib/Algo.h, lib/AdjacencyMatrix.h, lib/AbstractModel.h [GraphModel]:
 	Header updates.
@@ -197,7 +197,7 @@
 	* lib/SymmetricalMatrix.cc [GraphModel]: Included in
 	SymmetricalMatrix.h.
 
-2004-12-24  Martin Larose  <larosem@onyx.glyphe.net>
+2004-12-24  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* lib/Relation.cc, lib/MaximumFlowGraph.h [GraphModel]: Working
 	version of MaximumFlowGraph and Relation based on new graph
@@ -206,7 +206,7 @@
 	* lib/HBond.h, lib/HBond.cc [GraphModel]: Initial value of HBond can
 	be set.
 
-2004-12-23  Martin Larose  <larosem@onyx.glyphe.net>
+2004-12-23  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* lib/UndirectedGraph.h, lib/Relation.cc, lib/MaximumFlowGraph.h [GraphModel]:
 	UndirectedGraph tested.  Unstable release.
@@ -217,12 +217,12 @@
 	* lib/Exception.h, lib/Exception.cc [GraphModel]: Messagestream
 	string outpout operator added.
 
-2004-12-22  Martin Larose  <larosem@onyx.glyphe.net>
+2004-12-22  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* lib/OrientedGraph.h [GraphModel]: OrientedGraph tested.  Unstable
 	release.
 
-2004-12-21  Martin Larose  <larosem@onyx.glyphe.net>
+2004-12-21  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* lib/Makefile.in, lib/Graph.h, lib/Exception.h, lib/Exception.cc, docs/Makefile.in, configure.in, Makefile.in [GraphModel]:
 	Exceptions uses strings.  Bugs corrected in OrientedGraph and Graph.
@@ -231,7 +231,7 @@
 	* lib/UndirectedGraph.h, lib/Relation.cc, lib/OrientedGraph.h, lib/GraphModel.h, lib/Graph.h [GraphModel]:
 	Bug corrections on test suite.
 
-2004-12-16  Martin Larose  <larosem@onyx.glyphe.net>
+2004-12-16  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* lib/UndirectedGraph.h, lib/Relation.h, lib/OrientedGraph.h, lib/MaximumFlowGraph.h, lib/Graph.h, lib/GraphAlgo.h [GraphModel]:
 	Corrections, corrections, corrections.
@@ -241,14 +241,14 @@
 	debug on Graph classes.  Updates on HBond and Relation classes for
 	new Graph design.
 
-2004-12-15  Martin Larose  <larosem@onyx.glyphe.net>
+2004-12-15  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* lib/Relation.h, lib/Relation.cc [GraphModel]: Unstable revision.
 
 	* lib/MaximumFlowGraph.h, lib/Graph.h [GraphModel]: MaximumFlowGraph
 	design completed. Unstable release.
 
-2004-12-14  Martin Larose  <larosem@onyx.glyphe.net>
+2004-12-14  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* lib/UndirectedGraph.h, lib/OrientedGraph.h, lib/MaximumFlowGraph.h, lib/Makefile.in, lib/GraphModel.h, lib/GraphModel.cc, lib/Graph.h	[GraphModel]:
 	Corrections on Graph, UndirectedGraph, OrientedGraph,
@@ -259,7 +259,7 @@
 
 	* lib/OrientedGraph.h [GraphModel]: New file.
 
-2004-12-13  Martin Larose  <larosem@onyx.glyphe.net>
+2004-12-13  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* lib/ArrayGraph.h [GraphModel]: Unneeded file.
 

@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:31:01 2004
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 // 
 // This file is part of mccore.
 // 
@@ -46,10 +46,13 @@ namespace mccore
    * iterators.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.h,v 1.4 2005-01-06 21:07:31 larosem Exp $
+   * @version $Id: GraphModel.h,v 1.5 2005-01-14 20:23:05 larosem Exp $
    */
   class GraphModel : public AbstractModel, public OrientedGraph< Residue*, Relation*, int, int, less_deref< Residue > >
   {
+
+  protected:
+    
     typedef OrientedGraph< Residue*, Relation*, int, int, less_deref< Residue > > graphsuper;
     
   public:
@@ -123,6 +126,13 @@ namespace mccore
      * @return itself.
      */
     GraphModel& operator= (const AbstractModel &right);
+
+    /**
+     * Assigns the object with the right's content (deep copy).
+     * @param right the object to copy.
+     * @return itself.
+     */
+    GraphModel& operator= (const GraphModel &right);
 
     /**
      * Gets the model reference at nth position.

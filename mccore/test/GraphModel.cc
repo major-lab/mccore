@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // GraphModel.cc
-// Copyright © 2004 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal
+// Copyright © 2004-05 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal
 // Author           : Martin Larose
 // Created On       : Wed Dec 29 00:44:53 2004
-// $Revision: 1.3 $
-// $Id: GraphModel.cc,v 1.3 2005-01-10 16:47:34 thibaup Exp $
+// $Revision: 1.4 $
+// $Id: GraphModel.cc,v 1.4 2005-01-14 20:23:10 larosem Exp $
 //
 // This file is part of mccore.
 //
@@ -30,6 +30,7 @@
 
 #include <iostream>
 
+#include "AbstractModel.h"
 #include "GraphModel.h"
 #include "Messagestream.h"
 #include "Pdbstream.h"
@@ -44,33 +45,67 @@ using namespace std;
 int
 main (int argc, char *argv[])
 {
+  GraphModel model;
+  GraphModel model2;
+  
   try
-  {
-    izfPdbstream ifs;
-    GraphModel model;
-    
-    ifs.open ("1L8V.pdb.gz");
-
-    if (ifs.fail ())
     {
-      IntLibException ex ("failed to open \"1L8V.pdb.gz\"", __FILE__, __LINE__);
-      throw ex;
+      izfPdbstream ifs;
+    
+      ifs.open ("1L8V.pdb.gz");
+
+      if (! ifs)
+	{
+	  IntLibException ex ("failed to open \"1L8V.pdb.gz\"", __FILE__, __LINE__);
+	  throw ex;
+	}
+
+      ifs >> model;
+      ifs.close ();
+
+      model.removeWater ();
+      model.addHLP ();
+      model.annotate ();
+      gOut (0) << "Size: " << model.size ()
+	       << " Edge size: " << model.edgeSize ()
+	       << endl;
+      gOut (0) << model << endl;
+    }
+  catch (Exception& ex)
+    {
+      gErr (0) << argv[0] << ": " << ex << endl;
+      return EXIT_FAILURE;
     }
 
-    ifs >> model;
-    ifs.close ();
+  AbstractModel &absModel = model;
+  GraphModel model3 (absModel);
 
-//   gOut (0) << model << endl;
-    model.removeWater ();
-    model.addHLP ();
-    model.annotate ();
-    gOut (0) << model << endl;
-  }
-  catch (Exception& ex)
-  {
-    gErr (0) << argv[0] << ": " << ex << endl;
-    return EXIT_FAILURE;
-  }
+  model2 = absModel;
+  model.clear ();
+
+  gOut (0) << "copy constructor with AbstractModel&" << endl
+	   << "Size: " << model3.size ()
+	   << " Edge size: " << model3.edgeSize ()
+	   << endl << model3 << endl;
+  gOut (0) << "operator= with AbstractModel&" << endl
+	   << "Size: " << model2.size ()
+	   << " Edge size: " << model2.edgeSize ()
+	   << endl << model2 << endl;
+
+  gOut (0) << "copy constructor with GraphModel&" << endl;
+  GraphModel model4 (model2);
+
+  model2.clear ();
+  gOut (0) << "Size: " << model4.size ()
+	   << " Edge size: " << model4.edgeSize ()
+	   << endl << model4 << endl;
+  gOut (0) << "operator= with GraphModel&" << endl;
+  model = model4;
+  model4.clear ();
+  gOut (0) << "Size: " << model.size ()
+	   << " Edge size: " << model.edgeSize ()
+	   << endl << model << endl;
+
   return EXIT_SUCCESS;
 }
   

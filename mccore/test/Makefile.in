@@ -1,11 +1,11 @@
 #                            -*- Mode: Makefile -*-
 # Makefile.in
-# Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique.
+# Copyright © 2000-05 Laboratoire de Biologie Informatique et Théorique.
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.5 $
-# $Id: Makefile.in,v 1.5 2005-01-11 19:51:22 thibaup Exp $
+# $Revision: 1.6 $
+# $Id: Makefile.in,v 1.6 2005-01-14 20:23:59 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -81,19 +81,22 @@ SOURCES = GraphModel.cc OrientedGraph.cc UndirectedGraph.cc HomogeneousTransfo.c
 
 HEADERS = 
 
+REFDATA = 1L8V.pdb.gz HomogeneousTransfo.bin.gz
+
 OBJECTS = $(SOURCES:%.cc=%.o)
 
 PROGRAMS = $(SOURCES:%.cc=%)
 
-DISTFILES = Makefile.in $(SOURCES) $(HEADERS)
-
-REFDATA = 1L8V.pdb.gz HomogeneousTransfo.bin.gz
+DISTFILES = Makefile.in $(SOURCES) $(HEADERS) $(REFDATA) $(SOURCES:%.cc=%.good)
 
 all static doc:
 
 test: $(PROGRAMS)
 	@ for refdata in $(REFDATA); do \
-            ln -svf $(srcdir)/$$refdata; \
+	    if test ! -f $$refdata; then \
+	      $(RM) $$refdata; \
+	      ln -s $(srcdir)/$$refdata; \
+	    fi; \
           done
 	@ for program in $(PROGRAMS); do \
 	    echo "Testing " $$program; \

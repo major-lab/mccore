@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.4 $
-// $Id: GraphModel.cc,v 1.4 2005-01-10 16:46:56 thibaup Exp $
+// $Revision: 1.5 $
+// $Id: GraphModel.cc,v 1.5 2005-01-14 20:23:01 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -51,7 +51,17 @@ namespace mccore
     : AbstractModel (right),
       annotated (false)
   {
-    AbstractModel::insert (right.begin (), right.end ());
+    const GraphModel *model;
+
+    if (0 == (model = dynamic_cast< const GraphModel* > (&right)))
+      {
+	AbstractModel::insert (right.begin (), right.end ());
+      }
+    else
+      {
+	annotated = model->annotated;
+	deepCopy (*model);
+      }
   }
   
 
@@ -111,17 +121,31 @@ namespace mccore
       {
 	const GraphModel *model;
 	
-	clear ();
-	AbstractModel::operator= (right);
 	if (0 == (model = dynamic_cast< const GraphModel* > (&right)))
 	  {
+	    clear ();
+	    AbstractModel::operator= (right);
+	    annotated = false;
 	    AbstractModel::insert (right.begin (), right.end ());
 	  }
 	else
 	  {
-	    annotated = model->annotated;
-	    deepCopy (*model);
+	    return operator= (*model);
 	  }
+      }
+    return *this;
+  }
+    
+
+  GraphModel&
+  GraphModel::operator= (const GraphModel &right)
+  {
+    if (this != &right)
+      {
+	clear ();
+	AbstractModel::operator= (right);
+	annotated = right.annotated;
+	deepCopy (right);
       }
     return *this;
   }
@@ -249,12 +273,12 @@ namespace mccore
 
     os << "[GraphModel]" << endl
        << "[Vertices]" << endl;
-    for (vit = vertices.begin (), vwit = vertexWeights.begin (), counter = 0; vertices.end () != vit; ++vit, ++vwit, ++counter)
+    for (vit = begin (), vwit = vertexWeights.begin (), counter = 0; end () != vit; ++vit, ++vwit, ++counter)
       {
 	os << setw (5) << counter << "  " << *vit << "  " << *vwit << endl;
       }
     os << "[Edges]" << endl;
-    for (eit = edges.begin (), ewit = edgeWeights.begin (), counter = 0; edges.end () != eit; ++eit, ++ewit, ++counter)
+    for (eit = edge_begin (), ewit = edgeWeights.begin (), counter = 0; edges.end () != eit; ++eit, ++ewit, ++counter)
       {
 	os << setw (5) << counter << "  " << **eit << "  " << *ewit << endl;
       }
