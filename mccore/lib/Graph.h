@@ -4,7 +4,7 @@
 //                  Université de Montréal
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 00:05:15 2004
-// $Revision: 1.23.4.7 $
+// $Revision: 1.23.4.8 $
 // 
 // This file is part of mccore.
 // 
@@ -80,7 +80,7 @@ namespace mccore
    * costly.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Graph.h,v 1.23.4.7 2004-12-14 02:51:26 larosem Exp $
+   * @version $Id: Graph.h,v 1.23.4.8 2004-12-15 01:11:35 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -833,6 +833,28 @@ namespace mccore
     }
 
     /**
+     * Sets the edge weight between endvertices labels h and t.
+     * @param h the head label of the edge.
+     * @param t the tail label of the edge.
+     * @param w the new weight.
+     * @exception NoSuchElementException if the graph does not contain the
+     * labels or the vertices are not connected.
+     */
+    void internalSetEdgeWeight (Graph::label h, Graph::label t, EW &w) const throw (NoSuchElementException)
+    {
+      typename EV2ELabel::iterator evit;
+      EndVertices ev (h, t);
+      
+      if (vertices.size () <= h
+	  || vertices.size () <= t
+	  || ev2elabel.end () == (evit = ev2elabel.find (ev)))
+	{
+	  throw NoSuchElementException ();
+	}
+      edgeWeights[evit->second] = w;
+    }
+    
+    /**
      * Determines if the vertex label is in the graph.
      * @param l the vertex label to find.
      * @return whether the label is within the range of vertices.
@@ -1087,7 +1109,7 @@ namespace mccore
      * @param e the edge.
      * @return true if the connect operation succeeded.
      */
-    bool connect (const V &h, const V &t, E &e)
+    virtual bool connect (const V &h, const V &t, E &e)
     {
       typename V2VLabel::const_iterator ith;
       typename V2VLabel::const_iterator itt;
@@ -1106,7 +1128,7 @@ namespace mccore
      * @param w the weight of this edge.
      * @return true if the connect operation succeeded.
      */
-    bool connect (const V &h, const V &t, E &e, EW &w)
+    virtual bool connect (const V &h, const V &t, E &e, EW &w)
     {
       typename V2VLabel::const_iterator ith;
       typename V2VLabel::const_iterator itt;
@@ -1124,7 +1146,7 @@ namespace mccore
      * @param e the edge.
      * @return true if the connect operation succeeded.
      */
-    bool internalConnect (Graph::label h, Graph::label t, E &e)
+    virtual bool internalConnect (Graph::label h, Graph::label t, E &e)
     {
       return (vertices.size () > h && vertices.size () > t
 	      ? uncheckedInternalConnect (h, t, e)
@@ -1139,7 +1161,7 @@ namespace mccore
      * @param w the weight of this edge.
      * @return true if the connect operation succeeded.
      */
-    bool internalConnect (Graph::label h, Graph::label t, E &e, EW &w)
+    virtual bool internalConnect (Graph::label h, Graph::label t, E &e, EW &w)
     {
       return (vertices.size () > h && vertices.size () > t
 	      ? uncheckedInternalConnect (h, t, e, w)

@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Apr  7 18:28:55 2003
-// $Revision: 1.10.4.1 $
+// $Revision: 1.10.4.2 $
 // 
 // This file is part of mccore.
 // 
@@ -26,11 +26,13 @@
 #define _mccore_MaximumFlowGraph_h_
 
 #include <algorithm>
+#include <cmath>
 #include <functional>
 #include <iostream>
 #include <limits>
 #include <list>
 
+#include "Messagestream.h"
 #include "OrientedGraph.h"
 
 
@@ -42,7 +44,7 @@ namespace mccore
    * Maximum flow in a directed graph but edges are made in both directions.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: MaximumFlowGraph.h,v 1.10.4.1 2004-12-14 02:51:42 larosem Exp $
+   * @version $Id: MaximumFlowGraph.h,v 1.10.4.2 2004-12-15 01:11:41 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -84,7 +86,7 @@ namespace mccore
      */
     virtual Graph< V, E, VW, float, Vertex_Comparator >* cloneGraph () const
     {
-      return new MaximumFlowGraph< V, VW, E, float, Vertex_Comparator> (*this);
+      return new MaximumFlowGraph< V, VW, E, Vertex_Comparator> (*this);
     }
 
     /**
@@ -139,39 +141,138 @@ namespace mccore
       return false;
     }
 
+    /**
+     * Connects two vertices of the graph with an edge and weight.  No check
+     * are made on vertex labels validity.  Private method to ensure that an
+     * in-edge is given.
+     * @param h the head vertex of the edge.
+     * @param t the tail vertex of the edge.
+     * @param e the edge.
+     * @param w the weight of this edge.
+     * @return false.
+     */
+    virtual bool uncheckedInternalConnect (label h, label t, E &e, float w)
+    {
+      return false;
+    }
+    
   protected:
 
     /**
      * Connects two vertices labels of the graph with an edge.  Two
      * endvertices are added, pointing to the same edge.  No check are
-     * made on vertex labels validity.  Private method to ensure that an edge
-     * weigth is entered.
+     * made on vertex labels validity.
      * @param h the head vertex label of the edge.
      * @param t the tail vertex label of the edge.
      * @param oe the out-edge.
+     * @param ow the out-edge weight.
      * @param ie the in-edge.
+     * @param iw the in-edge weight.
      * @return true if the connect operation succeeded.
      */
-    virtual bool uncheckedInternalConnect (label h, label t, E &oe, E &ie)
+    virtual bool uncheckedInternalConnect (label h, label t, E &oe, float ow, E &ie, float iw)
     {
-      return uncheckedInternalConnect (h, t, e, 0);
+      return (uncheckedInternalConnect (h, t, oe, ow)
+	      && uncheckedInternalConnect (t, h, ie, iw));
     }
 
+  private:
+
     /**
-     * Connects two vertices of the graph with an edge and weight.  Two
-     * endvertices are added, pointing to the same edge.  No check are
-     * made on vertex labels validity.
+     * Connects two vertices of the graph with an edge.  Private method to
+     * ensure that the in-edge and weights are given.
+     * @param h the head vertex of the edge.
+     * @param t the tail vertex of the edge.
+     * @param e the edge.
+     * @return true if the connect operation succeeded.
+     */
+    virtual bool connect (const V &h, const V &t, E &e) { return false; }
+    
+    /**
+     * Connects two vertices of the graph with an edge and weight.  Private
+     * method to ensure that the in-edge and its weight are given.
      * @param h the head vertex of the edge.
      * @param t the tail vertex of the edge.
      * @param e the edge.
      * @param w the weight of this edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool uncheckedInternalConnect (label h, label t, E &e, float w)
+    virtual bool connect (const V &h, const V &t, E &e, float w) { return false; }
+
+  public:
+    
+    /**
+     * Connects two vertices of the graph with in and out edges with their
+     * weights.
+     * @param h the head vertex of the edge.
+     * @param t the tail vertex of the edge.
+     * @param oe the out-edge.
+     * @param ow the weight of the out-edge.
+     * @param ie the in-edge.
+     * @param iw the weight of this in-edge.
+     * @return true if the connect operation succeeded.
+     */
+    virtual bool connect (const V &h, const V &t, E &oe, float ow, E &ie, float iw)
     {
-      return (OrientedGraph::uncheckedInternalConnect (h, t, e, w)
-	      && OrientedGraph::uncheckedInternalConnect (t, h, 0, 0));
+      typename V2VLabel::const_iterator ith;
+      typename V2VLabel::const_iterator itt;
+      
+      return (v2vlabel.end () != (ith = v2vlabel.find (&h))
+	      && v2vlabel.end () != (itt = v2vlabel.find (&t))
+	      ? uncheckedInternalConnect (ith->second, itt->second, oe, ow, ie, iw)
+	      : false);
     }
+
+  private:
+
+    /**
+     * Connects two vertices labels of the graph with an edge.  Private
+     * method to ensure that the in-edge and its weight are given.
+     * @param h the head vertex label of the edge.
+     * @param t the tail vertex label of the edge.
+     * @param e the edge.
+     * @return true if the connect operation succeeded.
+     */
+    virtual bool internalConnect (label h, label t, E &e)
+    {
+      return false;
+    }      
+    
+    /**
+     * Connects two vertices labels of the graph with an edge and weight.
+     * Private method to ensure that the in-edge and its weight are given.
+     * @param h the head vertex label of the edge.
+     * @param t the tail vertex label of the edge.
+     * @param e the edge.
+     * @param w the weight of this edge.
+     * @return true if the connect operation succeeded.
+     */
+    virtual bool internalConnect (label h, label t, E &e, float w)
+    {
+      return false;
+    }
+
+  public:
+    
+    /**
+     * Connects two vertices labels of the graph with in and out edges and their
+     * weight.
+     * @param h the head vertex label of the edge.
+     * @param t the tail vertex label of the edge.
+     * @param oe the out-edge.
+     * @param ow the weight of the out-edge.
+     * @param ie the in-edge.
+     * @param iw the weight of the in-edge.
+     * @return true if the connect operation succeeded.
+     */
+    virtual bool internalConnect (label h, label t, E &oe, float ow, E &ie, float iw)
+    {
+      return (vertices.size () > h && vertices.size () > t
+	      ? uncheckedInternalConnect (h, t, oe, ow, ie, iw)
+	      : false);
+    }
+    
+  protected:
     
     /**
      * Disconnects two endvertices labels of the graph.  No check are
@@ -182,8 +283,8 @@ namespace mccore
      */
     virtual bool uncheckedInternalDisconnect (label h, label t)
     {
-      return (OrientedGraph::uncheckedInternalDisconnect (h, t)
-	      && OrientedGraph::uncheckedInternalDisconnect (t, h));
+      return (OrientedGraph< V, E, VW, float, Vertex_Comparator >::uncheckedInternalDisconnect (h, t)
+	      && OrientedGraph< V, E, VW, float, Vertex_Comparator >::uncheckedInternalDisconnect (t, h));
     }      
 
   public:
@@ -197,280 +298,265 @@ namespace mccore
      * @param source the source of the graph.
      * @param sink the sink of the graph.
      */
-    void preFlowPush (const label& source, const label& sink)
+    void preFlowPush (const V &source, const V &sink)
     {
-      if (!contains (source) || !contains (sink)) return;
-     
-      int sourceid = mapping.find (source)->second;
-      int sinkid = mapping.find (sink)->second;
- 
-      int i;
-      map< int, int >::const_iterator j;
+      if (contains (source) && contains (sink))
+	{
+	  label sourceid;
+	  label sinkid;
+	  vector< int > labels;
+	  vector< float > excess;
+	  list< label > q;
+	  int distance;
+	  list< label > active;
+	  list < label > neighborhood;
+	  typename list < label >:: iterator it;
+
+	  sourceid = getVertexLabel ();
+	  sinkid = getVertexLabel ();
       
-      // Compute the initial distance labels
-      vector< int > label;
-      vector< float > excess;
-      
-      for (i=0; i<size (); ++i) {
-	label.push_back (numeric_limits<int>::max ());
-	excess.push_back (0);
-      }
+	  // Compute the initial distance labels
+	  labels.insert (labels.end (), size (), numeric_limits<int>::max ());
+	  excess.insert (excess.end (), size (), 0);
+	  
+	  distance = 0;
+	  q.push_back (sourceid);
+	  labels[sourceid] = distance;
 
-      list< int > q;
-      q.push_back (sourceid);
-      int distance = 0;
-      label[sourceid] = distance;
+	  gOut (5) << "Labels " << labels << endl;
+	  
+	  while (! q.empty ())
+	    {
+	      list < label > tmp;
 
-//       if (verbose) cout << label << endl;
+	      distance = labels[q.front ()] + 1;
+	      neighborhood = internalOutNeighborhood (q.front ());
+	      tmp = internalInNeighborhood (q.front ());
+	      neighborhood.insert (neighborhood.end (), tmp.begin (), tmp.end ());
+	      for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
+		{
+		  if (labels[*it] > distance)
+		    {
+		      labels[*it] = distance;
+		      q.push_back (*it);
+		    }
+		}
+	      q.pop_front ();
+	    }
 
-      while (q.size () > 0) {
-	distance = label[q.front ()] + 1;
-	for (j=getNeighborsMap (q.front ()).begin (); j!=getNeighborsMap (q.front ()).end (); ++j) {  
-	  if (label[j->first] > distance) {
-	    label[j->first] = distance;
-	    q.push_back (j->first);
-	  }
+	  gOut (5) << "Labels " << labels << endl;
+
+	  // Flood from the source
+	  neighborhood = internalOutNeighborhood (sourceid);
+	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
+	    {
+	      internalSetEdgeWeight (sourceid, *it, internalGetEdge (sourceid, *it).getValue ());
+	      excess[*it] = internalGetEdgeWeight (sourceid, *it);
+	      excess[sourceid] -= excess[*it];
+	      active.push_back (*it);
+	    }
+	  
+	  gOut (5) << "Active " << active << endl;
+	  gOut (5) << "Excess " << excess << endl;
+	  
+	  while (! active.empty ())
+	    {
+	      pushRelabel (active, excess, labels, sourceid, sinkid);
+	      if (0 == excess[active.front ()])
+		{
+		  active.pop_front ();
+		}
+	    }
 	}
-	for (j=getReverseNeighborsMap (q.front ()).begin (); 
-	     j!=getReverseNeighborsMap (q.front ()).end (); ++j) {
-	  if (label[j->first] > distance) {
-	    label[j->first] = distance;
-	    q.push_back (j->first);
-	  }
-	}
-	q.pop_front ();
-      }
-
-//       if (verbose) cout << label << endl;
-
-      // Flood from the source      
-      list< int > active;
-      for (j=getNeighborsMap (sourceid).begin (); 
-	   j!=getNeighborsMap (sourceid).end (); ++j) {
-	internalSetFlow (sourceid, j->first, internalGetWeight (sourceid, j->first));
-	excess[j->first] = internalGetFlow (sourceid, j->first);
-	excess[sourceid] = excess[sourceid] - internalGetFlow (sourceid, j->first);
-	active.push_back (j->first);
-      }
-
-//       if (verbose) cout << active << endl;
-//       if (verbose) cout << excess << endl;
-
-      while (active.size () > 0) {
-	internalPushRelabel (active.front (), active, excess, label, sourceid, sinkid);
-	if (excess[active.front ()] == 0) active.pop_front ();
-      }
     }
-    
-    // PRIVATE METHODS ---------------------------------------------------------
     
   private:
     
     /**
      * Push-Relabel part of the Pre Flow Push algorithm.
+     * @param active the active list of labels.
+     * @param excess the excess collection for each labels.
+     * @param labels the distance collection for each labels.
+     * @param source the source vertex label.
+     * @param sink the sink vertex label.
      */
-    void internalPushRelabel (int node, list< int >& active, vector< float >& excess, 
-			      vector< int >& label, int source, int sink)
+    void pushRelabel (list< label > &active, vector< float > &excess, vector< int > &labels, label source, label sink)
     {
-      map< int, int >::const_iterator i;
+      label front;
 
-      if (verbose) cout << "Relabeling [" << node << "]" << endl;
+      front = active.front ();
+      gOut (5) << "Relabeling [" << front << "]" << endl;
       
-      if (excess[node] > 0) {
-	vector< float > cap;
-	for (i=getNeighborsMap (node).begin (); i!=getNeighborsMap (node).end (); ++i) {
-	  if (label[i->first] > label[node] &&
-	      internalGetFlow (node, i->first) < internalGetWeight (node, i->first))
-	    cap.push_back (internalGetWeight (node, i->first) - internalGetFlow (node, i->first));
-	}
-	float eq = equilibrateFlow (cap, excess[node]);
+      if (0 < excess[front])
+	{
+	  list< label > neighborhood;
+	  typename list< label >::iterator it;
+	  vector< float > cap;
+	  float eq;
 
-	for (i=getNeighborsMap (node).begin (); i!=getNeighborsMap (node).end (); ++i) {
-	  if (label[i->first] > label[node] &&
-	      internalGetFlow (node, i->first) < internalGetWeight (node, i->first)) {
-	    float push_delta = min(eq, internalGetWeight (node, i->first)-internalGetFlow (node, i->first));
-
-	    if (verbose) cout << "Pushing " << push_delta << " from " << node << " to " << i->first << endl;
-
-	    internalSetFlow (node, i->first, internalGetFlow (node, i->first) + push_delta);
-	    excess[node] = excess[node] - push_delta;
-	    if (fabs (excess[node]) < 1e-5) excess[node] = 0;
-	    if (i->first != source && i->first != sink) {
-	      if (verbose) cout << "         AddingA " << i->first << endl;
-	      active.push_back (i->first);
+	  neighborhood = internalOutNeighborhood (front);
+	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
+	    {
+	      if (labels[*it] > labels[front]
+		  && internalGetEdgeWeight (front, *it) < internalGetEdge (front, *it).getValue ())
+		{
+		  cap.push_back (internalGetEdge (front, *it)
+				 - internalGetEdgeWeight (front, *it));
+		}
 	    }
-	    excess[i->first] += push_delta;
-	  }
-	}
-      }
-
-      if (excess[node] > 0) {
-	vector< float > cap;
-	for (i=getReverseNeighborsMap (node).begin (); i!=getReverseNeighborsMap (node).end (); ++i) {
-	  if (label[i->first] > label[node] &&
-	      internalGetFlow (i->first, node) > 0)
-	    cap.push_back (internalGetFlow (i->first, node));	 
-	}
-	float eq = equilibrateFlow (cap, excess[node]);
-	
-	for (i=getReverseNeighborsMap (node).begin (); i!=getReverseNeighborsMap (node).end (); ++i) {
-	  if (label[i->first] > label[node] &&
-	      internalGetFlow (i->first, node) > 0) {
-	    float push_delta = min(eq, internalGetFlow (i->first, node));
-
-	    if (verbose) cout << "Pushing back " << push_delta << " from " << node << " to " << i->first << endl;
+	  eq = equilibrateFlow (cap, excess[front]);
 	  
-	    internalSetFlow (i->first, node, internalGetFlow (i->first, node) - push_delta);
-	    excess[node] = excess[node] - push_delta;
-	    if (fabs (excess[node]) < 1e-5) excess[node] = 0;
-	    if (i->first != source && i->first != sink) {
-	      if (verbose) cout << "         AddingB " << i->first << endl;
-	      active.push_back (i->first);
-	    }
-	    excess[i->first] += push_delta;
-	  }
-	}
-      }
-    
-      if (excess[node] > 0) {
-	if (verbose) cout << "Residual" << endl;
+	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
+	    {
+	      if (labels[*it] > labels[front]
+		  && internalGetEdgeWeight (front, *it) < internalGetEdge (front, *it).getValue ())
+		{
+		  float push_delta;
 
-	int max_dist = -2 * size ();
-
-	for (i=getNeighborsMap (node).begin (); i!=getNeighborsMap (node).end (); ++i) {
-	  if (internalGetWeight (node, i->first) - internalGetFlow (node, i->first) > 0) {
-	    if (label[i->first] > max_dist) {
-	      max_dist = label[i->first];
-	      if (verbose) cout << "  max_dist forward residual = " 
-				<< internalGetWeight (node, i->first) - internalGetFlow (node, i->first)
-				<< endl;
+		  push_delta = min (eq, internalGetEdge (front, *it).getValue () - internalGetEdgeWeight (front, *it));
+		  
+		  gOut (5) << "Pushing " << push_delta << " from " << front
+			   << " to " << *it << endl;
+		  
+		  internalSetEdgeWeight (front, *it, internalGetEdgeWeight (front, *it) + push_delta);
+		  excess[front] -= push_delta;
+		  if (fabs (excess[front]) < 1e-5)
+		    {
+		      excess[front] = 0;
+		    }
+		  if (*it != source && *it != sink)
+		    {
+		      gOut (5) << "         AddingA " << *it << endl;
+		      active.push_back (*it);
+		    }
+		  excess[*it] += push_delta;
+		}
 	    }
-	  }
 	}
-	
-	for (i=getReverseNeighborsMap (node).begin (); i!=getReverseNeighborsMap (node).end (); ++i) {
-	  if (internalGetFlow (i->first, node) > 0) {
-	    if (label[i->first] > max_dist) {
-	      max_dist = label[i->first];
-	      if (verbose) cout << "  max_dist back residual = " 
-				<< internalGetFlow (i->first, node)
-				<< endl;
-	    }
-	  }
-	}
+      
+      if (0 < excess[front])
+	{
+	  list< label > neighborhood;
+	  typename list< label >::iterator it;
+	  vector< float > cap;
+	  float eq;
 
-	if (verbose) cout << "Relabel[" << node << "] from " 
-			  << label[node] << " to " << (max_dist - 1)
-			  << " (excess = " << excess[node] << ")" << endl;
-	
-	label[node] = max_dist - 1;
-      }
+	  neighborhood = internalInNeighborhood (front);
+	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
+	    {
+	      if (labels[*it] > labels[front]
+		  && 0 < internalGetEdgeWeight (*it, front))
+		{
+		  cap.push_back (internalGetEdgeWeight (*it, front));
+		}
+	    }
+	  eq = equilibrateFlow (cap, excess[front]);
+	  
+	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
+	    {
+	      if (labels[*it] > labels[front]
+		  && 0 < internalGetEdgeWeight (*it, front))
+		{
+		  float push_delta;
+
+		  push_delta = min (eq, internalGetEdgeWeight (*it, front));
+		  
+		  gOut (5) << "Pushing back " << push_delta << " from " << front
+			   << " to " << i->first << endl;
+		  
+		  internalSetEdgeWeight (*it, front, internalGetEdgeWeight (*it, front) - push_delta);
+		  excess[front] -= push_delta;
+		  if (fabs (excess[front]) < 1e-5)
+		    {
+		      excess[front] = 0;
+		    }
+		  if (*it != source && *it != sink)
+		    {
+		      gOut (5) << "         AddingB " << *it << endl;
+		      active.push_back (*it);
+		    }
+		  excess[*it] += push_delta;
+		}
+	    }
+	}
+      
+      if (0 < excess[front])
+	{
+	  int max_dist;
+
+	  gOut (5) << "Residual" << endl;
+	  max_dist = -2 * size ();
+	  neighborhood = internalOutNeighborhood (front);
+	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
+	    {
+	      if (0 < internalGetEdge (front, it->*first).getValue () - internalGetEdgeWeight (front, *it)
+		  && labels[*it] > max_dist)
+		{
+		  max_dist = labels[*it];
+		  gOut (5) << "  max_dist forward residual = " 
+			   << internalGetEdgeWeight (front, *it) - internalGetEdgeWeight (front, *it)
+			   << endl;
+		}
+	    }
+
+	  neighborhood = internalInNeighborhood (front);
+	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
+	    {
+	      if (0 < internalGetEdgeWeight (*it, front)
+		  && labels[*it] > max_dist)
+		{
+		  max_dist = labels[*it];
+		  gOut (5) << "  max_dist back residual = " 
+			   << internalGetEdgeWeight (*it, front) << endl;
+		}
+	    }
+
+	  gOut (5) << "Relabel[" << front << "] from " 
+		   << labels[front] << " to " << (max_dist - 1)
+		   << " (excess = " << excess[front] << ")" << endl;
+	  
+	  labels[front] = max_dist - 1;
+	}
     }
-    
     
     /**
      * Reequilibrate flows in the graph.
      */
-    float equilibrateFlow (vector< float > capacities, float excess) 
+    float equilibrateFlow (vector< float > &capacities, float excess) 
     {
       unsigned int i;
+      
       sort (capacities.begin (), capacities.end ());
       for (i = 0; i < capacities.size (); ++i)
-	if (capacities[i] < (excess / (capacities.size () - i))) excess -= capacities[i];
-	else break;
-      if (i == capacities.size ()) {
-	// The capacity of the donor/acceptor is not exceeded, so give everything
-	return 1;
-      }
-      return (excess / (capacities.size () - i));
+	{
+	  if (capacities[i] < (excess / (capacities.size () - i)))
+	    {
+	      excess -= capacities[i];
+	    }
+	  else
+	    {
+	      break;
+	    }
+	}
+      if (i == capacities.size ())
+	{
+	  // The capacity of the donor/acceptor is not exceeded, so give
+	  // everything
+	  return 1;
+	}
+      return excess / (capacities.size () - i);
     }
     
-
-    /**
-     * Sets the flow of an edge.
-     * @param o an extremity of the edge.
-     * @param p an extremity of the edge.
-     * @param val the value.
-     */
-    void internalSetFlow (int o, int p, float val) 
-    {
-      edgeFlows[graph[o][p]] = val;
-    }
-  
-    /**
-     * Returns the flow of the desired edge
-     * @param o an extremity of the edge.
-     * @param p an extremity of the edge.
-     * @return the weight or 0 if the edge is not in the graph.
-     */
-    float internalGetFlow (const label& o, const label& p) const 
-    {
-      return edgeFlows[graph.find (o)->second.find (p)->second];
-    }
-  
-    // CUSTOM INTERFACE --------------------------------------------------------
-
-  protected:
-
-    /**
-     * Returns the neighbors of the given node in the form of a map of
-     * neighbors/edge ids..
-     * @param o a node in the graph.
-     * @return the map of neighbors with the associated edge.
-     */
-    const map< int, int >& getReverseNeighborsMap (int o) const {
-      static const map< int, int > empty;
-      
-      map< int, map< int, int > >::const_iterator i = reverseGraph.find (o);
-      if (i!=graph.end ()) {
-	return i->second;
-      } 
-      return empty;
-    }
-        
     // I/O ---------------------------------------------------------------------
-
+    
   public:
-
+    
     virtual ostream& output (ostream& os) const
     {
-      typename MaximumFlowGraph::const_iterator ki, kj;
-      typename vector< label >::const_iterator i;
-      typename vector< edge_type >::const_iterator j;
- 
-      os << "Nodes:" << endl;
-      for (i=nodes.begin (); i!=nodes.end (); ++i) {
-	os << i-nodes.begin () << " : " << *i << " (" 
-	   << nodeWeights[i-nodes.begin ()] << ")" << endl;
-      }
-      os << "Edges:" << endl;
-      for (j=edges.begin (); j!=edges.end (); ++j) {
-	os << j-edges.begin () << " : " << *j << " (" 
-	   << edgeFlows[j-edges.begin ()] << "/"
-	   << edgeWeights[j-edges.begin ()] << ")" << endl;
-      }
-      os << "Adjacency:" << endl;
-      for (ki=begin (); ki!=end (); ++ki) {      
-	os << *ki << "(" << getWeight (*ki) << ")" << " : ";      
-	for (kj=begin (); kj!=end (); ++kj) {
-	  if (areConnected (*ki, *kj)) 
-	    os << *kj << "(" << getEdge (*ki, *kj) << ") ";
-	}
-	os << endl;
-      }
-      
-      os << "Reverse Adjacency: " << endl;
-      for (ki=begin (); ki!=end (); ++ki) {      
-	os << *ki << "(" << getWeight (*ki) << ")" << " : ";      
-	for (kj=begin (); kj!=end (); ++kj) {
-	  if (areConnected (*kj, *ki)) 
-	    os << *kj << "(" << getEdge (*kj, *ki) << ") ";
-	}
-	os << endl;
-      }
-
-      return os;
+      return os << "[MaximumFlowGraph]" << endl
+		<< Graph< V, E, VW, float, Vertex_Comparator >::output (os);
     }
+    
   };
 
 }
