@@ -3,7 +3,7 @@
 // Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 // 
 //  This file is part of mccore.
 //  
@@ -422,7 +422,6 @@ namespace mccore {
   Atom& 
   ExtendedResidue::get (size_type pos) const
   {
-    place ();
     return *atomGlobal[pos];
   }
 
@@ -430,7 +429,6 @@ namespace mccore {
   Atom* 
   ExtendedResidue::get (const AtomType* type) const 
   {
-    place ();
     AtomMap::const_iterator it = atomIndex.find (type);
     if (it == atomIndex.end ())
       return 0;
@@ -460,6 +458,7 @@ namespace mccore {
   void ExtendedResidue::displace () const
   {
     placed=false;
+    place ();
   }
 
 
@@ -469,18 +468,18 @@ namespace mccore {
   ostream&
   ExtendedResidue::output (ostream &os) const 
   {    
-    os << &resId << endl;
+//     os << &resId << endl;
     os << resId << type;
-    os << endl << tfo;
-    os << endl;
-    AtomMap::const_iterator cit;
-    os << "\n\tLocal coordinates\t\tGlobal coordinates";
-    for (cit=atomIndex.begin (); cit!=atomIndex.end (); ++cit) {
-      os << "\n\t" 
-	 << atomLocal[cit->second] << " " << *(atomLocal[cit->second]) << " \t " 
-	 << atomGlobal[cit->second] << " " << *(atomGlobal[cit->second]) 
-	 << ((!isPlaced ())?" [invalid]":"") << flush;
-    }
+//     os << endl << tfo;
+//     os << endl;
+//     AtomMap::const_iterator cit;
+//     os << "\n\tLocal coordinates\t\tGlobal coordinates";
+//     for (cit=atomIndex.begin (); cit!=atomIndex.end (); ++cit) {
+//       os << "\n\t" 
+// 	 << atomLocal[cit->second] << " " << *(atomLocal[cit->second]) << " \t " 
+// 	 << atomGlobal[cit->second] << " " << *(atomGlobal[cit->second]) 
+// 	 << ((!isPlaced ())?" [invalid]":"") << flush;
+//     }
     return os;
   }
   

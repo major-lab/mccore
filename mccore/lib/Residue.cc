@@ -1150,7 +1150,7 @@ namespace mccore {
   
 
   const PropertyType* 
-  Residue::getPucker ()
+  Residue::getPucker () const
   {
     if (!getType ()->isNucleicAcid ()) return 0;
 
@@ -1205,7 +1205,7 @@ namespace mccore {
   }
   
   const PropertyType* 
-  Residue::getGlycosyl ()
+  Residue::getGlycosyl () const
   {
     if (!getType ()->isNucleicAcid ()) return 0;
     
@@ -1381,10 +1381,10 @@ namespace mccore {
   Residue::output (ostream &os) const 
   {
     os << resId << type;
-    AtomMap::const_iterator cit;
-    for (cit=atomIndex.begin (); cit!=atomIndex.end (); ++cit) {
-      os << endl << *(atomGlobal[cit->second]);
-    }
+//     AtomMap::const_iterator cit;
+//     for (cit=atomIndex.begin (); cit!=atomIndex.end (); ++cit) {
+//       os << endl << *(atomGlobal[cit->second]);
+//     }
     return os;
   }
   
@@ -1435,7 +1435,7 @@ namespace mccore {
     return r.output (os);
   }
 
-//   ostream&
+  // ostream&
 //   operator<< (ostream &os, const Residue *r)
 //   {
 //     return r->output (os);

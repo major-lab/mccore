@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 //
 //  This file is part of mccore.
 //  
@@ -56,7 +56,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Patrick Gendron <gendrop@iro.umontreal.ca>
-   * @version $Id: Residue.h,v 1.14 2003-10-28 16:11:44 gendrop Exp $
+   * @version $Id: Residue.h,v 1.15 2003-12-04 22:44:43 gendrop Exp $
    */
   class Residue
   {
@@ -364,12 +364,12 @@ namespace mccore {
     /**
      * Determines the pucker mode of the NucleicAcid backbone.
      */
-    virtual const PropertyType* getPucker ();
+    virtual const PropertyType* getPucker () const;
 
     /**
      * Determines the glycosidic angle classification.
      */
-    virtual const PropertyType* getGlycosyl ();
+    virtual const PropertyType* getGlycosyl () const;
     
     /**
      *  Initializes all the internals of the residue.  It aligns the
