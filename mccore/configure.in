@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
-# $Revision: 1.25 $
-# $Id: configure.in,v 1.25 2004-08-24 19:40:31 gendrop Exp $
+# $Revision: 1.26 $
+# $Id: configure.in,v 1.26 2004-09-01 19:53:15 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -83,7 +83,10 @@ if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
 	  echo "        " $t;
 	done
 	AC_CHECK_LIB(z,gzopen)
-	AC_CHECK_LIB(rnamlc++,xmlcpginit,HAVE_XMLCPG=true)
+	AC_ARG_WITH(rnaml,
+	    [  --with-rnaml            include rnaml reader and writer classes],
+	    AC_CHECK_LIB(rnamlc++,xmlcpginit),
+	)
 	LIBALLFLAGSTART="-all"
 	LIBALLFLAGSTOP="-notall"
 	ARXX="$CXX"
@@ -106,7 +109,10 @@ if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
 	  echo "        " $t;
 	done
 	AC_CHECK_LIB(z,gzopen)
-	AC_CHECK_LIB(rnamlc++,xmlcpginit,HAVE_XMLCPG=true)
+	AC_ARG_WITH(rnaml,
+	    [  --with-rnaml            include rnaml reader and writer classes],
+	    AC_CHECK_LIB(rnamlc++,xmlcpginit),
+	)
 	LIBALLFLAGSTART="-z allextract"
 	LIBALLFLAGSTOP="-z defaultextract"
 	ARXX="$CXX"
@@ -115,7 +121,11 @@ if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
     esac;
 elif eval "test \"`echo $GXX`\" = yes"; then     # gnu compiler
         AC_CHECK_LIB(z,main)
-        AC_CHECK_LIB(rnamlc++,main,HAVE_XMLCPG=true)
+	AC_ARG_WITH(rnaml,
+	    [  --with-rnaml            include rnaml reader and writer classes],
+	    AC_CHECK_LIB(rnamlc++,main)
+	    HAVE_LIBRNAML=1,
+	)
 	CXXFLAGS="$CXXFLAGS -Wall"
 	DEPFLAGS="-MM"
 	LINKOPTIONS="-shared"
@@ -143,6 +153,6 @@ AC_SUBST(LIBALLFLAGSTART)
 AC_SUBST(LIBALLFLAGSTOP)
 AC_SUBST(ARXX)
 AC_SUBST(AROPTIONS)
-AC_SUBST(HAVE_XMLCPG)
+AC_SUBST(HAVE_LIBRNAML)
 
 AC_OUTPUT( Makefile docs/Makefile lib/Makefile, echo timestamp > stamp-h )
