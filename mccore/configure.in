@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
-# $Revision: 1.14.8.2 $
-# $Id: configure.in,v 1.14.8.2 2003-10-28 20:59:18 larosem Exp $
+# $Revision: 1.14.8.3 $
+# $Id: configure.in,v 1.14.8.3 2003-11-13 21:06:34 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -43,7 +43,6 @@ AC_CANONICAL_HOST
 
 AC_PROG_INSTALL
 AC_PATH_PROG(AR,ar)
-AC_CHECK_LIB(rnamlc++,main)
 AC_CHECK_FUNCS(strsep)
 AC_CHECK_FUNCS(isfdtype)
 AC_CHECK_FUNCS(acosf)
@@ -88,6 +87,8 @@ if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
         LINKOPTIONS= ;;
     esac;
 elif eval "test \"`echo $GXX`\" = yes"; then     # gnu compiler
+        AC_CHECK_LIB(z,main)
+        AC_CHECK_LIB(rnamlc++,main)
 	CXXSHFLAGS="$CXXFLAGS -Wall";
 	CXXFLAGS="$CXXFLAGS -Wall";
 	DEPFLAGS="-MM"
