@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Sep 13 14:08:02 2001
-// Update Count     : 26
+// Last Modified On : Fri Sep 14 16:35:32 2001
+// Update Count     : 27
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -271,6 +271,9 @@ CResidue::CResidue (t_Residue *type,
 	}
     }
 
+  mAtomRes.reserve (size ());
+  mAtomRes.resize (size ());
+
   if (! mType)
     return;
   
@@ -420,9 +423,6 @@ CResidue::CResidue (t_Residue *type,
     }
 
   isIdentity = mTfo.isIdentity ();
-
-  mAtomRes.reserve (size ());
-  mAtomRes.resize (size ());
 }
 
 
