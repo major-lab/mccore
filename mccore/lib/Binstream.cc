@@ -1,11 +1,11 @@
 //                              -*- mode: C++ -*- 
 // Binstream.cc
-// Copyright © 1999, 2000-04 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-05 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@orage.IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:18:52 EDT
-// $Revision: 1.20 $
-// $Id: Binstream.cc,v 1.20 2004-11-19 19:50:25 larosem Exp $
+// $Revision: 1.21 $
+// $Id: Binstream.cc,v 1.21 2005-01-05 01:42:45 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -40,17 +40,17 @@
 
 
 
-namespace mccore {
+namespace mccore
+{
   
   iBinstream&
   iBinstream::operator>> (char &c)
   {
     short int ns;
-    this->read ((char*)&ns, sizeof (short int));
+    iBinstream::read ((char*)&ns, sizeof (short int));
     c = (char)ntohs (ns);
     return *this;
   }
-  
   
   
   iBinstream&
@@ -59,11 +59,10 @@ namespace mccore {
     short int length;
     
     *this >> length;
-    this->read ((char*)str, sizeof (char) * length);
+    iBinstream::read ((char*)str, sizeof (char) * length);
     str[length] = '\0';
     return *this;
   }
-  
   
   
   iBinstream&
@@ -73,11 +72,26 @@ namespace mccore {
     
     *this >> length;
     *str = new char[length + 1];
-    this->read ((char*)*str, sizeof (char) * length);
+    iBinstream::read ((char*)*str, sizeof (char) * length);
     (*str)[length] = '\0';
     return *this;
   }
   
+  
+  iBinstream&
+  iBinstream::operator>> (string &str)
+  {
+    short int length;
+    char *buffer;
+    
+    *this >> length;
+    buffer = new char[length + 1];
+    iBinstream::read (buffer, sizeof (char) * length);
+    buffer[length] = '\0';
+    str = buffer;
+    delete[] buffer;
+    return *this;
+  }
   
   
   iBinstream&
@@ -85,11 +99,10 @@ namespace mccore {
   {
     short int ns;
     
-    this->read ((char*) &ns, sizeof (short int));
+    iBinstream::read ((char*) &ns, sizeof (short int));
     n = ntohs (ns);
     return *this;
   }
-  
   
   
   iBinstream&
@@ -97,11 +110,10 @@ namespace mccore {
   {
     int nl;
     
-    this->read ((char*)&nl, sizeof (int));
+    iBinstream::read ((char*)&nl, sizeof (int));
     n = (int)ntohl (nl);
     return *this;
   }
-  
   
   
   iBinstream&
@@ -109,11 +121,10 @@ namespace mccore {
   {
     long int nl;
     
-    this->read ((char*)&nl, sizeof (long int));
+    iBinstream::read ((char*)&nl, sizeof (long int));
     n = (long int)ntohl (nl);
     return *this;
   }
-  
   
   
   iBinstream&
@@ -122,12 +133,11 @@ namespace mccore {
     long int nl;
     long int hl;
     
-    this->read ((char*)&nl, sizeof (long int));
+    iBinstream::read ((char*)&nl, sizeof (long int));
     hl = ntohl (nl);
     x = *((float*)&hl);
     return *this;
   }
-  
   
   
   iBinstream&
@@ -138,7 +148,6 @@ namespace mccore {
   }
   
   
-  
   iBinstream&
   iBinstream::operator>> (ios& (*func)(ios&))
   {
@@ -147,16 +156,14 @@ namespace mccore {
   }
   
   
-  
   oBinstream&
   oBinstream::operator<< (char c)
   {
     short int ns = htons (c);
     
-    this->write ((char*)&ns, sizeof (short int));
+    oBinstream::write ((char*)&ns, sizeof (short int));
     return *this;
   }
-  
   
   
   oBinstream&
@@ -164,21 +171,31 @@ namespace mccore {
   {
     short int length = strlen (str);
     *this << length;
-    this->write ((char*)str, sizeof (char) * length);
+    oBinstream::write ((char*)str, sizeof (char) * length);
     return *this;
   }
   
   
+  oBinstream&
+  oBinstream::operator<< (const string &str)
+  {
+    unsigned int length;
+
+    length = str.size ();
+    *this << length;
+    oBinstream::write (str.data (), sizeof (char) * length);
+    return *this;
+  }
+
   
   oBinstream&
   oBinstream::operator<< (short int n)
   {
     short int ns = htons (n);
     
-    this->write ((char*)&ns, sizeof (short int));
+    oBinstream::write ((char*)&ns, sizeof (short int));
     return *this;
   }
-  
   
   
   oBinstream&
@@ -186,10 +203,9 @@ namespace mccore {
   {
     int nl = htonl (n);
     
-    this->write ((char*)&nl, sizeof (int));
+    oBinstream::write ((char*)&nl, sizeof (int));
     return *this;
   }
-  
   
   
   oBinstream&
@@ -197,10 +213,9 @@ namespace mccore {
   {
     long int nl = htonl (n);
     
-    this->write ((char*)&nl, sizeof (long int));
+    oBinstream::write ((char*)&nl, sizeof (long int));
     return *this;
   }
-  
   
   
   oBinstream&
@@ -208,10 +223,9 @@ namespace mccore {
   {
     long int nl = htonl (*((long int*)&x));
     
-    this->write ((char*)&nl, sizeof (long int));
+    oBinstream::write ((char*)&nl, sizeof (long int));
     return *this;
   }
-  
   
   
   oBinstream&
@@ -222,11 +236,11 @@ namespace mccore {
   }
   
   
-  
   oBinstream&
   oBinstream::operator<< (ostream& (*func)(ostream&))
   {
     (*func)(*this);
     return *this;
   }
+  
 }
