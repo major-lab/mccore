@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.9 $
-// $Id: PropertyType.cc,v 1.9 2004-08-17 18:26:13 thibaup Exp $
+// $Revision: 1.10 $
+// $Id: PropertyType.cc,v 1.10 2004-08-26 15:21:05 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -312,7 +312,13 @@ namespace mccore {
   oBinstream&
   operator<< (oBinstream &obs, const PropertyType *t)
   {
-    return (t == 0 ? PropertyType::pNull : t)->output (obs);
+    if (0 == t)
+    {
+      FatalIntLibException ex ("", __FILE__, __LINE__);
+      ex << "Cannot write null-pointed property type to binstream: use PropertyType::pNull";
+      throw ex;
+    }
+    return t->output (obs);
   }
  
 

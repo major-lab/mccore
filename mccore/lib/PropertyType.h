@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 // 
 // This file is part of mccore.
 // 
@@ -46,7 +46,7 @@ namespace mccore
    * General property types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: PropertyType.h,v 1.9 2004-08-17 18:26:28 thibaup Exp $
+   * @version $Id: PropertyType.h,v 1.10 2004-08-26 15:21:10 thibaup Exp $
    */
   class PropertyType
   {
@@ -1179,6 +1179,7 @@ namespace mccore
    * @param obs the binary output stream.
    * @param t the type to dump.
    * @return the output binary stream used.
+   * @exception FatalIntLibException thrown if type is null pointed.
    */
   oBinstream& operator<< (oBinstream &out, const PropertyType *t);
 

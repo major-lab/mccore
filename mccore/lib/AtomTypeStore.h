@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 12:30:39 2003
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 // 
 //  This file is part of mccore.
 //  
@@ -44,7 +44,7 @@ namespace mccore {
    * @short Repository of atomtypes.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: AtomTypeStore.h,v 1.6 2004-06-01 19:43:16 thibaup Exp $
+   * @version $Id: AtomTypeStore.h,v 1.7 2004-08-26 15:21:00 thibaup Exp $
    */
   class AtomTypeStore
   {
@@ -93,9 +93,10 @@ namespace mccore {
     
     /**
      * Gets the atomtype represented by the string if one exists.
+     * @param key string key representing the atom type.
      * @return the matching atom type or a new one if none existed.
      */
-    const AtomType* get (const char* s);
+    const AtomType* get (const char* key);
 
   private:
     

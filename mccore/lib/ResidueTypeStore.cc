@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -21,6 +21,8 @@ namespace mccore {
   {
     ResidueType *t;
 
+    stringType["null"] = ResidueType::rNull = new ResidueType ("null", "null");
+    
     /** nucleic acids **/
     
     /*
@@ -188,44 +190,44 @@ namespace mccore {
     // METHODS -----------------------------------------------------------------
     
   const ResidueType* 
-  ResidueTypeStore::get (const char* s) 
+  ResidueTypeStore::get (const char* key) 
   {
-    ResidueType* t = 0;
-    char* str = new char[strlen (s) + 1];
-    strcpy (str, s);
-    for (char* i=str; *i; ++i) {
-      *i = toupper (*i);
-    }
-    
-    if (stringType.find (str) != stringType.end ()) {
-      t = stringType[str];
-    } else {
-      t = new ResidueType (str, str);
-      stringType[*t] = t;      
-    }
-    delete[] str;
-    return t;
+    char* key_copy = strdup (key);
+    char* kp;
+
+    for (kp = key_copy; 0 != *kp; ++kp)
+      *kp = toupper (*kp);
+
+    pair< map< const char*, ResidueType*, less_string >::iterator, bool > inserted =
+      stringType.insert (make_pair (key_copy, ResidueType::rNull));
+
+    if (inserted.second) // unique insertion => new atom type
+      inserted.first->second = new ResidueType (inserted.first->first, inserted.first->first);
+    else                 // key exists => delete key copy
+      delete[] key_copy;
+
+    return inserted.first->second;
   } 
 
 
   const ResidueType* 
-  ResidueTypeStore::getInvalid (const char* s) 
+  ResidueTypeStore::getInvalid (const char* key) 
   {
-    ResidueType* t = 0;
-    char* str = new char[strlen (s) + 1];
-    strcpy (str, s);
-    for (char* i=str; *i; ++i) {
-      *i = toupper (*i);
-    }
-    
-    if (invalidType.find (str) != invalidType.end ()) {
-      t = invalidType[str];
-    } else {
-      t = new ResidueType (str, str);
-      invalidType[*t] = t;      
-    }
-    delete[] str;
-    return t;
+    char* key_copy = strdup (key);
+    char* kp;
+
+    for (kp = key_copy; 0 != *kp; ++kp)
+      *kp = toupper (*kp);
+
+    pair< map< const char*, ResidueType*, less_string >::iterator, bool > inserted =
+      invalidType.insert (make_pair (key_copy, ResidueType::rNull));
+
+    if (inserted.second) // unique insertion => new atom type
+      inserted.first->second = new ResidueType (inserted.first->first, inserted.first->first);
+    else                 // key exists => delete key copy
+      delete[] key_copy;
+
+    return inserted.first->second;
   } 
 
 

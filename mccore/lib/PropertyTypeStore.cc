@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:42:25 2003
-// $Revision: 1.6 $
-// $Id: PropertyTypeStore.cc,v 1.6 2004-08-17 18:26:39 thibaup Exp $
+// $Revision: 1.7 $
+// $Id: PropertyTypeStore.cc,v 1.7 2004-08-26 15:21:14 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -259,11 +259,14 @@ namespace mccore {
   const PropertyType* 
   PropertyTypeStore::get (const char* key) 
   {
+    char* key_copy = strdup (key);
     pair< map< const char*, PropertyType*, less_string >::iterator, bool > inserted =
-      stringType.insert (make_pair (key, PropertyType::pNull));
+      stringType.insert (make_pair (key_copy, PropertyType::pNull));
 
     if (inserted.second) // unique insertion => new property type
       inserted.first->second = new PropertyType (inserted.first->first);
+    else                 // key exists => delete key copy
+      delete[] key_copy;
 
     return inserted.first->second;
   }

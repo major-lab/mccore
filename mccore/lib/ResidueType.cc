@@ -21,82 +21,85 @@ namespace mccore
   // STATIC MEMBERS ------------------------------------------------------------
 
   ResidueTypeStore ResidueType::rtstore;
-  ResidueType* ResidueType::rNucleicAcid;
-  ResidueType* ResidueType::rAminoAcid;
 
-  ResidueType* ResidueType::rRNA;
-  ResidueType* ResidueType::rDNA;
-  ResidueType* ResidueType::rPhosphate;
-  ResidueType* ResidueType::rRRibose;
-  ResidueType* ResidueType::rDRibose;
-  ResidueType* ResidueType::rPurine;
-  ResidueType* ResidueType::rPyrimidine;
-  ResidueType* ResidueType::rRPurine;
-  ResidueType* ResidueType::rRPyrimidine;
-  ResidueType* ResidueType::rDPurine;
-  ResidueType* ResidueType::rDPyrimidine;
+  ResidueType* ResidueType::rNull = 0;
+  
+  ResidueType* ResidueType::rNucleicAcid = 0;
+  ResidueType* ResidueType::rAminoAcid = 0;
 
-  ResidueType* ResidueType::rW;
-  ResidueType* ResidueType::rS;
-  ResidueType* ResidueType::rM;
-  ResidueType* ResidueType::rK;
-  ResidueType* ResidueType::rB;
-  ResidueType* ResidueType::rD;
-  ResidueType* ResidueType::rH;
-  ResidueType* ResidueType::rV;
+  ResidueType* ResidueType::rRNA = 0;
+  ResidueType* ResidueType::rDNA = 0;
+  ResidueType* ResidueType::rPhosphate = 0;
+  ResidueType* ResidueType::rRRibose = 0;
+  ResidueType* ResidueType::rDRibose = 0;
+  ResidueType* ResidueType::rPurine = 0;
+  ResidueType* ResidueType::rPyrimidine = 0;
+  ResidueType* ResidueType::rRPurine = 0;
+  ResidueType* ResidueType::rRPyrimidine = 0;
+  ResidueType* ResidueType::rDPurine = 0;
+  ResidueType* ResidueType::rDPyrimidine = 0;
 
-  ResidueType* ResidueType::rRW;
-  ResidueType* ResidueType::rRS;
-  ResidueType* ResidueType::rRM;
-  ResidueType* ResidueType::rRK;
-  ResidueType* ResidueType::rRB;
-  ResidueType* ResidueType::rRD;
-  ResidueType* ResidueType::rRH;
-  ResidueType* ResidueType::rRV;
+  ResidueType* ResidueType::rW = 0;
+  ResidueType* ResidueType::rS = 0;
+  ResidueType* ResidueType::rM = 0;
+  ResidueType* ResidueType::rK = 0;
+  ResidueType* ResidueType::rB = 0;
+  ResidueType* ResidueType::rD = 0;
+  ResidueType* ResidueType::rH = 0;
+  ResidueType* ResidueType::rV = 0;
 
-  ResidueType* ResidueType::rDW;
-  ResidueType* ResidueType::rDS;
-  ResidueType* ResidueType::rDM;
-  ResidueType* ResidueType::rDK;
-  ResidueType* ResidueType::rDB;
-  ResidueType* ResidueType::rDD;
-  ResidueType* ResidueType::rDH;
-  ResidueType* ResidueType::rDV;
+  ResidueType* ResidueType::rRW = 0;
+  ResidueType* ResidueType::rRS = 0;
+  ResidueType* ResidueType::rRM = 0;
+  ResidueType* ResidueType::rRK = 0;
+  ResidueType* ResidueType::rRB = 0;
+  ResidueType* ResidueType::rRD = 0;
+  ResidueType* ResidueType::rRH = 0;
+  ResidueType* ResidueType::rRV = 0;
 
-  ResidueType* ResidueType::rA;
-  ResidueType* ResidueType::rC;
-  ResidueType* ResidueType::rG;
-  ResidueType* ResidueType::rU;
-  ResidueType* ResidueType::rT;
-  ResidueType* ResidueType::rRA;
-  ResidueType* ResidueType::rRC;
-  ResidueType* ResidueType::rRG;
-  ResidueType* ResidueType::rRU;
-  ResidueType* ResidueType::rDA;
-  ResidueType* ResidueType::rDC;
-  ResidueType* ResidueType::rDG;
-  ResidueType* ResidueType::rDT;
+  ResidueType* ResidueType::rDW = 0;
+  ResidueType* ResidueType::rDS = 0;
+  ResidueType* ResidueType::rDM = 0;
+  ResidueType* ResidueType::rDK = 0;
+  ResidueType* ResidueType::rDB = 0;
+  ResidueType* ResidueType::rDD = 0;
+  ResidueType* ResidueType::rDH = 0;
+  ResidueType* ResidueType::rDV = 0;
 
-  ResidueType* ResidueType::rALA;
-  ResidueType* ResidueType::rARG;
-  ResidueType* ResidueType::rASN;
-  ResidueType* ResidueType::rASP;
-  ResidueType* ResidueType::rCYS;
-  ResidueType* ResidueType::rGLN;
-  ResidueType* ResidueType::rGLU;
-  ResidueType* ResidueType::rGLY;
-  ResidueType* ResidueType::rHIS;
-  ResidueType* ResidueType::rILE;
-  ResidueType* ResidueType::rLEU;
-  ResidueType* ResidueType::rLYS;
-  ResidueType* ResidueType::rMET;
-  ResidueType* ResidueType::rPHE;
-  ResidueType* ResidueType::rPRO;
-  ResidueType* ResidueType::rSER;
-  ResidueType* ResidueType::rTHR;
-  ResidueType* ResidueType::rTRP;
-  ResidueType* ResidueType::rTYR;
-  ResidueType* ResidueType::rVAL;
+  ResidueType* ResidueType::rA = 0;
+  ResidueType* ResidueType::rC = 0;
+  ResidueType* ResidueType::rG = 0;
+  ResidueType* ResidueType::rU = 0;
+  ResidueType* ResidueType::rT = 0;
+  ResidueType* ResidueType::rRA = 0;
+  ResidueType* ResidueType::rRC = 0;
+  ResidueType* ResidueType::rRG = 0;
+  ResidueType* ResidueType::rRU = 0;
+  ResidueType* ResidueType::rDA = 0;
+  ResidueType* ResidueType::rDC = 0;
+  ResidueType* ResidueType::rDG = 0;
+  ResidueType* ResidueType::rDT = 0;
+
+  ResidueType* ResidueType::rALA = 0;
+  ResidueType* ResidueType::rARG = 0;
+  ResidueType* ResidueType::rASN = 0;
+  ResidueType* ResidueType::rASP = 0;
+  ResidueType* ResidueType::rCYS = 0;
+  ResidueType* ResidueType::rGLN = 0;
+  ResidueType* ResidueType::rGLU = 0;
+  ResidueType* ResidueType::rGLY = 0;
+  ResidueType* ResidueType::rHIS = 0;
+  ResidueType* ResidueType::rILE = 0;
+  ResidueType* ResidueType::rLEU = 0;
+  ResidueType* ResidueType::rLYS = 0;
+  ResidueType* ResidueType::rMET = 0;
+  ResidueType* ResidueType::rPHE = 0;
+  ResidueType* ResidueType::rPRO = 0;
+  ResidueType* ResidueType::rSER = 0;
+  ResidueType* ResidueType::rTHR = 0;
+  ResidueType* ResidueType::rTRP = 0;
+  ResidueType* ResidueType::rTYR = 0;
+  ResidueType* ResidueType::rVAL = 0;
 
   
   // LIFECYCLE -----------------------------------------------------------------
@@ -227,9 +230,7 @@ namespace mccore
   ostream &
   operator<< (ostream &out, const ResidueType *t)
   {
-    if (!t) out << "null";
-    else t->output (out);
-    return out;
+    return (0 == t ? ResidueType::rNull : t)->output (out);
   }
 
 
@@ -243,13 +244,19 @@ namespace mccore
   Exception&
   operator<< (Exception& ex, const ResidueType *t)
   {
-    return t == 0 ? (ex << "null") : (ex << t->toLongString ());
+    return ex << (0 == t ? ResidueType::rNull : t)->toLongString ();
   }
 
   
   oBinstream&
   operator<< (oBinstream &obs, const ResidueType *t)
   {
+    if (0 == t)
+    {
+      FatalIntLibException ex ("", __FILE__, __LINE__);
+      ex << "Cannot write null-pointed residue type to binstream: use ResidueType::rNull";
+      throw ex;
+    }
     return t->output (obs);
   }
  

@@ -3,7 +3,7 @@
 // Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
-// $Revision: 1.23 $
+// $Revision: 1.24 $
 // 
 //  This file is part of mccore.
 //  
@@ -57,7 +57,7 @@ namespace mccore
    *   - The charge and van der Waals radius<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: AtomType.h,v 1.23 2004-06-30 18:13:53 thibaup Exp $ 
+   * @version $Id: AtomType.h,v 1.24 2004-08-26 15:20:43 thibaup Exp $ 
    */
   class AtomType 
   {
@@ -348,6 +348,7 @@ namespace mccore
 
     // TYPE POINTERS -----------------------------------------------------------
 
+    static AtomType* aNull;
     static AtomType* aC1p;
     static AtomType* aC2p;
     static AtomType* aC3p;
@@ -546,6 +547,7 @@ namespace mccore
    * @param obs the binary output stream.
    * @param t the type to dump.
    * @return the output binary stream used.
+   * @exception FatalIntLibException thrown if type is null pointed.
    */
   oBinstream& operator<< (oBinstream &out, const AtomType *t);
   

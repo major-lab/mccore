@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.22 $
-// $Id: ResidueType.h,v 1.22 2004-06-30 18:16:32 thibaup Exp $
+// $Revision: 1.23 $
+// $Id: ResidueType.h,v 1.23 2004-08-26 15:21:23 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -55,7 +55,7 @@ namespace mccore {
    *   - The nature of a type (nucleic acid (pur/pyr) or amino acid)<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueType.h,v 1.22 2004-06-30 18:16:32 thibaup Exp $
+   * @version $Id: ResidueType.h,v 1.23 2004-08-26 15:21:23 thibaup Exp $
    */
   class ResidueType
   {    
@@ -352,7 +352,8 @@ namespace mccore {
 
     // TYPE POINTERS -----------------------------------------------------------
 
-
+    static ResidueType* rNull;
+    
     static ResidueType* rUnknown;
     static ResidueType* rNucleicAcid;
     static ResidueType* rAminoAcid;
@@ -474,6 +475,7 @@ namespace mccore {
    * @param obs the binary output stream.
    * @param t the type to dump.
    * @return the output binary stream used.
+   * @exception FatalIntLibException thrown if type is null pointed.
    */
   oBinstream& operator<< (oBinstream &out, const ResidueType *t);
   

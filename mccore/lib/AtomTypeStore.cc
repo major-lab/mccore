@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Tue Mar 11 13:56:50 2003
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -22,6 +22,7 @@ namespace mccore {
   {
     AtomType *t;
 
+    stringType["null"] = AtomType::aNull = new AtomType ("null");
     stringType["C1*"] = AtomType::aC1p = new AC1p ("C1*");   
     stringType["C2*"] = AtomType::aC2p = new AC2p ("C2*");
     stringType["C3*"] = AtomType::aC3p = new AC3p ("C3*");
@@ -195,25 +196,23 @@ namespace mccore {
   // METHODS -------------------------------------------------------------------
 
   const AtomType* 
-  AtomTypeStore::get (const char* s) 
+  AtomTypeStore::get (const char* key) 
   {
-    AtomType* t = 0;
-    char* str = new char[strlen (s) + 1];
-    strcpy (str, s);
+    char* key_copy = strdup (key);
+    char* kp;
 
-    for (char* i=str; *i; ++i) {
-      if (*i == '\'') *i = '*';
-      *i = toupper (*i);
-    }
-    
-    if (stringType.find (str) != stringType.end ()) {
-      t = stringType[str];
-    } else {
-      t = new AtomType (str);
-      stringType[*t] = t;
-    }
-    delete[] str;
-    return t;
+    for (kp = key_copy; 0 != *kp; ++kp)
+      *kp = toupper (*kp);
+
+    pair< map< const char*, AtomType*, less_string >::iterator, bool > inserted =
+      stringType.insert (make_pair (key_copy, AtomType::aNull));
+
+    if (inserted.second) // unique insertion => new atom type
+      inserted.first->second = new AtomType (inserted.first->first);
+    else                 // key exists => delete key copy
+      delete[] key_copy;
+
+    return inserted.first->second;
   }
 
 
