@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 //
 //  This file is part of mccore.
 //  
@@ -50,7 +50,7 @@ namespace mccore
  * </pre>
  *
  * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
- * @version $Id: HomogeneousTransfo.h,v 1.6 2003-09-26 21:16:23 gendrop Exp $
+ * @version $Id: HomogeneousTransfo.h,v 1.7 2003-09-29 19:37:26 thibaup Exp $
  */
 class HomogeneousTransfo
 {
@@ -91,7 +91,7 @@ public:
   HomogeneousTransfo(float n00, float n01, float n02, float n03,
 		     float n10, float n11, float n12, float n13,
 		     float n20, float n21, float n22, float n23,
-		     float n30, float n31, float n32, float n33);
+		     float n30 = 0, float n31 = 0, float n32 = 0, float n33 = 1);
   
   /**
    * Creates a transfo with an openGL matrix.
@@ -185,7 +185,7 @@ public:
   void set(float n00, float n01, float n02, float n03,
 	   float n10, float n11, float n12, float n13,
 	   float n20, float n21, float n22, float n23,
-	   float n30, float n31, float n32, float n33);
+	   float n30 = 0, float n31 = 0, float n32 = 0, float n33 = 1);
   
   /**
    * Sets the matrix to identity.
