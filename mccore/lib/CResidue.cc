@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Philippe Thibault
-// Last Modified On : Wed Mar 19 08:28:16 2003
-// Update Count     : 34
+// Last Modified On : Wed Mar 19 16:57:34 2003
+// Update Count     : 35
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -103,7 +103,7 @@ CResidue::setIdeal ()
     insert (CAtom (0.254, 2.014, 1.509, a_C4)); 
     insert (CAtom (0.034, 2.979, 0.591, a_N3)); 
     insert (CAtom (0.142, 4.190, 1.110, a_C2)); 
-    insert (CAtom (0.047, 5.269, 0.336, a_N2)); 
+    insert (CAtom (-0.047, 5.269, 0.336, a_N2)); 
     insert (CAtom (0.444, 4.437, 2.427, a_N1)); 
     insert (CAtom (0.676, 3.459, 3.389, a_C6)); 
     insert (CAtom (0.941, 3.789, 4.552, a_O6)); 
@@ -111,7 +111,7 @@ CResidue::setIdeal ()
     insert (CAtom (0.712, 0.912, 3.448, a_N7)); 
     insert (CAtom (0.498, 0.057, 2.485, a_C8)); 
     insert (CAtom (0.000, 0.000, 0.000, a_C1p));
-  } else if (mType->is_rG ()) {
+  } else if (mType->is_rU ()) {
     insert (CAtom (0.212, 0.676, 1.281, a_N1)); 
     insert (CAtom (0.195, -0.023, 2.466, a_C6));
     insert (CAtom (0.370, 2.048, 1.265, a_C2)); 
@@ -129,8 +129,8 @@ CResidue::setIdeal ()
       insert (CAtom (102.198, 105.850, 6.595, a_O5p));
   }
   else {
-    gOut (2) << "Oups, setIdeal erased the residue " 
-	     << "but the ideal confo is unknown.  Go get a coffee!" << endl;
+    gOut (2) << "Oups, setIdeal erased the residue " << (const char*)*mType  
+	     << " but the ideal confo is unknown.  Go get a coffee!" << endl;
   }
 
   Align ();

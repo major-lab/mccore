@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
 // Last Modified By : Philippe Thibault
-// Last Modified On : Wed Mar 19 08:28:28 2003
-// Update Count     : 8
+// Last Modified On : Wed Mar 19 16:58:16 2003
+// Update Count     : 9
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -151,7 +151,7 @@ Residue::setIdeal ()
       insert (CAtom (100.658, 104.316, 7.746, a_O2P));
       insert (CAtom (102.198, 105.850, 6.595, a_O5p));
   } else {
-    gOut (2) << "Oups, setIdeal erased the residue " 
+    gOut (2) << "Oups, setIdeal erased the residue " << (const char*)*mType
 	     << "but the ideal confo is unknown.  Go get a coffee!" << endl;
   }
  
