@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 //
 //  This file is part of mccore.
 //  
@@ -56,7 +56,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Patrick Gendron <gendrop@iro.umontreal.ca>
-   * @version $Id: Residue.h,v 1.10 2003-07-09 21:50:12 gendrop Exp $
+   * @version $Id: Residue.h,v 1.11 2003-07-11 21:26:03 gendrop Exp $
    */
   class Residue
   {
@@ -271,23 +271,21 @@ namespace mccore {
      * @param t a homogeneous matrix that will be filled and that must not be null.
      * @return the referential.
      */
-    virtual const HomogeneousTransfo& getReferential (HomogeneousTransfo *t) const; 
+    virtual const HomogeneousTransfo getReferential () const; 
 
     /**
      * Sets the homogeneous matrix representing the local referential.
      * @param m the new referential.
      */
-    void setReferential (const HomogeneousTransfo& m);
+    virtual void setReferential (const HomogeneousTransfo& m);
   
     /**
      * Applies a tfo over each atoms.
      * @param aTransfo the transfo to apply.
      * @return itself.
      */
-    const Residue& transform (const HomogeneousTransfo &aTransfo) {
-      HomogeneousTransfo curr;
-      setReferential(aTransfo * getReferential(&curr));
-      return *this;
+    virtual void transform (const HomogeneousTransfo &aTransfo) {
+      setReferential(aTransfo * getReferential());
     }
 
     /**

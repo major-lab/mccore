@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 // 
 //  This file is part of mccore.
 //  
@@ -52,7 +52,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: ExtendedResidue.h,v 1.2 2003-07-09 21:49:27 gendrop Exp $
+   * @version $Id: ExtendedResidue.h,v 1.3 2003-07-11 21:25:56 gendrop Exp $
    */
   class ExtendedResidue : public virtual Residue
   {
@@ -182,20 +182,20 @@ namespace mccore {
      * @param t a homogeneous matrix that will be filled if non null.
      * @return the referential.
      */
-    virtual const HomogeneousTransfo& getReferential (HomogeneousTransfo *t = 0) const; 
+    virtual const HomogeneousTransfo getReferential () const; 
 
     /**
      * Sets the homogeneous matrix representing the local referential.
      * @param m the new referential.
      */
-    void setReferential (const HomogeneousTransfo& m);
+    virtual void setReferential (const HomogeneousTransfo& m);
     
     /**
      * Applies a tfo over each atoms.  Only the internal transfo is modified.
      * @param aTransfo the transfo to apply.
      * @return itself.
      */
-    const ExtendedResidue& transform (const HomogeneousTransfo &aTransfo);
+    virtual void transform (const HomogeneousTransfo &aTransfo);
     
     /**
      * Inserts an atom in the residue.  It crushes the existing atom if it

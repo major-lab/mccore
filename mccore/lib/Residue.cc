@@ -345,12 +345,11 @@ namespace mccore {
   // METHODS -------------------------------------------------------------------
 
 
-  const HomogeneousTransfo&
-  Residue::getReferential (HomogeneousTransfo *t) const
+  const HomogeneousTransfo
+  Residue::getReferential () const
   {
     Vector3D *pivot[3];
-
-    assert (t!=0);
+    HomogeneousTransfo t;
 
     /* Set the pivots */
     if ((get (AtomType::aN9) != 0 || get (AtomType::aN1) != 0) 
@@ -380,9 +379,9 @@ namespace mccore {
     }
     
     if (pivot[0] != 0 && pivot[1] != 0 && pivot[2] != 0) {
-      *t = HomogeneousTransfo::align (*pivot[0], *pivot[1], *pivot[2]);
+      t = HomogeneousTransfo::align (*pivot[0], *pivot[1], *pivot[2]);
     }
-    return *t; 
+    return t; 
   }
 
 
@@ -516,7 +515,7 @@ namespace mccore {
     }
 
     if (!type->isNucleicAcid () && !type->isAminoAcid ()) {
-      gOut (2) << "Validate called on a non valid residue" << endl;
+      gOut (3) << "Validate called on a non valid residue" << endl;
       return;
     }
     
@@ -1296,8 +1295,7 @@ namespace mccore {
       AtomSet *as;
       float result;
       
-      HomogeneousTransfo t;
-      tmpRes->setReferential (tmpRef->getReferential (&t));
+      tmpRes->setReferential (tmpRef->getReferential ());
 
       // This supposes that the atoms are in the same order in the two 
       // residues, which is the case since we iterate on sorted residues 
@@ -1348,10 +1346,10 @@ namespace mccore {
   Residue::output (ostream &os) const 
   {
     os << resId << type;
-//     AtomMap::const_iterator cit;
-//     for (cit=atomIndex.begin (); cit!=atomIndex.end (); ++cit) {
-//       os << endl << *(atomGlobal[cit->second]);
-//     }
+    AtomMap::const_iterator cit;
+    for (cit=atomIndex.begin (); cit!=atomIndex.end (); ++cit) {
+      os << endl << *(atomGlobal[cit->second]);
+    }
     return os;
   }
   

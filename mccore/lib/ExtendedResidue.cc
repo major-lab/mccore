@@ -161,8 +161,8 @@ namespace mccore {
   // METHODS -------------------------------------------------------------------
 
 
-  const HomogeneousTransfo&
-  ExtendedResidue::getReferential (HomogeneousTransfo *t) const
+  const HomogeneousTransfo
+  ExtendedResidue::getReferential () const
   {
     return tfo; 
   }
@@ -176,11 +176,10 @@ namespace mccore {
   }
   
 
-  const ExtendedResidue& 
+  void
   ExtendedResidue::transform (const HomogeneousTransfo &aTransfo) 
   {
     setReferential (aTransfo * getReferential());
-    return *this;
   }
 
 
@@ -411,12 +410,12 @@ namespace mccore {
   {
     place ();
     os << resId << type;
-//     os << endl << tfo;
-//     AtomMap::const_iterator cit;
-//     os << "\n\tLocal coordinates\t\tGlobal coordinates";
-//     for (cit=atomIndex.begin (); cit!=atomIndex.end (); ++cit) {
-//       os << "\n\t" << *(atomLocal[cit->second]) << "\t" << *(atomGlobal[cit->second]) << flush;
-//     }
+    os << endl << tfo;
+    AtomMap::const_iterator cit;
+    os << "\n\tLocal coordinates\t\tGlobal coordinates";
+    for (cit=atomIndex.begin (); cit!=atomIndex.end (); ++cit) {
+      os << "\n\t" << *(atomLocal[cit->second]) << "\t" << *(atomGlobal[cit->second]) << flush;
+    }
     return os;
   }
   
