@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Wed Jan 30 19:57:48 2002
-// $Revision: 1.9 $
-// $Id: sockstream.cc,v 1.9 2005-01-03 23:07:07 larosem Exp $
+// $Revision: 1.10 $
+// $Id: sockstream.cc,v 1.10 2005-01-26 15:39:28 thibaup Exp $
 //
 // This file is part of mccore.
 //
@@ -131,8 +131,8 @@ namespace mccore
     
     if (hp == NULL)
       {
-	SocketException exc ("unknown host: ");
-	exc << host;
+	SocketException exc ("failed to identify host ");
+	exc << host << ", " << hstrerror (h_errno);
 	throw exc;
       }
     
