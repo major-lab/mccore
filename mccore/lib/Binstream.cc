@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@orage.IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:18:52 EDT
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:09:26 2001
-// Update Count     : 10
+// Last Modified On : Wed Sep 26 18:40:50 2001
+// Update Count     : 11
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -78,7 +78,7 @@ iBinstream::operator>> (char **str)
 iBinstream&
 iBinstream::operator>> (short int &n)
 {
-  int ns;
+  short int ns;
 
   this->read ((char*) &ns, sizeof (short int));
   n = ntohs (ns);
