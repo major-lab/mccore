@@ -4,10 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>.
 // Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:35:06 2001
-// Update Count     : 6
-// Status           : Ok.
+// $Revision: 1.4.8.2 $
+// $Id: fPdbstream.h,v 1.4.8.2 2003-11-26 17:00:49 larosem Exp $
 //
 //  This file is part of mccore.
 //  

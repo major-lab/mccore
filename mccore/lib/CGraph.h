@@ -4,10 +4,8 @@
 //                           Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:33:55 2001
-// Update Count     : 4
-// Status           : Ok.
+// $Revision: 1.4.14.2 $
+// $Id: CGraph.h,v 1.4.14.2 2003-11-26 16:59:56 larosem Exp $
 // 
 //  This file is part of mccore.
 //  
@@ -41,6 +39,8 @@ typedef int edgeid;
 
 #define badid -1
 
+using namespace std;
+
 
 
 /**
@@ -51,7 +51,7 @@ typedef int edgeid;
  * @author Patrick Gendron <gendrop@iro.umontreal.ca>
  */
 template< class Node >
-class CPath : public std::vector< Node >
+class CPath : public vector< Node >
 {
   int mValue;
 
@@ -59,9 +59,9 @@ public:
 
   // LIFECYCLE ------------------------------------------------------------
 
-  CPath () : std::vector< Node > (), mValue (0) { }
+  CPath () : vector< Node > (), mValue (0) { }
   CPath (const CPath &other)
-    : std::vector< Node > (other), mValue (other.mValue) { }
+    : vector< Node > (other), mValue (other.mValue) { }
   ~CPath () { }
 
   // OPERATORS ------------------------------------------------------------
@@ -70,7 +70,7 @@ public:
   {
     if (this != &right)
       {
-	std::vector< Node >::operator= (right);
+	vector< Node >::operator= (right);
 	mValue = right.mValue;
       }
     return *this;
@@ -95,8 +95,8 @@ public:
 
 
 template< class Node >
-std::ostream&
-operator<< (std::ostream &out, const CPath< Node > &cpath) 
+ostream&
+operator<< (ostream &out, const CPath< Node > &cpath) 
 {
   CPath< Node >::const_iterator cit;
   
@@ -121,22 +121,22 @@ class CGraph
 {
 public:
 
-  typedef std::map< nodeid, edgeid, less< nodeid > > adjlist;    // Adjacency List
-  typedef std::map< nodeid, adjlist ,less< nodeid > > adjgraph;  // Adjacency Graph  
-  typedef std::vector< Node >::size_type size_type;
+  typedef map< nodeid, edgeid, less< nodeid > > adjlist;    // Adjacency List
+  typedef map< nodeid, adjlist ,less< nodeid > > adjgraph;  // Adjacency Graph  
+  typedef vector< Node >::size_type size_type;
 protected:
 
   struct __degree { short deg, in, out; };
 
-  std::vector< Node > mNode;
-  std::vector< bool > mNodeMark;
-  std::vector< int >  mNodeValue;
-  std::vector< __degree > mDegrees;
+  vector< Node > mNode;
+  vector< bool > mNodeMark;
+  vector< int >  mNodeValue;
+  vector< __degree > mDegrees;
 
-  std::vector< Edge > mEdge;
-  std::vector< std::pair< nodeid, nodeid > > mEdgeNodes;
-  std::vector< bool > mEdgeMark;
-  std::vector< int >  mEdgeValue;
+  vector< Edge > mEdge;
+  vector< pair< nodeid, nodeid > > mEdgeNodes;
+  vector< bool > mEdgeMark;
+  vector< int >  mEdgeValue;
   
   adjgraph mAdj;
 
@@ -183,8 +183,8 @@ public:
   
   // Node related functions -----------------------------------------------
 
-  const std::vector< Node >& getNodes () const { return mNode; }
-  std::vector< Node >& getNodes () { return mNode; }
+  const vector< Node >& getNodes () const { return mNode; }
+  vector< Node >& getNodes () { return mNode; }
 
   const Node& getNode (nodeid index) const;
   Node& getNode (nodeid index);
@@ -204,9 +204,9 @@ public:
 
   // Edges related functions -----------------------------------------------
 
-  const std::vector< Edge >& getEdges () const { return mEdge; }
-  std::vector< Edge >& getEdges () { return mEdge; }
-  const std::vector< std::pair< nodeid, nodeid > >& getEdgeNodes () const 
+  const vector< Edge >& getEdges () const { return mEdge; }
+  vector< Edge >& getEdges () { return mEdge; }
+  const vector< pair< nodeid, nodeid > >& getEdgeNodes () const 
   { return mEdgeNodes; }
 
   const Edge& getEdge (edgeid index) const;
@@ -214,7 +214,7 @@ public:
   const Edge& getEdge (nodeid a, nodeid b) const;
   Edge& getEdge (nodeid a, nodeid b); // a=origin, b=destination
 
-  const std::pair< nodeid, nodeid >& getNodes (const Edge &e) const;
+  const pair< nodeid, nodeid >& getNodes (const Edge &e) const;
 
   int getEdgeValue (nodeid a, nodeid b) const;
   int getEdgeValue (edgeid index) const;
@@ -284,13 +284,13 @@ public:
     return addEdgeById (ida, idb, e, oriented, v);
   }
 
-  std::vector< CPath< nodeid > > shortest_path (nodeid root) const
+  vector< CPath< nodeid > > shortest_path (nodeid root) const
   {
     nodeid i, j;
     int n = size ();
-    std::vector< CPath< nodeid > > P (n);    // path description
-    std::vector< nodeid > C;                  // node set
-    std::vector< nodeid >::iterator k;
+    vector< CPath< nodeid > > P (n);    // path description
+    vector< nodeid > C;                  // node set
+    vector< nodeid >::iterator k;
     
     // Initialize ---
     for (i = 0; i < n; ++i)
@@ -314,7 +314,7 @@ public:
     // Execute ---
     for (i = 0; i < n - 2; ++i)
       {
-	std::vector< nodeid >::iterator min_iter = C.begin ();
+	vector< nodeid >::iterator min_iter = C.begin ();
 	int min_value = P[*min_iter].getValue (); // in C
 	int min_index;
 	
@@ -352,13 +352,13 @@ public:
   }
   
 
-  std::vector< CPath< nodeid > > minimum_mean_path () const
+  vector< CPath< nodeid > > minimum_mean_path () const
   {
     int i, j;
-    std::vector< CPath< nodeid > > tree;
-    std::vector< CPath< nodeid > > minTree;
-    std::vector< CPath< nodeid > > finalTree;
-    std::vector< CPath< nodeid > >::iterator k;
+    vector< CPath< nodeid > > tree;
+    vector< CPath< nodeid > > minTree;
+    vector< CPath< nodeid > > finalTree;
+    vector< CPath< nodeid > >::iterator k;
     int sum;
     int minValue = MAXINT;
       
@@ -388,7 +388,7 @@ public:
 
       sort (minTree.begin (), minTree.end ());
       
-      std::vector< bool > placed (size (), false);
+      vector< bool > placed (size (), false);
       
       for (k = minTree.begin (); k != minTree.end (); ++k)
 	{
@@ -419,7 +419,7 @@ public:
   
   // I/O  -----------------------------------------------------------------
 
-  friend std::ostream& operator<< (std::ostream &out, const CGraph< Node, Edge > &gr)
+  friend ostream& operator<< (ostream &out, const CGraph< Node, Edge > &gr)
   {
     int i, j;
     edgeid id;
@@ -429,14 +429,14 @@ public:
     for (i = 0; i < gr.mNode.size (); ++i)
       out << "Node[" << i << "]: " << gr.mNode[i]
 	  << " (value: " << gr.mNodeValue[i] << ") "
-	  << (gr.mNodeMark[i]?"mark":"") << std::endl;
-    out << std::endl;
+	  << (gr.mNodeMark[i]?"mark":"") << endl;
+    out << endl;
     for (j = 0; j < gr.mEdge.size (); ++j)
       out << "Edge[" << j << "]: " << gr.mEdge[j]
 	  << " (value: " << gr.mEdgeValue[j] << ") "
-	  << (gr.mEdgeMark[j]?"mark":"") << std::endl;
-    out << std::endl;
-    out << "Matrix:" << std::endl;
+	  << (gr.mEdgeMark[j]?"mark":"") << endl;
+    out << endl;
+    out << "Matrix:" << endl;
     for(i = 0; i < gr.mNode.size (); ++i)
       {
 	for(j = 0; j < gr.mNode.size (); ++j)
@@ -461,7 +461,7 @@ CGraph< Node, Edge >::getNode (nodeid index) const
 { 
   if (index < 0 || index > (int)mNode.size ())
     {
-      cerr << "Bad Index in getNode (id): " << index << std::endl;
+      cerr << "Bad Index in getNode (id): " << index << endl;
       throw BadIndex ();
     }
   return mNode[index];
@@ -475,7 +475,7 @@ CGraph< Node, Edge >::getNode (nodeid index)
 {
   if (index < 0 || index > (int)mNode.size ())
     {
-    cerr << "Bad Index in getNode (id): " << index << std::endl;
+    cerr << "Bad Index in getNode (id): " << index << endl;
     throw BadIndex ();
   }
   return mNode[index];
@@ -489,7 +489,7 @@ CGraph< Node, Edge >::getNodeValue (nodeid index) const
 {
   if (index < 0 || index > (int)mNodeValue.size ())
     {
-      cerr << "Bad Index in getNodeValue (id): " << index << std::endl;
+      cerr << "Bad Index in getNodeValue (id): " << index << endl;
       throw BadIndex ();
     }
   return mNodeValue[index];
@@ -503,7 +503,7 @@ CGraph< Node, Edge >::setNodeValue (nodeid index, int v)
 {
   if (index < 0 || index > (int)mNode.size ())
     {
-      cerr << "Bad Index in setNodeValue (id): " << index << std::endl;
+      cerr << "Bad Index in setNodeValue (id): " << index << endl;
       throw BadIndex ();
     }
   mNodeValue[index] = v;
@@ -515,7 +515,7 @@ template< class Node, class Edge >
 nodeid 
 CGraph< Node, Edge >::getNodeIndex (const Node &n) const
 {
-  std::vector< Node >::const_iterator i = find (mNode.begin (), mNode.end (), n);
+  vector< Node >::const_iterator i = find (mNode.begin (), mNode.end (), n);
   if (i == mNode.end ())
     return badid;
   return i - mNode.begin ();
@@ -529,7 +529,7 @@ CGraph< Node, Edge >::getEdge (edgeid index) const
 {
   if (index < 0 || index > (int)mEdge.size ())
     {
-      cerr << "Bad Index in getEdge (b): " << index << std::endl;
+      cerr << "Bad Index in getEdge (b): " << index << endl;
       throw BadIndex ();
     }
   return mEdge[index];
@@ -543,7 +543,7 @@ CGraph< Node, Edge >::getEdge (edgeid index)
 {
   if (index < 0 || index > (int)mEdge.size ())
     {
-      cerr << "Bad Index in getEdge (b): " << index << std::endl;
+      cerr << "Bad Index in getEdge (b): " << index << endl;
       throw BadIndex ();
     }
   return mEdge[index];
@@ -586,10 +586,10 @@ CGraph< Node, Edge >::getEdge (nodeid a, nodeid b)
 
 
 template< class Node, class Edge >
-const std::pair< nodeid, nodeid >&
+const pair< nodeid, nodeid >&
 CGraph< Node, Edge >::getNodes (const Edge &e) const
 {
-  std::vector< Edge >::const_iterator i = find (mEdge.begin (), mEdge.end (), e);
+  vector< Edge >::const_iterator i = find (mEdge.begin (), mEdge.end (), e);
   if (i == mEdge.end ())
     return make_pair (badid, badid);
   return mEdgeNodes[i - mEdge.begin ()];
@@ -620,7 +620,7 @@ CGraph< Node, Edge >::getEdgeValue (edgeid index) const
 {
   if (index < 0 || index > (int)mEdge.size ())
     {
-      cerr << "Bad Index in getEdgeValue (index): " << index << std::endl;
+      cerr << "Bad Index in getEdgeValue (index): " << index << endl;
       throw BadIndex ();
     }
   return mEdgeValue[index]; 
@@ -651,7 +651,7 @@ CGraph< Node, Edge >::setEdgeValue (edgeid index, int v)
 {
   if (index < 0 || index > (int)mEdge.size ())
     {
-      cerr << "Bad Index in setEdgeValue (b): " << index << std::endl;
+      cerr << "Bad Index in setEdgeValue (b): " << index << endl;
       throw BadIndex ();
     }
   mEdgeValue[index] = v;
@@ -663,7 +663,7 @@ template< class Node, class Edge >
 edgeid
 CGraph< Node, Edge >::getEdgeIndex (const Edge &e) const
 {
-  std::vector< Edge >::const_iterator i = find (mEdge.begin (), mEdge.end (), e);
+  vector< Edge >::const_iterator i = find (mEdge.begin (), mEdge.end (), e);
   if (i == mEdge.end ())
     return badid;
   return i - mEdge.begin ();

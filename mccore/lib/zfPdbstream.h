@@ -4,26 +4,24 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : ven 23 jui 1999 13:54:45 EDT
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:10:42 2001
-// Update Count     : 6
-// Status           : Ok.
+// $Revision: 1.6.8.2 $
+// $Id: zfPdbstream.h,v 1.6.8.2 2003-11-26 17:01:12 larosem Exp $
 //
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifndef _zfPdbstream_h_
@@ -34,6 +32,8 @@
 #include "fstreambase.h"
 #include "zfstream.h"
 #include "Pdbstream.h"
+
+using namespace std;
 
 
 
@@ -64,7 +64,7 @@ public:
    * @param name the file name.
    * @param mode the ios mode (default = ios::in).
    */
-  izfPdbstream (const char *name, int mode = std::ios::in)
+  izfPdbstream (const char *name, int mode = ios::in)
     : iPdbstream (zfstreambase::rdbuf ()), 
       zfstreambase (name, mode) { }
 
@@ -81,7 +81,7 @@ public:
    * @param name the file name.
    * @param mode the ios mode (default = ios::in).
    */
-  void open (const char *name, int mode = std::ios::in)
+  void open (const char *name, int mode = ios::in)
   {
     zfstreambase::open (name, mode);
     iPdbstream::open ();
@@ -127,7 +127,7 @@ public:
    * @param mode the ios mode (default = ios::out).
    * @param level the compression level (default = Z_BEST_SPEED).
    */
-  ozfPdbstream (const char *name, int mode = std::ios::out,
+  ozfPdbstream (const char *name, int mode = ios::out,
 		int level = Z_BEST_SPEED)
     : oPdbstream (zfstreambase::rdbuf()),
       zfstreambase (name, mode, level) { }
@@ -145,7 +145,7 @@ public:
    * @param mode the ios mode (default = ios::out).
    * @param level the compression level (default = Z_BEST_SPEED).
    */
-  void open (const char *name, int mode = std::ios::out,
+  void open (const char *name, int mode = ios::out,
 	     int level = Z_BEST_SPEED)
   {
     zfstreambase::open (name, mode, level);

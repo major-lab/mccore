@@ -4,10 +4,8 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Wed Sep  5 16:32:07 2001
-// Update Count     : 6
-// Status           : Ok.
+// $Revision: 1.7.8.2 $
+// $Id: ResidueType.h,v 1.7.8.2 2003-11-26 17:00:19 larosem Exp $
 // 
 //  This file is part of mccore.
 //  

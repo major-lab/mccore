@@ -4,10 +4,8 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:51 2001
-// Last Modified By : Philippe Thibault
-// Last Modified On : Fri Aug 24 10:01:21 2001
-// Update Count     : 3
-// Status           : Unknown.
+// $Revision: 1.7.10.2 $
+// $Id: ServerSocket.h,v 1.7.10.2 2003-11-26 17:00:31 larosem Exp $
 // 
 //  This file is part of mccore.
 //  
@@ -30,9 +28,9 @@
 #ifndef _ServerSocket_h_
 #define _ServerSocket_h_
 
-#include "sockstream.h"
-
 #define MAX_QUEUE_LEN 0
+
+class Sockstream;
 
 
 

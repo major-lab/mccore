@@ -1,13 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // ResidueFactoryMethod.h
-// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct 12 14:31:19 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Oct 25 11:21:41 2001
-// Update Count     : 2
-// Status           : Unknown.
+// $Revision: 1.1.12.1 $
+// $Id: ResidueFactoryMethod.h,v 1.1.12.1 2003-11-26 17:00:15 larosem Exp $
 // 
 //  This file is part of mccore.
 //  

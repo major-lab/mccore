@@ -4,10 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created on       : jeu 22 jui 1999 18:24:14 EDT
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:10:40 2001
-// Update Count     : 5
-// Status           : Ok.
+// $Revision: 1.7.10.2 $
+// $Id: zfBinstream.h,v 1.7.10.2 2003-11-26 17:01:10 larosem Exp $
 // 
 //  This file is part of mccore.
 //  
@@ -35,6 +33,8 @@
 #include "fstreambase.h"
 #include "zfstream.h"
 #include "Binstream.h"
+
+using namespace std;
 
 
 
@@ -71,7 +71,7 @@ public:
    * @param name the path and file name to open.
    * @param mode the open mode (default ios::in).
    */
-  izfBinstream(const char *name, int mode = std::ios::in)
+  izfBinstream(const char *name, int mode = ios::in)
       : iBinstream (zfstreambase::rdbuf ()), zfstreambase (name, mode) { }
 
   // OPERATORS ------------------------------------------------------------
@@ -85,7 +85,7 @@ public:
    * @param name the path and file name to open.
    * @param mode the open mode (default ios::in).
    */
-  void open (const char *name, int mode=std::ios::in)
+  void open (const char *name, int mode=ios::in)
   {
     zfstreambase::open (name, mode);
     iBinstream::open ();
@@ -136,7 +136,7 @@ public:
    * @param mode the open mode (default ios::out).
    */
   ozfBinstream (const char *name, int level = Z_BEST_SPEED,
-		int mode = std::ios::out)
+		int mode = ios::out)
     : oBinstream (zfstreambase::rdbuf()), zfstreambase (name, mode, level) { }
 
   // OPERATORS ------------------------------------------------------------
@@ -153,7 +153,7 @@ public:
    * @param prot the protection (default 0644).
    */
   void open (const char *name, int level = Z_BEST_SPEED,
-	     int mode = std::ios::out)
+	     int mode = ios::out)
   {
     zfstreambase::open (name, mode, level);
     oBinstream::open ();

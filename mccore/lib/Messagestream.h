@@ -4,10 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Sep  5 17:06:24 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Sep 20 12:45:33 2001
-// Update Count     : 3
-// Status           : Unknown.
+// $Revision: 1.3.10.2 $
+// $Id: Messagestream.h,v 1.3.10.2 2003-11-26 17:00:10 larosem Exp $
 // 
 //  This file is part of mccore.
 //  

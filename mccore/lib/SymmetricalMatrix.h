@@ -1,12 +1,26 @@
 //                              -*- Mode: C++ -*- 
 // SymmetricalMatrix.h
+// Copyright © 2003-03 Laboratoire de Biologie Informatique et Théorique
 // Author           : Philippe Thibault
 // Created On       : Wed Oct 16 09:28:54 2002
-// Last Modified By : Philippe Thibault
-// Last Modified On : Wed Oct 23 08:13:55 2002
-// Update Count     : 2
-// Status           : Ok.
+// $Revision: 1.3.10.2 $
+// $Id: SymmetricalMatrix.h,v 1.3.10.2 2003-11-26 17:00:42 larosem Exp $
 // 
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifndef _SymmetricalMatrix_h_

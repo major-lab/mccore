@@ -37,6 +37,8 @@
 #include "ResidueType.h"
 #include "CAtom.h"
 
+using namespace std;
+
 
 /**
  * @short A class for lone algorithms in the mccore library

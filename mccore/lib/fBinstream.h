@@ -4,26 +4,24 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:20:58 EDT
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:10:29 2001
-// Update count     : 0
-// Status           : Ok.
+// $Revision
+// $Id: fBinstream.h,v 1.5.8.2 2003-11-26 17:00:45 larosem Exp $
 //
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifndef _fBinstream_h_
@@ -34,6 +32,8 @@
 
 #include "fstreambase.h"
 #include "Binstream.h"
+
+using namespace std;
 
 
 /**
@@ -63,7 +63,7 @@ public:
    * @param name the path and file name to open.
    * @param mode the open mode (default ios::in).
    */
-  ifBinstream (const char *name, int mode=std::ios::in)
+  ifBinstream (const char *name, int mode=ios::in)
     : iBinstream (fstreambase::rdbuf ()), fstreambase (name, mode) { }
 
   // OPERATORS ------------------------------------------------------------
@@ -77,7 +77,7 @@ public:
    * @param name the path and file name to open.
    * @param mode the open mode (default ios::in).
    */
-  void open (const char *name, int mode=std::ios::in)
+  void open (const char *name, int mode=ios::in)
     {
       fstreambase::open (name, mode);
       iBinstream::open ();
@@ -120,7 +120,7 @@ public:
    * @param name the path and file name to open.
    * @param mode the open mode (default ios::out).
    */
-  ofBinstream (const char *name, int mode = std::ios::out)
+  ofBinstream (const char *name, int mode = ios::out)
     : oBinstream (fstreambase::rdbuf ()), fstreambase (name, mode) { }
 
   // OPERATORS ------------------------------------------------------------
@@ -134,7 +134,7 @@ public:
    * @param name the path and file name to open.
    * @param mode the open mode (default = ios::out).
    */
-  void open (const char *name, int mode = std::ios::out)
+  void open (const char *name, int mode = ios::out)
   {
     fstreambase::open (name, mode);
     oBinstream::open ();
@@ -178,7 +178,7 @@ public:
    * @param mode the open mode (default ios::in).
    * @param prot the protection (default 0644).
    */
-  fBinstream (const char *name, int mode = std::ios::in)
+  fBinstream (const char *name, int mode = ios::in)
     : Binstream (fstreambase::rdbuf ()), fstreambase(name, mode)  { }
 
   // OPERATORS ------------------------------------------------------------
@@ -193,7 +193,7 @@ public:
    * @param mode the open mode (default ios::in).
    * @param prot the protection (default 0644).
    */
-  void open (const char *name, int mode = std::ios::in)
+  void open (const char *name, int mode = ios::in)
   {
     fstreambase::open (name, mode);
     Binstream::open ();
