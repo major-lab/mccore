@@ -75,7 +75,7 @@ private:
    * The associative container between atom types and atom position in
    * mAtomRef, mAtomResPos.
    */
-  map< t_Atom*, int > mAtomIndex;
+  map< const t_Atom*, int > mAtomIndex;
 
   /**
    * The atom container in local referential.
@@ -477,7 +477,7 @@ public:
    * @param type the atom type.
    * @return the reference to the atom in the local referential.
    */
-  CAtom& operator[] (t_Atom *type) ;
+  CAtom& operator[] (const t_Atom *type) ;
 
   /**
    * Returns a const reference to the atom associated with the type.  The
@@ -485,7 +485,7 @@ public:
    * @param type the atom type.
    * @return the reference to the atom in the local referential.
    */
-  const CAtom& operator[] (t_Atom *type) const;
+  const CAtom& operator[] (const t_Atom *type) const;
 
   /**
    * Gets the const reference to the tranfo.
@@ -546,6 +546,13 @@ public:
    * @return the iterator to the element or end () if it is not found.
    */
   const_iterator find (t_Atom *k) const;
+
+  /**
+   * Check if an element with key k exists.
+   * @param k the atom type key.
+   * @return the presence of an element with key k.
+   */
+  bool exists (const t_Atom *k) const { return find (k) != end (); }
 
   /**
    * Gets the residue id.
