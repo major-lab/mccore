@@ -4,8 +4,8 @@
 // Author           : Patrick Gendron
 // Created On       : Thu May 31 08:17:56 2001
 // Last Modified By : Patrick Gendron
-// Last Modified On : Wed Jun 18 18:25:32 2003
-// $Revision: 1.2 $
+// Last Modified On : Thu Jul 10 12:22:42 2003
+// $Revision: 1.3 $
 // 
 //  This file is part of mccore.
 //  
@@ -96,6 +96,8 @@ namespace mccore {
        */
       PairingPattern ();
 
+    public:
+
       /**
        * Initializes the object for a particular pattern.
        * @param id the MC-Sym pairing id.
@@ -103,8 +105,6 @@ namespace mccore {
        * @param type_b the type of another residue.
        */
       PairingPattern (const PropertyType* id, const ResidueType* type_a, const ResidueType* type_b);
-
-    public:
 
       /**
        * Initializes the object with the other's content.
@@ -131,7 +131,10 @@ namespace mccore {
 
       int size () const { return mSize; }
 
-      static list< PairingPattern* >& patternList () { return patterns; }
+      static list< PairingPattern* >& patternList () { 
+	if (!isInit) { init (); isInit = true; }
+	return patterns; 
+      }
 
       // METHODS --------------------------------------------------------------
 
@@ -140,6 +143,7 @@ namespace mccore {
        * @return the type
        */
       const PropertyType* getName () { return name; }
+
 
       /**
        * Add an H-Bond to the pattern.
@@ -153,7 +157,7 @@ namespace mccore {
       void addBond (char dir, const AtomType *donor, const AtomType *hydro, 
 		    const AtomType *acceptor, const AtomType *lonepair, bool ignore=false);
   
-
+     
       /**
        * Evaluates the possibility of the flow pattern to match the
        * current HBond pairing pattern.  
@@ -162,7 +166,7 @@ namespace mccore {
        */
       const PropertyType* 
       evaluate (const Residue* ra, const Residue *rb, list< HBondFlow > &hbf) const;
-     
+
       /**
        * Write Amber description.
        * @param the output stream.

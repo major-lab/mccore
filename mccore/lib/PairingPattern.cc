@@ -4,8 +4,8 @@
 // Author           : Patrick Gendron
 // Created On       : Thu May 31 08:17:56 2001
 // Last Modified By : Patrick Gendron
-// Last Modified On : Wed Jun 18 18:25:27 2003
-// Update Count     : 34
+// Last Modified On : Thu Jul 10 12:14:52 2003
+// Update Count     : 37
 // Status           : Unknown.
 // 
 
@@ -798,7 +798,6 @@ namespace mccore {
     pat->addBond ('>', AtomType::aN3, AtomType::aH3, AtomType::aO4, AtomType::a1LP4);
     patterns.push_back (pat);
     //# 82 is a 81 ;
-
   };
 
 
