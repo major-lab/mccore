@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Nov  9 17:54:05 2000
-// Update Count     : 4
+// Last Modified On : Tue Nov 14 18:02:10 2000
+// Update Count     : 5
 // Status           : Ok.
 // 
 
@@ -534,8 +534,8 @@ RadToDegree (float r)
 
 
 float 
-rmsd (const vector< residue_iterator > &mgr1,
-      const vector< residue_iterator > &mgr2)
+rmsd (const vector< CResidue::iterator > &mgr1,
+      const vector< CResidue::iterator > &mgr2)
 {
   float rmsd = 0;
   vector< CResidue::iterator >::const_iterator i, j;
@@ -548,8 +548,8 @@ rmsd (const vector< residue_iterator > &mgr1,
 
 
 float 
-rmsd_with_align (const vector< residue_iterator > &x,
-		 const vector< residue_iterator > &y, 
+rmsd_with_align (const vector< CResidue::iterator > &x,
+		 const vector< CResidue::iterator > &y, 
 		 CTransfo *t)
 {
   // Removing translations

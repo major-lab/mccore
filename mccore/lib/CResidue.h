@@ -3,9 +3,9 @@
 // Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Thu Sep 28 16:59:32 2000
-// Last Modified By : Labo Lbit
-// Last Modified On : Fri Nov 10 18:36:05 2000
-// Update Count     : 6
+// Last Modified By : Martin Larose
+// Last Modified On : Tue Nov 14 18:02:08 2000
+// Update Count     : 7
 // Status           : Ok.
 // 
 
@@ -31,336 +31,6 @@ class oBinstream;
 
 
 /**
- * @short Iterator class over atoms in residues.
- *
- * @author Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
- */
-class residue_iterator
-{
-public:
-  typedef random_access_iterator_tag iterator_category;
-  typedef CAtom value_type;
-  typedef ptrdiff_t difference_type;
-  typedef CAtom* pointer;
-  typedef CAtom& reference;
-  typedef size_t size_type;
-private:
-  
-  /**
-   * The pointer over the residue.
-   */
-  CResidue *mRes;
-  
-  /**
-   * The index of the atom global referencial container.
-   */
-  size_type mPos;
-  
-  /**
-   * The unary function filter.
-   */
-  AtomSet *mSet;
-  
-  /**
-   * The unary function option filter.
-   */
-  AtomSet *mOption;
-  
-public:
-  
-  // LIFECYCLE ------------------------------------------------------------
-  
-  /**
-   * Initializes the iterator.
-   */
-  residue_iterator ();
-  
-  /**
-   * Initializes the iterator with a residue and position.
-   * @param nRes the residue.
-   * @param nPos the position over the atom global referential container.
-   * @param nSet the atom set unary filter function.
-   * @param nOption the atom set option unary filter function.
-   */
-  residue_iterator (CResidue *nRes, int nPos, AtomSet *nSet = 0,
-		    AtomSet *nOption = 0);
-  
-  /**
-   * Initializes the iterator with the right's contents.
-   * @param right the iterator to copy.
-   */
-  residue_iterator (const residue_iterator &right);
-  
-  /**
-   * Destructs the object.
-   */
-  ~residue_iterator () { delete mSet; delete mOption; }
-  
-  // OPERATORS ------------------------------------------------------------
-  
-  /**
-   * Assigns the iterator with the right's content.
-   * @param right the object to copy.
-   * @return itself.
-   */
-  residue_iterator& operator= (const residue_iterator &right);
-  
-  /**
-   * Advances and assigns the iterator of k positions.
-   * @param k the number of positions to advance.
-   * @return itself.
-   */
-  residue_iterator& operator+= (difference_type k);
-  
-  /**
-   * Gets the atom pointed by the current mPos index.  Places the atom if
-   * needed.
-   * @return the atom pointer over local referential atom container.
-   */
-  pointer operator-> () const;
-  
-  /**
-   * Dereferences the iterator.  Places the atom if needed.
-   * @return the atom reference over local referential atom container.
-   */
-  reference operator* () const;
-  
-  /**
-   * Pre-advances the iterator to the next atom filtered by the unary
-   * functions.
-   * @return the iterator over the next atom.
-   */
-  residue_iterator& operator++ ();
-  
-  /**
-   * Post-advances the iterator to the next atom filtered by the unary
-   * functions.
-   * @param ign ignored parameter.
-   * @return the iterator over the current atom.
-   */
-  residue_iterator operator++ (int ign);
-  
-  /**
-   * Adds the iterator to a distance type k.  The result may points to the
-   * end of the residue.
-   * @param k the distance type.
-   * @return a new iterator pointing to itself + k.
-   */
-  residue_iterator operator+ (difference_type k) const;
-  
-  /**
-   * Calculates the distance between 2 iterators.  Self and i must be
-   * iterators from the same container.
-   * @param i the iterator.
-   * @return the difference type between 2 iterators.
-   */
-  difference_type operator- (const residue_iterator &i) const;
-  
-  /**
-   * Tests whether the iterators are equal.
-   * @param right the right iterator.
-   * @return the truth value.
-   */
-  bool operator== (const residue_iterator &right) const
-  { return mPos == right.mPos; }
-  
-  /**
-   * Tests whether the iterators are different.
-   * @param right the right iterator.
-   * @return the truth value.
-   */
-  bool operator!= (const residue_iterator &right) const
-  { return !(operator== (right)); }
-  
-  /**
-   * Tests whether the current iterator is less than the right.
-   * @param right the right iterator.
-   * @return the truth value.
-   */
-  bool operator< (const residue_iterator &right) const
-  { return mPos < right.mPos; }
-  
-  // ACCESS ---------------------------------------------------------------
-  
-  /**
-   * Casts the iterator to a residue.
-   * @return the residue pointed by the iterator.
-   */
-  operator CResidue* () { return mRes; }
-  
-  // METHODS --------------------------------------------------------------
-  
-  // I/O  -----------------------------------------------------------------
-};
-
-
-
-/**
- * @short Const iterator class over atoms in residues.
- *
- * @author Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
- */
-class const_residue_iterator
-{
-public:
-  typedef random_access_iterator_tag iterator_category;
-  typedef const CAtom value_type;
-  typedef ptrdiff_t difference_type;
-  typedef const CAtom* pointer;
-  typedef const CAtom& reference;
-  typedef size_t size_type;
-private:
-  /**
-   * The pointer over the residue.
-   */
-  const CResidue *mRes;
-  
-  /**
-   * The index of the atom global referencial container.
-   */
-  size_type mPos;
-  
-  /**
-   * The unary function filter.
-   */
-  const AtomSet *mSet;
-  
-  /**
-   * The unary function option filter.
-   */
-  const AtomSet *mOption;
-  
-public:
-  
-  // LIFECYCLE ------------------------------------------------------------
-  
-  /**
-   * Initializes the iterator.
-   */
-  const_residue_iterator ();
-  
-  /**
-   * Initializes the iterator with a residue and position.
-   * @param nRes the residue.
-   * @param nPos the position over the atom global referential container.
-   * @param nSet the atom set unary filter function.
-   * @param nOption the atom set option unary filter function.
-   */
-  const_residue_iterator (const CResidue *nRes, int nPos,
-			  const AtomSet *nSet = 0,
-			  const AtomSet *nOption = 0);
-  
-  /**
-   * Initializes the const_iterator with the right's contents.
-   * @param right the const_iterator to copy.
-   */
-  const_residue_iterator (const const_residue_iterator &right);
-  
-  /**
-   * Destructs the object.
-   */
-  ~const_residue_iterator () { delete mSet; delete mOption; }
-     
-  // OPERATORS ------------------------------------------------------------
-  
-  /**
-   * Assigns the const_iterator with the right's content.
-   * @param right the object to copy.
-   * @return itself.
-   */
-  const_residue_iterator& operator= (const const_residue_iterator &right);
-  
-  /**
-   * Advances and assigns the const_iterator of k positions.
-   * @param k the number of positions to advance.
-   * @return itself.
-   */
-  const_residue_iterator& operator+= (difference_type k);
-  
-  /**
-   * Gets the atom pointed by the current mPos index.  Places the atom if
-   * needed.
-   * @return the atom pointer over local referential atom container.
-   */
-  pointer operator-> () const;
-
-  /**
-   * Dereferences the iterator.  Places the atom if needed.
-   * @return the atom reference over local referential atom container.
-   */
-  reference operator* () const;
-  
-  /**
-   * Pre-advances the iterator to the next atom filtered by the unary
-   * functions.
-   * @return the iterator over the next atom.
-   */
-  const_residue_iterator& operator++ ();
-  
-  /**
-   * Post-advances the iterator to the next atom filtered by the unary
-   * functions.
-   * @param ign ignored parameter.
-   * @return the iterator over the current atom.
-   */
-  const_residue_iterator operator++ (int ign);
-  
-  /**
-   * Adds the const_iterator to a distance type k.  The result may points
-   * to the end of the residue.
-   * @param k the distance type.
-   * @return a new iterator pointing to itself + k.
-   */
-  const_residue_iterator operator+ (difference_type k) const;
-  
-  /**
-   * Calculates the distance between 2 const_iterators.  Self and i must
-   * be const_iterators from the same container.
-   * @param i the const_iterator.
-   * @return the difference type between 2 const_iterators.
-   */
-  difference_type operator- (const const_residue_iterator &i) const;
-  
-  /**
-   * Tests whether the iterators are equal.
-   * @param right the right iterator.
-   * @return the truth value.
-   */
-  bool operator== (const const_residue_iterator &right) const
-  { return mPos == right.mPos; }
-  
-  /**
-   * Tests whether the iterators are different.
-   * @param right the right iterator.
-   * @return the truth value.
-   */
-  bool operator!= (const const_residue_iterator &right) const
-  { return !(operator== (right)); }
-  
-  /**
-   * Tests whether the current iterator is less than the right.
-   * @param right the right iterator.
-   * @return the truth value.
-   */
-  bool operator< (const const_residue_iterator &right) const
-  { return mPos < right.mPos; }
-  
-  // ACCESS ---------------------------------------------------------------
-  
-  /**
-   * Casts the iterator to a residue.
-   * @return the residue pointed by the iterator.
-   */
-  operator const CResidue* () const { return mRes; }
-  
-  // METHODS --------------------------------------------------------------
-  
-  // I/O  -----------------------------------------------------------------
-};
-
-
-
-/**
  * @short Residue implementation.
  *
  * The lazy residues contains an unsorted array of atoms (CAtoms).  The
@@ -378,8 +48,6 @@ class CResidue : public CResId
 {
 public:
   typedef vector< CAtom >::size_type size_type;
-  typedef residue_iterator iterator;
-  typedef const_residue_iterator const_iterator;
 private:
   
   /**
@@ -432,9 +100,336 @@ public:
    */
   static int count;
 
+  /**
+   * @short Iterator class over atoms in residues.
+   *
+   * @author Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
+   */
+  class residue_iterator
+  {
+  public:
+    typedef random_access_iterator_tag iterator_category;
+    typedef CAtom value_type;
+    typedef ptrdiff_t difference_type;
+    typedef CAtom* pointer;
+    typedef CAtom& reference;
+    typedef size_t size_type;
+  private:
+    
+    /**
+     * The pointer over the residue.
+     */
+    CResidue *mRes;
+    
+    /**
+     * The index of the atom global referencial container.
+     */
+    size_type mPos;
+    
+    /**
+     * The unary function filter.
+     */
+    AtomSet *mSet;
+    
+    /**
+     * The unary function option filter.
+     */
+    AtomSet *mOption;
+    
+  public:
+    
+    // LIFECYCLE ------------------------------------------------------------
+    
+    /**
+     * Initializes the iterator.
+     */
+    residue_iterator ();
+    
+    /**
+     * Initializes the iterator with a residue and position.
+     * @param nRes the residue.
+     * @param nPos the position over the atom global referential container.
+     * @param nSet the atom set unary filter function.
+     * @param nOption the atom set option unary filter function.
+     */
+    residue_iterator (CResidue *nRes, int nPos, AtomSet *nSet = 0,
+		      AtomSet *nOption = 0);
+    
+    /**
+     * Initializes the iterator with the right's contents.
+     * @param right the iterator to copy.
+     */
+    residue_iterator (const residue_iterator &right);
+    
+    /**
+     * Destructs the object.
+     */
+    ~residue_iterator () { delete mSet; delete mOption; }
+    
+    // OPERATORS ------------------------------------------------------------
+    
+    /**
+     * Assigns the iterator with the right's content.
+     * @param right the object to copy.
+     * @return itself.
+     */
+    residue_iterator& operator= (const residue_iterator &right);
+    
+    /**
+     * Advances and assigns the iterator of k positions.
+     * @param k the number of positions to advance.
+     * @return itself.
+     */
+    residue_iterator& operator+= (difference_type k);
+    
+    /**
+     * Gets the atom pointed by the current mPos index.  Places the atom if
+     * needed.
+     * @return the atom pointer over local referential atom container.
+     */
+    pointer operator-> () const { return &(mRes->Place (mPos)); }
+  
+    /**
+     * Dereferences the iterator.  Places the atom if needed.
+     * @return the atom reference over local referential atom container.
+     */
+    reference operator* () const { return mRes->Place (mPos); }
+  
+    /**
+     * Pre-advances the iterator to the next atom filtered by the unary
+     * functions.
+     * @return the iterator over the next atom.
+     */
+    residue_iterator& operator++ ();
+    
+    /**
+     * Post-advances the iterator to the next atom filtered by the unary
+     * functions.
+     * @param ign ignored parameter.
+     * @return the iterator over the current atom.
+     */
+    residue_iterator operator++ (int ign);
+    
+    /**
+     * Adds the iterator to a distance type k.  The result may points to the
+     * end of the residue.
+     * @param k the distance type.
+     * @return a new iterator pointing to itself + k.
+     */
+    residue_iterator operator+ (difference_type k) const;
+    
+    /**
+     * Calculates the distance between 2 iterators.  Self and i must be
+     * iterators from the same container.
+     * @param i the iterator.
+     * @return the difference type between 2 iterators.
+     */
+    difference_type operator- (const residue_iterator &i) const;
+    
+    /**
+     * Tests whether the iterators are equal.
+     * @param right the right iterator.
+     * @return the truth value.
+     */
+    bool operator== (const residue_iterator &right) const
+    { return mPos == right.mPos; }
+    
+    /**
+     * Tests whether the iterators are different.
+     * @param right the right iterator.
+     * @return the truth value.
+     */
+    bool operator!= (const residue_iterator &right) const
+    { return !(operator== (right)); }
+    
+    /**
+     * Tests whether the current iterator is less than the right.
+     * @param right the right iterator.
+     * @return the truth value.
+     */
+    bool operator< (const residue_iterator &right) const
+    { return mPos < right.mPos; }
+    
+    // ACCESS ---------------------------------------------------------------
+    
+    /**
+     * Casts the iterator to a residue.
+     * @return the residue pointed by the iterator.
+     */
+    operator CResidue* () { return mRes; }
+    
+    // METHODS --------------------------------------------------------------
+    
+    // I/O  -----------------------------------------------------------------
+  };
+  
+  /**
+   * @short Const iterator class over atoms in residues.
+   *
+   * @author Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
+   */
+  class const_residue_iterator
+  {
+  public:
+    typedef random_access_iterator_tag iterator_category;
+    typedef const CAtom value_type;
+    typedef ptrdiff_t difference_type;
+    typedef const CAtom* pointer;
+    typedef const CAtom& reference;
+    typedef size_t size_type;
+  private:
+    /**
+     * The pointer over the residue.
+     */
+    const CResidue *mRes;
+    
+    /**
+     * The index of the atom global referencial container.
+     */
+    size_type mPos;
+    
+    /**
+     * The unary function filter.
+     */
+    const AtomSet *mSet;
+    
+    /**
+     * The unary function option filter.
+     */
+    const AtomSet *mOption;
+    
+  public:
+    
+    // LIFECYCLE ------------------------------------------------------------
+    
+    /**
+     * Initializes the iterator.
+     */
+    const_residue_iterator ();
+    
+    /**
+     * Initializes the iterator with a residue and position.
+     * @param nRes the residue.
+     * @param nPos the position over the atom global referential container.
+     * @param nSet the atom set unary filter function.
+     * @param nOption the atom set option unary filter function.
+     */
+    const_residue_iterator (const CResidue *nRes, int nPos,
+			    const AtomSet *nSet = 0,
+			    const AtomSet *nOption = 0);
+    
+    /**
+     * Initializes the const_iterator with the right's contents.
+     * @param right the const_iterator to copy.
+     */
+    const_residue_iterator (const const_residue_iterator &right);
+    
+    /**
+     * Destructs the object.
+     */
+    ~const_residue_iterator () { delete mSet; delete mOption; }
+    
+    // OPERATORS ------------------------------------------------------------
+    
+    /**
+     * Assigns the const_iterator with the right's content.
+     * @param right the object to copy.
+     * @return itself.
+     */
+    const_residue_iterator& operator= (const const_residue_iterator &right);
+    
+    /**
+     * Advances and assigns the const_iterator of k positions.
+     * @param k the number of positions to advance.
+     * @return itself.
+     */
+    const_residue_iterator& operator+= (difference_type k);
+    
+    /**
+     * Gets the atom pointed by the current mPos index.  Places the atom if
+     * needed.
+     * @return the atom pointer over local referential atom container.
+     */
+    pointer operator-> () const { return &(mRes->Place (mPos)); }
+    
+    /**
+     * Dereferences the iterator.  Places the atom if needed.
+     * @return the atom reference over local referential atom container.
+     */
+    reference operator* () const { return mRes->Place (mPos); }
+    
+    /**
+     * Pre-advances the iterator to the next atom filtered by the unary
+     * functions.
+     * @return the iterator over the next atom.
+     */
+    const_residue_iterator& operator++ ();
+    
+    /**
+     * Post-advances the iterator to the next atom filtered by the unary
+     * functions.
+     * @param ign ignored parameter.
+     * @return the iterator over the current atom.
+     */
+    const_residue_iterator operator++ (int ign);
+    
+    /**
+     * Adds the const_iterator to a distance type k.  The result may points
+     * to the end of the residue.
+     * @param k the distance type.
+     * @return a new iterator pointing to itself + k.
+     */
+    const_residue_iterator operator+ (difference_type k) const;
+    
+    /**
+     * Calculates the distance between 2 const_iterators.  Self and i must
+     * be const_iterators from the same container.
+     * @param i the const_iterator.
+     * @return the difference type between 2 const_iterators.
+     */
+    difference_type operator- (const const_residue_iterator &i) const;
+    
+    /**
+     * Tests whether the iterators are equal.
+     * @param right the right iterator.
+     * @return the truth value.
+     */
+    bool operator== (const const_residue_iterator &right) const
+    { return mPos == right.mPos; }
+    
+    /**
+     * Tests whether the iterators are different.
+     * @param right the right iterator.
+     * @return the truth value.
+     */
+    bool operator!= (const const_residue_iterator &right) const
+    { return !(operator== (right)); }
+    
+    /**
+     * Tests whether the current iterator is less than the right.
+     * @param right the right iterator.
+     * @return the truth value.
+     */
+    bool operator< (const const_residue_iterator &right) const
+    { return mPos < right.mPos; }
+    
+    // ACCESS ---------------------------------------------------------------
+    
+    /**
+     * Casts the iterator to a residue.
+     * @return the residue pointed by the iterator.
+     */
+    operator const CResidue* () const { return mRes; }
+    
+    // METHODS --------------------------------------------------------------
+    
+    // I/O  -----------------------------------------------------------------
+  };
+  
   friend residue_iterator;
-
   friend const_residue_iterator;
+  typedef residue_iterator iterator;
+  typedef const_residue_iterator const_iterator;
 
   // LIFECYCLE ------------------------------------------------------------
 

@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Nov 14 17:22:54 2000
-// Update Count     : 5
+// Last Modified On : Tue Nov 14 18:02:05 2000
+// Update Count     : 6
 // Status           : Ok.
 // 
 
@@ -34,7 +34,7 @@ int CResidue::count = 0;
 
 
 
-residue_iterator::residue_iterator ()
+CResidue::residue_iterator::residue_iterator ()
   : mRes (0),
     mPos (0),
     mSet (new all_atom_set ()),
@@ -43,8 +43,8 @@ residue_iterator::residue_iterator ()
 
 
 
-residue_iterator::residue_iterator (CResidue *nRes, int nPos,
-				    AtomSet *nSet, AtomSet *nOption)
+CResidue::residue_iterator::residue_iterator (CResidue *nRes, int nPos,
+					      AtomSet *nSet, AtomSet *nOption)
   : mRes (nRes), mPos (nPos), mSet (nSet), mOption (nOption)
 {
   size_type size = mRes->size ();
@@ -61,7 +61,7 @@ residue_iterator::residue_iterator (CResidue *nRes, int nPos,
 
 
 
-residue_iterator::residue_iterator (const residue_iterator &right)
+CResidue::residue_iterator::residue_iterator (const CResidue::iterator &right)
   : mRes (right.mRes),
     mPos (right.mPos),
     mSet (right.mSet->clone ()),
@@ -70,8 +70,8 @@ residue_iterator::residue_iterator (const residue_iterator &right)
 
 
 
-residue_iterator&
-residue_iterator::operator= (const residue_iterator &right)
+CResidue::iterator&
+CResidue::residue_iterator::operator= (const CResidue::iterator &right)
 {
   if (this != &right)
     {
@@ -87,8 +87,8 @@ residue_iterator::operator= (const residue_iterator &right)
 
 
 
-residue_iterator&
-residue_iterator::operator+= (difference_type k)
+CResidue::iterator&
+CResidue::residue_iterator::operator+= (difference_type k)
 {
   size_type size = mRes->mAtomRef.size ();
 
@@ -101,24 +101,8 @@ residue_iterator::operator+= (difference_type k)
 
 
 
-residue_iterator::pointer
-residue_iterator::operator-> () const
-{
-  return &(mRes->Place (mPos));
-}
-
-
-
-residue_iterator::reference
-residue_iterator::operator* () const
-{
-  return mRes->Place (mPos);
-}
-
-
-
-residue_iterator&
-residue_iterator::operator++ ()
+CResidue::iterator&
+CResidue::residue_iterator::operator++ ()
 {
   size_type size = mRes->mAtomRef.size ();
 
@@ -131,8 +115,8 @@ residue_iterator::operator++ ()
 
 
 
-residue_iterator
-residue_iterator::operator++ (int ign)
+CResidue::iterator
+CResidue::residue_iterator::operator++ (int ign)
 {
   residue_iterator ret = *this;
   size_type size = mRes->mAtomRef.size ();
@@ -146,23 +130,23 @@ residue_iterator::operator++ (int ign)
 
 
 
-residue_iterator
-residue_iterator::operator+ (difference_type k) const
+CResidue::iterator
+CResidue::residue_iterator::operator+ (difference_type k) const
 {
   return residue_iterator (*this) += k;
 }
 
 
 
-residue_iterator::difference_type
-residue_iterator::operator- (const residue_iterator &i) const
+CResidue::iterator::difference_type
+CResidue::residue_iterator::operator- (const CResidue::iterator &i) const
 {
   return difference_type (mPos - i.mPos);
 }
 
 
 
-const_residue_iterator::const_residue_iterator ()
+CResidue::const_residue_iterator::const_residue_iterator ()
   : mRes (0),
     mPos (0),
     mSet (new all_atom_set ()),
@@ -171,7 +155,7 @@ const_residue_iterator::const_residue_iterator ()
 
 
 
-const_residue_iterator::const_residue_iterator (const CResidue *nRes,
+CResidue::const_residue_iterator::const_residue_iterator (const CResidue *nRes,
 						int nPos,
 						const AtomSet *nSet,
 						const AtomSet *nOption)
@@ -191,7 +175,7 @@ const_residue_iterator::const_residue_iterator (const CResidue *nRes,
 
 
 
-const_residue_iterator::const_residue_iterator (const const_residue_iterator &right)
+CResidue::const_residue_iterator::const_residue_iterator (const CResidue::const_iterator &right)
   : mRes (right.mRes),
     mPos (right.mPos),
     mSet (right.mSet->clone ()),
@@ -200,8 +184,8 @@ const_residue_iterator::const_residue_iterator (const const_residue_iterator &ri
 
 
 
-const_residue_iterator&
-const_residue_iterator::operator= (const const_residue_iterator &right)
+CResidue::const_iterator&
+CResidue::const_residue_iterator::operator= (const CResidue::const_iterator &right)
 {
   if (this != &right)
     {
@@ -217,8 +201,8 @@ const_residue_iterator::operator= (const const_residue_iterator &right)
 
 
 
-const_residue_iterator&
-const_residue_iterator::operator+= (difference_type k)
+CResidue::const_iterator&
+CResidue::const_residue_iterator::operator+= (difference_type k)
 {
   size_type size = mRes->mAtomRef.size ();
 
@@ -231,24 +215,8 @@ const_residue_iterator::operator+= (difference_type k)
 
 
 
-const_residue_iterator::pointer
-const_residue_iterator::operator-> () const
-{
-  return &(mRes->Place (mPos));
-}
-
-
-
-const_residue_iterator::reference
-const_residue_iterator::operator* () const
-{
-  return mRes->Place (mPos);
-}
-
-
-
-const_residue_iterator&
-const_residue_iterator::operator++ ()
+CResidue::const_iterator&
+CResidue::const_residue_iterator::operator++ ()
 {
   size_type size = mRes->mAtomRef.size ();
 
@@ -261,8 +229,8 @@ const_residue_iterator::operator++ ()
 
 
 
-const_residue_iterator
-const_residue_iterator::operator++ (int ign)
+CResidue::const_iterator
+CResidue::const_residue_iterator::operator++ (int ign)
 {
   const_residue_iterator ret = *this;
   size_type size = mRes->mAtomRef.size ();
@@ -276,16 +244,16 @@ const_residue_iterator::operator++ (int ign)
 
 
 
-const_residue_iterator
-const_residue_iterator::operator+ (difference_type k) const
+CResidue::const_iterator
+CResidue::const_residue_iterator::operator+ (difference_type k) const
 {
   return const_residue_iterator (*this) += k;
 }
 
 
 
-const_residue_iterator::difference_type
-const_residue_iterator::operator- (const const_residue_iterator &i) const
+CResidue::const_iterator::difference_type
+CResidue::const_residue_iterator::operator- (const CResidue::const_iterator &i) const
 {
   return difference_type (mPos - i.mPos);
 }
