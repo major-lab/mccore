@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.32 $
+// $Revision: 1.33 $
 //
 // This file is part of mccore.
 // 
@@ -62,12 +62,10 @@ namespace mccore
    * the atom types.
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: Residue.h,v 1.32 2005-01-27 21:40:52 thibaup Exp $
+   * @version $Id: Residue.h,v 1.33 2005-02-02 18:14:21 thibaup Exp $
    */
   class Residue
   {
-    friend class ExtendedResidue;
-
   public:
     
     /**
@@ -105,10 +103,11 @@ namespace mccore
     /**
      * Ribose's atom aliases used in the theoretical building method.
      */
-    Atom *rib_C1p, *rib_C2p, *rib_C3p, *rib_C4p, *rib_C5p, *rib_O2p, *rib_O3p, *rib_O4p, *rib_O5p, *rib_P, *rib_O1P, *rib_O2P;
+    Atom *rib_C1p, *rib_C2p, *rib_C3p, *rib_C4p, *rib_C5p, *rib_O2p, *rib_O3p, *rib_O4p, *rib_O5p, *rib_O1P, *rib_O2P, *rib_P;
 
     /**
-     * Flag asserting ribose's atoms pointer validity. Any methods modifying the atoms' container should raise this flag.
+     * Flag asserting ribose's atoms pointer validity. 
+     * Any methods modifying the atoms' container must raise this flag.
      */
     bool rib_dirty_ref;
 
@@ -153,20 +152,6 @@ namespace mccore
      * Default parameter values for the ribose theoretical building by optimization.
      */
     static float s_rib_minshift, s_rib_mindrop, s_rib_shiftrate;
-    
-
-  protected:
-
-    /**
-     * Gets the atom at a position given by an index.  This is used by
-     * the iterators.  It is protected since no atom pointers should be
-     * used outside the residue; these pointers are not guaranteed to be valid.
-     * @param pos the position of the atom in the atom vector;
-     * @return the atom.
-     */
-    virtual Atom& _get (size_type pos) const;
-
-  public:
 
     // ITERATORS ---------------------------------------------------------------
 
@@ -184,7 +169,7 @@ namespace mccore
     {
       friend class Residue;
       friend class ExtendedResidue;
-      
+
     public:
       
       typedef random_access_iterator_tag iterator_category;
@@ -296,7 +281,8 @@ namespace mccore
        */
       ResidueIterator operator+ (difference_type k) const
       {
-	return ResidueIterator (*this) += k;
+	ResidueIterator it = *this;
+	return  it += k;
       }
       
       /**
@@ -337,7 +323,7 @@ namespace mccore
       operator Residue* () { return res; }
 
     };
-    friend class Residue::ResidueIterator;
+    
 
 
     /**
@@ -354,7 +340,7 @@ namespace mccore
     {
       friend class Residue;
       friend class ExtendedResidue;
-      
+
     public:
 
       typedef random_access_iterator_tag iterator_category;
@@ -521,10 +507,7 @@ namespace mccore
       operator const Residue* () const { return res; }
 
     };
-    
-    friend class Residue::ResidueConstIterator;
-
-     
+         
   public:
 
     typedef ResidueIterator iterator;
@@ -553,32 +536,58 @@ namespace mccore
     Residue (const ResidueType *t, const ResId &i, const vector< Atom > &vec);
 
     /**
-     * Initializes the object with the other's content.
-     * @param other the object to copy.
+     * Initializes this object's content with another's
+     * @param res the other object from which to copy content.
      */
-    Residue (const Residue &other);
+    Residue (const Residue& res);
 
     /**
      * Clones the residue.
      * @return the copy of the object.
      */
-    virtual Residue* clone () const { return new Residue (*this); }
+    virtual Residue* clone () const 
+    { 
+      return new Residue (*this); 
+    }
 
     /**
      * Destroys the object.
      */
     virtual ~Residue ();
-				 
+
+    // VIRTUAL ASSIGNATION --------------------------------------------------
+
+    /**
+     * Assigns this object's content with another's by resolving
+     * its polymorphic type.
+     * @param res the other object from which to copy content.
+     * @return *this;
+     */
+    virtual Residue& assign (const Residue& res);
+
+  protected:
+
+    /**
+     * @internal
+     * Assigns this object's content with another's.
+     * @param res the other object from which to copy content.
+     */
+    void _assign (const Residue& res);
+
+  public:
+
     // OPERATORS ------------------------------------------------------------
 
     /**
-     * Assigns the object with the other's content.
-     * @param other the object to copy.
+     * Assigns this object's content with another's by calling the virtual 
+     * assignation method. Kept for compatibility reason.
+     * @param res the other object from which to copy content.
      * @return itself.
      */
-    Residue& operator= (const Residue& right);
-
-  public:
+    Residue& operator= (const Residue& res)
+    {
+      return this->assign (res);
+    }
 
     /**
      * Indicates whether some other residue is "equal to" this one.
@@ -740,13 +749,9 @@ namespace mccore
   
     /**
      * Applies a tfo over each atoms.
-     * @param aTransfo the transfo to apply.
-     * @return itself.
+     * @param m the transfo to apply.
      */
-    virtual void transform (const HomogeneousTransfo &aTransfo);
-//     {
-//       setReferential (aTransfo * getReferential ());
-//     }
+    virtual void transform (const HomogeneousTransfo& m);
 
     /**
      * Inserts an atom in the residue.  It crushes the existing atom if it
@@ -879,20 +884,6 @@ namespace mccore
      * @throws IntLibException NoSuchAtomException
      */
     float distance (const Residue &r) const;
-
-    /**
-     * @deprecated
-     * DEPRECATED
-     * Copies the atom of other into *this without verification.  It
-     * is implied that both residues ar of the same type and contain
-     * the same atoms.
-     *
-     * Warning: Both residues must respect the same atom insertion order or else
-     * the destination residue will be corrupted!
-     *
-     * @param other the residue from which to copy atom locations.
-     */
-    virtual void atomCopy (const Residue& other); 
 
     /**
      * Builds a theoretical ribose onto a nucleic acid's nitrogen base.
@@ -1079,10 +1070,19 @@ namespace mccore
      */
     static float getMaxChi (const PropertyType* glycosyl) throw (TypeException);
     
-    
+    // INTERNAL METHODS ------------------------------------------------------
+
   protected:
 
-    // PRIVATE METHODS ------------------------------------------------------
+    /**
+     * @internal
+     * Gets the atom at a position given by an index.  This is used by
+     * the iterators.  It is protected since no atom pointers should be
+     * used outside the residue; these pointers are not guaranteed to be valid.
+     * @param pos the position of the atom in the atom vector;
+     * @return the atom.
+     */
+    virtual Atom& _get (size_type pos) const;
 
     /**
      * @internal

@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.17 $
+// $Revision: 1.18 $
 // 
 // This file is part of mccore.
 // 
@@ -53,8 +53,15 @@ namespace mccore
    * using iterators is garantied to follow a partial order defined by
    * the atom types.
    *
+   * *** Warning ***
+   *
+   * Virtual assignation is optimised by assessing that this class is a
+   * leaf in the class hierarchy. If a class extends this one, virtual 
+   * assignation may induce slicing. 
+   *          
+   *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ExtendedResidue.h,v 1.17 2005-01-27 21:40:53 thibaup Exp $
+   * @version $Id: ExtendedResidue.h,v 1.18 2005-02-02 18:14:22 thibaup Exp $
    */
   class ExtendedResidue : public Residue
   {
@@ -69,22 +76,13 @@ namespace mccore
      * The transfo that express the location of the local referential
      * in terms of global referential coordinates.
      */
-    HomogeneousTransfo tfo;
+    HomogeneousTransfo referential;
 
     /**
      * Indicates if the residue is placed in space, i.e. if atomGlobal
      * contains atoms from atomLocal transformed according to the tfo.
      */
     mutable bool placed;
-
-    /**
-     * Gets the atom at a position given by an index.  This is used by
-     * the iterators.  It is protected since no atom pointers should be
-     * used outside the residue; these pointers are not guaranteed to be valid.
-     * @param pos the position of the atom in the atom vector;
-     * @return the atom.
-     */
-    virtual Atom& _get (size_type pos) const;
 
   public:
 
@@ -93,7 +91,10 @@ namespace mccore
     /**
      * Initializes the object.
      */
-    ExtendedResidue () : Residue (), placed (true) { }
+    ExtendedResidue () 
+      : Residue (), placed (true) 
+    { 
+    }
 
     /**
      * Initializes the residue with a type and id.
@@ -102,7 +103,8 @@ namespace mccore
      */
     ExtendedResidue (const ResidueType *t, const ResId &i)
       : Residue (t, i), placed (true)
-    { }
+    { 
+    }
     
     /**
      * Initializes the residue with type, atom container and id.
@@ -113,37 +115,82 @@ namespace mccore
     ExtendedResidue (const ResidueType *t, const ResId &i, vector< Atom > &vec);
     
     /**
-     * Initializes the object with another's content.
-     * @param right the object to copy.
+     * Initializes this object's content with another's.
+     * @param exres the other object from which to copy content.
      */
-    ExtendedResidue (const ExtendedResidue& right);
+    ExtendedResidue (const ExtendedResidue& exres);
 
-   /**
-     * Initializes the object with a @ref Residue object's content.
-     * @param right the object to copy.
+    /**
+     * Initializes this object's content with another's by resolving
+     * its polymorphic type.
+     * @param res the polymorphic object from which to copy content.
      */
-    ExtendedResidue (const Residue& right);
+    ExtendedResidue (const Residue& res);
 
     /**
      * Clones the residue.
      * @return the copy of the object.
      */
-    virtual Residue* clone () const { return new ExtendedResidue (*this); }
+    virtual Residue* clone () const 
+    { 
+      return new ExtendedResidue (*this); 
+    }
     
     /**
      * Initializes the objet with the other's content.
      * @param other the objet to copy.
      */
     virtual ~ExtendedResidue ();
+
+    // VIRTUAL ASSIGNATION --------------------------------------------------
+
+    /**
+     * Assigns this object's content with another's by resolving
+     * its polymorphic type.
+     * @param res the other object from which to copy content.
+     * @return *this;
+     */
+    virtual Residue& assign (const Residue& res)
+    {
+      return this->assignNV (res);
+    }
+
+    /**
+     * Assigns this object's content with another's by resolving
+     * its polymorphic type (non-virtual version). 
+     */
+    ExtendedResidue& assignNV (const Residue& res);
     
+  protected:
+
+    /**
+     * @internal
+     * Assigns this object's content with another's.
+     * @param res the other object from which to copy content.
+     */
+    void _assign (const ExtendedResidue& res);
+
+  public:
+
     // OPERATORS ------------------------------------------------------------
 
     /**
-     * Assigns the object's content from another object.
-     * @param right the object from which to copy.
+     * Assigns this object's content with another's. Kept for compatibility reason.
+     * @param exres the other object from which to copy content.
      * @return itself.
      */
-    ExtendedResidue& operator= (const ExtendedResidue& right);
+    ExtendedResidue& operator= (const ExtendedResidue& exres);
+
+    /**
+     * Assigns this object's content with another's by resolving its polymorphic 
+     * type. Kept for compatibility reason.
+     * @param res the polymorphic object from which to copy content.
+     * @return itself.
+     */
+    ExtendedResidue& operator= (const Residue& res)
+    {
+      return this->assignNV (res);
+    }
 
     // ACCESS ---------------------------------------------------------------
  
@@ -154,7 +201,10 @@ namespace mccore
      * @param t a homogeneous matrix that will be filled if non null.
      * @return the referential.
      */
-    virtual const HomogeneousTransfo getReferential () const { return tfo; }
+    virtual const HomogeneousTransfo getReferential () const 
+    { 
+      return this->referential; 
+    }
 
     /**
      * Sets the homogeneous matrix representing the local referential.
@@ -162,6 +212,12 @@ namespace mccore
      */
     virtual void setReferential (const HomogeneousTransfo& m);
     
+    /**
+     * Applies a tfo over each atoms. The new referential is updated.
+     * @param m the transfo to apply.
+     */
+    virtual void transform (const HomogeneousTransfo& m);
+
     /**
      * Inserts an atom in the residue.  It crushes the existing atom if it
      * exists.  
@@ -188,24 +244,20 @@ namespace mccore
      */
     virtual void finalize ();
 
-    /**
-     * @deprecated
-     * DEPRECATED
-     * Copies the atom of other into *this without verification.  It
-     * is implied that both residues ar of the same type and contain
-     * the same atoms.
-     *
-     * Warning: Both residues must respect the same atom insertion order or else
-     * the destination residue will be corrupted!
-     *
-     * @param other the residue from which to copy atom locations.
-     */
-    virtual void atomCopy (const Residue& other); 
-
-    // PRIVATE METHODS ------------------------------------------------------
+    // INTERNAL METHODS ------------------------------------------------------
 
   protected:
     
+    /**
+     * @internal
+     * Gets the atom at a position given by an index.  This is used by
+     * the iterators.  It is protected since no atom pointers should be
+     * used outside the residue; these pointers are not guaranteed to be valid.
+     * @param pos the position of the atom in the atom vector;
+     * @return the atom.
+     */
+    virtual Atom& _get (size_type pos) const;
+
     /**
      * @internal
      * Fetches the atom specified by its type. If the atom is missing, a new
@@ -232,13 +284,7 @@ namespace mccore
      */
     void _place () const;
 
-//     /**
-//      * @internal
-//      * Updates the atom containers so that the residue is placed in space, if needed.
-//      */
-//     void _displace () const;
-
-//   public:
+  public:
     
     // I/O  -----------------------------------------------------------------
     
