@@ -1,9 +1,9 @@
 //                              -*- Mode: C++ -*- 
 // ResidueTypeStore.h
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003, 2004 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 // 
 //  This file is part of mccore.
 //  
@@ -41,7 +41,7 @@ namespace mccore {
    * Repository of residue types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueTypeStore.h,v 1.7 2004-08-26 15:21:32 thibaup Exp $
+   * @version $Id: ResidueTypeStore.h,v 1.8 2004-09-24 22:26:00 larosem Exp $
    */
   class ResidueTypeStore
   {
@@ -681,6 +681,48 @@ namespace mccore {
     };
 
     /**
+     * Public Amber RA RNA residue type class.
+     */
+    class RRA : public virtual RA
+    {
+    public:
+      RRA () {}
+      RRA (const char* t, const char* lt) : ResidueType (t, lt) {}
+
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const RRA* > (t); 
+      }
+    };
+
+    /**
+     * Public Amber RA5 RNA residue type class.
+     */
+    class RRA5 : public virtual RRA
+    {
+    public:
+      RRA5 () {}
+      RRA5 (const char* t, const char* lt) : ResidueType (t, lt) {}
+
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const RRA5* > (t); 
+      }
+    };
+
+    /**
+     * Public Amber RA3 RNA residue type class.
+     */
+    class RRA3 : public virtual RRA
+    {
+    public:
+      RRA3 () {}
+      RRA3 (const char* t, const char* lt) : ResidueType (t, lt) {}
+
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const RRA3* > (t); 
+      }
+    };
+
+    /**
      * Public C RNA residue type class.
      */
     class RC : public virtual C, public virtual RS, public virtual RM, public virtual RPyrimidine {
@@ -690,6 +732,48 @@ namespace mccore {
 
       virtual bool describe (const ResidueType* t) const {
 	return dynamic_cast< const RC* > (t); 
+      }
+    };
+
+    /**
+     * Public Amber RC RNA residue type class.
+     */
+    class RRC : public virtual RC
+    {
+    public:
+      RRC () {}
+      RRC (const char* t, const char* lt) : ResidueType (t, lt) {}
+
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const RRC* > (t); 
+      }
+    };
+
+    /**
+     * Public Amber RC5 RNA residue type class.
+     */
+    class RRC5 : public virtual RRC
+    {
+    public:
+      RRC5 () {}
+      RRC5 (const char* t, const char* lt) : ResidueType (t, lt) {}
+
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const RRC5* > (t); 
+      }
+    };
+
+    /**
+     * Public Amber RC3 RNA residue type class.
+     */
+    class RRC3 : public virtual RRC
+    {
+    public:
+      RRC3 () {}
+      RRC3 (const char* t, const char* lt) : ResidueType (t, lt) {}
+
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const RRC3* > (t); 
       }
     };
 
@@ -707,6 +791,48 @@ namespace mccore {
     };
 
     /**
+     * Public Amber RG RNA residue type class.
+     */
+    class RRG : public virtual RG
+    {
+    public:
+      RRG () {}
+      RRG (const char* t, const char* lt) : ResidueType (t, lt) {}
+
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const RRG* > (t); 
+      }
+    };
+
+    /**
+     * Public Amber RG5 RNA residue type class.
+     */
+    class RRG5 : public virtual RRG
+    {
+    public:
+      RRG5 () {}
+      RRG5 (const char* t, const char* lt) : ResidueType (t, lt) {}
+
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const RRG5* > (t); 
+      }
+    };
+
+    /**
+     * Public Amber RG3 RNA residue type class.
+     */
+    class RRG3 : public virtual RRG
+    {
+    public:
+      RRG3 () {}
+      RRG3 (const char* t, const char* lt) : ResidueType (t, lt) {}
+
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const RRG3* > (t); 
+      }
+    };
+
+    /**
      * Public U RNA residue type class.
      */
     class RU : public virtual U, public virtual RW, public virtual RK, public virtual RPyrimidine  {
@@ -719,8 +845,48 @@ namespace mccore {
       }
     };
 
+    /**
+     * Public Amber RU RNA residue type class.
+     */
+    class RRU : public virtual RU
+    {
+    public:
+      RRU () {}
+      RRU (const char* t, const char* lt) : ResidueType (t, lt) {}
 
-    
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const RRU* > (t); 
+      }
+    };
+
+    /**
+     * Public Amber RU5 RNA residue type class.
+     */
+    class RRU5 : public virtual RRU
+    {
+    public:
+      RRU5 () {}
+      RRU5 (const char* t, const char* lt) : ResidueType (t, lt) {}
+
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const RRU5* > (t); 
+      }
+    };
+
+    /**
+     * Public Amber RU3 RNA residue type class.
+     */
+    class RRU3 : public virtual RRU
+    {
+    public:
+      RRU3 () {}
+      RRU3 (const char* t, const char* lt) : ResidueType (t, lt) {}
+
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const RRU3* > (t); 
+      }
+    };
+
     /**
      *  Public abstract class for DN residue (any DNA).
      */
@@ -880,6 +1046,48 @@ namespace mccore {
     };
 
     /**
+     * Public Amber RU DNA residue type class.
+     */
+    class DDA : public virtual DA
+    {
+    public:
+      DDA () {}
+      DDA (const char* t, const char* lt) : ResidueType (t, lt) {}
+
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const DDA* > (t); 
+      }
+    };
+
+    /**
+     * Public Amber RU5 DNA residue type class.
+     */
+    class DDA5 : public virtual DDA
+    {
+    public:
+      DDA5 () {}
+      DDA5 (const char* t, const char* lt) : ResidueType (t, lt) {}
+
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const DDA5* > (t); 
+      }
+    };
+
+    /**
+     * Public Amber RU3 DNA residue type class.
+     */
+    class DDA3 : public virtual DDA
+    {
+    public:
+      DDA3 () {}
+      DDA3 (const char* t, const char* lt) : ResidueType (t, lt) {}
+
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const DDA3* > (t); 
+      }
+    };
+
+    /**
      * Public C DNA residue type class.
      */
     class DC : public virtual C, public virtual DS, public virtual DM, public virtual DPyrimidine {
@@ -889,6 +1097,48 @@ namespace mccore {
 
       virtual bool describe (const ResidueType* t) const {
 	return dynamic_cast< const DC* > (t); 
+      }
+    };
+
+    /**
+     * Public Amber RU DNA residue type class.
+     */
+    class DDC : public virtual DC
+    {
+    public:
+      DDC () {}
+      DDC (const char* t, const char* lt) : ResidueType (t, lt) {}
+
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const DDC* > (t); 
+      }
+    };
+
+    /**
+     * Public Amber RU5 DNA residue type class.
+     */
+    class DDC5 : public virtual DDC
+    {
+    public:
+      DDC5 () {}
+      DDC5 (const char* t, const char* lt) : ResidueType (t, lt) {}
+
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const DDC5* > (t); 
+      }
+    };
+
+    /**
+     * Public Amber RU3 DNA residue type class.
+     */
+    class DDC3 : public virtual DDC
+    {
+    public:
+      DDC3 () {}
+      DDC3 (const char* t, const char* lt) : ResidueType (t, lt) {}
+
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const DDC3* > (t); 
       }
     };
 
@@ -906,6 +1156,48 @@ namespace mccore {
     };
 
     /**
+     * Public Amber RU DNA residue type class.
+     */
+    class DDG : public virtual DG
+    {
+    public:
+      DDG () {}
+      DDG (const char* t, const char* lt) : ResidueType (t, lt) {}
+
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const DDG* > (t); 
+      }
+    };
+
+    /**
+     * Public Amber RU5 DNA residue type class.
+     */
+    class DDG5 : public virtual DDG
+    {
+    public:
+      DDG5 () {}
+      DDG5 (const char* t, const char* lt) : ResidueType (t, lt) {}
+
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const DDG5* > (t); 
+      }
+    };
+
+    /**
+     * Public Amber RU3 DNA residue type class.
+     */
+    class DDG3 : public virtual DDG
+    {
+    public:
+      DDG3 () {}
+      DDG3 (const char* t, const char* lt) : ResidueType (t, lt) {}
+
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const DDG3* > (t); 
+      }
+    };
+
+    /**
      * Public T DNA residue type class.
      */
     class DT : public virtual T, public virtual DW, public virtual DK, public virtual DPyrimidine {
@@ -915,6 +1207,48 @@ namespace mccore {
 
       virtual bool describe (const ResidueType* t) const {
 	return dynamic_cast< const DT* > (t); 
+      }
+    };
+
+    /**
+     * Public Amber RU DNA residue type class.
+     */
+    class DDT : public virtual DT
+    {
+    public:
+      DDT () {}
+      DDT (const char* t, const char* lt) : ResidueType (t, lt) {}
+
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const DDT* > (t); 
+      }
+    };
+
+    /**
+     * Public Amber RU5 DNA residue type class.
+     */
+    class DDT5 : public virtual DDT
+    {
+    public:
+      DDT5 () {}
+      DDT5 (const char* t, const char* lt) : ResidueType (t, lt) {}
+
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const DDT5* > (t); 
+      }
+    };
+
+    /**
+     * Public Amber RU3 DNA residue type class.
+     */
+    class DDT3 : public virtual DDT
+    {
+    public:
+      DDT3 () {}
+      DDT3 (const char* t, const char* lt) : ResidueType (t, lt) {}
+
+      virtual bool describe (const ResidueType* t) const {
+	return dynamic_cast< const DDT3* > (t); 
       }
     };
 

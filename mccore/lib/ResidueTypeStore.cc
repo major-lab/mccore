@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -35,34 +35,40 @@ namespace mccore {
     stringType["N:A"] = t;
     stringType["A"] = t = ResidueType::rRA = new RA ("A", "R:A"); 
     stringType["ADE"] = t; 
-    stringType["R:A"] = t; 
-    stringType["RA5"] = t; 
-    stringType["RA3"] = t; 
+    stringType["R:A"] = t;
     stringType["D:A"] = t = ResidueType::rDA = new DA ("A", "D:A");
-    stringType["DA5"] = t; 
-    stringType["DA3"] = t; 
+    stringType["RA"] = new RRA ("RA", "R:RA");
+    stringType["RA5"] = new RRA5 ("RA5", "R:RA5");
+    stringType["RA3"] = new RRA3 ("RA3", "R:RA3");
+    stringType["DA"] = new DDA ("DA", "D:DA");
+    stringType["DA5"] = new DDA5 ("DA5", "D:DA5");
+    stringType["DA3"] = new DDA3 ("DA3", "D:DA3");
     
     stringType["Cytosine"] = t = ResidueType::rC = new C ("C", "CYT");
     stringType["N:C"] = t;
     stringType["C"] = t = ResidueType::rRC = new RC ("C", "R:C");
     stringType["CYT"] = t; 
     stringType["R:C"] = t; 
-    stringType["RC5"] = t; 
-    stringType["RC3"] = t; 
     stringType["D:C"] = t = ResidueType::rDC = new DC ("C", "D:C");
-    stringType["DC5"] = t; 
-    stringType["DC3"] = t; 
+    stringType["RC"] = new RRC ("RC", "R:RC");
+    stringType["RC5"] = new RRC5 ("RC5", "R:RC5");
+    stringType["RC3"] = new RRC3 ("RC3", "R:RC3");
+    stringType["DC"] = new DDC ("DC", "D:DC");
+    stringType["DC5"] = new DDC5 ("DC5", "D:DC5");
+    stringType["DC3"] = new DDC3 ("DC3", "D:DC3");
     
     stringType["Guanine"] = t = ResidueType::rG = new G ("G", "GUA");
     stringType["N:G"] = t;
     stringType["G"] = t = ResidueType::rRG = new RG ("G", "R:G"); 
     stringType["GUA"] = t;
     stringType["R:G"] = t; 
-    stringType["RG5"] = t; 
-    stringType["RG3"] = t; 
     stringType["D:G"] = t = ResidueType::rDG = new DG ("G", "D:G");
-    stringType["DG5"] = t; 
-    stringType["DG3"] = t; 
+    stringType["RG"] = new RRG ("RG", "R:RG");
+    stringType["RG5"] = new RRG5 ("RG5", "R:RG5");
+    stringType["RG3"] = new RRG3 ("RG3", "R:RG3");
+    stringType["DG"] = new DDG ("DG", "D:DG");
+    stringType["DG5"] = new DDG5 ("DG5", "D:DG5");
+    stringType["DG3"] = new DDG3 ("DG3", "D:DG3");
     
     stringType["Uracyle"] = t = ResidueType::rU = new U ("U", "URA");
     stringType["N:U"] = t;
@@ -70,16 +76,18 @@ namespace mccore {
     stringType["R:U"] = t;
     stringType["URI"] = t; 
     stringType["URA"] = t; 
-    stringType["RU5"] = t; 
-    stringType["RU3"] = t; 
+    stringType["RU"] = new RRU ("RU", "R:RC");
+    stringType["RU5"] = new RRU5 ("RU5", "R:RU5");
+    stringType["RU3"] = new RRU3 ("RU3", "R:RU3");
     
     stringType["Thymine"] = t = ResidueType::rT = new T ("T", "TYM");
     stringType["N:T"] = t;
     stringType["T"] = t = ResidueType::rDT = new DT ("T", "D:T"); 
     stringType["D:T"] = t;
     stringType["TYM"] = t; 
-    stringType["DT5"] = t; 
-    stringType["DT3"] = t; 
+    stringType["DT"] = new DDT ("DT", "D:DT");
+    stringType["DT5"] = new DDT5 ("DT5", "D:DT5");
+    stringType["DT3"] = new DDT3 ("DT3", "D:DT3");
     
     stringType["(N:N)"] = ResidueType::rNucleicAcid = new N ("(N:N)", "(N:N)");
     stringType["(R:N)"] = ResidueType::rRNA = new RN ("(R:N)", "(R:N)");
