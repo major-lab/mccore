@@ -317,22 +317,22 @@ void
 CHBond::DumpAmberRestraint (ostream &os)
 {
   os << " &rst iresid=1," << endl;
-//   os << "      iat(1)=" << mResidueA->GetResNo()
-// 	    << ", iat(2)=" << mResidueB->GetResNo() << "," << endl;
-//   os << "      atnam(1)= '" << AmberNameString[ mDonor ] << "', "
-// 	    << "atnam(2)= '" << AmberNameString[ mAcceptor ] << "'," << endl;
-//   os << "      r1= 1.0, r2= 1.5, r3= 3.0, r4= 5.0," << endl;
-//   os << "      rk2=0.0, rk3=32.0" << endl;
-//   os << " &end" << endl;
-//   os << " &rst iresid=1," << endl;
-//   os << "      iat(1)=" << mResidueA->GetResNo()
-// 	    << ", iat(2)=" << mResidueA->GetResNo()
-// 	    << ", iat(3)=" << mResidueB->GetResNo() << "," << endl;
-//   os << "      atnam(1)= '" << AmberNameString[ mDonor ] << "', "
-// 	    << "atnam(2)= '" << AmberNameString[ mHydro ] << "', "
-// 	    << "atnam(3)= '" << AmberNameString[ mAcceptor ] << "'," << endl;
-//   os << "      r1= 150, r2= 170, r3= 190, r4= 210," << endl;
-//   os << "      rk2=20.0, rk3=20.0" << endl;
+  os << "      iat(1)=" << mResidueA->GetResNo()
+     << ", iat(2)=" << mResidueB->GetResNo() << "," << endl;
+  os << "      atnam(1)= '" << donor->AmberRep () << "', "
+     << "atnam(2)= '" << acceptor->AmberRep () << "'," << endl;
+  os << "      r1= 1.0, r2= 1.5, r3= 3.0, r4= 5.0," << endl;
+  os << "      rk2=0.0, rk3=32.0" << endl;
+  os << " &end" << endl;
+  os << " &rst iresid=1," << endl;
+  os << "      iat(1)=" << mResidueA->GetResNo()
+     << ", iat(2)=" << mResidueA->GetResNo()
+     << ", iat(3)=" << mResidueB->GetResNo() << "," << endl;
+  os << "      atnam(1)= '" << donor->AmberRep () << "', "
+     << "atnam(2)= '" << hydro->AmberRep () << "', "
+     << "atnam(3)= '" << acceptor->AmberRep () << "'," << endl;
+  os << "      r1= 150, r2= 170, r3= 190, r4= 210," << endl;
+  os << "      rk2=20.0, rk3=20.0" << endl;
   os << " &end" << endl;
 }
 
