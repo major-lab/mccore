@@ -4,7 +4,7 @@
 //                           Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 16:27:35 1999
-// $Revision: 1.4.2.5 $
+// $Revision: 1.4.2.6 $
 //
 // This file is part of mccore.
 // 
@@ -44,7 +44,7 @@ namespace mccore
    * libraries.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Exception.h,v 1.4.2.5 2004-12-27 01:35:34 larosem Exp $
+   * @version $Id: Exception.h,v 1.4.2.6 2004-12-27 04:23:30 larosem Exp $
    */
   class Exception : public exception
   {
@@ -237,59 +237,6 @@ namespace mccore
 
 
   
-  /**
-   * Exception for invalid access requests.
-   *
-   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Exception.h,v 1.4.2.5 2004-12-27 01:35:34 larosem Exp $
-   */
-  class NoSuchElementException : public Exception
-  {
-  public:
-
-    // LIFECYCLE ------------------------------------------------------------
-
-    /**
-     * Initializes the exeption.  mMessage contains "".
-     */
-    NoSuchElementException () : Exception ("NoSuchElementException: ") { }
-
-    /**
-     * Initializes the exeption with a message.
-     * @param message the message string.
-     */
-    NoSuchElementException (const string &message)
-      : Exception ("NoSuchElementException: " + message) { }
-
-    /**
-     * Initializes the exeption with the right's content.
-     * @param right the exception to copy.
-     */
-    NoSuchElementException (const NoSuchElementException &right)
-      : Exception (right)
-    { }
-
-    /**
-     * Destructs the exception.
-     */
-    virtual ~NoSuchElementException () throw () { }
-
-    // OPERATORS ------------------------------------------------------------
-
-    /**
-     * Assigns the exception with the right's content.
-     * @param right the exception to copy.
-     * @return itself.
-     */
-    NoSuchElementException& operator= (const NoSuchElementException &right);
-  
-    // ACCESS ---------------------------------------------------------------
-
-    // I/O ------------------------------------------------------------------
-    
-  };
-
-
   /**
    * @short Exceptions produced by users.
    *
@@ -546,6 +493,66 @@ namespace mccore
 
     // I/O ------------------------------------------------------------------
 
+  };
+
+
+  /**
+   * Exception for invalid access requests.
+   *
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: Exception.h,v 1.4.2.6 2004-12-27 04:23:30 larosem Exp $
+   */
+  class NoSuchElementException : public IntLibException
+  {
+  public:
+
+    // LIFECYCLE ------------------------------------------------------------
+
+    /**
+     * Initializes the exeption.  mMessage contains "".
+     */
+    NoSuchElementException () : IntLibException ("NoSuchElementException: ") { }
+
+    /**
+     * Initializes the exeption with a message.
+     * @param message the message string.
+     */
+    NoSuchElementException (const string &message)
+      : IntLibException ("NoSuchElementException: " + message) { }
+
+    /**
+     * Initializes the exeption with a message.
+     * @param message the message string.
+     */
+    NoSuchElementException (const string &message, const string &file = "", int line = -1)
+      : IntLibException ("NoSuchElementException: " + message, file, line) { }
+
+    /**
+     * Initializes the exeption with the right's content.
+     * @param right the exception to copy.
+     */
+    NoSuchElementException (const NoSuchElementException &right)
+      : IntLibException (right)
+    { }
+
+    /**
+     * Destructs the exception.
+     */
+    virtual ~NoSuchElementException () throw () { }
+
+    // OPERATORS ------------------------------------------------------------
+
+    /**
+     * Assigns the exception with the right's content.
+     * @param right the exception to copy.
+     * @return itself.
+     */
+    NoSuchElementException& operator= (const NoSuchElementException &right);
+  
+    // ACCESS ---------------------------------------------------------------
+
+    // I/O ------------------------------------------------------------------
+    
   };
 
 

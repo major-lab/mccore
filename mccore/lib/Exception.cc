@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.3.2.5 $
-// $Id: Exception.cc,v 1.3.2.5 2004-12-27 01:34:57 larosem Exp $
+// $Revision: 1.3.2.6 $
+// $Id: Exception.cc,v 1.3.2.6 2004-12-27 04:23:26 larosem Exp $
 //
 // This file is part of mccore.
 //
@@ -145,17 +145,6 @@ namespace mccore
   }	
 
 
-  NoSuchElementException&
-  NoSuchElementException::operator= (const NoSuchElementException &right)
-  {
-    if (this != &right)
-      {
-	Exception::operator= (right);
-      }
-    return *this;
-  }
-
-  
   LibException&
   LibException::operator= (const LibException &right)
   {
@@ -207,6 +196,17 @@ namespace mccore
   }
 
 
+  NoSuchElementException&
+  NoSuchElementException::operator= (const NoSuchElementException &right)
+  {
+    if (this != &right)
+      {
+	IntLibException::operator= (right);
+      }
+    return *this;
+  }
+
+  
   NullPointerException&
   NullPointerException::operator= (const NullPointerException &right)
   {
