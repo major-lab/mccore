@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.13 $
+// $Revision: 1.13.4.1 $
 //
 //  This file is part of mccore.
 //  
@@ -28,11 +28,12 @@
 #include <iostream>
 #include <list>
 #include <set>
+#include <utility>
 #include <vector>
 
 #include "HomogeneousTransfo.h"
 #include "HBond.h"
-#include "MaximumFlowGraph.h"
+#include "Vector3D.h"
 
 using namespace std;
 
@@ -64,7 +65,7 @@ namespace mccore {
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.13 2004-09-15 22:38:22 larosem Exp $
+   * @version $Id: Relation.h,v 1.13.4.1 2004-12-15 03:15:04 larosem Exp $
    */
   class Relation
   {
@@ -129,10 +130,7 @@ namespace mccore {
     
     // LIFECYCLE ------------------------------------------------------------
 
-  public:
-
-    /**
-     * Initializes the object.
+       * Initializes the object.
      */
     Relation ();
 
@@ -153,7 +151,7 @@ namespace mccore {
      * Clones the object.
      * @return a copy of the object.
      */
-    virtual Relation* clone () const;
+    virtual Relation* clone () const { return new Relation (*this); }
     
     /**
      * Destroys the object.
@@ -276,7 +274,7 @@ namespace mccore {
      * @param rb another residue.
      * @return a set of properties describing the adjacency state.
      */
-    static set< const PropertyType* > 
+    static set< const PropertyType* >
     areAdjacent (const Residue* ra, const Residue *rb);
     
     /**

@@ -9,21 +9,23 @@
 #include <config.h>
 #endif
 
+#include <iterator>
+//#include <cstdio>
+#include <string>
 #include <typeinfo>
 
-#include <iterator>
-#include <stdio.h>
-#include <string>
-
+#include "Atom.h"
+#include "AtomType.h"
 #include "Exception.h"
 #include "ExtendedResidue.h"
 #include "HBond.h"
+#include "MaximumFlowGraph.h"
 #include "PairingPattern.h"
 #include "PropertyType.h"
 #include "Relation.h"
 #include "Residue.h"
+#include "ResidueType.h"
 #include "ResidueTopology.h"
-#include "UndirectedGraph.h"
 #include "stlio.h"
 
 
@@ -74,15 +76,6 @@ namespace mccore
   { }
     
 
-  Relation*
-  Relation::clone () const
-  {
-    return new Relation (*this);
-  }
-  
-  // OPERATORS ------------------------------------------------------------
-  
-
   Relation& 
   Relation::operator= (const Relation &other)
   {
@@ -102,9 +95,6 @@ namespace mccore
   }
   
 
-  // METHODS --------------------------------------------------------------
-
-
   bool
   Relation::annotate () 
   {
@@ -118,7 +108,8 @@ namespace mccore
     //       areHBonded ();
     
     if (!is (PropertyType::pAdjacent)
-	&& (is (PropertyType::pPairing) || is (PropertyType::pStack)))
+	&& (is (PropertyType::pPairing)
+	    || is (PropertyType::pStack)))
     {
       labels.insert (PropertyType::pDIR_ANY);
     }
@@ -177,7 +168,7 @@ namespace mccore
     
     return !empty ();
   }
-
+  
   
   void
   Relation::areAdjacent ()
@@ -405,17 +396,17 @@ namespace mccore
     static const float TWO_BONDS_CUTOFF = 1.5f;
     static const float THREE_BONDS_CUTOFF = 2.1f;
 
-    //if (ref->getType ()->isNucleicAcid () && res->getType ()->isNucleicAcid ())
     try
     {
       Residue::const_iterator i, j, k, l;
       map< Residue::const_iterator, int > atomToInt; 
-      int node = 0;
+      int node;
       MaximumFlowGraph< int, HBond > graph;
-	
-      graph.insert (node++); // Source
-      graph.insert (node++); // Sink
-	
+
+      node = 0;
+      graph.insert (node++, 0); // Source
+      graph.insert (node++, 0); // Sink
+
       vector< Residue::const_iterator > ref_at;
       vector< Residue::const_iterator > refn_at;
       vector< Residue::const_iterator > res_at;
@@ -508,14 +499,14 @@ namespace mccore
 	    {
 	      if (atomToInt.find (i) == atomToInt.end ())
 	      {
-		graph.insert (node);
-		graph.connect (0, node);
+		graph.insert (node, 0);
+		graph.connect (0, node, HBond (), 1, HBond (), 1);
 		atomToInt[i] = node++;
 	      }
 	      if (atomToInt.find (k) == atomToInt.end ())
 	      {
 		graph.insert (node);
-		graph.connect (node, 1);
+		graph.connect (node, 1, HBond (), 1, HBond (), 1);
 		atomToInt[k] = node++;
 	      }
 	      graph.connect (atomToInt[i], atomToInt[k], h, h.getValue ());
