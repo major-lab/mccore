@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 // 
 //  This file is part of mccore.
 //  
@@ -56,7 +56,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: ExtendedResidue.h,v 1.8 2004-05-14 15:01:18 thibaup Exp $
+   * @version $Id: ExtendedResidue.h,v 1.9 2004-05-27 15:35:31 thibaup Exp $
    */
   class ExtendedResidue : public Residue
   {
@@ -250,9 +250,8 @@ namespace mccore {
      * Initializes all the internals of the residue.  It aligns the
      * residue to the origin of the global coordinate and stores the
      * transformation internally.
-     * @param h_lp flag for hydrogens and lone pairs addition.
      */
-    virtual void finalize (bool h_lp = true);
+    virtual void finalize ();
 
     /**
      * DEPRECATED
@@ -271,20 +270,6 @@ namespace mccore {
 
   protected:
     
- //    /**
-//      * Gets the atom at a position given by an index.  This is used by the iterators.
-//      * @param pos the position of the atom in the atom vector;
-//      * @return the atom.
-//      */
-//     virtual Atom& get (size_type pos) const;
-    
-//     /**
-//      * Gets the atom of given type.  
-//      * @param type the atom type.
-//      * @return the atom.
-//      */
-//     virtual Atom* get (const AtomType* type) const;
-
     /**
      * Fetches the atom specified by its type. If the atom is missing, a new
      * atom of the given type is created and placed at the global origin.
@@ -294,6 +279,14 @@ namespace mccore {
      */
     virtual Atom* _get_or_create (const AtomType *aType);
 
+   /**
+     * Overwrites an atom's coordinates in local referential. The overwritten
+     * atom is pointed by an AtomMap iterator.
+     * @param coord The atom's new coordinates.
+     * @param posit The AtomMap iterator.
+     */
+    virtual void _insert_local (const Vector3D& coord, AtomMap::iterator posit);
+    
     /**
      * Postprocesses ribose building. Places ribose's atoms back in global referential.
      * Internal method used for ribose building. Assumes that the ribose's atom pointers are set!
@@ -325,21 +318,6 @@ namespace mccore {
      */
     virtual ostream& output (ostream &os) const;
     
-     /**
-     * Inputs the residue from the stream. All residues binary I/O
-     * should be compatible for all inherited classes.
-     * @param ibs the input stream.
-     * @return the used output stream.
-     */
-    //virtual iBinstream& input (iBinstream &ibs);
-
-    /**
-     * Ouputs the set to the stream.
-     * @param os the output stream.
-     * @return the used output stream.
-     */
-    //    oBinstream& output (oBinstream &obs) const;
-
   };
 
 }

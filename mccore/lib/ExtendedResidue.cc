@@ -3,7 +3,7 @@
 // Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.16 $
+// $Revision: 1.17 $
 // 
 //  This file is part of mccore.
 //  
@@ -210,25 +210,6 @@ namespace mccore {
 
     if (!tfo.isIdentity ())
       (*atomLocal[inserted.first->second]).transform (tfo.invert ());
-    
-//     AtomMap::iterator it;
-//     it = atomIndex.find (atom.getType ());
-//     int pos = size ();
-
-//     if (it==atomIndex.end ()) {
-//       atomIndex[atom.getType ()] = pos;
-//       atomLocal.push_back (atom.clone ());
-//       atomGlobal.push_back (atom.clone ());
-//       it = atomIndex.find (atom.getType ());
-//     } else {
-//       *atomLocal[it->second] = atom;
-//       *atomGlobal[it->second] = atom;
-//     }
-
-//     // Transform the atom to the origin
-//     if (!tfo.isIdentity ()) {
-//       (*atomLocal[it->second]).transform (tfo.invert ());
-//     }    
   }
 
 
@@ -302,7 +283,7 @@ namespace mccore {
   }
 
 
-  void ExtendedResidue::finalize (bool h_lp)
+  void ExtendedResidue::finalize ()
   {
     unsigned int i;
     Vector3D *pivot[3];
@@ -311,13 +292,7 @@ namespace mccore {
     if (!type || empty ()) return;
 
     if (!getType ()->isPhosphate ()) {
-    
-      if (getType ()->isNucleicAcid () && h_lp) {
-	removeOptionals ();
-	addHydrogens ();
-	addLonePairs ();
-      }
-
+ 
       /* Compute the location of the pseudo atoms. */
       if (((v1 = get (AtomType::aN9)) != 0 
 	   && (v2 = get (AtomType::aC8)) != 0 
@@ -441,25 +416,6 @@ namespace mccore {
 
   // PRIVATE METHODS------------------------------------------------------------
 
-
- 
-//   Atom& 
-//   ExtendedResidue::get (size_type pos) const
-//   {
-//     return *atomGlobal[pos];
-//   }
-
-
-//   Atom* 
-//   ExtendedResidue::get (const AtomType* aType) const 
-//   {
-//     AtomMap::const_iterator it = atomIndex.find (aType);
-//     if (it == atomIndex.end ())
-//       return 0;
-//     else
-//       return atomGlobal[it->second];
-//   }
-
   Atom*
   ExtendedResidue::_get_or_create (const AtomType *aType)
   {
@@ -483,6 +439,16 @@ namespace mccore {
       }
   }
 
+  
+  void
+  ExtendedResidue::_insert_local (const Vector3D& coord, AtomMap::iterator posit)
+  {
+    atomLocal[posit->second]->set (coord.getX (), coord.getY (), coord.getZ ());
+    atomGlobal[posit->second]->set (coord.getX (), coord.getY (), coord.getZ ());
+    atomGlobal[posit->second]->transform (tfo);
+  }
+
+  
   void
   ExtendedResidue::place () const
   {
@@ -514,9 +480,9 @@ namespace mccore {
   {
     // place built ribose's atoms back in referential
 
-    
     // TODO: place only ribose atoms...
     displace (); // -> place all atoms :(
+    _add_ribose_hydrogens ();
   }
   
   // I/O -----------------------------------------------------------------------

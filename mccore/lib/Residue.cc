@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.31 $
-// $Id: Residue.cc,v 1.31 2004-05-17 18:17:25 thibaup Exp $
+// $Revision: 1.32 $
+// $Id: Residue.cc,v 1.32 2004-05-27 15:35:40 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -61,6 +61,19 @@
 
 namespace mccore {
 
+  // Parameters taken for AMBER all_nuc94.in
+  const float Residue::C_H_DIST_CYC = 1.08f;    // C-H distance for aromatic C
+  const float Residue::C_H_DIST = 1.09f;    // C-H distance for SP3 C
+  const float Residue::N_H_DIST = 1.01f;    // N-H distance for NH2 confo
+  const float Residue::O_H_DIST = 0.96f;
+  const float Residue::O_LP_DIST = 1.00f;
+  const float Residue::N_LP_DIST = 1.00f;
+  const float Residue::TAN19 = 0.354f;      // O2' H 
+  const float Residue::TAN54 = 1.376f;
+  const float Residue::TAN60 = 1.7320508f;  // For NH2-like conformations
+  const float Residue::TAN70 = 2.7474774f;  // For CH3-like conformations
+  const float Residue::TAN30 = 0.57735027f;
+  
   const float Residue::s_cosf_amplitude = 1.3305;
   const float Residue::s_cosf_vshift = 2.0778;
   const float Residue::s_cosf_phase = 0.3041;
@@ -150,15 +163,11 @@ namespace mccore {
   }
 
 
-  bool 
-  Residue::setIdeal (bool h_lp)
+  void
+  Residue::setTheoretical (bool backbone)
   {
-    if (!(type->isNucleicAcid () || type->isPhosphate ()))
-      return false;
-
-    clear ();
-
     if (type == ResidueType::rRA || type == ResidueType::rDA) {
+      clear ();
       insert (Atom (0.213f, 0.660f, 1.287f, AtomType::aN9));
       insert (Atom (0.250f, 2.016f, 1.509f, AtomType::aC4));
       insert (Atom (0.016f, 2.995f, 0.619f, AtomType::aN3));
@@ -171,6 +180,7 @@ namespace mccore {
       insert (Atom (0.520f, 0.074f, 2.491f, AtomType::aC8));
       //insert (Atom (-0.094f, -0.005f, 0.017f, AtomType::aC1p));
     } else if (type == ResidueType::rRC || type == ResidueType::rDC) {
+      clear ();
       insert (Atom (0.212f, 0.668f, 1.294f, AtomType::aN1)); 
       insert (Atom (0.193f, -0.043f, 2.462f, AtomType::aC6));
       insert (Atom (0.374f, 2.055f, 1.315f, AtomType::aC2)); 
@@ -181,6 +191,7 @@ namespace mccore {
       insert (Atom (0.328f, 0.569f, 3.645f, AtomType::aC5)); 
       //insert (Atom (0.064f, -0.006f, 0.002f, AtomType::aC1p));
     } else if (type == ResidueType::rRG || type == ResidueType::rDG) {
+      clear ();
       insert (Atom (0.214f, 0.659f, 1.283f, AtomType::aN9)); 
       insert (Atom (0.254f, 2.014f, 1.509f, AtomType::aC4)); 
       insert (Atom (0.034f, 2.979f, 0.591f, AtomType::aN3)); 
@@ -194,6 +205,7 @@ namespace mccore {
       insert (Atom (0.498f, 0.057f, 2.485f, AtomType::aC8)); 
       //insert (Atom (-0.075f, -0.005f, 0.009f, AtomType::aC1p));
     } else if (type == ResidueType::rRU) {
+      clear ();
       insert (Atom (0.212f, 0.676f, 1.281f, AtomType::aN1)); 
       insert (Atom (0.195f, -0.023f, 2.466f, AtomType::aC6));
       insert (Atom (0.370f, 2.048f, 1.265f, AtomType::aC2)); 
@@ -204,6 +216,7 @@ namespace mccore {
       insert (Atom (0.329f, 0.571f, 3.657f, AtomType::aC5)); 
       //insert (Atom (0.063f, -0.008f, -0.006f, AtomType::aC1p));
     } else if (type == ResidueType::rDT) {
+      clear ();
       insert (Atom (0.214f, 0.668f, 1.296f, AtomType::aN1)); 
       insert (Atom (0.171f, -0.052f, 2.470f, AtomType::aC6)); 
       insert (Atom (0.374f, 2.035f, 1.303f, AtomType::aC2)); 
@@ -215,49 +228,33 @@ namespace mccore {
       insert (Atom (0.231f, -0.299f, 4.949f, AtomType::aC5M)); 
       //insert (Atom (0.000f, 0.000f, 0.000f, AtomType::aC1p));	    
     } else if (type == ResidueType::rPhosphate) {
+      clear ();
       insert (Atom ( 4.691f,  0.327f, -2.444f, AtomType::aP));
       insert (Atom ( 5.034f,  1.678f, -1.932f, AtomType::aO1P));
       insert (Atom ( 4.718f,  0.068f, -3.906f, AtomType::aO2P));
       insert (Atom ( 3.246f, -0.057f, -1.895f, AtomType::aO5p));
       insert (Atom ( 5.662f, -0.712f, -1.734f, AtomType::aO3p));
+      finalize ();
+      return;
     }
     else {
-      return false;
+      throw CIntLibException ("cannot create a theoretical residue from type ")
+	<< (const char*)*type;
     }
 
-    // These data are not valid and should be replaced...
-//     if (type->isRNA ()) {
-//       insert (Atom ( 4.691f,  0.327f, -2.444f, AtomType::aP));
-//       insert (Atom ( 5.034f,  1.678f, -1.932f, AtomType::aO1P));
-//       insert (Atom ( 4.718f,  0.068f, -3.906f, AtomType::aO2P));
-//       insert (Atom ( 3.246f, -0.057f, -1.895f, AtomType::aO5p));
-//       insert (Atom ( 2.957f, -1.393f, -1.443f, AtomType::aC5p));
-//       insert (Atom ( 1.509f, -1.478f, -1.022f, AtomType::aC4p));
-//       insert (Atom ( 1.286f, -0.587f,  0.103f, AtomType::aO4p));
-//       insert (Atom ( 0.000f,  0.000f,  0.000f, AtomType::aC1p));
-//       insert (Atom (-0.694f, -0.627f, -1.210f, AtomType::aC2p));
-//       insert (Atom (-1.474f, -1.731f, -0.795f, AtomType::aO2p));
-//       insert (Atom ( 0.499f, -1.031f, -2.067f, AtomType::aC3p));
-//       insert (Atom ( 0.178f, -2.084f, -2.981f, AtomType::aO3p));
-//     } else if (type->isDNA ()) {
-//       insert (Atom (  0.224f,  -4.365f,   2.383f, AtomType::aP));
-//       insert (Atom (  1.336f,  -3.982f,   3.290f, AtomType::aO1P));
-//       insert (Atom (  0.278f,  -5.664f,   1.666f, AtomType::aO2P));
-//       insert (Atom (  0.042f,  -3.205f,   1.307f, AtomType::aO5p));
-//       insert (Atom (  1.149f,  -0.891f,  -0.438f, AtomType::aC2p));
-//       insert (Atom ( -1.014f,  -3.256f,   0.347f, AtomType::aC5p));
-//       insert (Atom ( -0.913f,  -2.083f,  -0.600f, AtomType::aC4p));
-//       insert (Atom ( -1.127f,  -0.853f,   0.133f, AtomType::aO4p));
-//       insert (Atom (  0.000f,   0.000f,   0.000f, AtomType::aC1p));
-//       insert (Atom (  0.445f,  -1.932f,  -1.287f, AtomType::aC3p));
-//       insert (Atom (  0.272f,  -1.450f,  -2.624f, AtomType::aO3p));	    
-//     } else {
-//       return false;
-//     }
+    finalize ();
 
-    finalize (h_lp);
+    if (backbone)
+      {
+	// create a C3' endo anti ribose
+	buildRibose (PropertyType::pC3p_endo, PropertyType::pAnti, true, true);
 
-    return true;    
+	// finish up 5' phosphate
+	Residue *po4 = Residue::createPhosphate5p (*this);
+	insert (*po4->find (AtomType::aO1P));
+	insert (*po4->find (AtomType::aO2P));
+	delete po4;
+      }
   }
 
 
@@ -514,22 +511,6 @@ namespace mccore {
 	*atomGlobal[inserted.first->second] = atom;
       }
 
-    
-//     AtomMap::iterator it;
-//     it = atomIndex.find (atom.getType ());
-//     int pos = size ();
-
-//     if (it == atomIndex.end ())
-//       {
-// 	atomIndex[atom.getType ()] = pos;
-// 	atomGlobal.push_back (atom.clone ());
-// 	rib_dirty_ref = true;
-// 	rib_built_valid = false;
-//       }
-//     else
-//       {
-// 	*atomGlobal[it->second] = atom;
-//       }
   }
 
 
@@ -660,20 +641,7 @@ namespace mccore {
 
 
   void Residue::addHydrogens () 
-  {
-    // Parameters taken for AMBER all_nuc94.in
-    static const float C_H_DIST_CYC = 1.08f;    // C-H distance for aromatic C
-    static const float C_H_DIST = 1.09f;    // C-H distance for SP3 C
-    static const float N_H_DIST = 1.01f;    // N-H distance for NH2 confo
-    //    static const float N_H_DIST_CYC = 1.00f;
-    static const float O_H_DIST = 0.96f;
-    
-    static const float TAN19 = 0.354f;      // O2' H 
-    static const float TAN54 = 1.376f;
-    static const float TAN60 = 1.7320508f;  // For NH2-like conformations
-    static const float TAN70 = 2.7474774f;  // For CH3-like conformations
-    static const float TAN30 = 0.57735027f;
- 
+  { 
     Vector3D x, y, z, up, a, b;
 
     if (type->isA ()) 
@@ -698,21 +666,21 @@ namespace mccore {
 	    x = (*get (AtomType::aC2) - *get (AtomType::aN1)).normalize ();
 	    y = (*get (AtomType::aC2) - *get (AtomType::aN3)).normalize ();
 	    z = (x + y).normalize ();
-	    h2 = *get (AtomType::aC2) + z * C_H_DIST_CYC;
+	    h2 = *get (AtomType::aC2) + z * Residue::C_H_DIST_CYC;
 	    
 	    x = (*get (AtomType::aC8) - *get (AtomType::aN7)).normalize ();
 	    y = (*get (AtomType::aC8) - *get (AtomType::aN9)).normalize ();
 	    z = (x + y).normalize ();
-	    h8 = *get (AtomType::aC8) + z * C_H_DIST_CYC;
+	    h8 = *get (AtomType::aC8) + z * Residue::C_H_DIST_CYC;
 	    
 	    x = (*get (AtomType::aC6) - *get (AtomType::aN1)).normalize ();
 	    y = (*get (AtomType::aC6) - *get (AtomType::aC5)).normalize ();
 	    z = (*get (AtomType::aN6) - *get (AtomType::aC6)).normalize ();  // axe N6-C6     
 	    up = x.cross (y).normalize ();
-	    a = (z + up.cross (z).normalize () * TAN60).normalize ();
-	    b = (z + z.cross (up).normalize () * TAN60).normalize ();	    
-	    h61 = *get (AtomType::aN6) + a * N_H_DIST;
-	    h62 = *get (AtomType::aN6) + b * N_H_DIST;
+	    a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
+	    b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();	    
+	    h61 = *get (AtomType::aN6) + a * Residue::N_H_DIST;
+	    h62 = *get (AtomType::aN6) + b * Residue::N_H_DIST;
 	    
 	    insert (Atom (h2, AtomType::aH2));
 	    insert (Atom (h8, AtomType::aH8));
@@ -742,23 +710,23 @@ namespace mccore {
 	    x = (*get (AtomType::aN1) - *get (AtomType::aC2)).normalize ();
 	    y = (*get (AtomType::aN1) - *get (AtomType::aC6)).normalize ();
 	    z = (x + y).normalize ();
-	    h1 = *get (AtomType::aN1) + z * N_H_DIST;
+	    h1 = *get (AtomType::aN1) + z * Residue::N_H_DIST;
 	    
 	    // H8
 	    x = (*get (AtomType::aC8) - *get (AtomType::aN7)).normalize ();
 	    y = (*get (AtomType::aC8) - *get (AtomType::aN9)).normalize ();
 	    z = (x + y).normalize ();
-	    h8 = *get (AtomType::aC8) + z * C_H_DIST_CYC;
+	    h8 = *get (AtomType::aC8) + z * Residue::C_H_DIST_CYC;
 	    
 	    // 1H2 and 2H2
 	    x = (*get (AtomType::aC2) - *get (AtomType::aN1)).normalize ();
 	    y = (*get (AtomType::aC2) - *get (AtomType::aN3)).normalize ();
 	    z = (*get (AtomType::aN2) - *get (AtomType::aC2)).normalize ();  // axe N2-C2	    
 	    up = x.cross (y).normalize ();
-	    a = (z + up.cross (z).normalize () * TAN60).normalize ();
-	    b = (z + z.cross (up).normalize () * TAN60).normalize ();	    
-	    h21 = *get (AtomType::aN2) + b * N_H_DIST;
-	    h22 = *get (AtomType::aN2) + a * N_H_DIST;
+	    a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
+	    b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();	    
+	    h21 = *get (AtomType::aN2) + b * Residue::N_H_DIST;
+	    h22 = *get (AtomType::aN2) + a * Residue::N_H_DIST;
 
 	    insert (Atom (h1, AtomType::aH1));
 	    insert (Atom (h8, AtomType::aH8));
@@ -787,23 +755,23 @@ namespace mccore {
 	    x = (*get (AtomType::aC5) - *get (AtomType::aC4)).normalize ();
 	    y = (*get (AtomType::aC5) - *get (AtomType::aC6)).normalize ();
 	    z = (x + y).normalize ();
-	    h5 = *get (AtomType::aC5) + z * C_H_DIST; // Exceptionnal distance!
+	    h5 = *get (AtomType::aC5) + z * Residue::C_H_DIST; // Exceptionnal distance!
 	          
 	    // H6
 	    x = (*get (AtomType::aC6) - *get (AtomType::aC5)).normalize ();
 	    y = (*get (AtomType::aC6) - *get (AtomType::aN1)).normalize ();
 	    z = (x + y).normalize ();
-	    h6 = *get (AtomType::aC6) + z * C_H_DIST_CYC;
+	    h6 = *get (AtomType::aC6) + z * Residue::C_H_DIST_CYC;
 	    
 	    // 1H4 and 2H4
 	    x = (*get (AtomType::aC4) - *get (AtomType::aN3)).normalize ();
 	    y = (*get (AtomType::aC4) - *get (AtomType::aC5)).normalize ();
 	    z = (*get (AtomType::aN4) - *get (AtomType::aC4)).normalize ();	    
 	    up = x.cross (y).normalize ();
-	    a = (z + up.cross (z).normalize () * TAN60).normalize ();
-	    b = (z + z.cross (up).normalize () * TAN60).normalize ();	    
-	    h41 = *get (AtomType::aN4) + b * N_H_DIST;
-	    h42 = *get (AtomType::aN4) + a * N_H_DIST;
+	    a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
+	    b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();	    
+	    h41 = *get (AtomType::aN4) + b * Residue::N_H_DIST;
+	    h42 = *get (AtomType::aN4) + a * Residue::N_H_DIST;
 
 	    insert (Atom (h5, AtomType::aH5));
 	    insert (Atom (h6, AtomType::aH6));
@@ -830,20 +798,20 @@ namespace mccore {
 	    x = (*get (AtomType::aN3) - *get (AtomType::aC2)).normalize ();
 	    y = (*get (AtomType::aN3) - *get (AtomType::aC4)).normalize ();
 	    z = (x + y).normalize ();
-	    h3 = *get (AtomType::aN3) + z * C_H_DIST; // Exceptionnal distance!
+	    h3 = *get (AtomType::aN3) + z * Residue::C_H_DIST; // Exceptionnal distance!
 	    
 	    
 	    // H5
 	    x = (*get (AtomType::aC5) - *get (AtomType::aC4)).normalize ();
 	    y = (*get (AtomType::aC5) - *get (AtomType::aC6)).normalize ();
 	    z = (x + y).normalize ();
-	    h5 = *get (AtomType::aC5) + z * C_H_DIST; // Exceptionnal distance!	    
+	    h5 = *get (AtomType::aC5) + z * Residue::C_H_DIST; // Exceptionnal distance!	    
 	    
 	    // H6
 	    x = (*get (AtomType::aC6) - *get (AtomType::aC5)).normalize ();
 	    y = (*get (AtomType::aC6) - *get (AtomType::aN1)).normalize ();
 	    z = (x + y).normalize ();
-	    h6 = *get (AtomType::aC6) + z * C_H_DIST_CYC;
+	    h6 = *get (AtomType::aC6) + z * Residue::C_H_DIST_CYC;
 
 	    insert (Atom (h3, AtomType::aH3));
 	    insert (Atom (h5, AtomType::aH5));
@@ -870,13 +838,13 @@ namespace mccore {
 	    x = (*get (AtomType::aN3) - *get (AtomType::aC2)).normalize ();
 	    y = (*get (AtomType::aN3) - *get (AtomType::aC4)).normalize ();
 	    z = (x + y).normalize ();
-	    h3 = *get (AtomType::aN3) + z * C_H_DIST; // Exceptionnal distance!	    
+	    h3 = *get (AtomType::aN3) + z * Residue::C_H_DIST; // Exceptionnal distance!	    
 	    
 	    // H6
 	    x = (*get (AtomType::aC6) - *get (AtomType::aC5)).normalize ();
 	    y = (*get (AtomType::aC6) - *get (AtomType::aN1)).normalize ();
 	    z = (x + y).normalize ();
-	    h6 = *get (AtomType::aC6) + z * C_H_DIST_CYC;
+	    h6 = *get (AtomType::aC6) + z * Residue::C_H_DIST_CYC;
 
 	    // 1H5M, 2H5M, 3H5M (arbitrarily placed)	    
 	    x = (*get (AtomType::aC5M) - *get (AtomType::aC5)).normalize ();
@@ -884,13 +852,13 @@ namespace mccore {
 	    up = x.cross (y).normalize ();
 	    z = x.cross (up);
 	    
-	    h51m = *get (AtomType::aC5M) + (x + z * TAN70).normalize () * C_H_DIST;
+	    h51m = *get (AtomType::aC5M) + (x + z * Residue::TAN70).normalize () * Residue::C_H_DIST;
 	    
-	    a = (up - z*TAN30).normalize ();
-	    h52m = *get (AtomType::aC5M) + (x + a * TAN70).normalize () * C_H_DIST;
+	    a = (up - z*Residue::TAN30).normalize ();
+	    h52m = *get (AtomType::aC5M) + (x + a * Residue::TAN70).normalize () * Residue::C_H_DIST;
 	    
-	    b = (-up - z*TAN30).normalize ();
-	    h53m = *get (AtomType::aC5M) + (x + b * TAN70).normalize () * C_H_DIST;
+	    b = (-up - z*Residue::TAN30).normalize ();
+	    h53m = *get (AtomType::aC5M) + (x + b * Residue::TAN70).normalize () * Residue::C_H_DIST;
 
 	    insert (Atom (h3, AtomType::aH3));
 	    insert (Atom (h6, AtomType::aH6));
@@ -899,174 +867,186 @@ namespace mccore {
 	    insert (Atom (h53m, AtomType::a3H5M));
 	}
 
+    _add_ribose_hydrogens ();
+  }
+
+
+  void
+  Residue::_add_ribose_hydrogens ()
+  {
     if (type->isNucleicAcid ()) 
-	{
-	    const Vector3D *r1;
-	    const Vector3D *r2;
-	    const Vector3D *r3;
-	    const Vector3D *r4;
-	    
-	    //  H1p
-	    if (!contains (AtomType::aH1p)) {
-		r1 = get (AtomType::aC1p);
-		r2 = get (AtomType::aC2p);
-		r3 = (type->isPurine ()) ? get (AtomType::aN9) : get (AtomType::aN1);
-		r4 = get (AtomType::aO4p);
-		if (0 != r1 && 0 != r2 && 0 != r3 && 0 != r4) {
-		    Vector3D h1p;
-		    
-		    x = (*r1 - *r2).normalize ();
-		    y = (*r1 - *r3).normalize ();
-		    z = (*r1 - *r4).normalize ();
-		    
-		    h1p = *r1 + (x + y + z).normalize () * C_H_DIST;
-		    insert (Atom (h1p, AtomType::aH1p));
-		}
-	    }
-	    
-	    //  H3p
-	    if (!contains (AtomType::aH3p)) {
-		r1 = get (AtomType::aC3p);
-		r2 = get (AtomType::aC2p);
-		r3 = get (AtomType::aO3p);
-		r4 = get (AtomType::aC4p);
-		if (0 != r1 && 0 != r2 && 0 != r3 && 0 != r4) {
-		    Vector3D h3p;
-		    
-		    x = (*r1 - *r2).normalize ();
-		    y = (*r1 - *r3).normalize ();
-		    z = (*r1 - *r4).normalize ();
-		    		    
-		    h3p = *r1 + (x + y + z).normalize () * C_H_DIST;
-		    insert (Atom (h3p, AtomType::aH3p));
-		}
-	    }
-
-	    //  H4p
-	    if (!contains (AtomType::aH4p)) {
-		r1 = get (AtomType::aC4p);
-		r2 = get (AtomType::aC3p);
-		r3 = get (AtomType::aO4p);
-		r4 = get (AtomType::aC5p);
-		if (0 != r1 && 0 != r2 && 0 != r3 && 0 != r4) {
-		    Vector3D h4p;
-		    
-		    x = (*r1 - *r2).normalize ();
-		    y = (*r1 - *r3).normalize ();
-		    z = (*r1 - *r4).normalize ();
+      {
+	Vector3D x, y, z, up;
 	  
-		    h4p = *r1 + (x + y + z).normalize () * C_H_DIST;
-		    insert (Atom (h4p, AtomType::aH4p));
-		}
-	    }
+	const Vector3D *r1;
+	const Vector3D *r2;
+	const Vector3D *r3;
+	const Vector3D *r4;
 	    
-	    
-	    //  1H5p  2H5p
-	    if (!contains (AtomType::a1H5p) || !contains (AtomType::a1H5p)) {
-		r1 = get (AtomType::aC5p);
-		r2 = get (AtomType::aC4p);
-		r3 = get (AtomType::aO5p);
-		if (0 != r1 && 0 != r2 && 0 != r3) {
-		    Vector3D h51p;
-		    Vector3D h52p;
+	//  H1p
+	if (!contains (AtomType::aH1p)) {
+	  r1 = get (AtomType::aC1p);
+	  r2 = get (AtomType::aC2p);
+	  r3 = (type->isPurine ()) ? get (AtomType::aN9) : get (AtomType::aN1);
+	  r4 = get (AtomType::aO4p);
+	  if (0 != r1 && 0 != r2 && 0 != r3 && 0 != r4) {
+	    Vector3D h1p;
 		    
-		    x = (*r1 - *r2).normalize ();
-		    y = (*r1 - *r3).normalize ();
-		    z = (x + y).normalize ();
-		    up = x.cross (y).normalize ();
+	    x = (*r1 - *r2).normalize ();
+	    y = (*r1 - *r3).normalize ();
+	    z = (*r1 - *r4).normalize ();
+		    
+	    h1p = *r1 + (x + y + z).normalize () * Residue::C_H_DIST;
+	    insert (Atom (h1p, AtomType::aH1p));
+	  }
+	}
+	    
+	//  H3p
+	if (!contains (AtomType::aH3p)) {
+	  r1 = get (AtomType::aC3p);
+	  r2 = get (AtomType::aC2p);
+	  r3 = get (AtomType::aO3p);
+	  r4 = get (AtomType::aC4p);
+	  if (0 != r1 && 0 != r2 && 0 != r3 && 0 != r4) {
+	    Vector3D h3p;
+		    
+	    x = (*r1 - *r2).normalize ();
+	    y = (*r1 - *r3).normalize ();
+	    z = (*r1 - *r4).normalize ();
+		    		    
+	    h3p = *r1 + (x + y + z).normalize () * Residue::C_H_DIST;
+	    insert (Atom (h3p, AtomType::aH3p));
+	  }
+	}
 
-		    h51p = *r1 + (up * TAN54 + z).normalize () * C_H_DIST;
-		    h52p = *r1 + (-up * TAN54 + z).normalize () * C_H_DIST;
-		    insert (Atom (h51p, AtomType::a1H5p));
-		    insert (Atom (h52p, AtomType::a2H5p));
-		}
-	    }
-	    
-	    // HO3p  // optional
-	    if (!contains (AtomType::aHO3p)) {
-		r1 = get (AtomType::aO3p);
-		r2 = get (AtomType::aC3p);
-		r3 = get (AtomType::aC4p);
-		
-		if (0 != r1 && 0 != r2 && 0 != r3) {
-		    Vector3D hO3p;
+	//  H4p
+	if (!contains (AtomType::aH4p)) {
+	  r1 = get (AtomType::aC4p);
+	  r2 = get (AtomType::aC3p);
+	  r3 = get (AtomType::aO4p);
+	  r4 = get (AtomType::aC5p);
+	  if (0 != r1 && 0 != r2 && 0 != r3 && 0 != r4) {
+	    Vector3D h4p;
 		    
-		    x = (*r2 - *r3).normalize ();
-		    y = (*r1 - *r2).normalize ();
-		    z = x.cross (y).cross (y).normalize ();
-		    
-		    hO3p = *r1 + (y*TAN19+z).normalize () * O_H_DIST;
-		    insert (Atom (hO3p, AtomType::aHO3p));
-		}
-	    }
+	    x = (*r1 - *r2).normalize ();
+	    y = (*r1 - *r3).normalize ();
+	    z = (*r1 - *r4).normalize ();
+	  
+	    h4p = *r1 + (x + y + z).normalize () * Residue::C_H_DIST;
+	    insert (Atom (h4p, AtomType::aH4p));
+	  }
+	}
 	    
-	    if (contains (AtomType::aO2p)) {
-		//  H2p
-		if (!contains (AtomType::aH2p)) {
-		    r1 = get (AtomType::aC2p);
-		    r2 = get (AtomType::aC1p);
-		    r3 = get (AtomType::aC3p);
-		    r4 = get (AtomType::aO2p);
-		    if (0 != r1 && 0 != r2 && 0 != r3 && 0 != r4) {
-			Vector3D h2p;
+	    
+	//  1H5p  2H5p
+	if (!contains (AtomType::a1H5p) || !contains (AtomType::a1H5p)) {
+	  r1 = get (AtomType::aC5p);
+	  r2 = get (AtomType::aC4p);
+	  r3 = get (AtomType::aO5p);
+	  if (0 != r1 && 0 != r2 && 0 != r3) {
+	    Vector3D h51p;
+	    Vector3D h52p;
+		    
+	    x = (*r1 - *r2).normalize ();
+	    y = (*r1 - *r3).normalize ();
+	    z = (x + y).normalize ();
+	    up = x.cross (y).normalize ();
+
+	    h51p = *r1 + (up * Residue::TAN54 + z).normalize () * Residue::C_H_DIST;
+	    h52p = *r1 + (-up * Residue::TAN54 + z).normalize () * Residue::C_H_DIST;
+	    insert (Atom (h51p, AtomType::a1H5p));
+	    insert (Atom (h52p, AtomType::a2H5p));
+	  }
+	}
+	    
+	    
+	    
+	if (contains (AtomType::aO2p)) {
+	  //  H2p
+	  if (!contains (AtomType::aH2p)) {
+	    r1 = get (AtomType::aC2p);
+	    r2 = get (AtomType::aC1p);
+	    r3 = get (AtomType::aC3p);
+	    r4 = get (AtomType::aO2p);
+	    if (0 != r1 && 0 != r2 && 0 != r3 && 0 != r4) {
+	      Vector3D h2p;
 			
-			x = (*r1 - *r2).normalize ();
-			y = (*r1 - *r3).normalize ();
-			z = (*r1 - *r4).normalize ();
+	      x = (*r1 - *r2).normalize ();
+	      y = (*r1 - *r3).normalize ();
+	      z = (*r1 - *r4).normalize ();
 			
-			h2p = *r1 + (x + y + z).normalize () * C_H_DIST;
-			insert (Atom (h2p, AtomType::aH2p));
-		    }
-		}
+	      h2p = *r1 + (x + y + z).normalize () * Residue::C_H_DIST;
+	      insert (Atom (h2p, AtomType::aH2p));
+	    }
+	  }
 		
-		// HO2p
-		if (!contains (AtomType::aHO2p)) {
-		    r1 = get (AtomType::aO2p);
-		    r2 = get (AtomType::aC2p);
-		    r3 = get (AtomType::aC1p);
-		    if (0 != r1 && 0 != r2 && 0 != r3) {
-			Vector3D hO2p;
+	  // HO2p
+	  if (!contains (AtomType::aHO2p)) {
+	    r1 = get (AtomType::aO2p);
+	    r2 = get (AtomType::aC2p);
+	    r3 = get (AtomType::aC1p);
+	    if (0 != r1 && 0 != r2 && 0 != r3) {
+	      Vector3D hO2p;
 			
-			x = (*r2 - *r3).normalize ();
-			y = (*r1 - *r2).normalize ();
-			z = x.cross (y).cross (y).normalize ();			
-			hO2p = *r1 + (y * TAN19 - z).normalize () * O_H_DIST;
-			insert (Atom (hO2p, AtomType::aHO2p));
-		    }
-		}
-	    } else {
-		// 1H2p 2H2p
-		if (!contains (AtomType::a1H2p) || !contains (AtomType::a2H2p)) {
-		    r1 = get (AtomType::aC2p);
-		    r2 = get (AtomType::aC1p);
-		    r3 = get (AtomType::aC3p);
-		    if (0 != r1 && 0 != r2 && 0 != r3) {
-			Vector3D h21p;
-			Vector3D h22p;
+	      x = (*r2 - *r3).normalize ();
+	      y = (*r1 - *r2).normalize ();
+	      z = x.cross (y).cross (y).normalize ();			
+	      hO2p = *r1 + (y * Residue::TAN19 - z).normalize () * Residue::O_H_DIST;
+	      insert (Atom (hO2p, AtomType::aHO2p));
+	    }
+	  }
+	} else {
+	  // 1H2p 2H2p
+	  if (!contains (AtomType::a1H2p) || !contains (AtomType::a2H2p)) {
+	    r1 = get (AtomType::aC2p);
+	    r2 = get (AtomType::aC1p);
+	    r3 = get (AtomType::aC3p);
+	    if (0 != r1 && 0 != r2 && 0 != r3) {
+	      Vector3D h21p;
+	      Vector3D h22p;
 			
-			x = (*r1 - *r2).normalize ();
-			y = (*r1 - *r3).normalize ();
-			z = (x + y).normalize ();
-			up = x.cross (y).normalize ();
+	      x = (*r1 - *r2).normalize ();
+	      y = (*r1 - *r3).normalize ();
+	      z = (x + y).normalize ();
+	      up = x.cross (y).normalize ();
 			
-			h21p = *r1 + (up * TAN54 + z).normalize () * C_H_DIST;
-			h22p = *r1 + (-up * TAN54 + z).normalize () * C_H_DIST;
-			insert (Atom (h21p, AtomType::a1H2p));
-			insert (Atom (h22p, AtomType::a2H2p));
-		    }
-		}
-	    }	  	    
-	}    
+	      h21p = *r1 + (up * Residue::TAN54 + z).normalize () * Residue::C_H_DIST;
+	      h22p = *r1 + (-up * Residue::TAN54 + z).normalize () * Residue::C_H_DIST;
+	      insert (Atom (h21p, AtomType::a1H2p));
+	      insert (Atom (h22p, AtomType::a2H2p));
+	    }
+	  }
+	}	  	    
+      }    
+  }
+
+
+  void
+  Residue::addHO3p ()
+  {
+    if (type->isNucleicAcid () && !contains (AtomType::aHO3p))
+      {
+	const Vector3D *r1 = get (AtomType::aO3p);
+	const Vector3D *r2 = get (AtomType::aC3p);
+	const Vector3D *r3 = get (AtomType::aC4p);
+		
+	if (0 != r1 && 0 != r2 && 0 != r3)
+	  {
+	    Vector3D hO3p;
+	    Vector3D x = (*r2 - *r3).normalize ();
+	    Vector3D y = (*r1 - *r2).normalize ();
+	    Vector3D z = x.cross (y).cross (y).normalize ();
+		    
+	    hO3p = *r1 + (y*Residue::TAN19+z).normalize () * Residue::O_H_DIST;
+	    insert (Atom (hO3p, AtomType::aHO3p));
+	  }
+      }
   }
 
   
   void 
   Residue::addLonePairs () 
   {
-    static const float O_LP_DIST = 1.00f;
-    static const float N_LP_DIST = 1.00f;
-    static const float TAN60 = 1.7320508f;
-
     Vector3D x, y, z, up, a, b;
     
     if (type->isA ()) 
@@ -1090,19 +1070,19 @@ namespace mccore {
 	x = (*get (AtomType::aN1) - *get (AtomType::aC2)).normalize ();
 	y = (*get (AtomType::aN1) - *get (AtomType::aC6)).normalize ();
 	z = (x + y).normalize ();
-	lp1 = *get (AtomType::aN1) + z * N_LP_DIST;
+	lp1 = *get (AtomType::aN1) + z * Residue::N_LP_DIST;
 	
 	// LP3
 	x = (*get (AtomType::aN3) - *get (AtomType::aC2)).normalize ();
 	y = (*get (AtomType::aN3) - *get (AtomType::aC4)).normalize ();
 	z = (x + y).normalize ();
-	lp3 =*get (AtomType::aN3) + z * N_LP_DIST;
+	lp3 =*get (AtomType::aN3) + z * Residue::N_LP_DIST;
       
 	// LP7
 	x = (*get (AtomType::aN7) - *get (AtomType::aC5)).normalize ();
 	y = (*get (AtomType::aN7) - *get (AtomType::aC8)).normalize ();
 	z = (x + y).normalize ();
-	lp7 = *get (AtomType::aN7) + z * N_LP_DIST;
+	lp7 = *get (AtomType::aN7) + z * Residue::N_LP_DIST;
 	
 	insert (Atom (lp1, AtomType::aLP1));
 	insert (Atom (lp3, AtomType::aLP3));
@@ -1131,13 +1111,13 @@ namespace mccore {
 	x = (*get (AtomType::aN3) - *get (AtomType::aC2)).normalize ();
 	y = (*get (AtomType::aN3) - *get (AtomType::aC4)).normalize ();
 	z = (x + y).normalize ();
-	lp3 = *get (AtomType::aN3) + z * N_LP_DIST;
+	lp3 = *get (AtomType::aN3) + z * Residue::N_LP_DIST;
 	
 	// LP7
 	x = (*get (AtomType::aN7) - *get (AtomType::aC5)).normalize ();
 	y = (*get (AtomType::aN7) - *get (AtomType::aC8)).normalize ();
 	z = (x + y).normalize ();
-	lp7 = *get (AtomType::aN7) + z * N_LP_DIST;
+	lp7 = *get (AtomType::aN7) + z * Residue::N_LP_DIST;
 	
 	// 1LP6 and 2LP6
 	x = (*get (AtomType::aC6) - *get (AtomType::aN1)).normalize ();
@@ -1145,10 +1125,10 @@ namespace mccore {
 	z = (*get (AtomType::aO6) - *get (AtomType::aC6)).normalize ();
 	
 	up = x.cross (y).normalize ();
-	a = (z + up.cross (z).normalize () * TAN60).normalize ();
-	b = (z + z.cross (up).normalize () * TAN60).normalize ();	
-	lp61 = *get (AtomType::aO6) + b * O_LP_DIST;
-	lp62 = *get (AtomType::aO6) + a * O_LP_DIST;
+	a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
+	b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();	
+	lp61 = *get (AtomType::aO6) + b * Residue::O_LP_DIST;
+	lp62 = *get (AtomType::aO6) + a * Residue::O_LP_DIST;
 	
 	insert (Atom (lp3, AtomType::aLP3));
 	insert (Atom (lp7, AtomType::aLP7));
@@ -1176,7 +1156,7 @@ namespace mccore {
 	x = (*get (AtomType::aN3) - *get (AtomType::aC2)).normalize ();
 	y = (*get (AtomType::aN3) - *get (AtomType::aC4)).normalize ();
 	z = (x + y).normalize ();
-	lp3 = *get (AtomType::aN3) + z * N_LP_DIST;
+	lp3 = *get (AtomType::aN3) + z * Residue::N_LP_DIST;
 	
 	// 1LP2 and 2LP2
 	x = (*get (AtomType::aC2) - *get (AtomType::aN1)).normalize ();
@@ -1184,11 +1164,11 @@ namespace mccore {
 	z = (*get (AtomType::aO2) - *get (AtomType::aC2)).normalize ();
 	
 	up = x.cross (y).normalize ();
-	a = (z + up.cross (z).normalize () * TAN60).normalize ();
-	b = (z + z.cross (up).normalize () * TAN60).normalize ();
+	a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
+	b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();
 	
-	lp21 = *get (AtomType::aO2) + a * O_LP_DIST;
-	lp22 = *get (AtomType::aO2) + b * O_LP_DIST;
+	lp21 = *get (AtomType::aO2) + a * Residue::O_LP_DIST;
+	lp22 = *get (AtomType::aO2) + b * Residue::O_LP_DIST;
 	
 	insert (Atom (lp3, AtomType::aLP3));
 	insert (Atom (lp21, AtomType::a1LP2));
@@ -1216,21 +1196,21 @@ namespace mccore {
 	y = (*get (AtomType::aC2) - *get (AtomType::aN3)).normalize ();
 	z = (*get (AtomType::aO2) - *get (AtomType::aC2)).normalize ();
 	up = x.cross (y).normalize ();
-	a = (z + up.cross (z).normalize () * TAN60).normalize ();
-	b = (z + z.cross (up).normalize () * TAN60).normalize ();
-	lp21 = *get (AtomType::aO2) + a * O_LP_DIST;
-	lp22 = *get (AtomType::aO2) + b * O_LP_DIST;
+	a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
+	b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();
+	lp21 = *get (AtomType::aO2) + a * Residue::O_LP_DIST;
+	lp22 = *get (AtomType::aO2) + b * Residue::O_LP_DIST;
 	
 	// 1LP4 and 2LP4
 	x = (*get (AtomType::aC4) - *get (AtomType::aN3)).normalize ();
 	y = (*get (AtomType::aC4) - *get (AtomType::aC5)).normalize ();
 	z = (*get (AtomType::aO4) - *get (AtomType::aC4)).normalize ();	
 	up = x.cross (y).normalize ();
-	a = (z + up.cross (z).normalize () * TAN60).normalize ();
-	b = (z + z.cross (up).normalize () * TAN60).normalize ();
+	a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
+	b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();
 	
-	lp41 = *get (AtomType::aO4) + b * O_LP_DIST;
-	lp42 = *get (AtomType::aO4) + a * O_LP_DIST;
+	lp41 = *get (AtomType::aO4) + b * Residue::O_LP_DIST;
+	lp42 = *get (AtomType::aO4) + a * Residue::O_LP_DIST;
       
 	insert (Atom (lp21, AtomType::a1LP2));
 	insert (Atom (lp22, AtomType::a2LP2));
@@ -1239,6 +1219,16 @@ namespace mccore {
       }      
   }
 
+  
+  void
+  Residue::setupHLP ()
+  {
+    removeOptionals ();
+    addHydrogens ();
+    addLonePairs ();
+  }
+  
+  
   float
   Residue::getRho () const
   {
@@ -1275,7 +1265,16 @@ namespace mccore {
   const PropertyType* 
   Residue::getPucker () const
   {
-    return Residue::getPuckerType (getRho ());
+    float rho;
+    try
+      {
+	rho = getRho ();
+      }
+    catch (CException ex)
+      {
+	return PropertyType::parseType ("undefined");
+      }
+    return Residue::getPuckerType (rho);
   }
 
 
@@ -1304,12 +1303,21 @@ namespace mccore {
   const PropertyType* 
   Residue::getGlycosyl () const
   {
-    return Residue::getGlycosylType (getChi ());
+    float chi;
+    try
+      {
+	chi = getChi ();
+      }
+    catch (CException ex)
+      {
+	return PropertyType::parseType ("undefined");
+      }
+    return Residue::getGlycosylType (chi);
   }
 
   
   void 
-  Residue::finalize (bool h_lp)
+  Residue::finalize ()
   {
     Vector3D *v1, *v2, *v3;
 
@@ -1318,12 +1326,6 @@ namespace mccore {
     // no pseudo atoms in phosphate residue, nothing to do!
     if (getType ()->isPhosphate ())
       return;
-    
-    if (getType ()->isNucleicAcid () && h_lp) {
-      removeOptionals ();
-      addHydrogens ();
-      addLonePairs ();
-    }
 
     /* Compute the location of the pseudo atoms. */
     if (((v1 = get (AtomType::aN9)) != 0 
@@ -1899,7 +1901,7 @@ namespace mccore {
     
     po4->setType (ResidueType::rPhosphate);
     po4->setResId (ResId ("p0"));
-    po4->setIdeal (false);
+    po4->setTheoretical ();
     po4->setReferential (HomogeneousTransfo ());
       
     phos_it = po4->find (AtomType::aP);
@@ -2063,7 +2065,6 @@ namespace mccore {
   Atom& 
   Residue::get (size_type pos) const 
   {
-    assert (pos < atomGlobal.size ());
     return *atomGlobal[pos];
   }
 
@@ -2081,7 +2082,7 @@ namespace mccore {
   Atom*
   Residue::_get_or_create (const AtomType *aType)
   {
-    int pos = size ();
+    size_type pos = size ();
     pair< AtomMap::iterator, bool > inserted =
       atomIndex.insert (make_pair (aType, pos));
 
@@ -2096,6 +2097,15 @@ namespace mccore {
       {
 	return atomGlobal[inserted.first->second];
       }
+  }
+
+  
+  void
+  Residue::_insert_local (const Vector3D& coord, AtomMap::iterator posit)
+  {
+    // no local atom container
+    atomGlobal[posit->second]->set (coord.getX (), coord.getY (), coord.getZ ());
+    atomGlobal[posit->second]->transform (getReferential ());
   }
 
   
@@ -2589,6 +2599,7 @@ namespace mccore {
   {
     // place built ribose's atoms back in referential
     _transform_ribose (referential, build5p, build3p);
+    _add_ribose_hydrogens ();
   }
   
   // I/O -----------------------------------------------------------------------
