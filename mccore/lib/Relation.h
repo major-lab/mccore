@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 //
 //  This file is part of mccore.
 //  
@@ -59,7 +59,7 @@ namespace mccore {
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.5 2003-06-18 22:25:40 gendrop Exp $
+   * @version $Id: Relation.h,v 1.6 2003-07-11 21:28:02 gendrop Exp $
    */
   class Relation
   {
@@ -216,8 +216,12 @@ namespace mccore {
     areStacked (const Residue* ra, const Residue *rb);
     
     /**
-     * Determines if the given residues are paired in space based
-     * on the formation of hydrogen bonds.
+     * Determines if the given residues are paired in space based on
+     * the formation of hydrogen bonds.  This method is used for the
+     * base pairing of nucleic acids based the parameters derived in:
+     * S. Lemieux and F. Major, RNA canonical and non-canonical base
+     * pairing types: a recognition method and complete
+     * repertoire. NAR, 30(19): 4250-4263, 2002.
      * @param ra a residue.
      * @param ra another residue.
      * @param pta the resulting interacting face of a.
@@ -228,6 +232,15 @@ namespace mccore {
     static set< const PropertyType* > 
     arePaired (const Residue* ra, const Residue *rb, 
 	       const PropertyType*& pta, const PropertyType*& pta);
+
+    /**
+     * [Experimental] Determines if there is at least one H-HBond
+     * possible between the two residues, regardless of the position
+     * of the donors and acceptors.
+     */
+    static set< const PropertyType* > 
+    areHBonded (const Residue* ra, const Residue *rb);
+    
 
     // PRIVATE METHODS ------------------------------------------------------
 

@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // zfstream.cc
-// Copyright © 2002 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Mon Jan 28 16:58:09 2002
 // Last Modified By : Patrick Gendron
-// Last Modified On : Mon Feb 25 11:37:31 2002
-// Update Count     : 1
+// Last Modified On : Fri Jul 11 17:28:26 2003
+// Update Count     : 4
 // Status           : Unknown.
 // 
 // 
@@ -29,7 +29,7 @@
 #include <config.h>
 #endif
 
-#include <stdio.h>
+#include <cstdio>
 #include <string.h>
 
 #include "zfstream.h"

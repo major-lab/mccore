@@ -237,7 +237,7 @@ namespace mccore {
   // METHODS -------------------------------------------------------------------
 
 
-  PropertyType* 
+  const PropertyType* 
   PropertyType::parseType (const char* s) 
   {
     return ptstore.get (s);

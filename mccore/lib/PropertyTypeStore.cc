@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:42:25 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 
 
 #ifdef HAVE_CONFIG_H
@@ -229,7 +229,7 @@ namespace mccore {
 
   // METHODS -------------------------------------------------------------------
 
-  PropertyType* 
+  const PropertyType* 
   PropertyTypeStore::get (const char* s) 
   {
     PropertyType* t = 0;

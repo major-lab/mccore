@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 // 
 //  This file is part of mccore.
 //  
@@ -43,7 +43,7 @@ namespace mccore {
    * General property types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: PropertyType.h,v 1.2 2003-07-09 21:49:50 gendrop Exp $
+   * @version $Id: PropertyType.h,v 1.3 2003-07-11 21:27:30 gendrop Exp $
    */
 class PropertyType
 {
@@ -151,7 +151,7 @@ public:
    * @param s the string.
    * @return a property type for the string.
    */
-  static PropertyType* parseType (const char* t);
+  static const PropertyType* parseType (const char* t);
 
   /**
    * General is method for use when both objects to compare are of

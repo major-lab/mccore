@@ -202,7 +202,7 @@ namespace mccore {
   // METHODS -------------------------------------------------------------------
 
 
-  AtomType* 
+  const AtomType* 
   AtomType::parseType (const char* s) 
   {
     return atstore.get (s);

@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Tue Mar 11 13:56:50 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -193,7 +193,7 @@ namespace mccore {
   
   // METHODS -------------------------------------------------------------------
 
-  AtomType* 
+  const AtomType* 
   AtomTypeStore::get (const char* s) 
   {
     AtomType* t = 0;

@@ -22,6 +22,8 @@
 #include "ExtendedResidue.h"
 #include "PairingPattern.h"
 
+#include "stlio.h"
+
 namespace mccore {
 
 
@@ -50,10 +52,9 @@ namespace mccore {
     : ref (rA), res (rB),
       refFace (0), resFace (0)
   {
-    HomogeneousTransfo t;
-    tfo = ref->getReferential (&t);
+    tfo = ref->getReferential ();
     tfo = tfo.invert ();
-    tfo *= res->getReferential (&t);
+    tfo *= res->getReferential ();
   }
 
   
@@ -107,6 +108,11 @@ namespace mccore {
     labels.insert (s.begin (), s.end ());
     refFace = pta;
     resFace = ptb;
+
+    if (!is (PropertyType::pAdjacent) && 
+	(is (PropertyType::pPairing) || is (PropertyType::pStack))) {
+      labels.insert (PropertyType::pDIR_ANY);
+    }
 
     return !empty ();
   }
@@ -381,10 +387,6 @@ namespace mccore {
     graph.insert (node++); // Source
     graph.insert (node++); // Sink
 
-    const UndirectedGraph< const AtomType* > *ga = ResidueTopology::get (ra->getType ());
-    const UndirectedGraph< const AtomType* > *gb = ResidueTopology::get (rb->getType ());
-    if (ga == 0 || gb == 0) return ts;
-    
     vector< Residue::const_iterator > ra_at;
     vector< Residue::const_iterator > ran_at;
     vector< Residue::const_iterator > rb_at;
@@ -394,16 +396,18 @@ namespace mccore {
     AtomSet* as = new AtomSetOr (new AtomSetHydrogen (), new AtomSetLP ());
     as = new AtomSetAnd (new AtomSetSideChain (), as);
 
+    const UndirectedGraph< const AtomType* > *ga = ResidueTopology::get (ra->getType ());
+    const UndirectedGraph< const AtomType* > *gb = ResidueTopology::get (rb->getType ());
+
     for (i=ra->begin (as->clone ()); i!=ra->end (); ++i) {
       ra_at.push_back (i);
       ran_at.push_back (ra->find (ga->getNeighbors (i->getType ()).front ()));
     }
-
     for (k=rb->begin (as); k!=rb->end (); ++k) {
       rb_at.push_back (k);
       rbn_at.push_back (rb->find (gb->getNeighbors (k->getType ()).front ()));
     }
-    
+
     for (x=0; x<(int)ra_at.size (); ++x) {
       i = ra_at[x];
       j = ran_at[x];
@@ -456,7 +460,7 @@ namespace mccore {
 // 	cout << m->second << " : " << *m->first << endl;
 //       }
 //     }
-//     graph.output (cout);
+//    graph.output (cout);
     
     graph.preFlowPush (0, 1);
     
@@ -525,7 +529,7 @@ namespace mccore {
       pd = pd + pb;
       
       float rad = fabs (pa.torsionAngle (pc, pb, pd));
-      PropertyType *iso = (rad<M_PI/2) ?
+      const PropertyType *iso = (rad<M_PI/2) ?
 	PropertyType::parseType ("cis") :
 	PropertyType::parseType ("trans");
 
@@ -558,7 +562,64 @@ namespace mccore {
 
 
 
+  set< const PropertyType* > 
+  Relation::areHBonded (const Residue* ra, const Residue *rb)
+  {
+    Residue::const_iterator i, j, k, l;
+    set< const PropertyType* > ts;
+    int x, y;
+    
+    vector< Residue::const_iterator > ra_at;
+    vector< Residue::const_iterator > ran_at;
+    vector< Residue::const_iterator > rb_at;
+    vector< Residue::const_iterator > rbn_at;
 
+    AtomSet* hl = new AtomSetOr (new AtomSetHydrogen (), new AtomSetLP ());
+    AtomSet* da = new AtomSetNot (hl->clone ());
+
+    for (i=ra->begin (hl->clone ()); i!=ra->end (); ++i) {
+      for (j=ra->begin (da->clone ()); j!=ra->end (); ++j) {
+	if (i->distance (*j) < 1.7) {
+	  ra_at.push_back (i);
+	  ran_at.push_back (j);	  
+	}
+      }
+    }
+    for (i=rb->begin (hl->clone ()); i!=rb->end (); ++i) {
+      for (j=rb->begin (da->clone ()); j!=rb->end (); ++j) {
+	if (i->distance (*j) < 1.7) {
+	  rb_at.push_back (i);
+	  rbn_at.push_back (j);	  
+	}
+      }
+    }    
+    
+    for (x=0; x<(int)ra_at.size (); ++x) {
+      i = ra_at[x];
+      j = ran_at[x];
+      for (y=0; y<(int)rb_at.size (); ++y) {
+	k = rb_at[y];
+	l = rbn_at[y];
+	
+	if (i->getType ()->isHydrogen () && k->getType ()->isLonePair ()) {
+	  HBond h (j->getType (), i->getType (), l->getType (), k->getType ());
+	  h.eval (*ra, *rb);
+	  if (h.getValue () > 0.01) {
+	    cout << h << endl;
+	  }
+	} else if (k->getType ()->isHydrogen () && i->getType ()->isLonePair ()) {
+	  HBond h (l->getType (), k->getType (), j->getType (), i->getType ());
+	  h.eval (*rb, *ra);
+	  if (h.getValue () > 0.01) {
+	    cout << h << endl;
+	  }	
+	} 
+      }
+    }
+
+
+    return ts;
+  }
 
   Vector3D 
   Relation::pyrimidineNormal (const Residue *res)
@@ -624,10 +685,10 @@ namespace mccore {
   {
     if (!Relation::isInit) Relation::init ();
 
-    HomogeneousTransfo tfo;
-    tfo = r->getReferential (&tfo);
-    tfo = tfo.invert ();
-    Vector3D pp = tfo * p;
+    HomogeneousTransfo t;
+    t = r->getReferential ();
+    t = t.invert ();
+    Vector3D pp = t * p;
 
     vector< pair< Vector3D, const PropertyType* > > *faces = 0;
 

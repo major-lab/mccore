@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:00:09 2003
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 // 
 //  This file is part of mccore.
 //  
@@ -44,7 +44,7 @@ namespace mccore {
    * Derived from Vector3D, this class adds the type of the atom.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Atom.h,v 1.2 2003-04-11 01:33:06 gendrop Exp $
+   * @version $Id: Atom.h,v 1.3 2003-07-11 21:27:00 gendrop Exp $
    */
   class Atom : public Vector3D
   {
@@ -69,7 +69,7 @@ namespace mccore {
      * @param z the z coordinate.
      * @param aType the atom type.
      */
-    Atom (float x, float y, float z, AtomType *aType);
+    Atom (float x, float y, float z, const AtomType *aType);
     
     /**
      * Initializes the atom with a point and a type.

@@ -3,7 +3,7 @@
 // Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique,
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Oct 26 10:24:02 2000
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 // 
 //  This file is part of mccore.
 //  
@@ -29,6 +29,8 @@
 #include <set>
 
 #include "ResId.h"
+#include "Messagestream.h"
+#include "CException.h"
 
 class iBinstream;
 class oBinstream;

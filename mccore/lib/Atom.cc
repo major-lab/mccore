@@ -24,7 +24,7 @@ namespace mccore {
   {}
 
 
-  Atom::Atom (float x, float y, float z, AtomType *aType) 
+  Atom::Atom (float x, float y, float z, const AtomType *aType) 
     : Vector3D (x, y, z), 
       type (aType) 
   {}
