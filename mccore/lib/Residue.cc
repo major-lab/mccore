@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.30 $
-// $Id: Residue.cc,v 1.30 2004-05-14 15:01:27 thibaup Exp $
+// $Revision: 1.31 $
+// $Id: Residue.cc,v 1.31 2004-05-17 18:17:25 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -56,8 +56,8 @@
 #define RAD_324 5.6548668
 #define RAD_360 6.2831853
 
-#define RAD(deg) (deg * 180.0 / M_PI)
-#define DEG(rad) (rad * M_PI / 180.0)
+#define RAD(deg) (deg * M_PI / 180.0)
+#define DEG(rad) (rad * 180.0 / M_PI)
 
 namespace mccore {
 
@@ -1275,7 +1275,7 @@ namespace mccore {
   const PropertyType* 
   Residue::getPucker () const
   {
-    return getPuckerType (getRho ());
+    return Residue::getPuckerType (getRho ());
   }
 
 
@@ -1304,7 +1304,7 @@ namespace mccore {
   const PropertyType* 
   Residue::getGlycosyl () const
   {
-    return getGlycosylType (getChi ());
+    return Residue::getGlycosylType (getChi ());
   }
 
   
@@ -1503,8 +1503,8 @@ namespace mccore {
 
     if (pucker)
       {
-	p_min[0] = getMinRho (pucker);
-	p_max[0] = getMaxRho (pucker);
+	p_min[0] = Residue::getMinRho (pucker);
+	p_max[0] = Residue::getMaxRho (pucker);
       }
     else
       {
@@ -1514,8 +1514,8 @@ namespace mccore {
 
     if (glycosyl)
       {
-	p_min[1] = getMinChi (pucker);
-	p_max[1] = getMaxChi (pucker);
+	p_min[1] = Residue::getMinChi (pucker);
+	p_max[1] = Residue::getMaxChi (pucker);
       }
     else
       {
@@ -1643,8 +1643,8 @@ namespace mccore {
 
     if (pucker)
       {
-	p_min[0] = getMinRho (pucker);
-	p_max[0] = getMaxRho (pucker);
+	p_min[0] = Residue::getMinRho (pucker);
+	p_max[0] = Residue::getMaxRho (pucker);
       }
     else
       {
@@ -1654,8 +1654,8 @@ namespace mccore {
 
     if (glycosyl)
       {
-	p_min[1] = getMinChi (pucker);
-	p_max[1] = getMaxChi (pucker);
+	p_min[1] = Residue::getMinChi (pucker);
+	p_max[1] = Residue::getMaxChi (pucker);
       }
     else
       {
@@ -2206,293 +2206,229 @@ namespace mccore {
 			  bool build5p, bool build3p)
   {
     // use explicit method for now...
-    _build_ribose_explicitly (rho, chi, gamma, beta, build5p, build3p);
+    //_build_ribose_explicitly (rho, chi, gamma, beta, build5p, build3p);
 
-    
-    
     ++rib_built_count;
     
-    // 0.6577118824501829 rad = 37.684115 deg
-    // 2.5132741228718345 rad = 144 deg
-
-    float nu0 = 0.6981317007977318 * cos (rho + 3*2.5132741228718345);
-    float nu1 = 0.6981317007977318 * cos (rho + 4*2.5132741228718345);
-
-    // building transfo 
-    // uses idealized geometries as defined by
-    // G.Parkinson et al., ACTA CRYST.D (1996) v. 52, 57-64.
-
-    // 1.0746515803304686  rad = 61.573  deg
-    // 0.45770037903074895 rad = 26.2243 deg
-    // 1.062835701294467   rad = 60.8960 deg
-    // 1.024618226663547   rad = 58.7063 deg
-
-    /*
+    // nu0 = 37.68 * cos (rho + 3 * 144)
+    // nu0 = 37.68 * cos (rho + 4 * 144)
+    float nu0 = 0.6576400621514634 * cos (rho + 7.5398223686155035);
+    float nu1 = 0.6576400621514634 * cos (rho + 10.053096491487338);
     
-    float sin_chi = sin (chi);
-    float sin_chi_c2p = sin (chi + 1.0746515803304686);
-    float sin_nu1_o2p = sin (nu1  + 0.45770037903074895);
-    float sin_nu1_c3p = sin (nu1  - 1.062835701294467);
-    float sin_nu0_c4p = sin (nu0  + 1.024618226663547);
+    float cos_chi_0 = cos (chi);
+    float cos_chi_1 = cos (2.067167966062084 - chi);  // 118.440 - chi
+    float cos_nu0_1 = cos (2.1176952479073194 - nu0); // 121.335 - nu0 
+    float cos_nu1_1 = cos (2.1146409217163296 - nu1); // 121.160 - nu1
+    float cos_nu1_2 = cos (4.2034160639181035 - nu1); // 240.838 - nu1
 
-    float cos_chi = cos (chi);
-    float cos_chi_c2p = cos (chi + 1.0746515803304686);
-    float cos_nu1_o2p = cos (nu1  + 0.45770037903074895);
-    float cos_nu1_c3p = cos (nu1  - 1.062835701294467);
-    float cos_nu0_c4p = cos (nu0  + 1.024618226663547);
-  
-    // C1' from Nt (N1 or N9)
+    float sin_chi_0 = sin (chi);
+    float sin_chi_1 = sin (2.067167966062084 - chi);  // 118.440 - chi
+    float sin_nu0_1 = sin (2.1176952479073194 - nu0); // 121.335 - nu0 
+    float sin_nu1_1 = sin (2.1146409217163296 - nu1); // 121.160 - nu1
+    float sin_nu1_2 = sin (4.2034160639181035 - nu1); // 240.838 - nu1
+    
+ 
+    // C1' (only a translation is needed)
     HomogeneousTransfo tfo
-      (1,0,0,1.465,
-       0,1,0,0,
-       0,0,1,0);
+      (1.0, 0.0, 0.0, 0.0,
+       0.0, 1.0, 0.0, -1.465,
+       0.0, 0.0, 1.0, 0.0,
+       0.0, 0.0, 0.0, 1.0);
 
     rib_C1p->set (0.0, 0.0, 0.0);
     rib_C1p->transform (tfo);
 
-    // O4' from C1'
+    
+    // O4' with respect to chi (from C1')
     tfo.set
-      (0.3189593092980698,
-       0,
-       -0.9477684100095858,
-       1.916965341275365,
-	 
-       -0.9477684100095858*sin_chi,cos_chi,
-       -0.3189593092980698*sin_chi,
-       -1.342987836983583*sin_chi,
-	 
-       0.9477684100095858*cos_chi,
-       sin_chi,
-       0.3189593092980698*cos_chi,
-       1.342987836983583*cos_chi);
-
+      (0.3178011539917053*cos_chi_0,
+       -0.9481573848900511*cos_chi_0,
+       -sin_chi_0,
+       1.3435390143892023*cos_chi_0,
+       
+       0.9481573848900511,
+       0.3178011539917053,
+       0.0,
+       -1.9153242352062465,
+       
+       0.3178011539917053*sin_chi_0,
+       -0.9481573848900511*sin_chi_0,
+       cos_chi_0,
+       1.3435390143892023*sin_chi_0,
+      
+       0.0, 0.0 ,0.0 ,1.0);
+    
     rib_O4p->set (0.0, 0.0, 0.0);
     rib_O4p->transform (tfo);
-      
-    // C2' from C1'
+    
+    
+    // C2' with respect to chi (from C1')
     tfo.set
-      (0.37505965617503256,
-       0,
+      (0.37505965617503256*cos_chi_1,
+       -0.9270006765422916*cos_chi_1,
+       sin_chi_1,
+       1.4173840344331636*cos_chi_1,
+
        0.9270006765422916,
-       2.038466214291625,
-	 
-       0.9270006765422916*sin_chi_c2p,
-       cos_chi_c2p,
-       -0.37505965617503256*sin_chi_c2p,
-       1.4173840344331636*sin_chi_c2p,
-	 
-       -0.9270006765422916*cos_chi_c2p,
-       sin_chi_c2p,
-       0.37505965617503256*cos_chi_c2p,
-       -1.4173840344331636*cos_chi_c2p);
+       0.37505965617503256,
+       0.0,
+       -2.038466214291625,
+      
+       -0.37505965617503256*sin_chi_1,
+       0.9270006765422916*sin_chi_1,
+       cos_chi_1,
+       -1.4173840344331636*sin_chi_1,
+ 
+       0.0, 0.0 ,0.0 ,1.0);
 
     rib_C2p->set (0.0, 0.0, 0.0);
     rib_C2p->transform (tfo);
 
+    
+    // C3' with respect to nu1 (from C2')
+    tfo.set
+      (cos_chi_1*(-0.9085646439620313 + 0.07442844670182767*cos_nu1_2) - 0.1984442887322796*sin_chi_1*sin_nu1_2,
+       cos_chi_1*(-0.18395798991077703 - 0.3676005332037575*cos_nu1_2) + 0.9801121692283693*sin_chi_1*sin_nu1_2,
+       cos_nu1_2*sin_chi_1 + 0.37505965617503256*cos_chi_1*sin_nu1_2,
+       cos_chi_1*(1.697552053067277 + 0.5598556120693227*cos_nu1_2) - 1.4927108337348063*sin_chi_1*sin_nu1_2,
+       
+       0.3676005332037575 + 0.18395798991077703*cos_nu1_2,
+       0.07442844670182767 - 0.9085646439620313*cos_nu1_2,
+       0.9270006765422916*sin_nu1_2,
+       -2.1518207386185084 + 1.3837439527541735*cos_nu1_2,
+      
+       (0.9085646439620313 - 0.07442844670182767*cos_nu1_2)*sin_chi_1 - 0.1984442887322796*cos_chi_1*sin_nu1_2,
+       (0.18395798991077703 + 0.3676005332037575*cos_nu1_2)*sin_chi_1 + 0.9801121692283693*cos_chi_1*sin_nu1_2,
+       cos_chi_1*cos_nu1_2 - 0.37505965617503256*sin_chi_1*sin_nu1_2,
+       (-1.697552053067277 - 0.5598556120693227*cos_nu1_2)*sin_chi_1 - 1.4927108337348063*cos_chi_1*sin_nu1_2,
+
+       0.0, 0.0, 0.0, 1.0);
+    
+    rib_C3p->set (0.0, 0.0, 0.0);
+    rib_C3p->transform (tfo);
+
     if (rib_O2p)
       {
-	// O2' from C2'
+	// O2' with respect to nu1 (from C2')
 	tfo.set
-	  (0.37505965617503256,
-	   0.9270006765422916*sin_nu1_o2p,
-	   0.9270006765422916*cos_nu1_o2p,
-	   2.2177447299432904 + 1.0391677584039087*cos_nu1_o2p - 0.6646594850808231*sin_nu1_o2p,
-	
-	   0.9270006765422916*sin_chi_c2p,
-	   cos_chi_c2p*cos_nu1_o2p - 0.37505965617503256*sin_chi_c2p*sin_nu1_o2p,
-	   -0.37505965617503256*cos_nu1_o2p*sin_chi_c2p - cos_chi_c2p*sin_nu1_o2p,
-	   cos_chi_c2p*(-0.717*cos_nu1_o2p - 1.121*sin_nu1_o2p) + sin_chi_c2p*(1.860490357820379 - 0.4204418745722115*cos_nu1_o2p + 0.26891777347749835*sin_nu1_o2p),
-	
-	   -0.9270006765422916*cos_chi_c2p,cos_nu1_o2p*sin_chi_c2p + 0.37505965617503256*cos_chi_c2p*sin_nu1_o2p,
-	   0.37505965617503256*cos_chi_c2p*cos_nu1_o2p - sin_chi_c2p*sin_nu1_o2p,
-	   sin_chi_c2p*(-0.717*cos_nu1_o2p - 1.121*sin_nu1_o2p) + cos_chi_c2p*(-1.860490357820379 + 0.4204418745722115*cos_nu1_o2p - 0.26891777347749835*sin_nu1_o2p));
+	  (cos_chi_1*(-0.8723723497509978 + 0.12684981914014418*cos_nu1_1) - 0.3382123804884682*sin_chi_1*sin_nu1_1,
+	   cos_chi_1*(-0.31352310552778895 - 0.3529573190546505*cos_nu1_1) + 0.9410698091450621*sin_chi_1*sin_nu1_1,
+	   cos_nu1_1*sin_chi_1 + 0.37505965617503256*cos_chi_1*sin_nu1_1,
+	   cos_chi_1*(1.8607057056494571 + 0.4990816491432758*cos_nu1_1) - 1.3306727101311178*sin_chi_1*sin_nu1_1,
+	   
+	   0.3529573190546505 + 0.31352310552778895*cos_nu1_1,
+	   0.12684981914014418 - 0.8723723497509978*cos_nu1_1,
+	   0.9270006765422916*sin_nu1_1,
+	   -2.217831858555789 + 1.2335345025479107*cos_nu1_1,
+	   
+	   (0.8723723497509978 - 0.12684981914014418*cos_nu1_1)*sin_chi_1 - 0.3382123804884682*cos_chi_1*sin_nu1_1,
+	   (0.31352310552778895 + 0.3529573190546505*cos_nu1_1)*sin_chi_1 + 0.9410698091450621*cos_chi_1*sin_nu1_1,
+	   cos_chi_1*cos_nu1_1 - 0.37505965617503256*sin_chi_1*sin_nu1_1,
+	   (-1.8607057056494571 - 0.4990816491432758*cos_nu1_1)*sin_chi_1 - 1.3306727101311178*cos_chi_1*sin_nu1_1,
+
+	   0.0, 0.0, 0.0, 1.0);
 
 	rib_O2p->set (0.0, 0.0, 0.0);
 	rib_O2p->transform (tfo);
       }
-    
-    // C3' from C2'
+
+
+    // C4' with respect to nu0 (from O4')
     tfo.set
-      (0.07442844670182767 + 0.9085646439620313*cos_nu1_c3p,
-       0.9270006765422916*sin_nu1_c3p,
-       -0.3676005332037575 + 0.18395798991077703*cos_nu1_c3p,
-       2.1518207386185084 + 1.3837439527541735*cos_nu1_c3p,
-
-       (0.18395798991077703 - 0.3676005332037575*cos_nu1_c3p)*sin_chi_c2p - 0.9801121692283693*cos_chi_c2p*sin_nu1_c3p,
-       cos_chi_c2p*cos_nu1_c3p - 0.37505965617503256*sin_chi_c2p*sin_nu1_c3p,
-       (-0.9085646439620313 - 0.07442844670182767*cos_nu1_c3p)*sin_chi_c2p - 0.1984442887322796*cos_chi_c2p*sin_nu1_c3p,
-       (1.697552053067277 - 0.5598556120693227*cos_nu1_c3p)*sin_chi_c2p - 1.4927108337348063*cos_chi_c2p*sin_nu1_c3p,
-	
-       cos_chi_c2p*(-0.18395798991077703 + 0.3676005332037575*cos_nu1_c3p) - 0.9801121692283693*sin_chi_c2p*sin_nu1_c3p,
-       cos_nu1_c3p*sin_chi_c2p + 0.37505965617503256*cos_chi_c2p*sin_nu1_c3p,
-       cos_chi_c2p*(0.9085646439620313 + 0.07442844670182767*cos_nu1_c3p) - 0.1984442887322796*sin_chi_c2p*sin_nu1_c3p,
-       cos_chi_c2p*(-1.697552053067277 + 0.5598556120693227*cos_nu1_c3p) - 1.4927108337348063*sin_chi_c2p*sin_nu1_c3p);
-
-    rib_C3p->set (0.0, 0.0, 0.0);
-    rib_C3p->transform (tfo);
+      (cos_chi_0*(-0.8926622497199935 + 0.10712926213198759*cos_nu0_1) + 0.3370952584230821*sin_chi_0*sin_nu0_1,
+       cos_chi_0*(-0.3196193586852655 - 0.2992004255904651*cos_nu0_1) - 0.941470544812038*sin_chi_0*sin_nu0_1,
+       -(cos_nu0_1*sin_chi_0) + 0.3178011539917053*cos_chi_0*sin_nu0_1,
+       cos_chi_0*(1.8076263232002079 + 0.43443901795735534*cos_nu0_1) + 1.3670152310670791*sin_chi_0*sin_nu0_1,
+       
+       0.2992004255904651 + 0.3196193586852655*cos_nu0_1,
+       0.10712926213198759 - 0.8926622497199935*cos_nu0_1,
+       0.9481573848900511*sin_nu0_1,
+       -2.0708759238218923 + 1.2961455865934306*cos_nu0_1,
       
-    // C4' from O4'
-    tfo.set
-      (0.10751967079428061 + 0.8922960413273637*cos_nu0_c4p,
-       -0.9477684100095858*sin_nu0_c4p,
-       0.3002907946977251 - 0.3194882370974149*cos_nu0_c4p,
-       2.0730839032686603 + 1.2956138520073321*cos_nu0_c4p,
+       (-0.8926622497199935 + 0.10712926213198759*cos_nu0_1)*sin_chi_0 - 0.3370952584230821*cos_chi_0*sin_nu0_1,
+       (-0.3196193586852655 - 0.2992004255904651*cos_nu0_1)*sin_chi_0 + 0.941470544812038*cos_chi_0*sin_nu0_1,
+       cos_chi_0*cos_nu0_1 + 0.3178011539917053*sin_chi_0*sin_nu0_1,
+       (1.8076263232002079 + 0.43443901795735534*cos_nu0_1)*sin_chi_0 - 1.3670152310670791*cos_chi_0*sin_nu0_1,
 
-       (-0.3194882370974149 + 0.3002907946977251*cos_nu0_c4p)*sin_chi + 0.941470544812038*cos_chi*sin_nu0_c4p,
-       cos_chi*cos_nu0_c4p - 0.3189593092980698*sin_chi*sin_nu0_c4p,
-       (-0.8922960413273637 - 0.10751967079428061*cos_nu0_c4p)*sin_chi - 0.3370952584230821*cos_chi*sin_nu0_c4p,
-       (-1.8068847572490294 + 0.43602223390109685*cos_nu0_c4p)*sin_chi + 1.3670152310670791*cos_chi*sin_nu0_c4p,
-
-       cos_chi*(0.3194882370974149 - 0.3002907946977251*cos_nu0_c4p) + 0.941470544812038*sin_chi*sin_nu0_c4p,
-       cos_nu0_c4p*sin_chi + 0.3189593092980698*cos_chi*sin_nu0_c4p,
-       cos_chi*(0.8922960413273637 + 0.10751967079428061*cos_nu0_c4p) - 0.3370952584230821*sin_chi*sin_nu0_c4p,
-       cos_chi*(1.8068847572490294 - 0.43602223390109685*cos_nu0_c4p) + 1.3670152310670791*sin_chi*sin_nu0_c4p);
-
+       0.0, 0.0, 0.0, 1.0);
+    
     rib_C4p->set (0.0, 0.0, 0.0);
     rib_C4p->transform (tfo);
-
-    */
-
-    chi *= 180.0 / M_PI;
-    nu0 *= 180.0 / M_PI;
-    nu1 *= 180.0 / M_PI;
-
-    HomogeneousTransfo tfo, c1p, c2p, o4p;
     
-    // step 1 : C1'
-    tfo = tfo.translate (0, -1.465, 0);
-    rib_C1p->set (0.0, 0.0, 0.0);
-    rib_C1p->transform (tfo);
-
-    c1p = tfo;
-    
-    // step 2 : O4' with respect to chi (from C1')
-    tfo = tfo.rotate (0.0, -chi * M_PI / 180.0, 0.0);
-    tfo = tfo.rotate (0.0, 0.0, 71.47 * M_PI / 180.0);
-    tfo = tfo.translate (0.0, -1.417, 0.0);
-    rib_O4p->set (0.0, 0.0, 0.0);
-    rib_O4p->transform (tfo);
-
-    o4p = tfo;
-      
-    // step 2 : C2' with respect to chi (from C1')
-    tfo = c1p;
-    tfo = tfo.rotate (0.0 , (118.44 - chi) * M_PI / 180.0, 0.0);
-    tfo = tfo.rotate (0.0, 0.0, 67.972 * M_PI / 180.0);
-    tfo = tfo.translate (0.0, -1.529, 0.0);
-    rib_C2p->set (0.0, 0.0, 0.0);
-    rib_C2p->transform (tfo);
-
-    c2p = tfo;
-      
-    // step 3 : C3' with respect to nu1 (from C2')
-    //tfo.setIdentity ();
-    tfo = tfo.rotate (0.0, (240.838 - nu1) * M_PI / 180.0, 0.0);
-    tfo = tfo.rotate (0.0, 0.0, 78.554 * M_PI / 180.0);
-    tfo = tfo.translate (0.0, -1.523, 0.0);
-    rib_C3p->set (0.0, 0.0, 0.0);
-    rib_C3p->transform (tfo);
-
-    if (rib_O2p)
-      {
-	// step 3 : O2' with respect to nu1 (from C2')
-
-	tfo = c2p;
-	tfo = tfo.rotate (0.0, (121.160 - nu1) * M_PI / 180.0, 0.0);
-	tfo = tfo.rotate (0.0, 0.0, 70.232 * M_PI / 180.0);
-	tfo = tfo.translate (0.0, -1.414, 0.0);
-	rib_O2p->set (0.0, 0.0, 0.0);
-	rib_O2p->transform (tfo);
-      }
-
-    // step 4 : C4' with respect to nu0 (from O4')
-
-    tfo = o4p;
-    tfo = tfo.rotate (0.0, (121.335 - nu0) * M_PI / 180.0, 0.0);
-    tfo = tfo.rotate (0.0, 0.0, 70.3 * M_PI / 180.0);
-    tfo = tfo.translate (0.0, -1.452, 0.0);
-    rib_C4p->set (0.0, 0.0, 0.0);
-    rib_C4p->transform (tfo);
-
     // C5' => align first for 5' branch
     HomogeneousTransfo branch5p =
       HomogeneousTransfo::align (*rib_C4p, *rib_C3p, *rib_O4p);
-  
-//     tfo.set (0.4983470223041225,
-// 	     -0.783262352599052,
-// 	     -0.3716857979014169,
-// 	     1.1827261524245685,
-	     
-// 	     0.,
-// 	     0.4287143941490142,
-// 	     -0.9034400745204099,
-// 	     -0.6473587351650114,
-	     
-// 	     0.8669776498622179,
-// 	     0.4502266709674608,
-// 	     0.21364854174307712,
-// 	     -0.6798422731608658);
 
-    tfo.setIdentity ();
-    tfo = tfo.rotate (0.0, 29.891 * M_PI / 180.0, 0.0);
-    tfo = tfo.rotate (0.0, 0.0, 64.614 * M_PI / 180.0);
-    tfo = tfo.translate (0.0, -1.510, 0.0);
+    tfo.set
+      (0.3716846792351733,
+       -0.7832599952069786,
+       0.4983515617816504,
+       1.1827225927625378,
+       
+       0.9034400745204099,
+       0.4287143941490142,
+       0.0,
+       -0.6473587351650114,
+       
+       -0.21365048788243526,
+       0.45023077211337686,
+       0.8669750405114266,
+       -0.6798484658911991,
+
+       0.0, 0.0, 0.0, 1.0);
     
     rib_C5p->set (0.0, 0.0, 0.0);
     rib_C5p->transform (branch5p * tfo);
 
     if (build5p)
-      {	// O5' from C5' according to gamma => align first for 5' branch
-// 	float cos_gamma = cos (gamma);
-// 	float sin_gamma = sin (gamma);
+      {
+	// O5' from C5' according to gamma => align first for 5' branch
+	float cos_gamma = cos (gamma);
+	float sin_gamma = sin (gamma);
 
-// 	tfo.set
-// 	  (0.4983470223041225*cos_gamma - 0.3716857979014169*sin_gamma,
-// 	   -0.26019509810650415 - 0.3505781564521977*cos_gamma - 0.47004642453183026*sin_gamma,
-// 	   0.7387817160165432 - 0.1234718128974842*cos_gamma - 0.16554791881575529*sin_gamma,
-// 	   1.5574070936979345 + 0.5048325452911646*cos_gamma + 0.6768668513258356*sin_gamma,
-	 
-// 	   -0.9034400745204099*sin_gamma,
-// 	   0.14241637361367576 - 0.8521346728303227*cos_gamma,
-// 	   -0.40436815932672815 - 0.3001174230360551*cos_gamma,
-// 	   -0.8524383131687046 + 1.2270739288756647*cos_gamma,
-	 
-// 	   0.8669776498622179*cos_gamma + 0.21364854174307712*sin_gamma,
-// 	   0.14956262411160473 + 0.20151566811507393*cos_gamma - 0.8177429105175843*sin_gamma,
-// 	   -0.42465877680708897 + 0.07097277571772671*cos_gamma - 0.2880048222840108*sin_gamma,
-// 	   -0.8952124518815765 - 0.2901825620857065*cos_gamma + 1.1775497911453214*sin_gamma);
+	tfo.set
+	  (-0.7387794924982604 + 0.12347144128320701*cos_gamma + 0.16554942680320905*sin_gamma,
+	   -0.26019431499486884 - 0.35057710131382114*cos_gamma - 0.4700507062172538*sin_gamma,
+	   0.4983515617816504*cos_gamma - 0.3716846792351733*sin_gamma,
+	   1.5574024063551488 + 0.5048310258919024*cos_gamma + 0.6768730169528454*sin_gamma,
+	   
+	   0.40436815932672815 + 0.3001174230360551*cos_gamma,
+	   0.14241637361367576 - 0.8521346728303227*cos_gamma,
+	   -0.9034400745204099*sin_gamma,
+	   -0.8524383131687046 + 1.2270739288756647*cos_gamma,
+	   
+	   0.42466264505328705 - 0.07097342221365434*cos_gamma + 0.28800395547318697*sin_gamma,
+	   0.14956398648790234 + 0.2015175037352462*cos_gamma - 0.8177404493490513*sin_gamma,
+	   0.8669750405114266*cos_gamma + 0.21365048788243526*sin_gamma,
+	   -0.8952206064337784 - 0.29018520537875453*cos_gamma + 1.1775462470626339*sin_gamma,
+	   
+	   0.0, 0.0, 0.0, 1.0);
 
-	tfo = tfo.rotate (0.0, -gamma, 0.0);
-	tfo = tfo.rotate (0.0, 0.0, 70.598 * M_PI / 180.0);
-	tfo = tfo.translate (0.0, -1.440, 0.0);
-	
 	rib_O5p->set (0.0, 0.0, 0.0);
 	rib_O5p->transform (branch5p * tfo);
 	
 	// P5' from O5' according to beta => align first for 5' branch
-// 	float cos_beta = cos (beta);
-// 	float sin_beta = sin (beta);
+	float cos_beta = cos (beta);
+	float sin_beta = sin (beta);
 
-// 	tfo.set
-// 	  (cos_beta*(0.4983470223041225*cos_gamma - 0.3716857979014169*sin_gamma) + sin_beta*(0.7387817160165432 - 0.1234718128974842*cos_gamma - 0.16554791881575529*sin_gamma),
-// 	   -0.26019509810650415 - 0.3505781564521977*cos_gamma - 0.47004642453183026*sin_gamma,
-// 	   cos_beta*(0.7387817160165432 - 0.1234718128974842*cos_gamma - 0.16554791881575529*sin_gamma) + sin_beta*(-0.4983470223041225*cos_gamma + 0.3716857979014169*sin_gamma),
-// 	   1.7704808595373507 + cos_gamma*(0.7919209976098692 + 0.680941371276353*sin_beta) + cos_beta*(-1.0094713367650046 + 0.1687118851431224*cos_gamma + 0.22620467626984803*sin_gamma) + (1.0617878683749513 - 0.5078714742524961*sin_beta)*sin_gamma,
-	 
-// 	   -0.9034400745204099*sin_gamma*cos_beta + sin_beta*(-0.40436815932672815 - 0.3001174230360551*cos_gamma),
-// 	   0.14241637361367576 - 0.8521346728303227*cos_gamma,
-// 	   cos_beta*(-0.40436815932672815 - 0.3001174230360551*cos_gamma) + 0.9034400745204099*sin_beta*sin_gamma,
-// 	   -0.9690630815209436 + 1.9248870124564157*cos_gamma + cos_beta*(0.5525286529040414 + 0.4100804468364657*cos_gamma) - 1.2344605178246881*sin_beta*sin_gamma,
-	 
-// 	   sin_beta*(-0.42465877680708897 + 0.07097277571772671*cos_gamma - 0.2880048222840108*sin_gamma) + cos_beta*(0.8669776498622179*cos_gamma + 0.21364854174307712*sin_gamma),
-// 	   0.14956262411160473 + 0.20151566811507393*cos_gamma - 0.8177429105175843*sin_gamma,
-// 	   cos_beta*(-0.42465877680708897 + 0.07097277571772671*cos_gamma - 0.2880048222840108*sin_gamma) + sin_beta*(-0.8669776498622179*cos_gamma - 0.21364854174307712*sin_gamma),
-// 	   -1.0176892847665697 + cos_gamma*(-0.45520374270514047 + 1.1846382607717347*sin_beta) + cos_beta*(0.5802537526292064 - 0.09697720074070179*cos_gamma + 0.3935297891688724*sin_gamma) + (1.847199460568171 + 0.2919293674377406*sin_beta)*sin_gamma);
+	tfo.set
+	  (-0.22318427905141008 + cos_gamma*(-0.3007110190328383 + 0.25617779354834425*sin_beta) + cos_beta*(-0.379769854899928 + 0.06347053730720459*cos_gamma + 0.08510074038901261*sin_gamma) - 0.4031906999458186*sin_gamma - 0.1910646385491005*sin_beta*sin_gamma,
+	   -0.13375297806012146 + cos_gamma*(-0.18021428078216548 - 0.427466042186876*sin_beta) + cos_beta*(0.6336955071998497 - 0.10590886509866484*cos_gamma - 0.14200167851160403*sin_gamma) - 0.24162972890879952*sin_gamma + 0.3188162553482103*sin_beta*sin_gamma,
+	   cos_beta*(0.4983515617816504*cos_gamma - 0.3716846792351733*sin_gamma) + sin_beta*(0.7387794924982604 - 0.12347144128320701*cos_gamma - 0.16554942680320905*sin_gamma),
+	   1.7704709004049224 + cos_gamma*(0.791912375177892 + 0.6809534052036935*sin_beta) + cos_beta*(-1.0094769429693606 + 0.1687128221021731*cos_gamma + 0.22620867386898522*sin_gamma) + 1.061789175104563*sin_gamma - 0.507874294769699*sin_beta*sin_gamma,
 
-	tfo = tfo.rotate (0.0, -beta, 0.0);
-	tfo = tfo.rotate (0.0, 0.0, 59.066 * M_PI / 180.0);
-	tfo = tfo.translate (0.0, -1.593, 0.0);
-	
+	   0.1221590705035631 - cos_gamma*0.7309270481720375 + cos_beta*(0.20786559285012113 + 0.15427546562496294*cos_gamma) - 0.4644136843202968*sin_beta*sin_gamma,
+	   0.07320918635646471 - cos_gamma*0.4380401247490384 + cos_beta*(-0.3468508376613121 - 0.25742872472978484*cos_gamma) + 0.7749347702003643*sin_beta*sin_gamma,
+	   -0.9034400745204099*cos_beta*sin_gamma + sin_beta*(-0.40436815932672815 - 0.3001174230360551*cos_gamma),
+	   -0.9690605470345528 + cos_gamma*1.9248718476008828 + cos_beta*(0.5525333843944701 + 0.41008395849454726*cos_gamma) - 1.2344710889291803*sin_beta*sin_gamma,
+	   
+	   0.12829000701654686 + cos_gamma*(0.17285365665378855 + 0.44566882091364896*sin_beta) + cos_beta*(0.21829798029171227 - 0.036483912357508086*cos_gamma + 0.14804853341393348*sin_gamma) - 0.7014250585864771*sin_gamma + 0.10982710755550963*sin_beta*sin_gamma,
+	   0.07688341923879162 + cos_gamma*(0.10359014283752652 - 0.7436565221493238*sin_beta) + cos_beta*(-0.36425863600498654 + 0.06087816357124541*cos_gamma - 0.24703827663377365*sin_gamma) - 0.42035976221392257*sin_gamma - 0.18326084529542347*sin_beta*sin_gamma,
+	   sin_beta*(-0.42466264505328705 + 0.07097342221365434*cos_gamma - 0.28800395547318697*sin_gamma) + cos_beta*(0.8669750405114266*cos_gamma + 0.21365048788243526*sin_gamma),
+	   -1.0176958932811735 + cos_gamma*(-0.45520430291893427 + 1.1846448397838727*sin_beta) + cos_beta*(0.5802640071559435 - 0.09697891456899393*cos_gamma + 0.3935319746776014*sin_gamma) + 1.8471793482694125*sin_gamma + 0.2919345265556096*sin_beta*sin_gamma,
+
+	   0.0, 0.0, 0.0, 1.0);
+
 	rib_P->set (0.0, 0.0, 0.0);
 	rib_P->transform (branch5p * tfo);
       }
@@ -2501,26 +2437,24 @@ namespace mccore {
       { // O3' => align first for 3' branch
 	HomogeneousTransfo branch3p =
 	  HomogeneousTransfo::align (*rib_C3p, *rib_C4p, *rib_C2p);
-  
-// 	tfo.set (0.5043859675317346,
-// 		 -0.8016153916448716,
-// 		 -0.3209479079774709,
-// 		 1.1471116254438114,
-	     
-// 		 0.,
-// 		 0.3716919156133742,
-// 		 -0.9283561384876282,
-// 		 -0.5318911312427386,
-	 
-// 		 0.8634783122679318,
-// 		 0.46824980912510733,
-// 		 0.18747618648037562,
-// 		 -0.6700654768580286);
 
-	tfo.setIdentity ();
-	tfo = tfo.rotate (0.0, 30.291 * M_PI / 180.0, 0.0);
-	tfo = tfo.rotate (0.0, 0.0, 68.18 * M_PI / 180.0);
-	tfo = tfo.translate (0.0, -1.431, 0.0);
+	tfo.set
+	  (0.32094659913896034,
+	   -0.8016121226249803,
+	   0.5043919957352705,
+	   1.147106947476347,
+	   
+	   0.9283561384876282,
+	   0.3716919156133742,
+	   0.0,
+	   -0.5318911312427386,
+	   
+	   -0.18747842711489557,
+	   0.46825540544486394,
+	   0.8634747909685556,
+	   -0.6700734851916004,
+
+	   0.0, 0.0, 0.0, 1.0);
 
 	rib_O3p->set (0.0, 0.0, 0.0);
 	rib_O3p->transform (branch3p * tfo);
@@ -2551,48 +2485,50 @@ namespace mccore {
     
     // O4' with respect to chi (from C1')
     o4p =
+      c1p * 
       HomogeneousTransfo::rotationY (-chi) *
       HomogeneousTransfo::rotationZ (RAD(71.47)) *
-      HomogeneousTransfo::translation (Vector3D (0.0, -1.417, 0.0)) *
-      c1p;
+      HomogeneousTransfo::translation (Vector3D (0.0, -1.417, 0.0));
     rib_O4p->set (0.0, 0.0, 0.0);
     rib_O4p->transform (o4p);
-      
+
+
+    
     // C2' with respect to chi (from C1')
     c2p =
+      c1p *
       HomogeneousTransfo::rotationY (RAD(118.44) - chi) *
       HomogeneousTransfo::rotationZ (RAD(67.972)) *
-      HomogeneousTransfo::translation (Vector3D (0.0, -1.529, 0.0)) *
-      c1p;
+      HomogeneousTransfo::translation (Vector3D (0.0, -1.529, 0.0));
     rib_C2p->set (0.0, 0.0, 0.0);
     rib_C2p->transform (c2p);
       
     // C3' with respect to nu1 (from C2')
     rib_C3p->set (0.0, 0.0, 0.0);
     rib_C3p->transform
-      (HomogeneousTransfo::rotationY (RAD(240.838) - nu1) *
-       HomogeneousTransfo::rotationZ (RAD(78.554)) *
-       HomogeneousTransfo::translation (Vector3D (0.0, -1.523, 0.0)) *
-       c2p);
+      ( c2p *
+        HomogeneousTransfo::rotationY (RAD(240.838) - nu1) *
+        HomogeneousTransfo::rotationZ (RAD(78.554)) *
+        HomogeneousTransfo::translation (Vector3D (0.0, -1.523, 0.0)) );
 
     if (rib_O2p)
       {
 	// O2' with respect to nu1 (from C2')
 	rib_O2p->set (0.0, 0.0, 0.0);
 	rib_O2p->transform
-	  (HomogeneousTransfo::rotationY (RAD(121.160) - nu1) *
-	   HomogeneousTransfo::rotationZ (RAD(70.232)) *
-	   HomogeneousTransfo::translation (Vector3D (0.0, -1.414, 0.0)) *
-	   c2p);
+	  ( c2p *
+	    HomogeneousTransfo::rotationY (RAD(121.160) - nu1) *
+	    HomogeneousTransfo::rotationZ (RAD(70.232)) *
+	    HomogeneousTransfo::translation (Vector3D (0.0, -1.414, 0.0)) );
       }
 
     // C4' with respect to nu0 (from O4')
     rib_C4p->set (0.0, 0.0, 0.0);
     rib_C4p->transform
-      (HomogeneousTransfo::rotationY (RAD(121.335) - nu0) *
-       HomogeneousTransfo::rotationZ (RAD(70.3)) *
-       HomogeneousTransfo::translation (Vector3D (0.0, -1.452, 0.0)) *
-       o4p);
+      ( o4p *
+        HomogeneousTransfo::rotationY (RAD(121.335) - nu0) *
+        HomogeneousTransfo::rotationZ (RAD(70.3)) *
+        HomogeneousTransfo::translation (Vector3D (0.0, -1.452, 0.0)) );
 
     // C5' aligned on furanose for 5' branch
     branch5p =
@@ -2608,21 +2544,21 @@ namespace mccore {
       {
 	// O5' from C5' according to gamma (aligned on furanose for 5' branch)
 	HomogeneousTransfo o5p =
+	  c5p *
 	  HomogeneousTransfo::rotationY (-gamma) *
 	  HomogeneousTransfo::rotationZ (RAD(70.598)) *
-	  HomogeneousTransfo::translation (Vector3D (0.0, -1.440, 0.0)) *
-	  c5p;
+	  HomogeneousTransfo::translation (Vector3D (0.0, -1.440, 0.0));
 	rib_O5p->set (0.0, 0.0, 0.0);
 	rib_O5p->transform (branch5p * o5p);
 
 	// P from O5' according to beta (aligned on furanose for 5' branch)
 	rib_P->set (0.0, 0.0, 0.0);
 	rib_P->transform
-	  (branch5p *
-	   HomogeneousTransfo::rotationY (-beta) *
-	   HomogeneousTransfo::rotationZ (RAD(59.066)) *
-	   HomogeneousTransfo::translation (Vector3D (0.0, -1.593, 0.0)) *
-	   o5p);
+	  ( branch5p *
+	    o5p *
+	    HomogeneousTransfo::rotationY (-beta) *
+	    HomogeneousTransfo::rotationZ (RAD(59.066)) *
+	    HomogeneousTransfo::translation (Vector3D (0.0, -1.593, 0.0)) );
       }
 
     if (build3p)

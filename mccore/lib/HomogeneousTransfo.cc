@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 //
 //  This file is part of mccore.
 //  
@@ -390,11 +390,11 @@ namespace mccore
     HomogeneousTransfo copy = *this;
 
     if (0 != theta_x)
-      copy = copy * rotationX (theta_x);
+      copy = copy * HomogeneousTransfo::rotationX (theta_x);
     if (0 != theta_y)
-      copy = copy * rotationY (theta_y);
+      copy = copy * HomogeneousTransfo::rotationY (theta_y);
     if (0 != theta_z)
-      copy = copy * rotationZ (theta_z);
+      copy = copy * HomogeneousTransfo::rotationZ (theta_z);
 
     return copy;
   }
