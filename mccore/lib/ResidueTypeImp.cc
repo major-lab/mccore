@@ -4,8 +4,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Mar  6 12:27:03 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Fri May 11 18:04:10 2001
-// Update Count     : 5
+// Last Modified On : Tue May 15 19:18:59 2001
+// Update Count     : 6
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -82,7 +82,7 @@
 void
 t_Residue::Binoutput (oBinstream &obs) const
 {
-  obs << char (T_RESIDUE_BIN);
+  obs << int (T_RESIDUE_BIN);
 }
 
 
@@ -90,7 +90,7 @@ t_Residue::Binoutput (oBinstream &obs) const
 iBinstream&
 operator>> (iBinstream &ibs, t_Residue *&t)
 {
-  char id;
+  int id;
   char buf[256];
   map< const char*, t_Residue*, less_string >::iterator pos;
   
@@ -275,7 +275,7 @@ rt_Misc::operator= (const rt_Misc &right)
 void
 rt_Misc::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_MISC_BIN) << mName;
+  obs << int (RT_MISC_BIN) << mName;
 }
 
 
@@ -293,7 +293,7 @@ rt_NucleicAcid::operator= (const rt_NucleicAcid &right)
 void
 rt_NucleicAcid::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_NUCLEICACID_BIN);
+  obs << int (RT_NUCLEICACID_BIN);
 }
 
 
@@ -311,7 +311,7 @@ rt_AminoAcid::operator= (const rt_AminoAcid &right)
 void
 rt_AminoAcid::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_AMINOACID_BIN);
+  obs << int (RT_AMINOACID_BIN);
 }
 
 
@@ -329,7 +329,7 @@ rt_Phosphate::operator= (const rt_Phosphate &right)
 void
 rt_Phosphate::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_PHOSPHATE_BIN);
+  obs << int (RT_PHOSPHATE_BIN);
 }
 
 
@@ -347,7 +347,7 @@ rt_Purine::operator= (const rt_Purine &right)
 void
 rt_Purine::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_PURINE_BIN);
+  obs << int (RT_PURINE_BIN);
 }
 
 
@@ -365,7 +365,7 @@ rt_Pyrimidine::operator= (const rt_Pyrimidine &right)
 void
 rt_Pyrimidine::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_PYRIMIDINE_BIN);
+  obs << int (RT_PYRIMIDINE_BIN);
 }
 
 
@@ -383,7 +383,7 @@ rt_DNA::operator= (const rt_DNA &right)
 void
 rt_DNA::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_DNA_BIN);
+  obs << int (RT_DNA_BIN);
 }
 
 
@@ -401,7 +401,7 @@ rt_RNA::operator= (const rt_RNA &right)
 void
 rt_RNA::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_RNA_BIN);
+  obs << int (RT_RNA_BIN);
 }
 
 
@@ -419,7 +419,7 @@ rt_A::operator= (const rt_A &right)
 void
 rt_A::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_A_BIN);
+  obs << int (RT_A_BIN);
 }
 
 
@@ -437,7 +437,7 @@ rt_C::operator= (const rt_C &right)
 void
 rt_C::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_C_BIN);
+  obs << int (RT_C_BIN);
 }
 
 
@@ -455,7 +455,7 @@ rt_G::operator= (const rt_G &right)
 void
 rt_G::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_G_BIN);
+  obs << int (RT_G_BIN);
 }
 
 
@@ -473,7 +473,7 @@ rt_U::operator= (const rt_U &right)
 void
 rt_U::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_U_BIN);
+  obs << int (RT_U_BIN);
 }
 
 
@@ -491,7 +491,7 @@ rt_T::operator= (const rt_T &right)
 void
 rt_T::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_T_BIN);
+  obs << int (RT_T_BIN);
 }
 
 
@@ -512,7 +512,7 @@ rt_rA::operator= (const rt_rA &right)
 void
 rt_rA::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_RA_BIN);
+  obs << int (RT_RA_BIN);
 }
 
 
@@ -533,7 +533,7 @@ rt_rC::operator= (const rt_rC &right)
 void
 rt_rC::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_RC_BIN);
+  obs << int (RT_RC_BIN);
 }
 
 
@@ -554,7 +554,7 @@ rt_rG::operator= (const rt_rG &right)
 void
 rt_rG::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_RG_BIN);
+  obs << int (RT_RG_BIN);
 }
 
 
@@ -575,7 +575,7 @@ rt_rU::operator= (const rt_rU &right)
 void
 rt_rU::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_RU_BIN);
+  obs << int (RT_RU_BIN);
 }
 
 
@@ -596,7 +596,7 @@ rt_dA::operator= (const rt_dA &right)
 void
 rt_dA::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_DA_BIN);
+  obs << int (RT_DA_BIN);
 }
 
 
@@ -617,7 +617,7 @@ rt_dC::operator= (const rt_dC &right)
 void
 rt_dC::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_DC_BIN);
+  obs << int (RT_DC_BIN);
 }
 
 
@@ -638,7 +638,7 @@ rt_dG::operator= (const rt_dG &right)
 void
 rt_dG::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_DG_BIN);
+  obs << int (RT_DG_BIN);
 }
 
 
@@ -659,7 +659,7 @@ rt_dT::operator= (const rt_dT &right)
 void
 rt_dT::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_DT_BIN);
+  obs << int (RT_DT_BIN);
 }
 
 
@@ -677,7 +677,7 @@ rt_ALA::operator= (const rt_ALA &right)
 void
 rt_ALA::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_ALA_BIN);
+  obs << int (RT_ALA_BIN);
 }
 
 
@@ -695,7 +695,7 @@ rt_ARG::operator= (const rt_ARG &right)
 void
 rt_ARG::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_ARG_BIN);
+  obs << int (RT_ARG_BIN);
 }
 
 
@@ -713,7 +713,7 @@ rt_ASN::operator= (const rt_ASN &right)
 void
 rt_ASN::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_ASN_BIN);
+  obs << int (RT_ASN_BIN);
 }
 
 
@@ -731,7 +731,7 @@ rt_ASP::operator= (const rt_ASP &right)
 void
 rt_ASP::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_ASP_BIN);
+  obs << int (RT_ASP_BIN);
 }
 
 
@@ -749,7 +749,7 @@ rt_CYS::operator= (const rt_CYS &right)
 void
 rt_CYS::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_CYS_BIN);
+  obs << int (RT_CYS_BIN);
 }
 
 
@@ -767,7 +767,7 @@ rt_GLN::operator= (const rt_GLN &right)
 void
 rt_GLN::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_GLN_BIN);
+  obs << int (RT_GLN_BIN);
 }
 
 
@@ -785,7 +785,7 @@ rt_GLU::operator= (const rt_GLU &right)
 void
 rt_GLU::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_GLU_BIN);
+  obs << int (RT_GLU_BIN);
 }
 
 
@@ -803,7 +803,7 @@ rt_GLY::operator= (const rt_GLY &right)
 void
 rt_GLY::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_GLY_BIN);
+  obs << int (RT_GLY_BIN);
 }
 
 
@@ -821,7 +821,7 @@ rt_HIS::operator= (const rt_HIS &right)
 void
 rt_HIS::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_HIS_BIN);
+  obs << int (RT_HIS_BIN);
 }
 
 
@@ -839,7 +839,7 @@ rt_ILE::operator= (const rt_ILE &right)
 void
 rt_ILE::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_ILE_BIN);
+  obs << int (RT_ILE_BIN);
 }
 
 
@@ -857,7 +857,7 @@ rt_LEU::operator= (const rt_LEU &right)
 void
 rt_LEU::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_LEU_BIN);
+  obs << int (RT_LEU_BIN);
 }
 
 
@@ -875,7 +875,7 @@ rt_LYS::operator= (const rt_LYS &right)
 void
 rt_LYS::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_LYS_BIN);
+  obs << int (RT_LYS_BIN);
 }
 
 
@@ -893,7 +893,7 @@ rt_MET::operator= (const rt_MET &right)
 void
 rt_MET::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_MET_BIN);
+  obs << int (RT_MET_BIN);
 }
 
 
@@ -911,7 +911,7 @@ rt_PHE::operator= (const rt_PHE &right)
 void
 rt_PHE::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_PHE_BIN);
+  obs << int (RT_PHE_BIN);
 }
 
 
@@ -929,7 +929,7 @@ rt_PRO::operator= (const rt_PRO &right)
 void
 rt_PRO::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_PRO_BIN);
+  obs << int (RT_PRO_BIN);
 }
 
 
@@ -947,7 +947,7 @@ rt_SER::operator= (const rt_SER &right)
 void
 rt_SER::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_SER_BIN);
+  obs << int (RT_SER_BIN);
 }
 
 
@@ -965,7 +965,7 @@ rt_THR::operator= (const rt_THR &right)
 void
 rt_THR::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_THR_BIN);
+  obs << int (RT_THR_BIN);
 }
 
 
@@ -983,7 +983,7 @@ rt_TRP::operator= (const rt_TRP &right)
 void
 rt_TRP::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_TRP_BIN);
+  obs << int (RT_TRP_BIN);
 }
 
 
@@ -1001,7 +1001,7 @@ rt_TYR::operator= (const rt_TYR &right)
 void
 rt_TYR::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_TYR_BIN);
+  obs << int (RT_TYR_BIN);
 }
 
 
@@ -1019,7 +1019,7 @@ rt_VAL::operator= (const rt_VAL &right)
 void
 rt_VAL::Binoutput (oBinstream &obs) const
 {
-  obs << char (RT_VAL_BIN);
+  obs << int (RT_VAL_BIN);
 }
 
 
