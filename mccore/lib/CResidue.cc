@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Nov 22 14:38:01 2000
-// Update Count     : 7
+// Last Modified On : Wed Nov 22 15:21:46 2000
+// Update Count     : 8
 // Status           : Ok.
 // 
 
@@ -37,25 +37,20 @@ int CResidue::count = 0;
 CResidue::residue_iterator::residue_iterator ()
   : mRes (0),
     mPos (0),
-    mSet (new all_atom_set ()),
-    mOption (new all_atom_set ())
+    mSet (new all_atom_set ())
 { }
 
 
 
 CResidue::residue_iterator::residue_iterator (CResidue *nRes, int nPos,
-					      AtomSet *nSet, AtomSet *nOption)
-  : mRes (nRes), mPos (nPos), mSet (nSet), mOption (nOption)
+					      AtomSet *nSet)
+  : mRes (nRes), mPos (nPos), mSet (nSet)
 {
   size_type size = mRes->size ();
 
   if (! mSet)
     mSet = new all_atom_set ();
-  if (! mOption)
-    mOption = new all_atom_set ();
-  while (mPos < size
-	 && ! ((*mSet) (mRes->mAtomRef[mPos])
-	       && (*mOption) (mRes->mAtomRef[mPos])))
+  while (mPos < size && ! (*mSet) (mRes->mAtomRef[mPos]))
     ++mPos;
 }
 
@@ -64,8 +59,7 @@ CResidue::residue_iterator::residue_iterator (CResidue *nRes, int nPos,
 CResidue::residue_iterator::residue_iterator (const CResidue::iterator &right)
   : mRes (right.mRes),
     mPos (right.mPos),
-    mSet (right.mSet->clone ()),
-    mOption (right.mOption->clone ())
+    mSet (right.mSet->clone ())
 { }
 
 
@@ -79,8 +73,6 @@ CResidue::residue_iterator::operator= (const CResidue::iterator &right)
       mPos = right.mPos;
       delete mSet;
       mSet = right.mSet->clone ();
-      delete mOption;
-      mOption = right.mOption->clone ();
     }
   return *this;
 }
@@ -93,9 +85,7 @@ CResidue::residue_iterator::operator+= (difference_type k)
   size_type size = mRes->mAtomRef.size ();
 
   while (k > 0 && mPos < size)
-    if (++mPos != size
-	&& (*mSet) (mRes->mAtomRef[mPos])
-	&& (*mOption) (mRes->mAtomRef[mPos]))
+    if (++mPos != size && (*mSet) (mRes->mAtomRef[mPos]))
       --k;
   return *this;
 }
@@ -108,9 +98,7 @@ CResidue::residue_iterator::operator++ ()
   size_type size = mRes->mAtomRef.size ();
 
   while (mPos < size)
-    if (++mPos == size
-	|| ((*mSet) (mRes->mAtomRef[mPos])
-	    && (*mOption) (mRes->mAtomRef[mPos])))
+    if (++mPos == size || (*mSet) (mRes->mAtomRef[mPos]))
       break;
 	
   return *this;
@@ -125,9 +113,7 @@ CResidue::residue_iterator::operator++ (int ign)
   size_type size = mRes->mAtomRef.size ();
 
   while (mPos < size)
-    if (++mPos == size
-	|| ((*mSet) (mRes->mAtomRef[mPos])
-	    && (*mOption) (mRes->mAtomRef[mPos])))
+    if (++mPos == size || (*mSet) (mRes->mAtomRef[mPos]))
       break;
 
   return ret;
@@ -154,27 +140,21 @@ CResidue::residue_iterator::operator- (const CResidue::iterator &i) const
 CResidue::const_residue_iterator::const_residue_iterator ()
   : mRes (0),
     mPos (0),
-    mSet (new all_atom_set ()),
-    mOption (new all_atom_set ())
+    mSet (new all_atom_set ())
 { }
 
 
 
 CResidue::const_residue_iterator::const_residue_iterator (const CResidue *nRes,
-						int nPos,
-						const AtomSet *nSet,
-						const AtomSet *nOption)
-  : mRes (nRes), mPos (nPos), mSet (nSet), mOption (nOption)
+							  int nPos,
+							  const AtomSet *nSet)
+  : mRes (nRes), mPos (nPos), mSet (nSet)
 {
   size_type size = mRes->size ();
 
   if (! mSet)
     mSet = new all_atom_set ();
-  if (! mOption)
-    mOption = new all_atom_set ();
-  while (mPos < size
-	 && ! (mSet->operator() (mRes->mAtomRef[mPos])
-	       && mOption->operator() (mRes->mAtomRef[mPos])))
+  while (mPos < size && ! (*mSet) (mRes->mAtomRef[mPos]))
     ++mPos;
 }
 
@@ -183,8 +163,7 @@ CResidue::const_residue_iterator::const_residue_iterator (const CResidue *nRes,
 CResidue::const_residue_iterator::const_residue_iterator (const CResidue::const_iterator &right)
   : mRes (right.mRes),
     mPos (right.mPos),
-    mSet (right.mSet->clone ()),
-    mOption (right.mOption->clone ())
+    mSet (right.mSet->clone ())
 { }
 
 
@@ -198,8 +177,6 @@ CResidue::const_residue_iterator::operator= (const CResidue::const_iterator &rig
       mPos = right.mPos;
       delete mSet;
       mSet = right.mSet->clone ();
-      delete mOption;
-      mOption = right.mOption->clone ();
     }
   return *this;
 }
@@ -211,9 +188,8 @@ CResidue::const_residue_iterator::operator+= (difference_type k)
 {
   size_type size = mRes->mAtomRef.size ();
 
-  while (k > 0 && ++mPos < size)
-    if (! (mSet->operator() (mRes->mAtomRef[mPos])
-	   && mOption->operator() (mRes->mAtomRef[mPos])))
+  while (k > 0 && mPos < size)
+    if (++mPos != size && (*mSet) (mRes->mAtomRef[mPos]))
       --k;
   return *this;
 }
@@ -225,10 +201,10 @@ CResidue::const_residue_iterator::operator++ ()
 {
   size_type size = mRes->mAtomRef.size ();
 
-  if (mPos < size)
-    while (++mPos < size
-	   && ! (mSet->operator() (mRes->mAtomRef[mPos])
-		 && mOption->operator() (mRes->mAtomRef[mPos])));
+  while (mPos < size)
+    if (++mPos == size || (*mSet) (mRes->mAtomRef[mPos]))
+      break;
+	
   return *this;
 }
 
@@ -240,10 +216,10 @@ CResidue::const_residue_iterator::operator++ (int ign)
   const_residue_iterator ret = *this;
   size_type size = mRes->mAtomRef.size ();
   
-  if (mPos < size)
-    while (++mPos < size
-	   && ! (mSet->operator() (mRes->mAtomRef[mPos])
-		 && mOption->operator() (mRes->mAtomRef[mPos])));
+  while (mPos < size)
+    if (++mPos == size || (*mSet) (mRes->mAtomRef[mPos]))
+      break;
+
   return ret;
 }
 
@@ -1361,7 +1337,8 @@ operator<< (oBinstream& obs, const CResidue& res)
   
   obs << (const CResId&)res << res.GetType ();
   
-  for (cit = res.begin (new no_pse_lp_atom_set (), new no_hydrogen_opt ());
+  for (cit = res.begin (new atomset_and (new no_pse_lp_atom_set (),
+					 new no_hydrogen_opt ()));
        cit != res.end ();
        ++cit)
     if (!(res.GetType ()->is_NucleicAcid ()))

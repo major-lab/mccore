@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Thu Sep 28 16:59:32 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Nov 14 18:02:08 2000
-// Update Count     : 7
+// Last Modified On : Wed Nov 22 15:21:48 2000
+// Update Count     : 8
 // Status           : Ok.
 // 
 
@@ -131,11 +131,6 @@ public:
      */
     AtomSet *mSet;
     
-    /**
-     * The unary function option filter.
-     */
-    AtomSet *mOption;
-    
   public:
     
     // LIFECYCLE ------------------------------------------------------------
@@ -152,8 +147,7 @@ public:
      * @param nSet the atom set unary filter function.
      * @param nOption the atom set option unary filter function.
      */
-    residue_iterator (CResidue *nRes, int nPos, AtomSet *nSet = 0,
-		      AtomSet *nOption = 0);
+    residue_iterator (CResidue *nRes, int nPos, AtomSet *nSet = 0);
     
     /**
      * Initializes the iterator with the right's contents.
@@ -164,7 +158,7 @@ public:
     /**
      * Destructs the object.
      */
-    ~residue_iterator () { delete mSet; delete mOption; }
+    ~residue_iterator () { delete mSet; }
     
     // OPERATORS ------------------------------------------------------------
     
@@ -293,11 +287,6 @@ public:
      */
     const AtomSet *mSet;
     
-    /**
-     * The unary function option filter.
-     */
-    const AtomSet *mOption;
-    
   public:
     
     // LIFECYCLE ------------------------------------------------------------
@@ -315,8 +304,7 @@ public:
      * @param nOption the atom set option unary filter function.
      */
     const_residue_iterator (const CResidue *nRes, int nPos,
-			    const AtomSet *nSet = 0,
-			    const AtomSet *nOption = 0);
+			    const AtomSet *nSet = 0);
     
     /**
      * Initializes the const_iterator with the right's contents.
@@ -327,7 +315,7 @@ public:
     /**
      * Destructs the object.
      */
-    ~const_residue_iterator () { delete mSet; delete mOption; }
+    ~const_residue_iterator () { delete mSet; }
     
     // OPERATORS ------------------------------------------------------------
     
@@ -519,8 +507,8 @@ public:
    * Gets the iterator begin.
    * @return the iterator over the first element.
    */
-  iterator begin (AtomSet *atomset = 0, AtomSet *atomsetopt = 0)
-  { return iterator (this, 0, atomset, atomsetopt); }
+  iterator begin (AtomSet *atomset = 0)
+  { return iterator (this, 0, atomset); }
 
   /**
    * Gets the end iterator.
@@ -532,8 +520,8 @@ public:
    * Gets the begin const iterator.
    * @return the const_iterator over the first element.
    */
-  const_iterator begin (AtomSet *atomset = 0, AtomSet *atomsetopt = 0) const
-  { return const_iterator (this, 0, atomset, atomsetopt); }
+  const_iterator begin (AtomSet *atomset = 0) const
+  { return const_iterator (this, 0, atomset); }
 
   /**
    * Gets the end const iterator.
