@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.4 $
-// $Id: PropertyType.cc,v 1.4 2004-01-29 17:26:24 larosem Exp $
+// $Revision: 1.5 $
+// $Id: PropertyType.cc,v 1.5 2004-01-29 17:27:28 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -21,7 +21,6 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with mccore; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

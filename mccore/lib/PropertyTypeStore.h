@@ -1,25 +1,25 @@
 //                              -*- Mode: C++ -*- 
 // PropertyTypeStore.h
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:42:25 2003
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #ifndef _PropertyTypeStore_h_
 #define _PropertyTypeStore_h_
@@ -2168,18 +2168,6 @@ namespace mccore {
     };
 
     /**
-     * Public class for B.
-     */
-    class PB : public virtual PropertyType {
-    public:
-      PB () {}
-      PB (const char* t) : PropertyType (t) {}
-      virtual bool describe (const PropertyType *t) const {
-	return dynamic_cast< const PB* > (t); 
-      }
-    };
-
-    /**
      * Public class for Ws.
      */
     class PWs : public PW {
@@ -2278,7 +2266,7 @@ namespace mccore {
     /**
      * Public class for Bs.
      */
-    class PBs : public PB {
+    class PBs : public PropertyType {
     public:
       PBs () {}
       PBs (const char* t) : PropertyType (t) {}
@@ -2290,7 +2278,7 @@ namespace mccore {
     /**
      * Public class for Bh.
      */
-    class PBh : public PB {
+    class PBh : public PropertyType {
     public:
       PBh () {}
       PBh (const char* t) : PropertyType (t) {}
