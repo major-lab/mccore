@@ -5,8 +5,8 @@
 // Author           : Sebastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Wed Feb 14 15:33:58 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:33:17 2001
-// Update Count     : 43
+// Last Modified On : Wed Aug 29 14:30:51 2001
+// Update Count     : 44
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -32,19 +32,27 @@
 #include <pair.h>
 #include <map.h>
 #include <algo.h>
+
 #include "CResidue.h"
 #include "ResidueType.h"
 #include "CAtom.h"
 
-class Algo {
+
+
+class Algo
+{
+
 private:
 
   template< class iterator >
-  class ResidueRange {
+  class ResidueRange
+  {
     iterator mRes;
     float mMin;
     float mMax;
+    
   public:
+    
     ResidueRange (iterator nRes, float nMin, float nMax)
       : mRes (nRes), mMin (nMin), mMax (nMax) {}
     bool operator< (const ResidueRange &o) const { return mMin < o.mMin; }
@@ -52,17 +60,16 @@ private:
     void Max (float nMax) { if (nMax > mMax) mMax = nMax; }
     float Min () const { return mMin; }
     float Max () const { return mMax; }
-    bool Overlap (const ResidueRange &o) const {
-      if (mMin < o.mMin) {
-	if (o.mMin <= mMax) return true;
-	else return false;
-      } else {
-	if (mMin <= o.mMax) return true;
-	else return false;
-      }
+    bool Overlap (const ResidueRange &o) const
+    {
+      if (mMin < o.mMin)
+	return o.mMin <= mMax;
+      else
+	return mMin <= o.mMax;
     }
     iterator GetResidue () { return mRes; }
-    void Output (ostream &out) {
+    void Output (ostream &out)
+    {
       out << (CResId)(*mRes) << " : " << mMin << "-" << mMax << endl;
     }
   };
@@ -93,10 +100,10 @@ private:
 	    }
       }
   }
-
-
+  
+  
 public:
-
+  
   template< class iterator >
   static vector< pair< iterator, iterator > > ExtractContact_AABB (iterator begin, iterator end, float cutoff) 
   {
@@ -105,28 +112,27 @@ public:
     vector< ResidueRange< iterator > > Y_range;
     vector< ResidueRange< iterator > > Z_range;
     iterator i;
-
+    
     for (i = begin; i != end; ++i) 
-      if (i->GetType ()->is_NucleicAcid ())
-	{
-	  CResidue::iterator j;
-	  ResidueRange< iterator > tmp_X (i, HUGE, -HUGE);
-	  ResidueRange< iterator > tmp_Y (i, HUGE, -HUGE);
-	  ResidueRange< iterator > tmp_Z (i, HUGE, -HUGE);
-	  
-	  for (j = i->begin (); j != i->end (); ++j)
-	    {
-	      tmp_X.Max (j->GetX ());
-	      tmp_X.Min (j->GetX ());
-	      tmp_Y.Max (j->GetY ());
-	      tmp_Y.Min (j->GetY ());
-	      tmp_Z.Max (j->GetZ ());
-	      tmp_Z.Min (j->GetZ ());
-	    }
-	  X_range.push_back (tmp_X);
-	  Y_range.push_back (tmp_Y);
-	  Z_range.push_back (tmp_Z);
-	}
+      {
+	CResidue::iterator j;
+	ResidueRange< iterator > tmp_X (i, HUGE, -HUGE);
+	ResidueRange< iterator > tmp_Y (i, HUGE, -HUGE);
+	ResidueRange< iterator > tmp_Z (i, HUGE, -HUGE);
+	
+	for (j = i->begin (); j != i->end (); ++j)
+	  {
+	    tmp_X.Max (j->GetX ());
+	    tmp_X.Min (j->GetX ());
+	    tmp_Y.Max (j->GetY ());
+	    tmp_Y.Min (j->GetY ());
+	    tmp_Z.Max (j->GetZ ());
+	    tmp_Z.Min (j->GetZ ());
+	  }
+	X_range.push_back (tmp_X);
+	Y_range.push_back (tmp_Y);
+	Z_range.push_back (tmp_Z);
+      }
     std::sort (X_range.begin (), X_range.end ());
     std::sort (Y_range.begin (), Y_range.end ());
     std::sort (Z_range.begin (), Z_range.end ());

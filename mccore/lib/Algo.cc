@@ -5,8 +5,8 @@
 // Author           : Sebastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Wed Feb 14 15:45:51 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:09:13 2001
-// Update Count     : 8
+// Last Modified On : Wed Aug 29 14:30:49 2001
+// Update Count     : 9
 // Status           : Unknown.
 //
 //  This file is part of mccore.
@@ -33,9 +33,14 @@
 #include <iostream.h>
 #include "Algo.h"
 
-void Algo_Inst () {
+
+
+void
+Algo_Inst ()
+{
   vector< CResidue > vec;
   vector< pair< vector< CResidue >::iterator, vector< CResidue >::iterator > >
     res = Algo::ExtractContact_AABB (vec.begin (), vec.end (), 5.0);
+
   cout << res.size () << endl;
 }
