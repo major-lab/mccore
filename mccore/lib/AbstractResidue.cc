@@ -3,9 +3,9 @@
 // Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : Fri Oct 12 18:21:12 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Fri Nov 16 13:30:40 2001
-// Update Count     : 4
+// Last Modified By : Patrick Gendron
+// Last Modified On : Mon Apr 15 14:33:57 2002
+// Update Count     : 5
 // Status           : Unknown.
 // 
 
@@ -261,6 +261,7 @@ AbstractResidue::operator= (const AbstractResidue &right)
       resId = right.resId;
       mType = right.mType;
       mTfo = right.mTfo;
+      mAtomIndex = right.mAtomIndex;
       }
   return *this;
 }
