@@ -1,20 +1,38 @@
 //                              -*- mode: C++ -*- 
 // Binstream.cc
-// Copyright © 1999, 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@orage.IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:18:52 EDT
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:14:22 2000
-// Update Count     : 3
+// Last Modified On : Mon Jan 22 16:53:40 2001
+// Update Count     : 4
 // Status           : Ok.
 // 
 
 
 
-#include <netinet/in.h>
 #include <string.h>
 
 #include "Binstream.h"
+
+
+
+#ifdef WORDS_BIGENDIAN
+
+#define MASK_0 0xff000000L
+#define MASK_1 0x00ff0000L
+#define MASK_2 0x0000ff00L
+#define MASK_3 0x000000ffL
+
+void
+swap_endian (long *x)
+{
+  long oldl = *x;
+  
+  *x = (((oldl & MASK_3) << 24) | ((oldl & MASK_2) << 8)
+	| ((oldl & MASK_1) >> 8) | ((oldl & MASK_0) >> 24));
+}
+#endif
 
 
 
@@ -55,10 +73,10 @@ iBinstream::operator>> (char **str)
 iBinstream&
 iBinstream::operator>> (int &n)
 {
-  int tmp;
-  
-  this->read ((char*) &tmp, sizeof (int));
-  n = ntohl ((long)tmp);
+  this->read ((char*) &n, sizeof (int));
+#ifdef WORDS_BIGENDIAN
+  swap_endian ((long*)&n);
+#endif
   return *this;
 }
 
@@ -67,11 +85,10 @@ iBinstream::operator>> (int &n)
 iBinstream&
 iBinstream::operator>> (float &x)
 {
-  int tmp;
-  
-  this->read ((char*)&tmp, sizeof (float));
-  tmp = ntohl (tmp);
-  x = *(float*)&tmp;
+  this->read ((char*)&x, sizeof (float));
+#ifdef WORDS_BIGENDIAN
+  swap_endian ((long*)&x);
+#endif
   return *this;
 }
 
@@ -119,8 +136,11 @@ oBinstream::operator<< (const char *str)
 oBinstream&
 oBinstream::operator<< (int n)
 {
-  int tmp = htonl (n);
+  int tmp = n;
 
+#ifdef WORDS_BIGENDIAN
+  swap_endian ((long*)&tmp);
+#endif
   this->write ((char*)&tmp, sizeof (int));
   return *this;
 }
@@ -130,8 +150,11 @@ oBinstream::operator<< (int n)
 oBinstream&
 oBinstream::operator<< (float x)
 {
-  int tmp = htonl (*(int*)&x);  
+  float tmp = x;  
   
+#ifdef WORDS_BIGENDIAN
+  swap_endian ((long*)&tmp);
+#endif
   this->write ((char*)&tmp, sizeof (float));
   return *this;
 }

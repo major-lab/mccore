@@ -1,10 +1,10 @@
 //                         -*- Mode: C++ -*-
 // Binstream.h
-// Copyright © 1999, 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:11:41 EDT
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Jan 22 15:10:26 2001
+// Last Modified On : Mon Jan 22 16:53:42 2001
 // Update count     : 0
 // Status           : Ok.
 //
@@ -14,6 +14,17 @@
 #define _Binstream_h_
 
 #include <iostream.h>
+
+
+
+#ifdef WORDS_BIGENDIAN
+/**
+ * Function used to swap bytes in case of big endianness.  This function
+ * works only on 32 bits words.
+ * @param obj the basic type to convert to little endian.
+ */
+void swap_endian (long* obj);
+#endif
 
 
 
