@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Thu May 31 08:17:56 2001
-// $Revision: 1.7 $
-// $Id: PairingPattern.cc,v 1.7 2004-09-15 22:37:59 larosem Exp $
+// $Revision: 1.8 $
+// $Id: PairingPattern.cc,v 1.8 2004-09-16 15:19:19 larosem Exp $
 
 
 #ifdef HAVE_CONFIG_H
@@ -184,62 +184,6 @@ namespace mccore {
     return (!ab && !ba) ? 0 : name;
   }
 
-
-
-//   void PairingPattern::amberOutput (ostream& out, CResId &id_a, CResId &id_b,
-// 				    const ResidueType *ta, const ResidueType *tb)
-//   {
-//     int i;
-
-//     out << " " << *name << " " << *typeA << " - " << *typeB << endl;
-
-//     bool reverse = false;
-//     if (ta->is (typeB) && tb->is (typeA)) reverse = true;
-//     else if (!ta->is (typeA) || !tb->is (typeB)) {
-//       LibException e;
-//       throw e << "Pairing type " << *name
-// 	      << " does not fit residue types " 
-// 	      << *ta << ", " << *tb 
-// 	      << " (" << *typeA << ", " << *typeB << " expected)";
-//     } 
-
-//     CResId new_id_a, new_id_b;
-
-//     for (i=0; i<mSize; ++i) {
-//       if (!ignored[i]) {
-// 	if ((!reverse && directions[i] == '>') || 
-// 	    (reverse && directions[i] == '<')) {
-// 	  new_id_a = id_a;
-// 	  new_id_b = id_b;
-// 	} else {
-// 	  new_id_a = id_b;
-// 	  new_id_b = id_a;
-// 	}
-
-// 	out << " &rst iresid=1," << endl;
-// 	out << "      iat(1)=" << new_id_a
-// 	    << ", iat(2)=" << new_id_b << "," << endl;
-// 	out << "      atnam(1)= '" << hbonds[i].getDonor ()->getAmberRep () << "', "
-// 	    << "atnam(2)= '" << hbonds[i].getAcceptor ()->getAmberRep () << "'," << endl;
-// 	out << "      r1= 1.0, r2= 1.5, r3= 3.0, r4= 5.0," << endl;
-// 	out << "      rk2=0.0, rk3=32.0" << endl;
-// 	out << " &end" << endl;
-// 	out << " &rst iresid=1," << endl;
-// 	out << "      iat(1)=" << new_id_a << ", iat(2)=" << new_id_a << ", iat(3)=" << new_id_b << "," << endl;
-// 	out << "      atnam(1)= '" << hbonds[i].getDonor ()->getAmberRep () << "', "
-// 	    << "atnam(2)= '" << hbonds[i].getHydro ()->getAmberRep () << "', "
-// 	    << "atnam(3)= '" << hbonds[i].getAcceptor ()->getAmberRep () << "'," << endl;
-// 	out << "      r1= 150, r2= 170, r3= 190, r4= 210," << endl;
-// 	out << "      rk2=20.0, rk3=20.0" << endl;
-// 	out << " &end" << endl;
-      
-//       }
-//     }
-//   }
-
-
-
-  // STATIC FUNCTIONS -----------------------------------------------------
 
   void PairingPattern::init ()
   {
