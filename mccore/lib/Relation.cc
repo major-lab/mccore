@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Relation.cc
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.33 $
-// $Id: Relation.cc,v 1.33 2005-01-03 22:59:50 larosem Exp $
+// $Revision: 1.34 $
+// $Id: Relation.cc,v 1.34 2005-01-06 21:08:21 larosem Exp $
 // 
 // This file is part of mccore.
 // 

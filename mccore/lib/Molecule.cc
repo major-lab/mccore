@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:35 2003
-// $Revision: 1.9 $
-// $Id: Molecule.cc,v 1.9 2005-01-05 01:48:31 larosem Exp $
+// $Revision: 1.10 $
+// $Id: Molecule.cc,v 1.10 2005-01-06 21:08:04 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -28,10 +28,11 @@
 #include <config.h>
 #endif
 
+#include "AbstractModel.h"
 #include "Binstream.h"
-#include "Model.h"
 #include "Molecule.h"
 #include "Pdbstream.h"
+#include "ModelFactoryMethod.h"
 #include "ResidueFactoryMethod.h"
 
 
@@ -69,14 +70,24 @@ namespace mccore
   }
   
   
-  Molecule::Molecule (const ResidueFactoryMethod *fm)
-    : residueFM (0 == fm ? new ExtendedResidueFM () : fm->clone ())
-  { }
+  Molecule::Molecule (const ModelFactoryMethod *fm)
+  {
+    if (0 == fm)
+      {
+	ExtendedResidueFM rFM;
+	
+	modelFM = new ModelFM (&rFM);
+      }
+    else
+      {
+	modelFM = fm->clone ();
+      }    
+  }
 
   
   Molecule::Molecule (const Molecule &right)
     : properties (right.properties),
-      residueFM (right.residueFM->clone ())
+      modelFM (right.modelFM->clone ())
   {
     const_iterator it;
     
@@ -95,7 +106,7 @@ namespace mccore
       {
 	delete *mit;
       }
-    delete residueFM;
+    delete modelFM;
   }
   
   
@@ -108,7 +119,7 @@ namespace mccore
 
 	// clear all
 	clear ();
-	delete residueFM;
+	delete modelFM;
 
 	// copy 
 	for (it = right.begin (); it != right.end (); ++it)
@@ -116,7 +127,7 @@ namespace mccore
 	    models.push_back (it->clone ());
 	  }
 	properties = right.properties;
-	residueFM = right.residueFM->clone ();
+	modelFM = right.modelFM->clone ();
       }
     return *this;
   }
@@ -146,13 +157,29 @@ namespace mccore
 
   
   void
-  Molecule::setResidueFM (const ResidueFactoryMethod *fm)
+  Molecule::setModelFM (const ModelFactoryMethod *fm)
   {
-    delete residueFM;
-    residueFM = 0 == fm ? new ExtendedResidueFM () : fm->clone ();
+    delete modelFM;
+    if (0 == fm)
+      {
+	ExtendedResidueFM rFM;
+
+	modelFM = new ModelFM (&rFM);
+      }
+    else
+      {
+	modelFM = fm->clone ();
+      }
   }
   
   
+  Molecule::iterator
+  Molecule::insert (const AbstractModel& model)
+  {
+    return iterator (models.insert (models.end (), model.clone ()));
+  }
+  
+    
   Molecule::iterator
   Molecule::erase (iterator pos)
   {
@@ -222,7 +249,7 @@ namespace mccore
       {
 	AbstractModel* model;
 
-	model = new Model (this->residueFM);
+	model = modelFM->createModel ();
 	ips >> *model;
 	if (model->empty ())
 	  {
@@ -267,7 +294,7 @@ namespace mccore
 
     for (ibs >> qty; qty > 0; --qty)
       {
-	models.push_back (new Model (this->residueFM));
+	models.push_back (modelFM->createModel ());
 	ibs >> *models.back ();
       }
 

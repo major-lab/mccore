@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // GraphModel.cc
-// Copyright © 2004 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2004, 2005 Laboratoire de Biologie Informatique et Théorique
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.2 $
-// $Id: GraphModel.cc,v 1.2 2005-01-03 22:46:03 larosem Exp $
+// $Revision: 1.3 $
+// $Id: GraphModel.cc,v 1.3 2005-01-06 21:07:22 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -48,23 +48,21 @@ namespace mccore
 {
 
   GraphModel::GraphModel (const AbstractModel &right)
-    : AbstractModel (right)
+    : AbstractModel (right),
+      annotated (false)
   {
-    const GraphModel *model;
-    
-    if (0 == (model = dynamic_cast< const GraphModel* > (&right)))
-      {
-	annotated = false;
-	AbstractModel::insert (right.begin (), right.end ());
-      }
-    else
-      {
-	annotated = model->annotated;
-	deepCopy (*model);
-      }
+    AbstractModel::insert (right.begin (), right.end ());
   }
   
 
+  GraphModel::GraphModel (const GraphModel &right)
+    : AbstractModel (right),
+      annotated (right.annotated)
+  {
+    deepCopy (right);
+  }
+
+  
   GraphModel::~GraphModel ()
   {
     vector< Residue* >::iterator resIt;

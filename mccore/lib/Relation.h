@@ -1,9 +1,9 @@
 //                              -*- Mode: C++ -*- 
 // Relation.h
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 // 
 // This file is part of mccore.
 // 
@@ -66,7 +66,7 @@ namespace mccore
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.14 2005-01-03 23:00:09 larosem Exp $
+   * @version $Id: Relation.h,v 1.15 2005-01-06 21:08:25 larosem Exp $
    */
   class Relation
   {

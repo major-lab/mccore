@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // RnamlReader.cc
-// Copyright Å© 2003-04 Laboratoire de Biologie Informatique et ThÅÈorique
+// Copyright Å© 2003-05 Laboratoire de Biologie Informatique et ThÅÈorique
 //                     UniversitÅÈ de MontrÅÈal.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
-// $Revision: 1.4 $
-// $Id: RnamlReader.cc,v 1.4 2005-01-03 23:04:44 larosem Exp $
+// $Revision: 1.5 $
+// $Id: RnamlReader.cc,v 1.5 2005-01-06 21:08:28 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -34,8 +34,9 @@
 #include "AbstractModel.h"
 #include "Atom.h"
 #include "AtomType.h"
+#include "GraphModel.h"
 #include "Messagestream.h"
-#include "Model.h"
+#include "ModelFactoryMethod.h"
 #include "Molecule.h"
 #include "ResId.h"
 #include "Residue.h"
@@ -158,7 +159,7 @@ namespace mccore
     const vector< rnaml::Base* > &bases = ((rnaml::Model&) model).getBases ();
     vector< rnaml::Base* >::const_iterator cit;
     
-    m = new Model ();
+    m = new GraphModel ();
     for (cit = bases.begin (); bases.end () != cit; ++cit)
       {
 	Residue *r;
@@ -177,8 +178,10 @@ namespace mccore
     Molecule *m;
     const char *str;
     rnaml::Structure *structure;
+    ExtendedResidueFM rFM;
+    GraphModelFM mFM (&rFM);
     
-    m = new Molecule ();
+    m = new Molecule (&mFM);
     m->setProperty ("id", molecule.getId ());
     m->setProperty ("type", molecule.getType ());
     str = molecule.getComment ();

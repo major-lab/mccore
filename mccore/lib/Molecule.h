@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:36 2003
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 // 
 // This file is part of mccore.
 // 
@@ -31,7 +31,6 @@
 #include <map>
 #include <string>
 
-#include "AbstractModel.h"
 #include "Exception.h"
 
 using namespace std;
@@ -39,7 +38,8 @@ using namespace std;
 
 namespace mccore
 {
-  class ResidueFactoryMethod;
+  class AbstractModel;
+  class ModelFactoryMethod;
   class iPdbstream;
   class oPdbstream;
   class iBinstream;
@@ -51,7 +51,7 @@ namespace mccore
    * This is a collection of mccore Models in a simple STL list.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Molecule.h,v 1.6 2005-01-05 01:48:49 larosem Exp $
+   * @version $Id: Molecule.h,v 1.7 2005-01-06 21:08:17 larosem Exp $
    */
   class Molecule
   {
@@ -72,9 +72,9 @@ namespace mccore
     map< string, string > properties;
     
     /**
-     * Factory method for creating new residues within new models.
+     * Factory method for creating new models within the molecule.
      */
-    ResidueFactoryMethod *residueFM;
+    ModelFactoryMethod *modelFM;
     
   public:
     
@@ -191,9 +191,9 @@ namespace mccore
     
     /**
      * Initializes the object.
-     * @param fm the residue factory methods that will instanciate new residues (default is @ref ExtendedResidueFM).
+     * @param fm the model factory method that will instanciate new model and residue (default is @ref ModelFM with ExtendedResidueFM).
      */
-    Molecule (const ResidueFactoryMethod *fm = 0);
+    Molecule (const ModelFactoryMethod *fm = 0);
     
     /**
      * Initializes the object with the right's content.
@@ -259,16 +259,16 @@ namespace mccore
     const map< string, string >& getProperties () const { return properties; }
 
    /**
-     * Gets the residue factory method.
-     * @return the residue factory method.
+     * Gets the model factory method.
+     * @return the model factory method.
      */
-    const ResidueFactoryMethod* getResidueFM () const { return residueFM; }
+    const ModelFactoryMethod* getModelFM () const { return modelFM; }
   
     /**
-     * Sets the residue factory method.
-     * @param fm the new factory method to use (default is @ref ExtendedResidueFM).
+     * Sets the model factory method.
+     * @param fm the new factory method to use (default is @ref ModelFM with ExtendedResidueFM).
      */
-    void setResidueFM (const ResidueFactoryMethod *fm = 0);
+    void setModelFM (const ModelFactoryMethod *fm = 0);
 
     /**
      * Gets the iterator pointing to the beginning of the molecule.
@@ -313,10 +313,7 @@ namespace mccore
      * @param model the model to insert.
      * @return the position where the residue was inserted.
      */
-    iterator insert (const AbstractModel& model)
-    {
-      return iterator (models.insert (models.end (), model.clone ()));
-    }
+    iterator insert (const AbstractModel& model);
     
     /**
      * Inserts the model range before pos.  It calls the list<> method.

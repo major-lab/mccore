@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.28 $
-// $Id: Model.cc,v 1.28 2005-01-05 01:46:20 larosem Exp $
+// $Revision: 1.29 $
+// $Id: Model.cc,v 1.29 2005-01-06 21:07:46 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -52,6 +52,18 @@ namespace mccore
   }
 
 
+  Model::Model (const Model &right)
+    : AbstractModel (right)
+  {
+    const_iterator cit;
+
+    for (cit = right.begin (); right.end () != cit; ++cit)
+      {
+	residues.push_back (cit->clone ());
+      }
+  }
+  
+  
   Model::~Model ()
   {
     vector< Residue* >::iterator it;
