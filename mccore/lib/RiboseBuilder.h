@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Philippe Thibault <thibaup@iro.umontreal.ca>
 // Created On       : Mon Sep 29 14:59:19 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 //
 //  This file is part of mccore.
 //  
@@ -26,15 +26,12 @@
 #define __RiboseBuilder_h_
 
 
-#include "Atom.h"
-#include "HomogeneousTransfo.h"
+#include "Residue.h"
+#include "ResidueFactoryMethod.h"
 
 
 namespace mccore
 {
-
-  class Residue;
-  class ResidueFactoryMethod;
 
   /**
    * @short Interface class. Builds a theoretical ribose between a RNA base and its two adjacent phosphates.

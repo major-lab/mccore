@@ -26,7 +26,6 @@
 #endif
 
 
-#include "Residue.h"
 #include "CException.h"
 #include "RiboseOptimizer2D.h"
 

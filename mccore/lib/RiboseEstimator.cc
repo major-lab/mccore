@@ -26,7 +26,6 @@
 
 #include <values.h>
 
-#include "Residue.h"
 #include "CException.h"
 #include "RiboseEstimator.h"
 
