@@ -4,11 +4,13 @@
 // Author           : Martin Larose
 // Created On       : Fri Oct  6 08:21:55 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:14:49 2000
-// Update Count     : 1
+// Last Modified On : Thu Nov  9 10:44:51 2000
+// Update Count     : 2
 // Status           : Unknown.
 // 
 
+
+#include "algo.h"
 
 #include "CModel.h"
 
@@ -24,6 +26,50 @@ CModel::operator= (const CModel &right)
       vector< CResidue >::operator= (right);
     }
   return *this;
+}
+
+
+
+CModel
+CModel::Validate () const
+{
+  const_iterator it = begin ();
+  CModel model;
+
+  for (it = begin (); it != end (); ++it)
+    {
+      CResidue res = it->Validate ();
+      
+      if (res.GetType () != 0)
+	model.push_back (res);
+    }
+  return model;
+}
+
+
+
+CModel
+CModel::RemoveOptionals () const
+{
+  const_iterator it;
+  CModel model;
+
+  for (it = begin (); it != end (); ++it)
+    model.push_back (it->RemoveOptionals ());
+  return model;
+}
+
+
+
+CModel
+CModel::SortAtoms () const
+{
+  const_iterator cit;
+  CModel model;
+
+  for (cit = begin (); cit != end (); ++cit)
+    model.push_back (cit->sort ());
+  return model;
 }
 
 

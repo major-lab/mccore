@@ -4,8 +4,8 @@
 // Author           : Patrick Gendron <gendrop@vertigo.IRO.UMontreal.CA>
 // Created On       : Fri Oct  1 18:22:41 1999
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:15:10 2000
-// Update Count     : 4
+// Last Modified On : Thu Nov  9 10:45:19 2000
+// Update Count     : 5
 // Status           : Ok.
 // 
 
@@ -342,15 +342,6 @@ CTransfo::Referentiel (const CPoint3D *p1, const CPoint3D *p2,
   m2.Align (&p4p, &p5p, &p6p);
   
   return *this *= m2;
-}
-
-
-
-float 
-CTransfo::RMS_align (const vector< const CAtom* > &theTo,
-		     const vector< const CAtom* > &theFrom)
-{
-  return rmsd_with_align (theTo, theFrom, this);
 }
 
 

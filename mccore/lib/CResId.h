@@ -4,8 +4,8 @@
 // Author           : Martin Larose
 // Created On       : Thu Sep 28 15:55:29 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:15:03 2000
-// Update Count     : 1
+// Last Modified On : Thu Nov  9 10:45:03 2000
+// Update Count     : 2
 // Status           : Ok.
 // 
 
@@ -76,6 +76,13 @@ public:
    */
   bool operator== (const CResId &right) const
   { return chain == right.chain && no == right.no; }
+  
+  /**
+   * Tests the difference between ids.
+   * @param right the object to test.
+   * @return the truth value.
+   */
+  bool operator!= (const CResId &right) const { return !operator== (right); }
   
   /**
    * Tests the partial order over ids.

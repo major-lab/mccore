@@ -4,8 +4,8 @@
 // Author           : Martin Larose
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:15:21 2000
-// Update Count     : 1
+// Last Modified On : Thu Nov  9 10:45:32 2000
+// Update Count     : 2
 // Status           : Ok.
 // 
 
@@ -873,8 +873,8 @@ void
 oPdbstream::open ()
 {
   mCurrentAtomNo = 1;
-  atomset = new no_pse_lp_atom_set ();
-  atomsetopt = new no_opt ();
+  atomset = new all_atom_set ();
+  atomsetopt = new no_pse_lp_atom_set ();
   restype = 0;
   mModelNo = 1;
 }

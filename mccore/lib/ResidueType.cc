@@ -4,12 +4,13 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:15:25 2000
-// Update Count     : 1
+// Last Modified On : Thu Nov  9 10:45:40 2000
+// Update Count     : 2
 // Status           : Ok.
 // 
 
 
+#include <iostream.h>
 #include <stdlib.h>
 
 #include "ResidueType.h"
@@ -1004,4 +1005,12 @@ void
 rt_VAL::Binoutput (oBinstream &obs) const
 {
   obs << char (RT_VAL_BIN);
+}
+
+
+
+ostream&
+operator<< (ostream &os, const t_Residue *restype)
+{
+  return os << *restype;
 }

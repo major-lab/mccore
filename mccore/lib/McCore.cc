@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:15:16 2000
-// Update Count     : 1
+// Last Modified On : Thu Nov  9 10:45:28 2000
+// Update Count     : 2
 // Status           : Ok.
 // 
 
@@ -17,6 +17,7 @@
 
 #include "CAtom.h"
 #include "CMessageQueue.h"
+#include "CResidue.h"
 #include "CTransfo.h"
 
 
@@ -260,14 +261,14 @@ set< t_Atom* > gdGOblAtomSet;
 set< t_Atom* > grGOblAtomSet;
 set< t_Atom* > gdTOblAtomSet;
 set< t_Atom* > grUOblAtomSet;
-set< t_Atom* > gdAAllAtomSet;
-set< t_Atom* > grAAllAtomSet;
-set< t_Atom* > gdCAllAtomSet;
-set< t_Atom* > grCAllAtomSet;
-set< t_Atom* > gdGAllAtomSet;
-set< t_Atom* > grGAllAtomSet;
-set< t_Atom* > gdTAllAtomSet;
-set< t_Atom* > grUAllAtomSet;
+set< t_Atom* > gdAOptAtomSet;
+set< t_Atom* > grAOptAtomSet;
+set< t_Atom* > gdCOptAtomSet;
+set< t_Atom* > grCOptAtomSet;
+set< t_Atom* > gdGOptAtomSet;
+set< t_Atom* > grGOptAtomSet;
+set< t_Atom* > gdTOptAtomSet;
+set< t_Atom* > grUOptAtomSet;
 
 
 
@@ -436,31 +437,22 @@ SetOblAtomSets ()
   for (i = 0; i < 22; ++i)
     grUOblAtomSet.insert (*(rU[i]));
 
-  gdAAllAtomSet.insert (gdAOblAtomSet.begin (), gdAOblAtomSet.end ());
-  grAAllAtomSet.insert (grAOblAtomSet.begin (), grAOblAtomSet.end ());
-  gdCAllAtomSet.insert (gdCOblAtomSet.begin (), gdCOblAtomSet.end ());
-  grCAllAtomSet.insert (grCOblAtomSet.begin (), grCOblAtomSet.end ());
-  gdGAllAtomSet.insert (gdGOblAtomSet.begin (), gdGOblAtomSet.end ());
-  grGAllAtomSet.insert (grGOblAtomSet.begin (), grGOblAtomSet.end ());
-  gdTAllAtomSet.insert (gdTOblAtomSet.begin (), gdTOblAtomSet.end ());
-  grUAllAtomSet.insert (grUOblAtomSet.begin (), grUOblAtomSet.end ());
-  
   for (i = 0; i < 17; ++i)
-    gdAAllAtomSet.insert (*(odA[i]));
+    gdAOptAtomSet.insert (*(odA[i]));
   for (i = 0; i < 17; ++i)
-    grAAllAtomSet.insert (*(orA[i]));
+    grAOptAtomSet.insert (*(orA[i]));
   for (i = 0; i < 17; ++i)
-    gdCAllAtomSet.insert (*(odC[i]));
+    gdCOptAtomSet.insert (*(odC[i]));
   for (i = 0; i < 17; ++i)
-    grCAllAtomSet.insert (*(orC[i]));
+    grCOptAtomSet.insert (*(orC[i]));
   for (i = 0; i < 18; ++i)
-    gdGAllAtomSet.insert (*(odG[i]));
+    gdGOptAtomSet.insert (*(odG[i]));
   for (i = 0; i < 18; ++i)
-    grGAllAtomSet.insert (*(orG[i]));
+    grGOptAtomSet.insert (*(orG[i]));
   for (i = 0; i < 19; ++i)
-    gdTAllAtomSet.insert (*(odT[i]));
+    gdTOptAtomSet.insert (*(odT[i]));
   for (i = 0; i < 17; ++i)
-    grUAllAtomSet.insert (*(orU[i]));
+    grUOptAtomSet.insert (*(orU[i]));
 }
 
 
@@ -540,10 +532,11 @@ RadToDegree (float r)
 
 
 float 
-rmsd (const vector< const CAtom * > &mgr1, const vector< const CAtom * > &mgr2)
+rmsd (const vector< CResidue::iterator > &mgr1,
+      const vector< CResidue::iterator > &mgr2)
 {
   float rmsd = 0;
-  vector< const CAtom * >::const_iterator i, j;
+  vector< CResidue::iterator >::const_iterator i, j;
   
   for (i = mgr1.begin (), j = mgr2.begin (); i != mgr1.end (); i++, j++)
     rmsd += **i || **j;
@@ -553,21 +546,20 @@ rmsd (const vector< const CAtom * > &mgr1, const vector< const CAtom * > &mgr2)
 
 
 float 
-rmsd_with_align (const vector< const CAtom * > &x,
-		 const vector< const CAtom * > &y, 
+rmsd_with_align (const vector< CResidue::iterator > &x,
+		 const vector< CResidue::iterator > &y, 
 		 CTransfo *t)
 {
   // Removing translations
   CPoint3D center_a (0, 0, 0);
   CPoint3D center_b (0, 0, 0);
   int count = 0;
-  vector< const CAtom* >::const_iterator cii, cij;
+  vector< CResidue::iterator >::const_iterator cii, cij;
   double r[3 * 3];
   int i, j, k;
   int n = x.size ();
   double e0 = 0;
   double rr[3 * 3];
-  
 
   for (cii = x.begin (), cij = y.begin ();
        cii != x.end () && cij != y.end ();
@@ -613,15 +605,15 @@ rmsd_with_align (const vector< const CAtom * > &x,
     }
   e0 /= 2;
 
-
   // Calcul de RR
 
   for (i = 0; i < 3; ++i)
-    for (j = 0; j < 3; ++j) {
-      rr[i*3+j] = 0;
-      for (k = 0; k < 3; ++k)
-	rr[i*3+j] += r[k*3+i] * r[k*3+j];
-    }
+    for (j = 0; j < 3; ++j)
+      {
+	rr[i*3+j] = 0;
+	for (k = 0; k < 3; ++k)
+	  rr[i*3+j] += r[k*3+i] * r[k*3+j];
+      }
 
   // Diagonalization
 
@@ -635,13 +627,14 @@ rmsd_with_align (const vector< const CAtom * > &x,
   // Tri des eigenvalues et eigenvectors
 
   for (i = 0; i < 2; ++i)
-    for (j = i+1; j < 3; ++j)
-      if (mu[i] < mu[j]) {
-	swap (mu[i], mu[j]);
-	swap (a[0*3+i], a[0*3+j]);
-	swap (a[1*3+i], a[1*3+j]);
-	swap (a[2*3+i], a[2*3+j]);
-      }
+    for (j = i + 1; j < 3; ++j)
+      if (mu[i] < mu[j])
+	{
+	  swap (mu[i], mu[j]);
+	  swap (a[0*3+i], a[0*3+j]);
+	  swap (a[1*3+i], a[1*3+j]);
+	  swap (a[2*3+i], a[2*3+j]);
+	}
 
 //    for (int i = 0; i < 3; ++i)
 //      cout << "mu[" << i << "] = " << mu[i] << endl;
@@ -655,11 +648,12 @@ rmsd_with_align (const vector< const CAtom * > &x,
   // Construction de b
 
   for (i = 0; i < 3; ++i)
-    for (j = 0; j < 3; ++j) {
-      b[i*3+j] = 0;
-      for (k = 0; k < 3; ++k)
-	b[i*3+j] += r[i*3+k] * a[k*3+j];
-    }
+    for (j = 0; j < 3; ++j)
+      {
+	b[i*3+j] = 0;
+	for (k = 0; k < 3; ++k)
+	  b[i*3+j] += r[i*3+k] * a[k*3+j];
+      }
   
   // Normalization de b
   
@@ -687,33 +681,37 @@ rmsd_with_align (const vector< const CAtom * > &x,
   sigma_3 = (b[0*3+2] * right_b3[0] +
 	     b[1*3+2] * right_b3[1] +
 	     b[2*3+2] * right_b3[2]);
-  if (sigma_3 < 0) sigma_3 = -1;
-  else sigma_3 = +1;
+  if (sigma_3 < 0)
+    sigma_3 = -1;
+  else
+    sigma_3 = +1;
 
   b[0*3+2] = right_b3[0];
   b[1*3+2] = right_b3[1];
   b[2*3+2] = right_b3[2];
   
   double rmsd = 2 * (e0 - sqrt (mu[0]) - sqrt (mu[1]) - sigma_3 * sqrt (mu[2])) / n;
-  if (rmsd < 0) rmsd = 0;
+  if (rmsd < 0)
+    rmsd = 0;
   rmsd = sqrt (rmsd);
 
   // Construction de U
 
   double u[3*3];
   for (i = 0; i < 3; ++i)
-    for (j = 0; j < 3; ++j){
-      u[i*3+j] = 0;
-      for (k = 0; k < 3; ++k)
-	u[i*3+j] += b[i*3+k] * a[j*3+k];
-    }
+    for (j = 0; j < 3; ++j)
+      {
+	u[i*3+j] = 0;
+	for (k = 0; k < 3; ++k)
+	  u[i*3+j] += b[i*3+k] * a[j*3+k];
+      }
   
   CTransfo rot (u[0*3+0], u[0*3+1], u[0*3+2], 0,
 		u[1*3+0], u[1*3+1], u[1*3+2], 0,
 		u[2*3+0], u[2*3+1], u[2*3+2], 0);
-  
-  *t = (CTransfo().SetTranslation (center_b) * rot *
-        CTransfo().SetTranslation (-center_a));
+
+  *t = (CTransfo ().SetTranslation (center_b) * rot *
+        CTransfo ().SetTranslation (-center_a));
 
   return rmsd;
 }
@@ -1042,6 +1040,14 @@ McCoreInit ()
   // Initializing obligatory atom sets
 
   SetOblAtomSets ();
+}
+
+
+
+void
+McCore_version ()
+{
+  cout << PACKAGE << " " << VERSION << endl;
 }
 
 

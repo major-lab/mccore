@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:15:04 2000
-// Update Count     : 1
+// Last Modified On : Thu Nov  9 10:45:10 2000
+// Update Count     : 2
 // Status           : Ok.
 // 
 
@@ -14,6 +14,7 @@
 #include <set.h>
 #include <algo.h>
 #include <string.h>
+#include <stdarg.h>
 
 #include "CResidue.h"
 
@@ -25,7 +26,6 @@
 #include "CMessageQueue.h"
 #include "CPoint3D.h"
 #include "Pdbstream.h"
-#include "ResidueType.h"
 
 
 
@@ -34,7 +34,10 @@ int CResidue::count = 0;
 
 
 CResidue::iterator::iterator ()
-  : mRes (0), mPos (0), mSet (new all_atom_set ()), mOption (new no_opt ())
+  : mRes (0),
+    mPos (0),
+    mSet (new all_atom_set ()),
+    mOption (new all_atom_set ())
 { }
 
 
@@ -48,7 +51,7 @@ CResidue::iterator::iterator (CResidue *nRes, int nPos,
   if (! mSet)
     mSet = new all_atom_set ();
   if (! mOption)
-    mOption = new no_opt ();
+    mOption = new all_atom_set ();
   while (mPos < size
 	 && ! ((*mSet) (mRes->mAtomRef[mPos])
 	       && (*mOption) (mRes->mAtomRef[mPos])))
@@ -141,7 +144,10 @@ CResidue::iterator::operator- (const CResidue::iterator &i) const
 
 
 CResidue::const_iterator::const_iterator ()
-  : mRes (0), mPos (0), mSet (new all_atom_set ()), mOption (new no_opt ())
+  : mRes (0),
+    mPos (0),
+    mSet (new all_atom_set ()),
+    mOption (new all_atom_set ())
 { }
 
 
@@ -156,7 +162,7 @@ CResidue::const_iterator::const_iterator (const CResidue *nRes, int nPos,
   if (! mSet)
     mSet = new all_atom_set ();
   if (! mOption)
-    mOption = new no_opt ();
+    mOption = new all_atom_set ();
   while (mPos < size
 	 && ! (mSet->operator() (mRes->mAtomRef[mPos])
 	       && mOption->operator() (mRes->mAtomRef[mPos])))
@@ -250,11 +256,11 @@ CResidue::const_iterator::operator- (const CResidue::const_iterator &i) const
 
 CResidue::CResidue (t_Residue *type, const vector< CAtom > &vec,
 		    const CResId &nId, t_Residue *readtype)
-  : CResId (nId), dirty_id (false), mType (type), mReadType (readtype),
+  : CResId (nId), mType (type), mReadType (readtype),
     mResName (0), mAtomRef (vec), mAtomResPos (vec.size (), -1)
 {
   count++;
-  CAtom *pivot[3] = {0, 0, 0};
+  const CAtom *pivot[3] = {0, 0, 0};
   vector< CAtom >::iterator it;
   vector< CAtom >::size_type i;
   
@@ -270,10 +276,13 @@ CResidue::CResidue (t_Residue *type, const vector< CAtom > &vec,
 	mAtomIndex[it->GetType ()] = i;
     }
 
+  if (! mType)
+    return;
+  
   // PSY and PSZ creation for nucleic acid.
   if (mType->is_Purine () || mType->is_Pyrimidine ())
     {
-      CPoint3D *p1 = 0, *p2 = 0, *p3 = 0;
+      const CPoint3D *p1 = 0, *p2 = 0, *p3 = 0;
       
       if ((mType->is_Purine ()
 	   && (p1 = Ref (a_N9))
@@ -378,7 +387,7 @@ CResidue::CResidue (t_Residue *type, const vector< CAtom > &vec,
 
 
 CResidue::CResidue (const CResidue& right)
-  : CResId (right), dirty_id (false), mType (right.mType),
+  : CResId (right), mType (right.mType),
     mReadType (right.mReadType), mResName (0), mAtomRef (right.mAtomRef),
     mAtomResPos (right.mAtomResPos), mAtomIndex (right.mAtomIndex),
     mAtomRes (right.mAtomRes), mTfo (right.mTfo)    
@@ -408,7 +417,6 @@ CResidue::operator= (const CResidue &right)
   if (&right != this)
     {
       CResId::operator= (right);
-      dirty_id = true;
       mType = right.mType;
       mReadType = right.mReadType;
       if (mResName)
@@ -436,14 +444,6 @@ bool
 CResidue::operator== (const CResidue &right) const
 {
   return CResId::operator== (right) && mType == right.mType;
-}
-
-
-
-bool
-CResidue::operator< (const CResidue &right) const
-{
-  return CResId::operator< (right);
 }
 
 
@@ -480,6 +480,32 @@ CResidue::operator[] (t_Atom *type) const
       Place (cit->second);
       return mAtomRes[mAtomResPos[cit->second]];
     }
+}
+
+
+
+CResidue::iterator
+CResidue::find (t_Atom *k)
+{
+  map< t_Atom*, int >::iterator it = mAtomIndex.find (k);
+
+  if (it == mAtomIndex.end ())
+    return end ();
+  else
+    return iterator (this, it->second);
+}
+
+
+
+CResidue::const_iterator
+CResidue::find (t_Atom *k) const
+{
+  map< t_Atom*, int >::const_iterator cit = mAtomIndex.find (k);
+
+  if (cit == mAtomIndex.end ())
+    return end ();
+  else
+    return const_iterator (this, cit->second);
 }
 
 
@@ -530,10 +556,10 @@ CResidue::Place (int pos) const
 
 
 
-CAtom*
-CResidue::Ref (t_Atom *t)
+const CAtom*
+CResidue::Ref (t_Atom *t) const
 {
-  map< t_Atom*, int >::iterator i = mAtomIndex.find (t);
+  map< t_Atom*, int >::const_iterator i = mAtomIndex.find (t);
   
   if (i != mAtomIndex.end ())
     return &(mAtomRef[i->second]);
@@ -603,8 +629,8 @@ CResidue::erase (set< t_Atom* >::iterator start,
 
   for (; start != finish; ++start)
     {
-      vector< CAtom >::iterator it = find (mAtomRef.begin (),
-					   mAtomRef.end (), *start);
+      vector< CAtom >::iterator it = ::find (mAtomRef.begin (),
+					     mAtomRef.end (), *start);
 
       if (it != mAtomRef.end ())
 	{
@@ -835,7 +861,7 @@ CResidue::AddHydrogens ()
   
   if (mType->is_NucleicAcid ())
     {
-      CPoint3D *r1, *r2, *r3, *r4;
+      const CPoint3D *r1, *r2, *r3, *r4;
       
       //  H1p
       r1 = Ref (a_C1p);
@@ -1085,97 +1111,213 @@ CResidue::AddLP ()
 
 
 
-bool
-CResidue::Validate ()
+CResidue
+CResidue::Validate () const
 {
+  CResidue res (*this);
+    
   if (mType != 0)
     {
-      set< t_Atom* >::const_iterator oblbegin, oblend, allbegin, allend;
-      set< t_Atom* > resset, diffset;
-      vector< CAtom >::const_iterator cit;
+      set< t_Atom* >::const_iterator optbegin, optend;
+      set< t_Atom* > resset, diffset, allset;
+      vector< CAtom >::iterator it;
 
       if (mType->is_DNA ())
 	{
 	  if (mType->is_dA ())
 	    {
-	      oblbegin = gdAOblAtomSet.begin ();
-	      oblend = gdAOblAtomSet.end ();
-	      allbegin = gdAAllAtomSet.begin ();
-	      allend = gdAAllAtomSet.end ();
+	      allset.insert (gdAOblAtomSet.begin (),  gdAOblAtomSet.end ());
+	      optbegin = gdAOptAtomSet.begin ();
+	      optend = gdAOptAtomSet.end ();
 	    }
 	  else if (mType->is_dC ())
 	    {
-	      oblbegin = gdCOblAtomSet.begin ();
-	      oblend = gdCOblAtomSet.end ();
-	      allbegin = gdCAllAtomSet.begin ();
-	      allend = gdCAllAtomSet.end ();
+	      allset.insert (gdCOblAtomSet.begin (), gdCOblAtomSet.end ());
+	      optbegin = gdCOptAtomSet.begin ();
+	      optend = gdCOptAtomSet.end ();
 	    }
 	  else if (mType->is_dG ())
 	    {
-	      oblbegin = gdGOblAtomSet.begin ();
-	      oblend = gdGOblAtomSet.end ();
-	      allbegin = gdGAllAtomSet.begin ();
-	      allend = gdGAllAtomSet.end ();
+	      allset.insert (gdGOblAtomSet.begin (), gdGOblAtomSet.end ());
+	      optbegin = gdGOptAtomSet.begin ();
+	      optend = gdGOptAtomSet.end ();
 	    }
 	  else if (mType->is_dT ())
 	    {
-	      oblbegin = gdTOblAtomSet.begin ();
-	      oblend = gdTOblAtomSet.end ();
-	      allbegin = gdTAllAtomSet.begin ();
-	      allend = gdTAllAtomSet.end ();
+	      allset.insert (gdTOblAtomSet.begin (), gdTOblAtomSet.end ());
+	      optbegin = gdTOptAtomSet.begin ();
+	      optend = gdTOptAtomSet.end ();
 	    }
 	}
       else if (mType->is_RNA ())
 	{
 	  if (mType->is_rA ())
 	    {
-	      oblbegin = grAOblAtomSet.begin ();
-	      oblend = grAOblAtomSet.end ();
-	      allbegin = grAAllAtomSet.begin ();
-	      allend = grAAllAtomSet.end ();
+	      allset.insert (grAOblAtomSet.begin (), grAOblAtomSet.end ());
+	      optbegin = grAOptAtomSet.begin ();
+	      optend = grAOptAtomSet.end ();
 	    }
 	  else if (mType->is_rC ())
 	    {
-	      oblbegin = grCOblAtomSet.begin ();
-	      oblend = grCOblAtomSet.end ();
-	      allbegin = grCAllAtomSet.begin ();
-	      allend = grCAllAtomSet.end ();
+	      allset.insert (grCOblAtomSet.begin (), grCOblAtomSet.end ());
+	      optbegin = grCOptAtomSet.begin ();
+	      optend = grCOptAtomSet.end ();
 	    }
 	  else if (mType->is_rG ())
 	    {
-	      oblbegin = grGOblAtomSet.begin ();
-	      oblend = grGOblAtomSet.end ();
-	      allbegin = grGAllAtomSet.begin ();
-	      allend = grGAllAtomSet.end ();
+	      allset.insert (grGOblAtomSet.begin (), grGOblAtomSet.end ());
+	      optbegin = grGOptAtomSet.begin ();
+	      optend = grGOptAtomSet.end ();
 	    }
 	  else if (mType->is_rU ())
 	    {
-	      oblbegin = grUOblAtomSet.begin ();
-	      oblend = grUOblAtomSet.end ();
-	      allbegin = grUAllAtomSet.begin ();
-	      allend = grUAllAtomSet.end ();
+	      allset.insert (grUOblAtomSet.begin (), grUOblAtomSet.end ());
+	      optbegin = grUOptAtomSet.begin ();
+	      optend = grUOptAtomSet.end ();
 	    }
 	}
       else
-	return false;
+	{
+	  res.mType = 0;
+	  return res;
+	}
       
-      for (cit = mAtomRef.begin (); cit != mAtomRef.end (); ++cit)
-	resset.insert ((*cit).GetType ());
+      for (it = res.mAtomRef.begin (); it != res.mAtomRef.end (); ++it)
+	resset.insert ((*it).GetType ());
       
-      set_difference (oblbegin, oblend,
+      set_difference (allset.begin (), allset.end (),
 		      resset.begin (), resset.end (),
 		      inserter (diffset, diffset.begin ()));
       if (! diffset.empty ())
-	return false;
-      
-      set_difference (resset.begin (), resset.end (),
-		      allbegin, allend,
-		      inserter (diffset, diffset.begin ()));
+	{
+	  res.mType = 0;
+	  return res;
+	}
 
-      erase (diffset.begin (), diffset.end ());
-      return true;
+      allset.insert (optbegin, optend);
+      set_difference (resset.begin (), resset.end (),
+		      allset.begin (), allset.end (),
+		      inserter (diffset, diffset.begin ()));
+      res.erase (diffset.begin (), diffset.end ());
+      return res;
     }
-  return false;
+  return res;
+}
+
+
+
+CResidue
+CResidue::RemoveOptionals () const
+{
+  if (mType != 0)
+    {
+      set< t_Atom* >::const_iterator setbegin, setend;
+      vector< CAtom > atom_vec;
+      
+      if (mType->is_DNA ())
+	{
+	  if (mType->is_dA ())
+	    {
+	      setbegin = gdAOptAtomSet.begin ();
+	      setend = gdAOptAtomSet.end ();
+	    }
+	  else if (mType->is_dC ())
+	    {
+	      setbegin = gdCOptAtomSet.begin ();
+	      setend = gdCOptAtomSet.end ();
+	    }
+	  else if (mType->is_dG ())
+	    {
+	      setbegin = gdGOptAtomSet.begin ();
+	      setend = gdGOptAtomSet.end ();
+	    }
+	  else if (mType->is_dT ())
+	    {
+	      setbegin = gdTOptAtomSet.begin ();
+	      setend = gdTOptAtomSet.end ();
+	    }
+	}
+      else if (mType->is_RNA ())
+	{
+	  if (mType->is_rA ())
+	    {
+	      setbegin = grAOptAtomSet.begin ();
+	      setend = grAOptAtomSet.end ();
+	    }
+	  else if (mType->is_rC ())
+	    {
+	      setbegin = grCOptAtomSet.begin ();
+	      setend = grCOptAtomSet.end ();
+	    }
+	  else if (mType->is_rG ())
+	    {
+	      setbegin = grGOptAtomSet.begin ();
+	      setend = grGOptAtomSet.end ();
+	    }
+	  else if (mType->is_rU ())
+	    {
+	      setbegin = grUOptAtomSet.begin ();
+	      setend = grUOptAtomSet.end ();
+	    }
+	}
+      else
+	return *this;
+
+      CResidue res (*this);
+      
+      res.erase (setbegin, setend);
+      return res;
+    }
+  else
+    return *this;
+}
+
+
+
+CResidue
+CResidue::sort () const
+{
+  CResidue res (*this);
+  vector< CAtom >::iterator it;
+  vector< CAtom >::size_type index;
+
+  ::sort (res.mAtomRef.begin (), res.mAtomRef.end ());
+  res.mAtomIndex.clear ();
+  res.mAtomResPos.clear ();
+  for (it = res.mAtomRef.begin (), index = 0;
+       it != res.mAtomRef.end ();
+       ++it, ++index)
+    {
+      res.mAtomIndex[it->GetType ()] = index;
+      res.mAtomResPos.push_back (-1);
+    }
+  return res;
+}
+
+
+
+CResidue
+CResidue::select (t_Atom *at ...) const
+{
+  va_list ap;
+  vector< CAtom > atom_vec;
+  const CAtom *atom;
+
+  atom = Ref (at);
+  if (atom)
+    atom_vec.push_back (*atom);
+  
+  va_start (ap, at);
+  for (;;)
+    {
+      t_Atom* type = va_arg (ap, t_Atom*);
+      if (type == 0)
+	break;
+      atom = Ref (type);
+      if (atom)
+	atom_vec.push_back (*atom);
+    }
+  return CResidue (mType, atom_vec, *(CResId*)this, mReadType);
 }
 
 

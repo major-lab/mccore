@@ -4,8 +4,8 @@
 ## Author           : Martin Larose
 ## Created On       : Tue Sep 19 18:53:22 2000
 ## Last Modified By : Martin Larose
-## Last Modified On : Tue Oct 24 11:14:13 2000
-## Update Count     : 2
+## Last Modified On : Thu Nov  9 10:45:54 2000
+## Update Count     : 3
 ## Status           : Ok.
 ###############################################################################
 
@@ -35,17 +35,7 @@ DISTFILES = Makefile.in Manual.tex
 
 all all-static static:
 
-doc: Manual.pdf Manual.html html texi docbook
-
-html: $(srcdir)/../lib/UCore.h
-	@- kdoc -f html -d html -p --strip-h-path -n libmccore -u "libmccore" -z $^
-
-texi: $(srcdir)/../lib/UCore.h
-	@- kdoc -f texinfo -d texi -p --strip-h-path $^
-
-docbook: $(srcdir)/../lib/UCore.h
-	@- kdoc -f docbook -d docbook -p --strip-h-path $^
-
+doc: Manual.pdf Manual.html
 
 Manual.dvi: Manual.tex
 	@ latex $<

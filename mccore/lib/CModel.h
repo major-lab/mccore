@@ -4,8 +4,8 @@
 // Author           : Martin Larose
 // Created On       : Fri Oct  6 08:21:55 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:14:51 2000
-// Update Count     : 1
+// Last Modified On : Thu Nov  9 10:44:55 2000
+// Update Count     : 2
 // Status           : Unknown.
 // 
 
@@ -65,6 +65,24 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Creates a new model with validated residues.
+   * @return the new model.
+   */
+  CModel Validate () const;
+
+  /**
+   * Creates a new model with all the optional atoms removed.
+   * @return the new model.
+   */
+  CModel RemoveOptionals () const;
+
+  /**
+   * Creates a new model with atoms sorted in residues.
+   * @return the new model.
+   */
+  CModel SortAtoms () const;
 
   // I/O  -----------------------------------------------------------------
 };

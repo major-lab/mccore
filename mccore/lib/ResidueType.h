@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs.iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:15:26 2000
-// Update Count     : 1
+// Last Modified On : Thu Nov  9 10:45:42 2000
+// Update Count     : 2
 // Status           : Ok.
 // 
 
@@ -16,6 +16,7 @@
 
 class iBinstream;
 class oBinstream;
+class ostream;
 class t_Residue;
 
 
@@ -3327,5 +3328,15 @@ public:
    */
   virtual void Binoutput (oBinstream &obs) const;
 };
+
+
+
+/**
+ * Displays the residue type to the output stream.
+ * @param os the output stream.
+ * @param restype the residue type.
+ * @return the output stream used.
+ */
+ostream& operator<< (ostream &os, const t_Residue *restype);
 
 #endif

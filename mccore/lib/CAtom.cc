@@ -4,8 +4,8 @@
 // Author           : 
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:14:25 2000
-// Update Count     : 40
+// Last Modified On : Thu Nov  9 10:44:45 2000
+// Update Count     : 41
 // Status           : Ok.
 // 
 
@@ -77,8 +77,9 @@ CAtom::SetAll (float x, float y, float z, t_Atom *type, char loc)
 ostream&
 operator<< (ostream &os, const CAtom& atom)
 {
-  return os << (const CPoint3D&) atom << *atom.GetType ()
-	    << ' ' << atom.GetAltLocId () << flush;
+  return os << (const CPoint3D&) atom
+	    << ' ' << *atom.GetType ()
+	    << ' ' << atom.GetAltLocId ();
 }
 
 

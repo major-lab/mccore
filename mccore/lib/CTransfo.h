@@ -4,8 +4,8 @@
 // Author           : Patrick Gendron <gendrop@IRO.UMontreal.CA>
 // Created On       : Fri Oct  1 18:22:41 1999
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:15:13 2000
-// Update Count     : 1
+// Last Modified On : Thu Nov  9 10:45:22 2000
+// Update Count     : 2
 // Status           : Ok.
 // 
 
@@ -17,11 +17,9 @@
 #include <vector.h>
 #include <pair.h>
 
-
-class CPoint3D;
 class CAtom;
+class CPoint3D;
 class CResidue;
-class CTransfo;
 class ostream;
 class iBinstream;
 class oBinstream;
@@ -296,9 +294,11 @@ public:
    * @param theTo the to atom vector.
    * @param theFrom the from atom vector.
    * @return the rmsd value.
+   * Replaced by it's contents.
    */
-  float RMS_align (const vector< const CAtom* > &theTo,
-  		   const vector< const CAtom* > &theFrom);
+//    float RMS_align (const vector< CResidue::iterator > &theTo,
+//    		   const vector< CResidue::iterator > &theFrom)
+//    { return rmsd_with_align (theTo, theFrom, this); }
 
   // I/O  -----------------------------------------------------------------
 };

@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:15:18 2000
-// Update Count     : 1
+// Last Modified On : Thu Nov  9 10:45:30 2000
+// Update Count     : 2
 // Status           : Ok.
 // 
 
@@ -21,11 +21,13 @@
 #include <string.h>
 
 #include "AtomType.h"
+#include "CResidue.h"
 #include "ResidueType.h"
 
 class CMessageQueue;
 class CAtom;
 class CTransfo;
+
 
 
 /**
@@ -1622,58 +1624,58 @@ extern set< t_Atom* > grUOblAtomSet;
 
 
 /**
- * Set of all atoms types in a dA.
+ * Set of optional atoms types in a dA.
  */
-extern set< t_Atom* > gdAAllAtomSet;
+extern set< t_Atom* > gdAOptAtomSet;
 
 
 
 /**
- * Set of all atoms types in a rA.
+ * Set of optional atoms types in a rA.
  */
-extern set< t_Atom* > grAAllAtomSet;
+extern set< t_Atom* > grAOptAtomSet;
 
 
 
 /**
- * Set of all atoms types in a dC.
+ * Set of optional atoms types in a dC.
  */
-extern set< t_Atom* > gdCAllAtomSet;
+extern set< t_Atom* > gdCOptAtomSet;
 
 
 
 /**
- * Set of all atoms types in a rC.
+ * Set of optional atoms types in a rC.
  */
-extern set< t_Atom* > grCAllAtomSet;
+extern set< t_Atom* > grCOptAtomSet;
 
 
 
 /**
- * Set of all atoms types in a dG.
+ * Set of optional atoms types in a dG.
  */
-extern set< t_Atom* > gdGAllAtomSet;
+extern set< t_Atom* > gdGOptAtomSet;
 
 
 
 /**
- * Set of all atoms types in a rG.
+ * Set of optional atoms types in a rG.
  */
-extern set< t_Atom* > grGAllAtomSet;
+extern set< t_Atom* > grGOptAtomSet;
 
 
 
 /**
- * Set of all atoms types in a dT.
+ * Set of optional atoms types in a dT.
  */
-extern set< t_Atom* > gdTAllAtomSet;
+extern set< t_Atom* > gdTOptAtomSet;
 
 
 
 /**
- * Set of all atoms types in a rU.
+ * Set of optional atoms types in a rU.
  */
-extern set< t_Atom* > grUAllAtomSet;
+extern set< t_Atom* > grUOptAtomSet;
 
 
 
@@ -1747,8 +1749,8 @@ float RadToDegree (float r);
  * @param mgr2 the second vector of atoms.
  * @return the rmsd value.
  */
-float rmsd (const vector< const CAtom * > &mgr1,
-	    const vector< const CAtom * > &mgr2);
+float rmsd (const vector< CResidue::iterator > &mgr1,
+	    const vector< CResidue::iterator > &mgr2);
 
 
 
@@ -1760,8 +1762,8 @@ float rmsd (const vector< const CAtom * > &mgr1,
  * @param t the transfo created (default = 0).
  * @return the rmsd value.
  */
-float rmsd_with_align (const vector< const CAtom * > &x,  
-		       const vector< const CAtom * > &y, 
+float rmsd_with_align (const vector< CResidue::iterator > &x,  
+		       const vector< CResidue::iterator > &y, 
 		       CTransfo *t = 0);
 
 
@@ -1785,6 +1787,13 @@ void jacobi (double *a, int n, double *d, double *v, int *nrot);
  * of the application.
  */
 void McCoreInit ();
+
+
+
+/**
+ * Displays to cout the version information.
+ */
+void McCore_version ();
 
 
 

@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:14:28 2000
-// Update Count     : 1
+// Last Modified On : Thu Nov  9 10:44:49 2000
+// Update Count     : 2
 // Status           : Ok.
 // 
 
@@ -16,7 +16,6 @@
 
 #include <function.h>
 
-#include "McCore.h"
 #include "CPoint3D.h"
 #include "AtomType.h"
 
@@ -108,6 +107,33 @@ public:
    */
   bool operator== (const t_Atom *t) const { return mType == t; }
 
+  /**
+   * Tests whether atoms are equals.  The discrimination is made over the
+   * atom type.
+   * @param right the right atom.
+   * @return the result of the test.
+   */
+  bool operator== (const CAtom &right) const
+  { return mType == right.GetType (); }
+
+  /**
+   * Tests whether atoms are not equals.  This is the negation of
+   * operator==.
+   * @param right the right atom.
+   * @return the result of the test.
+   */
+  bool operator!= (const CAtom &right) const { return ! operator== (right); }
+
+  /**
+   * Tests whether the atom is less than the right one.  The order is based
+   * over the type address.  The address over the same type is unique, so
+   * the address can be used to order atoms in residues.
+   * @param right the right atom.
+   * @return the result of the test.
+   */
+  bool operator< (const CAtom &right) const
+  { return mType < right.GetType (); }
+  
   // METHODS -------------------------------------------------------
 
   /**
@@ -224,8 +250,37 @@ struct AtomSet : public unary_function< const CAtom&, bool >
    * @param atom the atom.
    * @return false.
    */
+  typedef CAtom argument_type;
   virtual bool operator() (const CAtom &atom) const { return false; }
   virtual AtomSet* clone () const { return new AtomSet (); }
+};
+
+
+
+class atomset_and : public AtomSet
+{
+protected:
+  AtomSet *op1;
+  AtomSet *op2;
+public:
+  atomset_and (AtomSet *x, AtomSet *y) : op1(x), op2(y) {}
+  virtual ~atomset_and () { delete op1; delete op2; }
+  virtual atomset_and& operator= (const atomset_and &right)
+  {
+    if (this != &right)
+      {
+	AtomSet::operator= (right);
+	delete op1;
+	delete op2;
+	op1 = right.op1->clone ();
+	op2 = right.op2->clone ();
+      }
+    return *this;
+  }
+  virtual bool operator() (const CAtom& x) const
+  { return (*op1) (x) && (*op2) (x); }
+  virtual atomset_and* clone () const
+  { return new atomset_and (op1->clone (), op2->clone ()); }
 };
 
 
@@ -244,31 +299,6 @@ struct all_atom_set : public AtomSet
    */
   virtual bool operator() (const CAtom &atom) const { return true; }
   virtual all_atom_set* clone () const { return new all_atom_set (); }
-};
-
-
-
-/**
- * @short All atoms exept psedo and lone pair unary function.
- *
- * Tells whether the atom is part of the set.
- *
- * @author Martin Larose <larosem@IRO.UMontreal.CA>
- */
-struct no_pse_lp_atom_set : public AtomSet
-{
-  /**
-   * Tests whether the atom is a pseudo or a lone pair atom.
-   * @param atom the atom to test.
-   * @return the truth value.
-   */
-  virtual bool operator() (const CAtom &atom) const
-  {
-    return ! (atom.GetType ()->is_Pseudo ()
-	      || atom.GetType ()->is_LonePair ());
-  }
-  virtual no_pse_lp_atom_set* clone () const
-  { return new no_pse_lp_atom_set (); }
 };
 
 
@@ -324,26 +354,9 @@ struct pse_atom_set : public AtomSet
    * @return the truth value.
    */
   virtual bool operator() (const CAtom &atom) const
-  { return atom.GetType ()->is_C1p (); }
+  { return (atom.GetType ()->is_C1p () || atom.GetType ()->is_PSY ()
+	    || atom.GetType ()->is_PSZ ()); }
   virtual pse_atom_set* clone () const { return new pse_atom_set (); }
-};
-
-
-
-/**
- * @short No option unary function.
- *
- * @author Martin Larose <larosem@IRO.UMontreal.CA>
- */
-struct no_opt : public AtomSet
-{
-  /**
-   * Returns true
-   * @param atom the atom.
-   * @return true.
-   */
-  virtual bool operator() (const CAtom &atom) const { return true; }
-  virtual no_opt* clone () const { return new no_opt (); }
 };
 
 
@@ -363,6 +376,32 @@ struct no_hydrogen_opt : public AtomSet
   virtual bool operator() (const CAtom &atom) const
   { return ! atom.GetType ()->is_Hydrogen (); }
   virtual no_hydrogen_opt* clone () const { return new no_hydrogen_opt (); }
+};
+
+
+
+
+/**
+ * @short All atoms exept psedo and lone pair unary function.
+ *
+ * Tells whether the atom is part of the set.
+ *
+ * @author Martin Larose <larosem@IRO.UMontreal.CA>
+ */
+struct no_pse_lp_atom_set : public AtomSet
+{
+  /**
+   * Tests whether the atom is a pseudo or a lone pair atom.
+   * @param atom the atom to test.
+   * @return the truth value.
+   */
+  virtual bool operator() (const CAtom &atom) const
+  {
+    return ! (atom.GetType ()->is_Pseudo ()
+	      || atom.GetType ()->is_LonePair ());
+  }
+  virtual no_pse_lp_atom_set* clone () const
+  { return new no_pse_lp_atom_set (); }
 };
 
 #endif

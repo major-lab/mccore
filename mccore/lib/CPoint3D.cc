@@ -4,13 +4,13 @@
 // Author           : 
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:14:55 2000
-// Update Count     : 3
+// Last Modified On : Thu Nov  9 10:45:00 2000
+// Update Count     : 4
 // Status           : Ok.
 
 
 #include <iostream.h>
-#include <iomanip.h>
+#include <stdio.h>
 #include <math.h>
 
 #include "CPoint3D.h"
@@ -322,9 +322,10 @@ operator>> (istream &is, CPoint3D &p)
 ostream&
 operator<< (ostream &os, const CPoint3D &p)
 {
-  return os << setw (10) << setprecision (3) << p.GetX () << ' '
-	    << setw (10) << setprecision (3) << p.GetY () << ' '
-	    << setw (10) << setprecision (3) << p.GetZ () << ' ' << flush;
+  char line[81];
+
+  sprintf (line, "%10.3f %10.3f %10.3f", p.GetX (), p.GetY (), p.GetZ ());
+  return os << line;
 }
 
 

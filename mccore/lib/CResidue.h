@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Thu Sep 28 16:59:32 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:15:06 2000
-// Update Count     : 1
+// Last Modified On : Thu Nov  9 10:45:15 2000
+// Update Count     : 2
 // Status           : Ok.
 // 
 
@@ -17,13 +17,13 @@
 #include <set.h>
 #include <vector.h>
 
+#include "CAtom.h"
 #include "CResId.h"
 #include "CTransfo.h"
-#include "CAtom.h"
+#include "ResidueType.h"
 
 
 class t_Atom;
-class t_Residue;
 class oPdbstream;
 class iBinstream;
 class oBinstream;
@@ -32,18 +32,14 @@ class oBinstream;
 /**
  * @short Residue implementation.
  *
- * Les pivots sont trois atomes qui sont utilises comme points de reference
- * pour les atomes d'un residu.  CTransfo::Align(CResidue&) aligne les
- * atomes d'un residu par rapport a ces trois pivots.  Un residu possede
- * trois pointeurs vers les atomes de pivot dans le CResidue (mPivot). On
- * n'a qu'a les assignes par la methode SetPivot() qui passe par pour aller
- * chercher les t_Atom *des pivots et assigne les pointeurs.  Les operateurs
- * >> de iPdbstream et iBinstream pour un residu assignent les pivots
- * automatiquement (pour autant que le residu ait les trois atomes de pivots
- * presents).
- *
- *  Si le residue contient moins de trois atomes (ex: HOH), aucun
- *  pivot n'est utilise et on ne peut donc pas faire d'alignement
+ * The lazy residues contains an unsorted array of atoms (CAtoms).  The
+ * atoms are positioned in a global referential space and are only placed in
+ * local referential space when a residue iterator is dereferenced.  It is
+ * necessary to manipulates residue iterator instead of atom pointers since
+ * the atom address is unstable when it is placed.  Every methods that
+ * modifies the contents of the atom array are functional, i.e. a new
+ * residue is created, modified and returned.  This way existing iterators
+ * over the residue are not dandling.
  *
  * @author Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
  */
@@ -51,11 +47,6 @@ class CResidue : public CResId
 {
   typedef vector< CAtom >::size_type size_type;
   
-  /**
-   * Tells wheter the id has been changed.
-   */
-  bool dirty_id;
-
   /**
    * The residue type.
    */
@@ -192,13 +183,13 @@ public:
      * needed.
      * @return the atom pointer over local referential atom container.
      */
-    pointer operator-> () { return &(mRes->Place (mPos)); }
+    pointer operator-> () const { return &(mRes->Place (mPos)); }
 
     /**
      * Dereferences the iterator.  Places the atom if needed.
      * @return the atom reference over local referential atom container.
      */
-    reference operator* () { return mRes->Place (mPos); }
+    reference operator* () const { return mRes->Place (mPos); }
 
     /**
      * Pre-advances the iterator to the next atom filtered by the unary
@@ -354,13 +345,13 @@ public:
      * needed.
      * @return the atom pointer over local referential atom container.
      */
-    pointer operator-> () { return &(mRes->Place (mPos)); }
+    pointer operator-> () const { return &(mRes->Place (mPos)); }
 
     /**
      * Dereferences the iterator.  Places the atom if needed.
      * @return the atom reference over local referential atom container.
      */
-    reference operator* () { return mRes->Place (mPos); }
+    reference operator* () const { return mRes->Place (mPos); }
 
     /**
      * Pre-advances the iterator to the next atom filtered by the unary
@@ -438,7 +429,7 @@ public:
    * Initializes the residue.  Increases the global count.
    */
   CResidue ()
-    : CResId (), dirty_id (false), mType (0), mReadType (0), mResName (0),
+    : CResId (), mType (0), mReadType (0), mResName (0),
       mTfo ()
   {count++;} 
 
@@ -485,13 +476,6 @@ public:
    * @return the truth value.
    */
   bool operator!= (const CResidue &right) const { return !operator== (right); }
-
-  /**
-   * Tests if the residue id is less than the right one.
-   * @param right the right residue.
-   * @return the truth value.
-   */
-  bool operator< (const CResidue &right) const;
 
   /**
    * Returns a reference to the atom associated with the type.  The returned
@@ -552,6 +536,20 @@ public:
   { return const_iterator (this, size ()); }
 
   /**
+   * Finds an element whose key is k.
+   * @param k the atom type key.
+   * @return the iterator to the element or end () if it is not found.
+   */
+  iterator find (t_Atom *k);
+
+  /**
+   * Finds an element whose key is k.
+   * @param k the atom type key.
+   * @return the iterator to the element or end () if it is not found.
+   */
+  const_iterator find (t_Atom *k) const;
+
+  /**
    * Gets the residue id.
    * @return the residue id.
    */
@@ -567,7 +565,7 @@ public:
    * Gets the residue type.
    * @return the residue type.
    */
-  const t_Residue* GetType () const { return mType; }
+  t_Residue* GetType () const { return mType; }
 
   /**
    * Sets the residue type.
@@ -624,7 +622,7 @@ private:
    * @param t the atom type.
    * @return the atom or 0 if it is not found.
    */
-  CAtom* Ref (t_Atom *t);
+  const CAtom* Ref (t_Atom *t) const;
 
   /**
    * Inserts an atom in the residue.  It crushes the existing atom if it
@@ -648,24 +646,47 @@ private:
   void CResidue::erase (set< t_Atom* >::iterator start,
 			set< t_Atom* >::iterator finish);
 
-public:
-  
   /**
-   * Adds the hydrogen in the residue.
+   * Adds the hydrogens to the residue.
+   * @return the new residue.
    */
   void AddHydrogens ();
 
   /**
-   * Adds the lone pairs in the residue.
+   * Adds the lone pairs to the residue.
    */
   void AddLP ();
 
+public:
+  
   /**
-   * Tests wether all the obligatory atoms are in the residue and removes
-   * all atoms that are not obligatory or optional.
-   * @return false if the type was not set or if any atom is missing.
+   * Verifies wether all the obligatory atoms are in the residue and creates
+   * a new residue where all atoms other than obligatory and optional are
+   * removed.  If any test fails, the returned residue has no type.
+   * @return the residue created.
    */
-  bool Validate ();
+  CResidue Validate () const;
+
+  /**
+   * Creates a new residue where all the optional atoms are removed.
+   * @return the residue created.
+   */
+  CResidue RemoveOptionals () const;
+
+  /**
+   * Creates a new residue where all the atoms are sorted.  The order is
+   * based over atoms order @ref CAtom::operator<.
+   * @return the new residue created.
+   */
+  CResidue sort () const;
+
+  /**
+   * Creates a new residue with the atoms specified in the variable argument
+   * list.  The list must be terminated by a (t_Atom*) null pointer.
+   * @param at the first atom type.
+   * @return the new residue.
+   */
+  CResidue select (t_Atom *at ...) const;
   
   /**
    * Applies a tfo over each atoms.  Only the internal transfo is modified,
