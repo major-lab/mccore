@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // Residue.h
-// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique.
-//                  Université de Montréal.
+// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
 // Last Modified By : Patrick Gendron
@@ -29,7 +29,8 @@
 #ifndef _Residue_h_
 #define _Residue_h_
 
-#include <vector.h>
+#include <iostream>
+#include <vector>
 
 #include "AbstractResidue.h"
 #include "CAtom.h"
@@ -40,6 +41,8 @@ class iPdbstream;
 class oPdbstream;
 class t_Atom;
 class t_Residue;
+
+using namespace std;
 
 
 
@@ -101,7 +104,7 @@ public:
    * @param vec the atom container.
    * @param nId the residue id.
    */
-  Residue (t_Residue *type, vector< CAtom > &vec, const CResId &nId);
+  Residue (t_Residue *type, const vector< CAtom > &vec, const CResId &nId);
 
   /**
    * Initializes the object with the right's content.

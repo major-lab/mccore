@@ -3,26 +3,43 @@
 // Copyright © 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Mon Feb 18 16:07:09 2002
-// Last Modified By : Patrick Gendron
-// Last Modified On : Thu Feb 27 17:30:21 2003
-// Update Count     : 24
-// Status           : Unknown.
+// $Revision: 1.7.4.1 $
+// $Id: Graph.h,v 1.7.4.1 2003-12-10 14:18:25 larosem Exp $
 // 
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifndef _Graph_h_
 #define _Graph_h_
 
-#include <iostream.h>
-
-#include <vector.h>
-#include <map.h>
-#include <algo.h>
+#include <algorithm>
+#include <iostream>
+#include <map>
+#include <utility>
+#include <vector>
 
 #include "mccore/Binstream.h"
 
 #define nodeid int
 #define edgeid int
+
+using namespace std;
+
+
 
 /**
  * @short A class for a path in a graph.

@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // CResId.cc
-// Copyright © 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Thu Sep 28 15:55:29 2000
@@ -30,7 +30,6 @@
 #include <config.h>
 #endif
 
-#include <iostream.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>

@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // CResId.h
-// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Thu Sep 28 15:55:29 2000
@@ -29,10 +29,12 @@
 #ifndef _CResId_h_
 #define _CResId_h_
 
+#include <iostream>
 
-class ostream;
 class iBinstream;
 class oBinstream;
+
+using namespace std;
 
 
 

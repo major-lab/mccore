@@ -1,13 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // ServerSocket.h
-// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique.
-//                  Université de Montréal.
+// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:51 2001
-// Last Modified By : Philippe Thibault
-// Last Modified On : Fri Aug 24 10:01:21 2001
-// Update Count     : 3
-// Status           : Unknown.
+// $Revision: 1.7.4.1 $
+// $Id: ServerSocket.h,v 1.7.4.1 2003-12-10 14:20:05 larosem Exp $
 // 
 //  This file is part of mccore.
 //  
@@ -30,9 +28,11 @@
 #ifndef _ServerSocket_h_
 #define _ServerSocket_h_
 
-#include "sockstream.h"
-
 #define MAX_QUEUE_LEN 0
+
+class Sockstream;
+
+
 
 /**
  * @short Implementation of a server socket.

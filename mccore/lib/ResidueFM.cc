@@ -1,13 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // ResidueFM.cc
-// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct 12 14:46:02 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Oct 25 11:21:29 2001
-// Update Count     : 3
-// Status           : Unknown.
+// $Revision: 1.1.8.1 $
+// $Id: ResidueFM.cc,v 1.1.8.1 2003-12-10 14:19:04 larosem Exp $
 // 
 //  This file is part of mccore.
 //  
@@ -26,14 +24,14 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
-
+#include "CResId.h"
 #include "Residue.h"
 #include "ResidueFM.h"
+#include "ResidueType.h"
 
 
 
@@ -41,4 +39,12 @@ AbstractResidue*
 ResidueFM::createResidue () const
 {
   return new Residue ();
+}
+
+
+
+AbstractResidue*
+ResidueFM::createResidue (t_Residue *type, const vector< CAtom > &vec, const CResId &nId) const
+{
+  return new Residue (type, vec, nId);
 }

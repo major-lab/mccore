@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:35 2003
-// $Revision: 1.2 $
-// $Id: Molecule.cc,v 1.2 2003-07-31 18:07:17 gendrop Exp $
+// $Revision: 1.2.6.1 $
+// $Id: Molecule.cc,v 1.2.6.1 2003-12-10 14:18:46 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -28,34 +28,39 @@
 #include <config.h>
 #endif
 
-#include <iostream>
+#include <string.h>
 
 #include "Model.h"
 #include "Molecule.h"
 #include "Pdbstream.h"
-#include "stlio.h"
-
-using namespace mccore;
 
 
 
 Molecule::Molecule (const Molecule &right)
-  : header (right.header)
 {
-  Molecule::const_iterator cit;
-
-  for (cit = right.begin (); right.end () != cit; ++cit)
-    push_back ((*cit)->clone ());
+  Molecule::const_iterator mcit;
+  map< const char*, char* >::const_iterator cit;
+  
+  for (mcit = right.begin (); right.end () != mcit; ++mcit)
+    push_back ((*mcit)->clone ());
+  for (cit = right.properties.begin (); right.properties.end () != cit; ++cit)
+    properties[strdup (cit->first)] = strdup (cit->second);
 }
 
 
 
 Molecule::~Molecule ()
 {
-  Molecule::iterator it;
+  Molecule::iterator mit;
+  map< const char*, char* >::iterator it;
   
-  for (it = begin (); end () != it; ++it)
-    delete (*it);
+  for (mit = begin (); end () != mit; ++mit)
+    delete (*mit);
+  for (it = properties.begin (); properties.end () != it; ++it)
+    {
+      delete it->first;
+      delete it->second;
+    }
 }
 
 
@@ -67,41 +72,91 @@ Molecule::operator= (const Molecule &right)
     {
       Molecule::iterator it;
       Molecule::const_iterator cit;
-
-      header = right.header;
+      map< const char*, char* >::iterator pit;
+      map< const char*, char* >::const_iterator cpit;
+      
       for (it = begin (); end () != it; ++it)
 	delete (*it);
       clear ();
+      for (pit = properties.begin (); properties.end () != pit; ++pit)
+	{
+	  delete pit->first;
+	  delete pit->second;
+	}
+      properties.clear ();
       for (cit = right.begin (); right.end () != cit; ++cit)
 	push_back ((*cit)->clone ());
+      for (cpit = right.properties.begin (); right.properties.end () != cpit; ++cpit)
+	properties[strdup (cpit->first)] = strdup (cpit->second);
     }
   return *this;
 }
 
 
 
-ostream&
-mccore::operator<< (ostream &obs, const Molecule &obj)
+const char*
+Molecule::getProperty (const char *key) const
 {
-  return obs << "MOLECULE: " << endl << obj.getPdbFileHeader () << endl
-	     << (const list< Model* >&) obj << endl;
+  map< const char*, char* >::const_iterator cit;
+  
+  return properties.end () != (cit = properties.find (key)) ? cit->second : 0;
+}
+
+
+
+void
+Molecule::setProperty (const char *key, const char *value)
+{
+  map< const char*, char* >::iterator it;
+  
+  if (properties.end () != (it = properties.find (key)))
+    {
+      delete it->second;
+      it->second = strdup (value);
+    }
+  else
+    properties[strdup (key)] = strdup (value);
+}
+
+
+
+ostream&
+operator<< (ostream &obs, const Molecule &obj)
+{
+  const map< const char*, char* > &properties = ((Molecule&) obj).getProperties ();
+  map< const char*, char* >::const_iterator cit;
+  list< Model* >::const_iterator cmit;
+  
+  obs << "MOLECULE: " << endl;
+  for (cit = properties.begin (); properties.end () != cit; ++cit)
+    obs << "  " << cit->first << " = " << cit->second << endl;
+  for (cmit = obj.begin (); obj.end () != cmit; ++cmit)
+    obs << **cmit << endl;
+  return obs;
 }
 
 
 
 iPdbstream&
-mccore::operator>> (iPdbstream &ips, Molecule &obj)
+operator>> (iPdbstream &ips, Molecule &obj)
 {
   Molecule::iterator it;
-
+  map< const char*, char* > &properties = obj.getProperties ();
+  map< const char*, char* >::iterator pit;
+  
   for (it = obj.begin (); obj.end () != it; ++it)
     delete (*it);
   obj.clear ();
-  obj.setPdbFileHeader (ips.getHeader ());
+  for (pit = properties.begin (); properties.end () != pit; ++pit)
+    {
+      delete pit->first;
+      delete pit->second;
+    }
+  properties.clear ();
   while (! ips.eof ())
     {
       Model *model;
-
+      
       model = new Model ();
       ips >> *model;
       if (! model->empty ())
@@ -113,21 +168,19 @@ mccore::operator>> (iPdbstream &ips, Molecule &obj)
 
 
 oPdbstream&
-mccore::operator<< (oPdbstream &ops, const Molecule &obj)
+operator<< (oPdbstream &ops, const Molecule &obj)
 {
   Molecule::const_iterator cit;
   bool modelHeaders;
-
-  ops.setHeader (obj.getPdbFileHeader ());
+  
   modelHeaders = 1 < obj.size ();
   for (cit = obj.begin (); obj.end () != cit; ++cit)
     {
       if (modelHeaders)
-	ops.startModel ();
+	ops.MODEL ();
       ops << **cit;
       if (modelHeaders)
-	ops.endModel ();
+	ops.ENDMDL ();
     }
   return ops;
 }
-

@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // AtomType.h
-// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
@@ -75,7 +75,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const t_Atom& operator= (const t_Atom &right) { return *this; }
+  const t_Atom& operator= (const t_Atom &right) { return *this; }
 
   /**
    * Converts the atom type to a string.

@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // McCore.cc
-// Copyright © 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
@@ -30,18 +30,17 @@
 #include <config.h>
 #endif
 
-#include <iostream.h>
+#include <iostream>
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
 #include <sys/param.h>
 
-#include "McCore.h"
-
 #include "AtomTypeImp.h"
 #include "CAtom.h"
 #include "CException.h"
 #include "CTransfo.h"
+#include "McCore.h"
 #include "ResidueTypeImp.h"
 #include "oMessagestream.h"
 
@@ -1229,8 +1228,8 @@ void
 McCore_version ()
 {
   cout << PACKAGE << " " << VERSION << endl
-       << "Copyright © 2002 Université de Montréal" << endl
-       << "www-lbit.iro.umontreal.ca" << endl;
+	    << "Copyright © 2002 Université de Montréal" << endl
+	    << "www-lbit.iro.umontreal.ca" << endl;
 }
 
 

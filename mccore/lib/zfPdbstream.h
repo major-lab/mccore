@@ -1,38 +1,38 @@
 //                              -*- Mode: C++ -*-
 // zfPdbstream.h
-// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : ven 23 jui 1999 13:54:45 EDT
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:10:42 2001
-// Update Count     : 6
-// Status           : Ok.
+// $Revision: 1.6.4.1 $
+// $Id: zfPdbstream.h,v 1.6.4.1 2003-12-10 14:20:42 larosem Exp $
 //
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifndef _zfPdbstream_h_
 #define _zfPdbstream_h_
 
+#include <iostream>
 
-#include "fstreambase.h"
-#include "zfstream.h"
 #include "Pdbstream.h"
+#include "zfstream.h"
+
+using namespace std;
 
 
 
@@ -44,17 +44,20 @@
  *
  * @author Martin Larose <larosem@iro.umontreal.ca>.
  */
-class izfPdbstream : public iPdbstream, public zfstreambase
+class izfPdbstream : public zfstreambase, public iPdbstream
 {
-
-public:
-
+  
+ public:
+  
   // LIFECYCLE -----------------------------------------------------
-
+  
   /**
    * Initializes the objet.
    */
-  izfPdbstream () : iPdbstream (zfstreambase::rdbuf ()) { }
+  izfPdbstream ()
+    : zfstreambase (),
+      iPdbstream (zfstreambase::rdbuf ())
+  { }
 
   /**
    * Initializes the objet with a file name and optional mode and
@@ -64,8 +67,9 @@ public:
    * @param mode the ios mode (default = ios::in).
    */
   izfPdbstream (const char *name, int mode = ios::in)
-    : iPdbstream (zfstreambase::rdbuf ()), 
-      zfstreambase (name, mode) { }
+    : zfstreambase (name, mode),
+      iPdbstream (zfstreambase::rdbuf ())
+  { }
 
   // OPERATORS -----------------------------------------------------
 
@@ -107,17 +111,20 @@ public:
  *
  * @author Martin Larose <larosem@iro.umontreal.ca>.
  */
-class ozfPdbstream : public oPdbstream, public zfstreambase
+class ozfPdbstream : public zfstreambase, public oPdbstream
 {
-
-public:
-
+  
+ public:
+  
   // LIFECYCLE -----------------------------------------------------
-
+  
   /**
    * Initializes the pdb file stream.
    */
-  ozfPdbstream () : oPdbstream (zfstreambase::rdbuf()) { }
+  ozfPdbstream ()
+    : zfstreambase (),
+      oPdbstream (zfstreambase::rdbuf())
+  { }
 
   /**
    * Initializes the pdb file stream with a file name and optional mode,
@@ -126,10 +133,10 @@ public:
    * @param mode the ios mode (default = ios::out).
    * @param level the compression level (default = Z_BEST_SPEED).
    */
-  ozfPdbstream (const char *name, int mode = ios::out,
-		int level = Z_BEST_SPEED)
-    : oPdbstream (zfstreambase::rdbuf()),
-      zfstreambase (name, mode, level) { }
+  ozfPdbstream (const char *name, int mode = ios::out, int level = Z_BEST_SPEED)
+    : zfstreambase (name, mode, level),
+      oPdbstream (zfstreambase::rdbuf())
+  { }
 
   // OPERATORS -----------------------------------------------------
 
@@ -144,8 +151,7 @@ public:
    * @param mode the ios mode (default = ios::out).
    * @param level the compression level (default = Z_BEST_SPEED).
    */
-  void open (const char *name, int mode = ios::out,
-	     int level = Z_BEST_SPEED)
+  void open (const char *name, int mode = ios::out, int level = Z_BEST_SPEED)
   {
     zfstreambase::open (name, mode, level);
     oPdbstream::open ();

@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // CResIdSet.cc
-// Copyright © 2000-01 , 2002Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Oct 26 10:24:02 2000
@@ -30,7 +30,6 @@
 #include <config.h>
 #endif
 
-#include <iostream.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>

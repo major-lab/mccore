@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*-
 // AtomTypeImp.cc
-// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
@@ -30,17 +30,17 @@
 #include <config.h>
 #endif
 
+#include <ctype.h>
+#include <map>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
+#include "AbstractResidue.h"
 #include "AtomTypeImp.h"
 #include "Binstream.h"
 #include "CException.h"
-#include "AbstractResidue.h"
 #include "McCore.h"
 #include "ResidueType.h"
-
 
 #define T_ATOM_BIN           1
 #define AT_NUCLEICACID_BIN   2
@@ -210,6 +210,8 @@
 #define AT_3H_BIN          169
 #define AT_H5T_BIN         170
 #define AT_PSAZ_BIN        171
+
+using namespace std;
 
 
 

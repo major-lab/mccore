@@ -30,12 +30,11 @@
 #include <config.h>
 #endif
 
-#include <iostream.h>
-#include <set.h>
-#include <list.h>
-#include <algo.h>
-#include <string.h>
+#include <algorithm>
+#include <list>
+#include <set>
 #include <stdarg.h>
+#include <string.h>
 
 #include "AtomType.h"
 #include "Binstream.h"
@@ -50,13 +49,13 @@
 
 
 Residue::Residue (t_Residue *type,
-		  vector< CAtom > &vec,
+		  const vector< CAtom > &vec,
 		  const CResId &nId)
   : AbstractResidue (nId, type),
     isPlaced (false),
     isIdentity (true)
 {
-  vector< CAtom >::iterator it;
+  vector< CAtom >::const_iterator it;
 
   for (it = vec.begin (); it != vec.end (); ++it)
     mAtomRef.push_back (it->clone ());

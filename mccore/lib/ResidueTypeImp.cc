@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // ResidueTypeImp.cc
-// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-01, 03 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Mar  6 12:27:03 2001
@@ -30,14 +30,12 @@
 #include <config.h>
 #endif
 
-#include <iostream.h>
+#include <map>
 #include <stdlib.h>
 
 #include "Binstream.h"
 #include "McCore.h"
 #include "ResidueTypeImp.h"
-
-
 
 #define T_RESIDUE_BIN          1
 #define RT_NUCLEICACID_BIN     2

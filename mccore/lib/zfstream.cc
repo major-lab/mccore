@@ -1,29 +1,26 @@
 //                              -*- Mode: C++ -*- 
 // zfstream.cc
-// Copyright © 2002 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2002-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Mon Jan 28 16:58:09 2002
-// Last Modified By : Patrick Gendron
-// Last Modified On : Mon Feb 25 11:37:31 2002
-// Update Count     : 1
-// Status           : Unknown.
+// $Revision: 1.1.4.1 $
+// $Id: zfstream.cc,v 1.1.4.1 2003-12-10 14:20:46 larosem Exp $
 // 
+// This file is part of mccore.
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -33,6 +30,8 @@
 #include <string.h>
 
 #include "zfstream.h"
+
+
 
 zfstreambuf::zfstreambuf ()
   : opened (0)

@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // CHBond.h
-// Copyright © 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
@@ -29,12 +29,15 @@
 #ifndef _CHBond_h
 #define _CHBond_h
 
+#include <iostream>
 #include <stdlib.h>
 
 class AbstractResidue;
 class t_Atom;
 class CAtom;
-class ostream;
+
+using namespace std;
+
 
 
 /**

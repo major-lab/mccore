@@ -1,13 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Messagestream.h
-// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
+// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Sep  5 17:06:24 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Sep 20 12:45:33 2001
-// Update Count     : 3
-// Status           : Unknown.
+// $Revision: 1.3.4.1 $
+// $Id: Messagestream.h,v 1.3.4.1 2003-12-10 14:18:37 larosem Exp $
 // 
 //  This file is part of mccore.
 //  
@@ -30,7 +28,9 @@
 #define _Messagestream_h_
 
 
-#include <iostream.h>
+#include <iostream>
+
+using namespace std;
 
 
 

@@ -1,13 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CGraph.h
-// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:33:55 2001
-// Update Count     : 4
-// Status           : Ok.
+// $Revision: 1.4.10.1 $
+// $Id: CGraph.h,v 1.4.10.1 2003-12-10 14:16:42 larosem Exp $
 // 
 //  This file is part of mccore.
 //  
@@ -29,17 +27,19 @@
 #ifndef _CGraph_h_
 #define _CGraph_h_
 
-
-#include <iostream.h>
+#include <algorithm>
+#include <iostream>
+#include <map>
+#include <utility>
 #include <values.h>
-#include <vector.h>
-#include <map.h>
-#include <algo.h>
-
+#include <vector>
 
 typedef int nodeid;
 typedef int edgeid;
+
 #define badid -1
+
+using namespace std;
 
 
 

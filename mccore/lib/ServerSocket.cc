@@ -1,13 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // ServerSocket.cc
-// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique.
-//                  Université de Montréal.
+// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:56 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Tue Oct  2 10:27:54 2001
-// Update Count     : 9
-// Status           : Unknown.
+// $Revision: 1.13.4.1 $
+// $Id: ServerSocket.cc,v 1.13.4.1 2003-12-10 14:20:02 larosem Exp $
 // 
 //  This file is part of mccore.
 //  
@@ -25,26 +23,21 @@
 //  License along with mccore; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
-#include "ServerSocket.h"
-
 #include <errno.h>
-#include <iostream.h>
-#include <string.h>
-#include <unistd.h>
+#include <fcntl.h>
+#include <netdb.h>
+#include <netinet/in.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
 #include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
-#include <fcntl.h>
-
-//  #include "CException.h"
+#include <sys/types.h>
+#include <unistd.h>
 
 #if defined(__sgi) || defined (__sun)
 #include <strings.h>
@@ -54,6 +47,8 @@
 typedef int socklen_t;
 #endif
 
+#include "ServerSocket.h"
+#include "sockstream.h"
 
 
 
@@ -63,7 +58,7 @@ ServerSocket::ServerSocket (int thePort)
   sockaddr_in sin;
 
   // Creating socket ---
-  if ((socket_id = ::socket (AF_INET, SOCK_STREAM, 0)) < 0) {
+  if ((socket_id = socket (AF_INET, SOCK_STREAM, 0)) < 0) {
 //      CFatalSocketException exc ("socket creation failed", __FILE__, __LINE__);
 //      exc << ": " << strerror (errno);
 //      throw exc;
@@ -75,7 +70,7 @@ ServerSocket::ServerSocket (int thePort)
   sin.sin_addr.s_addr = INADDR_ANY;
   sin.sin_port = htons (port);
 
-  if (::bind (socket_id, (sockaddr*)&sin, sizeof (sin)) < 0) {
+  if (bind (socket_id, (sockaddr*)&sin, sizeof (sin)) < 0) {
 //      CFatalSocketException exc ("socket binding failed", __FILE__, __LINE__);
 //      exc << ": " << strerror (errno);
 //      throw exc;
@@ -120,7 +115,7 @@ ServerSocket::close ()
 {
 
   /*
-  if (::shutdown (socket_id, SHUT_RDWR) == -1 && errno != ENOTCONN) {
+  if (shutdown (socket_id, SHUT_RDWR) == -1 && errno != ENOTCONN) {
     CFatalSocketException exc ("socket shutdown failed",
 			       __FILE__, __LINE__);
     exc << ": " << strerror (errno);

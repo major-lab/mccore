@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // CException.cc
-// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
@@ -30,11 +30,11 @@
 #include <config.h>
 #endif
 
-#include <iostream.h>
 #include <stdio.h>
 #include <string.h>
 
 #include "CException.h"
+
 
 
 

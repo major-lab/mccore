@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // CAtom.cc
-// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
@@ -30,16 +30,12 @@
 #include <config.h>
 #endif
 
-#include <iostream.h>
 #include <string.h>
 
-#include "CAtom.h"
-
 #include "Binstream.h"
+#include "CAtom.h"
 #include "CException.h"
 #include "Pdbstream.h"
-
-
 
 #define AS_AND          2
 #define AS_ALL          3

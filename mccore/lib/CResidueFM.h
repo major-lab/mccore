@@ -1,13 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CResidueFM.h
-// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct 12 14:46:02 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Oct 25 11:18:30 2001
-// Update Count     : 2
-// Status           : Unknown.
+// $Revision: 1.1.8.1 $
+// $Id: CResidueFM.h,v 1.1.8.1 2003-12-10 14:18:08 larosem Exp $
 // 
 //  This file is part of mccore.
 //  
@@ -29,10 +27,16 @@
 #ifndef _CResidueFM_h_
 #define _CResidueFM_h_
 
+#include <vector>
 
+#include "CAtom.h"
 #include "ResidueFactoryMethod.h"
 
 class AbstractResidue;
+class CResId;
+class t_Residue;
+
+using namespace std;
 
 
 
@@ -77,6 +81,15 @@ public:
    * @return the newly created empty residue.
    */
   virtual AbstractResidue* createResidue () const;
+
+  /**
+   * Creates the residue.
+   * @param type the residue type.
+   * @param vec the atom container.
+   * @param nId the residue id.
+   * @return the newly created residue.
+   */
+  virtual AbstractResidue* createResidue (t_Residue *type, const vector< CAtom > &vec, const CResId &nId) const;
 
   // I/O  -----------------------------------------------------------------
 

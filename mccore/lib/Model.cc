@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // Model.cc
-// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique.
-//                  Université de Montréal.
+// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
 // Last Modified By : Patrick Gendron
@@ -30,34 +30,38 @@
 #include <config.h>
 #endif
 
+#include <algorithm>
 #include <string.h>
-#include <list.h>
-#include <algo.h>
 
 #include "AbstractResidue.h"
+#include "Algo.h"
 #include "Binstream.h"
-#include "McCore.h"
 #include "CResidueFM.h"
+#include "McCore.h"
+#include "Messagestream.h"
 #include "Model.h"
 #include "Pdbstream.h"
 #include "ResidueFM.h"
 #include "ResidueType.h"
-#include "Messagestream.h"
-#include "Algo.h"
-
-bool less_deref_func (AbstractResidue *x, AbstractResidue *y)
-{
-  return *x < *y;
-}
 
 
-//  Model::model_iterator&
-//  Model::model_iterator::operator= (const list< AbstractResidue* >::iterator &right)
-//  {
-//    if (this != &right)
-//      list< AbstractResidue* >::iterator::operator= (right);
-//    return *this;
-//  }
+
+// bool
+// less_deref_func (AbstractResidue* const& x, AbstractResidue* const& y)
+// // less_deref_func (list< AbstractResidue* >::const_reference x, list< AbstractResidue* >::const_reference y)
+// // less_deref_func (Model::const_reference x, Model::const_reference y)
+// {
+//   return *x < *y;
+// }
+
+// class Comp
+// {
+//  public:
+//   bool operator() (Model::const_reference x, Model::const_reference y)
+//   {
+//     return *x < *y;
+//   }
+// };
 
 
 
@@ -285,11 +289,12 @@ Model::find (const CResId &id) const
 }
 
 
-void
-Model::sort ()
-{
-  list< AbstractResidue* >::sort (less_deref_func);
-}
+// void
+// Model::sort ()
+// {
+//   ((list< AbstractResidue* >*) this)->sort (&less_deref_func);
+// //   ((list< AbstractResidue* >*) this)->sort (Comp ());
+// }
 
 
 void
@@ -570,6 +575,3 @@ operator<< (ostream &os, const Model &model)
     os << *cit;
   return os;
 }
-
- 
-

@@ -1,41 +1,39 @@
 //                              -*- Mode: C++ -*- 
 // Pdbstream.cc
-// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Oct 25 11:21:03 2001
-// Update Count     : 18
-// Status           : Ok.
+// $Revision: 1.19.8.1 $
+// $Id: Pdbstream.cc,v 1.19.8.1 2003-12-10 14:18:52 larosem Exp $
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
-#include <iomanip.h>
+#include <algorithm>
+#include <iomanip>
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <unistd.h>
-#include <algo.h>
 
 #include "AbstractResidue.h"
 #include "AtomTypeImp.h"
@@ -525,16 +523,16 @@ iPdbstream::operator>> (T& obj)
 
 
 iPdbstream&
-iPdbstream::getline (char *buffer, unsigned int sz)
+iPdbstream::getline (char *buf, unsigned int sz)
 {
   int c;
   
   while (sz > 1 && (c = get ()) != EOF && c != '\n' && c != '\r')
     {
-      *buffer++ = c;
+      *buf++ = c;
       --sz;
     }
-  *buffer = '\0';
+  *buf = '\0';
   return *this;
 }
 
@@ -618,14 +616,14 @@ iPdbstream::GetZ () const
 CAtom&
 iPdbstream::getatom (CAtom &atom)
 {
-  char buffer[5];
+  char buf[5];
   
-  strncpy (buffer, line + 17, 3);
-  buffer[3] = '\0';
-  current_res_type = GetResidueType (buffer);
-  strncpy (buffer, line + 22, 4);
-  buffer[4] = '\0';
-  current_res_id = CResId (atoi (buffer), line[21], line[26]);
+  strncpy (buf, line + 17, 3);
+  buf[3] = '\0';
+  current_res_type = GetResidueType (buf);
+  strncpy (buf, line + 22, 4);
+  buf[4] = '\0';
+  current_res_id = CResId (atoi (buf), line[21], line[26]);
 
   atom.SetAll (GetX (), GetY (), GetZ (), GetAtomType (), GetAltLocId ());
   return atom;

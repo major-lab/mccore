@@ -1,39 +1,39 @@
 //                        -*- Mode: C++ -*-
 // fBinstream.h
-// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:20:58 EDT
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:10:29 2001
-// Update count     : 0
-// Status           : Ok.
+// $Revision
+// $Id: fBinstream.h,v 1.5.4.1 2003-12-10 14:20:19 larosem Exp $
 //
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifndef _fBinstream_h_
 #define _fBinstream_h_
 
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
 
-#include "fstreambase.h"
 #include "Binstream.h"
+#include "fstreambase.h"
+
+using namespace std;
+
 
 
 /**
@@ -46,7 +46,7 @@
  *
  * @author Martin Larose <larosem@IRO.UMontreal.CA>
  */
-class ifBinstream : public iBinstream, public fstreambase
+class ifBinstream : public fstreambase, public iBinstream
 {
 
 public:
@@ -56,7 +56,10 @@ public:
   /**
    * Initializes the objet.
    */
-  ifBinstream () : iBinstream (fstreambase::rdbuf ()) { }
+  ifBinstream ()
+    : fstreambase (),
+      iBinstream (fstreambase::rdbuf ())
+  { }
 
   /**
    * Initializes the stream with file name and parameters.
@@ -64,7 +67,9 @@ public:
    * @param mode the open mode (default ios::in).
    */
   ifBinstream (const char *name, int mode=ios::in)
-    : iBinstream (fstreambase::rdbuf ()), fstreambase (name, mode) { }
+    : fstreambase (name, mode),
+      iBinstream (fstreambase::rdbuf ())
+  { }
 
   // OPERATORS ------------------------------------------------------------
 
@@ -78,16 +83,16 @@ public:
    * @param mode the open mode (default ios::in).
    */
   void open (const char *name, int mode=ios::in)
-    {
-      fstreambase::open (name, mode);
-      iBinstream::open ();
-    }
+  {
+    fstreambase::open (name, mode);
+    iBinstream::open ();
+  }
 
   /**
    * Closes the stream.
    */
   virtual void close () { iBinstream::close (); fstreambase::close (); }
-
+  
   // I/O ------------------------------------------------------------------
 };
 
@@ -103,7 +108,7 @@ public:
  *
  * @author Martin Larose <larosem@IRO.UMontreal.CA>
  */
-class ofBinstream : public oBinstream, public fstreambase
+class ofBinstream : public fstreambase, public oBinstream
 {
 
 public:
@@ -113,7 +118,10 @@ public:
   /**
    * Initializes the stream.
    */
-  ofBinstream () : oBinstream (fstreambase::rdbuf ()) { }
+  ofBinstream ()
+    : fstreambase (),
+      oBinstream (fstreambase::rdbuf ())
+  { }
 
   /**
    * Initializes the stream with file name and parameters.
@@ -121,7 +129,9 @@ public:
    * @param mode the open mode (default ios::out).
    */
   ofBinstream (const char *name, int mode = ios::out)
-    : oBinstream (fstreambase::rdbuf ()), fstreambase (name, mode) { }
+    : fstreambase (name, mode),
+      oBinstream (fstreambase::rdbuf ())
+  { }
 
   // OPERATORS ------------------------------------------------------------
 
@@ -160,17 +170,20 @@ public:
  *
  * @author Martin Larose <larosem@IRO.UMontreal.CA>
  */
-class fBinstream : public Binstream, public fstreambase
+class fBinstream : public fstreambase, public Binstream
 {
   
-public:
-
+ public:
+  
   // LIFECYCLE ------------------------------------------------------------
-
+  
   /**
    * Initializes the stream.
    */
-  fBinstream () : Binstream (fstreambase::rdbuf ()) { }
+  fBinstream ()
+    : fstreambase (),
+      Binstream (fstreambase::rdbuf ())
+  { }
 
   /**
    * Initializes the stream with file name and parameters.
@@ -179,7 +192,9 @@ public:
    * @param prot the protection (default 0644).
    */
   fBinstream (const char *name, int mode = ios::in)
-    : Binstream (fstreambase::rdbuf ()), fstreambase(name, mode)  { }
+    : fstreambase (name, mode),
+      Binstream (fstreambase::rdbuf ())
+  { }
 
   // OPERATORS ------------------------------------------------------------
 

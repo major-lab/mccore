@@ -1,37 +1,35 @@
 //                              -*- Mode: C++ -*- 
 // zfstream.h
-// Copyright © 2002 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2002-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Mon Jan 28 16:13:00 2002
-// Last Modified By : 
-// Last Modified On : 
-// Update Count     : 0
-// Status           : Unknown.
+// $Revision: 1.5.4.1 $
+// $Id: zfstream.h,v 1.5.4.1 2003-12-10 14:20:49 larosem Exp $
+//
+// This file is part of mccore.
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifndef _zfstream_h_
 #define _zfstream_h_
 
-#include <iostream.h>
-#include <fstream.h>
-
+#include <iostream>
 #include <zlib.h>
+
+using namespace std;
 
 
 
@@ -209,38 +207,46 @@ public:
  *
  * @author Patrick Gendron <gendrop@iro.umontreal.ca>
  */
-class izfstream : public istream, public zfstreambase
+class izfstream : public zfstreambase, public istream
 {
-
-public:
+  
+ public:
+  
   /**
    * Initializes the stream.
    */
-  izfstream() : istream(rdbuf ()) {} 
+  izfstream ()
+    : zfstreambase (),
+      istream (this->rdbuf ())
+  { } 
 
   /**
    * Initializes the stream with filename.
    * @param name the file name.
    * @param mode the file mode.
    */
-  izfstream(const char* name, int mode = ios::in)
-    : istream(rdbuf ()), zfstreambase(name, mode) {}  
-
+  izfstream (const char* name, int mode = ios::in)
+    : zfstreambase (name, mode),
+      istream (this->rdbuf ())
+  { }
+  
   /**
    * Opens the stream with file name.
    * @param name the file name.
    * @param mode the file mode.
    */
-  void open(const char* name, int mode = ios::in) {
-    zfstreambase::open(name, mode);
+  void open (const char* name, int mode = ios::in)
+  {
+    zfstreambase::open (name, mode);
   }
 
   /**
    * Gets the buffer.
    * @return the compressed file buffer object.
    */
-  zfstreambuf* rdbuf() { return zfstreambase::rdbuf(); }
+  zfstreambuf* rdbuf () { return zfstreambase::rdbuf (); }
 };
+
 
 
 /**
@@ -250,37 +256,44 @@ public:
  *
  * @author Patrick Gendron <gendrop@iro.umontreal.ca>
  */
-class ozfstream : public ostream, public zfstreambase
+class ozfstream : public zfstreambase, public ostream
 {
-public:
+  
+ public:
+
   /**
    * Initializes the stream.
    */
-  ozfstream() : ostream(rdbuf ()) {}
+  ozfstream ()
+    : zfstreambase (),
+      ostream (this->rdbuf ())
+  { }
 
   /**
    * Initializes the stream with filename.
    * @param name the file name.
    * @param mode the file mode.
    */
-  ozfstream(const char* name, int mode = ios::out)
-    : ostream(rdbuf ()), zfstreambase(name, mode) {}  
+  ozfstream (const char* name, int mode = ios::out)
+    : zfstreambase (name, mode),
+      ostream (this->rdbuf ())
+  { }
 
   /**
    * Opens the stream with file name.
    * @param name the file name.
    * @param mode the file mode.
    */
-  void open(const char* name, int mode = ios::out) {
-    zfstreambase::open(name, mode);
+  void open (const char* name, int mode = ios::out)
+  {
+    zfstreambase::open (name, mode);
   }
 
   /**
    * Gets the buffer.
    * @return the compressed file buffer object.
    */
-  zfstreambuf* rdbuf() { return zfstreambase::rdbuf(); }
+  zfstreambuf* rdbuf () { return zfstreambase::rdbuf (); }
 };
-
 
 #endif

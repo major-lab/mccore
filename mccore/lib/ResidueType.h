@@ -1,13 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // ResidueType.h
-// Copyright © 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Wed Sep  5 16:32:07 2001
-// Update Count     : 6
-// Status           : Ok.
+// $Revision: 1.7.4.1 $
+// $Id: ResidueType.h,v 1.7.4.1 2003-12-10 14:19:18 larosem Exp $
 // 
 //  This file is part of mccore.
 //  
@@ -29,10 +27,8 @@
 #ifndef _ResidueType_h_
 #define _ResidueType_h_
 
-
 class iBinstream;
 class oBinstream;
-class ostream;
 
 
 
@@ -75,7 +71,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const t_Residue& operator= (const t_Residue &right) { return *this; }
+  const t_Residue& operator= (const t_Residue &right) { return *this; }
 
   /**
    * Converts the residue type to a string.
@@ -97,7 +93,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const = 0;
+  virtual char getOneLetterRep () const = 0;
 
   /**
    * Tells if the residue is unknown.

@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // CAtom.h
-// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
@@ -29,18 +29,19 @@
 #ifndef _CAtom_h_
 #define _CAtom_h_
 
-
-#include <function.h>
+#include <iostream>
 #include <stdio.h>
 
 #include "CPoint3D.h"
 #include "AtomType.h"
 
-class ostream;
 class iBinstream;
 class oBinstream;
 class iPdbstream;
 class oPdbstream;
+
+using namespace std;
+
 
 
 /**
@@ -305,7 +306,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual AtomSet& operator= (const AtomSet &right) { return *this; }
+  AtomSet& operator= (const AtomSet &right) { return *this; }
   
   /**
    * Tests wheter the atom is within the set.
@@ -429,7 +430,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual atomset_and& operator= (const atomset_and &right);
+  atomset_and& operator= (const atomset_and &right);
 
   /**
    * Tests wheter the atom is within the set.

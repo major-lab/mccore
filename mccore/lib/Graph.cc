@@ -1,13 +1,27 @@
 //                              -*- Mode: C++ -*- 
 // Graph.cc
-// Copyright © 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2002-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Mon Feb 18 16:07:09 2002
-// Last Modified By : Patrick Gendron
-// Last Modified On : Thu Feb 27 16:04:59 2003
-// Update Count     : 24
-// Status           : Unknown.
+// $Revision: 1.9.4.1 $
+// $Id: Graph.cc,v 1.9.4.1 2003-12-10 14:18:22 larosem Exp $
 // 
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
 
 #ifndef __Graph_cc_
 #define __Graph_cc_
@@ -16,9 +30,12 @@
 #include <config.h>
 #endif
 
-#include <iostream.h>
-#include <iomanip.h>
+#include <assert.h>
+#include <iomanip>
 #include <values.h>
+
+using namespace std;
+
 
 
 // LIFECYCLE ------------------------------------------------------------
@@ -119,7 +136,7 @@ void Graph< Node, Edge >::setNodeValue (int index, int v)
 template< class Node, class Edge >
 int Graph< Node, Edge >::getNodeIndex (const Node &n) const
 {
-  vector< Node >::const_iterator i = ::find (mNodes.begin(), mNodes.end(), n);
+  std::vector< Node >::const_iterator i = ::find (mNodes.begin(), mNodes.end(), n);
   if  (i == mNodes.end()) return -1;
   return  (i - mNodes.begin());
 }
@@ -149,13 +166,13 @@ const Edge &Graph< Node, Edge >::getEdge (int a, int b) const
 {
   adjgraph::const_iterator i = (*this).find (a);
   if  (i == end()) {
-    cerr << "Index out of range " << __FILE__ << " " << __LINE__ << endl;
+    cerr << "Index out of range " << __FILE__ << " " << __LINE__ << std::endl;
     exit (EXIT_FAILURE);
   }
   
   adjlist::const_iterator j = i->second.find (b);
   if  (j == i->second.end()) {
-    cerr << "Index out of range" << __FILE__ << " " << __LINE__ << endl;
+    cerr << "Index out of range" << __FILE__ << " " << __LINE__ << std::endl;
     exit (EXIT_FAILURE);
   }
   return mEdges[ j->second ];
@@ -167,13 +184,13 @@ Edge &Graph< Node, Edge >::getEdge (int a, int b)
 {
   adjgraph::const_iterator i = (*this).find (a);
   if  (i == end()) {
-    cerr << "Index out of range" << __FILE__ << " " << __LINE__ << endl;
+    cerr << "Index out of range" << __FILE__ << " " << __LINE__ << std::endl;
     exit (EXIT_FAILURE);
   }
 
   adjlist::const_iterator j = i->second.find (b);
   if  (j == i->second.end()) {
-    cerr << "Index out of range" << __FILE__ << " " << __LINE__ << endl;
+    cerr << "Index out of range" << __FILE__ << " " << __LINE__ << std::endl;
     exit (EXIT_FAILURE);
   }
   return mEdges[ j->second ];
@@ -181,9 +198,9 @@ Edge &Graph< Node, Edge >::getEdge (int a, int b)
 
 
 template< class Node, class Edge >
-const pair< int, int > Graph< Node, Edge >::getNodes (const Edge &e) const
+const std::pair< int, int > Graph< Node, Edge >::getNodes (const Edge &e) const
 {
-  vector< Edge >::const_iterator i = ::find (mEdges.begin(), mEdges.end(), e);
+  std::vector< Edge >::const_iterator i = ::find (mEdges.begin(), mEdges.end(), e);
   if  (i == mEdges.end()) return make_pair (-1, -1);
   return mEdgeNodes[(i-mEdges.begin ())];
 }
@@ -209,7 +226,7 @@ void Graph< Node, Edge >::setEdgeValue (int index, int v)
 template< class Node, class Edge >
 int Graph< Node, Edge >::getEdgeIndex (const Edge &e) const
 {
-  vector< Edge >::const_iterator i = ::find (mEdges.begin(), mEdges.end(), e);
+  std::vector< Edge >::const_iterator i = ::find (mEdges.begin(), mEdges.end(), e);
   if  (i == mEdges.end()) return -1;
   return  (i - mEdges.begin());
 }
@@ -324,13 +341,13 @@ Graph< Node, Edge >::unmarkEdge (int a, int b)
 
 
 template< class Node, class Edge >
-vector< Path > Graph< Node, Edge >::shortest_path (int root) const
+std::vector< Path > Graph< Node, Edge >::shortest_path (int root) const
 {
   int i;
   int n = 0;
-  vector< Path > P (size ());             // path description  
-  vector< int > C;                  // node set
-  vector< int >::iterator k;
+  std::vector< Path > P (size ());             // path description  
+  std::vector< int > C;                  // node set
+  std::vector< int >::iterator k;
   
   // Initialize ---
   for  (i=0; i<(int)size (); i++) {
@@ -350,12 +367,12 @@ vector< Path > Graph< Node, Edge >::shortest_path (int root) const
     }
   }
   
-//   cout << "P =  ("; for  (i=0; i<(int)size (); i++) { cout << P[ i ] << " "; } cout << ")" << endl;
-//   cout << "C =  ("; for  (i=0; i<(int)C.size(); i++) { cout << C[ i ] << " "; } cout << ")" << endl;
+//   std::cout << "P =  ("; for  (i=0; i<(int)size (); i++) { std::cout << P[ i ] << " "; } std::cout << ")" << std::endl;
+//   std::cout << "C =  ("; for  (i=0; i<(int)C.size(); i++) { std::cout << C[ i ] << " "; } std::cout << ")" << std::endl;
 
   // Execute ---
   for  (i=0; i<n-2; i++) {
-    vector< int >::iterator min_iter = C.begin();
+    std::vector< int >::iterator min_iter = C.begin();
     int min_value = P[ *min_iter ].getValue(); // in C
     int min_index;
 
@@ -391,15 +408,15 @@ vector< Path > Graph< Node, Edge >::shortest_path (int root) const
 template< class Node, class Edge >
 Path Graph< Node, Edge >::shortest_path (int a, int b) const
 {
-  vector< Path > paths = shortest_path (a);
-  vector< Path >::iterator i;
+  std::vector< Path > paths = shortest_path (a);
+  std::vector< Path >::iterator i;
   
-//   cout << "Shortest path between " << a << " and " << b << endl;
+//   std::cout << "Shortest path between " << a << " and " << b << std::endl;
 
   for (i=paths.begin (); i!=paths.end (); ++i) {
     if (i->size ()) {
       if (i->back () == b) {
-// 	cout << *i << endl;
+// 	std::cout << *i << std::endl;
 	return *i;
       }
     }
@@ -409,11 +426,11 @@ Path Graph< Node, Edge >::shortest_path (int a, int b) const
 
 
 template< class Node, class Edge >
-vector< Edge > Graph< Node, Edge >::minimum_spanning_tree (void) const
+std::vector< Edge > Graph< Node, Edge >::minimum_spanning_tree (void) const
 {
-  vector< int > nearest (size (), -1);
-  vector< int > mindist (size (), MAXINT);
-  vector< Edge > T;
+  std::vector< int > nearest (size (), -1);
+  std::vector< int > mindist (size (), MAXINT);
+  std::vector< Edge > T;
   int i, j;
 
   for (i=1; i<(int)size (); ++i) {
@@ -452,16 +469,16 @@ vector< Edge > Graph< Node, Edge >::minimum_spanning_tree (void) const
 }
 
 template< class Node, class Edge >
-vector< Path > 
+std::vector< Path > 
 Graph< Node, Edge >::cycle_base_horton (bool minimum_basis_union)
 {
-  vector< Path > bag;
-  vector< Path >::iterator p;
+  std::vector< Path > bag;
+  std::vector< Path >::iterator p;
   Path tmpPath;
 
   for (unsigned int i = 0; i < mEdges.size (); ++i) mEdgeValues [i] = 1;
 
-  map< int, map< int, Path > > paths;
+  std::map< int, std::map< int, Path > > paths;
   for (int i=0; i<(int)size (); ++i) {
     for (int j=0; j<(int)size (); ++j) {
       paths[i][j] = shortest_path (i, j);
@@ -495,25 +512,25 @@ Graph< Node, Edge >::cycle_base_horton (bool minimum_basis_union)
 			Pvyp.begin (), Pvyp.end (),
 			inserter (inter, inter.begin ()));
 
-//        cout << "Inter = " << inter << endl;
+//        std::cout << "Inter = " << inter << std::endl;
 
       if (inter.size () == 1 && inter.front () == i) 
 	{
-//  	  cout << "v=" << i << " {x,y}=" << " " << mEdgeNodes[j].first << ","
-//  	       << mEdgeNodes[j].second << endl;
+//  	  std::cout << "v=" << i << " {x,y}=" << " " << mEdgeNodes[j].first << ","
+//  	       << mEdgeNodes[j].second << std::endl;
 
-//  	  cout << "Pvx " << Pvx << endl;
-//  	  cout << "Pvy " << Pvy << endl;
+//  	  std::cout << "Pvx " << Pvx << std::endl;
+//  	  std::cout << "Pvy " << Pvy << std::endl;
 	  
 	  Path C = Pvx;
 	  C.insert (C.end (), Pvy.rbegin (), Pvy.rend ());
 	  C.pop_back ();
 	  C.setValue (Pvx.getValue () + Pvy.getValue () + 1);
 
-//  	  cout << "C = " << C << endl;
+//  	  std::cout << "C = " << C << std::endl;
 	  
 	  for (p=bag.begin (); p!=bag.end (); ++p) {
-	    //cout << *p << " == " << C << " " << (*p == C) << endl;
+	    //std::cout << *p << " == " << C << " " << (*p == C) << std::endl;
 	    
 	    // Redundancy test
 	    if (*p == C) {
@@ -531,30 +548,30 @@ Graph< Node, Edge >::cycle_base_horton (bool minimum_basis_union)
   sort (bag.begin (), bag.end ());
 
 //   {
-//     cout << endl;
+//     std::cout << std::endl;
     
-//     vector< Path >::iterator i;
+//     std::vector< Path >::iterator i;
 //     for (i=bag.begin (); i!=bag.end (); ++i) {
-//       cout << (*i) << " " << endl;
+//       std::cout << (*i) << " " << std::endl;
 //     }
 //   }
 
-  vector< Path > newbag;
-  vector< Path > tmpbag;
+  std::vector< Path > newbag;
+  std::vector< Path > tmpbag;
   int j;
 
   for (j=0; j<(int)mEdgeMarks.size (); ++j) mEdgeMarks[j] = false;
 
-//    cout << "Gaussian elimination" << endl;
+//    std::cout << "Gaussian elimination" << std::endl;
 
   newbag = gaussian_elimination (bag, minimum_basis_union);
 
 //    {
-//      cout << endl;
+//      std::cout << std::endl;
     
-//      vector< Path >::iterator i;
+//      std::vector< Path >::iterator i;
 //      for (i=newbag.begin (); i!=newbag.end (); ++i) {
-//        cout << (*i) << " " << endl;
+//        std::cout << (*i) << " " << std::endl;
 //      }
 //    }
 
@@ -563,18 +580,18 @@ Graph< Node, Edge >::cycle_base_horton (bool minimum_basis_union)
 
 
 template< class Node, class Edge >
-vector< Path > 
-Graph< Node, Edge >::gaussian_elimination (vector< Path > &bag, bool minimum_basis_union)
+std::vector< Path > 
+Graph< Node, Edge >::gaussian_elimination (std::vector< Path > &bag, bool minimum_basis_union)
 {
   if (bag.size () == 0) return bag;
 
-  vector< bool* > matrix;
-  vector< bool* >::iterator n;
+  std::vector< bool* > matrix;
+  std::vector< bool* >::iterator n;
   int i, j;
-  vector< Path > newbag;
-  vector< Path >::iterator p, q;
+  std::vector< Path > newbag;
+  std::vector< Path >::iterator p, q;
 
-  vector< vector< Path >::iterator > marked;
+  std::vector< std::vector< Path >::iterator > marked;
   marked.clear ();
 
   for (p=bag.begin (); p!=bag.end (); ++p) {
@@ -582,7 +599,7 @@ Graph< Node, Edge >::gaussian_elimination (vector< Path > &bag, bool minimum_bas
     memset (row, false, mEdges.size () * sizeof (bool));
 
     // Let's see if *p is linearly independent to the content of newbag 
-//      cout << "Treating " << *p << endl;
+//      std::cout << "Treating " << *p << std::endl;
 
     for (i=0; i<(int)p->size (); ++i) {
       row[getEdgeIndex ((*p)[i], (*p)[(i+1)%(int)p->size ()])] = true;
@@ -591,16 +608,16 @@ Graph< Node, Edge >::gaussian_elimination (vector< Path > &bag, bool minimum_bas
     bool inserted = false;
 
     for (n=matrix.begin (), q=newbag.begin (); q!=newbag.end (); ++n, ++q) {
-//       for (j=0; j<(int)mEdges.size (); ++j) { cout << row[j] << " "; } 
-//       cout << "  ->  " << flush; 
-//       for (j=0; j<(int)mEdges.size (); ++j) { cout << (*n)[j] << " "; } cout << endl;
+//       for (j=0; j<(int)mEdges.size (); ++j) { std::cout << row[j] << " "; } 
+//       std::cout << "  ->  " << flush; 
+//       for (j=0; j<(int)mEdges.size (); ++j) { std::cout << (*n)[j] << " "; } std::cout << std::endl;
       
       j=0;    
       while (j<(int)mEdges.size () && row[j] == false && (*n)[j] == false) ++j;
       if (j == (int)mEdges.size ()) continue;
       
       if (row[j] == true && (*n)[j] == false) {
-//  	cout << "Marking " << *p << endl;
+//  	std::cout << "Marking " << *p << std::endl;
 	marked.push_back (p);
 	inserted = true;
 	break;
@@ -620,10 +637,10 @@ Graph< Node, Edge >::gaussian_elimination (vector< Path > &bag, bool minimum_bas
 	if (row[j] == true) break;
       }
       if (j!=(int)mEdges.size ()) {
-//  	cout << "Marking " << *p << endl;
+//  	std::cout << "Marking " << *p << std::endl;
 	marked.push_back (p);
       } else {
-//  	cout << "Rejecting " << *p << endl;
+//  	std::cout << "Rejecting " << *p << std::endl;
       }
     }
 
@@ -632,7 +649,7 @@ Graph< Node, Edge >::gaussian_elimination (vector< Path > &bag, bool minimum_bas
     // Let's see if we should try to insert the marked...
     if (p+1==bag.end () || (p+1)->size () > p->size ()) {
 
-//        cout << "Inserting marked cycles" << endl;
+//        std::cout << "Inserting marked cycles" << std::endl;
 
       for (i=0; i<(int)marked.size (); ++i) {
 	bool* row = new bool[mEdges.size ()];
@@ -642,7 +659,7 @@ Graph< Node, Edge >::gaussian_elimination (vector< Path > &bag, bool minimum_bas
 	  row[getEdgeIndex ((*marked[i])[j], (*marked[i])[(j+1)%(int)p->size ()])] = true;
 	}
 
-//  	cout << "Treating " << *marked[i] << endl;	
+//  	std::cout << "Treating " << *marked[i] << std::endl;	
 
 	inserted = false;
 	
@@ -652,7 +669,7 @@ Graph< Node, Edge >::gaussian_elimination (vector< Path > &bag, bool minimum_bas
 	  if (j == (int)mEdges.size ()) continue;
 	  
 	  if (row[j] == true && (*n)[j] == false) {
-//  	    cout << "Inserting " << *marked[i] << endl;
+//  	    std::cout << "Inserting " << *marked[i] << std::endl;
 	    matrix.insert (n, row);
 	    newbag.insert (q, *marked[i]);
 	    inserted = true;
@@ -670,7 +687,7 @@ Graph< Node, Edge >::gaussian_elimination (vector< Path > &bag, bool minimum_bas
 	
 	if (!inserted) {
 	  if (minimum_basis_union) {
-//  	    cout << "Accepting " << *marked[i] << endl;
+//  	    std::cout << "Accepting " << *marked[i] << std::endl;
 	    matrix.push_back (row);
 	    newbag.push_back (*marked[i]);
 	  } else {	    
@@ -678,25 +695,25 @@ Graph< Node, Edge >::gaussian_elimination (vector< Path > &bag, bool minimum_bas
 	      if (row[j] == true) break;
 	    }
 	    if (j!=(int)mEdges.size ()) {
-//  	      cout << "Accepting " << *marked[i] << endl;
+//  	      std::cout << "Accepting " << *marked[i] << std::endl;
 	      matrix.push_back (row);
 	      newbag.push_back (*marked[i]);
 	    } else {
-//  	      cout << "Rejecting " << *marked[i] << endl;
+//  	      std::cout << "Rejecting " << *marked[i] << std::endl;
 	    }
 	  }	
 	}
       }
       marked.clear ();
 
-//        cout << "Matrix -----------------------" << endl;
+//        std::cout << "Matrix -----------------------" << std::endl;
 //        for (i=0; i!=(int)matrix.size (); ++i) {
 //  	for (j=0; j<(int)mEdges.size (); ++j)
-//  	cout << matrix[i][j] << " " << flush;      
-//        cout << " : " << newbag[i] << flush;
-//        cout << endl;
+//  	std::cout << matrix[i][j] << " " << flush;      
+//        std::cout << " : " << newbag[i] << flush;
+//        std::cout << std::endl;
 //        }
-//        cout << "------------------------------" << endl;
+//        std::cout << "------------------------------" << std::endl;
       
     }
   }
@@ -708,7 +725,7 @@ Graph< Node, Edge >::gaussian_elimination (vector< Path > &bag, bool minimum_bas
 
 
 template< class Node, class Edge >
-ostream &Graph< Node, Edge >::output (ostream &out) const 
+std::ostream &Graph< Node, Edge >::output (std::ostream &out) const 
 {
   if  (size() == 0) return out;
   unsigned int i, j;
@@ -716,21 +733,21 @@ ostream &Graph< Node, Edge >::output (ostream &out) const
   
   for  (i=0; i<mNodes.size(); i++) {
     out << "Node[ " << i << " ]: " << mNodes[ i ] 
-	<< " (value: " << mNodeValues[ i ] << ") " << mNodeMarks[i] << endl;
+	<< " (value: " << mNodeValues[ i ] << ") " << mNodeMarks[i] << std::endl;
   }
-  out << endl;
+  out << std::endl;
   for  (j=0; j<mEdges.size(); j++) {
     out << "Edge[ " << j << " ]: " << mEdges[ j ] 
-	<< " (value: " << mEdgeValues[ j ] << ") " << mEdgeMarks[j] << endl; 
+	<< " (value: " << mEdgeValues[ j ] << ") " << mEdgeMarks[j] << std::endl; 
   }
-  out << endl;
+  out << std::endl;
   
-  out << "Matrix:" << endl;
+  out << "Matrix:" << std::endl;
   for (i=0 ; i<mNodes.size() ; i++) {
     for (j=0 ; j<mNodes.size() ; j++) {
       id = getEdgeIndex (i, j);
       if  (id != -1)
-	out << setw (2) << id << " ";
+	out << std::setw (2) << id << " ";
       else
 	out << " - ";
     }
@@ -738,13 +755,13 @@ ostream &Graph< Node, Edge >::output (ostream &out) const
   }
 
 //    {
-//      out << "Adjacency lists" << endl;
+//      out << "Adjacency lists" << std::endl;
 //      for (adjgraph::const_iterator i=begin (); i!=end (); ++i) {
 //        out << i->first << " : " ;
 //        for (adjlist::const_iterator j=i->second.begin (); 
 //  	   j!=i->second.end (); ++j)
 //  	out << j->first << " ";
-//        out << endl;
+//        out << std::endl;
 //      }
 //    }
 
