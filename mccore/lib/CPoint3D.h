@@ -5,7 +5,7 @@
 // Created On       : 
 // Last Modified By : Martin Larose
 // Last Modified On : Tue Jan 23 15:01:48 2001
-// Update Count     : 3
+// Update Count     : 7
 // Status           : Ok.
 // 
 
@@ -182,6 +182,19 @@ public:
    * @return itself.
    */
   const CPoint3D& SetXYZ (float nX, float nY, float nZ);
+
+  /**
+   * Gets the x coordinate.
+   * @return the x coordinate.
+   */
+  float &Get (int index) { 
+    switch (index) {
+    case 0: return mX;
+    case 1: return mY;
+    case 2: return mZ;
+    }
+    return mX;
+  }
 
   /**
    * Gets the x coordinate.
