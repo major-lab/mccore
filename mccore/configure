@@ -853,25 +853,6 @@ host_os=`echo $host | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/\3/'`
 echo "$ac_t""$host" 1>&6
 
 
-case "$host" in
-*-linux-gnu) CXXFLAGS="-Wall -O2 -g";
-             CXXSHFLAGS="-Wall -O2 -g";
-	     DEPFLAGS="-MM"
-	     LDFLAGS="-static"
-	     LINKOPTIONS= ;;
-*-sgi-*)     CXXFLAGS="-O2 -g -woff 1681 -ptused";
-             CXXSHFLAGS="-O2 -g -woff 1681 -ptused";
-	     DEPFLAGS="-M"
-	     LDFLAGS=
-	     LINKOPTIONS= ;;
-*-sun-*)     CXXFLAGS="-Wall -O2 -g";
-             CXXSHFLAGS="-Wall -O2 -g -fPIC";
-	     DEPFLAGS="-MM"
-	     LDFLAGS="-static"
-	     LINKOPTIONS= ;;
-esac
-
-
 # Find a good install program.  We prefer a C program (faster),
 # so one script is as good as another.  But avoid the broken or
 # incompatible versions:
@@ -884,7 +865,7 @@ esac
 # SVR4 /usr/ucb/install, which tries to use the nonexistent group "staff"
 # ./install, which can be erroneously created by make from ./install.sh.
 echo $ac_n "checking for a BSD compatible install""... $ac_c" 1>&6
-echo "configure:888: checking for a BSD compatible install" >&5
+echo "configure:869: checking for a BSD compatible install" >&5
 if test -z "$INSTALL"; then
 if eval "test \"`echo '$''{'ac_cv_path_install'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -939,7 +920,7 @@ test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
 # Extract the first word of "ar", so it can be a program name with args.
 set dummy ar; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:943: checking for $ac_word" >&5
+echo "configure:924: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_AR'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -974,12 +955,12 @@ fi
 for ac_func in strsep
 do
 echo $ac_n "checking for $ac_func""... $ac_c" 1>&6
-echo "configure:978: checking for $ac_func" >&5
+echo "configure:959: checking for $ac_func" >&5
 if eval "test \"`echo '$''{'ac_cv_func_$ac_func'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 983 "configure"
+#line 964 "configure"
 #include "confdefs.h"
 /* System header to define __stub macros and hopefully few prototypes,
     which can conflict with char $ac_func(); below.  */
@@ -1005,7 +986,7 @@ $ac_func();
 
 ; return 0; }
 EOF
-if { (eval echo configure:1009: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:990: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   eval "ac_cv_func_$ac_func=yes"
 else
@@ -1030,6 +1011,25 @@ fi
 done
 
 
+
+case "$host" in
+*-linux-gnu) CXXFLAGS="-Wall -O2 -g";
+             CXXSHFLAGS="-Wall -O2 -g";
+	     DEPFLAGS="-MM"
+	     LDFLAGS="-static"
+	     LINKOPTIONS= ;;
+*-sgi-*)     CXXFLAGS="-O2 -g -woff 1681 -ptused";
+             CXXSHFLAGS="-O2 -g -woff 1681 -ptused";
+	     DEPFLAGS="-M"
+	     LDFLAGS=
+	     LINKOPTIONS= ;;
+*-sun-*)     CXXFLAGS="-Wall -O2 -g";
+             CXXSHFLAGS="-Wall -O2 -g -fPIC";
+	     DEPFLAGS="-MM"
+	     LDFLAGS="-static"
+	     LINKOPTIONS= ;;
+esac
+
 # Check whether --with-malloc or --without-malloc was given.
 if test "${with_malloc+set}" = set; then
   withval="$with_malloc"
@@ -1038,7 +1038,6 @@ if test "${with_malloc+set}" = set; then
 EOF
 
 fi
-
 
 
 

@@ -1,6 +1,6 @@
 //                        -*- Mode: C++ -*-
 // CHBond.cc
-// Copyright © 1999, 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
@@ -17,6 +17,64 @@
 #include <mccore/AtomType.h>
 #include <mccore/CResidue.h>
 #include <mccore/McCore.h>
+
+
+HBond::HBond ()
+  : donor (0), hydro (0), acceptor (0), lonepair (0)
+{}
+
+
+HBond::HBond (t_Atom *donor, t_Atom *hydro, t_Atom *acceptor, t_Atom *lonepair)
+{
+  this->donor = donor;
+  this->hydro = hydro;
+  this->acceptor = acceptor;
+  this->lonepair = lonepair;
+}
+
+
+HBond::HBond (const HBond &other)
+  : donor (other.donor), 
+  hydro (other.hydro), 
+  acceptor (other.acceptor), 
+  lonepair (other.lonepair)
+{}
+
+
+const HBond& 
+HBond::operator= (const HBond &other)
+{
+  if (&other != this)
+    {
+      donor = other.donor;
+      hydro = other.hydro;
+      acceptor = other.acceptor;
+      lonepair = other.lonepair;
+    }
+  return *this;
+}
+
+
+bool 
+HBond::operator== (const HBond &other) const
+{
+  return (donor == other.donor && 
+	  hydro == other.hydro &&
+	  acceptor == other.acceptor && 
+	  lonepair == other.lonepair);
+}
+
+
+
+ostream&
+operator<< (ostream &os, const HBond &theBond)
+{
+  os << *(theBond.donor) << "-"
+     << *(theBond.hydro) << " -> "
+     << *(theBond.acceptor) << " (" << *(theBond.lonepair) << ") " << flush;
+  return os;
+}
+
 
 
 const int CHBond::sNbGauss = 7;
@@ -40,16 +98,6 @@ const float CHBond::sWeight[7] = {
   0.120741,
   0.534611,
   0.191654
-  // Optimisé sur 1ffk
-//    0.00685586,
-//    0.0276069,
-//    0.0109897,
-//    0.102683,
-//    0.104988,
-//    0.178908,
-//    0.313868,
-//    0.0682106,
-//    0.185678
 };
 
 const float CHBond::sMean[7][3] = {
@@ -60,15 +108,6 @@ const float CHBond::sMean[7][3] = {
   {5.06479, -0.443828, -0.424931},
   {6.52255, -0.165407, -0.0835928},
   {7.73618, -0.296942, -0.299877}
-//    {0.372106, 2.34613, 2.17351}, 
-//    {4.10073, 0.265808, 0.263397}, 
-//    {2.79089, 1.03484, 0.918478}, 
-//    {5.94793, -0.394396, 0.000134236}, 
-//    {5.22055, -0.50515, -0.461952}, 
-//    {5.9725, -0.0679276, 0.143566}, 
-//    {7.44753, -0.25692, -0.24096}, 
-//    {6.24168, -0.230479, -0.19713}, 
-//    {7.83215, -0.248146, -0.334584}
 };
 
 const float CHBond::sCovarInv[7][3][3] = {
@@ -93,33 +132,6 @@ const float CHBond::sCovarInv[7][3][3] = {
   {{2.18977, 0.416751, 0.437718},
    {0.416751, 1.10475, 0.0841468},
    {0.437718, 0.0841468, 1.06094}}
-//    {{3.02239, 1.3715, 1.13844},
-//     {1.3715, 2.3354, -0.228966},
-//     {1.13844, -0.228966, 2.51175}},
-//    {{6.1517, -0.809517, 0.463752},
-//     {-0.809517, 4.8259, -2.345},
-//     {0.463752, -2.345, 5.40297}},
-//    {{10.5001, 2.10513, 1.97029},
-//     {2.10513, 2.83424, 2.6967},
-//     {1.97029, 2.6967, 3.31565}},
-//    {{3.13307, 0.78012, 0.809492},
-//     {0.78012, 0.710563, 0.261174},
-//     {0.809492, 0.261174, 0.848647}},
-//    {{10.2544, 12.3188, 10.1528},
-//     {12.3188, 18.7488, 10.1583},
-//     {10.1528, 10.1583, 15.9878}},
-//    {{0.878105, 0.231733, 0.195747},
-//     {0.231733, 4.15305, 2.72557},
-//     {0.195747, 2.72557, 3.87254}},
-//    {{1.68066, 0.55384, 0.68024},
-//     {0.55384, 2.66366, -0.0308225},
-//     {0.68024, -0.0308225, 2.97714}},
-//    {{25.132, 17.608, 17.5469},
-//     {17.608, 21.9551, 8.23878},
-//     {17.5469, 8.23878, 22.1419}},
-//    {{2.27699, 0.447363, 0.428156},
-//     {0.447363, 0.875401, 0.0991827},
-//     {0.428156, 0.0991827, 0.89259}}
 };
 
 const float CHBond::sCovarDet[7] = {
@@ -133,76 +145,45 @@ const float CHBond::sCovarDet[7] = {
 };
 
 
-/**
- * Calculates the modified gaussian probability distribution function.
- * Gives 1 when m<=0 and 0.5 when m = v.
- * @param m the x - mean.
- * @param v the standard deviation.
- * @return the probability.
- */
-
-//  float
-//  eval_Gaussian (float m, float v, float x)
-//  {
-//    float d = x - m;
-//    float t = (1 / (sqrt (2 * M_PI) * v) * 
-//  	     exp (-d * d / (2 * v * v)));
-//    return t;
-//  }
-
-
-
 CHBond::CHBond ()
+  : HBond ()
 {
   mResidueA = 0;
   mResidueB = 0;
-  mDonor = 0;
-  mAcceptor = 0;
-  mHydro = 0;
-  mLonePair = 0;
   cache_penality = -1;
 }
-
-
-
-CHBond::CHBond (const CHBond &right)
-  : mResidueA (right.mResidueA),
-    mResidueB (right.mResidueB),
-    mDonor (right.mDonor),
-    mAcceptor (right.mAcceptor),
-    mHydro (right.mHydro),
-    mLonePair (right.mLonePair),
-    cache_penality (right.cache_penality)
-{ }
 
 
 
 CHBond::CHBond (const CResidue *nResidueA, const CResidue *nResidueB,
 		t_Atom *nDonor, t_Atom *nHydro, 
 		t_Atom *nAcceptor, t_Atom *nLonePair)
-  : mResidueA (nResidueA),
+  : HBond (nDonor, nHydro, nAcceptor, nLonePair),
+    mResidueA (nResidueA),
     mResidueB (nResidueB),
-    mDonor (nDonor),
-    mAcceptor (nAcceptor),
-    mHydro (nHydro),
-    mLonePair (nLonePair),
     cache_penality (-1)
 { }
 
 
 
+CHBond::CHBond (const CHBond &other)
+  : HBond (other),
+    mResidueA (other.mResidueA),
+    mResidueB (other.mResidueB),
+    cache_penality (other.cache_penality)
+{ }
+
+
+
 const CHBond&
-CHBond::operator= (const CHBond &right)
+CHBond::operator= (const CHBond &other)
 {
-  if (&right != this)
+  if (&other != this)
     {
-      mResidueA = right.mResidueA;
-      mResidueB = right.mResidueB;
-      mDonor = right.mDonor;
-      mAcceptor = right.mAcceptor;
-      mHydro = right.mHydro;
-      mLonePair = right.mLonePair;
-      cache_penality = right.cache_penality;
+      HBond::operator= (other);
+      mResidueA = other.mResidueA;
+      mResidueB = other.mResidueB;
+      cache_penality = other.cache_penality;
     }
   return *this;
 }
@@ -214,9 +195,9 @@ CHBond::operator float () const
   if (cache_penality < 0)
     {
       float x[3];
-      x[0] = log (pow ((*mResidueA)[mHydro] | (*mResidueB)[mLonePair], 3));
-      x[1] = atanh (cos ((*mResidueA)[mDonor].Angle ((*mResidueA)[mHydro], (*mResidueB)[mAcceptor])));
-      x[2] = atanh (cos ((*mResidueB)[mAcceptor].Angle ((*mResidueA)[mDonor], (*mResidueB)[mLonePair])));
+      x[0] = log (pow ((*mResidueA)[hydro] | (*mResidueB)[lonepair], 3));
+      x[1] = atanh (cos ((*mResidueA)[donor].Angle ((*mResidueA)[hydro], (*mResidueB)[acceptor])));
+      x[2] = atanh (cos ((*mResidueB)[acceptor].Angle ((*mResidueA)[donor], (*mResidueB)[lonepair])));
       
       float p_x = 0;
       float p_h = 0;
@@ -258,18 +239,37 @@ void CHBond::SetHBond (const CResidue *nResidueA, const CResidue *nResidueB,
 {
   mResidueA = nResidueA;
   mResidueB = nResidueB;
-  mDonor = nDonor;
-  mAcceptor = nAcceptor;
-  mHydro = nHydro;
-  mLonePair = nLonePair;
+  donor = nDonor;
+  acceptor = nAcceptor;
+  hydro = nHydro;
+  lonepair = nLonePair;
   cache_penality = -1;
 }
 
 
-const CAtom &CHBond::GetDonor (const CResidue *r) const { return (r)?(*r)[mDonor]:(*mResidueA)[mDonor]; }
-const CAtom &CHBond::GetHydrogen (const CResidue *r) const { return (r)?(*r)[mHydro]:(*mResidueA)[mHydro]; }
-const CAtom &CHBond::GetAcceptor (const CResidue *r) const { return (r)?(*r)[mAcceptor]:(*mResidueB)[mAcceptor]; }
-const CAtom &CHBond::GetLonePair (const CResidue *r) const { return (r)?(*r)[mLonePair]:(*mResidueB)[mLonePair]; }
+const CAtom &
+CHBond::GetDonor (const CResidue *r) const 
+{ 
+  return (r)?(*r)[donor]:(*mResidueA)[donor]; 
+}
+
+const CAtom &
+CHBond::GetHydrogen (const CResidue *r) const 
+{ 
+  return (r)?(*r)[hydro]:(*mResidueA)[hydro]; 
+}
+
+const CAtom &
+CHBond::GetAcceptor (const CResidue *r) const 
+{ 
+return (r)?(*r)[acceptor]:(*mResidueB)[acceptor]; 
+}
+
+const CAtom &
+CHBond::GetLonePair (const CResidue *r) const 
+{ 
+return (r)?(*r)[lonepair]:(*mResidueB)[lonepair]; 
+}
 
 
 float CHBond::Eval (float dist, float angle_h, float angle_l, bool decision)
@@ -345,9 +345,9 @@ operator<< (ostream &os, const CHBond &theBond)
     {
       os << (const CResId)*theBond.mResidueA << " -> "
 	 << (const CResId)*theBond.mResidueB << "     "
-	 << *(theBond.mDonor) << "-"
-	 << *(theBond.mHydro) << " -> "
-	 << *(theBond.mAcceptor) << " (" << *(theBond.mLonePair) << ")     "
+	 << *(theBond.donor) << "-"
+	 << *(theBond.hydro) << " -> "
+	 << *(theBond.acceptor) << " (" << *(theBond.lonepair) << ")     "
 	 << "[" << (float)theBond << "]" << flush;
     }
   else
@@ -355,9 +355,9 @@ operator<< (ostream &os, const CHBond &theBond)
       cerr << "Error..." << endl;
       os << "baseA" << " -> "
 	 << "baseB" << "     "
-	 << *(theBond.mDonor) << "-"
-	 << *(theBond.mHydro) << " -> "
-	 << *(theBond.mAcceptor) << "     "
+	 << *(theBond.donor) << "-"
+	 << *(theBond.hydro) << " -> "
+	 << *(theBond.acceptor) << "     "
 	 << "[" << "???" << "]" << flush;
     }
   return os;

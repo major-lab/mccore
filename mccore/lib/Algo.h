@@ -29,7 +29,7 @@
 #include <vector.h>
 #include <pair.h>
 #include <map.h>
-#include <algorithm>
+#include <algo.h>
 #include "CResidue.h"
 #include "ResidueType.h"
 

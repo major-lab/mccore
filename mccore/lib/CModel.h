@@ -47,7 +47,7 @@ class oBinstream;
  * This object is the container for residues.  It is an unsorted list of
  * residues.  Random access is simulated with sequential access.  This class
  * should be the replacement for nearly all CResidue*.  Note: A
- * validated model contains only nucleic acids residues.
+ * validated model contains only _ribonucleic_acids_ residues.
  *
  * @author Martin Larose
  */

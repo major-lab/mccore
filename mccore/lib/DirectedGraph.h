@@ -13,8 +13,8 @@
 #ifndef _DirectedGraph_h_
 #define _DirectedGraph_h_
 
-#include <vector>
-#include <map>
+#include <vector.h>
+#include <map.h>
 
 
 /**

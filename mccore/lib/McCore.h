@@ -66,6 +66,27 @@ struct less_string
 
 
 /**
+ * @short less comparator that first dereferences the objects.
+ *
+ * @author Patrick Gendron <gendrop@iro.umontreal.ca>
+ */
+template <class T>
+struct less_deref
+{
+  /**
+   * Tests whether the object pointed to are ordered.
+   * @param x the pointer to the first object.
+   * @param y the pointer to the second object.
+   * @return the thruth value.
+   */
+  bool operator()(const T& x, const T& y) const { 
+    return (x && y && *x < *y); 
+  }
+};
+
+
+
+/**
  * Map of the Miscellaneous Atom ordered by their name.
  */
 extern map< const char *, t_Atom*, less_string > gMiscAtomString;

@@ -294,7 +294,7 @@ set< t_Atom* > grUOptAtomSet;
 
 
 
-CMessageQueue gOut (cout, 2);
+CMessageQueue gOut (cerr, 2);
 
 
 
@@ -1116,7 +1116,7 @@ McCoreInit ()
 
   SetBondsParam ();
 
-  // Initializing obligatory atom sets
+  // Initializing obligatory atom sets -------------------------------
 
   SetOblAtomSets ();
 }
