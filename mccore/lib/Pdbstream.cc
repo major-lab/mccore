@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.37 $
-// $Id: Pdbstream.cc,v 1.37 2004-06-18 15:19:37 thibaup Exp $
+// $Revision: 1.38 $
+// $Id: Pdbstream.cc,v 1.38 2004-09-01 16:36:12 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -284,9 +284,7 @@ namespace mccore {
 	    2) ResID for current cached atom is different from last read atom.
 	    3) Residue type for current cached atom is different from last read atom.
 	*/
-	while (!eom () &&
-	       *rid == previd &&
-	       rtype == prevtype)
+	while (!eom () && *rid == previd && rtype == prevtype)
 	  {
 	    // Insert the atom.
 	    r.insert (*ratom);      
@@ -296,25 +294,24 @@ namespace mccore {
 	  }
 	
 	// Post reading processing
-	if (r.size () > 0) {
-	  // Fix type.
-	  if (r.getType ()->isNucleicAcid ()) {
-	    if (r.contains (AtomType::aO2p)) {
-	      if (r.getType () == ResidueType::rDA) r.setType (ResidueType::rRA);
-	      else if (r.getType () == ResidueType::rDC) r.setType (ResidueType::rRC);
-	      else if (r.getType () == ResidueType::rDG) r.setType (ResidueType::rRG);
-	      else if (r.getType () == ResidueType::rDT) r.setType (ResidueType::rRU);
-	    } else {
-	      if (r.getType () == ResidueType::rRA) r.setType (ResidueType::rDA);
-	      else if (r.getType () == ResidueType::rRC) r.setType (ResidueType::rDC);
-	      else if (r.getType () == ResidueType::rRG) r.setType (ResidueType::rDG);
-	      else if (r.getType () == ResidueType::rRU) r.setType (ResidueType::rDT);
-	    }
+	if (r.size () > 0)
+	  {
+	    // Fix type.
+	    if (r.getType ()->isNucleicAcid () && ! r.contains (AtomType::aO2p))
+	      {
+		if (r.getType () == ResidueType::rRA)
+		  r.setType (ResidueType::rDA);
+		else if (r.getType () == ResidueType::rRC)
+		  r.setType (ResidueType::rDC);
+		else if (r.getType () == ResidueType::rRG)
+		  r.setType (ResidueType::rDG);
+		else if (r.getType () == ResidueType::rRU)
+		  r.setType (ResidueType::rDT);
+	      }
+	    
+	    // Finalize
+	    r.finalize ();
 	  }
-
-	  // Finalize
-	  r.finalize ();
-	}
       }
   }
   
