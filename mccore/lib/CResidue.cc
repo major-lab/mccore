@@ -253,7 +253,7 @@ CResidue::CResidue (t_Residue *type, const vector< CAtom > &vec,
   
   for (cit = vec.begin (), i = 0; cit != vec.end (); ++cit, ++i)
     {
-      map< t_Atom*, int >::iterator pos = mAtomIndex.find (cit->GetType ());
+      map< const t_Atom*, int >::iterator pos = mAtomIndex.find (cit->GetType ());
       
       if (pos != mAtomIndex.end ())
 	gOut(2) << "CResidue: Duplicated atom ["
@@ -462,9 +462,9 @@ CResidue::operator== (const CResidue &right) const
 
 
 CAtom&
-CResidue::operator[] (t_Atom *type)
+CResidue::operator[] (const t_Atom *type)
 {
-  map< t_Atom*, int >::iterator i = mAtomIndex.find (type);
+  map< const t_Atom*, int >::iterator i = mAtomIndex.find (type);
   
   if (i == mAtomIndex.end ())
     {
@@ -482,9 +482,9 @@ CResidue::operator[] (t_Atom *type)
 
 
 const CAtom&
-CResidue::operator[] (t_Atom *type) const
+CResidue::operator[] (const t_Atom *type) const
 {
-  map< t_Atom*, int >::const_iterator cit = mAtomIndex.find (type);
+  map< const t_Atom*, int >::const_iterator cit = mAtomIndex.find (type);
   
   if (cit == mAtomIndex.end ())
     return mAtomRes[mAtomRes.size ()];
@@ -500,7 +500,7 @@ CResidue::operator[] (t_Atom *type) const
 CResidue::iterator
 CResidue::find (t_Atom *k)
 {
-  map< t_Atom*, int >::iterator it = mAtomIndex.find (k);
+  map< const t_Atom*, int >::iterator it = mAtomIndex.find (k);
 
   if (it == mAtomIndex.end ())
     return end ();
@@ -511,9 +511,9 @@ CResidue::find (t_Atom *k)
 
 
 CResidue::const_iterator
-CResidue::find (t_Atom *k) const
+CResidue::find (const t_Atom *k) const
 {
-  map< t_Atom*, int >::const_iterator cit = mAtomIndex.find (k);
+  map< const t_Atom*, int >::const_iterator cit = mAtomIndex.find (k);
 
   if (cit == mAtomIndex.end ())
     return end ();
@@ -571,7 +571,7 @@ CResidue::Place (int pos) const
 const CAtom*
 CResidue::Ref (t_Atom *t) const
 {
-  map< t_Atom*, int >::const_iterator i = mAtomIndex.find (t);
+  map< const t_Atom*, int >::const_iterator i = mAtomIndex.find (t);
   
   if (i != mAtomIndex.end ())
     return &(mAtomRef[i->second]);
@@ -584,7 +584,7 @@ CResidue::Ref (t_Atom *t) const
 void
 CResidue::Create (const CAtom &a)
 {
-  map< t_Atom*, int >::iterator i = mAtomIndex.find (a.GetType ());
+  map< const t_Atom*, int >::iterator i = mAtomIndex.find (a.GetType ());
   
   if (i == mAtomIndex.end ())
     {
@@ -610,7 +610,7 @@ CResidue::Create (const CAtom &a)
 void
 CResidue::erase (t_Atom *type)
 {
-  map< t_Atom*, int >::iterator i = mAtomIndex.find (type);
+  map< const t_Atom*, int >::iterator i = mAtomIndex.find (type);
 
   if (i != mAtomIndex.end ())
     {
