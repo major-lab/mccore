@@ -4,7 +4,7 @@
 //                  Université de Montréal
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 00:05:15 2004
-// $Revision: 1.23.4.8 $
+// $Revision: 1.23.4.9 $
 // 
 // This file is part of mccore.
 // 
@@ -63,13 +63,13 @@ namespace mccore
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
    */
   template < class V , class VC = less< V > >
-  class less_deref : public binary_function< V*, V*, bool >
+  class less_deref : public binary_function< V, V, bool >
   {
     
   public:
     
     less_deref () { }
-    bool operator() (const V *left, const V *right)
+    bool operator() (const V *left, const V *right) const
     {
       return VC ().operator() (*left, *right);
     }
@@ -80,7 +80,7 @@ namespace mccore
    * costly.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Graph.h,v 1.23.4.8 2004-12-15 01:11:35 larosem Exp $
+   * @version $Id: Graph.h,v 1.23.4.9 2004-12-16 17:08:13 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -95,7 +95,7 @@ namespace mccore
     typedef typename vector< V >::iterator iterator;
     typedef typename vector< V >::const_iterator const_iterator;
     typedef typename vector< V >::size_type size_type;
-    typedef size_type label;
+    typedef typename vector< V >::size_type label;
     
   public:
     
@@ -123,8 +123,8 @@ namespace mccore
        */
       EndVertices () { }
 
-    protected:
-      
+    public:
+
       /**
        * Initializes the object with head and tail vertices labels.
        * @param head the head label.
@@ -133,8 +133,6 @@ namespace mccore
       EndVertices (label head, label tail)
 	: head (head), tail (tail)
       { }
-
-    public:
 
       /**
        * Initializes the object with right's content.
@@ -280,6 +278,8 @@ namespace mccore
       
       // I/O  -----------------------------------------------------------------
 
+      friend class Graph;
+      friend class OrientedGraph;
     };
 
   protected:
@@ -735,6 +735,28 @@ namespace mccore
     }
     
     /**
+     * Gets the edge given its endvertices label.
+     * @param h the endvertices head label.
+     * @param t the endvertices tail label.
+     * @return the edge.
+     * @exception NoSuchElementException if the graph does not contain the
+     * label.
+     */
+    const E& internalGetEdge (Graph::label h, Graph::label t) const throw (NoSuchElementException)
+    {
+      typename EV2ELabel::const_iterator evit;
+      EndVertices ev (h, t);
+      
+      if (vertices.size () <= h
+	  || vertices.size () <= t
+	  || ev2elabel.end () == (evit = ev2elabel.find (ev)))
+	{
+	  throw NoSuchElementException ();
+	}
+      return edges[evit->second];
+    }
+    
+    /**
      * Gets the edge label between endvertices labels h and t.
      * @param h the head label of the edge.
      * @param t the tail label of the edge.
@@ -744,7 +766,7 @@ namespace mccore
      */
     Graph::label internalGetEdgeLabel (Graph::label h, Graph::label t) const throw (NoSuchElementException)
     {
-      typename EV2ELabel::iterator evit;
+      typename EV2ELabel::const_iterator evit;
       EndVertices ev (h, t);
       
       if (vertices.size () <= h
@@ -788,7 +810,7 @@ namespace mccore
      */
     const EW& internalGetEdgeWeight (Graph::label h, Graph::label t) const throw (NoSuchElementException)
     {
-      typename EV2ELabel::iterator evit;
+      typename EV2ELabel::const_iterator evit;
       EndVertices ev (h, t);
       
       if (vertices.size () <= h
@@ -840,7 +862,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * labels or the vertices are not connected.
      */
-    void internalSetEdgeWeight (Graph::label h, Graph::label t, EW &w) const throw (NoSuchElementException)
+    void internalSetEdgeWeight (Graph::label h, Graph::label t, EW w) throw (NoSuchElementException)
     {
       typename EV2ELabel::iterator evit;
       EndVertices ev (h, t);

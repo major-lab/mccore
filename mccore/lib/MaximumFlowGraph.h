@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Apr  7 18:28:55 2003
-// $Revision: 1.10.4.2 $
+// $Revision: 1.10.4.3 $
 // 
 // This file is part of mccore.
 // 
@@ -34,6 +34,7 @@
 
 #include "Messagestream.h"
 #include "OrientedGraph.h"
+#include "stlio.h"
 
 
 
@@ -41,10 +42,13 @@ namespace mccore
 {
   
   /**
-   * Maximum flow in a directed graph but edges are made in both directions.
-   *
+   * Maximum flow in a directed graph.  The edges must implements the method:
+   * <pre>
+   *      float getValue ()
+   * </pre>
+   * for flow calculation.
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: MaximumFlowGraph.h,v 1.10.4.2 2004-12-15 01:11:41 larosem Exp $
+   * @version $Id: MaximumFlowGraph.h,v 1.10.4.3 2004-12-16 17:08:39 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -55,13 +59,13 @@ namespace mccore
     
   public:
     
-    typedef typename Graph< V, E, VW, float, Vertex_Comparator >::size_type size_type;
-    typedef typename Graph< V, E, VW, float, Vertex_Comparator >::label label;
-    typedef typename Graph< V, E, VW, float, Vertex_Comparator >::iterator iterator;
-    typedef typename Graph< V, E, VW, float, Vertex_Comparator >::const_iterator const_iterator;
-    typedef typename Graph< V, E, VW, float, Vertex_Comparator >::V2VLabel V2VLabel;
-    typedef typename Graph< V, E, VW, float, Vertex_Comparator >::EV2ELabel EV2ELabel;
-    typedef typename Graph< V, E, VW, float, Vertex_Comparator >::EndVertices EndVertices;
+    typedef typename OrientedGraph< V, E, VW, float, Vertex_Comparator >::size_type size_type;
+    typedef typename OrientedGraph< V, E, VW, float, Vertex_Comparator >::label label;
+    typedef typename OrientedGraph< V, E, VW, float, Vertex_Comparator >::iterator iterator;
+    typedef typename OrientedGraph< V, E, VW, float, Vertex_Comparator >::const_iterator const_iterator;
+    typedef typename OrientedGraph< V, E, VW, float, Vertex_Comparator >::V2VLabel V2VLabel;
+    typedef typename OrientedGraph< V, E, VW, float, Vertex_Comparator >::EV2ELabel EV2ELabel;
+    typedef typename OrientedGraph< V, E, VW, float, Vertex_Comparator >::EndVertices EndVertices;
 
     // LIFECYCLE ---------------------------------------------------------------
     
@@ -86,7 +90,7 @@ namespace mccore
      */
     virtual Graph< V, E, VW, float, Vertex_Comparator >* cloneGraph () const
     {
-      return new MaximumFlowGraph< V, VW, E, Vertex_Comparator> (*this);
+      return new MaximumFlowGraph< V, E, VW, Vertex_Comparator> (*this);
     }
 
     /**
@@ -117,66 +121,6 @@ namespace mccore
     // METHODS -----------------------------------------------------------------
 
   private:
-    
-    /**
-     * Inserts a vertex in the graph.  Private method to ensure that a vertex
-     * weigth is entered.
-     * @param v the vertex to insert.
-     * @return true if the element was inserted, false if already present.
-     */
-    virtual bool insert (V &v) { return false; }
-
-    /**
-     * Connects two vertices labels of the graph with an edge.  Two
-     * endvertices are added, pointing to the same edge.  No check are
-     * made on vertex labels validity.  Private method to ensure that an edge
-     * weigth is entered.  Private method to ensure that a in-edge is given.
-     * @param h the head vertex label of the edge.
-     * @param t the tail vertex label of the edge.
-     * @param e the edge.
-     * @return true if the connect operation succeeded.
-     */
-    virtual bool uncheckedInternalConnect (label h, label t, E &e)
-    {
-      return false;
-    }
-
-    /**
-     * Connects two vertices of the graph with an edge and weight.  No check
-     * are made on vertex labels validity.  Private method to ensure that an
-     * in-edge is given.
-     * @param h the head vertex of the edge.
-     * @param t the tail vertex of the edge.
-     * @param e the edge.
-     * @param w the weight of this edge.
-     * @return false.
-     */
-    virtual bool uncheckedInternalConnect (label h, label t, E &e, float w)
-    {
-      return false;
-    }
-    
-  protected:
-
-    /**
-     * Connects two vertices labels of the graph with an edge.  Two
-     * endvertices are added, pointing to the same edge.  No check are
-     * made on vertex labels validity.
-     * @param h the head vertex label of the edge.
-     * @param t the tail vertex label of the edge.
-     * @param oe the out-edge.
-     * @param ow the out-edge weight.
-     * @param ie the in-edge.
-     * @param iw the in-edge weight.
-     * @return true if the connect operation succeeded.
-     */
-    virtual bool uncheckedInternalConnect (label h, label t, E &oe, float ow, E &ie, float iw)
-    {
-      return (uncheckedInternalConnect (h, t, oe, ow)
-	      && uncheckedInternalConnect (t, h, ie, iw));
-    }
-
-  private:
 
     /**
      * Connects two vertices of the graph with an edge.  Private method to
@@ -187,44 +131,24 @@ namespace mccore
      * @return true if the connect operation succeeded.
      */
     virtual bool connect (const V &h, const V &t, E &e) { return false; }
-    
-    /**
-     * Connects two vertices of the graph with an edge and weight.  Private
-     * method to ensure that the in-edge and its weight are given.
-     * @param h the head vertex of the edge.
-     * @param t the tail vertex of the edge.
-     * @param e the edge.
-     * @param w the weight of this edge.
-     * @return true if the connect operation succeeded.
-     */
-    virtual bool connect (const V &h, const V &t, E &e, float w) { return false; }
 
   public:
     
     /**
-     * Connects two vertices of the graph with in and out edges with their
-     * weights.
+     * Connects two vertices of the graph with an edge.
      * @param h the head vertex of the edge.
      * @param t the tail vertex of the edge.
-     * @param oe the out-edge.
-     * @param ow the weight of the out-edge.
-     * @param ie the in-edge.
-     * @param iw the weight of this in-edge.
+     * @param e the edge.
+     * @param w the edge weight.
      * @return true if the connect operation succeeded.
      */
-    virtual bool connect (const V &h, const V &t, E &oe, float ow, E &ie, float iw)
+    virtual bool connect (const V &h, const V &t, E &e, float w)
     {
-      typename V2VLabel::const_iterator ith;
-      typename V2VLabel::const_iterator itt;
-      
-      return (v2vlabel.end () != (ith = v2vlabel.find (&h))
-	      && v2vlabel.end () != (itt = v2vlabel.find (&t))
-	      ? uncheckedInternalConnect (ith->second, itt->second, oe, ow, ie, iw)
-	      : false);
+      return OrientedGraph< V, E, VW, float, Vertex_Comparator >::connect (h, t, e, w);
     }
 
   private:
-
+    
     /**
      * Connects two vertices labels of the graph with an edge.  Private
      * method to ensure that the in-edge and its weight are given.
@@ -238,55 +162,6 @@ namespace mccore
       return false;
     }      
     
-    /**
-     * Connects two vertices labels of the graph with an edge and weight.
-     * Private method to ensure that the in-edge and its weight are given.
-     * @param h the head vertex label of the edge.
-     * @param t the tail vertex label of the edge.
-     * @param e the edge.
-     * @param w the weight of this edge.
-     * @return true if the connect operation succeeded.
-     */
-    virtual bool internalConnect (label h, label t, E &e, float w)
-    {
-      return false;
-    }
-
-  public:
-    
-    /**
-     * Connects two vertices labels of the graph with in and out edges and their
-     * weight.
-     * @param h the head vertex label of the edge.
-     * @param t the tail vertex label of the edge.
-     * @param oe the out-edge.
-     * @param ow the weight of the out-edge.
-     * @param ie the in-edge.
-     * @param iw the weight of the in-edge.
-     * @return true if the connect operation succeeded.
-     */
-    virtual bool internalConnect (label h, label t, E &oe, float ow, E &ie, float iw)
-    {
-      return (vertices.size () > h && vertices.size () > t
-	      ? uncheckedInternalConnect (h, t, oe, ow, ie, iw)
-	      : false);
-    }
-    
-  protected:
-    
-    /**
-     * Disconnects two endvertices labels of the graph.  No check are
-     * made on vertex labels validity.
-     * @param h the head vertex of the edge.
-     * @param t the tail vertex of the edge.
-     * @return true if the vertices were disconnected.
-     */
-    virtual bool uncheckedInternalDisconnect (label h, label t)
-    {
-      return (OrientedGraph< V, E, VW, float, Vertex_Comparator >::uncheckedInternalDisconnect (h, t)
-	      && OrientedGraph< V, E, VW, float, Vertex_Comparator >::uncheckedInternalDisconnect (t, h));
-    }      
-
   public:
     
     /**
@@ -309,14 +184,14 @@ namespace mccore
 	  list< label > q;
 	  int distance;
 	  list< label > active;
-	  list < label > neighborhood;
-	  typename list < label >:: iterator it;
+	  list< label > neighborhood;
+	  typename list< label >:: iterator it;
 
-	  sourceid = getVertexLabel ();
-	  sinkid = getVertexLabel ();
+	  sourceid = getVertexLabel (source);
+	  sinkid = getVertexLabel (sink);
       
 	  // Compute the initial distance labels
-	  labels.insert (labels.end (), size (), numeric_limits<int>::max ());
+	  labels.insert (labels.end (), size (), numeric_limits< int >::max ());
 	  excess.insert (excess.end (), size (), 0);
 	  
 	  distance = 0;
@@ -400,7 +275,7 @@ namespace mccore
 	      if (labels[*it] > labels[front]
 		  && internalGetEdgeWeight (front, *it) < internalGetEdge (front, *it).getValue ())
 		{
-		  cap.push_back (internalGetEdge (front, *it)
+		  cap.push_back (internalGetEdge (front, *it).getValue ()
 				 - internalGetEdgeWeight (front, *it));
 		}
 	    }
@@ -462,7 +337,7 @@ namespace mccore
 		  push_delta = min (eq, internalGetEdgeWeight (*it, front));
 		  
 		  gOut (5) << "Pushing back " << push_delta << " from " << front
-			   << " to " << i->first << endl;
+			   << " to " << *it << endl;
 		  
 		  internalSetEdgeWeight (*it, front, internalGetEdgeWeight (*it, front) - push_delta);
 		  excess[front] -= push_delta;
@@ -482,6 +357,8 @@ namespace mccore
       
       if (0 < excess[front])
 	{
+	  list< label > neighborhood;
+	  typename list< label >::iterator it;
 	  int max_dist;
 
 	  gOut (5) << "Residual" << endl;
@@ -489,7 +366,7 @@ namespace mccore
 	  neighborhood = internalOutNeighborhood (front);
 	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
 	    {
-	      if (0 < internalGetEdge (front, it->*first).getValue () - internalGetEdgeWeight (front, *it)
+	      if (0 < internalGetEdge (front, *it).getValue () - internalGetEdgeWeight (front, *it)
 		  && labels[*it] > max_dist)
 		{
 		  max_dist = labels[*it];
@@ -551,10 +428,10 @@ namespace mccore
     
   public:
     
-    virtual ostream& output (ostream& os) const
+    virtual ostream& write (ostream& os) const
     {
       return os << "[MaximumFlowGraph]" << endl
-		<< Graph< V, E, VW, float, Vertex_Comparator >::output (os);
+		<< Graph< V, E, VW, float, Vertex_Comparator >::write (os);
     }
     
   };

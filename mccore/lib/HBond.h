@@ -4,36 +4,36 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Patrick Gendron
-// Last Modified On : Tue Jun  3 10:05:01 2003
-// Update Count     : 31
-// Status           : Ok.
+// $Revision: 1.5.4.1 $
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _HBond_h
-#define _HBond_h
+#ifndef _mccore_HBond_h
+#define _mccore_HBond_h
 
 #include <iostream>
+
 using namespace std;
 
-namespace mccore {
 
+
+namespace mccore
+{
   class AtomType;
   class Residue;
   class Atom;
@@ -46,7 +46,7 @@ namespace mccore {
    * between any two atoms.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: HBond.h,v 1.5 2004-09-24 22:19:00 larosem Exp $
+   * @version $Id: HBond.h,v 1.5.4.1 2004-12-16 17:08:27 larosem Exp $
    */
   class HBond
     {
@@ -225,7 +225,7 @@ namespace mccore {
 	return resA;
       }
 
-      float getValue () { return value; }
+      float getValue () const { return value; }
 
       // METHODS ---------------------------------------------------------------
 

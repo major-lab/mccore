@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.29 $
-// $Id: ResidueType.h,v 1.29 2004-12-02 20:15:28 larosem Exp $
+// $Revision: 1.29.4.1 $
+// $Id: ResidueType.h,v 1.29.4.1 2004-12-16 17:09:51 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -53,7 +53,7 @@ namespace mccore
    *   - The nature of a type (nucleic acid (pur/pyr) or amino acid)<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueType.h,v 1.29 2004-12-02 20:15:28 larosem Exp $
+   * @version $Id: ResidueType.h,v 1.29.4.1 2004-12-16 17:09:51 larosem Exp $
    */
   class ResidueType
   {    
@@ -417,96 +417,96 @@ namespace mccore
 
     // TYPE POINTERS -----------------------------------------------------------
 
-    static ResidueType* rNull;
-    static ResidueType* rUnknown;
+    static const ResidueType* rNull;
+    static const ResidueType* rUnknown;
 
-    static ResidueType* rNucleicAcid;
-    static ResidueType* rAminoAcid;
+    static const ResidueType* rNucleicAcid;
+    static const ResidueType* rAminoAcid;
 
-    static ResidueType* rRNA;
-    static ResidueType* rDNA;
+    static const ResidueType* rRNA;
+    static const ResidueType* rDNA;
 
-    static ResidueType* rPhosphate;
+    static const ResidueType* rPhosphate;
 
-    static ResidueType* rRRibose;
-    static ResidueType* rRRibose5;
-    static ResidueType* rRRibose3;
-    static ResidueType* rRRibose53;
-    static ResidueType* rDRibose;
-    static ResidueType* rDRibose5;
-    static ResidueType* rDRibose3;
-    static ResidueType* rDRibose53;
+    static const ResidueType* rRRibose;
+    static const ResidueType* rRRibose5;
+    static const ResidueType* rRRibose3;
+    static const ResidueType* rRRibose53;
+    static const ResidueType* rDRibose;
+    static const ResidueType* rDRibose5;
+    static const ResidueType* rDRibose3;
+    static const ResidueType* rDRibose53;
     
-    static ResidueType* rPurine; // (R = A || G)
-    static ResidueType* rPyrimidine; // (Y = C || U)
-    static ResidueType* rRPurine;
-    static ResidueType* rRPyrimidine;
-    static ResidueType* rDPurine;
-    static ResidueType* rDPyrimidine;
+    static const ResidueType* rPurine; // (R = A || G)
+    static const ResidueType* rPyrimidine; // (Y = C || U)
+    static const ResidueType* rRPurine;
+    static const ResidueType* rRPyrimidine;
+    static const ResidueType* rDPurine;
+    static const ResidueType* rDPyrimidine;
 
-    static ResidueType* rW; // (A || U)
-    static ResidueType* rS; // (C || G)
-    static ResidueType* rM; // (A || C)
-    static ResidueType* rK; // (G || U)
-    static ResidueType* rB; // (C || G || U || S || Y || K)
-    static ResidueType* rD; // (A || G || U || R || W || K)
-    static ResidueType* rH; // (A || C || U || M || W || Y)
-    static ResidueType* rV; // (A || C || G || M || R || S)
+    static const ResidueType* rW; // (A || U)
+    static const ResidueType* rS; // (C || G)
+    static const ResidueType* rM; // (A || C)
+    static const ResidueType* rK; // (G || U)
+    static const ResidueType* rB; // (C || G || U || S || Y || K)
+    static const ResidueType* rD; // (A || G || U || R || W || K)
+    static const ResidueType* rH; // (A || C || U || M || W || Y)
+    static const ResidueType* rV; // (A || C || G || M || R || S)
 
-    static ResidueType* rRW;
-    static ResidueType* rRS;
-    static ResidueType* rRM;
-    static ResidueType* rRK;
-    static ResidueType* rRB;
-    static ResidueType* rRD;
-    static ResidueType* rRH;
-    static ResidueType* rRV;
+    static const ResidueType* rRW;
+    static const ResidueType* rRS;
+    static const ResidueType* rRM;
+    static const ResidueType* rRK;
+    static const ResidueType* rRB;
+    static const ResidueType* rRD;
+    static const ResidueType* rRH;
+    static const ResidueType* rRV;
 
-    static ResidueType* rDW;
-    static ResidueType* rDS;
-    static ResidueType* rDM;
-    static ResidueType* rDK;
-    static ResidueType* rDB;
-    static ResidueType* rDD;
-    static ResidueType* rDH;
-    static ResidueType* rDV;
+    static const ResidueType* rDW;
+    static const ResidueType* rDS;
+    static const ResidueType* rDM;
+    static const ResidueType* rDK;
+    static const ResidueType* rDB;
+    static const ResidueType* rDD;
+    static const ResidueType* rDH;
+    static const ResidueType* rDV;
 
-    static ResidueType* rA;
-    static ResidueType* rC;
-    static ResidueType* rG;
-    static ResidueType* rU;
-    static ResidueType* rT;
-    static ResidueType* rRA;
-    static ResidueType* rRC;
-    static ResidueType* rRG;
-    static ResidueType* rRU;
-    static ResidueType* rDA;
-    static ResidueType* rDC;
-    static ResidueType* rDG;
-    static ResidueType* rDT;
+    static const ResidueType* rA;
+    static const ResidueType* rC;
+    static const ResidueType* rG;
+    static const ResidueType* rU;
+    static const ResidueType* rT;
+    static const ResidueType* rRA;
+    static const ResidueType* rRC;
+    static const ResidueType* rRG;
+    static const ResidueType* rRU;
+    static const ResidueType* rDA;
+    static const ResidueType* rDC;
+    static const ResidueType* rDG;
+    static const ResidueType* rDT;
 
-    static ResidueType* rALA;
-    static ResidueType* rARG;
-    static ResidueType* rASN;
-    static ResidueType* rASP;
-    static ResidueType* rCYS;
-    static ResidueType* rGLN;
-    static ResidueType* rGLU;
-    static ResidueType* rGLY;
-    static ResidueType* rHIS;
-    static ResidueType* rILE;
-    static ResidueType* rLEU;
-    static ResidueType* rLYS;
-    static ResidueType* rMET;
-    static ResidueType* rPHE;
-    static ResidueType* rPRO;
-    static ResidueType* rSER;
-    static ResidueType* rTHR;
-    static ResidueType* rTRP;
-    static ResidueType* rTYR;
-    static ResidueType* rVAL;
-    static ResidueType* rASX; // (ASN | ASP)
-    static ResidueType* rGLX; // (GLN | GLU)
+    static const ResidueType* rALA;
+    static const ResidueType* rARG;
+    static const ResidueType* rASN;
+    static const ResidueType* rASP;
+    static const ResidueType* rCYS;
+    static const ResidueType* rGLN;
+    static const ResidueType* rGLU;
+    static const ResidueType* rGLY;
+    static const ResidueType* rHIS;
+    static const ResidueType* rILE;
+    static const ResidueType* rLEU;
+    static const ResidueType* rLYS;
+    static const ResidueType* rMET;
+    static const ResidueType* rPHE;
+    static const ResidueType* rPRO;
+    static const ResidueType* rSER;
+    static const ResidueType* rTHR;
+    static const ResidueType* rTRP;
+    static const ResidueType* rTYR;
+    static const ResidueType* rVAL;
+    static const ResidueType* rASX; // (ASN | ASP)
+    static const ResidueType* rGLX; // (GLN | GLU)
   };
 
   /**

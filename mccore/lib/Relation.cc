@@ -1,41 +1,53 @@
 //                              -*- Mode: C++ -*- 
 // Relation.cc
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
+// $Revision: 1.32.2.2 $
+// 
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
+#include <cmath>
 #include <iterator>
-//#include <cstdio>
+#include <limits>
 #include <string>
-#include <typeinfo>
 
 #include "Atom.h"
+#include "AtomSet.h"
 #include "AtomType.h"
 #include "Exception.h"
 #include "ExtendedResidue.h"
-#include "HBond.h"
 #include "MaximumFlowGraph.h"
 #include "PairingPattern.h"
 #include "PropertyType.h"
 #include "Relation.h"
 #include "Residue.h"
 #include "ResidueType.h"
-#include "ResidueTopology.h"
-#include "stlio.h"
 
 
 
 namespace mccore
 {
-
-
-  // STATIC MEMBERS -------------------------------------------------------
-
   
   vector< pair< Vector3D, const PropertyType* > > Relation::faces_A;
   vector< pair< Vector3D, const PropertyType* > > Relation::faces_C;
@@ -44,8 +56,6 @@ namespace mccore
   vector< pair< Vector3D, const PropertyType* > > Relation::faces_T;
 
   bool Relation::isInit = false;
-
-  // LIFECYCLE ------------------------------------------------------------
 
 
   Relation::Relation ()
@@ -67,9 +77,12 @@ namespace mccore
 
   
   Relation::Relation (const Relation &other)
-    : ref (other.ref), res (other.res),
-      tfo (other.tfo), po4_tfo (other.po4_tfo),
-      refFace (other.refFace), resFace (other.resFace), 
+    : ref (other.ref),
+      res (other.res),
+      tfo (other.tfo),
+      po4_tfo (other.po4_tfo),
+      refFace (other.refFace),
+      resFace (other.resFace), 
       labels (other.labels),
       hbonds (other.hbonds),
       sum_flow (other.sum_flow)
@@ -152,9 +165,11 @@ namespace mccore
 	po4_tfo = r5->getReferential ().invert () * pRes.getReferential ();
 	  
 	if (r5 == res)
-	  po4_tfo = tfo * po4_tfo;
+	  {
+	    po4_tfo = tfo * po4_tfo;
+	  }
       }
-      catch (NoSuchAtomException& ex)
+      catch (NoSuchAtomException &ex)
       {
 	gOut (3) << "unable to compute phosphate transfo: " << ex << endl;
 	po4_tfo.setIdentity ();
@@ -395,275 +410,297 @@ namespace mccore
     static const float PAIRING_CUTOFF = 0.8f;
     static const float TWO_BONDS_CUTOFF = 1.5f;
     static const float THREE_BONDS_CUTOFF = 2.1f;
+    typedef MaximumFlowGraph< int, HBond > HBondFlowGraph;
 
     try
-    {
-      Residue::const_iterator i, j, k, l;
-      map< Residue::const_iterator, int > atomToInt; 
-      int node;
-      MaximumFlowGraph< int, HBond > graph;
+      {
+	Residue::const_iterator i, j, k, l;
+	map< Residue::const_iterator, int > atomToInt; 
+	int node;
+	HBondFlowGraph graph;
 
-      node = 0;
-      graph.insert (node++, 0); // Source
-      graph.insert (node++, 0); // Sink
+	node = 0;
+	graph.insert (node++, 0); // Source
+	graph.insert (node++, 0); // Sink
 
-      vector< Residue::const_iterator > ref_at;
-      vector< Residue::const_iterator > refn_at;
-      vector< Residue::const_iterator > res_at;
-      vector< Residue::const_iterator > resn_at;
-      int x, y;
+	vector< Residue::const_iterator > ref_at;
+	vector< Residue::const_iterator > refn_at;
+	vector< Residue::const_iterator > res_at;
+	vector< Residue::const_iterator > resn_at;
+	int x, y;
 	
-      //     AtomSet* hl = new AtomSetOr (new AtomSetHydrogen (), new AtomSetLP ());
-      //     hl = new AtomSetAnd (hl, new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M), 
-      // 							    new AtomSetAtom (AtomType::a3H5M))));
-      //     AtomSet* da = new AtomSetNot (hl->clone ());
+	//     AtomSet* hl = new AtomSetOr (new AtomSetHydrogen (), new AtomSetLP ());
+	//     hl = new AtomSetAnd (hl, new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M), 
+	// 							    new AtomSetAtom (AtomType::a3H5M))));
+	//     AtomSet* da = new AtomSetNot (hl->clone ());
 
-      //     for (i=ref->begin (hl->clone ()); i!=ref->end (); ++i) {
-      //       for (j=ref->begin (da->clone ()); j!=ref->end (); ++j) {
-      // 	if (i->distance (*j) < 1.7) {
-      // 	  ref_at.push_back (i);
-      // 	  refn_at.push_back (j);	  
-      // 	}
-      //       }
-      //     }
-      //     for (i=res->begin (hl->clone ()); i!=res->end (); ++i) {
-      //       for (j=res->begin (da->clone ()); j!=res->end (); ++j) {
-      // 	if (i->distance (*j) < 1.7) {
-      // 	  res_at.push_back (i);
-      // 	  resn_at.push_back (j);	  
-      // 	}
-      //       }
-      //     }    
-      //     delete da;
-      //     delete hl;
+	//     for (i=ref->begin (hl->clone ()); i!=ref->end (); ++i) {
+	//       for (j=ref->begin (da->clone ()); j!=ref->end (); ++j) {
+	// 	if (i->distance (*j) < 1.7) {
+	// 	  ref_at.push_back (i);
+	// 	  refn_at.push_back (j);	  
+	// 	}
+	//       }
+	//     }
+	//     for (i=res->begin (hl->clone ()); i!=res->end (); ++i) {
+	//       for (j=res->begin (da->clone ()); j!=res->end (); ++j) {
+	// 	if (i->distance (*j) < 1.7) {
+	// 	  res_at.push_back (i);
+	// 	  resn_at.push_back (j);	  
+	// 	}
+	//       }
+	//     }    
+	//     delete da;
+	//     delete hl;
     
-      AtomSetAnd da (new AtomSetSideChain (), 
-		     new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M), 
-						    new AtomSetAtom (AtomType::a3H5M))));
-      for (i=ref->begin (da); i!=ref->end (); ++i)
-      {
-	if ((i->getType ()->isCarbon ()
-	     || i->getType ()->isNitrogen ()
-	     || i->getType ()->isOxygen ()))
-	{
-	  for (j=ref->begin (da); j!=ref->end (); ++j)
+	AtomSetAnd da (new AtomSetSideChain (), 
+		       new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M), 
+						      new AtomSetAtom (AtomType::a3H5M))));
+	for (i = ref->begin (da); i != ref->end (); ++i)
 	  {
-	    if ((j->getType ()->isHydrogen ()
-		 || j->getType ()->isLonePair ())
-		&& i->distance (*j) < 1.7)
-	    {
-	      ref_at.push_back (j);
-	      refn_at.push_back (i);	  
-	    }
+	    if ((i->getType ()->isCarbon ()
+		 || i->getType ()->isNitrogen ()
+		 || i->getType ()->isOxygen ()))
+	      {
+		for (j = ref->begin (da); j != ref->end (); ++j)
+		  {
+		    if ((j->getType ()->isHydrogen ()
+			 || j->getType ()->isLonePair ())
+			&& i->distance (*j) < 1.7)
+		      {
+			ref_at.push_back (j);
+			refn_at.push_back (i);	  
+		      }
+		  }
+	      }
 	  }
-	}
-      }
-        
-      for (i=res->begin (da); i!=res->end (); ++i)
-      {
-	if ((i->getType ()->isCarbon ()
-	     || i->getType ()->isNitrogen ()
-	     || i->getType ()->isOxygen ()))
-	{
-	  for (j=res->begin (da); j!=res->end (); ++j)
+      
+	for (i=res->begin (da); i!=res->end (); ++i)
 	  {
-	    if ((j->getType ()->isHydrogen ()
-		 || j->getType ()->isLonePair ())
-		&& i->distance (*j) < 1.7)
-	    {
-	      res_at.push_back (j);
-	      resn_at.push_back (i);	  
-	    }
+	    if ((i->getType ()->isCarbon ()
+		 || i->getType ()->isNitrogen ()
+		 || i->getType ()->isOxygen ()))
+	      {
+		for (j=res->begin (da); j!=res->end (); ++j)
+		  {
+		    if ((j->getType ()->isHydrogen ()
+			 || j->getType ()->isLonePair ())
+			&& i->distance (*j) < 1.7)
+		      {
+			res_at.push_back (j);
+			resn_at.push_back (i);	  
+		      }
+		  }
+	      }
 	  }
-	}
-      }
 	
-      for (x = 0; x < (int) ref_at.size (); ++x)
-      {
-	i = ref_at[x];
-	j = refn_at[x];
-	for (y=0; y<(int)res_at.size (); ++y)
-	{
-	  k = res_at[y];
-	  l = resn_at[y];
-		
-	  if (i->getType ()->isHydrogen ()
-	      && k->getType ()->isLonePair ())
+	for (x = 0; x < (int) ref_at.size (); ++x)
 	  {
-	    HBond h (j->getType (), i->getType (), l->getType (), k->getType ());
-		    
-	    h.evalStatistically (*ref, *res);
-	    //h.eval (*ref, *res);
-		    
-	    if (h.getValue () > 0.01)
-	    {
-	      if (atomToInt.find (i) == atomToInt.end ())
+	    i = ref_at[x];
+	    j = refn_at[x];
+	    for (y = 0; y < (int) res_at.size (); ++y)
 	      {
-		graph.insert (node, 0);
-		graph.connect (0, node, HBond (), 1, HBond (), 1);
-		atomToInt[i] = node++;
+		k = res_at[y];
+		l = resn_at[y];
+	      
+		if (i->getType ()->isHydrogen ()
+		    && k->getType ()->isLonePair ())
+		  {
+		    HBond h (j->getType (), i->getType (), l->getType (), k->getType ());
+		  
+		    h.evalStatistically (*ref, *res);
+		    //h.eval (*ref, *res);
+		  
+		    if (h.getValue () > 0.01)
+		      {
+			HBond hb;
+			    
+			if (atomToInt.find (i) == atomToInt.end ())
+			  {
+			    graph.insert (node, 0);
+			    graph.connect (0, node, hb, 0.0F);
+			    atomToInt[i] = node++;
+			  }
+			if (atomToInt.find (k) == atomToInt.end ())
+			  {
+			    graph.insert (node);
+			    graph.connect (node, 1, hb, 0.0F);
+			    atomToInt[k] = node++;
+			  }
+			graph.connect (atomToInt[i], atomToInt[k], h, 0.0F);
+		      }
+		  }
+		else if (k->getType ()->isHydrogen ()
+			 && i->getType ()->isLonePair ())
+		  {
+		    HBond h (l->getType (), k->getType (), j->getType (), i->getType ());
+		  
+		    h.evalStatistically (*res, *ref);
+		    //h.eval (*res, *ref);
+		  
+		    if (h.getValue () > 0.01)
+		      {
+			HBond hb;
+			
+			if (atomToInt.find (k) == atomToInt.end ())
+			  {
+			    graph.insert (node, 0);
+			    graph.connect (0, node, hb, 0.0F);
+			    atomToInt[k] = node++;
+			  }
+			if (atomToInt.find (i) == atomToInt.end ())
+			  {
+			    graph.insert (node, 0);
+			    graph.connect (node, 1, hb, 0.0F);
+			    atomToInt[i] = node++;
+			  }
+			graph.connect (atomToInt[k], atomToInt[i], h, 0);
+		      }
+		  }
 	      }
-	      if (atomToInt.find (k) == atomToInt.end ())
-	      {
-		graph.insert (node);
-		graph.connect (node, 1, HBond (), 1, HBond (), 1);
-		atomToInt[k] = node++;
-	      }
-	      graph.connect (atomToInt[i], atomToInt[k], h, h.getValue ());
-	    }
 	  }
-	  else if (k->getType ()->isHydrogen ()
-		   && i->getType ()->isLonePair ())
+      
+	if (graph.size () >= 3)
 	  {
-	    HBond h (l->getType (), k->getType (), j->getType (), i->getType ());
-		    
-	    h.evalStatistically (*res, *ref);
-	    //h.eval (*res, *ref);
-		    
-	    if (h.getValue () > 0.01)
-	    {
-	      if (atomToInt.find (k) == atomToInt.end ())
-	      {
-		graph.insert (node);
-		graph.connect (0, node);
-		atomToInt[k] = node++;
-	      }
-	      if (atomToInt.find (i) == atomToInt.end ())
-	      {
-		graph.insert (node);
-		graph.connect (node, 1);
-		atomToInt[i] = node++;
-	      }
-	      graph.connect (atomToInt[k], atomToInt[i], h, h.getValue ());
-	    }
-	  }
-	}
-      }
-	
-      if (graph.size () >= 3)
-      {
-	//     graph.output (cout);
-	    
-	graph.preFlowPush (0, 1);
-	    
-	//     graph.output (cout);
-	    
-	map< Residue::const_iterator, int >::iterator m, n;
-	for (m = atomToInt.begin (); m != atomToInt.end (); ++m)
-	{
-	  for (n = atomToInt.begin (); n != atomToInt.end (); ++n)
-	  {
-	    if (graph.areConnected (m->second, n->second))
-	    {
-	      float flow;
+	    map< Residue::const_iterator, int >::iterator m;
+	    map< Residue::const_iterator, int >::iterator n;
 
-	      flow = graph.getFlow (m->second, n->second);
-	      sum_flow += flow;
-	      hbonds.push_back (HBondFlow (graph.getEdge (m->second, n->second), flow));
-	    }
-	  }
-	}
-	
-	//     cout << "Sum flow = " << sum_flow << endl;
-	    
-	if (sum_flow >= PAIRING_CUTOFF)
-	{
-	  labels.insert (PropertyType::pPairing);
-		
-	  if (sum_flow < TWO_BONDS_CUTOFF)
-	    labels.insert (PropertyType::pOneHbond);
-		
-		
-	  // Compute contact points and visual contact points
-	  Vector3D pa;
-	  Vector3D pb;
-	  Vector3D pva;
-	  Vector3D pvb;
-		
-	  list< HBondFlow > hbf;
-	  for (m=atomToInt.begin (); m!=atomToInt.end (); ++m)
-	  {
-	    for (n=atomToInt.begin (); n!=atomToInt.end (); ++n)
-	    {
-	      if (graph.areConnected (m->second, n->second))
+	    if (5 <= gOut.getVerboseLevel ())
 	      {
-		HBondFlow fl;
-			    
-		fl.hbond = graph.getEdge (m->second, n->second);
-		fl.flow = graph.getFlow (m->second, n->second);
-		hbf.push_back (fl);
-			    
-		if (fl.hbond.getDonorResidue () == ref)
-		{
-		  pa = pa + (fl.hbond.getHydrogen () * fl.flow);
-		  pb = pb + (fl.hbond.getLonePair () * fl.flow);
-		  pva = pva + (fl.hbond.getHydrogen () * fl.flow);
-		  pvb = pvb + (fl.hbond.getAcceptor () * fl.flow);
-		}
-		else
-		{
-		  pa = pa + (fl.hbond.getLonePair () * fl.flow);
-		  pb = pb + (fl.hbond.getHydrogen () * fl.flow);
-		  pva = pva + (fl.hbond.getAcceptor () * fl.flow);
-		  pvb = pvb + (fl.hbond.getHydrogen () * fl.flow);
-		}
+		gOut (5) << graph;
 	      }
-	    }
+	    
+	    graph.preFlowPush (0, 1);
+	    
+	    if (5 <= gOut.getVerboseLevel ())
+	      {
+		gOut (5) << graph;
+	      }
+	    
+	    for (m = atomToInt.begin (); m != atomToInt.end (); ++m)
+	      {
+		for (n = atomToInt.begin (); n != atomToInt.end (); ++n)
+		  {
+		    if (graph.areConnected (m->second, n->second))
+		      {
+			float flow;
+
+			flow = graph.getEdgeWeight (m->second, n->second);
+			sum_flow += flow;
+			hbonds.push_back (HBondFlow (graph.getEdge (m->second, n->second), flow));
+		      }
+		  }
+	      }
+	
+	    gOut (5) << "Sum flow = " << sum_flow << endl;
+	    
+	    if (sum_flow >= PAIRING_CUTOFF)
+	      {
+		Vector3D pa;
+		Vector3D pb;
+		Vector3D pva;
+		Vector3D pvb;
+		list< HBondFlow > hbf;
+	  
+		labels.insert (PropertyType::pPairing);
+		
+		if (sum_flow < TWO_BONDS_CUTOFF)
+		  {
+		    labels.insert (PropertyType::pOneHbond);
+		  }
+		
+		
+		// Compute contact points and visual contact points
+		for (m = atomToInt.begin (); m != atomToInt.end (); ++m)
+		  {
+		    for (n = atomToInt.begin (); n != atomToInt.end (); ++n)
+		      {
+			if (graph.areConnected (m->second, n->second))
+			  {
+			    HBondFlow fl;
+			    
+			    fl.hbond = graph.getEdge (m->second, n->second);
+			    fl.flow = graph.getEdgeWeight (m->second, n->second);
+			    hbf.push_back (fl);
+		      
+			    if (fl.hbond.getDonorResidue () == ref)
+			      {
+				pa = pa + (fl.hbond.getHydrogen () * fl.flow);
+				pb = pb + (fl.hbond.getLonePair () * fl.flow);
+				pva = pva + (fl.hbond.getHydrogen () * fl.flow);
+				pvb = pvb + (fl.hbond.getAcceptor () * fl.flow);
+			      }
+			    else
+			      {
+				pa = pa + (fl.hbond.getLonePair () * fl.flow);
+				pb = pb + (fl.hbond.getHydrogen () * fl.flow);
+				pva = pva + (fl.hbond.getAcceptor () * fl.flow);
+				pvb = pvb + (fl.hbond.getHydrogen () * fl.flow);
+			      }
+			  }
+		      }
+		  }
+	      
+		pa = pa / sum_flow;
+		pb = pb / sum_flow;
+		pva = pva / sum_flow;
+		pvb = pvb / sum_flow;
+	      
+		Vector3D pc, pd;
+		pc = *ref->safeFind (AtomType::aC1p); 
+		pc = pc - *ref->safeFind (AtomType::aPSY);
+		pc = pc + pa;
+		pd = *res->safeFind (AtomType::aC1p); 
+		pd = pd - *res->safeFind (AtomType::aPSY);
+		pd = pd + pb;
+	      
+		float rad = fabs (pa.torsionAngle (pc, pb, pd));
+		const PropertyType *iso = (rad < M_PI / 2
+					   ? PropertyType::pCis
+					   : PropertyType::pTrans);
+	      
+		labels.insert (iso);
+	      
+		refFace = getFace (ref, pa);
+		resFace = getFace (res, pb);
+	      
+		int size_hint;
+		if (sum_flow >= PAIRING_CUTOFF && sum_flow < TWO_BONDS_CUTOFF)
+		  {
+		    size_hint = 1;
+		  }
+		else if (sum_flow < THREE_BONDS_CUTOFF)
+		  {
+		    size_hint = 2;
+		  }
+		else
+		  {
+		    size_hint = 3;
+		  }
+		
+		hbf.sort ();
+	      
+		while ((int)hbf.size () != size_hint)
+		  {
+		    hbf.pop_front ();
+		  }
+		
+		const PropertyType *pp = translatePairing (ref, res, hbf, sum_flow, size_hint);
+		if (pp)
+		  {
+		    labels.insert (pp);
+		  }
+	      }
 	  }
-		
-	  pa = pa / sum_flow;
-	  pb = pb / sum_flow;
-	  pva = pva / sum_flow;
-	  pvb = pvb / sum_flow;
-		
-	  Vector3D pc, pd;
-	  pc = *ref->safeFind (AtomType::aC1p); 
-	  pc = pc - *ref->safeFind (AtomType::aPSY);
-	  pc = pc + pa;
-	  pd = *res->safeFind (AtomType::aC1p); 
-	  pd = pd - *res->safeFind (AtomType::aPSY);
-	  pd = pd + pb;
-		
-	  float rad = fabs (pa.torsionAngle (pc, pb, pd));
-	  const PropertyType *iso = (rad < M_PI / 2
-				     ? PropertyType::pCis
-				     : PropertyType::pTrans);
-		
-	  labels.insert (iso);
-		
-	  refFace = getFace (ref, pa);
-	  resFace= getFace (res, pb);
-		
-	  int size_hint;
-	  if (sum_flow >= PAIRING_CUTOFF && sum_flow < TWO_BONDS_CUTOFF)
+	else
 	  {
-	    size_hint = 1;
+	    hbonds.clear ();
 	  }
-	  else if (sum_flow < THREE_BONDS_CUTOFF)
-	  {
-	    size_hint = 2;
-	  }
-	  else
-	  {
-	    size_hint = 3;
-	  }
-		
-	  hbf.sort ();
-		
-	  while ((int)hbf.size () != size_hint) hbf.pop_front ();
-		
-	  const PropertyType *pp = translatePairing (ref, res, hbf, sum_flow, size_hint);
-	  if (pp)
-	    labels.insert (pp);
-	}
       }
-      else
-	hbonds.clear ();
-    }
     catch (NoSuchAtomException& ex)
-    {
-      gOut (3) << "An error occured during pairing annotation: " << ex << endl;
-    }
+      {
+	gOut (3) << "An error occured during pairing annotation: " << ex << endl;
+      }
   }
     
   
@@ -677,173 +714,173 @@ namespace mccore
     
     //    if (ref->getType ()->isNucleicAcid () || res->getType ()->isNucleicAcid ())
     try
-    {
-      Vector3D pyrCenterA;
-      Vector3D pyrCenterB;
-      Vector3D imidCenterA;
-      Vector3D imidCenterB;
-      Vector3D normalA, normalB;
-      Vector3D centerV;
-      float distance, theta1, theta2, tau1, tau2, tau3, tau4;
-      float normal, overlap;
+      {
+	Vector3D pyrCenterA;
+	Vector3D pyrCenterB;
+	Vector3D imidCenterA;
+	Vector3D imidCenterB;
+	Vector3D normalA, normalB;
+	Vector3D centerV;
+	float distance, theta1, theta2, tau1, tau2, tau3, tau4;
+	float normal, overlap;
 
-      // Stacking Pyr-Pyr 
-      pyrCenterA = ((*(ref->safeFind (AtomType::aN1))
-		     + *(ref->safeFind (AtomType::aC2))
-		     + *(ref->safeFind (AtomType::aN3))
-		     + *(ref->safeFind (AtomType::aC4))
-		     + *(ref->safeFind (AtomType::aC5))
-		     + *(ref->safeFind (AtomType::aC6))) / 6);
-      pyrCenterB = ((*(res->safeFind (AtomType::aN1))
-		     + *(res->safeFind (AtomType::aC2))
-		     + *(res->safeFind (AtomType::aN3))
-		     + *(res->safeFind (AtomType::aC4))
-		     + *(res->safeFind (AtomType::aC5))
-		     + *(res->safeFind (AtomType::aC6))) / 6);
+	// Stacking Pyr-Pyr 
+	pyrCenterA = ((*(ref->safeFind (AtomType::aN1))
+		       + *(ref->safeFind (AtomType::aC2))
+		       + *(ref->safeFind (AtomType::aN3))
+		       + *(ref->safeFind (AtomType::aC4))
+		       + *(ref->safeFind (AtomType::aC5))
+		       + *(ref->safeFind (AtomType::aC6))) / 6);
+	pyrCenterB = ((*(res->safeFind (AtomType::aN1))
+		       + *(res->safeFind (AtomType::aC2))
+		       + *(res->safeFind (AtomType::aN3))
+		       + *(res->safeFind (AtomType::aC4))
+		       + *(res->safeFind (AtomType::aC5))
+		       + *(res->safeFind (AtomType::aC6))) / 6);
 	
-      distance = pyrCenterA.distance (pyrCenterB);
-      centerV = pyrCenterB - pyrCenterA;
-      centerV = centerV.normalize ();
-      normalA = pyrimidineNormal (ref);
-      normalB = pyrimidineNormal (res);
-      theta1 = (float) acos (normalA.dot (normalB));   // this is symmetric
-      theta2 = (float) acos (-normalA.dot (normalB));
-      tau1 = (float) acos (normalA.dot (centerV));  // this ain't
-      tau2 = (float) acos (-normalA.dot (centerV));
-      tau3 = (float) acos (normalB.dot (centerV));
-      tau4 = (float) acos (-normalB.dot (centerV));
-	
-      normal = min (theta1, theta2);
-      overlap = min (min (tau1, tau2), min (tau3, tau4));
-	
-      // Check if the stack is reverse here since we need only pyr-pyr rings...
-      float rev_angle = Vector3D (0, 0, 0).angle (normalA, normalB);
-      bool reverse = false;
-	
-      if (ref->getType ()->isPurine () && res->getType ()->isPurine ()
-	  || ref->getType ()->isPyrimidine () && res->getType ()->isPyrimidine ())
-      {
-	if (rev_angle > M_PI / 2)
-	  reverse = true;
-      }
-      else if (rev_angle < M_PI / 2) 
-      {
-	reverse = true;
-      }
-	
-      if (distance <= STACK_DISTANCE_CUTOFF
-	  && normal <= STACK_NORMAL_CUTOFF
-	  && overlap <=  STACK_OVERLAP_CUTOFF)
-      {
-	labels.insert (PropertyType::pStack);
-	if (reverse)
-	  labels.insert (PropertyType::pReverse);
-	return;
-      }
-	
-      // Stacking imid-Pyr
-      if (ref->getType ()->isPurine ())
-      {
-	imidCenterA = ((*(ref->safeFind (AtomType::aC4))
-			+ *(ref->safeFind (AtomType::aC5))
-			+ *(ref->safeFind (AtomType::aN7))
-			+ *(ref->safeFind (AtomType::aC8))
-			+ *(ref->safeFind (AtomType::aN9))) / 5);
-	    
-	distance = imidCenterA.distance (pyrCenterB);
-	centerV = pyrCenterB - imidCenterA;
-	centerV = centerV.normalize ();
-	normalA = imidazolNormal (ref);
-	normalB = pyrimidineNormal (res);
-	theta1 = (float) acos (normalA.dot (normalB)); // this is symmetric
-	theta2 = (float) acos (-normalA.dot (normalB));
-	tau1 = (float) acos (normalA.dot (centerV));  // this ain't
-	tau2 = (float) acos (-normalA.dot (centerV));
-	tau3 = (float) acos (normalB.dot (centerV));
-	tau4 = (float) acos (-normalB.dot (centerV));
-	    
-	normal = min (theta1, theta2);
-	overlap = min (min (tau1, tau2), min (tau3, tau4));
-	    
-	if (distance <= STACK_DISTANCE_CUTOFF
-	    && normal <= STACK_NORMAL_CUTOFF
-	    && overlap <=  STACK_OVERLAP_CUTOFF)
-	{
-	  labels.insert (PropertyType::pStack);
-	  if (reverse)
-	    labels.insert (PropertyType::pReverse);
-	  return;
-	}
-      }
-	
-      // Stacking Pyr-Imid
-      if (res->getType ()->isPurine ())
-      {
-	imidCenterB = ((*(res->safeFind (AtomType::aC4))
-			+ *(res->safeFind (AtomType::aC5))
-			+ *(res->safeFind (AtomType::aN7))
-			+ *(res->safeFind (AtomType::aC8))
-			+ *(res->safeFind (AtomType::aN9))) / 5);
-	    
-	distance = pyrCenterA.distance (imidCenterB);
-	centerV = imidCenterB - pyrCenterA;
+	distance = pyrCenterA.distance (pyrCenterB);
+	centerV = pyrCenterB - pyrCenterA;
 	centerV = centerV.normalize ();
 	normalA = pyrimidineNormal (ref);
-	normalB = imidazolNormal (res);
-	theta1 = (float) acos (normalA.dot (normalB));  // this is symmetric
+	normalB = pyrimidineNormal (res);
+	theta1 = (float) acos (normalA.dot (normalB));   // this is symmetric
 	theta2 = (float) acos (-normalA.dot (normalB));
 	tau1 = (float) acos (normalA.dot (centerV));  // this ain't
 	tau2 = (float) acos (-normalA.dot (centerV));
 	tau3 = (float) acos (normalB.dot (centerV));
 	tau4 = (float) acos (-normalB.dot (centerV));
-	    
-	normal = min (theta1, theta2);
-	overlap = min (min (tau1, tau2), min (tau3, tau4));
-	    
-	if (distance <= STACK_DISTANCE_CUTOFF
-	    && normal <= STACK_NORMAL_CUTOFF
-	    && overlap <=  STACK_OVERLAP_CUTOFF)
-	{
-	  labels.insert (PropertyType::pStack);
-	  if (reverse)
-	    labels.insert (PropertyType::pReverse);
-	  return;
-	}
-      }
 	
-      // Stacking Imid-Imid
-      if (ref->getType ()->isPurine () && res->getType ()->isPurine ())
-      {
-	distance = imidCenterA.distance (imidCenterB);
-	centerV = imidCenterB - imidCenterA;
-	centerV = centerV.normalize ();
-	normalA = imidazolNormal (ref);
-	normalB = imidazolNormal (res);
-	theta1 = (float) acos (normalA.dot (normalB)); // this is symmetric
-	theta2 = (float) acos (-normalA.dot (normalB));
-	tau1 = (float) acos (normalA.dot (centerV));  // this ain't
-	tau2 = (float) acos (-normalA.dot (centerV));
-	tau3 = (float) acos (normalB.dot (centerV));
-	tau4 = (float) acos (-normalB.dot (centerV));
-	    
 	normal = min (theta1, theta2);
 	overlap = min (min (tau1, tau2), min (tau3, tau4));
-	    
+	
+	// Check if the stack is reverse here since we need only pyr-pyr rings...
+	float rev_angle = Vector3D (0, 0, 0).angle (normalA, normalB);
+	bool reverse = false;
+	
+	if (ref->getType ()->isPurine () && res->getType ()->isPurine ()
+	    || ref->getType ()->isPyrimidine () && res->getType ()->isPyrimidine ())
+	  {
+	    if (rev_angle > M_PI / 2)
+	      reverse = true;
+	  }
+	else if (rev_angle < M_PI / 2) 
+	  {
+	    reverse = true;
+	  }
+	
 	if (distance <= STACK_DISTANCE_CUTOFF
 	    && normal <= STACK_NORMAL_CUTOFF
 	    && overlap <=  STACK_OVERLAP_CUTOFF)
-	{
-	  labels.insert (PropertyType::pStack);
-	  if (reverse)
-	    labels.insert (PropertyType::pReverse);
-	  return;
-	}
+	  {
+	    labels.insert (PropertyType::pStack);
+	    if (reverse)
+	      labels.insert (PropertyType::pReverse);
+	    return;
+	  }
+	
+	// Stacking imid-Pyr
+	if (ref->getType ()->isPurine ())
+	  {
+	    imidCenterA = ((*(ref->safeFind (AtomType::aC4))
+			    + *(ref->safeFind (AtomType::aC5))
+			    + *(ref->safeFind (AtomType::aN7))
+			    + *(ref->safeFind (AtomType::aC8))
+			    + *(ref->safeFind (AtomType::aN9))) / 5);
+	    
+	    distance = imidCenterA.distance (pyrCenterB);
+	    centerV = pyrCenterB - imidCenterA;
+	    centerV = centerV.normalize ();
+	    normalA = imidazolNormal (ref);
+	    normalB = pyrimidineNormal (res);
+	    theta1 = (float) acos (normalA.dot (normalB)); // this is symmetric
+	    theta2 = (float) acos (-normalA.dot (normalB));
+	    tau1 = (float) acos (normalA.dot (centerV));  // this ain't
+	    tau2 = (float) acos (-normalA.dot (centerV));
+	    tau3 = (float) acos (normalB.dot (centerV));
+	    tau4 = (float) acos (-normalB.dot (centerV));
+	    
+	    normal = min (theta1, theta2);
+	    overlap = min (min (tau1, tau2), min (tau3, tau4));
+	    
+	    if (distance <= STACK_DISTANCE_CUTOFF
+		&& normal <= STACK_NORMAL_CUTOFF
+		&& overlap <=  STACK_OVERLAP_CUTOFF)
+	      {
+		labels.insert (PropertyType::pStack);
+		if (reverse)
+		  labels.insert (PropertyType::pReverse);
+		return;
+	      }
+	  }
+	
+	// Stacking Pyr-Imid
+	if (res->getType ()->isPurine ())
+	  {
+	    imidCenterB = ((*(res->safeFind (AtomType::aC4))
+			    + *(res->safeFind (AtomType::aC5))
+			    + *(res->safeFind (AtomType::aN7))
+			    + *(res->safeFind (AtomType::aC8))
+			    + *(res->safeFind (AtomType::aN9))) / 5);
+	    
+	    distance = pyrCenterA.distance (imidCenterB);
+	    centerV = imidCenterB - pyrCenterA;
+	    centerV = centerV.normalize ();
+	    normalA = pyrimidineNormal (ref);
+	    normalB = imidazolNormal (res);
+	    theta1 = (float) acos (normalA.dot (normalB));  // this is symmetric
+	    theta2 = (float) acos (-normalA.dot (normalB));
+	    tau1 = (float) acos (normalA.dot (centerV));  // this ain't
+	    tau2 = (float) acos (-normalA.dot (centerV));
+	    tau3 = (float) acos (normalB.dot (centerV));
+	    tau4 = (float) acos (-normalB.dot (centerV));
+	    
+	    normal = min (theta1, theta2);
+	    overlap = min (min (tau1, tau2), min (tau3, tau4));
+	    
+	    if (distance <= STACK_DISTANCE_CUTOFF
+		&& normal <= STACK_NORMAL_CUTOFF
+		&& overlap <=  STACK_OVERLAP_CUTOFF)
+	      {
+		labels.insert (PropertyType::pStack);
+		if (reverse)
+		  labels.insert (PropertyType::pReverse);
+		return;
+	      }
+	  }
+	
+	// Stacking Imid-Imid
+	if (ref->getType ()->isPurine () && res->getType ()->isPurine ())
+	  {
+	    distance = imidCenterA.distance (imidCenterB);
+	    centerV = imidCenterB - imidCenterA;
+	    centerV = centerV.normalize ();
+	    normalA = imidazolNormal (ref);
+	    normalB = imidazolNormal (res);
+	    theta1 = (float) acos (normalA.dot (normalB)); // this is symmetric
+	    theta2 = (float) acos (-normalA.dot (normalB));
+	    tau1 = (float) acos (normalA.dot (centerV));  // this ain't
+	    tau2 = (float) acos (-normalA.dot (centerV));
+	    tau3 = (float) acos (normalB.dot (centerV));
+	    tau4 = (float) acos (-normalB.dot (centerV));
+	    
+	    normal = min (theta1, theta2);
+	    overlap = min (min (tau1, tau2), min (tau3, tau4));
+	    
+	    if (distance <= STACK_DISTANCE_CUTOFF
+		&& normal <= STACK_NORMAL_CUTOFF
+		&& overlap <=  STACK_OVERLAP_CUTOFF)
+	      {
+		labels.insert (PropertyType::pStack);
+		if (reverse)
+		  labels.insert (PropertyType::pReverse);
+		return;
+	      }
+	  }
       }
-    }
     catch (NoSuchAtomException& ex)
-    {
-      gOut (3) << "An error occured during stacking annotation: " << ex << endl;
-    }
+      {
+	gOut (3) << "An error occured during stacking annotation: " << ex << endl;
+      }
     
   }
 
@@ -1010,7 +1047,7 @@ namespace mccore
     else if (r->getType ()->isT ()) faces = &faces_T;
 
     int face_index = 0;
-    float dist = MAXFLOAT;
+    float dist = numeric_limits< float >::max ();
     for (unsigned int x=0; x<faces->size (); ++x) {
       float tmp = pp.distance ((*faces)[x].first);
       if (tmp < dist) {
@@ -1194,19 +1231,21 @@ namespace mccore
 	}
       }
     }
-
     return best_type;
   }
+}
 
 
-  // NON-MEMBER FUNCTIONS ------------------------------------------------------
-
-  ostream& operator<< (ostream &os, const Relation &r)
+namespace std
+{
+  
+  ostream& operator<< (ostream &os, const mccore::Relation &r)
   {
     return r.write (os);
   }
 
-  ostream& operator<< (ostream &os, const Relation *r)
+  
+  ostream& operator<< (ostream &os, const mccore::Relation *r)
   {
     return r->write (os);
   }

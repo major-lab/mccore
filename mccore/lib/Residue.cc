@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.56 $
-// $Id: Residue.cc,v 1.56 2004-12-09 19:53:20 thibaup Exp $
+// $Revision: 1.56.2.1 $
+// $Id: Residue.cc,v 1.56.2.1 2004-12-16 17:09:22 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -26,8 +26,6 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
-
-#include <typeinfo>
 
 #include <algorithm>
 #include <cmath>
@@ -1784,7 +1782,7 @@ namespace mccore {
     if (erho1 < -1.2 || erho1 > 1.2)
     {
       this->rib_built_valid = false;
-      return MAXFLOAT;
+      return numeric_limits< float >::max ();
     }
     if (erho1 < -1)
       erho1 = -1;

@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu May 10 14:49:18 2001
-// $Revision: 1.1.2.2 $
+// $Revision: 1.1.2.3 $
 // 
 // This file is part of mccore.
 // 
@@ -43,7 +43,7 @@ namespace mccore
    * Directed graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: OrientedGraph.h,v 1.1.2.2 2004-12-14 02:51:46 larosem Exp $
+   * @version $Id: OrientedGraph.h,v 1.1.2.3 2004-12-16 17:08:44 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -110,9 +110,9 @@ namespace mccore
     // ACCESS ---------------------------------------------------------------
 
     /**
-     * Returns the in-neighbors of the given vertex sorted over their label. An
-     * empty list is returned if the vertex has no neighbors or if the graph
-     * does not contain the vertex.
+     * Returns the in-neighbors of the given vertex. An empty list is
+     * returned if the vertex has no neighbors or if the graph does not
+     * contain the vertex.
      * @param v a vertex in the graph.
      * @return the list of in-neighbors.
      */
@@ -123,8 +123,6 @@ namespace mccore
 
       if (v2vlabel.end () != (it = v2vlabel.find (&v)))
 	{
-	  set< label > nLabels;
-	  typename set< label >::iterator sit;
 	  typename EV2ELabel::const_iterator evit;
 	  label l;
 
@@ -133,21 +131,17 @@ namespace mccore
 	    {
 	      if (evit->first.getTailLabel () == l)
 		{
-		  nLabels.insert (evit->first.getHeadLabel ());
+		  res.push_back (vertices[evit->first.getHeadLabel ()]);
 		}
-	    }
-	  for (sit = nLabels.begin (); nLabels.end () != sit; ++sit)
-	    {
-	      res.push_back (vertices[*sit]);
 	    }
 	}
       return res;
     }	  
 
     /**
-     * Returns the out-neighbors of the given vertex sorted over their label. An
-     * empty list is returned if the vertex has no neighbors or if the graph
-     * does not contain the vertex.
+     * Returns the out-neighbors of the given vertex. An empty list is
+     * returned if the vertex has no neighbors or if the graph does not
+     * contain the vertex.
      * @param v a vertex in the graph.
      * @return the list of out-neighbors.
      */
@@ -158,31 +152,25 @@ namespace mccore
 
       if (v2vlabel.end () != (it = v2vlabel.find (&v)))
 	{
-	  set< label > nLabels;
-	  typename set< label >::iterator sit;
 	  typename EV2ELabel::const_iterator evit;
 	  label l;
 
 	  l = it->second;
-	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
+	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit && evit->first.getHeadLabel () <= l; ++evit)
 	    {
 	      if (evit->first.getHeadLabel () == l)
 		{
-		  nLabels.insert (evit->first.getTailLabel ());
+		  res.push_back (vertices[evit->first.getTailLabel ()]);
 		}
-	    }
-	  for (sit = nLabels.begin (); nLabels.end () != sit; ++sit)
-	    {
-	      res.push_back (vertices[*sit]);
 	    }
 	}
       return res;
     }	  
 
     /**
-     * Returns a increasing label list of the in-neighbors of the given
-     * vertex label.  An empty list is returned if the label has no
-     * in-neighbor or if it is not contained in the graph.
+     * Returns a label list of the in-neighbors of the given vertex label.
+     * An empty list is returned if the label has no in-neighbor or if it is
+     * not contained in the graph.
      * @param l the vertex label.
      * @return the list of in-neighbors.
      */
@@ -190,27 +178,25 @@ namespace mccore
     {
       list< label > res;
 
-      if (vertices.size () > v)
+      if (vertices.size () > l)
 	{
-	  set< label > nLabels;
 	  typename EV2ELabel::const_iterator evit;
 
 	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
 	    {
 	      if (evit->first.getTailLabel () == l)
 		{
-		  nLabels.insert (evit->first.getHeadLabel ());
+		  res.push_back (evit->first.getHeadLabel ());
 		}
 	    }
-	  res.insert (res.end (), nLabels.begin (), nLabels.end ());
 	}
       return res;
     }	  
     
     /**
-     * Returns a increasing label list of the neighbors of the given vertex
-     * label.  An empty list is returned if the label has no neighbor or if
-     * it is not contained in the graph.
+     * Returns a label list of the neighbors of the given vertex label.  An
+     * empty list is returned if the label has no neighbor or if it is not
+     * contained in the graph.
      * @param l the vertex label.
      * @return the list of out-neighbors.
      */
@@ -218,19 +204,17 @@ namespace mccore
     {
       list< label > res;
 
-      if (vertices.size () > v)
+      if (vertices.size () > l)
 	{
-	  set< label > nLabels;
 	  typename EV2ELabel::const_iterator evit;
 
-	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
+	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit && evit->first.getHeadLabel () <= l; ++evit)
 	    {
 	      if (evit->first.getHeadLabel () == l)
 		{
-		  nLabels.insert (evit->first.getTailLabel ());
+		  res.push_back (evit->first.getTailLabel ());
 		}
 	    }
-	  res.insert (res.end (), nLabels.begin (), nLabels.end ());
 	}
       return res;
     }	  
@@ -276,15 +260,16 @@ namespace mccore
 
       if (! neighbors.empty ())
 	{
-	  list< label > lit;
+	  typename list< label >::iterator lit;
 	  typename EV2ELabel::iterator evit;
 	  EV2ELabel newEV2;
+	  iterator res;
 
 	  for (lit = neighbors.begin (); neighbors.end () != lit; ++lit)
 	    {
 	      uncheckedInternalDisconnect (l, *lit);
 	    }
-	  vertices.erase (vertices.begin () + l);
+	  res = vertices.erase (vertices.begin () + l);
 	  vertexWeights.erase (vertexWeights.begin () + l);
 	  rebuildV2VLabel ();
 	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
@@ -307,9 +292,9 @@ namespace mccore
 	      newEV2.insert (make_pair (ev, evit->second));
 	    }
 	  ev2elabel = newEV2;
-	  return true;
+	  return res;
 	}
-      return false;
+      return end ();
     }
 
     /**

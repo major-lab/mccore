@@ -1,30 +1,30 @@
 //                              -*- Mode: C++ -*- 
 // ResidueTopology.h
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 21 15:30:27 2003
-// $Revision: 1.2 $
+// $Revision: 1.2.6.1 $
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-
-#ifndef _ResidueTopology_h_
-#define _ResidueTopology_h_
+#ifndef _mccore_ResidueTopology_h_
+#define _mccore_ResidueTopology_h_
 
 #include <iostream>
 #include <set>
@@ -32,20 +32,24 @@
 #include "AtomType.h"
 #include "UndirectedGraph.h"
 
-namespace mccore {
 
+
+namespace mccore
+{
   class ResidueType;
 
+
+  
   /**
    * The topology of known residues including obligatory and optionnal atoms.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueTopology.h,v 1.2 2003-04-11 01:35:51 gendrop Exp $
+   * @version $Id: ResidueTopology.h,v 1.2.6.1 2004-12-16 17:09:43 larosem Exp $
    */
   class ResidueTopology
   {
 
-    static map< const ResidueType*, UndirectedGraph< const AtomType* > > topologies;
+    static map< const ResidueType*, UndirectedGraph< const AtomType*, bool > > topologies;
     
   public:
 
@@ -65,16 +69,9 @@ namespace mccore {
     /**
      * Destroys the object.
      */
-    ~ResidueTopology () { cout << "AHAH" << endl; }
+    ~ResidueTopology () { }
 
     // OPERATORS ------------------------------------------------------------
-
-    /**
-     * Assigns the object with the other's content.
-     * @param other the object to copy.
-     * @return itself.
-     */
-    ResidueTopology& operator= (const ResidueTopology &other);
 
     // ACCESS ---------------------------------------------------------------
 
@@ -83,21 +80,20 @@ namespace mccore {
      * @param type the ResidueType.
      * @return the topology or null if the type is non-standard.
      */
-    static const UndirectedGraph< const AtomType* >* get (const ResidueType* type);
-
-    // METHODS --------------------------------------------------------------
+    static const UndirectedGraph< const AtomType*, bool >* get (const ResidueType* type);
 
     /**
      * Returns obligatory atom sets for the given type. 
      */
     static set< const AtomType* > getOblSet (const ResidueType* type);
   
-
-    // PRIVATE METHODS ------------------------------------------------------
+    // METHODS --------------------------------------------------------------
 
   private:
 
     static bool init (const ResidueType* type);
+
+    // I/O  -----------------------------------------------------------------
 
   };
 

@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.12 $
+// $Revision: 1.12.2.1 $
 // 
 // This file is part of mccore.
 // 
@@ -46,7 +46,7 @@ namespace mccore
    * General property types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: PropertyType.h,v 1.12 2004-12-06 21:38:25 thibaup Exp $
+   * @version $Id: PropertyType.h,v 1.12.2.1 2004-12-16 17:09:08 larosem Exp $
    */
   class PropertyType
   {
@@ -367,917 +367,917 @@ namespace mccore
     /**
      * Global null type.
      */
-    static PropertyType* pNull;
+    static const PropertyType* pNull;
 
     /**
      * Global unknown type.
      */
-    static PropertyType* pUnknown;
+    static const PropertyType* pUnknown;
     
     /**
      * Global theo type.
      */
-    static PropertyType* pTheo;
+    static const PropertyType* pTheo;
     
     /**
      * Global pairing type.
      */
-    static PropertyType* pPairing;
+    static const PropertyType* pPairing;
     
     /**
      * Global pairing type.
      */
-    static PropertyType* pStack;
+    static const PropertyType* pStack;
 
     /**
      * Global reverse type.
      */
-    static PropertyType* pStraigth;
+    static const PropertyType* pStraigth;
 
     /**
      * Global reverse type.
      */
-    static PropertyType* pReverse;
+    static const PropertyType* pReverse;
 
     /**
      * Global reverse type.
      */
-    static PropertyType* pUpward;
+    static const PropertyType* pUpward;
 
     /**
      * Global reverse type.
      */
-    static PropertyType* pDownward;
+    static const PropertyType* pDownward;
     
     /**
      * Global cis type.
      */
-    static PropertyType* pCis;
+    static const PropertyType* pCis;
     
     /**
      * Global trans type.
      */
-    static PropertyType* pTrans;
+    static const PropertyType* pTrans;
     
     /**
      * Global adjacent type.
      */
-    static PropertyType* pAdjacent;
+    static const PropertyType* pAdjacent;
     
     /**
      * Global type_A type.
      */
-    static PropertyType* pType_A;
+    static const PropertyType* pType_A;
     
     /**
      * Global type_B type.
      */
-    static PropertyType* pType_B;
+    static const PropertyType* pType_B;
     
     /**
      * Global helix type.
      */
-    static PropertyType* pHelix;
+    static const PropertyType* pHelix;
     
     /**
      * Global C1p_endo type.
      */
-    static PropertyType* pC1p_endo;
+    static const PropertyType* pC1p_endo;
     
     /**
      * Global C1p_exo type.
      */
-    static PropertyType* pC1p_exo;
+    static const PropertyType* pC1p_exo;
     
     /**
      * Global C2p_endo type.
      */
-    static PropertyType* pC2p_endo;
+    static const PropertyType* pC2p_endo;
     
     /**
      * Global C2p_exo type.
      */
-    static PropertyType* pC2p_exo;
+    static const PropertyType* pC2p_exo;
     
     /**
      * Global C3p_endo type.
      */
-    static PropertyType* pC3p_endo;
+    static const PropertyType* pC3p_endo;
     
     /**
      * Global C3p_exo type.
      */
-    static PropertyType* pC3p_exo;
+    static const PropertyType* pC3p_exo;
     
     /**
      * Global C4p_endo type.
      */
-    static PropertyType* pC4p_endo;
+    static const PropertyType* pC4p_endo;
     
     /**
      * Global C4p_exo type.
      */
-    static PropertyType* pC4p_exo;
+    static const PropertyType* pC4p_exo;
     
     /**
      * Global O4p_endo type.
      */
-    static PropertyType* pO4p_endo;
+    static const PropertyType* pO4p_endo;
     
     /**
      * Global O4p_exo type.
      */
-    static PropertyType* pO4p_exo;
+    static const PropertyType* pO4p_exo;
     
     /**
      * Global anti type.
      */
-    static PropertyType* pAnti;
+    static const PropertyType* pAnti;
     
     /**
      * Global syn type.
      */
-    static PropertyType* pSyn;
+    static const PropertyType* pSyn;
     
     /**
      * Global DIR_5p type.
      */
-    static PropertyType* pDIR_5p;
+    static const PropertyType* pDIR_5p;
     
     /**
      * Global DIR_3p type.
      */
-    static PropertyType* pDIR_3p;
+    static const PropertyType* pDIR_3p;
     
     /**
      * Global DIR_ANY type.
      */
-    static PropertyType* pDIR_ANY;
+    static const PropertyType* pDIR_ANY;
     
     /**
      * Global saenger type.
      */
-    static PropertyType* pSaenger;
+    static const PropertyType* pSaenger;
     
     /**
      * Global wc type.
      */
-    static PropertyType* pWC;
+    static const PropertyType* pWC;
     
     /**
      * Global wobble type.
      */
-    static PropertyType* pWobble;
+    static const PropertyType* pWobble;
     
     /**
      * Global I type.
      */
-    static PropertyType* pI;
+    static const PropertyType* pI;
     
     /**
      * Global II type.
      */
-    static PropertyType* pII;
+    static const PropertyType* pII;
     
     /**
      * Global III type.
      */
-    static PropertyType* pIII;
+    static const PropertyType* pIII;
     
     /**
      * Global IV type.
      */
-    static PropertyType* pIV;
+    static const PropertyType* pIV;
     
     /**
      * Global V type.
      */
-    static PropertyType* pV;
+    static const PropertyType* pV;
     
     /**
      * Global VI type.
      */
-    static PropertyType* pVI;
+    static const PropertyType* pVI;
     
     /**
      * Global VII type.
      */
-    static PropertyType* pVII;
+    static const PropertyType* pVII;
     
     /**
      * Global VIII type.
      */
-    static PropertyType* pVIII;
+    static const PropertyType* pVIII;
     
     /**
      * Global IX type.
      */
-    static PropertyType* pIX;
+    static const PropertyType* pIX;
     
     /**
      * Global X type.
      */
-    static PropertyType* pX;
+    static const PropertyType* pX;
     
     /**
      * Global XI type.
      */
-    static PropertyType* pXI;
+    static const PropertyType* pXI;
     
     /**
      * Global XII type.
      */
-    static PropertyType* pXII;
+    static const PropertyType* pXII;
     
     /**
      * Global XIII type.
      */
-    static PropertyType* pXIII;
+    static const PropertyType* pXIII;
     
     /**
      * Global XIV type.
      */
-    static PropertyType* pXIV;
+    static const PropertyType* pXIV;
     
     /**
      * Global XV type.
      */
-    static PropertyType* pXV;
+    static const PropertyType* pXV;
     
     /**
      * Global XVI type.
      */
-    static PropertyType* pXVI;
+    static const PropertyType* pXVI;
     
     /**
      * Global XVII type.
      */
-    static PropertyType* pXVII;
+    static const PropertyType* pXVII;
     
     /**
      * Global XVIII type.
      */
-    static PropertyType* pXVIII;
+    static const PropertyType* pXVIII;
     
     /**
      * Global XIX type.
      */
-    static PropertyType* pXIX;
+    static const PropertyType* pXIX;
     
     /**
      * Global XX type.
      */
-    static PropertyType* pXX;
+    static const PropertyType* pXX;
     
     /**
      * Global XXI type.
      */
-    static PropertyType* pXXI;
+    static const PropertyType* pXXI;
     
     /**
      * Global XXII type.
      */
-    static PropertyType* pXXII;
+    static const PropertyType* pXXII;
     
     /**
      * Global XXIII type.
      */
-    static PropertyType* pXXIII;
+    static const PropertyType* pXXIII;
     
     /**
      * Global XXIV type.
      */
-    static PropertyType* pXXIV;
+    static const PropertyType* pXXIV;
     
     /**
      * Global XXV type.
      */
-    static PropertyType* pXXV;
+    static const PropertyType* pXXV;
     
     /**
      * Global XXVI type.
      */
-    static PropertyType* pXXVI;
+    static const PropertyType* pXXVI;
     
     /**
      * Global XXVII type.
      */
-    static PropertyType* pXXVII;
+    static const PropertyType* pXXVII;
     
     /**
      * Global XXVIII type.
      */
-    static PropertyType* pXXVIII;
+    static const PropertyType* pXXVIII;
     
     /**
      * Global OneHbond type.
      */
-    static PropertyType* pOneHbond;
+    static const PropertyType* pOneHbond;
     
     /**
      * Global 29 type.
      */
-    static PropertyType* p29;
+    static const PropertyType* p29;
     
     /**
      * Global 30 type.
      */
-    static PropertyType* p30;
+    static const PropertyType* p30;
     
     /**
      * Global 31 type.
      */
-    static PropertyType* p31;
+    static const PropertyType* p31;
     
     /**
      * Global 32 type.
      */
-    static PropertyType* p32;
+    static const PropertyType* p32;
     
     /**
      * Global 33 type.
      */
-    static PropertyType* p33;
+    static const PropertyType* p33;
     
     /**
      * Global 34 type.
      */
-    static PropertyType* p34;
+    static const PropertyType* p34;
     
     /**
      * Global 35 type.
      */
-    static PropertyType* p35;
+    static const PropertyType* p35;
     
     /**
      * Global 36 type.
      */
-    static PropertyType* p36;
+    static const PropertyType* p36;
     
     /**
      * Global 37 type.
      */
-    static PropertyType* p37;
+    static const PropertyType* p37;
     
     /**
      * Global 38 type.
      */
-    static PropertyType* p38;
+    static const PropertyType* p38;
     
     /**
      * Global 39 type.
      */
-    static PropertyType* p39;
+    static const PropertyType* p39;
     
     /**
      * Global 40 type.
      */
-    static PropertyType* p40;
+    static const PropertyType* p40;
     
     /**
      * Global 41 type.
      */
-    static PropertyType* p41;
+    static const PropertyType* p41;
     
     /**
      * Global 42 type.
      */
-    static PropertyType* p42;
+    static const PropertyType* p42;
     
     /**
      * Global 43 type.
      */
-    static PropertyType* p43;
+    static const PropertyType* p43;
     
     /**
      * Global 44 type.
      */
-    static PropertyType* p44;
+    static const PropertyType* p44;
     
     /**
      * Global 45 type.
      */
-    static PropertyType* p45;
+    static const PropertyType* p45;
     
     /**
      * Global 46 type.
      */
-    static PropertyType* p46;
+    static const PropertyType* p46;
     
     /**
      * Global 47 type.
      */
-    static PropertyType* p47;
+    static const PropertyType* p47;
     
     /**
      * Global 48 type.
      */
-    static PropertyType* p48;
+    static const PropertyType* p48;
     
     /**
      * Global 49 type.
      */
-    static PropertyType* p49;
+    static const PropertyType* p49;
     
     /**
      * Global 50 type.
      */
-    static PropertyType* p50;
+    static const PropertyType* p50;
     
     /**
      * Global 51 type.
      */
-    static PropertyType* p51;
+    static const PropertyType* p51;
     
     /**
      * Global 52 type.
      */
-    static PropertyType* p52;
+    static const PropertyType* p52;
     
     /**
      * Global 53 type.
      */
-    static PropertyType* p53;
+    static const PropertyType* p53;
     
     /**
      * Global 54 type.
      */
-    static PropertyType* p54;
+    static const PropertyType* p54;
     
     /**
      * Global 55 type.
      */
-    static PropertyType* p55;
+    static const PropertyType* p55;
     
     /**
      * Global 56 type.
      */
-    static PropertyType* p56;
+    static const PropertyType* p56;
     
     /**
      * Global 57 type.
      */
-    static PropertyType* p57;
+    static const PropertyType* p57;
     
     /**
      * Global 58 type.
      */
-    static PropertyType* p58;
+    static const PropertyType* p58;
     
     /**
      * Global 59 type.
      */
-    static PropertyType* p59;
+    static const PropertyType* p59;
     
     /**
      * Global 60 type.
      */
-    static PropertyType* p60;
+    static const PropertyType* p60;
     
     /**
      * Global 61 type.
      */
-    static PropertyType* p61;
+    static const PropertyType* p61;
     
     /**
      * Global 62 type.
      */
-    static PropertyType* p62;
+    static const PropertyType* p62;
     
     /**
      * Global 63 type.
      */
-    static PropertyType* p63;
+    static const PropertyType* p63;
     
     /**
      * Global 64 type.
      */
-    static PropertyType* p64;
+    static const PropertyType* p64;
     
     /**
      * Global 65 type.
      */
-    static PropertyType* p65;
+    static const PropertyType* p65;
     
     /**
      * Global 66 type.
      */
-    static PropertyType* p66;
+    static const PropertyType* p66;
     
     /**
      * Global 67 type.
      */
-    static PropertyType* p67;
+    static const PropertyType* p67;
     
     /**
      * Global 68 type.
      */
-    static PropertyType* p68;
+    static const PropertyType* p68;
     
     /**
      * Global 69 type.
      */
-    static PropertyType* p69;
+    static const PropertyType* p69;
     
     /**
      * Global 70 type.
      */
-    static PropertyType* p70;
+    static const PropertyType* p70;
     
     /**
      * Global 71 type.
      */
-    static PropertyType* p71;
+    static const PropertyType* p71;
     
     /**
      * Global 72 type.
      */
-    static PropertyType* p72;
+    static const PropertyType* p72;
     
     /**
      * Global 73 type.
      */
-    static PropertyType* p73;
+    static const PropertyType* p73;
     
     /**
      * Global 74 type.
      */
-    static PropertyType* p74;
+    static const PropertyType* p74;
     
     /**
      * Global 75 type.
      */
-    static PropertyType* p75;
+    static const PropertyType* p75;
     
     /**
      * Global 76 type.
      */
-    static PropertyType* p76;
+    static const PropertyType* p76;
     
     /**
      * Global 77 type.
      */
-    static PropertyType* p77;
+    static const PropertyType* p77;
     
     /**
      * Global 78 type.
      */
-    static PropertyType* p78;
+    static const PropertyType* p78;
     
     /**
      * Global 79 type.
      */
-    static PropertyType* p79;
+    static const PropertyType* p79;
     
     /**
      * Global 80 type.
      */
-    static PropertyType* p80;
+    static const PropertyType* p80;
     
     /**
      * Global 81 type.
      */
-    static PropertyType* p81;
+    static const PropertyType* p81;
     
     /**
      * Global 82 type.
      */
-    static PropertyType* p82;
+    static const PropertyType* p82;
     
     /**
      * Global 83 type.
      */
-    static PropertyType* p83;
+    static const PropertyType* p83;
     
     /**
      * Global 84 type.
      */
-    static PropertyType* p84;
+    static const PropertyType* p84;
     
     /**
      * Global 85 type.
      */
-    static PropertyType* p85;
+    static const PropertyType* p85;
     
     /**
      * Global 86 type.
      */
-    static PropertyType* p86;
+    static const PropertyType* p86;
     
     /**
      * Global 87 type.
      */
-    static PropertyType* p87;
+    static const PropertyType* p87;
     
     /**
      * Global 88 type.
      */
-    static PropertyType* p88;
+    static const PropertyType* p88;
     
     /**
      * Global 89 type.
      */
-    static PropertyType* p89;
+    static const PropertyType* p89;
     
     /**
      * Global 90 type.
      */
-    static PropertyType* p90;
+    static const PropertyType* p90;
     
     /**
      * Global 91 type.
      */
-    static PropertyType* p91;
+    static const PropertyType* p91;
     
     /**
      * Global 92 type.
      */
-    static PropertyType* p92;
+    static const PropertyType* p92;
     
     /**
      * Global 93 type.
      */
-    static PropertyType* p93;
+    static const PropertyType* p93;
     
     /**
      * Global 94 type.
      */
-    static PropertyType* p94;
+    static const PropertyType* p94;
     
     /**
      * Global 95 type.
      */
-    static PropertyType* p95;
+    static const PropertyType* p95;
     
     /**
      * Global 96 type.
      */
-    static PropertyType* p96;
+    static const PropertyType* p96;
     
     /**
      * Global 97 type.
      */
-    static PropertyType* p97;
+    static const PropertyType* p97;
     
     /**
      * Global 98 type.
      */
-    static PropertyType* p98;
+    static const PropertyType* p98;
     
     /**
      * Global 99 type.
      */
-    static PropertyType* p99;
+    static const PropertyType* p99;
     
     /**
      * Global 100 type.
      */
-    static PropertyType* p100;
+    static const PropertyType* p100;
     
     /**
      * Global 101 type.
      */
-    static PropertyType* p101;
+    static const PropertyType* p101;
     
     /**
      * Global 102 type.
      */
-    static PropertyType* p102;
+    static const PropertyType* p102;
     
     /**
      * Global 103 type.
      */
-    static PropertyType* p103;
+    static const PropertyType* p103;
     
     /**
      * Global 104 type.
      */
-    static PropertyType* p104;
+    static const PropertyType* p104;
     
     /**
      * Global 105 type.
      */
-    static PropertyType* p105;
+    static const PropertyType* p105;
     
     /**
      * Global 106 type.
      */
-    static PropertyType* p106;
+    static const PropertyType* p106;
     
     /**
      * Global 108 type.
      */
-    static PropertyType* p108;
+    static const PropertyType* p108;
     
     /**
      * Global 109 type.
      */
-    static PropertyType* p109;
+    static const PropertyType* p109;
     
     /**
      * Global 110 type.
      */
-    static PropertyType* p110;
+    static const PropertyType* p110;
     
     /**
      * Global 111 type.
      */
-    static PropertyType* p111;
+    static const PropertyType* p111;
     
     /**
      * Global 112 type.
      */
-    static PropertyType* p112;
+    static const PropertyType* p112;
     
     /**
      * Global 113 type.
      */
-    static PropertyType* p113;
+    static const PropertyType* p113;
     
     /**
      * Global 114 type.
      */
-    static PropertyType* p114;
+    static const PropertyType* p114;
     
     /**
      * Global 115 type.
      */
-    static PropertyType* p115;
+    static const PropertyType* p115;
     
     /**
      * Global 116 type.
      */
-    static PropertyType* p116;
+    static const PropertyType* p116;
     
     /**
      * Global 117 type.
      */
-    static PropertyType* p117;
+    static const PropertyType* p117;
     
     /**
      * Global 118 type.
      */
-    static PropertyType* p118;
+    static const PropertyType* p118;
     
     /**
      * Global 119 type.
      */
-    static PropertyType* p119;
+    static const PropertyType* p119;
     
     /**
      * Global 120 type.
      */
-    static PropertyType* p120;
+    static const PropertyType* p120;
     
     /**
      * Global 121 type.
      */
-    static PropertyType* p121;
+    static const PropertyType* p121;
     
     /**
      * Global 122 type.
      */
-    static PropertyType* p122;
+    static const PropertyType* p122;
     
     /**
      * Global 123 type.
      */
-    static PropertyType* p123;
+    static const PropertyType* p123;
     
     /**
      * Global 124 type.
      */
-    static PropertyType* p124;
+    static const PropertyType* p124;
     
     /**
      * Global 125 type.
      */
-    static PropertyType* p125;
+    static const PropertyType* p125;
     
     /**
      * Global 126 type.
      */
-    static PropertyType* p126;
+    static const PropertyType* p126;
     
     /**
      * Global 127 type.
      */
-    static PropertyType* p127;
+    static const PropertyType* p127;
     
     /**
      * Global 128 type.
      */
-    static PropertyType* p128;
+    static const PropertyType* p128;
     
     /**
      * Global 129 type.
      */
-    static PropertyType* p129;
+    static const PropertyType* p129;
     
     /**
      * Global 130 type.
      */
-    static PropertyType* p130;
+    static const PropertyType* p130;
     
     /**
      * Global 131 type.
      */
-    static PropertyType* p131;
+    static const PropertyType* p131;
     
     /**
      * Global 132 type.
      */
-    static PropertyType* p132;
+    static const PropertyType* p132;
     
     /**
      * Global 133 type.
      */
-    static PropertyType* p133;
+    static const PropertyType* p133;
     
     /**
      * Global 134 type.
      */
-    static PropertyType* p134;
+    static const PropertyType* p134;
     
     /**
      * Global 135 type.
      */
-    static PropertyType* p135;
+    static const PropertyType* p135;
     
     /**
      * Global 136 type.
      */
-    static PropertyType* p136;
+    static const PropertyType* p136;
     
     /**
      * Global 137 type.
      */
-    static PropertyType* p137;
+    static const PropertyType* p137;
     
     /**
      * Global W type.
      */
-    static PropertyType* pW;
+    static const PropertyType* pW;
     
     /**
      * Global S type.
      */
-    static PropertyType* pS;
+    static const PropertyType* pS;
     
     /**
      * Global H type.
      */
-    static PropertyType* pH;
+    static const PropertyType* pH;
     
     /**
      * Global Ws type.
      */
-    static PropertyType* pWs;
+    static const PropertyType* pWs;
     
     /**
      * Global Ww type.
      */
-    static PropertyType* pWw;
+    static const PropertyType* pWw;
     
     /**
      * Global Wh type.
      */
-    static PropertyType* pWh;
+    static const PropertyType* pWh;
     
     /**
      * Global Sw type.
      */
-    static PropertyType* pSw;
+    static const PropertyType* pSw;
     
     /**
      * Global Ss type.
      */
-    static PropertyType* pSs;
+    static const PropertyType* pSs;
     
     /**
      * Global Hw type.
      */
-    static PropertyType* pHw;
+    static const PropertyType* pHw;
     
     /**
      * Global Hh type.
      */
-    static PropertyType* pHh;
+    static const PropertyType* pHh;
     
     /**
      * Global C8 type.
      */
-    static PropertyType* pC8;
+    static const PropertyType* pC8;
     
     /**
      * Global Bs type.
      */
-    static PropertyType* pBs;
+    static const PropertyType* pBs;
     
     /**
      * Global Bh type.
      */
-    static PropertyType* pBh;
+    static const PropertyType* pBh;
     
   };
   

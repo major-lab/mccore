@@ -3,27 +3,27 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.13.4.1 $
-//
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// $Revision: 1.13.4.2 $
+// 
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _Relation_h_
-#define _Relation_h_
+#ifndef _mccore_Relation_h_
+#define _mccore_Relation_h_
 
 #include <iostream>
 #include <list>
@@ -43,8 +43,8 @@ namespace mccore {
 
   class Residue;
   class PropertyType;
-  class iBinstream;
-  class oBinstream;
+//   class iBinstream;
+//   class oBinstream;
 
   
 
@@ -65,7 +65,7 @@ namespace mccore {
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.13.4.1 2004-12-15 03:15:04 larosem Exp $
+   * @version $Id: Relation.h,v 1.13.4.2 2004-12-16 17:09:18 larosem Exp $
    */
   class Relation
   {
@@ -118,8 +118,6 @@ namespace mccore {
      */
     float sum_flow;
 
-    // STATIC MEMBERS -------------------------------------------------------
-
     static vector< pair< Vector3D, const PropertyType* > > faces_A;
     static vector< pair< Vector3D, const PropertyType* > > faces_C;
     static vector< pair< Vector3D, const PropertyType* > > faces_G;
@@ -130,12 +128,14 @@ namespace mccore {
     
     // LIFECYCLE ------------------------------------------------------------
 
-       * Initializes the object.
+    /**
+     * Initializes the object.
      */
     Relation ();
 
     /**
-     * Initializes the object. The relation keeps only pointers to the original residues.
+     * Initializes the object. The relation keeps only pointers to the
+     * original residues.
      * @param rA the residue of origin of the relation.
      * @param rB the residue of destination of the relation.
      */
@@ -220,7 +220,8 @@ namespace mccore {
 
     // METHODS --------------------------------------------------------------
 
-    bool is (const PropertyType* t) const {
+    bool is (const PropertyType* t) const
+    {
       return (labels.find (t) != labels.end ());
     }
     
@@ -375,24 +376,6 @@ namespace mccore {
     
   };
 
-  // NON_MEMBER FUNCTIONS ------------------------------------------------------
-
-  /**
-   * Ouputs the relation to the stream.
-   * @param os the output stream.
-   * @param r the relation.
-   * @return the used output stream.
-   */
-  ostream& operator<< (ostream &os, const Relation &r);
-
-  /**
-   * Ouputs the relation to the stream.
-   * @param os the output stream.
-   * @param r the relation.
-   * @return the used output stream.
-   */
-  ostream& operator<< (ostream &os, const Relation *r);
-  
 //   /**
 //    * Inputs the relation from the binary stream.
 //    * @param ibs the input binary stream.
@@ -409,6 +392,28 @@ namespace mccore {
 //    * @return the output binary stream used.
 //    */
 //   oBinstream& operator<< (oBinstream &obs, const Relation &res);
+}
+
+
+
+namespace std
+{
+  
+  /**
+   * Ouputs the relation to the stream.
+   * @param os the output stream.
+   * @param r the relation.
+   * @return the used output stream.
+   */
+  ostream& operator<< (ostream &os, const mccore::Relation &r);
+
+  /**
+   * Ouputs the relation to the stream.
+   * @param os the output stream.
+   * @param r the relation.
+   * @return the used output stream.
+   */
+  ostream& operator<< (ostream &os, const mccore::Relation *r);
 
 }
 
