@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Thu May 31 08:17:56 2001
-// $Revision: 1.11.4.1 $
-// $Id: PairingPattern.cc,v 1.11.4.1 2004-12-25 02:42:47 larosem Exp $
+// $Revision: 1.11.4.2 $
+// $Id: PairingPattern.cc,v 1.11.4.2 2004-12-27 01:44:55 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -74,7 +74,7 @@ namespace mccore
 
 
   const PropertyType*
-  PairingPattern::evaluate (const Residue* ra, const Residue *rb, list< HBondFlow > &hbf) const
+  PairingPattern::evaluate (const Residue *ra, const Residue *rb, list< HBondFlow > &hbf) const
   {
     bool ab = true;
     bool ba = true;

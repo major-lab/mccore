@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Thu May 31 08:17:56 2001
-// $Revision: 1.7.4.1 $
-// $Id: PairingPattern.h,v 1.7.4.1 2004-12-25 02:42:55 larosem Exp $
+// $Revision: 1.7.4.2 $
+// $Id: PairingPattern.h,v 1.7.4.2 2004-12-27 01:45:13 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -53,20 +53,20 @@ namespace mccore
    * identify the pairing.
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: PairingPattern.h,v 1.7.4.1 2004-12-25 02:42:55 larosem Exp $
+   * @version $Id: PairingPattern.h,v 1.7.4.2 2004-12-27 01:45:13 larosem Exp $
    */
   class PairingPattern
     {
       /**
        * The MC-Sym Id.
        */
-      const PropertyType* name;
+      const PropertyType *name;
 
       /**
        * The type of residues involved in the pattern description.
        */
-      const ResidueType* typeA;
-      const ResidueType* typeB;
+      const ResidueType *typeA;
+      const ResidueType *typeB;
 
     public:
       
@@ -145,7 +145,7 @@ namespace mccore
        * @param type_a the type of one residue.
        * @param type_b the type of another residue.
        */
-      PairingPattern (const PropertyType* id, const ResidueType* type_a, const ResidueType* type_b)
+      PairingPattern (const PropertyType *id, const ResidueType *type_a, const ResidueType *type_b)
 	: name (id), typeA (type_a), typeB (type_b), msize (0)
       { }
 
@@ -245,7 +245,7 @@ namespace mccore
        * @param pattern the description of the flow pattern in a BasePair.
        * @return the property type or 0 if there is no match.
        */
-      const PropertyType* evaluate (const Residue* ra, const Residue *rb, list< HBondFlow > &hbf) const;
+      const PropertyType* evaluate (const Residue *ra, const Residue *rb, list< HBondFlow > &hbf) const;
 
       /**
        * Initializes the Global vector of pairing patterns
