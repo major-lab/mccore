@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Mar 20 16:21:52 2003
-// $Revision: 1.3 $
-// $Id: ResidueFactoryMethod.cc,v 1.3 2005-01-03 23:01:44 larosem Exp $
+// $Revision: 1.4 $
+// $Id: ResidueFactoryMethod.cc,v 1.4 2005-01-26 19:57:58 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -31,11 +31,37 @@
 #include "ExtendedResidue.h"
 #include "ResidueFactoryMethod.h"
 #include "Residue.h"
+#include "Exception.h"
+#include "Binstream.h"
 
+
+#define _TAG_ResidueFM         'R'
+#define _TAG_ExtendedResidueFM 'E'
 
 
 namespace mccore
 {
+
+  ResidueFactoryMethod*
+  ResidueFactoryMethod::read (iBinstream& ibs)
+  {
+    char tag = 0;
+
+    ibs >> tag;
+
+    switch (tag)
+    {
+    case _TAG_ResidueFM:
+      return new ResidueFM ();
+    case _TAG_ExtendedResidueFM:
+      return new ExtendedResidueFM (); 
+    default:
+      FatalIntLibException ex ("", __FILE__, __LINE__);
+      ex << "Unknown ResidueFactoryMethod tag '" << tag << "' in binary stream.";
+      throw ex;
+    }
+  }
+
 
   Residue* 
   ResidueFM::createResidue () const
@@ -44,10 +70,31 @@ namespace mccore
   }
 
 
+  oBinstream&
+  ResidueFM::write (oBinstream& obs) const
+  {
+    return obs << (char)_TAG_ResidueFM;
+  }
+
+
   Residue* 
   ExtendedResidueFM::createResidue () const
   {
     return new ExtendedResidue ();
+  }
+
+
+  oBinstream&
+  ExtendedResidueFM::write (oBinstream& obs) const
+  {
+    return obs << (char)_TAG_ExtendedResidueFM;
+  }
+
+
+  oBinstream&
+  operator<< (oBinstream& obs, const ResidueFactoryMethod& obj)
+  {
+    return obj.write (obs);
   }
 
 }

@@ -4,8 +4,8 @@
 //                     UniversitÅÈ de MontrÅÈal.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
-// $Revision: 1.7 $
-// $Id: RnamlReader.cc,v 1.7 2005-01-25 15:23:00 thibaup Exp $
+// $Revision: 1.8 $
+// $Id: RnamlReader.cc,v 1.8 2005-01-26 19:57:58 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -138,7 +138,7 @@ namespace mccore
     const vector< rnaml::Atom* > &atoms = ((rnaml::Base&) base).getAtoms ();
     vector< rnaml::Atom* >::const_iterator cit;
 
-    r = this->modelFM->getResidueFactoryMethod ()->createResidue ();
+    r = this->modelFM->createResidue ();
     str = base.getStrand ();
     if (0 != str)
       id.setChainId (str[0]);

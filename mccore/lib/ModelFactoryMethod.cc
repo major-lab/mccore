@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Wed Jan  5 17:20:53 2005
-// $Revision: 1.2 $
-// $Id: ModelFactoryMethod.cc,v 1.2 2005-01-25 15:23:00 thibaup Exp $
+// $Revision: 1.3 $
+// $Id: ModelFactoryMethod.cc,v 1.3 2005-01-26 19:57:58 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -33,7 +33,12 @@
 #include "Model.h"
 #include "ModelFactoryMethod.h"
 #include "ResidueFactoryMethod.h"
+#include "Binstream.h"
+#include "Exception.h"
 
+
+#define _TAG_ModelFM      'M'
+#define _TAG_GraphModelFM 'G'
 
 
 namespace mccore
@@ -41,12 +46,14 @@ namespace mccore
 
   ModelFactoryMethod::ModelFactoryMethod (const ResidueFactoryMethod *fm)
     : rFM (fm == 0 ? new ExtendedResidueFM () : fm->clone ())
-  { }
+  {
+  }
   
   
   ModelFactoryMethod::ModelFactoryMethod (const ModelFactoryMethod &right)
     : rFM (right.rFM->clone ())
-  { }
+  { 
+  }
 
   
   ModelFactoryMethod::~ModelFactoryMethod ()
@@ -55,32 +62,88 @@ namespace mccore
   }
 
 
-  const ResidueFactoryMethod* 
-  ModelFactoryMethod::getResidueFactoryMethod () const
+  Residue* 
+  ModelFactoryMethod::createResidue () const
   {
-    return this->rFM;
+    return this->rFM->createResidue ();
   }
 
 
-  void 
-  ModelFactoryMethod::setResidueFactoryMethod (const ResidueFactoryMethod* fm)
+  ModelFactoryMethod*
+  ModelFactoryMethod::read (iBinstream& ibs)
+  {
+    char tag = 0;
+    ModelFactoryMethod* mfm = 0;
+
+    ibs >> tag;
+
+    switch (tag)
+    {
+    case _TAG_ModelFM:
+      mfm = new ModelFM ();
+      break;
+    case _TAG_GraphModelFM:
+      mfm = new GraphModelFM (); 
+      break;
+    default:
+      FatalIntLibException ex ("", __FILE__, __LINE__);
+      ex << "Unknown ModelFactoryMethod tag '" << tag << "' in binary stream.";
+      throw ex;
+    }
+
+    mfm->_read (ibs);
+    return mfm;
+  }
+
+
+  oBinstream& 
+  ModelFactoryMethod::write (oBinstream& obs) const
+  {
+    return obs << *this->rFM;
+  }
+  
+  
+  iBinstream&
+  ModelFactoryMethod::_read (iBinstream& ibs)
   {
     delete this->rFM;
-    this->rFM = 0 == fm ? new ExtendedResidueFM () : fm->clone ();
+    this->rFM = ResidueFactoryMethod::read (ibs);
+    return ibs;
   }
 
-  
+
   AbstractModel* 
   ModelFM::createModel () const
   {
-    return new Model (rFM->clone ());
+    return new Model (this->rFM);
+  }
+
+
+  oBinstream& 
+  ModelFM::write (oBinstream& obs) const
+  {
+    return this->ModelFactoryMethod::write (obs << (char)_TAG_ModelFM);
   }
 
 
   AbstractModel* 
   GraphModelFM::createModel () const
   {
-    return new GraphModel (rFM->clone ());
+    return new GraphModel (this->rFM);
+  }
+
+
+  oBinstream& 
+  GraphModelFM::write (oBinstream& obs) const
+  {
+    return this->ModelFactoryMethod::write (obs << (char)_TAG_GraphModelFM);
+  }
+
+
+  oBinstream&
+  operator<< (oBinstream& obs, const ModelFactoryMethod& obj)
+  {
+    return obj.write (obs);
   }
 
 }

@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 // 
 // This file is part of mccore.
 // 
@@ -59,7 +59,7 @@ namespace mccore
    * molecule.
    *
    * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: RnamlReader.h,v 1.5 2005-01-25 15:22:53 thibaup Exp $
+   * @version $Id: RnamlReader.h,v 1.6 2005-01-26 19:57:58 thibaup Exp $
    */
   class RnamlReader
   {
@@ -118,6 +118,11 @@ namespace mccore
     
     // ACCESS ---------------------------------------------------------------
     
+    bool isOpen () const
+    {
+      return this->is != 0;
+    }
+
     // METHODS --------------------------------------------------------------
     
   private:

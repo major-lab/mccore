@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Jan  5 17:12:54 2005
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 //
 // This file is part of mccore.
 // 
@@ -32,9 +32,10 @@ namespace mccore
 {
   class AbstractModel;
   class ResidueFactoryMethod;
+  class Residue;
+  class iBinstream;
+  class oBinstream;
 
-
-  
   /**
    * @short Abstract class for model factory methods.
    *
@@ -42,7 +43,7 @@ namespace mccore
    * methods.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ModelFactoryMethod.h,v 1.3 2005-01-25 15:23:00 thibaup Exp $
+   * @version $Id: ModelFactoryMethod.h,v 1.4 2005-01-26 19:57:58 thibaup Exp $
    */
   class ModelFactoryMethod
   {
@@ -83,27 +84,46 @@ namespace mccore
 
     // ACCESS ---------------------------------------------------------------
 
-    /**
-     * Gets the residue factory method.
-     * @return the residue factory method.
-     */
-    const ResidueFactoryMethod* getResidueFactoryMethod () const;
-
-    /**
-     * Sets the residue factory method.
-     * @param fm the new residue factory method (default is @ref ExtendedResidueFM)
-     */
-    void setResidueFactoryMethod (const ResidueFactoryMethod* fm = 0);
-
     // METHODS --------------------------------------------------------------
-
-    // I/O  -----------------------------------------------------------------
 
     /**
      * Creates the model.
      * @return the newly created empty model.
      */
     virtual AbstractModel* createModel () const = 0;
+
+    /**
+     * Creates a residue using the factory method.
+     * @return the newly created empty residue.
+     */
+    Residue* createResidue () const;
+
+    // I/O  -----------------------------------------------------------------
+
+    /**
+     * Creates a new object as read from the input binary stream. Throws a
+     * @ref FatalIntLibException if read fails.
+     * @param ibs the input binary stream
+     * @return the newly created object.
+     * @throws FatalIntLibException
+     */
+    static ModelFactoryMethod* read (iBinstream& ibs);
+
+    /**
+     * Writes the object to the output stream.
+     * @param obs the output stream.
+     * @return the written stream.
+     */
+    virtual oBinstream& write (oBinstream& obs) const;
+
+  protected:
+
+    /**
+     * Reads the object from the input stream.
+     * @param ibs the input stream.
+     * @return the read stream.
+     */
+    iBinstream& _read (iBinstream& ibs);
 
   };
   
@@ -114,7 +134,7 @@ namespace mccore
    * This is the model factory method implementation for the Model class.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ModelFactoryMethod.h,v 1.3 2005-01-25 15:23:00 thibaup Exp $
+   * @version $Id: ModelFactoryMethod.h,v 1.4 2005-01-26 19:57:58 thibaup Exp $
    */
   class ModelFM : public ModelFactoryMethod
   {
@@ -159,6 +179,13 @@ namespace mccore
 
     // I/O  -----------------------------------------------------------------
 
+    /**
+     * Writes the object to the output stream.
+     * @param obs the output stream.
+     * @return the written stream.
+     */
+    virtual oBinstream& write (oBinstream& obs) const;
+
   };
 
 
@@ -169,7 +196,7 @@ namespace mccore
    * This is the model factory method implementation for the GraphModel class.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ModelFactoryMethod.h,v 1.3 2005-01-25 15:23:00 thibaup Exp $
+   * @version $Id: ModelFactoryMethod.h,v 1.4 2005-01-26 19:57:58 thibaup Exp $
    */
   class GraphModelFM : public ModelFactoryMethod
   {
@@ -214,8 +241,24 @@ namespace mccore
 
     // I/O  -----------------------------------------------------------------
 
+    /**
+     * Writes the object to the output stream.
+     * @param obs the output stream.
+     * @return the written stream.
+     */
+    virtual oBinstream& write (oBinstream& obs) const;
+
   };
   
+
+  /**
+   * Writes a @ref ModelFactoryMethod object to the output stream.
+   * @param obs the output stream.
+   * @param obj the @ref ModelFactoryMethod object to write
+   * @return the written stream.
+   */
+  oBinstream& operator<< (oBinstream& obs, const ModelFactoryMethod& obj);
+
 }
 
 #endif

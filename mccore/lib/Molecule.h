@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:36 2003
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 // 
 // This file is part of mccore.
 // 
@@ -51,7 +51,7 @@ namespace mccore
    * This is a collection of mccore Models in a simple STL list.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Molecule.h,v 1.7 2005-01-06 21:08:17 larosem Exp $
+   * @version $Id: Molecule.h,v 1.8 2005-01-26 19:57:58 thibaup Exp $
    */
   class Molecule
   {
@@ -104,6 +104,14 @@ namespace mccore
 	: list< AbstractModel* >::iterator (lIt)
       { }
 
+      /**
+       * Initializes the iterator with the molecule iterator
+       * @param lIt the list iterator.
+       */
+      molecule_iterator (const molecule_iterator &lIt)
+	: list< AbstractModel* >::iterator (lIt)
+      { }
+
       // OPERATORS ------------------------------------------------------------
 
       /**
@@ -149,6 +157,22 @@ namespace mccore
        */
       molecule_const_iterator (const list< AbstractModel* >::const_iterator &lIt)
 	: list< AbstractModel* >::const_iterator (lIt)
+      { }
+
+      /**
+       * Initializes the iterator with a non const list iterator.
+       * @param lIt the list iterator.
+       */
+      molecule_const_iterator (const list< AbstractModel* >::iterator &lIt)
+	: list< AbstractModel* >::const_iterator (lIt)
+      { }
+
+      /**
+       * Initializes the iterator with a const molecule_iterator.
+       * @param it the molecule iterator.
+       */
+      molecule_const_iterator (const molecule_const_iterator& it)
+	: list< AbstractModel* >::const_iterator (it)
       { }
 
       /**
@@ -221,20 +245,6 @@ namespace mccore
      */
     Molecule& operator= (const Molecule &right);
 
-//     /**
-//      * Gets the model reference at nth position.
-//      * @param nth the position of the reference to get.
-//      * @return the nth reference.
-//      */
-//     AbstractModel& operator[] (size_type nth);
-
-//     /**
-//      * Gets the model const_reference at nth position.
-//      * @param nth the position of the const_reference to get.
-//      * @return the nth const_reference.
-//      */
-//     const AbstractModel& operator[] (size_type nth) const;
-    
     // ACCESS ---------------------------------------------------------------
     
     /**

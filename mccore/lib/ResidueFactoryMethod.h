@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct 12 14:31:19 2001
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 //
 // This file is part of mccore.
 // 
@@ -31,9 +31,9 @@
 namespace mccore
 {
   class Residue;
+  class iBinstream;
+  class oBinstream;
 
-
-  
   /**
    * @short Abstract class for residue factory methods.
    *
@@ -41,7 +41,7 @@ namespace mccore
    * methods.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ResidueFactoryMethod.h,v 1.5 2005-01-03 23:01:55 larosem Exp $
+   * @version $Id: ResidueFactoryMethod.h,v 1.6 2005-01-26 19:57:58 thibaup Exp $
    */
   class ResidueFactoryMethod
   {
@@ -71,13 +71,29 @@ namespace mccore
 
     // METHODS --------------------------------------------------------------
 
-    // I/O  -----------------------------------------------------------------
-
     /**
      * Creates the residue.
      * @return the newly created empty residue.
      */
     virtual Residue* createResidue () const = 0;
+
+    // I/O  -----------------------------------------------------------------
+
+    /**
+     * Creates a new object as read from the input binary stream. Throws a
+     * @ref FatalIntLibException if read fails.
+     * @param ibs the input binary stream
+     * @return the newly created object.
+     * @throws FatalIntLibException
+     */
+    static ResidueFactoryMethod* read (iBinstream& ibs);
+
+    /**
+     * Writes the object to the output stream.
+     * @param obs the output stream.
+     * @return the written stream.
+     */
+    virtual oBinstream& write (oBinstream& obs) const = 0;
 
   };
   
@@ -89,7 +105,7 @@ namespace mccore
    * class.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ResidueFactoryMethod.h,v 1.5 2005-01-03 23:01:55 larosem Exp $
+   * @version $Id: ResidueFactoryMethod.h,v 1.6 2005-01-26 19:57:58 thibaup Exp $
    */
   class ResidueFM : public ResidueFactoryMethod
   {
@@ -128,6 +144,13 @@ namespace mccore
 
     // I/O  -----------------------------------------------------------------
 
+    /**
+     * Writes the object to the output stream.
+     * @param obs the output stream.
+     * @return the written stream.
+     */
+    virtual oBinstream& write (oBinstream& obs) const;
+
   };
 
 
@@ -138,7 +161,7 @@ namespace mccore
    * This is the residue factory method implementation for the Residue class.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ResidueFactoryMethod.h,v 1.5 2005-01-03 23:01:55 larosem Exp $
+   * @version $Id: ResidueFactoryMethod.h,v 1.6 2005-01-26 19:57:58 thibaup Exp $
    */
   class ExtendedResidueFM : public ResidueFactoryMethod
   {
@@ -177,7 +200,24 @@ namespace mccore
 
     // I/O  -----------------------------------------------------------------
 
+    /**
+     * Writes the object to the output stream.
+     * @param obs the output stream.
+     * @return the written stream.
+     */
+    virtual oBinstream& write (oBinstream& obs) const;
+
   };
+
+
+  /**
+   * Writes a @ref ResidueFactoryMethod object to the output stream.
+   * @param obs the output stream.
+   * @param obj the @ref ResidueFactoryMethod object to write
+   * @return the written stream.
+   */
+  oBinstream& operator<< (oBinstream& obs, const ResidueFactoryMethod& obj);
+
 }
 
 #endif

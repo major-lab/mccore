@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:35 2003
-// $Revision: 1.10 $
-// $Id: Molecule.cc,v 1.10 2005-01-06 21:08:04 larosem Exp $
+// $Revision: 1.11 $
+// $Id: Molecule.cc,v 1.11 2005-01-26 19:57:58 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -71,17 +71,9 @@ namespace mccore
   
   
   Molecule::Molecule (const ModelFactoryMethod *fm)
+    : modelFM (0 == fm ? new ModelFM () : fm->clone ())
   {
-    if (0 == fm)
-      {
-	ExtendedResidueFM rFM;
-	
-	modelFM = new ModelFM (&rFM);
-      }
-    else
-      {
-	modelFM = fm->clone ();
-      }    
+
   }
 
   
@@ -89,12 +81,7 @@ namespace mccore
     : properties (right.properties),
       modelFM (right.modelFM->clone ())
   {
-    const_iterator it;
-    
-    for (it = right.begin (); it != right.end (); ++it)
-      {
-	models.push_back (it->clone ());
-      }
+    this->insert (right.models.begin (), right.models.end ());
   }
   
   
@@ -118,16 +105,13 @@ namespace mccore
 	const_iterator it;
 
 	// clear all
-	clear ();
-	delete modelFM;
+	this->clear ();
+	delete this->modelFM;
 
 	// copy 
-	for (it = right.begin (); it != right.end (); ++it)
-	  {
-	    models.push_back (it->clone ());
-	  }
-	properties = right.properties;
-	modelFM = right.modelFM->clone ();
+	this->modelFM = right.modelFM->clone ();
+	this->properties = right.properties;
+	this->insert (right.models.begin (), right.models.end ());
       }
     return *this;
   }
@@ -159,24 +143,17 @@ namespace mccore
   void
   Molecule::setModelFM (const ModelFactoryMethod *fm)
   {
-    delete modelFM;
-    if (0 == fm)
-      {
-	ExtendedResidueFM rFM;
-
-	modelFM = new ModelFM (&rFM);
-      }
-    else
-      {
-	modelFM = fm->clone ();
-      }
+    delete this->modelFM;
+    this->modelFM = 0 == fm ? new ModelFM () : fm->clone ();
   }
   
   
   Molecule::iterator
   Molecule::insert (const AbstractModel& model)
   {
-    return iterator (models.insert (models.end (), model.clone ()));
+    AbstractModel* cloned = this->modelFM->createModel ();
+    *cloned = model;
+    return this->models.insert (models.end (), cloned);
   }
   
     
@@ -270,17 +247,19 @@ namespace mccore
     const_iterator mit;
     map< string, string >::const_iterator pit;
 
-    obs << size ();
-    for (mit = begin (); mit != end (); ++mit)
-      {
-	obs << *mit;
-      }
+    // -- dump ModelFactoryMethod in first place
+    obs << *this->modelFM;
 
-    obs << properties.size ();
+    // -- dump models
+    obs << (unsigned int)size ();
+    for (mit = begin (); mit != end (); ++mit)
+      obs << *mit;
+
+    // -- dump properties
+    obs << (unsigned int)properties.size ();
     for (pit = properties.begin (); pit != properties.end (); ++pit)
-      {
-	obs << pit->first.c_str () << pit->second.c_str ();
-      }
+      obs << pit->first.c_str () << pit->second.c_str ();
+
     return obs;
   }
 
@@ -289,23 +268,29 @@ namespace mccore
   Molecule::read (iBinstream &ibs)
   {
     unsigned int qty;
+    string kcs, vcs;
 
-    clear ();
+    // -- reset object
+    this->clear ();
+    delete this->modelFM;
 
+    // -- read ModelFactoryMethod
+    this->modelFM = ModelFactoryMethod::read (ibs);
+
+    // -- read models using restored factory method for object creation
     for (ibs >> qty; qty > 0; --qty)
-      {
-	models.push_back (modelFM->createModel ());
-	ibs >> *models.back ();
-      }
+    {
+      this->models.push_back (modelFM->createModel ());
+      ibs >> *this->models.back ();
+    }
 
+    // -- read properties
     for (ibs >> qty; qty > 0; --qty)
-      {
-	string kcs;
-	string vcs;
-      
-	ibs >> kcs >> vcs;
-	setProperty (kcs, vcs);
-      }
+    {
+      ibs >> kcs >> vcs;
+      this->setProperty (kcs, vcs);
+    }
+
     return ibs;
   }
 
