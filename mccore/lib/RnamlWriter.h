@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.1.2.1 $
-// $Id: RnamlWriter.h,v 1.1.2.1 2003-07-15 14:10:48 larosem Exp $
+// $Revision: 1.1.2.2 $
+// $Id: RnamlWriter.h,v 1.1.2.2 2003-07-15 17:08:31 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -27,7 +27,6 @@
 #ifndef _mccore_RnamlWriter_h_
 #define _mccore_RnamlWriter_h_
 
-#include <iostream>
 #include <cstdio>
 
 namespace rnaml
@@ -71,6 +70,7 @@ namespace mccore
     
     /**
      * Initializes the object.
+     * @param f the output stream.
      */
     RnamlWriter (FILE *f) : of (f) { }
     
@@ -85,12 +85,32 @@ namespace mccore
     
     // METHODS --------------------------------------------------------------
 
+    /**
+     * Transforms a mccore Atom to a rnaml Atom.
+     * @param atom the mccore Atom.
+     * @return the rnaml Atom.
+     */
     static rnaml::Atom* toRnaml (const mccore::Atom &atom);
 
+    /**
+     * Transforms a mccore Residue to a rnaml Base.
+     * @param residue the mccore Residue.
+     * @return the rnaml Base.
+     */
     static rnaml::Base* toRnaml (const Residue &residue);
 
+    /**
+     * Transforms a mccore Model to a rnaml Model.
+     * @param model the mccore Model.
+     * @return the rnaml Model.
+     */
     static rnaml::Model* toRnaml (const mccore::Model &model);
 
+    /**
+     * Transforms a mccore Molecule to a rnaml Molecule.
+     * @param molecule the mccore Molecule.
+     * @return the rnaml Molecule.
+     */
     static rnaml::Molecule* toRnaml (const mccore::Molecule &molecule);
     
     // I/O  -----------------------------------------------------------------
