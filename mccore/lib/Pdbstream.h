@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:34:46 2001
-// Update Count     : 10
+// Last Modified On : Fri Aug 24 17:35:58 2001
+// Update Count     : 11
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -341,6 +341,11 @@ class oPdbstream : public ostream
    * The chain id of the saved residue.
    */
   char chainid;
+
+  /**
+   * The insertion code of the saved residue.
+   */
+  char iCode;
 
   /**
    * The atom serial number of the saved atom.

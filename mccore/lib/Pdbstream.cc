@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:10:12 2001
-// Update Count     : 14
+// Last Modified On : Fri Aug 24 17:35:55 2001
+// Update Count     : 15
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -621,7 +621,7 @@ iPdbstream::getatom (CAtom &atom)
   current_res_type = GetResidueType (buffer);
   strncpy (buffer, line + 22, 4);
   buffer[4] = '\0';
-  current_res_id = CResId (atoi (buffer), line[21]);
+  current_res_id = CResId (atoi (buffer), line[21], line[26]);
 
   atom.SetAll (GetX (), GetY (), GetZ (), GetAtomType (), GetAltLocId ());
   return atom;
@@ -909,6 +909,7 @@ oPdbstream::SetResId (const CResId &resid)
 {
   resno = resid.GetResNo ();
   chainid = resid.GetChainId ();
+  iCode = resid.getInsertionCode ();
 }
 
 
@@ -983,7 +984,8 @@ oPdbstream::putatom (const CAtom &atom)
 	    << ' '
 	    << chainid
 	    << setw (4) << resno
-	    << "    "
+	    << iCode
+	    << "   "
 	    << setw (8) << atom.GetX ()
 	    << setw (8) << atom.GetY ()
 	    << setw (8) << atom.GetZ ()

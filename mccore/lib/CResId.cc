@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Thu Sep 28 15:55:29 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:09:47 2001
-// Update Count     : 8
+// Last Modified On : Fri Aug 24 17:35:48 2001
+// Update Count     : 9
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -44,24 +44,66 @@
 
   
 CResId::CResId (const char *str)
+  : no (-1),
+    chain (' '),
+    iCode (' '),
+    mRep (0)
 {
-  if (str[0] == '\'')
+  char *strCopy = strdup (str);
+  char *base = strCopy;
+  char *token;
+  unsigned int i;
+
+  if (strCopy[0] == '\'')
     {
-      if (strlen (str) < 4 || str[2] != '\'')
+      if (strlen (strCopy) < 4 || strCopy[2] != '\'')
 	{
-	  gOut (3) << "Malformed residue id " << str << endl;
-	  chain = ' ';
-	  no = -1;
+	  gOut (2) << "Malformed residue id " << strCopy << endl;
+	  delete[] base;
 	  return;
 	}
-      chain = str[1];
-      str += 3;
+      chain = strCopy[1];
+      strCopy += 3;
     }
-  else if (isalpha (str[0]))
-    chain = *str++;
-  else
-    chain = ' ';
-  no = atoi (str);
+  else if (isalpha (strCopy[0]))
+    chain = *strCopy++;
+  
+  token = strsep (&strCopy, ".");
+
+  if (strlen (token) > 4 || strlen (token) < 1)
+    {
+      gOut (2) << "Malformed residue number in residue id "
+	       << '\'' << chain << '\'' << token;
+      if (strlen (strCopy) > 0)
+	gOut << '.' << strCopy;
+      gOut << endl;
+      delete[] base;
+      return;
+    }
+  for (i = 0; i < strlen (token); ++i)
+    if (!isdigit (token[i]))
+      {
+	gOut (2) << "Malformed residue number in residue id "
+		 << '\'' << chain << '\'' << token;
+	if (strlen (strCopy) > 0)
+	  gOut << '.' << strCopy;
+	gOut << endl;
+	delete[] base;
+	return;
+      }
+  no = atoi (token);
+  if (strCopy)
+    {
+      if (strlen (strCopy) != 1)
+	{
+	  gOut (2) << "Malformed insertion code in residue id "
+		   << (const char*)*this << "." << strCopy << endl;
+	  delete[] base;
+	  return;
+	}
+      iCode = strCopy[0];
+    }
+  delete[] base;
 }
 
 
@@ -73,6 +115,12 @@ CResId::operator= (const CResId &right)
     {
       no = right.no;
       chain = right.chain;
+      iCode = right.iCode;
+      if (mRep)
+	{
+	  delete[] mRep;
+	  mRep = 0;
+	}
     }
   return *this;
 }
@@ -81,10 +129,24 @@ CResId::operator= (const CResId &right)
 
 CResId::operator const char* () const
 {
-  if (chain == ' ')
-    sprintf (mRep, "%d", no);
-  else
-    sprintf (mRep, "%c%d", chain, no);
+  if (!mRep)
+    {
+      mRep = new char[11];
+
+      if (chain == ' ')
+	sprintf (mRep, "%d", no);
+      else if (! isalpha (chain))
+	sprintf (mRep, "'%c'%d", chain, no);
+      else
+	sprintf (mRep, "%c%d", chain, no);
+      if (iCode != ' ')
+	{
+	  char ic[3];
+
+	  sprintf (ic, ".%c", iCode);
+	  strcat (mRep, ic);
+	}
+    }
   return mRep;
 }
 
@@ -102,11 +164,12 @@ iBinstream&
 operator>> (iBinstream &ibs, CResId &obj)
 {
   int resno;
-  char chainid;
+  char chainid, ic;
 
-  ibs >> resno >> chainid;
+  ibs >> resno >> chainid >> ic;
   obj.SetResNo (resno);
   obj.SetChainId (chainid);
+  obj.setInsertionCode (ic);
   return ibs;
 }
 
@@ -115,5 +178,6 @@ operator>> (iBinstream &ibs, CResId &obj)
 oBinstream&
 operator<< (oBinstream &obs, const CResId &obj)
 {
-  return obs << obj.GetResNo () << obj.GetChainId ();
+  return obs << obj.GetResNo () << obj.GetChainId ()
+	     << obj.getInsertionCode ();
 }

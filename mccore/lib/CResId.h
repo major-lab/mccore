@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Thu Sep 28 15:55:29 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:34:15 2001
-// Update Count     : 7
+// Last Modified On : Fri Aug 24 17:35:51 2001
+// Update Count     : 8
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -54,9 +54,14 @@ class CResId
   char chain;
 
   /**
+   * The insertion code.
+   */
+  char iCode;
+
+  /**
    * The id representation.
    */
-  mutable char mRep[10];
+  mutable char *mRep;
   
 public:
 
@@ -67,7 +72,8 @@ public:
    * @param n the residue number (default = -1).
    * @param c the residue chain id (default = ' ').
    */
-  CResId (int n = -1, char c = ' ') : no (n), chain (c) { }
+  CResId (int n = -1, char c = ' ', char ic = ' ')
+    : no (n), chain (c), iCode (ic), mRep (0) { }
 
   /**
    * Initializes the structure with a text representation.
@@ -79,12 +85,14 @@ public:
    * Initializes the object with the right's content.
    * @param right the object to copy.
    */
-  CResId (const CResId &right) : no (right.no), chain (right.chain) { }
+  CResId (const CResId &right)
+    : no (right.no), chain (right.chain), iCode (right.iCode), mRep (0)
+  { }
 
   /**
    * Destructs the object.
    */
-  ~CResId () { }
+  ~CResId () { if (mRep) delete[] mRep; }
 
   // OPERATORS ------------------------------------------------------------
 
@@ -101,7 +109,11 @@ public:
    * @return the truth value.
    */
   bool operator== (const CResId &right) const
-  { return chain == right.chain && no == right.no; }
+  {
+    return (chain == right.chain
+	    && no == right.no
+	    && iCode == right.iCode);
+  }
   
   /**
    * Tests the difference between ids.
@@ -116,7 +128,13 @@ public:
    * @return the truth value.
    */
   bool operator< (const CResId &right) const
-  { return chain < right.chain || (chain == right.chain && no < right.no); }
+  {
+    return (chain < right.chain
+	    || (chain == right.chain && no < right.no)
+	    || (chain == right.chain
+		&& no == right.no
+		&& iCode < right.iCode));
+  }
 
   /**
    * Converts the residue id to a string representation.
@@ -135,7 +153,15 @@ public:
    * Sets the residue number.
    * @param resno the new residue number.
    */
-  void SetResNo (int resno) { no = resno; }
+  void SetResNo (int resno)
+  {
+    if (mRep)
+      {
+	delete[] mRep;
+	mRep = 0;
+	}
+    no = resno;
+  }
 
   /**
    * Gets the chain id.
@@ -147,7 +173,35 @@ public:
    * Sets the chain id.
    * @param chainid the new chain id.
    */
-  void SetChainId (char chainid) { chain = chainid; }
+  void SetChainId (char chainid)
+  {
+    if (mRep)
+      {
+	delete[] mRep;
+	mRep = 0;
+      }
+    chain = chainid;
+  }
+
+  /**
+   * Gets the residue insertion code.
+   * @return the insertion code.
+   */
+  char getInsertionCode () const { return iCode; }
+
+  /**
+   * Sets the insertion code.  It invalidates the residue id representation.
+   * @param ic the insertion code.
+   */
+  void setInsertionCode (char ic)
+  {
+    if (mRep)
+      {
+	delete[] mRep;
+	mRep = 0;
+      }
+    iCode = ic;
+  }
   
   // METHODS --------------------------------------------------------------
 
