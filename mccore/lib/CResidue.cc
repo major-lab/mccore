@@ -243,24 +243,26 @@ CResidue::const_residue_iterator::operator- (const CResidue::const_iterator &i) 
 
 CResidue::CResidue (t_Residue *type, const vector< CAtom > &vec,
 		    const CResId &nId)
-  : CResId (nId), mType (type), mResName (0), mAtomRef (vec),
+  : CResId (nId), mType (type), mResName (0),
     mAtomResPos (vec.size (), -1)
 {
   count++;
   const CAtom *pivot[3] = {0, 0, 0};
-  vector< CAtom >::iterator it;
+  vector< CAtom >::const_iterator cit;
   vector< CAtom >::size_type i;
   
-  for (it = mAtomRef.begin (), i = 0; it != mAtomRef.end (); ++it, ++i)
+  for (cit = vec.begin (), i = 0; cit != vec.end (); ++cit, ++i)
     {
-      map< t_Atom*, int >::iterator pos = mAtomIndex.find (it->GetType ());
+      map< t_Atom*, int >::iterator pos = mAtomIndex.find (cit->GetType ());
       
       if (pos != mAtomIndex.end ())
 	gOut(2) << "CResidue: Duplicated atom ["
-		<< *it->GetType () << "] in residue "
+		<< *cit->GetType () << "] in residue "
 		<< nId << "." << endl;
-      else
-	mAtomIndex[it->GetType ()] = i;
+      else {
+	mAtomIndex[cit->GetType ()] = i;
+	mAtomRef.push_back (*cit);
+      }
     }
 
   if (! mType)
@@ -365,6 +367,8 @@ CResidue::CResidue (t_Residue *type, const vector< CAtom > &vec,
       CTransfo theAlign (mTfo);
       theAlign.Inverse ();
       
+      vector< CAtom >::iterator it;
+
       for (it = mAtomRef.begin (); it != mAtomRef.end (); ++it)
 	it->Transform (theAlign);
     }
@@ -1375,6 +1379,17 @@ CResidue::Transform (const CTransfo& tfo)
 }
 
 
+
+void
+CResidue::Align ()
+{
+  vector< int >:: iterator i;
+  
+  mTfo.SetIdentity ();
+  mAtomRes.clear ();
+  for (i = mAtomResPos.begin (); i != mAtomResPos.end (); ++i)
+    *i = -1;
+}
 
 iBinstream&
 operator>> (iBinstream& ibs, CResidue& res)

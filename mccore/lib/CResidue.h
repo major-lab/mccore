@@ -706,7 +706,7 @@ public:
   /**
    * Aligns the residue.  Sets the transfo to the identity.
    */
-  void Align () { mTfo.SetIdentity (); }
+  void Align ();
 
   // I/O  -----------------------------------------------------------------
 };
