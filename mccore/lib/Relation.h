@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 //
 //  This file is part of mccore.
 //  
@@ -64,10 +64,12 @@ namespace mccore {
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.11 2004-03-17 20:45:27 larosem Exp $
+   * @version $Id: Relation.h,v 1.12 2004-08-17 18:30:10 thibaup Exp $
    */
   class Relation
   {
+
+  protected:
     
     /**
      * The residue at the origin of this relation.
@@ -148,9 +150,15 @@ namespace mccore {
     Relation (const Relation &other);
 
     /**
+     * Clones the object.
+     * @return a copy of the object.
+     */
+    virtual Relation* clone () const;
+    
+    /**
      * Destroys the object.
      */
-    ~Relation () { }
+    virtual ~Relation () { }
 
     // OPERATORS ------------------------------------------------------------
 
@@ -224,7 +232,7 @@ namespace mccore {
      */
     bool annotate ();
 
-  private:
+  protected:
     
     /**
      * Tests for adjacency relation.
@@ -310,7 +318,7 @@ namespace mccore {
 
     // PRIVATE METHODS ------------------------------------------------------
 
-  private:
+  protected:
     
     /**
      *
@@ -348,7 +356,7 @@ namespace mccore {
      * @param os the output stream.
      * @return the used output stream.
      */
-    ostream& output (ostream &os) const;
+    virtual ostream& write (ostream &os) const;
     
 //     /**
 //      * Inputs the residue from the stream. Not virtual so that only
@@ -386,22 +394,22 @@ namespace mccore {
    */
   ostream& operator<< (ostream &os, const Relation *r);
   
-  /**
-   * Inputs the relation from the binary stream.
-   * @param ibs the input binary stream.
-   * @param res the relation to fill.
-   * @return the input binary stream used.
-   */
-  iBinstream& operator>> (iBinstream &ibs, Relation &res);
+//   /**
+//    * Inputs the relation from the binary stream.
+//    * @param ibs the input binary stream.
+//    * @param res the relation to fill.
+//    * @return the input binary stream used.
+//    */
+//   iBinstream& operator>> (iBinstream &ibs, Relation &res);
 
   
-  /**
-   * Outputs the relation to the binary stream.
-   * @param obs the output binary stream.
-   * @param res the relation.
-   * @return the output binary stream used.
-   */
-  oBinstream& operator<< (oBinstream &obs, const Relation &res);
+//   /**
+//    * Outputs the relation to the binary stream.
+//    * @param obs the output binary stream.
+//    * @param res the relation.
+//    * @return the output binary stream used.
+//    */
+//   oBinstream& operator<< (oBinstream &obs, const Relation &res);
 
 }
 

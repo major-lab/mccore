@@ -73,6 +73,12 @@ namespace mccore
       sum_flow (other.sum_flow)
   { }
     
+
+  Relation*
+  Relation::clone () const
+  {
+    return new Relation (*this);
+  }
   
   // OPERATORS ------------------------------------------------------------
   
@@ -875,7 +881,7 @@ namespace mccore
   
 
   ostream&
-  Relation::output (ostream &os) const
+  Relation::write (ostream &os) const
   {
     if (ref!=0 && res!=0) {
       os << "{" 
@@ -1207,11 +1213,11 @@ namespace mccore
 
   ostream& operator<< (ostream &os, const Relation &r)
   {
-    return r.output (os);
+    return r.write (os);
   }
 
   ostream& operator<< (ostream &os, const Relation *r)
   {
-    return r->output (os);
+    return r->write (os);
   }
 }

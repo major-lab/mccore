@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.43 $
-// $Id: Residue.cc,v 1.43 2004-07-12 20:16:15 thibaup Exp $
+// $Revision: 1.44 $
+// $Id: Residue.cc,v 1.44 2004-08-17 18:30:37 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -260,8 +260,14 @@ namespace mccore {
 
     this->finalize ();
     this->setReferential (HomogeneousTransfo::identity);
+
+    // every atoms are present: inhibits warning
+    int vlv = gOut.getVerboseLevel ();
+    gOut.setVerboseLevel (2);
     this->addHydrogens ();
     this->addLonePairs ();
+    gOut.setVerboseLevel (vlv);
+    
   }
 
   void
