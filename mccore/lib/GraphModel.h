@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:31:01 2004
-// $Revision: 1.1.2.5 $
+// $Revision: 1.1.2.6 $
 // 
 // This file is part of mccore.
 // 
@@ -27,8 +27,9 @@
 #define _mccore_GraphModel_h_
 
 #include "AbstractModel.h"
+#include "Algo.h"
 #include "Residue.h"
-#include "UndirectedGraph.h"
+#include "OrientedGraph.h"
 
 
 
@@ -45,11 +46,11 @@ namespace mccore
    * iterators.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.h,v 1.1.2.5 2004-12-27 01:37:55 larosem Exp $
+   * @version $Id: GraphModel.h,v 1.1.2.6 2004-12-27 04:25:08 larosem Exp $
    */
-  class GraphModel : public AbstractModel, public UndirectedGraph < Residue*, Relation*, float, float, less_deref< Residue > >
+  class GraphModel : public AbstractModel, public OrientedGraph< Residue*, Relation*, float, float, less_deref< Residue > >
   {
-    typedef UndirectedGraph< Residue*, Relation*, float, float, less_deref< Residue > > graphsuper;
+    typedef OrientedGraph< Residue*, Relation*, float, float, less_deref< Residue > > graphsuper;
     
   public:
 
@@ -181,16 +182,58 @@ namespace mccore
     virtual const_iterator end () const
     { return const_iterator (vertices.end()); }
 
+    /**
+     * Tells if the GraphModel was annotated.
+     * @return the annotated flag.
+     */
+    bool isAnnotated () const { return annotated; }
 
     // METHODS -------------------------------------------------------------
 
+  private:
+
     /**
-     * Inserts a residue at the end.
+     * Inserts a vertex in the graph.  Private, use the reference insert
+     * method.
+     * @param v the vertex to insert.
+     * @return true if the element was inserted, false if already present.
+     */
+    virtual bool insert (const Residue *&v) { return false; }
+
+    /**
+     * Inserts a vertex and its weight in the graph.  Private, use the
+     * reference insert method.
+     * @param v the vertex to insert.
+     * @param w the vertex weight.
+     * @return true if the element was inserted, false if already present.
+     */
+    virtual bool insert (const Residue *&v, const float &w) { return false; }
+
+  public:
+    
+    /**
+     * Inserts a residue at the end.  The annotated flag is turned to false.
      * @param res the residue to insert.
      * @return the position where the residue was inserted.
      */
-    virtual iterator insert (const Residue &res);
-
+    virtual iterator insert (const Residue &res)
+    {
+      return insert (res, 0);
+    }
+    
+    /**
+     * Inserts a residue at the end.  The annotated flag is turned to false.
+     * @param res the residue to insert.
+     * @param w the Residue weight.
+     * @return the position where the residue was inserted.
+     */
+    virtual iterator insert (const Residue &res, float w)
+    {
+      annotated = false;
+      graphsuper::insert (res.clone (), w);
+      return end ();
+    }
+      
     /**
      * Inserts the residue range before pos.
      * @param pos the iterator where the residue will be placed.
@@ -200,6 +243,7 @@ namespace mccore
     template <class InputIterator>
     void insert (InputIterator f, InputIterator l)
     {
+      annotated = false;
       graphsuper::insertRange (f, l);
     }
 
@@ -238,7 +282,8 @@ namespace mccore
     }
     
     /**
-     * Sorts the model according to the Residue::operator<
+     * Sorts the model according to the Residue::operator<.  If the
+     * GraphModel is already annotated, it rearrange the adjacency graph.
      */ 
     virtual void sort ();
     
@@ -248,7 +293,7 @@ namespace mccore
      */
     virtual size_type size () const
     {
-      return UndirectedGraph< Residue*, Relation*, float, float, less_deref < Residue > >::size ();
+      return graphsuper::size ();
     }
 
     /**
@@ -257,7 +302,7 @@ namespace mccore
      */
     virtual bool empty () const
     {
-      return UndirectedGraph< Residue*, Relation*, float, float, less_deref < Residue > >::empty ();
+      return graphsuper::empty ();
     }
 
     /**
@@ -266,9 +311,18 @@ namespace mccore
     virtual void clear ();
 
     /**
-     * Annotates the GraphModel.  It builds edge in the graph.
+     * Annotates the GraphModel.  It builds edges in the graph.
      */
     void annotate ();
+
+    /**
+     * Reannotates the GraphModel.
+     */
+    void reannotate ()
+    {
+      annotated = false;
+      annotate ();
+    }
     
     // I/O  -----------------------------------------------------------------
 
@@ -301,6 +355,7 @@ namespace mccore
     virtual iBinstream& input (iBinstream &ibs);
 
   };
+  
 }
     
 #endif

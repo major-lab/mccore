@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.1.2.3 $
-// $Id: GraphModel.cc,v 1.1.2.3 2004-12-27 01:37:53 larosem Exp $
+// $Revision: 1.1.2.4 $
+// $Id: GraphModel.cc,v 1.1.2.4 2004-12-27 04:25:04 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -28,12 +28,17 @@
 #include <config.h>
 #endif
 
+#include <algorithm>
 #include <set>
 #include <vector>
 
+#include "Binstream.h"
 #include "GraphModel.h"
+#include "Messagestream.h"
+#include "Pdbstream.h"
 #include "Relation.h"
 #include "Residue.h"
+#include "ResidueFactoryMethod.h"
 
 using namespace std;
 
@@ -107,24 +112,108 @@ namespace mccore
   void
   GraphModel::sort ()
   {
+    vector< Residue* > orig = vertices;
+    vector< float > origWeights = vertexWeights;
+    graphsuper::size_type vIndex;
+    graphsuper::size_type *corresp;
+    EV2ELabel origEdgeMap = ev2elabel;
+    EV2ELabel::iterator evIt;
+
+    std::sort (vertices.begin (), vertices.end (), less_deref< Residue > ());
+    corresp = new graphsuper::size_type[size ()];
+    for (vIndex = 0; vIndex < size () - 1; ++vIndex)
+      {
+	graphsuper::size_type origIndex;
+
+	origIndex = v2vlabel.find (&orig[vIndex])->second;
+	corresp[origIndex] = vIndex;
+	vertexWeights[vIndex] = origWeights[origIndex];
+      }	
+    rebuildV2VLabel ();
+
+    ev2elabel.clear ();
+    for (evIt = origEdgeMap.begin (); origEdgeMap.end () != evIt; ++evIt)
+      {
+	const EndVertices &endVertices = evIt->first;
+	EndVertices ev (corresp[endVertices.getHeadLabel ()],
+			corresp[endVertices.getTailLabel ()]);
+
+	ev2elabel.insert (make_pair (ev, evIt->second));
+      }
+    delete[] corresp;
   }
   
     
   void
   GraphModel::clear ()
   {
+    graphsuper::iterator vIt;
+    edge_iterator eIt;
+    
+    for (vIt = graphsuper::begin (); graphsuper::end () != vIt; ++vIt)
+      {
+	delete *vIt;
+      }
+    for (eIt = edge_begin (); edge_end () != eIt; ++eIt)
+      {
+	delete *eIt;
+      }
+    graphsuper::clear ();
+    annotated = false;
   }
 
 
   void
   GraphModel::annotate ()
   {
+    if (! annotated)
+      {
+	edge_iterator eIt;
+	vector< pair< AbstractModel::iterator, AbstractModel::iterator > > contacts;
+	vector< pair< AbstractModel::iterator, AbstractModel::iterator > >::iterator l;
+
+	for (eIt = edge_begin (); edge_end () != eIt; ++eIt)
+	  {
+	    delete *eIt;
+	  }
+	edges.clear ();
+	ev2elabel.clear ();
+	edgeWeights.clear ();
+
+	removeWater ();
+	addHLP ();
+	
+	contacts = Algo::extractContacts (begin (), end (), 5.0);
+	gErr (3) << "Found " << contacts.size () << " possible contacts " << endl;
+  
+	for (l = contacts.begin (); contacts.end () != l; ++l)
+	  {
+	    Residue *i = &*l->first;
+	    Residue *j = &*l->second;
+	    Relation *rel = new Relation (i, j);
+
+	    if (rel->annotate ())
+	      {
+		Relation invert = rel->invert ();
+	    
+		connect (i, j, rel, 0);
+		connect (j, i, invert.clone (), 0);
+	      }
+	    else
+	      {
+		delete rel;
+	      }
+	  }
+	annotated = true;
+      }
   }
     
 
   ostream&
   GraphModel::output (ostream &os) const
   {
+    os << "[GraphModel]" << endl;
+    Graph< Residue*, Relation*, float, float, less_deref< Residue > >::write (os);
     return os;
   }
 
@@ -132,6 +221,23 @@ namespace mccore
   iPdbstream&
   GraphModel::input (iPdbstream &ips)
   {
+    int currNb = ips.getModelNb ();
+
+    clear ();
+    while (! (ips.eof ()) && currNb == ips.getModelNb ())
+      {
+	Residue *res = getResidueFM ()->createResidue ();
+	
+	ips >> *res;
+ 	if (0 != res->size ())
+	  {
+	    graphsuper::insert (res, 0); 
+	  }
+	else
+	  {
+	    delete res;
+	  }
+      }    
     return ips;
   }
   
@@ -139,6 +245,11 @@ namespace mccore
   oBinstream&
   GraphModel::output (oBinstream &obs) const
   {
+    graphsuper::const_iterator cit;
+    
+    obs << size ();
+    for (cit = graphsuper::begin (); cit != graphsuper::end (); ++cit)
+      obs << **cit;
     return obs;
   }
   
@@ -146,6 +257,17 @@ namespace mccore
   iBinstream&
   GraphModel::input (iBinstream &ibs)
   {
+    GraphModel::size_type sz;
+
+    clear ();
+    ibs >> sz;
+    for (; sz > 0; --sz)
+      {
+	Residue *res = getResidueFM ()->createResidue ();
+	
+	ibs >> *res;
+	graphsuper::insert (res, 0); 
+      }
     return ibs;
   }
   
