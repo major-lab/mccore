@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.43 $
-# $Id: Makefile.in,v 1.43 2004-01-09 21:47:03 gendrop Exp $
+# $Revision: 1.44 $
+# $Id: Makefile.in,v 1.44 2004-03-02 20:37:17 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -118,10 +118,10 @@ SOURCES = Binstream.cc \
           RiboseEstimator.cc
 
 
-HEADERS = $(SOURCES:.cc=.h) Algo.h Path.h AdjacencyMatrix.h \
-AbstractGraph.h Graph.h ArrayGraph.h UndirectedArrayGraph.h GraphAlgo.h \
-UndirectedGraph.h MaximumFlowGraph.h \
-SymmetricalMatrix.h SymmetricalMatrix.cc stlio.h
+HEADERS = $(SOURCES:.cc=.h) AbstractGraph.h AdjacencyMatrix.h Algo.h \
+ArrayGraph.h Graph.h GraphAlgo.h MaximumFlowGraph.h Path.h SocketCommand.h \
+SymmetricalMatrix.h SymmetricalMatrix.cc UndirectedArrayGraph.h \
+sBinstream.h stlio.h
 
 
 OBJECTS = $(SOURCES:.cc=.o)
