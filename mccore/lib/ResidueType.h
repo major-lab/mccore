@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:26:33 2003
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 // 
 //  This file is part of mccore.
 //  
@@ -47,7 +47,7 @@ namespace mccore {
    *   - The nature of a type (nucleic acid (pur/pyr) or amino acid)<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueType.h,v 1.14 2003-07-31 18:09:45 gendrop Exp $
+   * @version $Id: ResidueType.h,v 1.15 2003-07-31 20:42:13 gendrop Exp $
    */
   class ResidueType
   {    
@@ -154,10 +154,18 @@ namespace mccore {
     virtual operator const char* () const { return type; }
  
     /**
-     * Converts the residuetype into a string.
+     * Converts the residuetype into a long string.
      * @return the string.
      */
     virtual const char* toLongString () const { return longtype; }
+
+    /**
+     * Converts the residuetype into a PDB standard string.
+     * @return the string.
+     */
+    virtual const char* toPdbString () const {       
+      return (isAminoAcid ()?longtype:type); 
+    }
 
     /**
      * Identifies the type of residue stored in a string.

@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Patrick Gendron
-// Last Modified On : Thu Jul 31 14:08:50 2003
-// Update Count     : 278
+// Last Modified On : Thu Jul 31 16:42:08 2003
+// Update Count     : 291
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -408,12 +408,25 @@ namespace mccore {
     setf (ios::left, ios::adjustfield);
     *this << setw (40) << header.getClassification ().c_str();
 
-    *this << setw (13) << header.getDate ().c_str();
+    *this << setw (9) << header.getDate ().c_str();
     *this << "   ";
     *this << setw (4) << header.getPdbId ().c_str();
-    pad (4);
+    pad (14);
     *this << endl;
 
+    setf (ios::left, ios::adjustfield);
+    *this << setw (6) << "EXPDTA";
+    setf (ios::right, ios::adjustfield);
+    *this << "    " << "THEORETICAL MODEL";
+    pad (53);
+    *this << endl;
+    
+    setf (ios::left, ios::adjustfield);
+    *this << setw (6) << "AUTHOR";
+    setf (ios::right, ios::adjustfield);
+    gethostname (line, 80);
+    *this << "    " << getenv ("LOGNAME") << '@' << line << endl;
+   
     if (header.getTitle () != "") {
       *this << setw (6) << "TITLE";
       *this << "    ";
@@ -437,7 +450,7 @@ namespace mccore {
     *this << setw (3) << k;
     *this << " ";
     setf (ios::left, ios::adjustfield);
-    *this << setw (71) << rem;
+    *this << setw (69) << rem;
     *this << endl;
   }
 
@@ -474,7 +487,7 @@ namespace mccore {
     *this << setw (5) << n++;
     *this << "      ";  // EMPTY SPACE.
     setf (ios::right, ios::adjustfield);
-    *this << setw (3) << (const char*)*rtype;
+    *this << setw (3) << rtype->toPdbString ();
     *this << ' ';
     *this << rid->getChainId ();
     setf (ios::right, ios::adjustfield);
@@ -526,7 +539,7 @@ namespace mccore {
     *this << ' ';  // ALTLOC
     
     setf (ios::right, ios::adjustfield);
-    *this << setw (3) << (const char*)*rtype;
+    *this << setw (3) << rtype->toPdbString ();
 
     *this << ' ';
 
@@ -564,8 +577,7 @@ namespace mccore {
     setResidueType (r.getType ());
     setResId (r.getResId ());
     
-    //    for (Residue::const_iterator i=r.begin (atomset->clone ()); i!=r.end (); ++i) {
-    for (Residue::const_iterator i=r.begin (); i!=r.end (); ++i) {
+    for (Residue::const_iterator i=r.begin (atomset->clone ()); i!=r.end (); ++i) {
       *this << *i << endl;
     }
 

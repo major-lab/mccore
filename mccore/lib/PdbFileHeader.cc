@@ -71,7 +71,7 @@ namespace mccore {
     if (month==11) date += "DEC";
     date += "-";
     sprintf (t, "%04d", year);
-    date += string (t);
+    date += string (t+2);
   }
 
 
