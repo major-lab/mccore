@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.1.4.1 $
-// $Id: RnamlWriter.h,v 1.1.4.1 2003-10-28 01:54:11 larosem Exp $
+// $Revision: 1.1.4.2 $
+// $Id: RnamlWriter.h,v 1.1.4.2 2003-10-30 21:26:10 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -38,105 +38,98 @@ namespace rnaml
   class Rnaml;
 }
 
-
-
-namespace mccore
-{
-  class Atom;
-  class Residue;
-  class Model;
-  class Molecule;
+class CAtom;
+class AbstractResidue;
+class Model;
+class Molecule;
   
 
+
+/**
+ * @short Writer for mccore objects to rnaml.
+ *
+ * This class writes the mccore objects into a stream.  The objects are
+ * transformed into rnamlObjects, then outputted to the stream.
+ *
+ * @author Martin Larose (<larosem@iro.umontreal.ca>).
+ */
+class RnamlWriter
+{
+  /**
+   * The output stream.
+   */
+  FILE *of;
+  
+ public:
+  
+  // LIFECYCLE ------------------------------------------------------------
   
   /**
-   * @short Writer for mccore objects to rnaml.
-   *
-   * This class writes the mccore objects into a stream.  The objects are
-   * transformed into rnamlObjects, then outputted to the stream.
-   *
-   * @author Martin Larose (<larosem@iro.umontreal.ca>).
+   * Initializes the object.
+   * @param f the output stream.
    */
-  class RnamlWriter
-  {
-    /**
-     * The output stream.
-     */
-    FILE *of;
-    
-  public:
-    
-    // LIFECYCLE ------------------------------------------------------------
-    
-    /**
-     * Initializes the object.
-     * @param f the output stream.
-     */
-    RnamlWriter (FILE *f) : of (f) { }
-    
-    /**
-     * Destroys the object.
-     */
-    virtual ~RnamlWriter ();
-    
-    // OPERATORS ------------------------------------------------------------
-    
-    // ACCESS ---------------------------------------------------------------
-    
-    // METHODS --------------------------------------------------------------
+  RnamlWriter (FILE *f) : of (f) { }
 
-    /**
-     * Transforms a mccore Molecule to a rnaml Molecule.
-     * @param molecule the mccore Molecule.
-     * @return the rnaml Molecule.
-     */
-    static rnaml::Molecule* toRnaml (const mccore::Molecule &molecule);
-    
-    // I/O  -----------------------------------------------------------------
+  /**
+   * Initializes the writer with a file name.
+   * @param name the file name.
+   */
+  RnamlWriter (const char *name);
+  
+  /**
+   * Destroys the object.
+   */
+  virtual ~RnamlWriter ();
+  
+  // OPERATORS ------------------------------------------------------------
+  
+  // ACCESS ---------------------------------------------------------------
+  
+  // METHODS --------------------------------------------------------------
+  
+  /**
+   * Transforms a mccore CAtom to a rnaml Atom.
+   * @param atom the mccore CAtom.
+   * @return the rnaml Atom.
+   */
+  static rnaml::Atom* toRnaml (const CAtom &atom);
+  
+  /**
+   * Transforms a mccore AbstractResidue to a rnaml Base.
+   * @param residue the mccore AbstractResidue.
+   * @return the rnaml Base.
+   */
+  static rnaml::Base* toRnaml (const AbstractResidue &residue);
+  
+  /**
+   * Transforms a mccore Model to a rnaml Model.
+   * @param model the mccore Model.
+   * @return the rnaml Model.
+   */
+  static rnaml::Model* toRnaml (const Model &model);
+  
+  /**
+   * Transforms a mccore Molecule to a rnaml Molecule.
+   * @param molecule the mccore Molecule.
+   * @return the rnaml Molecule.
+   */
+  static rnaml::Molecule* toRnaml (const Molecule &molecule);
 
-  private:
-    
-    /**
-     * Writes the atom in rnaml.
-     * @param atom the Atom to write.
-     */
-    void write (const Atom &atom);
+  /**
+   * Close the stream. Once a stream has been closed, further write ()
+   * invocations will do nothing. Closing a previously-closed stream,
+   * however, has no effect.
+   */
+  void close ();
+  
+  // I/O  -----------------------------------------------------------------
+  
+  /**
+   * Writes the molecule wrapped in a rnaml document.
+   * @param molecule the Molecule to write.
+   */
+  void write (const Molecule &molecule);
 
-    /**
-     * Writes the residue in rnaml.
-     * @param residue the Residue to write.
-     */
-    void write (const Residue &residue);
-    
-    /**
-     * Writes the model in rnaml.
-     * @param model the Model to write.
-     */
-    void write (const Model &model);
-
-    /**
-     * Writes the molecule in rnaml.
-     * @param molecule the Molecule to write.
-     */
-    void write (const Molecule &molecule);
-
-  public:
-    
-    /**
-     * Writes the molecule wrapped in a rnaml document.
-     * @param molecule the Molecule to write.
-     */
-    void write (const mccore::Molecule &molecule);
-
-  private:
-    
-    /**
-     * Writes a rnaml object to the stream.
-     * @param rnaml the Rnaml object to write.
-     */
-    void write (const rnaml::Rnaml &rnaml);
-
-  };
-}
+};
 
 #endif

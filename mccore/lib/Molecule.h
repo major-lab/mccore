@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:36 2003
-// $Revision: 1.1.4.2 $
+// $Revision: 1.1.4.3 $
 // 
 // This file is part of mccore.
 // 
@@ -44,7 +44,7 @@ class oPdbstream;
  * This is a collection of mccore Models in a simple STL list.
  *
  * @author Martin Larose (<larosem@iro.umontreal.ca>)
- * @version $Id: Molecule.h,v 1.1.4.2 2003-10-28 20:59:32 larosem Exp $
+ * @version $Id: Molecule.h,v 1.1.4.3 2003-10-30 21:25:58 larosem Exp $
  */
 class Molecule : public list< Model* >
 {
@@ -95,7 +95,7 @@ class Molecule : public list< Model* >
    * @param key the key.
    * @return the value of the key.
    */
-  char* getProperty (const char *key);
+  const char* getProperty (const char *key) const;
   
   /**
    * Sets the key value pair.

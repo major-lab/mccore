@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:35 2003
-// $Revision: 1.2.2.2 $
-// $Id: Molecule.cc,v 1.2.2.2 2003-10-28 20:59:28 larosem Exp $
+// $Revision: 1.2.2.3 $
+// $Id: Molecule.cc,v 1.2.2.3 2003-10-30 21:25:55 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -95,12 +95,12 @@ Molecule::operator= (const Molecule &right)
 
 
 
-char*
-Molecule::getProperty (const char *key)
+const char*
+Molecule::getProperty (const char *key) const
 {
-  map< const char*, char* >::iterator it;
+  map< const char*, char* >::const_iterator cit;
   
-  return properties.end () != (it = properties.find (key)) ? it->second : 0;
+  return properties.end () != (cit = properties.find (key)) ? cit->second : 0;
 }
 
 

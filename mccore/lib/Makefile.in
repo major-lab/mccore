@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.28.8.2 $
-# $Id: Makefile.in,v 1.28.8.2 2003-10-28 20:59:25 larosem Exp $
+# $Revision: 1.28.8.3 $
+# $Id: Makefile.in,v 1.28.8.3 2003-10-30 21:25:53 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -72,6 +72,7 @@ SOURCES = zfstream.cc \
 	  ServerSocket.cc \
 	  Binstream.cc \
 	  Pdbstream.cc \
+	  RnamlReader.cc \
 	  RnamlWriter.cc \
 	  CException.cc \
 \
