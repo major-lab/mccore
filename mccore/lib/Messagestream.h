@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Sep  5 17:06:24 2001
 // Last Modified By : Patrick Gendron
-// Last Modified On : Wed Jul  9 11:50:34 2003
-// Update Count     : 13
+// Last Modified On : Thu Jul 31 10:14:18 2003
+// Update Count     : 16
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -47,6 +47,13 @@ extern Messagestream &gOut;
  * When setting the verbose level to x, only messages of priority
  * inferior or equal to x will be printed.
  * 
+ * 0 : Program output
+ * 1 : Program errors
+ * 2 : Library errors
+ * 3 : verbose
+ * 4 : very verbose
+ * 5 : debug
+ *
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class Messagestream : public ostream
