@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // AtomTypeStore.h
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 12:30:39 2003
-// $Revision: 1.13 $
+// $Revision: 1.14 $
 // 
 //  This file is part of mccore.
 //  
@@ -35,15 +35,16 @@ using namespace std;
 
 
 namespace mccore
-{ 
+{
+  class ResidueType;
 
-  class Residue;
+  
 
   /**
    * @short Repository of atomtypes.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: AtomTypeStore.h,v 1.13 2005-01-03 22:51:28 larosem Exp $
+   * @version $Id: AtomTypeStore.h,v 1.14 2005-03-30 18:57:13 larosem Exp $
    */
   class AtomTypeStore
   {
