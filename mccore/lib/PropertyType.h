@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // PropertyType.h
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 // 
 // This file is part of mccore.
 // 
@@ -47,7 +47,7 @@ namespace mccore
    * General property types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: PropertyType.h,v 1.14 2005-01-07 17:09:44 thibaup Exp $
+   * @version $Id: PropertyType.h,v 1.15 2005-01-15 02:17:39 larosem Exp $
    */
   class PropertyType
   {
@@ -204,8 +204,9 @@ namespace mccore
     static const PropertyType* invert (const PropertyType* t);
     
     /**
-     * General is method for use when both objects to compare are of
-     * unknown type.
+     * Tests whether the type this is same as or derived from t.
+     * @param t the base type class.
+     * @return true if this is same as or derived from t.
      */
     virtual bool is (const PropertyType *t) const
     {
@@ -213,7 +214,7 @@ namespace mccore
     }
     
     /**
-     * Tests whether the type t is a ResidueType or derived class.
+     * Tests whether the type t is a PropertyType or derived class.
      * @param the type to test.
      * @return the truth value of the test.
      */
