@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:45:21 2003
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 // 
 //  This file is part of mccore.
 //  
@@ -147,7 +147,7 @@ namespace mccore {
      */
     ResId operator+ (int offset) const
     {
-      return ResId (no + 1, chain, iCode);
+      return ResId (chain, no + 1, iCode);
     }
 
     /**
@@ -157,7 +157,7 @@ namespace mccore {
      */
     ResId operator- (int offset) const
     {
-      return ResId (no + 1, chain, iCode);
+      return ResId (chain, no - 1, iCode);
     }
 
 
