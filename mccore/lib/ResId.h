@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:45:21 2003
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 // 
 //  This file is part of mccore.
 //  
@@ -70,7 +70,7 @@ namespace mccore {
      * Initializes the object.
      */
     ResId (int n = -1) 
-      : chain (' '), no (n), iCode (i) {}
+      : chain (' '), no (n), iCode (' ') {}
 
     /**
      * Initializes the object.
