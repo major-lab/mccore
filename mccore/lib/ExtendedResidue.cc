@@ -3,7 +3,7 @@
 // Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 // 
 //  This file is part of mccore.
 //  
@@ -281,44 +281,48 @@ namespace mccore {
     Vector3D *v1, *v2, *v3;
 
     if (!type || empty ()) return;
+
+    if (!getType ()->isPhosphate ()) {
     
-    if (getType ()->isNucleicAcid ()) {
-      removeOptionals ();
-      addHydrogens ();
-      addLonePairs ();
-    }
+      if (getType ()->isNucleicAcid ()) {
+	removeOptionals ();
+	addHydrogens ();
+	addLonePairs ();
+      }
 
-    /* Compute the location of the pseudo atoms. */
-    if (((v1 = get (AtomType::aN9)) != 0 
-	 && (v2 = get (AtomType::aC8)) != 0 
-	 && (v3 = get (AtomType::aC4)) != 0)
-	|| ((v1 = get (AtomType::aN1)) != 0 
-	    && (v2 = get (AtomType::aC6)) != 0 
-	    && (v3 = get (AtomType::aC2)) != 0)) {
-      Vector3D a, b, y, z;
+      /* Compute the location of the pseudo atoms. */
+      if (((v1 = get (AtomType::aN9)) != 0 
+	   && (v2 = get (AtomType::aC8)) != 0 
+	   && (v3 = get (AtomType::aC4)) != 0)
+	  || ((v1 = get (AtomType::aN1)) != 0 
+	      && (v2 = get (AtomType::aC6)) != 0 
+	      && (v3 = get (AtomType::aC2)) != 0)) {
+	Vector3D a, b, y, z;
       
-      a = (*v2-*v1).normalize();
-      b = (*v3-*v1).normalize();
-      y = *v1 + (a + b).normalize();
-      z = *v1 + (b.cross(a)).normalize();
-      
-      insert (Atom (y, AtomType::aPSY));
-      insert (Atom (z, AtomType::aPSZ));
-
-    } else if (type->isAminoAcid ()) {
-      if ((v1 = get (AtomType::aCA)) != 0 &&
-	  (v2 = get (AtomType::aN)) != 0 &&
-	  (v3 = get (AtomType::aC)) != 0) {
-	Vector3D a, b, z;
-	a = (*v2 - *v1).normalize();
-	b = (*v3 - *v1).normalize();
+	a = (*v2-*v1).normalize();
+	b = (*v3-*v1).normalize();
+	y = *v1 + (a + b).normalize();
 	z = *v1 + (b.cross(a)).normalize();
+      
+	insert (Atom (y, AtomType::aPSY));
+	insert (Atom (z, AtomType::aPSZ));
+
+      } else if (type->isAminoAcid ()) {
+	if ((v1 = get (AtomType::aCA)) != 0 &&
+	    (v2 = get (AtomType::aN)) != 0 &&
+	    (v3 = get (AtomType::aC)) != 0) {
+	  Vector3D a, b, z;
+	  a = (*v2 - *v1).normalize();
+	  b = (*v3 - *v1).normalize();
+	  z = *v1 + (b.cross(a)).normalize();
 	
-	insert (Atom(z, AtomType::aPSAZ));
-      } else {
-	gOut (4) << "Residue " << getResId () << "-" << getType()
-		 << " is missing one or more critical atoms." << endl;	
-      }	
+	  insert (Atom(z, AtomType::aPSAZ));
+	} else {
+	  gOut (4) << "Residue " << getResId () << "-" << getType()
+		   << " is missing one or more critical atoms." << endl;	
+	}	
+      }
+
     }
     
     /* Set the pivots */
