@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Thu May 31 08:17:56 2001
-// $Revision: 1.9 $
-// $Id: PairingPattern.cc,v 1.9 2004-09-17 22:06:15 larosem Exp $
+// $Revision: 1.10 $
+// $Id: PairingPattern.cc,v 1.10 2004-09-19 03:37:22 larosem Exp $
 
 
 #ifdef HAVE_CONFIG_H
@@ -85,7 +85,8 @@ namespace mccore {
 
     // One direction...
 
-    gOut (3) << "Testing " << *this << endl;
+    gOut (3) << "Testing " << *this << endl
+	     << "  " << *ra->getType () << " " << *rb->getType () << endl;
 
     if (ra->getType ()->is (typeA) && rb->getType ()->is (typeB))
       {
@@ -101,12 +102,11 @@ namespace mccore {
 		
 		for (k = hbf.rbegin (); k != hbf.rend (); ++k)
 		  {
-		    if ((k->hbond.getDonorResidue () == ra
-			 && '>' == descIt->direction
-			 && descIt->hbond == k->hbond)
-			|| (k->hbond.getDonorResidue () == rb
-			    && '<' == descIt->direction
-			    && descIt->hbond == k->hbond))
+		    if (((k->hbond.getDonorResidue () == ra
+			  && '>' == descIt->direction)
+			 || (k->hbond.getDonorResidue () == rb
+			     && '<' == descIt->direction))
+			&& descIt->hbond == k->hbond)
 		      {
 			found = true;
 			break;
@@ -124,7 +124,7 @@ namespace mccore {
 		      gOut (3) << '>';
 		    else
 		      gOut (3) << '<';
-		    gOut (3) << (HBond) k->hbond << " " << k->flow << endl;
+		    gOut (3) << k->hbond << " " << k->flow << endl;
 		  }
 	      }
 	  }
@@ -141,7 +141,7 @@ namespace mccore {
 
 	for (descIt = descriptions.begin (); descriptions.end () != descIt; ++descIt)
 	  {
-	    gOut (0) << descIt->direction << descIt->hbond << "   ";
+	    gOut (3) << descIt->direction << descIt->hbond << "   ";
 	    if (! descIt->ignored)
 	      {
 		list< HBondFlow >::reverse_iterator k;
@@ -149,11 +149,11 @@ namespace mccore {
 		
 		for (k = hbf.rbegin (); k != hbf.rend (); ++k)
 		  {
-		    if ((k->hbond.getDonorResidue () == rb
-			 &&  '>' == descIt->direction
-			 && descIt->hbond == k->hbond)
-			|| (k->hbond.getDonorResidue () == ra
-			    && '<' == descIt->direction))
+		    if (((k->hbond.getDonorResidue () == rb
+			  &&  '>' == descIt->direction)
+			 || (k->hbond.getDonorResidue () == ra
+			     && '<' == descIt->direction))
+			&& descIt->hbond == k->hbond)
 		      {
 			found = true;
 			break;
@@ -171,7 +171,7 @@ namespace mccore {
 		      gOut (3) << '>';
 		    else
 		      gOut (3) << '<';
-		    gOut (3) << (HBond) k->hbond << " " << k->flow << endl;
+		    gOut (3) << k->hbond << " " << k->flow << endl;
 		  }
 	      }
 	  }
@@ -754,7 +754,7 @@ namespace mccore {
   ostream& 
   PairingPattern::output (ostream &os) const
   {
-    os << name << ": " << typeA << " " << typeB << endl;
+    os << name << ": " << *typeA << " " << *typeB << endl;
     for_each (descriptions.begin (), descriptions.end (), Print< const PairingPattern::Description > (os));
     return os;
   }

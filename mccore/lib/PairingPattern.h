@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Thu May 31 08:17:56 2001
-// $Revision: 1.5 $
-// $Id: PairingPattern.h,v 1.5 2004-09-15 22:38:14 larosem Exp $
+// $Revision: 1.6 $
+// $Id: PairingPattern.h,v 1.6 2004-09-19 03:37:26 larosem Exp $
 // 
 //  This file is part of mccore.
 //  
@@ -73,12 +73,6 @@ namespace mccore {
       public:
 
 	/**
-	 * Initializes the description.
-	 */
-	Description (bool i, char d, HBond &h)
-	  : ignored (i), direction (d), hbond (h) { }
-
-	/**
 	 * Indicates if the bond should be ignored.
 	 */
 	bool ignored;
@@ -90,6 +84,29 @@ namespace mccore {
 	char direction;
 	
 	HBond hbond;
+
+	/**
+	 * Initializes the description.
+	 */
+	Description (bool i, char d, HBond &h)
+	  : ignored (i), direction (d), hbond (h) { }
+
+	Description (const Description &other)
+	  : ignored (other.ignored), direction (other.direction), hbond (other.hbond)
+	{ }
+
+	~Description () { }
+
+	Description& operator= (const Description &other)
+	{
+	  if (this != &other)
+	    {
+	      ignored = other.ignored;
+	      direction = other.direction;
+	      hbond = other.hbond;
+	    }
+	  return *this;
+	}
       };
 
     private:
