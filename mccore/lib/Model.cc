@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Oct 25 11:19:59 2001
-// Update Count     : 2
+// Last Modified On : Thu Oct 25 11:27:39 2001
+// Update Count     : 3
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -248,8 +248,8 @@ Model::validate ()
   while (it != end ())
     {
       it->validate ();
-      if (it->getType ()->is_NucleicAcid ()
-	  || it->getType ()->is_AminoAcid ())
+      if (it->GetType ()->is_NucleicAcid ()
+	  || it->GetType ()->is_AminoAcid ())
 	++it;
       else
 	{
@@ -279,7 +279,7 @@ Model::removeAminoAcid ()
 
   while (modelIt != end ())
     {
-      if (modelIt->getType ()->is_AminoAcid ())
+      if (modelIt->GetType ()->is_AminoAcid ())
 	{
 	  delete &*modelIt;
 	  modelIt = erase (modelIt);
@@ -298,7 +298,7 @@ Model::removeNucleicAcid ()
 
   for (modelIt = begin (); modelIt != end ();)
     {
-      if (modelIt->getType ()->is_NucleicAcid ())
+      if (modelIt->GetType ()->is_NucleicAcid ())
 	{
 	  delete &*modelIt;
 	  modelIt = erase (modelIt);
@@ -317,7 +317,7 @@ Model::keepAminoAcid ()
 
   for (modelIt = begin (); modelIt != end ();)
     {
-      if (modelIt->getType ()->is_AminoAcid ())
+      if (modelIt->GetType ()->is_AminoAcid ())
 	++modelIt;
       else
 	{
@@ -336,7 +336,7 @@ Model::keepNucleicAcid ()
 
   for (modelIt = begin (); modelIt != end ();)
     {
-      if (modelIt->getType ()->is_NucleicAcid ())
+      if (modelIt->GetType ()->is_NucleicAcid ())
 	++modelIt;
       else
 	{

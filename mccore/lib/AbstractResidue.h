@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct 12 18:21:13 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Oct 25 11:15:34 2001
-// Update Count     : 2
+// Last Modified On : Thu Oct 25 11:27:27 2001
+// Update Count     : 3
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -598,7 +598,7 @@ public:
    * Gets the residue type.
    * @return the residue type.
    */
-  t_Residue* getType () const { return mType; }
+  t_Residue* GetType () const { return mType; }
 
   /**
    * Sets the residue type.
