@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:45:21 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 // 
 //  This file is part of mccore.
 //  
@@ -129,6 +129,26 @@ namespace mccore {
 	      || (chain == other.chain
 		  && no == other.no
 		  && iCode < other.iCode));
+    }
+
+    /**
+     * Calculate an id equal to this with its residue number incremented.
+     * @param offset the increment.
+     * @return the increment id.
+     */
+    ResId operator+ (int offset) const
+    {
+      return ResId (no + 1, chain, iCode);
+    }
+
+    /**
+     * Calculate an id equal to this with its residue number decremented.
+     * @param offset the decrement.
+     * @return the increment id.
+     */
+    ResId operator- (int offset) const
+    {
+      return ResId (no + 1, chain, iCode);
     }
 
     /**
