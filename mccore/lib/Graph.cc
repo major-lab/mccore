@@ -1,10 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Graph.cc
-// Copyright � 2002-03 Laboratoire de Biologie Informatique et Th�orique.
-// Author           : Patrick Gendron
-// Created On       : Mon Feb 18 16:07:09 2002
-// $Revision: 1.12 $
-// $Id: Graph.cc,v 1.12 2003-12-23 14:52:11 larosem Exp $
+// Copyright © 2004 Laboratoire de Biologie Informatique et Théorique
+//                  Université de Montréal
+// Author           : Martin Larose
+// Created On       : Fri Dec 10 00:05:19 2004
+// $Revision: 1.12.2.1 $
+// $Id: Graph.cc,v 1.12.2.1 2004-12-10 05:15:48 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -28,3 +29,25 @@
 #endif
 
 #include "Graph.h"
+
+
+namespace mccore
+{
+
+  ostream&
+  Graph::write (ostream& os) const
+  {
+    return os;
+  }
+}
+
+namespace std
+{
+  using namespace mccore;
+
+  ostream&
+  operator<< (ostream& os, const Graph& obj)
+  {
+    return obj.write (os);
+  }
+}
