@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Tue Mar 11 13:56:50 2003
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -22,7 +22,7 @@ namespace mccore {
   {
     AtomType *t;
 
-    stringType["null"] = AtomType::aNull = new AtomType ("null");
+    stringType[""] = AtomType::aNull = new AtomType ("");
     stringType["C1*"] = AtomType::aC1p = new AC1p ("C1*");   
     stringType["C2*"] = AtomType::aC2p = new AC2p ("C2*");
     stringType["C3*"] = AtomType::aC3p = new AC3p ("C3*");

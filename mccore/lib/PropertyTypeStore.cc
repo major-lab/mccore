@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:42:25 2003
-// $Revision: 1.7 $
-// $Id: PropertyTypeStore.cc,v 1.7 2004-08-26 15:21:14 thibaup Exp $
+// $Revision: 1.8 $
+// $Id: PropertyTypeStore.cc,v 1.8 2004-08-26 20:18:06 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -40,7 +40,7 @@ namespace mccore {
 
   PropertyTypeStore::PropertyTypeStore () 
   {
-    stringType["null"] = PropertyType::pNull = new PropertyType ("null");
+    stringType[""] = PropertyType::pNull = new PropertyType ("");
     stringType["theo"] = PropertyType::pTheo = new Theo ("theo");
     stringType["pairing"] = PropertyType::pPairing = new Pairing ("pairing");
     stringType["cis"] = PropertyType::pCis = new Cis ("cis");

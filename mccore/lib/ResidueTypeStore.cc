@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.12 $
+// $Revision: 1.13 $
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -21,7 +21,7 @@ namespace mccore {
   {
     ResidueType *t;
 
-    stringType["null"] = ResidueType::rNull = new ResidueType ("null", "null");
+    stringType[""] = ResidueType::rNull = new ResidueType ("", "");
     
     /** nucleic acids **/
     
