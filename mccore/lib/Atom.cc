@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Atom.cc
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:00:09 2003
-// $Revision: 1.10 $
-// $Id: Atom.cc,v 1.10 2005-01-03 22:49:43 larosem Exp $
+// $Revision: 1.11 $
+// $Id: Atom.cc,v 1.11 2005-01-05 01:41:23 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -35,36 +35,31 @@
 
 
 
-namespace mccore {
-
-
-  // LIFECYCLE ------------------------------------------------------------
-  
+namespace mccore
+{
   
   Atom::Atom ()
     : Vector3D (),
       type (AtomType::aNull)
-  {
-  }
+  { }
   
   
   Atom::Atom (float x, float y, float z, const AtomType *aType) 
     : Vector3D (x, y, z), 
       type (aType) 
-  {}
+  { }
   
   
   Atom::Atom (Vector3D aPoint, const AtomType *aType)
     : Vector3D (aPoint.getX(), aPoint.getY(), aPoint.getZ()),
       type (aType) 
-  {}
+  { }
   
   
   Atom::Atom (const Atom &other) 
     : Vector3D (other),
       type (other.type) 
-  {
-  }
+  { }
   
   
   Atom* 
@@ -72,9 +67,6 @@ namespace mccore {
   { 
     return new Atom (*this); 
   }
-  
-  
-  // OPERATORS ------------------------------------------------------------
   
   
   Atom& 
@@ -100,6 +92,7 @@ namespace mccore {
   { 
     return ! operator== (other); 
   }
+
   
   bool 
   Atom::operator< (const Atom &other) const
@@ -108,25 +101,13 @@ namespace mccore {
   }
   
   
-  // METHODS --------------------------------------------------------------
-  
   Vector3D 
   Atom::getColor () const 
   {
     return this->type->getColor ();
   }
   
-  // I/O -----------------------------------------------------------------------
-  
-  ostream&
-  operator<< (ostream &os, const Atom& atom)
-  {
-    return os << (const Vector3D&) atom 
-	      << ' ' << *atom.getType ();
-  }
-  
-  
-  
+
   iBinstream&
   operator>> (iBinstream &ibs, Atom &atom)
   {
@@ -140,7 +121,6 @@ namespace mccore {
   }
   
   
-  
   oBinstream&
   operator<< (oBinstream &obs, const Atom &atom)
   {
@@ -148,7 +128,6 @@ namespace mccore {
     return obs << (const Vector3D&) atom << atom.getType ();
   }
   
-
 
   iPdbstream& 
   operator>> (iPdbstream &ips, Atom &at)
@@ -158,7 +137,6 @@ namespace mccore {
   }
 
 
-
   oPdbstream&
   operator<< (oPdbstream &ops, const Atom &at)
   {
@@ -166,4 +144,18 @@ namespace mccore {
     return ops;
   }
 
+}
+
+
+
+namespace std
+{
+
+  ostream&
+  operator<< (ostream &os, const mccore::Atom &atom)
+  {
+    return os << (const mccore::Vector3D&) atom
+	      << ' ' << *atom.getType ();
+  }
+  
 }

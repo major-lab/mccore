@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // Atom.h
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:00:09 2003
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 // 
 // This file is part of mccore.
 // 
@@ -32,8 +32,10 @@
 
 using namespace std;
 
-namespace mccore {
 
+
+namespace mccore
+{
   class AtomType;
   class iBinstream;
   class iPdbstream;
@@ -48,7 +50,7 @@ namespace mccore {
    * Derived from Vector3D, this class adds the type of the atom.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Atom.h,v 1.7 2005-01-03 22:50:00 larosem Exp $
+   * @version $Id: Atom.h,v 1.8 2005-01-05 01:41:45 larosem Exp $
    */
   class Atom : public Vector3D
   {
@@ -193,21 +195,12 @@ namespace mccore {
   };
 
   /**
-   * Ouputs the atom to the stream.
-   * @param os the output stream.
-   * @param atom the atom.
-   * @return the used output stream.
-   */
-  ostream& operator<< (ostream &os, const Atom &atom);
-  
-  /**
    * Inputs the atom from the binary stream.
    * @param ibs the input binary stream.
    * @param atom the atom to fill.
    * @return the input binary stream used.
    */
   iBinstream& operator>> (iBinstream &ibs, Atom &atom);
-
 
   /**
    * Outputs the atom to the binary stream.
@@ -231,6 +224,21 @@ namespace mccore {
    */
   oPdbstream& operator<< (oPdbstream &ops, const Atom& at);
 
+}
+
+
+
+namespace std
+{
+  
+  /**
+   * Ouputs the atom to the stream.
+   * @param os the output stream.
+   * @param atom the atom.
+   * @return the used output stream.
+   */
+  ostream& operator<< (ostream &os, const mccore::Atom &atom);
+  
 }
 
 #endif
