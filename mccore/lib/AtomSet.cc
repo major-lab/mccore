@@ -22,16 +22,17 @@
 
 namespace mccore {
   
-  const int AtomSet::ATOMSET_ALL = 0;
-  const int AtomSet::ATOMSET_NOT = 1;
-  const int AtomSet::ATOMSET_AND = 2;
-  const int AtomSet::ATOMSET_OR  = 3;
-  const int AtomSet::ATOMSET_SIDECHAIN = 4;
-  const int AtomSet::ATOMSET_BACKBONE = 5;
-  const int AtomSet::ATOMSET_PSE = 6;
-  const int AtomSet::ATOMSET_HYDROGEN = 7;
-  const int AtomSet::ATOMSET_LP = 8;
-  const int AtomSet::ATOMSET_ATOM = 9;
+  const int AtomSet::ATOMSET_ALL       =  0;
+  const int AtomSet::ATOMSET_NOT       =  1;
+  const int AtomSet::ATOMSET_AND       =  2;
+  const int AtomSet::ATOMSET_OR        =  3;
+  const int AtomSet::ATOMSET_SIDECHAIN =  4;
+  const int AtomSet::ATOMSET_BACKBONE  =  5;
+  const int AtomSet::ATOMSET_PHOSPHATE =  6;
+  const int AtomSet::ATOMSET_PSE       =  7;
+  const int AtomSet::ATOMSET_HYDROGEN  =  8;
+  const int AtomSet::ATOMSET_LP        =  9;
+  const int AtomSet::ATOMSET_ATOM      = 10;
   
   ostream&
   operator<< (ostream &os, const AtomSet &as)
@@ -72,6 +73,9 @@ namespace mccore {
       break;
     case AtomSet::ATOMSET_BACKBONE:
       as = new AtomSetBackbone ();
+      break;
+    case AtomSet::ATOMSET_PHOSPHATE:
+      as = new AtomSetPhosphate ();
       break;
     case AtomSet::ATOMSET_PSE:
       as = new AtomSetPSE ();
@@ -262,7 +266,33 @@ namespace mccore {
     return obs;
   }
 
+  
+  AtomSetPhosphate&
+  AtomSetPhosphate::operator= (const AtomSetPhosphate &other)
+  {
+    if (this != &other)
+      {
+	AtomSet::operator= (other);
+      }
+    return *this;
+  }
 
+  ostream& 
+  AtomSetPhosphate::output (ostream &os) const
+  {
+    os << "phosphate";
+    return os;
+  }
+
+  
+  oBinstream& 
+  AtomSetPhosphate::output (oBinstream &obs) const
+  {
+    obs << getSetNumber ();
+    return obs;
+  }
+
+  
   AtomSetPSE&
   AtomSetPSE::operator= (const AtomSetPSE &other)
   {

@@ -46,6 +46,7 @@ namespace mccore {
     static const int ATOMSET_OR;
     static const int ATOMSET_SIDECHAIN;
     static const int ATOMSET_BACKBONE;
+    static const int ATOMSET_PHOSPHATE;
     static const int ATOMSET_PSE;
     static const int ATOMSET_HYDROGEN;
     static const int ATOMSET_LP;
@@ -721,6 +722,89 @@ namespace mccore {
   };
 
 
+  /**
+   * @short Phosphate atom set unary function.
+   *
+   * Filters the atoms that are located on the phosphate.
+   *
+   * @author Philippe Thibault <thibaup@iro.umontreal.ca>
+   */
+  class AtomSetPhosphate : public AtomSet
+  {
+  public:
+
+    // LIFECYCLE ------------------------------------------------------------
+
+    /**
+     * Initializes the object.
+     */
+    AtomSetPhosphate () : AtomSet () {}
+
+    /**
+     * Initializes the object with the other's content.
+     * @param other the object to copy.
+     */
+    AtomSetPhosphate (const AtomSetPhosphate &other) 
+      : AtomSet (other)
+    {}
+
+    /**
+     * Copies the function object.
+     * @return a copy of itself.
+     */
+    virtual AtomSet* clone () const
+    { return new AtomSetPhosphate (); }
+  
+    /**
+     * Destroys the object.
+     */
+    virtual ~AtomSetPhosphate () {}
+
+    // OPERATORS ------------------------------------------------------------
+
+    /**
+     * Assigns the object with the other's content.
+     * @param other the object to copy.
+     * @return itself.
+     */
+    AtomSetPhosphate& operator= (const AtomSetPhosphate &other);
+
+    /**
+     * Tests wheter the atom is within the set.
+     * @param atom the atom.
+     * @return wheter the atom is within the set.
+     */
+    virtual bool operator() (const Atom &atom) const
+    { return atom.getType ()->isPhosphate (); }
+
+    // METHODS --------------------------------------------------------------
+
+  protected: 
+
+    /**
+     * Gets the set number of the AtomSet.
+     * @return the set number.
+     */
+    virtual int getSetNumber() const { return AtomSet::ATOMSET_PHOSPHATE; }
+
+  public:
+
+    // I/O  -----------------------------------------------------------------
+
+    /**
+     * Ouputs the set to the stream.
+     * @param os the output stream.
+     * @return the used output stream.
+     */
+    virtual ostream& output (ostream &os) const;
+
+    /**
+     * Ouputs the set to the stream.
+     * @param os the output stream.
+     * @return the used output stream.
+     */
+    virtual oBinstream& output (oBinstream &obs) const;
+  };
 
 
   /**
