@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Patrick Gendron
-// Last Modified On : Thu Aug  7 11:22:10 2003
-// Update Count     : 295
+// Last Modified On : Thu Aug 28 10:41:28 2003
+// Update Count     : 301
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -41,6 +41,7 @@
 #include "AtomType.h"
 #include "ResidueType.h"
 #include "Residue.h"
+#include "Model.h"
 
 
 namespace mccore {
@@ -499,6 +500,31 @@ namespace mccore {
   }
 
 
+  void oPdbstream::putconect (const Model &model)
+  {
+    Model::const_iterator cit1, cit2;
+    
+    for (cit2 = model.begin (), cit1 = cit2++;
+	 cit2 != model.end ();
+	 ++cit1, ++cit2)
+      if ((cit1->getResId ().getChainId () == cit2->getResId ().getChainId ())
+	  && (cit1->getResId ().getResNo () + 1 == cit2->getResId ().getResNo ()))
+	{
+	  Residue::const_iterator a, b;
+	  
+	  a = cit1->find (AtomType::aO3p);
+	  b = cit2->find (AtomType::aP);
+	  if (a != (*cit1).end () && b != (*cit2).end ())
+	    {
+	      setf (ios::left, ios::adjustfield);
+	      *this << setw (6) << "CONECT";
+	      setf (ios::right, ios::adjustfield);
+	      *this << setw (5) << (*a).getSerialNo ()
+		    << setw (5) << (*b).getSerialNo () << endl;
+	    }
+	}
+  }
+
   void oPdbstream::end () 
   {
     setf (ios::left, ios::adjustfield);
@@ -564,7 +590,10 @@ namespace mccore {
 
     pad (14);
 
+    at.setSerialNo (n);
+
     if (n>99999) n=1;
+
 
     return *this;
   }
@@ -578,8 +607,8 @@ namespace mccore {
     setResidueType (r.getType ());
     setResId (r.getResId ());
     
-    //    for (Residue::const_iterator i=r.begin (atomset->clone ()); i!=r.end (); ++i) {
-    for (Residue::const_iterator i=r.begin (); i!=r.end (); ++i) {
+    for (Residue::const_iterator i=r.begin (atomset->clone ()); i!=r.end (); ++i) {
+    //    for (Residue::const_iterator i=r.begin (); i!=r.end (); ++i) {
       *this << *i << endl;
     }
 

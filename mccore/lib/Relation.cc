@@ -22,6 +22,8 @@
 #include "ExtendedResidue.h"
 #include "PairingPattern.h"
 
+#include "zfPdbstream.h"
+
 #include "stlio.h"
 
 namespace mccore {
@@ -148,7 +150,7 @@ namespace mccore {
 	 << res->getResId () << res->getType () << ": ";
       copy (labels.begin (), labels.end (), ostream_iterator< const PropertyType* > (os, " "));
       if (is (PropertyType::pPairing))
-	os << " " << resFace << "/" << refFace;
+	os << " " << refFace << "/" << resFace;
       os << "}";
     }	
     return os;
@@ -393,21 +395,6 @@ namespace mccore {
     vector< Residue::const_iterator > rbn_at;
     int x, y;
 
-//     AtomSet* as = new AtomSetOr (new AtomSetHydrogen (), new AtomSetLP ());
-//     as = new AtomSetAnd (new AtomSetSideChain (), as);
-
-//     const UndirectedGraph< const AtomType* > *ga = ResidueTopology::get (ra->getType ());
-//     const UndirectedGraph< const AtomType* > *gb = ResidueTopology::get (rb->getType ());
-
-//     for (i=ra->begin (as->clone ()); i!=ra->end (); ++i) {
-//       ra_at.push_back (i);
-//       ran_at.push_back (ra->find (ga->getNeighbors (i->getType ()).front ()));
-//     }
-//     for (k=rb->begin (as); k!=rb->end (); ++k) {
-//       rb_at.push_back (k);
-//       rbn_at.push_back (rb->find (gb->getNeighbors (k->getType ()).front ()));
-//     }
-
     AtomSet* hl = new AtomSetOr (new AtomSetHydrogen (), new AtomSetLP ());
     hl = new AtomSetAnd (hl, new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M), 
  							   new AtomSetAtom (AtomType::a3H5M))));
@@ -429,6 +416,9 @@ namespace mccore {
 	}
       }
     }    
+
+    delete hl;
+    delete da;
 
     for (x=0; x<(int)ra_at.size (); ++x) {
       i = ra_at[x];
@@ -475,6 +465,7 @@ namespace mccore {
       }
     }
 
+    if (graph.size () < 3) return ts;
 
 //     {
 //       map< Residue::const_iterator, int >::iterator m, n;
@@ -486,7 +477,7 @@ namespace mccore {
     
     graph.preFlowPush (0, 1);
     
-    //    graph.output (cout);
+//     graph.output (cout);
 
     float sum_flow = 0;
     map< Residue::const_iterator, int >::iterator m, n;
@@ -615,6 +606,9 @@ namespace mccore {
       }
     }    
     
+    delete hl; 
+    delete da;
+
     for (x=0; x<(int)ra_at.size (); ++x) {
       i = ra_at[x];
       j = ran_at[x];

@@ -38,7 +38,7 @@
 #include "Messagestream.h"
 #include "Rmsd.h"
 #include "zfPdbstream.h"
-
+#include "CException.h"
 
 namespace mccore {
 
@@ -521,12 +521,6 @@ namespace mccore {
       return;
     }
     
-    if (getType ()->isNucleicAcid ()) {
-      removeOptionals ();
-      addHydrogens ();
-      addLonePairs ();
-    }
-
     gOut (5) << "Fixed atom content" << endl;
 
     set< const AtomType* > actset;
@@ -668,7 +662,7 @@ namespace mccore {
 	    b = (z + z.cross (up).normalize () * TAN60).normalize ();	    
 	    h21 = *get (AtomType::aN2) + b * N_H_DIST;
 	    h22 = *get (AtomType::aN2) + a * N_H_DIST;
-	    
+
 	    insert (Atom (h1, AtomType::aH1));
 	    insert (Atom (h8, AtomType::aH8));
 	    insert (Atom (h21, AtomType::a1H2));
@@ -1236,6 +1230,12 @@ namespace mccore {
 
     if (!type || empty ()) return;
     
+    if (getType ()->isNucleicAcid ()) {
+      removeOptionals ();
+      addHydrogens ();
+      addLonePairs ();
+    }
+
     /* Compute the location of the pseudo atoms. */
     if (((v1 = get (AtomType::aN9)) != 0 
 	 && (v2 = get (AtomType::aC8)) != 0 
@@ -1269,7 +1269,7 @@ namespace mccore {
 	gOut (2) << "Residue " << getResId () << "-" << getType()
 		 << " is missing one or more critical atoms." << endl;		
       }	
-    }
+    }    
   }
 
 
@@ -1322,6 +1322,29 @@ namespace mccore {
 	     << getType () << " and " << r.getType () << endl;
     return MAXFLOAT;
   }
+  
+
+  void Residue::atomCopy (const Residue& other) 
+  {
+    const Residue *resp = dynamic_cast< const Residue* > (&other);
+    
+    if (this != &other && resp) {
+      if (type != resp->type) {
+	CLibException exc ("Invalid residue type ");
+	
+	exc << *resp->type << ".";
+	throw exc;
+      }
+      
+      AtomMap::const_iterator i, j;
+      
+      for (i=atomIndex.begin (), j=resp->atomIndex.end ();
+	   i!=atomIndex.end () && j!=resp->atomIndex.end ();
+	   ++i, ++j) {
+	atomGlobal[i->second] = resp->atomGlobal[j->second];
+      }
+    }
+  }
 
 
   // PRIVATE METHODS -----------------------------------------------------------
@@ -1353,10 +1376,10 @@ namespace mccore {
   Residue::output (ostream &os) const 
   {
     os << resId << type;
-//     AtomMap::const_iterator cit;
-//     for (cit=atomIndex.begin (); cit!=atomIndex.end (); ++cit) {
-//       os << endl << *(atomGlobal[cit->second]);
-//     }
+    AtomMap::const_iterator cit;
+    for (cit=atomIndex.begin (); cit!=atomIndex.end (); ++cit) {
+      os << endl << *(atomGlobal[cit->second]);
+    }
     return os;
   }
   

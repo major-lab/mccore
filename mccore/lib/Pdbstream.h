@@ -3,7 +3,7 @@
 // Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.19 $
+// $Revision: 1.20 $
 //  This file is part of mccore.
 //  
 //  mccore is free software; you can redistribute it and/or
@@ -74,7 +74,7 @@ namespace mccore {
    * </pre>
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Pdbstream.h,v 1.19 2003-07-31 18:08:55 gendrop Exp $
+   * @version $Id: Pdbstream.h,v 1.20 2003-08-28 14:41:36 gendrop Exp $
    */
   class iPdbstream : public istream
   {
@@ -362,6 +362,12 @@ namespace mccore {
      * Writes a TER record to the pdb stream.
      */
     void ter ();
+
+    /**
+     * Writes the connection among adjacent residues. 
+     * (TODO: BUGGY since adjacent residues are not necessarily i and i+1.
+     */
+    void putconect (const Model &model);
 
   protected:
 
