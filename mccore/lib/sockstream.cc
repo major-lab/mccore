@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // sockstream.cc
-// Copyright © 2002-03 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2002-04 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Wed Jan 30 19:57:48 2002
-// $Revision: 1.1.4.1 $
-// $Id: sockstream.cc,v 1.1.4.1 2003-12-10 14:20:32 larosem Exp $
+// $Revision: 1.1.4.2 $
+// $Id: sockstream.cc,v 1.1.4.2 2004-03-25 22:11:30 larosem Exp $
 //
 // This file is part of mccore.
 //
@@ -326,23 +326,3 @@ sockstreambuf::sys_close ()
 {
   return ::close (socket_id);
 }
-
-
-
-void 
-sockstreambase::open (const char* host, int port)
-{
-  clear ();
-  if (!rdbuf ()->open (host, port))
-    setstate (ios::badbit);
-}
-
-
-void 
-sockstreambase::close ()
-{
-  if (!rdbuf ()->close ())
-    setstate (ios::failbit);
-}
-
-

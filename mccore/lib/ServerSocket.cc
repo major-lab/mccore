@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // ServerSocket.cc
-// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-04 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:56 2001
-// $Revision: 1.13.4.1 $
-// $Id: ServerSocket.cc,v 1.13.4.1 2003-12-10 14:20:02 larosem Exp $
+// $Revision: 1.13.4.2 $
+// $Id: ServerSocket.cc,v 1.13.4.2 2004-03-25 22:11:24 larosem Exp $
 // 
 //  This file is part of mccore.
 //  
@@ -48,7 +48,7 @@ typedef int socklen_t;
 #endif
 
 #include "ServerSocket.h"
-#include "sockstream.h"
+#include "sBinstream.h"
 
 
 
