@@ -490,11 +490,14 @@ namespace mccore
   {
     Vector3D p5p, o5p, u, v;
     Vector3D rib_p5p (ribose.P5p), rib_o5p (ribose.O5p);
-    HomogeneousTransfo trans, rot;
+    HomogeneousTransfo tfo;
     Residue::const_iterator p5p_it, o5p_it;
   
     Residue* po4 = fm ? fm->createResidue () : new ExtendedResidue ();
-
+    po4->setType (ResidueType::rPhosphate);
+    po4->setIdeal ();
+    po4->setReferential (HomogeneousTransfo ());
+    
     rib_p5p.transform (alignment);
     rib_o5p.transform (alignment);
   
@@ -506,17 +509,17 @@ namespace mccore
 
     p5p = *p5p_it;
   
-    trans = trans.translate (rib_p5p - p5p);
-
-    p5p = *p5p_it;
+    po4->transform (tfo.translate (rib_p5p - p5p));
+    
     o5p = *o5p_it;
 
     u = o5p - p5p;
     v = rib_o5p - p5p;
-  
-    rot = rot.rotate (u.cross (v), p5p.angle (o5p, rib_o5p));
 
-    po4->transform (rot * trans);
+    po4->transform
+      (tfo.translate (rib_p5p) *
+       tfo.rotate ((u.cross (v)).normalize (), rib_p5p.angle (o5p, rib_o5p)) *
+       tfo.translate (rib_p5p * -1));
 
     return po4;
   }
