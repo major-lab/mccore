@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.38 $
-// $Id: Pdbstream.cc,v 1.38 2004-09-01 16:36:12 larosem Exp $
+// $Revision: 1.39 $
+// $Id: Pdbstream.cc,v 1.39 2004-09-07 15:12:55 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -38,6 +38,7 @@
 #include "AtomType.h"
 #include "Model.h"
 #include "Pdbstream.h"
+#include "Messagestream.h"
 #include "ResId.h"
 #include "Residue.h"
 #include "ResidueType.h"
@@ -308,11 +309,13 @@ namespace mccore {
 		else if (r.getType () == ResidueType::rRU)
 		  r.setType (ResidueType::rDT);
 	      }
-	    
+
 	    // Finalize
 	    r.finalize ();
 	  }
       }
+
+    gOut (6) << "> Read residue " << r << endl;
   }
   
 
