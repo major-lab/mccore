@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Thu Sep 28 16:59:32 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Fri Mar 23 17:41:44 2001
-// Update Count     : 12
+// Last Modified On : Thu Apr 19 16:35:57 2001
+// Update Count     : 13
 // Status           : Ok.
 // 
 
@@ -538,7 +538,7 @@ public:
    * @param k the atom type key.
    * @return the iterator to the element or end () if it is not found.
    */
-  iterator find (t_Atom *k);
+  iterator find (const t_Atom *k);
 
   /**
    * Finds an element whose key is k.

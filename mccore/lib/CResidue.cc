@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Fri Mar 23 17:41:41 2001
-// Update Count     : 15
+// Last Modified On : Thu Apr 19 16:35:55 2001
+// Update Count     : 16
 // Status           : Ok.
 // 
 
@@ -498,7 +498,7 @@ CResidue::operator[] (const t_Atom *type) const
 
 
 CResidue::iterator
-CResidue::find (t_Atom *k)
+CResidue::find (const t_Atom *k)
 {
   map< const t_Atom*, int >::iterator it = mAtomIndex.find (k);
 
