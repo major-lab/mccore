@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Jan 23 15:01:58 2001
-// Update Count     : 11
+// Last Modified On : Wed Jan 24 16:17:30 2001
+// Update Count     : 12
 // Status           : Ok.
 // 
 
@@ -1084,62 +1084,70 @@ CResidue::AddLP ()
 CResidue
 CResidue::Validate () const
 {
-  CResidue res (*this);
-    
-  if (mType != 0)
+  vector< CAtom >::const_iterator at_it;
+  vector< CAtom > atoms;
+
+  for (at_it = mAtomRef.begin (); at_it != mAtomRef.end (); ++at_it)
+    if (::find (atoms.begin (), atoms.end (), *at_it) == atoms.end ())
+      atoms.push_back (*at_it);
+
+  CResidue res (mType, atoms, *this, mReadType);
+  res.mTfo = mTfo;
+  
+  if (res.mType != 0)
     {
       set< t_Atom* >::const_iterator optbegin, optend;
       set< t_Atom* > resset, diffset, allset;
       vector< CAtom >::iterator it;
 
-      if (mType->is_DNA ())
+      if (res.mType->is_DNA ())
 	{
-	  if (mType->is_dA ())
+	  if (res.mType->is_dA ())
 	    {
 	      allset.insert (gdAOblAtomSet.begin (),  gdAOblAtomSet.end ());
 	      optbegin = gdAOptAtomSet.begin ();
 	      optend = gdAOptAtomSet.end ();
 	    }
-	  else if (mType->is_dC ())
+	  else if (res.mType->is_dC ())
 	    {
 	      allset.insert (gdCOblAtomSet.begin (), gdCOblAtomSet.end ());
 	      optbegin = gdCOptAtomSet.begin ();
 	      optend = gdCOptAtomSet.end ();
 	    }
-	  else if (mType->is_dG ())
+	  else if (res.mType->is_dG ())
 	    {
 	      allset.insert (gdGOblAtomSet.begin (), gdGOblAtomSet.end ());
 	      optbegin = gdGOptAtomSet.begin ();
 	      optend = gdGOptAtomSet.end ();
 	    }
-	  else if (mType->is_dT ())
+	  else if (res.mType->is_dT ())
 	    {
 	      allset.insert (gdTOblAtomSet.begin (), gdTOblAtomSet.end ());
 	      optbegin = gdTOptAtomSet.begin ();
 	      optend = gdTOptAtomSet.end ();
 	    }
 	}
-      else if (mType->is_RNA ())
+      else if (res.mType->is_RNA ())
 	{
-	  if (mType->is_rA ())
+	  if (res.mType->is_rA ())
 	    {
 	      allset.insert (grAOblAtomSet.begin (), grAOblAtomSet.end ());
 	      optbegin = grAOptAtomSet.begin ();
 	      optend = grAOptAtomSet.end ();
 	    }
-	  else if (mType->is_rC ())
+	  else if (res.mType->is_rC ())
 	    {
 	      allset.insert (grCOblAtomSet.begin (), grCOblAtomSet.end ());
 	      optbegin = grCOptAtomSet.begin ();
 	      optend = grCOptAtomSet.end ();
 	    }
-	  else if (mType->is_rG ())
+	  else if (res.mType->is_rG ())
 	    {
 	      allset.insert (grGOblAtomSet.begin (), grGOblAtomSet.end ());
 	      optbegin = grGOptAtomSet.begin ();
 	      optend = grGOptAtomSet.end ();
 	    }
-	  else if (mType->is_rU ())
+	  else if (res.mType->is_rU ())
 	    {
 	      allset.insert (grUOblAtomSet.begin (), grUOblAtomSet.end ());
 	      optbegin = grUOptAtomSet.begin ();
@@ -1148,7 +1156,7 @@ CResidue::Validate () const
 	}
       else
 	{
-	  if (mType->is_AminoAcid ())
+	  if (res.mType->is_AminoAcid ())
 	    gOut (3) << 'p';
 	  res.mType = 0;
 	  return res;
@@ -1172,6 +1180,7 @@ CResidue::Validate () const
 		      allset.begin (), allset.end (),
 		      inserter (diffset, diffset.begin ()));
       res.erase (diffset.begin (), diffset.end ());
+
       gOut (3) << '.';
       return res;
     }
