@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // sockstream.h
-// Copyright © 2002 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2002-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Thu Jan 31 15:21:36 2002
 // Last Modified By : Patrick Gendron
@@ -28,16 +28,18 @@
 #ifndef _sockstream_h_
 #define _sockstream_h_
 
-#include <iostream.h>
+#include <iostream>
 
 #include "Binstream.h"
-
 
 #if defined (__sgi)
 typedef int streamsize;
 #else
 typedef std::streamsize streamsize;
 #endif
+
+using namespace std;
+
 
 
 /**
@@ -423,5 +425,3 @@ public:
 };
 
 #endif
-
-

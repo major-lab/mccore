@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // CTransfo.cc
-// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Patrick Gendron <gendrop@IRO.UMontreal.CA>
 // Created On       : Fri Oct  1 18:22:41 1999
@@ -30,17 +30,15 @@
 #include <config.h>
 #endif
 
-#include <iostream.h>
-#include <iomanip.h>
+#include <iomanip>
 #include <math.h>
 
-#include "CTransfo.h"
-
-#include "McCore.h"
 #include "Binstream.h"
 #include "CException.h"
 #include "CPoint3D.h"
 #include "CResidue.h"
+#include "CTransfo.h"
+#include "McCore.h"
 
 
 

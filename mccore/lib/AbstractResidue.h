@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // AbstractResidue.h
-// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique.
-//                  Université de Montréal.
+// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct 12 18:21:13 2001
 // Last Modified By : Martin Larose
@@ -29,8 +29,9 @@
 #ifndef _AbstractResidue_h_
 #define _AbstractResidue_h_
 
-#include <iostream.h>
-#include <map.h>
+#include <iostream>
+#include <iterator>
+#include <map>
 
 #include "CResId.h"
 #include "CTransfo.h"
@@ -43,6 +44,8 @@ class iPdbstream;
 class oPdbstream;
 class t_Atom;
 class t_Residue;
+
+using namespace std;
 
 
 
@@ -68,14 +71,10 @@ public:
    */
   typedef unsigned int size_type;
 
-protected:
-
   /**
    * Definition of the sorted mapping.
    */
   typedef map< const t_Atom*, size_type > ResMap;
-
-public:
 
   class ResidueIterator;
   class ResidueConstIterator;

@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
-// $Revision: 1.1.2.3 $
+// $Revision: 1.1.2.4 $
 // 
 // This file is part of mccore.
 // 
@@ -26,7 +26,7 @@
 #ifndef _mccore_RnamlReader_h_
 #define _mccore_RnamlReader_h_
 
-#include <vector.h>
+#include <vector>
 
 namespace rnaml {
   class Atom;
@@ -44,6 +44,8 @@ class Model;
 class Molecule;
 class ResidueFactoryMethod;
 
+using namespace std;
+
 
 
 /**
@@ -53,7 +55,7 @@ class ResidueFactoryMethod;
  * molecule.
  *
  * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
- * @version $Id: RnamlReader.h,v 1.1.2.3 2003-11-18 19:34:04 larosem Exp $
+ * @version $Id: RnamlReader.h,v 1.1.2.4 2003-11-21 15:55:43 larosem Exp $
  */
 class RnamlReader
 {
@@ -79,12 +81,12 @@ class RnamlReader
   /**
    * The vector of Rnaml children.
    */
-  std::vector< rnaml::Object* > children;
+  vector< rnaml::Object* > children;
   
   /**
    * The iterator over the children vector.
    */
-  std::vector< rnaml::Object* >::iterator it;
+  vector< rnaml::Object* >::iterator it;
     
  public:
   

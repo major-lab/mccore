@@ -1,6 +1,6 @@
 //                        -*- Mode: C++ -*-
 // fBinstream.h
-// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:20:58 EDT
@@ -29,8 +29,8 @@
 #ifndef _fBinstream_h_
 #define _fBinstream_h_
 
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 
 #include "fstreambase.h"
 #include "Binstream.h"
@@ -63,7 +63,7 @@ public:
    * @param name the path and file name to open.
    * @param mode the open mode (default ios::in).
    */
-  ifBinstream (const char *name, int mode=ios::in)
+  ifBinstream (const char *name, int mode=std::ios::in)
     : iBinstream (fstreambase::rdbuf ()), fstreambase (name, mode) { }
 
   // OPERATORS ------------------------------------------------------------
@@ -77,7 +77,7 @@ public:
    * @param name the path and file name to open.
    * @param mode the open mode (default ios::in).
    */
-  void open (const char *name, int mode=ios::in)
+  void open (const char *name, int mode=std::ios::in)
     {
       fstreambase::open (name, mode);
       iBinstream::open ();
@@ -120,7 +120,7 @@ public:
    * @param name the path and file name to open.
    * @param mode the open mode (default ios::out).
    */
-  ofBinstream (const char *name, int mode = ios::out)
+  ofBinstream (const char *name, int mode = std::ios::out)
     : oBinstream (fstreambase::rdbuf ()), fstreambase (name, mode) { }
 
   // OPERATORS ------------------------------------------------------------
@@ -134,7 +134,7 @@ public:
    * @param name the path and file name to open.
    * @param mode the open mode (default = ios::out).
    */
-  void open (const char *name, int mode = ios::out)
+  void open (const char *name, int mode = std::ios::out)
   {
     fstreambase::open (name, mode);
     oBinstream::open ();
@@ -178,7 +178,7 @@ public:
    * @param mode the open mode (default ios::in).
    * @param prot the protection (default 0644).
    */
-  fBinstream (const char *name, int mode = ios::in)
+  fBinstream (const char *name, int mode = std::ios::in)
     : Binstream (fstreambase::rdbuf ()), fstreambase(name, mode)  { }
 
   // OPERATORS ------------------------------------------------------------
@@ -193,7 +193,7 @@ public:
    * @param mode the open mode (default ios::in).
    * @param prot the protection (default 0644).
    */
-  void open (const char *name, int mode = ios::in)
+  void open (const char *name, int mode = std::ios::in)
   {
     fstreambase::open (name, mode);
     Binstream::open ();

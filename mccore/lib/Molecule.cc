@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:35 2003
-// $Revision: 1.2.2.3 $
-// $Id: Molecule.cc,v 1.2.2.3 2003-10-30 21:25:55 larosem Exp $
+// $Revision: 1.2.2.4 $
+// $Id: Molecule.cc,v 1.2.2.4 2003-11-21 15:55:12 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -28,7 +28,6 @@
 #include <config.h>
 #endif
 
-#include <iostream.h>
 #include <string.h>
 
 #include "Model.h"

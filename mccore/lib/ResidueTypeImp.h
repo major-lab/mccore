@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // ResidueTypeImp.h
-// Copyright © 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Mar  6 12:24:34 2001
@@ -29,13 +29,14 @@
 #ifndef _ResidueTypeImp_h_
 #define _ResidueTypeImp_h_
 
+#include <iostream>
 
 #include "ResidueType.h"
 
-
 class iBinstream;
 class oBinstream;
-class ostream;
+
+using namespace std;
 
 
 

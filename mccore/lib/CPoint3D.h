@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // CPoint3D.h
-// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
@@ -29,12 +29,13 @@
 #ifndef _CPoint3D_h_
 #define _CPoint3D_h_
 
+#include <iostream>
 
 class CTransfo;
-class istream;
-class ostream;
 class iBinstream;
 class oBinstream;
+
+using namespace std;
 
 
 

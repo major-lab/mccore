@@ -1,6 +1,6 @@
 //                       -*- Mode: C++ -*-
 // fPdbstream.h
-// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>.
 // Created On       : 
@@ -29,11 +29,14 @@
 #ifndef _fPdbstream_h_
 #define _fPdbstream_h_
 
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 
 #include "fstreambase.h"
 #include "Pdbstream.h"
+
+using namespace std;
+
 
 
 /**

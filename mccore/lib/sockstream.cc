@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // sockstream.cc
-// Copyright © 2002 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2002-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Wed Jan 30 19:57:48 2002
 // Last Modified By : Patrick Gendron
@@ -9,7 +9,7 @@
 // Status           : Unknown.
 // 
 
-#include <iostream.h>
+
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
@@ -32,6 +32,7 @@
 #include <strings.h>
 #define MSG_NOSIGNAL 0
 #endif
+
 
 
 #ifndef HAVE_ISFDTYPE

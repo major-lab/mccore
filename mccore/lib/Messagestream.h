@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // Messagestream.h
-// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
+// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Sep  5 17:06:24 2001
 // Last Modified By : Martin Larose
@@ -30,7 +30,9 @@
 #define _Messagestream_h_
 
 
-#include <iostream.h>
+#include <iostream>
+
+using namespace std;
 
 
 

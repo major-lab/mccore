@@ -30,12 +30,11 @@
 #include <config.h>
 #endif
 
-#include <iostream.h>
-#include <set.h>
-#include <list.h>
-#include <algo.h>
-#include <string.h>
+#include <algorithm>
+#include <list>
+#include <set>
 #include <stdarg.h>
+#include <string.h>
 
 #include "AtomType.h"
 #include "Binstream.h"

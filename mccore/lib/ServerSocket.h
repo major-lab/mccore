@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // ServerSocket.h
-// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique.
-//                  Université de Montréal.
+// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:51 2001
 // Last Modified By : Philippe Thibault
@@ -33,6 +33,8 @@
 #include "sockstream.h"
 
 #define MAX_QUEUE_LEN 0
+
+
 
 /**
  * @short Implementation of a server socket.

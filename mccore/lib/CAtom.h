@@ -29,18 +29,19 @@
 #ifndef _CAtom_h_
 #define _CAtom_h_
 
-
-#include <function.h>
+#include <iostream>
 #include <stdio.h>
 
 #include "CPoint3D.h"
 #include "AtomType.h"
 
-class ostream;
 class iBinstream;
 class oBinstream;
 class iPdbstream;
 class oPdbstream;
+
+using namespace std;
+
 
 
 /**

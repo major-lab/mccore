@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // zfBinstream.h
-// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created on       : jeu 22 jui 1999 18:24:14 EDT
@@ -29,7 +29,7 @@
 #ifndef _zfBinstream_h_
 #define _zfBinstream_h_
 
-
+#include <iostream>
 #include <zlib.h>
 
 #include "fstreambase.h"
@@ -71,7 +71,7 @@ public:
    * @param name the path and file name to open.
    * @param mode the open mode (default ios::in).
    */
-  izfBinstream(const char *name, int mode = ios::in)
+  izfBinstream(const char *name, int mode = std::ios::in)
       : iBinstream (zfstreambase::rdbuf ()), zfstreambase (name, mode) { }
 
   // OPERATORS ------------------------------------------------------------
@@ -85,7 +85,7 @@ public:
    * @param name the path and file name to open.
    * @param mode the open mode (default ios::in).
    */
-  void open (const char *name, int mode=ios::in)
+  void open (const char *name, int mode=std::ios::in)
   {
     zfstreambase::open (name, mode);
     iBinstream::open ();
@@ -136,7 +136,7 @@ public:
    * @param mode the open mode (default ios::out).
    */
   ozfBinstream (const char *name, int level = Z_BEST_SPEED,
-		int mode = ios::out)
+		int mode = std::ios::out)
     : oBinstream (zfstreambase::rdbuf()), zfstreambase (name, mode, level) { }
 
   // OPERATORS ------------------------------------------------------------
@@ -153,7 +153,7 @@ public:
    * @param prot the protection (default 0644).
    */
   void open (const char *name, int level = Z_BEST_SPEED,
-	     int mode = ios::out)
+	     int mode = std::ios::out)
   {
     zfstreambase::open (name, mode, level);
     oBinstream::open ();

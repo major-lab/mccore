@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // Model.h
-// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
@@ -29,7 +29,8 @@
 #ifndef _Model_h_
 #define _Model_h_
 
-#include <list.h>
+#include <iostream>
+#include <list>
 
 #include "AbstractResidue.h"
 
@@ -38,6 +39,9 @@ class iPdbstream;
 class oPdbstream;
 class iBinstream;
 class oBinstream;
+
+using namespace std;
+
 
 
 /**
@@ -66,8 +70,6 @@ public:
   typedef const value_type* const_pointer;
   typedef const value_type& const_reference;
 
-protected:
-
   /**
    * @short Iterator class for Model.
    *
@@ -75,6 +77,7 @@ protected:
    */
   class model_iterator : public list< AbstractResidue* >::iterator
   {
+
   public:
 
     // LIFECYCLE ------------------------------------------------------------
@@ -147,6 +150,7 @@ protected:
    */
   class model_const_iterator : public list< AbstractResidue* >::const_iterator
   {
+
   public:
 
     /**
@@ -166,7 +170,7 @@ protected:
      * Initializes the iterator with a non const model_iterator.
      * @param it the model iterator.
      */
-    model_const_iterator (const model_iterator& it)
+    model_const_iterator (const Model::model_iterator& it)
       : list< AbstractResidue* >::const_iterator (it)
     { }
 
@@ -417,10 +421,10 @@ public:
   void push_back (AbstractResidue *res)
   { list< AbstractResidue* >::push_back (res); }
 
-  /**
-   * Sorts the model according to the AbstractResidue::operator<
-   */ 
-  void sort ();
+//   /**
+//    * Sorts the model according to the AbstractResidue::operator<
+//    */ 
+//   void sort ();
 
   // METHODS --------------------------------------------------------------
 

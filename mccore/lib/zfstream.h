@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // zfstream.h
-// Copyright © 2002 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2002-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Mon Jan 28 16:13:00 2002
 // Last Modified By : 
@@ -28,10 +28,10 @@
 #ifndef _zfstream_h_
 #define _zfstream_h_
 
-#include <iostream.h>
-#include <fstream.h>
-
+#include <iostream>
 #include <zlib.h>
+
+using namespace std;
 
 
 

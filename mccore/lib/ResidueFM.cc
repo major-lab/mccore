@@ -31,7 +31,6 @@
 #include <config.h>
 #endif
 
-
 #include "Residue.h"
 #include "ResidueFM.h"
 

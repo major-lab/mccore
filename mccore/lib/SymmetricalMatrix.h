@@ -12,6 +12,8 @@
 #ifndef _SymmetricalMatrix_h_
 #define _SymmetricalMatrix_h_
 
+#include <utility>
+
 class iBinstream;
 class oBinstream;
 
@@ -97,7 +99,7 @@ public:
    * @param j the column index.
    * @return the data at (i,j).
    */
-  Type& operator[] (pair< int, int > ij) const { return getij (ij.first, ij.second); }
+  Type& operator[] (std::pair< int, int > ij) const { return getij (ij.first, ij.second); }
 
   /**
    * Access the two-dimensional matrix data at (i,j).

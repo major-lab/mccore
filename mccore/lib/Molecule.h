@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:36 2003
-// $Revision: 1.1.4.3 $
+// $Revision: 1.1.4.4 $
 // 
 // This file is part of mccore.
 // 
@@ -26,15 +26,15 @@
 #ifndef _mccore_Molecule_h_
 #define _mccore_Molecule_h_
 
+#include <iostream>
+#include <list>
+#include <map>
 
-#include <list.h>
-#include <map.h>
-
-
-
-class iPdbstream;
 class Model;
+class iPdbstream;
 class oPdbstream;
+
+using namespace std;
 
 
 
@@ -44,7 +44,7 @@ class oPdbstream;
  * This is a collection of mccore Models in a simple STL list.
  *
  * @author Martin Larose (<larosem@iro.umontreal.ca>)
- * @version $Id: Molecule.h,v 1.1.4.3 2003-10-30 21:25:58 larosem Exp $
+ * @version $Id: Molecule.h,v 1.1.4.4 2003-11-21 15:55:14 larosem Exp $
  */
 class Molecule : public list< Model* >
 {

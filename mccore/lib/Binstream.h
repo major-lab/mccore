@@ -1,6 +1,6 @@
 //                         -*- Mode: C++ -*-
 // Binstream.h
-// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:11:41 EDT
@@ -29,7 +29,7 @@
 #ifndef _Binstream_h_
 #define _Binstream_h_
 
-#include <iostream.h>
+#include <iostream>
 
 
 /**
@@ -50,7 +50,7 @@
  *
  * @author Martin Larose <larosem@iro.umontreal.ca> 
  */
-class iBinstream : public istream
+class iBinstream : public std::istream
 {
   
 public:
@@ -60,13 +60,13 @@ public:
   /**
    * Initializes the stream.  Nothing to be done.
    */
-  iBinstream () : istream (cin.rdbuf ()) { }
+  iBinstream () : std::istream (std::cin.rdbuf ()) { }
 
   /**
    * Initializes the stream with a predefined stream buffer.
    * @param sb the stream buffer.
    */
-  iBinstream (streambuf *sb) : istream (sb) { }
+  iBinstream (std::streambuf *sb) : std::istream (sb) { }
 
   // OPERATORS ------------------------------------------------------------
   
@@ -176,14 +176,14 @@ public:
    * @param f is the ios manip fuction.
    * @return itself.
    */
-  iBinstream& operator>> (ios& (*f)(ios&));
+  iBinstream& operator>> (std::ios& (*f)(std::ios&));
   
   /**
    * Inputs istream manipulation functions.
    * @param f is the istream manip function.
    * @return itself.
    */
-  iBinstream& operator>> (istream& (*f)(istream&));
+  iBinstream& operator>> (std::istream& (*f)(std::istream&));
 
   // ACCESS ---------------------------------------------------------------
 
@@ -222,7 +222,7 @@ public:
  *
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
-class oBinstream : public ostream
+class oBinstream : public std::ostream
 {
   
 public:
@@ -232,13 +232,13 @@ public:
   /**
    * Initializes the stream.  Nothing to be done.
    */
-  oBinstream () : ostream (cout.rdbuf ()) { }
+  oBinstream () : std::ostream (std::cout.rdbuf ()) { }
 
   /**
    * Initializes the stream with a predefined stream buffer.
    * @param sb the stream buffer.
    */
-  oBinstream (streambuf *sb) : ostream (sb) { }
+  oBinstream (std::streambuf *sb) : std::ostream (sb) { }
 
   // OPERATORS ------------------------------------------------------------
   
@@ -328,14 +328,14 @@ public:
    * @param func is the ios manip fuction.
    * @return itself.
    */
-  oBinstream& operator<< (ios& (*func)(ios&));
+  oBinstream& operator<< (std::ios& (*func)(std::ios&));
   
   /**
    * Manipulates ostream output.
    * @param func is the ostream manip function.
    * @return itself.
    */
-  oBinstream& operator<< (ostream& (*func)(ostream&));
+  oBinstream& operator<< (std::ostream& (*func)(std::ostream&));
 
   // ACCESS ---------------------------------------------------------------
 
@@ -384,7 +384,7 @@ public:
    * Initializes the stream with a predefined stream buffer.
    * @param sb the stream buffer.
    */
-  Binstream (streambuf *sb) : iBinstream (sb), oBinstream (sb) { }
+  Binstream (std::streambuf *sb) : iBinstream (sb), oBinstream (sb) { }
   
   // OPERATORS ------------------------------------------------------------
 

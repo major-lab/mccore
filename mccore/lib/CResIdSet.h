@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // CResIdSet.h
-// Copyright © 2000-02 Laboratoire de Biologie Informatique et Théorique,
+// Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique,
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Oct 26 10:24:02 2000
@@ -29,14 +29,15 @@
 #ifndef _CResIdSet_h_
 #define _CResIdSet_h_
 
-
-#include <set.h>
+#include <iostream>
+#include <set>
 
 #include "CResId.h"
 
-class ostream;
 class iBinstream;
 class oBinstream;
+
+using namespace std;
 
 
 

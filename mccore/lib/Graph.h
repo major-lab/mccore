@@ -13,23 +13,25 @@
 #ifndef _Graph_h_
 #define _Graph_h_
 
-#include <iostream.h>
-
-#include <vector.h>
-#include <map.h>
-#include <algo.h>
+#include <algorithm>
+#include <iostream>
+#include <map>
+#include <utility>
+#include <vector>
 
 #include "mccore/Binstream.h"
 
 #define nodeid int
 #define edgeid int
 
+
+
 /**
  * @short A class for a path in a graph.
  *
  * @author Patrick Gendron
  */
-class Path : public vector< int >
+class Path : public std::vector< int >
 {
   int mValue;
   
@@ -39,13 +41,13 @@ public:
   /**
    * Initializes the object.
    */
-  Path () : vector< int >() { mValue = 0; }
+  Path () : std::vector< int >() { mValue = 0; }
 
   /**
    * Initializes the object with the other's content.
    * @param other the object to copy.
    */
-  Path (const Path &other) : vector< int> (other) { mValue = other.mValue; }
+  Path (const Path &other) : std::vector< int> (other) { mValue = other.mValue; }
 
   /**
    * Destroys the object.
@@ -62,7 +64,7 @@ public:
   Path& operator= (const Path &other)
   {
     if  (this != &other) {
-      vector< int >::operator= (other);
+      std::vector< int >::operator= (other);
       mValue = other.mValue;
     } 
     return *this;
@@ -125,7 +127,7 @@ public:
 
   // I/O  -----------------------------------------------------------------
 
-  ostream &output (ostream &out) const {
+  std::ostream &output (std::ostream &out) const {
     out << "[ " << flush;
     for  (int i=0; i<(int)size(); i++) 
       out << (*this)[i] << " ";
@@ -153,7 +155,7 @@ public:
     return ibn;
   }
   
-  friend ostream &operator<< (ostream &out, const Path &path)
+  friend std::ostream &operator<< (std::ostream &out, const Path &path)
   {
     return path.output (out);
   }
@@ -179,27 +181,27 @@ public:
  * @author Patrick Gendron
  */
 template< class Node, class Edge >
-class Graph : public map< int, map< int, int > >
+class Graph : public std::map< int, std::map< int, int > >
 {
 public:
 
-  typedef map< int, int > adjlist;    // Adjacency List
-  typedef map< int, adjlist > adjgraph;  // Adjacency Graph  
+  typedef std::map< int, int > adjlist;    // Adjacency List
+  typedef std::map< int, adjlist > adjgraph;  // Adjacency Graph  
 
 protected:
 
-  vector< Node > mNodes;
-  vector< int > mNodeValues;
+  std::vector< Node > mNodes;
+  std::vector< int > mNodeValues;
 
   // A mark on a node indicates that it is active in the graph. 
-  vector< bool > mNodeMarks;
+  std::vector< bool > mNodeMarks;
 
-  vector< Edge > mEdges;
-  vector< int >  mEdgeValues;
-  vector< pair< int, int > > mEdgeNodes;
+  std::vector< Edge > mEdges;
+  std::vector< int >  mEdgeValues;
+  std::vector< std::pair< int, int > > mEdgeNodes;
 
   // A mark on an edge indicates that it is active in the graph. 
-  vector< bool > mEdgeMarks;
+  std::vector< bool > mEdgeMarks;
 
 public:
 
@@ -246,8 +248,8 @@ public:
 
   // Node related functions -----------------------------------------------
 
-  const vector< Node > &getNodes (void) const { return mNodes; }
-  vector< Node > &getNodes (void) { return mNodes; }
+  const std::vector< Node > &getNodes (void) const { return mNodes; }
+  std::vector< Node > &getNodes (void) { return mNodes; }
   
   const Node &getNode (int index) const;
   Node &getNode (int index);
@@ -270,10 +272,10 @@ public:
   
   // Edges related functions -----------------------------------------------
 
-  const vector< Edge > &getEdges (void) const { return mEdges; }
-  vector< Edge > &getEdges (void) { return mEdges; }
+  const std::vector< Edge > &getEdges (void) const { return mEdges; }
+  std::vector< Edge > &getEdges (void) { return mEdges; }
 
-  const vector< pair< int, int > > &getEdgeNodes (void) const { return mEdgeNodes; }
+  const std::vector< std::pair< int, int > > &getEdgeNodes (void) const { return mEdgeNodes; }
 
   const Edge &getEdge (int index) const;
   Edge &getEdge (int index);
@@ -281,7 +283,7 @@ public:
   const Edge &getEdge (int a, int b) const;
   Edge &getEdge (int a, int b); // a=origin, b=destination
 
-  const pair< int, int > getNodes (const Edge &e) const;
+  const std::pair< int, int > getNodes (const Edge &e) const;
 
   int getEdgeValue (int index) const;
   void setEdgeValue (int index, int v);
@@ -314,17 +316,17 @@ public:
   void unmarkEdge (int a, int b);
 
   // Dijkstra's algorithm
-  vector< Path > shortest_path (int root) const;
+  std::vector< Path > shortest_path (int root) const;
   Path shortest_path (int a, int b) const;
 
   // Prim's algorithm
-  vector< Edge > minimum_spanning_tree (void) const;
+  std::vector< Edge > minimum_spanning_tree (void) const;
 
   // Horton's algorithm 
-  vector< Path > cycle_base () { return cycle_base_horton (); }
-  vector< Path > cycle_base_union () { return cycle_base_horton (true); }
-  private: vector< Path > cycle_base_horton (bool minimum_basis_union = false);
-  private: vector< Path > gaussian_elimination (vector< Path > &bag, bool minimum_basis_union);
+  std::vector< Path > cycle_base () { return cycle_base_horton (); }
+  std::vector< Path > cycle_base_union () { return cycle_base_horton (true); }
+  private: std::vector< Path > cycle_base_horton (bool minimum_basis_union = false);
+  private: std::vector< Path > gaussian_elimination (std::vector< Path > &bag, bool minimum_basis_union);
 
   // Seb's algorithm.
   // TODO: CODE THIS ALGO...  FROM ~lemieuxs/prog/analysis/UnGraph.h
@@ -332,7 +334,7 @@ public:
   // I/O  -----------------------------------------------------------------
 public:
 
-  ostream &output (ostream &out) const;
+  std::ostream &output (std::ostream &out) const;
 
   iBinstream& input (iBinstream& ibs);
   oBinstream& output (oBinstream& obs) const;
@@ -340,7 +342,7 @@ public:
 };
 
 template< class Node, class Edge >
-ostream &operator<< (ostream &out, const Graph< Node, Edge > &gr)
+std::ostream &operator<< (std::ostream &out, const Graph< Node, Edge > &gr)
 {
   return gr.output (out);
 }

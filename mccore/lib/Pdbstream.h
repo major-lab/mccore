@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // Pdbstream.h
-// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
@@ -29,7 +29,7 @@
 #ifndef _Pdbstream_h_
 #define _Pdbstream_h_
 
-#include <iostream.h>
+#include <iostream>
 
 #include "CResId.h"
 #include "CAtom.h"
@@ -37,6 +37,8 @@
 class Model;
 class t_Residue;
 class t_Atom;
+
+using namespace std;
 
 
 

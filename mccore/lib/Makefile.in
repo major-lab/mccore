@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.28.8.5 $
-# $Id: Makefile.in,v 1.28.8.5 2003-11-19 20:35:21 larosem Exp $
+# $Revision: 1.28.8.6 $
+# $Id: Makefile.in,v 1.28.8.6 2003-11-21 15:54:54 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -66,6 +66,8 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 .cc.o:
 	$(CXX) $(CXXFLAGS) $(DEFS) -I.. -I$(srcdir) -c $<
 
+% : %.cc
+% : %.o
 
 SOURCES = zfstream.cc \
 	  sockstream.cc \

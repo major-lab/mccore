@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // DirectedGraph.h
-// Copyright © 2001, 2003 Laboratoire de Biologie Informatique et Théorique.
-//                  Université de Montréal.
+// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu May 10 14:49:18 2001
 // Last Modified By : Martin Larose
@@ -29,9 +29,11 @@
 #ifndef _DirectedGraph_h_
 #define _DirectedGraph_h_
 
-#include <iostream.h>
-#include <map.h>
-#include <vector.h>
+#include <iostream>
+#include <map>
+#include <vector>
+
+using namespace std;
 
 
 
@@ -144,6 +146,5 @@ public:
 // I/O  -------------------------------------------------------------------
 
 ostream &operator<< (ostream &os, const DirectedGraph &obj);
-//istream &operator>> (istream &is, DirectedGraph &obj);
 
 #endif

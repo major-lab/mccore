@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // ServerSocket.cc
-// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique.
-//                  Université de Montréal.
+// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:56 2001
 // Last Modified By : Martin Larose
@@ -32,7 +32,6 @@
 #include "ServerSocket.h"
 
 #include <errno.h>
-#include <iostream.h>
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -43,8 +42,6 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <fcntl.h>
-
-//  #include "CException.h"
 
 #if defined(__sgi) || defined (__sun)
 #include <strings.h>

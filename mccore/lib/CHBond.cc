@@ -30,16 +30,17 @@
 #include <config.h>
 #endif
 
-#include <iostream.h>
 #include <math.h>
 
+#include "AbstractResidue.h"
 #include "AtomType.h"
 #include "CAtom.h"
 #include "CHBond.h"
-#include "AbstractResidue.h"
 #include "McCore.h"
 #include "CResidue.h"
 #include "fPdbstream.h"
+
+
 
 HBond::HBond ()
   : donor (0), hydro (0), acceptor (0), lonepair (0)

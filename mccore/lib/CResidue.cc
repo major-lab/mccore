@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // CResidue.cc
-// Copyright © 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
@@ -30,9 +30,8 @@
 #include <config.h>
 #endif
 
-#include <iostream.h>
-#include <set.h>
-#include <algo.h>
+#include <set>
+#include <algorithm>
 #include <stdarg.h>
 
 #include "AtomType.h"

@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // Algo.h
-// Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
-//                  Université de Montréal.
+// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal.
 // Author           : Sebastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Wed Feb 14 15:33:58 2001
 // Last Modified By : Patrick Gendron
@@ -26,12 +26,12 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
+#include <algorithm>
+#include <map>
 #include <math.h>
+#include <utility>
 #include <values.h>
-#include <vector.h>
-#include <pair.h>
-#include <map.h>
-#include <algo.h>
+#include <vector>
 
 #include "AbstractResidue.h"
 #include "ResidueType.h"
@@ -142,9 +142,9 @@ public:
 	Y_range.push_back (tmp_Y);
 	Z_range.push_back (tmp_Z);
       }
-    std::sort (X_range.begin (), X_range.end ());
-    std::sort (Y_range.begin (), Y_range.end ());
-    std::sort (Z_range.begin (), Z_range.end ());
+    sort (X_range.begin (), X_range.end ());
+    sort (Y_range.begin (), Y_range.end ());
+    sort (Z_range.begin (), Z_range.end ());
 
     map< pair< iter, iter >, int > contact;
     

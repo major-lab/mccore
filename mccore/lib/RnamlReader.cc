@@ -4,8 +4,8 @@
 //                  UniversitÅÈ de MontrÅÈal.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
-// $Revision: 1.1.2.3 $
-// $Id: RnamlReader.cc,v 1.1.2.3 2003-11-18 16:21:59 larosem Exp $
+// $Revision: 1.1.2.4 $
+// $Id: RnamlReader.cc,v 1.1.2.4 2003-11-21 15:55:40 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -125,8 +125,8 @@ RnamlReader::toMccore (const rnaml::Base &base)
   const char *str;
   char *type;
   int c;
-  const std::vector< rnaml::Atom* > &atoms = ((rnaml::Base&) base).getAtoms ();
-  std::vector< rnaml::Atom* >::const_iterator cit;
+  const vector< rnaml::Atom* > &atoms = ((rnaml::Base&) base).getAtoms ();
+  vector< rnaml::Atom* >::const_iterator cit;
 
   r = residueFM->createResidue ();
   str = base.getStrand ();
@@ -155,8 +155,8 @@ Model*
 RnamlReader::toMccore (const rnaml::Model &model)
 {
   Model *m;
-  const std::vector< rnaml::Base* > &bases = ((rnaml::Model&) model).getBases ();
-  std::vector< rnaml::Base* >::const_iterator cit;
+  const vector< rnaml::Base* > &bases = ((rnaml::Model&) model).getBases ();
+  vector< rnaml::Base* >::const_iterator cit;
 
   m = new Model ();
   for (cit = bases.begin (); bases.end () != cit; ++cit)

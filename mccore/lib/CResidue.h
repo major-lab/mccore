@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // CResidue.h
-// Copyright © 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Thu Sep 28 16:59:32 2000
@@ -29,7 +29,8 @@
 #ifndef _CResidue_h_
 #define _CResidue_h_
 
-#include <vector.h>
+#include <iostream>
+#include <vector>
 
 #include "AbstractResidue.h"
 #include "CAtom.h"
@@ -39,7 +40,8 @@ class t_Residue;
 class oPdbstream;
 class iBinstream;
 class oBinstream;
-class ostream;
+
+using namespace std;
 
 
 
@@ -312,8 +314,8 @@ public:
     
     for (ciit = start; ciit != finish; ++ciit)
       {
-	vector< CAtom >::iterator it = ::find (mAtomRef.begin (),
-					       mAtomRef.end (), *ciit);
+	vector< CAtom >::iterator it = std::find (mAtomRef.begin (),
+						  mAtomRef.end (), *ciit);
 	
 	if (it != mAtomRef.end ())
 	  mAtomRef.erase (it);

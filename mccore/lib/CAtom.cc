@@ -30,16 +30,12 @@
 #include <config.h>
 #endif
 
-#include <iostream.h>
 #include <string.h>
 
-#include "CAtom.h"
-
 #include "Binstream.h"
+#include "CAtom.h"
 #include "CException.h"
 #include "Pdbstream.h"
-
-
 
 #define AS_AND          2
 #define AS_ALL          3

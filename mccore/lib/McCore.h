@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // McCore.h
-// Copyright © 2000-02 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
@@ -30,10 +30,9 @@
 #define _McCore_h_
 
 
-#include <map.h>
-#include <set.h>
-#include <vector.h>
-#include <function.h>
+#include <map>
+#include <set>
+#include <vector>
 #include <string.h>
 
 #include "AbstractResidue.h"
@@ -44,6 +43,8 @@ class Messagestream;
 class CPoint3D;
 class CAtom;
 class CTransfo;
+
+using namespace std;
 
 
 /**
@@ -90,7 +91,7 @@ struct less_deref
 /**
  * Atomic bond fixed length (A).
  */
-extern map< t_Atom*, map < t_Atom*, float > > gAtomicBond;
+extern map< t_Atom*, map< t_Atom*, float > > gAtomicBond;
 
 
 

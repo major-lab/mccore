@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // DirectedGraph.cc
-// Copyright © 2001, 2003 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu May 10 14:49:18 2001
@@ -33,8 +33,6 @@
 #include "DirectedGraph.h"
 
 
-// LIFECYCLE ------------------------------------------------------------
-
 
 DirectedGraph::DirectedGraph ()
   : mLastEdge (0)
@@ -46,14 +44,15 @@ DirectedGraph::DirectedGraph (const DirectedGraph &other)
 {}
 
 
-DirectedGraph::~DirectedGraph (void)
+DirectedGraph::~DirectedGraph ()
 {}
 
 
 // OPERATORS ------------------------------------------------------------
 
 
-DirectedGraph &DirectedGraph::operator= (const DirectedGraph &other)
+DirectedGraph&
+DirectedGraph::operator= (const DirectedGraph &other)
 {
   if (this != &other) { 
     mAdj = other.mAdj;
@@ -72,7 +71,8 @@ DirectedGraph &DirectedGraph::operator= (const DirectedGraph &other)
 
 // I/O  -----------------------------------------------------------------
 
-ostream& DirectedGraph::output (ostream& os) const
+ostream&
+DirectedGraph::output (ostream& os) const
 {
   os << "----" << endl;;
   map< int, int >::const_iterator k;
@@ -98,15 +98,10 @@ ostream& DirectedGraph::output (ostream& os) const
   return os;
 }
 
- ostream &operator<< (ostream &os, const DirectedGraph &obj)
- {
-   return obj.output (os);
- }
 
 
-//  istream &operator>> (istream &is, DirectedGraph &obj)
-//  {
-//    return obj.input (is);
-//  }
-
-
+ostream&
+operator<< (ostream &os, const DirectedGraph &obj)
+{
+  return obj.output (os);
+}

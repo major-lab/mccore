@@ -15,10 +15,9 @@
 #include <config.h>
 #endif
 
-#include <iostream.h>
-#include <set.h>
-#include <algo.h>
-#include <iterator.h>
+#include <set>
+#include <algorithm>
+#include <iterator>
 
 #include "AbstractResidue.h"
 #include "AtomType.h"
@@ -995,8 +994,8 @@ AbstractResidue::validate ()
 	resset.insert ((*it).GetType ());
       
       set_difference (allset.begin (), allset.end (),
-		      resset.begin (), resset.end (),
-		      inserter (diffset, diffset.begin ()));
+			   resset.begin (), resset.end (),
+			   inserter (diffset, diffset.begin ()));
       if (! diffset.empty ())
 	{
 	  map< const char *, t_Residue*, less_string >::iterator i
@@ -1012,8 +1011,8 @@ AbstractResidue::validate ()
 	{
 	  allset.insert (optbegin, optend);
 	  set_difference (resset.begin (), resset.end (),
-			  allset.begin (), allset.end (),
-			  inserter (diffset, diffset.begin ()));
+			       allset.begin (), allset.end (),
+			       inserter (diffset, diffset.begin ()));
 	  for (cit = diffset.begin (); cit != diffset.end (); ++cit)
 	    erase (*cit);
 	  if (mType->is_AminoAcid ())

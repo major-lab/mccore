@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.1.4.5 $
-// $Id: RnamlWriter.cc,v 1.1.4.5 2003-11-18 19:34:12 larosem Exp $
+// $Revision: 1.1.4.6 $
+// $Id: RnamlWriter.cc,v 1.1.4.6 2003-11-21 15:55:46 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -28,7 +28,7 @@
 #include <config.h>
 #endif
 
-#include <iostream.h>
+#include <iostream>
 #include <stdio.h>
 #include <string>
 #include <string.h>
@@ -111,7 +111,7 @@ RnamlWriter::toRnaml (const AbstractResidue &residue)
   base = new rnaml::Base ();
   if (' ' != ((const CResId&) residue).GetChainId ())
     {
-      std::string chainId;
+      string chainId;
       
       chainId = ((const CResId&) residue).GetChainId ();
       base->setStrand (chainId.c_str ());
@@ -122,7 +122,7 @@ RnamlWriter::toRnaml (const AbstractResidue &residue)
   base->setBaseType (type);
   if (' ' != ((const CResId&) residue).getInsertionCode ())
     {
-      std::string insertionCode;
+      string insertionCode;
       
       insertionCode = ((const CResId&) residue).getInsertionCode ();
       base->setInsertion (insertionCode.c_str ()[0]);
@@ -184,11 +184,11 @@ RnamlWriter::toRnaml (const Molecule &molecule)
       for (cit = molecule.begin (); molecule.end () != cit; ++cit)
 	{
 	  rnaml::Model *model;
-// 	  std::ostringstream oss;
+// 	  ostringstream oss;
 	  char *id;
 
 	  model = RnamlWriter::toRnaml (**cit);
-// 	  oss << (std::string) "model" << ++i;
+// 	  oss << (string) "model" << ++i;
 // 	  model->setId (oss.str ().c_str ());
 	  id = new char[256];
 	  sprintf (id, "model%d", ++i);

@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // Pdbstream.cc
-// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
@@ -30,12 +30,12 @@
 #include <config.h>
 #endif
 
-#include <iomanip.h>
+#include <algorithm>
+#include <iomanip>
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <unistd.h>
-#include <algo.h>
 
 #include "AbstractResidue.h"
 #include "AtomTypeImp.h"
@@ -525,16 +525,16 @@ iPdbstream::operator>> (T& obj)
 
 
 iPdbstream&
-iPdbstream::getline (char *buffer, unsigned int sz)
+iPdbstream::getline (char *buf, unsigned int sz)
 {
   int c;
   
   while (sz > 1 && (c = get ()) != EOF && c != '\n' && c != '\r')
     {
-      *buffer++ = c;
+      *buf++ = c;
       --sz;
     }
-  *buffer = '\0';
+  *buf = '\0';
   return *this;
 }
 
@@ -618,14 +618,14 @@ iPdbstream::GetZ () const
 CAtom&
 iPdbstream::getatom (CAtom &atom)
 {
-  char buffer[5];
+  char buf[5];
   
-  strncpy (buffer, line + 17, 3);
-  buffer[3] = '\0';
-  current_res_type = GetResidueType (buffer);
-  strncpy (buffer, line + 22, 4);
-  buffer[4] = '\0';
-  current_res_id = CResId (atoi (buffer), line[21], line[26]);
+  strncpy (buf, line + 17, 3);
+  buf[3] = '\0';
+  current_res_type = GetResidueType (buf);
+  strncpy (buf, line + 22, 4);
+  buf[4] = '\0';
+  current_res_id = CResId (atoi (buf), line[21], line[26]);
 
   atom.SetAll (GetX (), GetY (), GetZ (), GetAtomType (), GetAltLocId ());
   return atom;

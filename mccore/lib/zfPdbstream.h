@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*-
 // zfPdbstream.h
-// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : ven 23 jui 1999 13:54:45 EDT
@@ -29,6 +29,7 @@
 #ifndef _zfPdbstream_h_
 #define _zfPdbstream_h_
 
+#include <iostream>
 
 #include "fstreambase.h"
 #include "zfstream.h"
@@ -63,7 +64,7 @@ public:
    * @param name the file name.
    * @param mode the ios mode (default = ios::in).
    */
-  izfPdbstream (const char *name, int mode = ios::in)
+  izfPdbstream (const char *name, int mode = std::ios::in)
     : iPdbstream (zfstreambase::rdbuf ()), 
       zfstreambase (name, mode) { }
 
@@ -80,7 +81,7 @@ public:
    * @param name the file name.
    * @param mode the ios mode (default = ios::in).
    */
-  void open (const char *name, int mode = ios::in)
+  void open (const char *name, int mode = std::ios::in)
   {
     zfstreambase::open (name, mode);
     iPdbstream::open ();
@@ -126,7 +127,7 @@ public:
    * @param mode the ios mode (default = ios::out).
    * @param level the compression level (default = Z_BEST_SPEED).
    */
-  ozfPdbstream (const char *name, int mode = ios::out,
+  ozfPdbstream (const char *name, int mode = std::ios::out,
 		int level = Z_BEST_SPEED)
     : oPdbstream (zfstreambase::rdbuf()),
       zfstreambase (name, mode, level) { }
@@ -144,7 +145,7 @@ public:
    * @param mode the ios mode (default = ios::out).
    * @param level the compression level (default = Z_BEST_SPEED).
    */
-  void open (const char *name, int mode = ios::out,
+  void open (const char *name, int mode = std::ios::out,
 	     int level = Z_BEST_SPEED)
   {
     zfstreambase::open (name, mode, level);
