@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Jan 23 15:02:11 2001
-// Update Count     : 8
+// Last Modified On : Fri Feb  2 14:56:38 2001
+// Update Count     : 9
 // Status           : Ok.
 // 
 
@@ -279,7 +279,7 @@ set< t_Atom* > grUOptAtomSet;
 
 
 
-CMessageQueue gOut (cout, 3);
+CMessageQueue gOut (cout, 2);
 
 
 

@@ -4,8 +4,8 @@
 // Author           : Martin Larose
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Jan 23 15:02:18 2001
-// Update Count     : 6
+// Last Modified On : Fri Feb  2 14:56:25 2001
+// Update Count     : 7
 // Status           : Ok.
 // 
 
@@ -380,7 +380,9 @@ t_Residue*
 iPdbstream::GetResidueType (char *s)
 {
   int l;
-  
+  char tmp[4];
+
+  strcpy (tmp, s);
   Strip (s);
   l = strlen (s);
 
@@ -479,10 +481,10 @@ iPdbstream::GetResidueType (char *s)
 
   // This is an unknown type...
   map< const char *, t_Residue*, less_string >::iterator i
-    = gMiscResidueString.find (s);
+    = gMiscResidueString.find (tmp);
   
   if (i == gMiscResidueString.end ())
-    return new rt_Misc (s);
+    return new rt_Misc (tmp);
   else
     return i->second;
 }

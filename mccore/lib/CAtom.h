@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Jan 23 15:01:32 2001
-// Update Count     : 5
+// Last Modified On : Fri Feb  2 14:56:15 2001
+// Update Count     : 6
 // Status           : Ok.
 // 
 
@@ -247,14 +247,37 @@ oPdbstream& operator<< (oPdbstream &ops, const CAtom &atom);
  *
  * @author Martin Larose <larosem@IRO.UMontreal.CA>
  */
-class AtomSet : public unary_function< const CAtom&, bool >
+class AtomSet
 {
 public:
 
   // LIFECYCLE -----------------------------------------------------
 
+  /**
+   * Initializes the objet.
+   */
+  AtomSet () { }
+
+  /**
+   * Initializes the object with the right's content.
+   * @param right the object to copy.
+   */
+  AtomSet (const AtomSet &right) { }
+
+  /**
+   * Destructs the object.
+   */
+  virtual ~AtomSet () { }
+  
   // OPERATORS -----------------------------------------------------
 
+  /**
+   * Assigns the object with the right's content.
+   * @param right the object to copy.
+   * @return itself.
+   */
+  virtual AtomSet& operator= (const AtomSet &right) { return *this; }
+  
   /**
    * Tests wheter the atom is within the set.
    * @param atom the atom.
@@ -333,7 +356,7 @@ class atomset_and : public AtomSet
   /**
    * Initializes the object.  It must not be used.
    */
-  atomset_and () { }
+  atomset_and () : AtomSet () { }
   
 public:
 
@@ -342,7 +365,15 @@ public:
    * @param x the left function object.
    * @param y the right function object.
    */
-  atomset_and (AtomSet *x, AtomSet *y) : op1(x), op2(y) { }
+  atomset_and (AtomSet *x, AtomSet *y) : AtomSet (), op1(x), op2(y) { }
+
+  /**
+   * Initializes the object with the right's content.
+   * @param right the object to copy.
+   */
+  atomset_and (const atomset_and &right)
+    : AtomSet (right), op1 (right.op1->clone ()), op2 (right.op2->clone ())
+  { }
 
   /**
    * Destructs the operands.
@@ -407,6 +438,17 @@ public:
 
   // LIFECYCLE -----------------------------------------------------
 
+  /**
+   * Initializes the object.
+   */
+  all_atom_set () : AtomSet () { }
+
+  /**
+   * Initializes the object with the right's content.
+   * @param right the object to copy.
+   */
+  all_atom_set (const all_atom_set& right) : AtomSet (right) { }
+  
   // OPERATORS -----------------------------------------------------
 
   /**
@@ -456,6 +498,17 @@ public:
 
   // LIFECYCLE -----------------------------------------------------
 
+  /**
+   * Initializes the object.
+   */
+  base_atom_set () : AtomSet () { }
+
+  /**
+   * Initializes the object with the right's content.
+   * @param right the object to copy.
+   */
+  base_atom_set (const base_atom_set& right) : AtomSet (right) { }
+  
   // OPERATORS -----------------------------------------------------
 
   /**
@@ -506,6 +559,17 @@ public:
 
   // LIFECYCLE -----------------------------------------------------
 
+  /**
+   * Initializes the object.
+   */
+  backbone_atom_set () : AtomSet () { }
+
+  /**
+   * Initializes the object with the right's content.
+   * @param right the object to copy.
+   */
+  backbone_atom_set (const backbone_atom_set& right) : AtomSet (right) { }
+  
   // OPERATORS -----------------------------------------------------
 
   /**
@@ -556,6 +620,17 @@ public:
 
   // LIFECYCLE -----------------------------------------------------
 
+  /**
+   * Initializes the object.
+   */
+  pse_atom_set () : AtomSet () { }
+
+  /**
+   * Initializes the object with the right's content.
+   * @param right the object to copy.
+   */
+  pse_atom_set (const pse_atom_set& right) : AtomSet (right) { }
+  
   // OPERATORS -----------------------------------------------------
 
   /**
@@ -607,6 +682,17 @@ public:
 
   // LIFECYCLE -----------------------------------------------------
 
+  /**
+   * Initializes the object.
+   */
+  no_hydrogen_set () : AtomSet () { }
+
+  /**
+   * Initializes the object with the right's content.
+   * @param right the object to copy.
+   */
+  no_hydrogen_set (const no_hydrogen_set& right) : AtomSet (right) { }
+  
   // OPERATORS -----------------------------------------------------
 
   /**
@@ -658,6 +744,17 @@ public:
 
   // LIFECYCLE -----------------------------------------------------
 
+  /**
+   * Initializes the object.
+   */
+  no_pse_lp_atom_set () : AtomSet () { }
+
+  /**
+   * Initializes the object with the right's content.
+   * @param right the object to copy.
+   */
+  no_pse_lp_atom_set (const no_pse_lp_atom_set& right) : AtomSet (right) { }
+  
   // OPERATORS -----------------------------------------------------
 
   /**

@@ -4,8 +4,8 @@
 // Author           : Martin Larose
 // Created On       : Fri Oct  6 08:21:55 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Jan 23 15:01:41 2001
-// Update Count     : 5
+// Last Modified On : Fri Feb  2 14:56:18 2001
+// Update Count     : 6
 // Status           : Unknown.
 // 
 
@@ -16,6 +16,7 @@
 
 #include "Binstream.h"
 #include "Pdbstream.h"
+#include "ResidueType.h"
 
 
 
@@ -73,7 +74,7 @@ CModel::Validate () const
     {
       CResidue res = it->Validate ();
       
-      if (res.GetType () != 0)
+      if (res.GetType ()->is_NucleicAcid ())
 	model.push_back (res);
     }
   return model;
@@ -202,6 +203,7 @@ operator< (const CModel::iterator &left, const CModel::iterator &right)
 iPdbstream&
 operator>> (iPdbstream &ips, CModel &obj)
 {
+  obj.clear ();
   while (! (ips.eof () || ips.eop ()))
     {
       CResidue res;
@@ -246,7 +248,8 @@ iBinstream&
 operator>> (iBinstream &ibs, CModel &obj)
 {
   CModel::size_type sz;
-  
+
+  obj.clear ();
   ibs >> sz;
   for (; sz > 0; --sz)
     {

@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Jan 24 16:17:30 2001
-// Update Count     : 12
+// Last Modified On : Fri Feb  2 14:56:20 2001
+// Update Count     : 13
 // Status           : Ok.
 // 
 
@@ -242,9 +242,9 @@ CResidue::const_residue_iterator::operator- (const CResidue::const_iterator &i) 
 
 
 CResidue::CResidue (t_Residue *type, const vector< CAtom > &vec,
-		    const CResId &nId, t_Residue *readtype)
-  : CResId (nId), mType (type), mReadType (readtype),
-    mResName (0), mAtomRef (vec), mAtomResPos (vec.size (), -1)
+		    const CResId &nId)
+  : CResId (nId), mType (type), mResName (0), mAtomRef (vec),
+    mAtomResPos (vec.size (), -1)
 {
   count++;
   const CAtom *pivot[3] = {0, 0, 0};
@@ -294,8 +294,6 @@ CResidue::CResidue (t_Residue *type, const vector< CAtom > &vec,
 	  gOut(1) << "Residue " << *type << "-" << nId
 		  << " is missing one or more critical atoms. (1)<br>" 
 		  << endl;
-	  mReadType = type;
-//  	  mType = 0;
 	  map< const char *, t_Residue*, less_string >::iterator i
 	    = gMiscResidueString.find (mType->operator const char* ());
 	  
@@ -382,7 +380,7 @@ CResidue::CResidue (t_Residue *type, const vector< CAtom > &vec,
 
 CResidue::CResidue (const CResidue& right)
   : CResId (right), mType (right.mType),
-    mReadType (right.mReadType), mResName (0), mAtomRef (right.mAtomRef),
+    mResName (0), mAtomRef (right.mAtomRef),
     mAtomResPos (right.mAtomResPos), mAtomIndex (right.mAtomIndex),
     mAtomRes (right.mAtomRes), mTfo (right.mTfo)    
 {
@@ -412,7 +410,6 @@ CResidue::operator= (const CResidue &right)
     {
       CResId::operator= (right);
       mType = right.mType;
-      mReadType = right.mReadType;
       if (mResName)
 	{
 	  delete[] mResName;
@@ -641,8 +638,13 @@ CResidue::AddHydrogens ()
 		  << " is missing one or more critical atoms.<br>" 
 		  << endl;
 	  // Invalid residue
-	  mReadType = mType;
-	  mType = 0;
+	  map< const char *, t_Residue*, less_string >::iterator i
+	    = gMiscResidueString.find (mType->operator const char* ());
+	  
+	  if (i == gMiscResidueString.end ())
+	    mType = new rt_Misc (mType->operator const char* ());
+	  else
+	    mType = i->second;
 	  return;
 	}
       
@@ -685,8 +687,13 @@ CResidue::AddHydrogens ()
 		  << " is missing one or more critical atoms.<br>" 
 		  << endl;
 	  // invalid residue
-	  mReadType = mType;
-	  mType = 0;
+	  map< const char *, t_Residue*, less_string >::iterator i
+	    = gMiscResidueString.find (mType->operator const char* ());
+	  
+	  if (i == gMiscResidueString.end ())
+	    mType = new rt_Misc (mType->operator const char* ());
+	  else
+	    mType = i->second;
 	  return;
 	}
 
@@ -729,8 +736,13 @@ CResidue::AddHydrogens ()
 		  << " is missing one or more critical atoms.<br>" 
 		  << endl;
 	  // invalid residue
-	  mReadType = mType;
-	  mType = 0;
+	  map< const char *, t_Residue*, less_string >::iterator i
+	    = gMiscResidueString.find (mType->operator const char* ());
+	  
+	  if (i == gMiscResidueString.end ())
+	    mType = new rt_Misc (mType->operator const char* ());
+	  else
+	    mType = i->second;
 	  return;
 	}
       
@@ -772,8 +784,13 @@ CResidue::AddHydrogens ()
 		  << " is missing one or more critical atoms.<br>" 
 		  << endl;
 	  // invalid residue
-	  mReadType = mType;
-	  mType = 0;
+	  map< const char *, t_Residue*, less_string >::iterator i
+	    = gMiscResidueString.find (mType->operator const char* ());
+	  
+	  if (i == gMiscResidueString.end ())
+	    mType = new rt_Misc (mType->operator const char* ());
+	  else
+	    mType = i->second;
 	  return;
 	}
       
@@ -808,8 +825,13 @@ CResidue::AddHydrogens ()
 		  << " is missing one or more critical atoms.<br>" 
 		  << endl;
 	  // invalid residue
-	  mReadType = mType;
-	  mType = 0;
+	  map< const char *, t_Residue*, less_string >::iterator i
+	    = gMiscResidueString.find (mType->operator const char* ());
+	  
+	  if (i == gMiscResidueString.end ())
+	    mType = new rt_Misc (mType->operator const char* ());
+	  else
+	    mType = i->second;
 	  return;
 	}
       
@@ -1081,6 +1103,28 @@ CResidue::AddLP ()
 
 
 
+void
+CResidue::AtomCopy (const CResidue &right)
+{
+  if (this != &right)
+    {
+      if (mType != right.mType)
+	{
+	  CIntLibException exc ("Invalid residue type ", __FILE__,
+				__LINE__);
+	  exc << right.mType->operator const char* () << ".";
+	  throw exc;
+	}
+      mAtomRef = right.mAtomRef;
+      mAtomResPos = right.mAtomResPos;
+      mAtomIndex = right.mAtomIndex;
+      mAtomRes = right.mAtomRes;
+      mTfo = right.mTfo;
+    }
+}
+
+
+
 CResidue
 CResidue::Validate () const
 {
@@ -1091,7 +1135,7 @@ CResidue::Validate () const
     if (::find (atoms.begin (), atoms.end (), *at_it) == atoms.end ())
       atoms.push_back (*at_it);
 
-  CResidue res (mType, atoms, *this, mReadType);
+  CResidue res (mType, atoms, *this);
   res.mTfo = mTfo;
   
   if (res.mType != 0)
@@ -1158,7 +1202,13 @@ CResidue::Validate () const
 	{
 	  if (res.mType->is_AminoAcid ())
 	    gOut (3) << 'p';
-	  res.mType = 0;
+	  map< const char *, t_Residue*, less_string >::iterator i
+	    = gMiscResidueString.find (res.mType->operator const char* ());
+	  
+	  if (i == gMiscResidueString.end ())
+	    res.mType = new rt_Misc (res.mType->operator const char* ());
+	  else
+	    res.mType = i->second;
 	  return res;
 	}
       
@@ -1171,7 +1221,13 @@ CResidue::Validate () const
       if (! diffset.empty ())
 	{
 	  gOut (3) << 'i';
-	  res.mType = 0;
+	  map< const char *, t_Residue*, less_string >::iterator i
+	    = gMiscResidueString.find (res.mType->operator const char* ());
+	  
+	  if (i == gMiscResidueString.end ())
+	    res.mType = new rt_Misc (res.mType->operator const char* ());
+	  else
+	    res.mType = i->second;
 	  return res;
 	}
 
@@ -1301,7 +1357,7 @@ CResidue::select (t_Atom *at ...) const
       if (atom)
 	atom_vec.push_back (*atom);
     }
-  return CResidue (mType, atom_vec, *(CResId*)this, mReadType);
+  return CResidue (mType, atom_vec, *(CResId*)this);
 }
 
 
@@ -1325,18 +1381,17 @@ operator>> (iBinstream& ibs, CResidue& res)
 {
   CResId resid;
   t_Residue *type;
-  t_Residue *readtype;
-  vector< CAtom >::size_type i, nb;
+  vector< CAtom >::size_type nb;
   vector< CAtom > vec;
 
-  ibs >> resid >> type >> readtype >> nb;
-  for (i = 0; i < nb; i++)
+  ibs >> resid >> type >> nb;
+  for (; nb > 0; --nb)
     {
       vec.push_back (CAtom ());
       CAtom &aref = vec.back ();
       ibs >> aref;
     }
-  res = CResidue (type, vec, resid, readtype);
+  res = CResidue (type, vec, resid);
   return ibs;
 }
 
@@ -1355,9 +1410,8 @@ operator<< (oBinstream& obs, const CResidue& res)
 					 new no_hydrogen_set ()));
        cit != res.end ();
        ++cit)
-    if (!(res.GetType ()->is_NucleicAcid ()))
-      atoms.push_back (cit);
-    
+    atoms.push_back (cit);
+  
   obs << atoms.size ();
   
   for (ciit = atoms.begin (); ciit != atoms.end (); ++ciit)
@@ -1459,10 +1513,7 @@ operator<< (oPdbstream &ops, const CResidue &res)
   CResidue::const_iterator cit;
   const t_Residue *type = res.GetType ();
 
-  if (type)
-    ops.SetResType (type);
-  else
-    ops.SetResType (res.GetReadType ());
+  ops.SetResType (type);
   ops.SetResId (res);
   
   for (cit = res.begin (); cit != res.end (); ++cit)

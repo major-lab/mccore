@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Thu Sep 28 16:59:32 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Jan 23 15:02:03 2001
-// Update Count     : 10
+// Last Modified On : Fri Feb  2 14:56:22 2001
+// Update Count     : 11
 // Status           : Ok.
 // 
 
@@ -54,12 +54,6 @@ private:
    * The residue type.
    */
   t_Residue  *mType;
-
-  /**
-   * The residue type as read from an input file.  This is kept for output
-   * of invalid residues.  It is only valid when mType == 0.
-   */
-  t_Residue *mReadType;
 
   /**
    * The name of the residue.
@@ -425,8 +419,7 @@ public:
    * Initializes the residue.  Increases the global count.
    */
   CResidue ()
-    : CResId (), mType (0), mReadType (0), mResName (0),
-      mTfo ()
+    : CResId (), mType (0), mResName (0), mTfo ()
   {count++;} 
 
   /**
@@ -434,10 +427,8 @@ public:
    * @param type the residue type.
    * @param vec the atom container.
    * @param nId the residue id.
-   * @param readtype the type read from the input file.
    */
-  CResidue (t_Residue *type, const vector< CAtom > &vec,
-	    const CResId &nId, t_Residue *readtype = 0);
+  CResidue (t_Residue *type, const vector< CAtom > &vec, const CResId &nId);
 
   /**
    * Initializes the residue with the right's content.
@@ -567,12 +558,6 @@ public:
    */
   void SetType (t_Residue *type) { mType = type; }
 
-  /**
-   * Gets the read residue type.
-   * @return the read residue type.
-   */
-  const t_Residue* GetReadType () const { return mReadType; }
- 
  /**
    * Gets the transfo.
    * @return the transfo.
@@ -674,6 +659,12 @@ private:
   void AddLP ();
 
 public:
+
+  /**
+   * Copies the atoms from the right residue.
+   * @param right the residue to copy.
+   */
+  void AtomCopy (const CResidue &right);
   
   /**
    * Verifies wether all the obligatory atoms are in the residue and creates
