@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.29 $
+// $Revision: 1.30 $
 //
 // This file is part of mccore.
 // 
@@ -62,7 +62,7 @@ namespace mccore
    * the atom types.
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: Residue.h,v 1.29 2005-01-11 20:58:26 thibaup Exp $
+   * @version $Id: Residue.h,v 1.30 2005-01-26 20:50:50 larosem Exp $
    */
   class Residue
   {
@@ -157,16 +157,14 @@ namespace mccore
 
   protected:
 
-    // PRIVATE METHODS ------------------------------------------------------
-
     /**
      * Gets the atom at a position given by an index.  This is used by
-     * the iterators.  It is private since no atom pointers should be
+     * the iterators.  It is protected since no atom pointers should be
      * used outside the residue; these pointers are not guaranteed to be valid.
      * @param pos the position of the atom in the atom vector;
      * @return the atom.
      */
-    Atom& _get (size_type pos) const;
+    virtual Atom& _get (size_type pos) const;
 
   public:
 
@@ -761,7 +759,7 @@ namespace mccore
      */
     virtual void transform (const HomogeneousTransfo &aTransfo)
     {
-      this->setReferential(aTransfo * this->getReferential());
+      setReferential (aTransfo * getReferential ());
     }
 
     /**

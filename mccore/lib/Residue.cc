@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.62 $
-// $Id: Residue.cc,v 1.62 2005-01-11 20:58:26 thibaup Exp $
+// $Revision: 1.63 $
+// $Id: Residue.cc,v 1.63 2005-01-26 20:50:42 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -77,12 +77,19 @@ namespace mccore
   float Residue::s_rib_shiftrate = 0.5;
   
 
+  Atom& 
+  Residue::_get (size_type pos) const 
+  {
+    return *atomGlobal[pos];
+  }
+
+
   Residue::Residue ()
     : rib_dirty_ref (true),
       rib_built_valid (false),
       rib_built_count (0)
   {
-    this->setType (0);
+    setType (0);
     rib_C1p = rib_C2p = rib_C3p = rib_C4p = rib_C5p = rib_O2p = rib_O3p = rib_O4p = rib_O5p = rib_P = rib_O1P = rib_O2P = 0;
   }
   
@@ -93,7 +100,7 @@ namespace mccore
       rib_built_valid (false),
       rib_built_count (0)      
   {
-    this->setType (t);
+    setType (t);
     rib_C1p = rib_C2p = rib_C3p = rib_C4p = rib_C5p = rib_O2p = rib_O3p = rib_O4p = rib_O5p = rib_O1P = rib_O2P = rib_P = 0;
   }
 
@@ -106,7 +113,7 @@ namespace mccore
   {
     vector< Atom >::const_iterator j;
 
-    this->setType (t);
+    setType (t);
     for (j = vec.begin (); j != vec.end (); ++j)
       {
 	insert (*j);
@@ -148,152 +155,152 @@ namespace mccore
   void
   Residue::setTheoretical ()
   {
-    this->clear ();
+    clear ();
     
-    if (this->type->isA ())
+    if (type->isA ())
     {
-      this->insert (Atom ( 0.213f,  0.660f,  1.287f, AtomType::aN9));
-      this->insert (Atom ( 0.250f,  2.016f,  1.509f, AtomType::aC4));
-      this->insert (Atom ( 0.016f,  2.995f,  0.619f, AtomType::aN3));
-      this->insert (Atom ( 0.142f,  4.189f,  1.194f, AtomType::aC2));
-      this->insert (Atom ( 0.451f,  4.493f,  2.459f, AtomType::aN1));
-      this->insert (Atom ( 0.681f,  3.485f,  3.329f, AtomType::aC6));
-      this->insert (Atom ( 0.990f,  3.787f,  4.592f, AtomType::aN6));
-      this->insert (Atom ( 0.579f,  2.170f,  2.844f, AtomType::aC5));
-      this->insert (Atom ( 0.747f,  0.934f,  3.454f, AtomType::aN7));
-      this->insert (Atom ( 0.520f,  0.074f,  2.491f, AtomType::aC8));
+      insert (Atom ( 0.213f,  0.660f,  1.287f, AtomType::aN9));
+      insert (Atom ( 0.250f,  2.016f,  1.509f, AtomType::aC4));
+      insert (Atom ( 0.016f,  2.995f,  0.619f, AtomType::aN3));
+      insert (Atom ( 0.142f,  4.189f,  1.194f, AtomType::aC2));
+      insert (Atom ( 0.451f,  4.493f,  2.459f, AtomType::aN1));
+      insert (Atom ( 0.681f,  3.485f,  3.329f, AtomType::aC6));
+      insert (Atom ( 0.990f,  3.787f,  4.592f, AtomType::aN6));
+      insert (Atom ( 0.579f,  2.170f,  2.844f, AtomType::aC5));
+      insert (Atom ( 0.747f,  0.934f,  3.454f, AtomType::aN7));
+      insert (Atom ( 0.520f,  0.074f,  2.491f, AtomType::aC8));
 
-      this->insert (Atom ( -0.0303076f, 5.03468f, 0.54474f, AtomType::aH2));
-      this->insert (Atom ( 1.04802f, 4.75317f, 4.88051f, AtomType::a1H6));
-      this->insert (Atom ( 1.16578f, 3.04933f, 5.25911f, AtomType::a2H6));
-      this->insert (Atom ( 0.569712f, -0.995716f, 2.63113f, AtomType::aH8));
-      this->insert (Atom ( 0.510616f, 5.44634f, 2.75495f, AtomType::aLP1));
-      this->insert (Atom ( -0.219929f, 2.84729f, -0.341479f, AtomType::aLP3));
-      this->insert (Atom ( 0.985635f, 0.744068f, 4.40635f, AtomType::aLP7));
+      insert (Atom ( -0.0303076f, 5.03468f, 0.54474f, AtomType::aH2));
+      insert (Atom ( 1.04802f, 4.75317f, 4.88051f, AtomType::a1H6));
+      insert (Atom ( 1.16578f, 3.04933f, 5.25911f, AtomType::a2H6));
+      insert (Atom ( 0.569712f, -0.995716f, 2.63113f, AtomType::aH8));
+      insert (Atom ( 0.510616f, 5.44634f, 2.75495f, AtomType::aLP1));
+      insert (Atom ( -0.219929f, 2.84729f, -0.341479f, AtomType::aLP3));
+      insert (Atom ( 0.985635f, 0.744068f, 4.40635f, AtomType::aLP7));
     }
-    else if (this->type->isC ())
+    else if (type->isC ())
     {
-      this->insert (Atom ( 0.212f,  0.668f,  1.294f, AtomType::aN1)); 
-      this->insert (Atom ( 0.193f, -0.043f,  2.462f, AtomType::aC6));
-      this->insert (Atom ( 0.374f,  2.055f,  1.315f, AtomType::aC2)); 
-      this->insert (Atom ( 0.388f,  2.673f,  0.240f, AtomType::aO2)); 
-      this->insert (Atom ( 0.511f,  2.687f,  2.504f, AtomType::aN3)); 
-      this->insert (Atom ( 0.491f,  1.984f,  3.638f, AtomType::aC4)); 
-      this->insert (Atom ( 0.631f,  2.649f,  4.788f, AtomType::aN4)); 
-      this->insert (Atom ( 0.328f,  0.569f,  3.645f, AtomType::aC5));
+      insert (Atom ( 0.212f,  0.668f,  1.294f, AtomType::aN1)); 
+      insert (Atom ( 0.193f, -0.043f,  2.462f, AtomType::aC6));
+      insert (Atom ( 0.374f,  2.055f,  1.315f, AtomType::aC2)); 
+      insert (Atom ( 0.388f,  2.673f,  0.240f, AtomType::aO2)); 
+      insert (Atom ( 0.511f,  2.687f,  2.504f, AtomType::aN3)); 
+      insert (Atom ( 0.491f,  1.984f,  3.638f, AtomType::aC4)); 
+      insert (Atom ( 0.631f,  2.649f,  4.788f, AtomType::aN4)); 
+      insert (Atom ( 0.328f,  0.569f,  3.645f, AtomType::aC5));
 
-      this->insert (Atom ( 0.620979f, 2.14851f, 5.66522f, AtomType::a1H4));
-      this->insert (Atom ( 0.746876f, 3.6523f, 4.78031f, AtomType::a2H4));
-      this->insert (Atom ( 0.313722f, 0.00583071f, 4.57813f, AtomType::aH5));
-      this->insert (Atom ( 0.0671006f, -1.11515f, 2.42957f, AtomType::aH6)); 
-      this->insert (Atom ( 0.284334f, 2.178f, -0.622688f, AtomType::a1LP2)); 
-      this->insert (Atom ( 0.502955f, 3.66636f, 0.235793f, AtomType::a2LP2));
-      this->insert (Atom ( 0.627097f, 3.67983f, 2.53261f, AtomType::aLP3));
+      insert (Atom ( 0.620979f, 2.14851f, 5.66522f, AtomType::a1H4));
+      insert (Atom ( 0.746876f, 3.6523f, 4.78031f, AtomType::a2H4));
+      insert (Atom ( 0.313722f, 0.00583071f, 4.57813f, AtomType::aH5));
+      insert (Atom ( 0.0671006f, -1.11515f, 2.42957f, AtomType::aH6)); 
+      insert (Atom ( 0.284334f, 2.178f, -0.622688f, AtomType::a1LP2)); 
+      insert (Atom ( 0.502955f, 3.66636f, 0.235793f, AtomType::a2LP2));
+      insert (Atom ( 0.627097f, 3.67983f, 2.53261f, AtomType::aLP3));
     }
-    else if (this->type->isG ())
+    else if (type->isG ())
     {
-      this->insert (Atom ( 0.214f,  0.659f,  1.283f, AtomType::aN9)); 
-      this->insert (Atom ( 0.254f,  2.014f,  1.509f, AtomType::aC4)); 
-      this->insert (Atom ( 0.034f,  2.979f,  0.591f, AtomType::aN3)); 
-      this->insert (Atom ( 0.142f,  4.190f,  1.110f, AtomType::aC2)); 
-      this->insert (Atom (-0.047f,  5.269f,  0.336f, AtomType::aN2)); 
-      this->insert (Atom ( 0.444f,  4.437f,  2.427f, AtomType::aN1)); 
-      this->insert (Atom ( 0.676f,  3.459f,  3.389f, AtomType::aC6)); 
-      this->insert (Atom ( 0.941f,  3.789f,  4.552f, AtomType::aO6)); 
-      this->insert (Atom ( 0.562f,  2.154f,  2.846f, AtomType::aC5)); 
-      this->insert (Atom ( 0.712f,  0.912f,  3.448f, AtomType::aN7)); 
-      this->insert (Atom ( 0.498f,  0.057f,  2.485f, AtomType::aC8));
+      insert (Atom ( 0.214f,  0.659f,  1.283f, AtomType::aN9)); 
+      insert (Atom ( 0.254f,  2.014f,  1.509f, AtomType::aC4)); 
+      insert (Atom ( 0.034f,  2.979f,  0.591f, AtomType::aN3)); 
+      insert (Atom ( 0.142f,  4.190f,  1.110f, AtomType::aC2)); 
+      insert (Atom (-0.047f,  5.269f,  0.336f, AtomType::aN2)); 
+      insert (Atom ( 0.444f,  4.437f,  2.427f, AtomType::aN1)); 
+      insert (Atom ( 0.676f,  3.459f,  3.389f, AtomType::aC6)); 
+      insert (Atom ( 0.941f,  3.789f,  4.552f, AtomType::aO6)); 
+      insert (Atom ( 0.562f,  2.154f,  2.846f, AtomType::aC5)); 
+      insert (Atom ( 0.712f,  0.912f,  3.448f, AtomType::aN7)); 
+      insert (Atom ( 0.498f,  0.057f,  2.485f, AtomType::aC8));
 
-      this->insert (Atom ( 0.502066f, 5.40203f, 2.7193f, AtomType::aH1));
-      this->insert (Atom ( -0.271768f, 5.15574f, -0.642136f, AtomType::a1H2));
-      this->insert (Atom ( 0.0354486f, 6.19476f, 0.731306f, AtomType::a2H2));
-      this->insert (Atom ( 0.539896f, -1.01379f, 2.61934f, AtomType::aH8));
-      this->insert (Atom ( -0.184759f, 2.79908f, -0.368048f, AtomType::aLP3));
-      this->insert (Atom ( 0.988664f, 4.75695f, 4.79856f, AtomType::a2LP6));
-      this->insert (Atom ( 1.10746f, 3.08769f, 5.24515f, AtomType::a1LP6));
-      this->insert (Atom ( 0.933818f, 0.716543f, 4.4033f, AtomType::aLP7));
+      insert (Atom ( 0.502066f, 5.40203f, 2.7193f, AtomType::aH1));
+      insert (Atom ( -0.271768f, 5.15574f, -0.642136f, AtomType::a1H2));
+      insert (Atom ( 0.0354486f, 6.19476f, 0.731306f, AtomType::a2H2));
+      insert (Atom ( 0.539896f, -1.01379f, 2.61934f, AtomType::aH8));
+      insert (Atom ( -0.184759f, 2.79908f, -0.368048f, AtomType::aLP3));
+      insert (Atom ( 0.988664f, 4.75695f, 4.79856f, AtomType::a2LP6));
+      insert (Atom ( 1.10746f, 3.08769f, 5.24515f, AtomType::a1LP6));
+      insert (Atom ( 0.933818f, 0.716543f, 4.4033f, AtomType::aLP7));
     }
-    else if (this->type->isU ())
+    else if (type->isU ())
     {
-      this->insert (Atom ( 0.212f,  0.676f,  1.281f, AtomType::aN1)); 
-      this->insert (Atom ( 0.195f, -0.023f,  2.466f, AtomType::aC6));
-      this->insert (Atom ( 0.370f,  2.048f,  1.265f, AtomType::aC2)); 
-      this->insert (Atom ( 0.390f,  2.698f,  0.235f, AtomType::aO2)); 
-      this->insert (Atom ( 0.505f,  2.629f,  2.502f, AtomType::aN3)); 
-      this->insert (Atom ( 0.497f,  1.990f,  3.725f, AtomType::aC4)); 
-      this->insert (Atom ( 0.629f,  2.653f,  4.755f, AtomType::aO4)); 
-      this->insert (Atom ( 0.329f,  0.571f,  3.657f, AtomType::aC5));
+      insert (Atom ( 0.212f,  0.676f,  1.281f, AtomType::aN1)); 
+      insert (Atom ( 0.195f, -0.023f,  2.466f, AtomType::aC6));
+      insert (Atom ( 0.370f,  2.048f,  1.265f, AtomType::aC2)); 
+      insert (Atom ( 0.390f,  2.698f,  0.235f, AtomType::aO2)); 
+      insert (Atom ( 0.505f,  2.629f,  2.502f, AtomType::aN3)); 
+      insert (Atom ( 0.497f,  1.990f,  3.725f, AtomType::aC4)); 
+      insert (Atom ( 0.629f,  2.653f,  4.755f, AtomType::aO4)); 
+      insert (Atom ( 0.329f,  0.571f,  3.657f, AtomType::aC5));
 
-      this->insert (Atom ( 0.632158f, 3.71141f, 2.51965f, AtomType::aH3));
-      this->insert (Atom ( 0.310285f, -0.0229714f, 4.57076f, AtomType::aH5));
-      this->insert (Atom ( 0.0682911f, -1.09504f, 2.43321f, AtomType::aH6));
-      this->insert (Atom ( 0.289004f, 2.23923f, -0.647795f, AtomType::a1LP2));
-      this->insert (Atom ( 0.507414f, 3.69039f, 0.272225f, AtomType::a2LP2));
-      this->insert (Atom ( 0.624348f, 2.19893f, 5.64595f, AtomType::a1LP4));
-      this->insert (Atom ( 0.740793f, 3.64521f, 4.70007f, AtomType::a2LP4));
+      insert (Atom ( 0.632158f, 3.71141f, 2.51965f, AtomType::aH3));
+      insert (Atom ( 0.310285f, -0.0229714f, 4.57076f, AtomType::aH5));
+      insert (Atom ( 0.0682911f, -1.09504f, 2.43321f, AtomType::aH6));
+      insert (Atom ( 0.289004f, 2.23923f, -0.647795f, AtomType::a1LP2));
+      insert (Atom ( 0.507414f, 3.69039f, 0.272225f, AtomType::a2LP2));
+      insert (Atom ( 0.624348f, 2.19893f, 5.64595f, AtomType::a1LP4));
+      insert (Atom ( 0.740793f, 3.64521f, 4.70007f, AtomType::a2LP4));
     }
-    else if (this->type->isT ())
+    else if (type->isT ())
     {
-      this->insert (Atom ( 0.214f,  0.668f,  1.296f, AtomType::aN1)); 
-      this->insert (Atom ( 0.171f, -0.052f,  2.470f, AtomType::aC6)); 
-      this->insert (Atom ( 0.374f,  2.035f,  1.303f, AtomType::aC2)); 
-      this->insert (Atom ( 0.416f,  2.705f,  0.284f, AtomType::aO2)); 
-      this->insert (Atom ( 0.483f,  2.592f,  2.553f, AtomType::aN3)); 
-      this->insert (Atom ( 0.449f,  1.933f,  3.767f, AtomType::aC4)); 
-      this->insert (Atom ( 0.560f,  2.568f,  4.812f, AtomType::aO4)); 
-      this->insert (Atom ( 0.279f,  0.500f,  3.685f, AtomType::aC5)); 
-      this->insert (Atom ( 0.231f, -0.299f,  4.949f, AtomType::aC5M));
+      insert (Atom ( 0.214f,  0.668f,  1.296f, AtomType::aN1)); 
+      insert (Atom ( 0.171f, -0.052f,  2.470f, AtomType::aC6)); 
+      insert (Atom ( 0.374f,  2.035f,  1.303f, AtomType::aC2)); 
+      insert (Atom ( 0.416f,  2.705f,  0.284f, AtomType::aO2)); 
+      insert (Atom ( 0.483f,  2.592f,  2.553f, AtomType::aN3)); 
+      insert (Atom ( 0.449f,  1.933f,  3.767f, AtomType::aC4)); 
+      insert (Atom ( 0.560f,  2.568f,  4.812f, AtomType::aO4)); 
+      insert (Atom ( 0.279f,  0.500f,  3.685f, AtomType::aC5)); 
+      insert (Atom ( 0.231f, -0.299f,  4.949f, AtomType::aC5M));
 
-      this->insert (Atom ( 0.610471f, 3.67381f, 2.59215f, AtomType::aH3));
-      this->insert (Atom ( 0.338584f, 0.359726f, 5.81075f, AtomType::a1H5M));
-      this->insert (Atom ( 1.03978f, -1.02966f, 4.95911f, AtomType::a2H5M));
-      this->insert (Atom ( -0.72125f, -0.824345f, 5.02202f, AtomType::a3H5M));
-      this->insert (Atom ( 0.0428929f, -1.12249f, 2.40652f, AtomType::aH6));
-      this->insert (Atom ( 0.332737f, 2.2627f, -0.608996f, AtomType::a1LP2));
-      this->insert (Atom ( 0.533682f, 3.69636f, 0.341925f, AtomType::a2LP2));
-      this->insert (Atom ( 0.535573f, 2.09218f, 5.69121f, AtomType::a1LP4)); 
-      this->insert (Atom ( 0.67483f, 3.56099f, 4.78389f, AtomType::a2LP4));
+      insert (Atom ( 0.610471f, 3.67381f, 2.59215f, AtomType::aH3));
+      insert (Atom ( 0.338584f, 0.359726f, 5.81075f, AtomType::a1H5M));
+      insert (Atom ( 1.03978f, -1.02966f, 4.95911f, AtomType::a2H5M));
+      insert (Atom ( -0.72125f, -0.824345f, 5.02202f, AtomType::a3H5M));
+      insert (Atom ( 0.0428929f, -1.12249f, 2.40652f, AtomType::aH6));
+      insert (Atom ( 0.332737f, 2.2627f, -0.608996f, AtomType::a1LP2));
+      insert (Atom ( 0.533682f, 3.69636f, 0.341925f, AtomType::a2LP2));
+      insert (Atom ( 0.535573f, 2.09218f, 5.69121f, AtomType::a1LP4)); 
+      insert (Atom ( 0.67483f, 3.56099f, 4.78389f, AtomType::a2LP4));
     }
-    else if (this->type->isPhosphate ())
+    else if (type->isPhosphate ())
     {
-      this->insert (Atom ( 4.691f,  0.327f, -2.444f, AtomType::aP));
-      this->insert (Atom ( 5.034f,  1.678f, -1.932f, AtomType::aO1P));
-      this->insert (Atom ( 4.718f,  0.068f, -3.906f, AtomType::aO2P));
-      this->insert (Atom ( 3.246f, -0.057f, -1.895f, AtomType::aO5p));
-      this->insert (Atom ( 5.662f, -0.712f, -1.734f, AtomType::aO3p));
+      insert (Atom ( 4.691f,  0.327f, -2.444f, AtomType::aP));
+      insert (Atom ( 5.034f,  1.678f, -1.932f, AtomType::aO1P));
+      insert (Atom ( 4.718f,  0.068f, -3.906f, AtomType::aO2P));
+      insert (Atom ( 3.246f, -0.057f, -1.895f, AtomType::aO5p));
+      insert (Atom ( 5.662f, -0.712f, -1.734f, AtomType::aO3p));
     }
-    else if (this->type->isRibose ())
+    else if (type->isRibose ())
     {
-      this->insert (Atom ( 0.000f,  0.000f,  0.000f, AtomType::aC1p));                        
-      this->insert (Atom (-0.694f, -0.627f, -1.210f, AtomType::aC2p));                
-      this->insert (Atom ( 0.499f, -1.031f, -2.067f, AtomType::aC3p));                   
-      this->insert (Atom ( 1.509f, -1.478f, -1.022f, AtomType::aC4p));                     
-      this->insert (Atom ( 2.957f, -1.393f, -1.443f, AtomType::aC5p));
-      this->insert (Atom ( 1.286f, -0.587f,  0.103f, AtomType::aO4p));
+      insert (Atom ( 0.000f,  0.000f,  0.000f, AtomType::aC1p));                        
+      insert (Atom (-0.694f, -0.627f, -1.210f, AtomType::aC2p));                
+      insert (Atom ( 0.499f, -1.031f, -2.067f, AtomType::aC3p));                   
+      insert (Atom ( 1.509f, -1.478f, -1.022f, AtomType::aC4p));                     
+      insert (Atom ( 2.957f, -1.393f, -1.443f, AtomType::aC5p));
+      insert (Atom ( 1.286f, -0.587f,  0.103f, AtomType::aO4p));
 
-      this->insert (Atom ( -0.608679f, -0.1782100f,  0.886482f, AtomType::aH1p));
-      this->insert (Atom ( -1.391530f,  0.0203483f, -1.741500f, AtomType::aH2p));
-      this->insert (Atom (  0.859627f, -0.2273900f, -2.709070f, AtomType::aH3p));
-      this->insert (Atom (  1.354260f, -2.5362900f, -0.811835f, AtomType::aH4p));
-      this->insert (Atom (  3.151990f, -2.1054000f, -2.244600f, AtomType::a1H5p));
-      this->insert (Atom (  3.602570f, -1.6472600f, -0.602352f, AtomType::a2H5p));
+      insert (Atom ( -0.608679f, -0.1782100f,  0.886482f, AtomType::aH1p));
+      insert (Atom ( -1.391530f,  0.0203483f, -1.741500f, AtomType::aH2p));
+      insert (Atom (  0.859627f, -0.2273900f, -2.709070f, AtomType::aH3p));
+      insert (Atom (  1.354260f, -2.5362900f, -0.811835f, AtomType::aH4p));
+      insert (Atom (  3.151990f, -2.1054000f, -2.244600f, AtomType::a1H5p));
+      insert (Atom (  3.602570f, -1.6472600f, -0.602352f, AtomType::a2H5p));
       
-      if (this->type->isRNA ())
+      if (type->isRNA ())
       {
-	this->insert (Atom (-1.474f, -1.731f, -0.795f, AtomType::aO2p));
-	this->insert (Atom ( -1.90769f, -2.12145f, -1.55727f, AtomType::aHO2p));
+	insert (Atom (-1.474f, -1.731f, -0.795f, AtomType::aO2p));
+	insert (Atom ( -1.90769f, -2.12145f, -1.55727f, AtomType::aHO2p));
       }
       
-      if (this->type->isRibose5 () || this->type->isRibose53 ())
+      if (type->isRibose5 () || type->isRibose53 ())
       {
-	this->insert (Atom ( 4.691f,  0.327f, -2.444f, AtomType::aP));
-	this->insert (Atom ( 5.034f,  1.678f, -1.932f, AtomType::aO1P));
-	this->insert (Atom ( 4.718f,  0.068f, -3.906f, AtomType::aO2P));
-	this->insert (Atom ( 3.246f, -0.057f, -1.895f, AtomType::aO5p));
+	insert (Atom ( 4.691f,  0.327f, -2.444f, AtomType::aP));
+	insert (Atom ( 5.034f,  1.678f, -1.932f, AtomType::aO1P));
+	insert (Atom ( 4.718f,  0.068f, -3.906f, AtomType::aO2P));
+	insert (Atom ( 3.246f, -0.057f, -1.895f, AtomType::aO5p));
       }
 
-      if (this->type->isRibose3 () || this->type->isRibose53 ())
-	this->insert (Atom ( 0.178f, -2.084f, -2.981f, AtomType::aO3p));
+      if (type->isRibose3 () || type->isRibose53 ())
+	insert (Atom ( 0.178f, -2.084f, -2.981f, AtomType::aO3p));
     }
     else
     {
@@ -302,15 +309,15 @@ namespace mccore
       throw ex;
     }
 
-    this->finalize ();
-    this->setReferential (HomogeneousTransfo::identity);
+    finalize ();
+    setReferential (HomogeneousTransfo::identity);
   }
 
   void
   Residue::setFullTheoretical ()
   {
-    if (this->type->isNucleicAcid ())
-      this->setTheoretical ();
+    if (type->isNucleicAcid ())
+      setTheoretical ();
     else
     {
       IntLibException ex ("", __FILE__, __LINE__);
@@ -319,7 +326,7 @@ namespace mccore
     }
     
     // create a C3' endo anti ribose
-    this->buildRibose (PropertyType::pC3p_endo, PropertyType::pAnti, true, true);
+    buildRibose (PropertyType::pC3p_endo, PropertyType::pAnti, true, true);
   }
   
 
@@ -482,28 +489,28 @@ namespace mccore
   bool 
   Residue::contains (const AtomType *k) const 
   { 
-    return this->find (k) != this->end (); 
+    return find (k) != end (); 
   }
   
 
   bool
   Residue::validateRiboseBuilding () const
   {
-    return this->rib_built_valid;
+    return rib_built_valid;
   }
 
   
   unsigned int
   Residue::getRiboseBuiltCount () const
   {
-    return this->rib_built_count;
+    return rib_built_count;
   }
 
 
   const HomogeneousTransfo
   Residue::getReferential () const
   {
-    return this->_compute_referential ();
+    return _compute_referential ();
   }
 
 
@@ -512,9 +519,9 @@ namespace mccore
   {
     // Align the residue to the origin and transform.
     unsigned int i;
-    HomogeneousTransfo t (m * this->_compute_referential ().invert ());
-    for (i = 0; i < this->atomGlobal.size (); ++i)
-      this->atomGlobal[i]->transform (t);
+    HomogeneousTransfo t (m * _compute_referential ().invert ());
+    for (i = 0; i < atomGlobal.size (); ++i)
+      atomGlobal[i]->transform (t);
   }
 
 
@@ -523,16 +530,16 @@ namespace mccore
   {
     int pos = size ();
     pair< AtomMap::iterator, bool > inserted =
-      this->atomIndex.insert (make_pair (atom.getType (), pos));
+      atomIndex.insert (make_pair (atom.getType (), pos));
 
     if (inserted.second)
     {
-      this->atomGlobal.push_back (atom.clone ());
-      this->rib_dirty_ref = true;
+      atomGlobal.push_back (atom.clone ());
+      rib_dirty_ref = true;
     }
     else
     {
-      *this->atomGlobal[inserted.first->second] = atom;
+      *atomGlobal[inserted.first->second] = atom;
     }
   }
 
@@ -540,14 +547,14 @@ namespace mccore
   Residue::iterator 
   Residue::erase (const AtomType *atype)
   {
-    return this->erase (this->find (atype));
+    return erase (find (atype));
   }
 
 
   Residue::iterator 
   Residue::erase (const iterator& rit)
   {
-    if (this->end () != rit)
+    if (end () != rit)
     {
       vector< Atom* >::iterator avit;
       vector< Atom* >::const_iterator cavit;
@@ -556,32 +563,32 @@ namespace mccore
       iterator next_rit = rit + 1;
 
       // invalidate ribose pointers
-      this->rib_dirty_ref = true;
+      rib_dirty_ref = true;
       
       // get next atom type before deletion
-      if (this->end () != next_rit)
+      if (end () != next_rit)
 	next = next_rit.pos->first;
       
       // delete atom
-      avit = this->atomGlobal.begin () + rit.pos->second;
+      avit = atomGlobal.begin () + rit.pos->second;
       delete *avit;
-      this->atomGlobal.erase (avit);
+      atomGlobal.erase (avit);
 
       // fix atom map
-      this->atomIndex.clear ();
-      for (cavit = this->atomGlobal.begin (); cavit != this->atomGlobal.end (); ++cavit, ++index)
-	this->atomIndex.insert (make_pair ((*cavit)->getType (), index));
+      atomIndex.clear ();
+      for (cavit = atomGlobal.begin (); cavit != atomGlobal.end (); ++cavit, ++index)
+	atomIndex.insert (make_pair ((*cavit)->getType (), index));
 
       if (next)
       {
 	// fetch iterator to saved atom type and set its filter.
-	next_rit = this->find (next);
+	next_rit = find (next);
 	delete next_rit.filter;
 	next_rit.filter = rit.filter->clone ();
 	return next_rit;
       }
     }
-    return this->end (); 
+    return end (); 
   }
 
 
@@ -638,19 +645,19 @@ namespace mccore
       - if both O3P and O3' are present -> remove O3P atom
       - if O3P is present but O3' isn't -> rename O3P atom type to O3' 
     */
-    Atom* O3_P = this->_get (AtomType::aO3P);
+    Atom* O3_P = _get (AtomType::aO3P);
     if (0 != O3_P)
     {
-      if (0 == this->_get (AtomType::aO3p))
+      if (0 == _get (AtomType::aO3p))
       {
 	O3_P->setType (AtomType::aO3p);
-	this->insert (*O3_P);
-	this->erase (AtomType::aO3P);
+	insert (*O3_P);
+	erase (AtomType::aO3P);
 	gOut (3) << "\tRenamed O3P to O3' in residue " << *this << endl;
       }
       else
       {
-	this->erase (AtomType::aO3P);
+	erase (AtomType::aO3P);
 	gOut (3) << "\tRemoved O3P in residue " << *this << endl;
       }
     }
@@ -750,16 +757,16 @@ namespace mccore
   { 
     Vector3D x, y, z, up, a, b, v;
 
-    if (this->type->isA ()) 
+    if (type->isA ()) 
     {
-      if (overwrite || 0 == this->_get (AtomType::aH2))
+      if (overwrite || 0 == _get (AtomType::aH2))
 	try // H2
 	{
-	  x = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN1)).normalize ();
-	  y = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN3)).normalize ();
+	  x = (*_safe_get (AtomType::aC2) - *_safe_get (AtomType::aN1)).normalize ();
+	  y = (*_safe_get (AtomType::aC2) - *_safe_get (AtomType::aN3)).normalize ();
 	  z = (x + y).normalize ();
-	  v = *this->_safe_get (AtomType::aC2) + z * Residue::C_H_DIST_CYC;
-	  this->insert (Atom (v, AtomType::aH2));
+	  v = *_safe_get (AtomType::aC2) + z * Residue::C_H_DIST_CYC;
+	  insert (Atom (v, AtomType::aH2));
 	}
 	catch (NoSuchAtomException& ex)
 	{
@@ -767,10 +774,10 @@ namespace mccore
 		   << *this << ": " << ex << endl;
 	}
       
-      if (overwrite || 0 == this->_get (AtomType::aH8))
+      if (overwrite || 0 == _get (AtomType::aH8))
 	try // H8
 	{
-	  x = (*this->_safe_get (AtomType::aC8) - *this->_safe_get (AtomType::aN7)).normalize ();
+	  x = (*this->_safe_get (AtomType::aC8) - *_safe_get (AtomType::aN7)).normalize ();
 	  y = (*this->_safe_get (AtomType::aC8) - *this->_safe_get (AtomType::aN9)).normalize ();
 	  z = (x + y).normalize ();
 	  v = *this->_safe_get (AtomType::aC8) + z * Residue::C_H_DIST_CYC;	
@@ -2187,13 +2194,6 @@ namespace mccore
   }
     
   
-  Atom& 
-  Residue::_get (size_type pos) const 
-  {
-    return *atomGlobal[pos];
-  }
-
-
   Atom* 
   Residue::_get (const AtomType* aType) const 
   {
@@ -2201,7 +2201,7 @@ namespace mccore
     if (it == atomIndex.end ())
       return 0;
     else
-      return atomGlobal[it->second];
+      return &_get (it->second);
   }
 
 
@@ -2215,7 +2215,7 @@ namespace mccore
       ex << "residue " << *this << " is missing atom " << aType;
       throw ex;
     }
-    return atomGlobal[it->second];
+    return &_get (it->second);
   }
 
   
