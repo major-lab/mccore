@@ -23,8 +23,11 @@ namespace mccore {
   // LIFECYCLE ------------------------------------------------------------
   
   
-  Atom::Atom () : type (0) 
-  {}
+  Atom::Atom ()
+    : Vector3D ()
+  {
+    type = AtomType::parseType ("Unknown");
+  }
   
   
   Atom::Atom (float x, float y, float z, const AtomType *aType) 
