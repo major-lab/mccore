@@ -1,4 +1,32 @@
+2001-09-07  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* docs/McCoreManual.tex: File will be reinserted when the article
+	be published.
+
+2001-09-07  Philippe Thibault  <thibaup@mansarde.IRO.UMontreal.CA>
+
+	* lib/sockbuf.cc, lib/CException.h, lib/CException.cc: Added new
+	exception class CConnectionException, derived from class
+	CSocketException, which is thrown when a connection to a socket
+	fails.
+
+2001-09-06  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/CMessageQueue.cc, lib/CMessageQueue.h, lib/oMessagestream.h, lib/Messagestream.h, lib/McCore.h, lib/McCore.cc, lib/Makefile.in, lib/CResidue.cc, lib/CResId.cc:
+	The CMessageQueue are replaced by the Messagestream.
+
+2001-09-05  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/ResidueTypeImp.h, lib/ResidueType.h, lib/Pdbstream.h, lib/Pdbstream.cc, lib/CHBond.cc, lib/AtomTypeImp.h, lib/AtomType.h:
+	Replaced GetAtomStr and GetResidueStr by getPDBRep in atom and residue types.
+
+	* lib/AtomTypeImp.h, lib/AtomTypeImp.cc, lib/AtomType.h: getVDWR,
+	getAmberEpsilon and getAmberCharge values entered for each atoms.
+
 2001-08-29  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Algo.h, lib/Algo.cc: Removed test over nucleic acid in
+	ExtractContact_AABB.
 
 	* CModel.cc, CModel.h: Validate does not remove amino acids from
 	the model.  New methods removeAminoAcid and removeNucleicAcid
