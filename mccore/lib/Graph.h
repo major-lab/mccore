@@ -4,8 +4,8 @@
 // Author           : Patrick Gendron
 // Created On       : Mon Feb 18 16:07:09 2002
 // Last Modified By : Patrick Gendron
-// Last Modified On : Tue Jun 11 16:07:30 2002
-// Update Count     : 4
+// Last Modified On : Fri Jul 26 15:21:33 2002
+// Update Count     : 5
 // Status           : Unknown.
 // 
 
@@ -66,6 +66,40 @@ public:
 
   bool operator< (const Path &path) const { // used in sort
     return  (size () < path.size ());
+  }
+
+  bool operator== (const Path &other) const {
+    Path a = *this;
+    Path b = other;
+    int i, j;
+    
+    bool success = false;
+    
+    if (a.size () != b.size ()) return false;
+    
+    for (i=0; i<(int)a.size (); ++i) {
+      for (j=0; j<(int)a.size (); ++j) {
+	if (a[j]!=b[j]) break;
+      }
+      if (j==(int)a.size ()) { success = true; break; }
+      b.rotate ();
+    }
+    
+    if (!success) {
+      reverse (b.begin (), b.end ());
+      
+      for (i=0; i<(int)a.size (); ++i) {
+	for (j=0; j<(int)a.size (); ++j) {
+	  if (a[j]!=b[j]) break;
+	}
+	if (j==(int)a.size ()) { success = true; break; }
+	b.rotate ();
+      }
+      
+    }
+    if (!success) return false;
+    
+    return true;
   }
 
   // ACCESS ---------------------------------------------------------------
@@ -270,19 +304,30 @@ public:
   void markNode (int index);
   void unmarkNode (int index);
 
-  void markEdge (int index );
-  void unmarkEdge (int index);
-
+  // (Un)Marks edge from a to b.  If the edge (b,a) exists, it is not modified
   void markEdge (int a, int b);
   void unmarkEdge (int a, int b);
 
+  // Dijkstra's algorithm
   vector< Path > shortest_path (int root) const;
   Path shortest_path (int a, int b) const;
 
+  // Prim's algorithm
   vector< Edge > minimum_spanning_tree (void) const;
 
+  // Vismara's algorithm
+  vector< Path > cycle_base_vismara ();
+  void order_graph (int index = -1, int depth = 0);
+
+  // Horton's algorithm 
+  vector< Path > cycle_base_horton ();
+
+  vector< Path > gaussian_elimination (vector< Path > &bag, bool minimum_basis = true);
+
+  // Sebastien's algorithm
   vector< Path > cycle_base ();
   void build_tree (int index = -1, int depth = 0);
+
 
   // I/O  -----------------------------------------------------------------
 
