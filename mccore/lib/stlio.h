@@ -4,9 +4,9 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Wed Apr  9 13:38:51 2003
-// Last Modified By : Patrick Gendron
-// Last Modified On : Mon Jun  9 16:18:34 2003
-// Update Count     : 20
+// Last Modified By : Martin Larose
+// Last Modified On : Tue Jul  8 15:03:27 2003
+// Update Count     : 21
 // Status           : Unknown.
 // 
 
@@ -19,63 +19,118 @@
 #include <list>
 #include <map>
 
-using namespace std;
-
-template< typename T, typename S >
-ostream& operator<< (ostream &os, const pair< T, S > &t)
+namespace std
 {
-  os << "(" << t.first << ", " << t.second << ") ";
-  return os;
-}
+  template< typename T, typename S >
+  ostream& operator<< (ostream &os, const pair< T, S > &t)
+  {
+    os << "(" << t.first << ", " << t.second << ") ";
+    return os;
+  }
 
+  template< typename T, typename S >
+  ostream& operator<< (ostream &os, const pair< T*, S* > &t)
+  {
+    os << "(" << *(t.first) << ", " << *(t.second) << ") ";
+    return os;
+  }
 
-template< typename T >
-ostream& operator<< (ostream &os, const set< T > &t)
-{
-  typename set< T >::const_iterator i;
+  template< typename T >
+  ostream& operator<< (ostream &os, const set< T > &t)
+  {
+    typename set< T >::const_iterator i;
+    
+    for (i=t.begin(); i!=t.end (); ++i)
+      {
+	os << *i << " ";
+      }
+    return os;
+  }
 
-  for (i=t.begin(); i!=t.end (); ++i)
-    {
-      os << *i << " ";
-    }
-  return os;
-}
+  template< typename T >
+  ostream& operator<< (ostream &os, const set< T* > &t)
+  {
+    typename set< T* >::const_iterator i;
+    
+    for (i = t.begin (); i != t.end (); ++i)
+      os << **i << " ";
+    return os;
+  }
 
+  template< typename T >
+  ostream& operator<< (ostream &os, const vector< T > &t)
+  {
+    typename vector< T >::const_iterator i;
+    
+    for (i=t.begin(); i!=t.end (); ++i)
+      {
+	os << *i << " ";
+      }
+    return os;
+  }
 
-template< typename T >
-ostream& operator<< (ostream &os, const vector< T > &t)
-{
-  typename vector< T >::const_iterator i;
+  template< typename T >
+  ostream& operator<< (ostream &os, const vector< T* > &t)
+  {
+    typename vector< T* >::const_iterator i;
+    
+    for (i = t.begin (); i != t.end (); ++i)
+      os << **i << " ";
+    return os;
+  }
+
+  template< typename T >
+  ostream& operator<< (ostream &os, const list< T > &t)
+  {
+    typename list< T >::const_iterator i;
+    
+    for (i=t.begin(); i!=t.end (); ++i)
+      {
+	os << *i << " ";
+      }
+    return os;
+  }
   
-  for (i=t.begin(); i!=t.end (); ++i)
-    {
-      os << *i << " ";
-    }
-  return os;
-}
+  template< typename T, typename S >
+  ostream& operator<< (ostream &os, const map< T, S > &t)
+  {
+    typename map< T, S >::const_iterator i;
+    for (i=t.begin(); i!=t.end (); ++i)
+      {
+	os << "(" << i->first << "=" << i->second << ") ";
+      }
+    return os;
+  }
 
-template< typename T >
-ostream& operator<< (ostream &os, const list< T > &t)
-{
-  typename list< T >::const_iterator i;
-  
-  for (i=t.begin(); i!=t.end (); ++i)
-    {
-      os << *i << " ";
-    }
-  return os;
-}
+  template< typename T, typename S >
+  ostream& operator<< (ostream &os, const map< T, S* > &t)
+  {
+    typename map< T, S* >::const_iterator i;
+    
+    for (i = t.begin (); i != t.end (); ++i)
+      os << "(" << i->first << "=" << *(i->second) << ") ";
+    return os;
+  }
 
+  template< typename T, typename S >
+  ostream& operator<< (ostream &os, const map< T*, S > &t)
+  {
+    typename map< T*, S >::const_iterator i;
+    
+    for (i = t.begin (); i != t.end (); ++i)
+      os << "(" << *(i->first) << "=" << i->second << ") ";
+    return os;
+  }
 
-template< typename T, typename S >
-ostream& operator<< (ostream &os, const map< T, S > &t)
-{
-  typename map< T, S >::const_iterator i;
-  for (i=t.begin(); i!=t.end (); ++i)
-    {
-      os << "(" << i->first << "=" << i->second << ") ";
-    }
-  return os;
+  template< typename T, typename S >
+  ostream& operator<< (ostream &os, const map< T*, S* > &t)
+  {
+    typename map< T*, S* >::const_iterator i;
+    
+    for (i = t.begin (); i != t.end (); ++i)
+      os << "(" << *(i->first) << "=" << *(i->second) << ") ";
+    return os;
+  }
 }
 
 #endif
