@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 // 
 // This file is part of mccore.
 // 
@@ -54,7 +54,7 @@ namespace mccore
    * the atom types.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ExtendedResidue.h,v 1.14 2005-01-05 01:44:00 larosem Exp $
+   * @version $Id: ExtendedResidue.h,v 1.15 2005-01-26 20:42:46 larosem Exp $
    */
   class ExtendedResidue : public Residue
   {
@@ -76,6 +76,15 @@ namespace mccore
      * contains atoms from atomLocal transformed according to the tfo.
      */
     mutable bool placed;
+
+    /**
+     * Gets the atom at a position given by an index.  This is used by
+     * the iterators.  It is protected since no atom pointers should be
+     * used outside the residue; these pointers are not guaranteed to be valid.
+     * @param pos the position of the atom in the atom vector;
+     * @return the atom.
+     */
+    virtual Atom& _get (size_type pos) const;
 
   public:
 
@@ -150,7 +159,8 @@ namespace mccore
     virtual void setReferential (const HomogeneousTransfo& m)
     {
       tfo = m;
-      _displace ();
+//       _displace ();
+      placed = false;
     }
     
     /**
@@ -170,7 +180,7 @@ namespace mccore
     /**
      * Removes all of the atoms from the residue.  
      */
-    virtual void clear();
+    virtual void clear ();
 
     /**
      * Initializes all the internals of the residue.  It aligns the
@@ -219,18 +229,17 @@ namespace mccore
 					    bool build5p, bool build3p);
     
     /**
-     * @internal
      * Updates the atom containers so that the residue is placed in space.
      */
     void _place () const;
 
-    /**
-     * @internal
-     * Updates the atom containers so that the residue is placed in space, if needed.
-     */
-    void _displace () const;
+//     /**
+//      * @internal
+//      * Updates the atom containers so that the residue is placed in space, if needed.
+//      */
+//     void _displace () const;
 
-  public:
+//   public:
     
     // I/O  -----------------------------------------------------------------
     

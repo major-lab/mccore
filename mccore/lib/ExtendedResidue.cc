@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.26 $
-// $Id: ExtendedResidue.cc,v 1.26 2005-01-05 01:43:42 larosem Exp $
+// $Revision: 1.27 $
+// $Id: ExtendedResidue.cc,v 1.27 2005-01-26 20:42:42 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -39,6 +39,14 @@
 namespace mccore
 {
   
+  Atom& 
+  ExtendedResidue::_get (size_type pos) const 
+  {
+    _place ();
+    return *atomGlobal[pos];
+  }
+
+
   ExtendedResidue::ExtendedResidue (const ExtendedResidue &other)
     : Residue (other),
       tfo (other.tfo),
@@ -98,14 +106,14 @@ namespace mccore
 
     if (inserted.second)
       {
-	atomLocal.push_back (atom.clone ());
 	atomGlobal.push_back (atom.clone ());
+	atomLocal.push_back (atom.clone ());
 	rib_dirty_ref = true;
       }
     else
       {
-	*atomLocal[inserted.first->second] = atom;
 	*atomGlobal[inserted.first->second] = atom;
+	*atomLocal[inserted.first->second] = atom;
       }
 
     if (! tfo.isIdentity ())
@@ -177,6 +185,8 @@ namespace mccore
   void
   ExtendedResidue::finalize ()
   {
+    unsigned int i;
+
     // set pseudo-atoms
     Residue::finalize ();
 
@@ -184,8 +194,8 @@ namespace mccore
     tfo = _compute_referential ();
 
     // set local atoms in referential's origin
-    unsigned int i;
     HomogeneousTransfo inv (tfo.invert ());
+    
     for (i = 0; i < atomLocal.size (); ++i)
       {
 	*atomLocal[i] = *atomGlobal[i];
@@ -260,11 +270,11 @@ namespace mccore
 	atomLocal.push_back (new Atom (0.0, 0.0, 0.0, aType));
 	atomGlobal.push_back (new Atom (0.0, 0.0, 0.0, aType));
 	rib_dirty_ref = true;
-	return atomLocal[pos];
+	return atomGlobal[pos];
       }
     else
       {
-	return atomLocal[inserted.first->second];
+	return atomGlobal[inserted.first->second];
       }
   }
 
@@ -276,7 +286,8 @@ namespace mccore
     // place built ribose's atoms back in referential
 
     // TODO: place only ribose atoms...
-    _displace (); // -> place all atoms :(
+    placed = false;
+    _place (); // -> place all atoms :(
     _add_ribose_hydrogens (true);
   }
   
@@ -301,11 +312,11 @@ namespace mccore
   }
 
   
-  void
-  ExtendedResidue::_displace () const
-  {
-    placed = false;
-    _place ();
-  }
+//   void
+//   ExtendedResidue::_displace () const
+//   {
+//     placed = false;
+//     _place ();
+//   }
 
 }
