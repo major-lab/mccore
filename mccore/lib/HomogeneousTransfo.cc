@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 //
 //  This file is part of mccore.
 //  
@@ -339,7 +339,43 @@ namespace mccore
 			       0,
 			       0, 0, 0, 1);
   }
+
   
+  HomogeneousTransfo 
+  HomogeneousTransfo::rotationX (float theta)
+  {
+    float a = (float)sin (theta);
+    float b = (float)cos (theta);
+    return HomogeneousTransfo (1, 0, 0, 0,
+			       0, b, -a, 0,
+			       0 , a, b, 0,
+			       0,  0, 0, 1);
+  }
+
+  
+  HomogeneousTransfo 
+  HomogeneousTransfo::rotationY (float theta)
+  {
+    float a = (float) sin (theta);
+    float b = (float) cos (theta);
+    return HomogeneousTransfo (b, 0, a, 0,
+			       0, 1, 0, 0,
+			       -a, 0, b, 0,
+			       0, 0, 0, 1);
+  }
+
+
+  HomogeneousTransfo 
+  HomogeneousTransfo::rotationZ (float theta)
+  {
+    float a = (float) sin (theta);
+    float b = (float) cos (theta);
+    return HomogeneousTransfo (b,-a, 0, 0,
+			       a, b, 0, 0,
+			       0, 0, 1, 0,
+			       0, 0, 0, 1);
+  }
+
   
   HomogeneousTransfo 
   HomogeneousTransfo::rotate (const Vector3D &axis, float theta) const 
@@ -351,33 +387,15 @@ namespace mccore
   HomogeneousTransfo 
   HomogeneousTransfo::rotate(float theta_x, float theta_y, float theta_z) const 
   {
-    float a, b;
     HomogeneousTransfo copy = *this;
-    
-    if (0 != theta_x) {
-      a = (float) sin(theta_x);
-      b = (float) cos(theta_x);
-      copy = copy * HomogeneousTransfo(1, 0, 0, 0,
-				       0, b, -a, 0,
-				       0, a, b, 0,
-				       0, 0, 0, 1);
-    }
-    if (0 != theta_y) {
-      a = (float) sin(theta_y);
-      b = (float) cos(theta_y);
-      copy = copy * HomogeneousTransfo (b, 0, a, 0,
-					0, 1, 0, 0,
-					-a, 0, b, 0,
-					0, 0, 0, 1);
-    }
-    if (0 != theta_z) {
-      a = (float) sin(theta_z);
-      b = (float) cos(theta_z);
-      copy = copy * HomogeneousTransfo (b,-a, 0, 0,
-					a, b, 0, 0,
-					0, 0, 1, 0,
-					0, 0, 0, 1);
-    }
+
+    if (0 != theta_x)
+      copy = copy * rotationX (theta_x);
+    if (0 != theta_y)
+      copy = copy * rotationY (theta_y);
+    if (0 != theta_z)
+      copy = copy * rotationZ (theta_z);
+
     return copy;
   }
 

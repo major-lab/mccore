@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 //
 //  This file is part of mccore.
 //  
@@ -55,7 +55,7 @@ namespace mccore
    * </pre>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: HomogeneousTransfo.h,v 1.10 2004-05-13 15:39:31 larosem Exp $
+   * @version $Id: HomogeneousTransfo.h,v 1.11 2004-05-14 14:58:01 thibaup Exp $
    */
   class HomogeneousTransfo
   {
@@ -259,6 +259,30 @@ namespace mccore
      * @return the new HomogeneousTransfo with the given rotation.
      */
     static HomogeneousTransfo rotation (const Vector3D &axis, float theta);
+
+    /**
+     * Calculates the homogeneous rotation matrix by a given angle
+     * about the X axis.
+     * @param theta the angle to rotate by (in radians).
+     * @return the new HomogeneousTransfo with the given rotation.
+     */
+    static HomogeneousTransfo rotationX (float theta);
+
+    /**
+     * Calculates the homogeneous rotation matrix by a given angle
+     * about the Y axis.
+     * @param theta the angle to rotate by (in radians).
+     * @return the new HomogeneousTransfo with the given rotation.
+     */
+    static HomogeneousTransfo rotationY (float theta);
+
+    /**
+     * Calculates the homogeneous rotation matrix by a given angle
+     * about the Z axis.
+     * @param theta the angle to rotate by (in radians).
+     * @return the new HomogeneousTransfo with the given rotation.
+     */
+    static HomogeneousTransfo rotationZ (float theta);
     
     /**
      * Rotates the current HomogeneousTransfo given an angle about a given axis.
