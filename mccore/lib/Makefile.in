@@ -4,8 +4,8 @@
 ## Author           : Martin Larose
 ## Created On       : Tue Sep 19 18:57:11 2000
 ## Last Modified By : Martin Larose
-## Last Modified On : Tue Jan 23 15:02:07 2001
-## Update Count     : 4
+## Last Modified On : Fri Feb  9 11:13:31 2001
+## Update Count     : 5
 ## Status           : Ok.
 ###############################################################################
 
@@ -76,17 +76,17 @@ OBJECTS = $(SOURCES:.cc=.o)
 
 SHOBJECTS = $(SOURCES:.cc=.lo)
 
-LIBRARY = libmccore
+LIBRARY = lib$(PACKAGE)
 
 DISTFILES = Makefile.in $(SOURCES) $(HEADERS) 
 
 
-all: $(LIBRARY).so TAGS
+all: $(LIBRARY).so.$(VERSION) TAGS
 
 all-static static: $(LIBRARY).a
 
-$(LIBRARY).so: $(SHOBJECTS)
-	$(LD) -shared $(LDFLAGS) -o $@ $^
+$(LIBRARY).so.$(VERSION): $(SHOBJECTS)
+	$(LD) -shared $(LDFLAGS) -o $@ -Wl,-soname,$@ $^
 
 $(LIBRARY).a: $(OBJECTS)
 	$(AR) crs $@ $^
@@ -98,7 +98,7 @@ TAGS: $(SOURCES) $(HEADERS)
 doc: html texi docbook
 
 html: $(HEADERS)
-	@- kdoc -f html -d ../docs/html -p --strip-h-path -n libmccore -u "libmccore" -z $^
+	@- kdoc -f html -d ../docs/html -p --strip-h-path -n $(LIBRARY) -u "$(LIBRARY)" -z $^
 
 texi: $(HEADERS)
 	@- kdoc -f texinfo -d ../docs/texinfo -p --strip-h-path $^
@@ -108,29 +108,44 @@ docbook: $(HEADERS)
 
 
 
-install: $(LIBRARY).so
-	@ echo Installing $^ in $(libdir)
+install: $(LIBRARY).so.$(VERSION)
+	@ echo Installing $(LIBRARY).so in $(libdir)
 	@ $(srcdir)/../mkinstalldirs $(libdir)
-	@ $(srcdir)/../mkinstalldirs $(includedir)
+	@ $(srcdir)/../mkinstalldirs $(includedir)/$(PACKAGE)-$(VERSION)
 	@ $(INSTALL_DATA) $^ $(libdir)/$^
+	@ rm -f $(libdir)/$(LIBRARY).so
+	@ ln -s $^ $(libdir)/$(LIBRARY).so
+	@ echo Installing headers in $(includedir)/$(PACKAGE)-$(VERSION)
 	@ for file in $(HEADERS); do \
-	   $(INSTALL_DATA) $(srcdir)/$$file $(includedir); \
+           $(INSTALL_DATA) $(srcdir)/$$file $(includedir)/$(PACKAGE)-$(VERSION)/$$file; \
 	  done
+	@ rm -f $(includedir)/$(PACKAGE)
+	@ ln -s $(PACKAGE)-$(VERSION) $(includedir)/$(PACKAGE)
 
 install-static: static
 	@ echo Installing $(LIBRARY).a in $(libdir)
 	@ $(srcdir)/../mkinstalldirs $(libdir)
-	@ $(srcdir)/../mkinstalldirs $(includedir)
-	@ $(INSTALL_DATA) $(LIBRARY).a $(libdir)/$(LIBRARY).a
+	@ $(srcdir)/../mkinstalldirs $(includedir)/$(PACKAGE)-$(VERSION)
+	@ $(INSTALL_DATA) $(LIBRARY).a $(libdir)/$(LIBRARY)-$(VERSION).a
+	@ rm -f $(libdir)/$(LIBRARY).a
+	@ ln -s $(LIBRARY)-$(VERSION).a $(libdir)/$(LIBRARY).a
+	@ echo Installing headers in $(includedir)/$(PACKAGE)-$(VERSION)
 	@ for file in $(HEADERS); do \
-	   $(INSTALL_DATA) $(srcdir)/$$file $(includedir); \
-	  done
+           $(INSTALL_DATA) $(srcdir)/$$file $(includedir)/$(PACKAGE)-$(VERSION)/$$file; \
+	  done;
+	@ rm -f $(includedir)/$(PACKAGE)
+	@ ln -s $(PACKAGE)-$(VERSION) $(includedir)/$(PACKAGE)
 
 uninstall:
-	@ rm -f $(libdir)/$(LIBRARY).a $(libdir)/$(LIBRARY).so
+	@ rm -f $(libdir)/$(LIBRARY).a
+	@ rm -f $(libdir)/$(LIBRARY)-$(VERSION).a
+	@ rm -f $(libdir)/$(LIBRARY).so
+	@ rm -f $(libdir)/$(LIBRARY).so.$(VERSION)
 	@ for file in $(HEADERS); do \
-           rm -f $(includedir)/$$file; \
-          done
+           rm -f $(includedir)/$(PACKAGE)-$(VERSION)/$$file; \
+          done;
+	@- rmdir $(includedir)/$(PACKAGE)-$(VERSION)
+	@ rm -f $(includedir)/$(PACKAGE)
 
 
 mostlyclean:
@@ -138,7 +153,7 @@ mostlyclean:
 
 clean: mostlyclean
 	@ echo "Cleaning project"
-	@ rm -f $(LIBRARY).so $(LIBRARY).a
+	@ rm -f $(LIBRARY).so $(LIBRARY).so.$(VERSION) $(LIBRARY).a
 	@ rm -f $(OBJECTS) $(SHOBJECTS) TAGS
 	@ rm -f *.d
 
