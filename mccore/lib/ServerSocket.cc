@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:56 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Sep 20 12:45:52 2001
-// Update Count     : 5
+// Last Modified On : Mon Oct  1 12:57:28 2001
+// Update Count     : 6
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -37,6 +37,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -61,7 +62,7 @@ ServerSocket::ServerSocket (int thePort)
   // Creating socket ---
   if ((socket_id = ::socket (AF_INET, SOCK_STREAM, 0)) < 0) {
     CFatalSocketException exc ("socket creation failed", __FILE__, __LINE__);
-    exc << ": " << sys_errlist[errno];
+    exc << ": " << strerror (errno);
     throw exc;
   }
 
@@ -73,13 +74,13 @@ ServerSocket::ServerSocket (int thePort)
 
   if (::bind (socket_id, (sockaddr*)&sin, sizeof (sin)) < 0) {
     CFatalSocketException exc ("socket binding failed", __FILE__, __LINE__);
-    exc << ": " << sys_errlist[errno];
+    exc << ": " << strerror (errno);
     throw exc;
   }
 
   if (listen (socket_id, MAX_QUEUE_LEN) < 0) {
     CFatalSocketException exc ("socket listening failed", __FILE__, __LINE__);
-    exc << ": " << sys_errlist[errno];
+    exc << ": " << strerror (errno);
     throw exc;
   }
 
@@ -102,7 +103,7 @@ ServerSocket::accept ()
 		       (socklen_t*)&clientlen)) < 0) {
     CFatalSocketException exc ("socket connection accepting failed",
 			       __FILE__, __LINE__);
-    exc << ": " << sys_errlist[errno];
+    exc << ": " << strerror (errno);
     throw exc;
   }
 
@@ -119,7 +120,7 @@ ServerSocket::close ()
   if (::shutdown (socket_id, SHUT_RDWR) == -1 && errno != ENOTCONN) {
     CFatalSocketException exc ("socket shutdown failed",
 			       __FILE__, __LINE__);
-    exc << ": " << sys_errlist[errno];
+    exc << ": " << strerror (errno);
     throw exc;
   }
   */
@@ -127,7 +128,7 @@ ServerSocket::close ()
   if (::close (socket_id) == -1) {
     CFatalSocketException exc ("socket closing failed",
 			       __FILE__, __LINE__);
-    exc << ": " << sys_errlist[errno];
+    exc << ": " << strerror (errno);
     throw exc;
   }
 }

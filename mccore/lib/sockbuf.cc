@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:34 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Sep 20 12:46:27 2001
-// Update Count     : 6
+// Last Modified On : Mon Oct  1 12:57:34 2001
+// Update Count     : 7
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -79,7 +79,7 @@ sockbuf::sockbuf ()
     {
       CFatalSocketException exc ("socket creation failed", __FILE__, __LINE__);
 
-      exc << ": " << sys_errlist[errno];
+      exc << ": " << strerror (errno);
       throw exc;
     }
 }
@@ -113,7 +113,7 @@ sockbuf::open (const char* host, int port)
       CConnectionException exc ("connection to ");
       
       exc << host << " via port #" << port
-	  << " failed:\n\t" << sys_errlist[errno];
+	  << " failed:\n\t" << strerror (errno);
       throw exc;
     }
 
@@ -228,7 +228,7 @@ sockbuf::sys_close ()
       CFatalSocketException exc ("socket shutdown failed",
 				 __FILE__, __LINE__);
       
-      exc << ": " << sys_errlist[errno];
+      exc << ": " << strerror (errno);
       throw exc;
     }
   
@@ -237,7 +237,7 @@ sockbuf::sys_close ()
       CFatalSocketException exc ("socket closing failed",
 				 __FILE__, __LINE__);
       
-      exc << ": " << sys_errlist[errno];
+      exc << ": " << strerror (errno);
       throw exc;
     }
   return true;
@@ -255,7 +255,7 @@ sockbuf::xsgetn (char* s, streamsize n)
     {
       CSocketException exc ("Warning: incomplete read (");
       
-      exc << r << "/" << n << " bytes):\n\t" << sys_errlist[errno];
+      exc << r << "/" << n << " bytes):\n\t" << strerror (errno);
       throw exc;
     }
   return r;
@@ -273,7 +273,7 @@ sockbuf::xsputn (const char* s, streamsize n)
     {
       CSocketException exc ("Warning: incomplete write (");
       
-      exc << w << "/" << n << " bytes):\n\t" << sys_errlist[errno];
+      exc << w << "/" << n << " bytes):\n\t" << strerror (errno);
       throw exc;
     }
   return w;
