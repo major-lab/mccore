@@ -281,7 +281,7 @@ namespace mccore {
   Exception&
   operator<< (Exception& ex, const AtomType *t)
   {
-    return ex << (const char*)(0 == t ? AtomType::aNull : t);
+    return ex << (const char*)*(0 == t ? AtomType::aNull : t);
   }
 
   

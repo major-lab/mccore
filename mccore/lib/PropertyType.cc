@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.10 $
-// $Id: PropertyType.cc,v 1.10 2004-08-26 15:21:05 thibaup Exp $
+// $Revision: 1.11 $
+// $Id: PropertyType.cc,v 1.11 2004-09-10 14:32:27 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -305,7 +305,7 @@ namespace mccore {
   Exception&
   operator<< (Exception& ex, const PropertyType *t)
   {
-    return ex << (const char*)(t == 0 ? PropertyType::pNull : t);
+    return ex << (const char*)*(t == 0 ? PropertyType::pNull : t);
   }
 
   
