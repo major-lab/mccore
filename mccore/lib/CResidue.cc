@@ -3,9 +3,9 @@
 // Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Nov  9 10:45:10 2000
-// Update Count     : 2
+// Last Modified By : Labo Lbit
+// Last Modified On : Thu Nov  9 16:50:23 2000
+// Update Count     : 3
 // Status           : Ok.
 // 
 
@@ -26,6 +26,7 @@
 #include "CMessageQueue.h"
 #include "CPoint3D.h"
 #include "Pdbstream.h"
+#include "ResidueType.h"
 
 
 
@@ -540,6 +541,14 @@ CResidue::SetTransfo (const CTransfo &tfo)
 
 
 
+const char*
+CResidue::GetResName () const
+{
+  return mResName == 0 ? *mType : mResName;
+}
+
+
+
 CAtom&
 CResidue::Place (int pos) const
 {
@@ -615,38 +624,6 @@ CResidue::erase (t_Atom *type)
 	  mAtomIndex[cit->GetType ()] = index;
 	  mAtomResPos.push_back (-1);
 	}
-    }
-}
-
-
-
-void
-CResidue::erase (set< t_Atom* >::iterator start,
-		 set< t_Atom* >::iterator finish)
-{
-  vector< CAtom >::const_iterator cit;
-  vector< CAtom >::size_type index;
-
-  for (; start != finish; ++start)
-    {
-      vector< CAtom >::iterator it = ::find (mAtomRef.begin (),
-					     mAtomRef.end (), *start);
-
-      if (it != mAtomRef.end ())
-	{
-//  	  gOut (1) << "Erasing atom " << (*start)->operator const char* ()
-//  		   << endl;
-	  mAtomRef.erase (it);
-	}
-    }
-  mAtomIndex.clear ();
-  mAtomResPos.clear ();
-  for (cit = mAtomRef.begin (), index = 0;
-       cit != mAtomRef.end ();
-       ++cit, ++index)
-    {
-      mAtomIndex[cit->GetType ()] = index;
-      mAtomResPos.push_back (-1);
     }
 }
 

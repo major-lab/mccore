@@ -3,9 +3,9 @@
 // Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Thu Sep 28 16:59:32 2000
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Nov  9 10:45:15 2000
-// Update Count     : 2
+// Last Modified By : Labo Lbit
+// Last Modified On : Thu Nov  9 16:50:25 2000
+// Update Count     : 3
 // Status           : Ok.
 // 
 
@@ -20,10 +20,10 @@
 #include "CAtom.h"
 #include "CResId.h"
 #include "CTransfo.h"
-#include "ResidueType.h"
 
 
 class t_Atom;
+class t_Residue;
 class oPdbstream;
 class iBinstream;
 class oBinstream;
@@ -596,8 +596,7 @@ public:
    * Gets the residue name.
    * @return the residue name.
    */
-  const char* GetResName () const
-  { return (mResName == 0) ? *mType : mResName; }
+  const char* GetResName () const;
 
   /**
    * Sets the residue name.
@@ -643,9 +642,32 @@ private:
    * @param start the iterator of the first atom to erase.
    * @param finish the iterator of the last atom to erase.
    */
-  void CResidue::erase (set< t_Atom* >::iterator start,
-			set< t_Atom* >::iterator finish);
-
+  template<class _InputIterator>
+  void erase (const _InputIterator &start, const _InputIterator &finish)
+  {
+    vector< CAtom >::const_iterator cit;
+    vector< CAtom >::size_type index;
+    _InputIterator ciit;
+    
+    for (ciit = start; ciit != finish; ++ciit)
+      {
+	vector< CAtom >::iterator it = ::find (mAtomRef.begin (),
+					       mAtomRef.end (), *ciit);
+	
+	if (it != mAtomRef.end ())
+	  mAtomRef.erase (it);
+      }
+    mAtomIndex.clear ();
+    mAtomResPos.clear ();
+    for (cit = mAtomRef.begin (), index = 0;
+	 cit != mAtomRef.end ();
+	 ++cit, ++index)
+      {
+	mAtomIndex[cit->GetType ()] = index;
+	mAtomResPos.push_back (-1);
+      }
+  }
+  
   /**
    * Adds the hydrogens to the residue.
    * @return the new residue.

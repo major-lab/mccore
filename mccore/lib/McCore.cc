@@ -3,9 +3,9 @@
 // Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Nov  9 10:45:28 2000
-// Update Count     : 2
+// Last Modified By : Labo Lbit
+// Last Modified On : Thu Nov  9 16:50:27 2000
+// Update Count     : 3
 // Status           : Ok.
 // 
 
@@ -15,10 +15,11 @@
 
 #include "McCore.h"
 
+#include "AtomType.h"
 #include "CAtom.h"
 #include "CMessageQueue.h"
-#include "CResidue.h"
 #include "CTransfo.h"
+#include "ResidueType.h"
 
 
 
