@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.34 $
-// $Id: Residue.cc,v 1.34 2004-06-09 20:48:15 thibaup Exp $
+// $Revision: 1.35 $
+// $Id: Residue.cc,v 1.35 2004-06-17 18:03:48 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -26,6 +26,8 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+
+#include <typeinfo>
 
 #include <algorithm>
 #include <assert.h>
@@ -598,6 +600,30 @@ namespace mccore {
       gOut (6) << "Validate called on a unknown residue: " << *type << endl;
       return;
     }
+
+    
+    /*
+      O3' and O3P mismatches
+        - if both O3P and O3' are present -> remove O3P atom
+        - if O3P is present but O3' isn't -> rename O3P atom type to O3' 
+    */
+    Atom* O3_P = get (AtomType::aO3P);
+    if (0 != O3_P)
+      {
+	if (0 == get (AtomType::aO3p))
+	  {
+	    O3_P->setType (AtomType::aO3p);
+	    insert (*O3_P);
+	    erase (AtomType::aO3P);
+	    gOut (6) << "Renamed O3P to O3' in residue " << *this << endl;
+	  }
+	else
+	  {
+	    erase (AtomType::aO3P);
+	    gOut (6) << "Removed O3P in residue " << *this << endl;
+	  }
+      }
+    
     
     gOut (6) << "Fixed atom content" << endl;
 
