@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:42:25 2003
-// $Revision: 1.5 $
-// $Id: PropertyTypeStore.cc,v 1.5 2004-01-29 17:26:53 larosem Exp $
+// $Revision: 1.6 $
+// $Id: PropertyTypeStore.cc,v 1.6 2004-08-17 18:26:39 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -40,6 +40,7 @@ namespace mccore {
 
   PropertyTypeStore::PropertyTypeStore () 
   {
+    stringType["null"] = PropertyType::pNull = new PropertyType ("null");
     stringType["theo"] = PropertyType::pTheo = new Theo ("theo");
     stringType["pairing"] = PropertyType::pPairing = new Pairing ("pairing");
     stringType["cis"] = PropertyType::pCis = new Cis ("cis");
@@ -256,24 +257,17 @@ namespace mccore {
   // METHODS -------------------------------------------------------------------
 
   const PropertyType* 
-  PropertyTypeStore::get (const char* s) 
+  PropertyTypeStore::get (const char* key) 
   {
-    PropertyType* t = 0;
-    char* str = new char[strlen (s) + 1];
-    strcpy (str, s);
+    pair< map< const char*, PropertyType*, less_string >::iterator, bool > inserted =
+      stringType.insert (make_pair (key, PropertyType::pNull));
 
-//     for (char* i=str; *i; ++i) {
-//       if (*i == '\'') *i = '*';
-//       *i = tolower (*i);
-//     }
-    
-    if (stringType.find (str) != stringType.end ()) {
-      t = stringType[str];
-    } else {
-      t = new PropertyType (str);
-      stringType[*t] = t;
-    }
-    delete[] str;
-    return t;
+    if (inserted.second) // unique insertion => new property type
+      inserted.first->second = new PropertyType (inserted.first->first);
+
+    return inserted.first->second;
   }
+    
+
+  
 }

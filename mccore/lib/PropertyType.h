@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 // 
 // This file is part of mccore.
 // 
@@ -46,7 +46,7 @@ namespace mccore
    * General property types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: PropertyType.h,v 1.8 2004-06-30 18:15:14 thibaup Exp $
+   * @version $Id: PropertyType.h,v 1.9 2004-08-17 18:26:28 thibaup Exp $
    */
   class PropertyType
   {
@@ -193,6 +193,11 @@ namespace mccore
   public:
     
     // TYPE POINTERS -----------------------------------------------------------
+
+    /**
+     * Global null type.
+     */
+    static PropertyType* pNull;
     
     /**
      * Global theo type.

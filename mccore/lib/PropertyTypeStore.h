@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:42:25 2003
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 // 
 // This file is part of mccore.
 // 
@@ -90,7 +90,7 @@ namespace mccore {
      * Gets the property type represented by the string if one exists.
      * @return the matching property type or a new one if none existed.
      */
-    const PropertyType* get (const char* s);
+    const PropertyType* get (const char* key);
   
 
   private:
