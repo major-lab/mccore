@@ -1,16 +1,17 @@
 //                              -*- Mode: C++ -*- 
 // sockstream.cc
-// Copyright © 2002 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2002-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Wed Jan 30 19:57:48 2002
 // Last Modified By : Patrick Gendron
-// Last Modified On : Mon Feb 25 11:37:17 2002
-// Update Count     : 1
+// Last Modified On : Thu Mar 27 11:35:19 2003
+// Update Count     : 4
 // Status           : Unknown.
 // 
 
-#include <iostream.h>
-#include <string.h>
+#include <iostream>
+#include <string>
+
 #include <unistd.h>
 #include <errno.h>
 #include <stdlib.h>

@@ -1,13 +1,9 @@
 //                              -*- Mode: C++ -*- 
 // Algo.h
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
-//                  Université de Montréal.
 // Author           : Sebastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Wed Feb 14 15:33:58 2001
-// Last Modified By : Patrick Gendron
-// Last Modified On : Fri Mar  7 11:41:38 2003
-// Update Count     : 48
-// Status           : Unknown.
+// $Revision $
 // 
 //  This file is part of mccore.
 //  
@@ -25,136 +21,86 @@
 //  License along with mccore; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+#ifndef _Algo_h_
+#define _Algo_h_
 
-#include <math.h>
-#include <values.h>
-#include <vector.h>
-#include <pair.h>
-#include <map.h>
-#include <algo.h>
+#include <vector>
+#include <algorithm>
 
-#include "AbstractResidue.h"
+#include "BasicResidue.h"
 #include "ResidueType.h"
-#include "CAtom.h"
+#include "Atom.h"
 
+namespace mccore {
 
 /**
  * @short A class for lone algorithms in the mccore library
  * 
  * Long This is a container for algorithms that are not part of any objects.  Note:
  * const_iterator are now used as much as possible so that the functions may be called
- * with const_iterator and iterator
+ * with const_iterator and iterator types.
  *
  * @author Sebastien Lemieux
+ * @version $Id: Algo.h,v 1.15 2003-04-03 21:42:55 gendrop Exp $
  */
-
 class Algo
 {
-
-private:
-
-  template< class iter >
-  class ResidueRange
-  {
-    iter mRes;
-    float mMin;
-    float mMax;
-    
-  public:
-    
-    ResidueRange (iter nRes, float nMin, float nMax)
-      : mRes (nRes), mMin (nMin), mMax (nMax) {}
-    bool operator< (const ResidueRange &o) const { return mMin < o.mMin; }
-    void Min (float nMin) { if (nMin < mMin) mMin = nMin; }
-    void Max (float nMax) { if (nMax > mMax) mMax = nMax; }
-    float Min () const { return mMin; }
-    float Max () const { return mMax; }
-    bool Overlap (const ResidueRange &o) const
-    {
-      if (mMin < o.mMin)
-	return o.mMin <= mMax;
-      else
-	return mMin <= o.mMax;
-    }
-    iter GetResidue () const { return mRes; }
-    void Output (ostream &out)
-    {
-      out << (CResId &)(*mRes) << " : " << mMin << "-" << mMax;
-    }
-  };
-
-  template< class iter >
-  static void ExtractContact_OneDim (vector< ResidueRange< iter > > &range, 
-				     map< pair< iter, iter >, int > &contact,
-				     float cutoff)
-  {
-    vector< ResidueRange< iter > >::iterator i;
-    
-    for (i = range.begin (); i != range.end (); ++i)
-      {
-	vector< ResidueRange< iter > >::iterator j;
-	
-	for (j = i; j != range.end (); ++j)
-	  if (i != j)
-	    {
-	      if (j->Min () - cutoff <= i->Max ())
-		{
-		  if (i->GetResidue () < j->GetResidue ())
-		    ++contact[make_pair (i->GetResidue (), j->GetResidue ())];
-		  else
-		    ++contact[make_pair (j->GetResidue (), i->GetResidue ())];
-		}
-	      else
-		break;
-	    }
-      }
-  }
-  
-  
 public:
   
-  template< class iter >
-  static vector< pair< iter, iter > > ExtractContact_AABB (iter begin, iter end, float cutoff) 
+  /**
+   * Using the Axis Aligned Bounding Box for collision detection, this
+   * method calculates the possible contacts between residues.
+   * @param begin an iterator on a collection of BasicResidue.
+   * @param end an iterator on a collection of BasicResidue.
+   * @param cutoff on the minimum distance for a contact (default = 5.0 Angstroms).
+   * @return a vector of pair of iterators on residues in contact.
+   */
+  template< class iter_type >
+  static vector< pair< iter_type, iter_type > > 
+  extractContacts (iter_type begin, iter_type end, float cutoff = 5.0) 
   {
-    vector< pair< iter, iter > > result;
-    vector< ResidueRange< iter > > X_range;
-    vector< ResidueRange< iter > > Y_range;
-    vector< ResidueRange< iter > > Z_range;
-    iter i;
+    vector< pair< iter_type, iter_type > > result;
+    vector< ResidueRange< iter_type > > X_range;
+    vector< ResidueRange< iter_type > > Y_range;
+    vector< ResidueRange< iter_type > > Z_range;
+    iter_type i;
     
     for (i = begin; i != end; ++i) 
       {
-	AbstractResidue::const_iterator j;
-	ResidueRange< iter > tmp_X (i, HUGE, -HUGE);
-	ResidueRange< iter > tmp_Y (i, HUGE, -HUGE);
-	ResidueRange< iter > tmp_Z (i, HUGE, -HUGE);
+        BasicResidue::const_iterator j;
+	
+	float minX, minY, minZ, maxX, maxY, maxZ;
+	minX = minY = minZ = HUGE;
+	maxX = maxY = maxZ = -HUGE;
 
-	for (j = i->begin (); j != i->end (); ++j)
+	for (j = i->begin (new AtomSetNot (new AtomSetPSE ())); j != i->end (); ++j)
 	  {
-	    tmp_X.Max (j->GetX ());
-	    tmp_X.Min (j->GetX ());
-	    tmp_Y.Max (j->GetY ());
-	    tmp_Y.Min (j->GetY ());
-	    tmp_Z.Max (j->GetZ ());
-	    tmp_Z.Min (j->GetZ ());
+	    minX = min (minX, j->getX ());
+	    minY = min (minY, j->getY ());
+	    minZ = min (minZ, j->getZ ());
+	    maxX = max (maxX, j->getX ());
+	    maxY = max (maxY, j->getY ());
+	    maxZ = max (maxZ, j->getZ ());
 	  }
-	X_range.push_back (tmp_X);
-	Y_range.push_back (tmp_Y);
-	Z_range.push_back (tmp_Z);
+	X_range.push_back (ResidueRange< iter_type > (i, minX, maxX));
+	Y_range.push_back (ResidueRange< iter_type > (i, minY, maxY));
+	Z_range.push_back (ResidueRange< iter_type > (i, minZ, maxZ));
       }
-    std::sort (X_range.begin (), X_range.end ());
-    std::sort (Y_range.begin (), Y_range.end ());
-    std::sort (Z_range.begin (), Z_range.end ());
+    
+    sort (X_range.begin (), X_range.end ());
+    sort (Y_range.begin (), Y_range.end ());
+    sort (Z_range.begin (), Z_range.end ());
 
-    map< pair< iter, iter >, int > contact;
+    map< pair< iter_type, iter_type >, int > contact;
     
     ExtractContact_OneDim (X_range, contact, cutoff);
     ExtractContact_OneDim (Y_range, contact, cutoff);
 
-    map< pair< iter, iter >, int >::iterator cont_i;
+    map< pair< iter_type, iter_type >, int >::iterator cont_i;
+
     for (cont_i = contact.begin (); cont_i != contact.end (); ++cont_i)
       {
-	map< pair< iter, iter >, int >::iterator tmp = cont_i;
+	map< pair< iter_type, iter_type >, int >::iterator tmp = cont_i;
 	
 	tmp++;
 	if (cont_i->second < 2)
@@ -175,12 +121,89 @@ public:
       }
     return result;
   }
+
+
+private:
+
+  template< class iter_type >
+  class ResidueRange
+  {
+    iter_type res;
+    float lower;
+    float upper;
+    
+  public:
+    
+    ResidueRange (iter_type r, float l, float u)
+      : res (r), lower (l), upper (u)
+    {}
+
+    /**
+     * Imposes a total ordering on the ResidueRange objects.  They are sorted
+     * by lower and upper bounds.
+     * @param obj the ResidueRange to compare.
+     * @return true if this range is less than obj
+     */
+    bool operator< (const ResidueRange &obj) const { 
+      if (lower < obj.lower) return true;
+      else if (lower == obj.lower) return upper < obj.upper;
+      else return false;
+    }
+
+    /**
+     * Determines if the bounds of the residue overlap that of this residue.
+     */
+    bool overlap (const ResidueRange &r) {
+      if (lower < r.lower) return upper > r.lower;
+      else return lower <= r.upper;
+    }
+
+    float lowerBound () { return lower; }
+    float upperBound () { return upper; }
+
+    iter_type getResidue () { return res; }
+    
+    void output (ostream &out)
+    {
+      out << res->getResId () << " : " << lower << "-" << upper;
+    }
+  };
+
+  /**
+   * Builds a map of contacts in one dimension given that range elements are sorted.     
+   */
+  template< class iter_type >
+  static void ExtractContact_OneDim (vector< ResidueRange< iter_type > > &range, 
+				     map< pair< iter_type, iter_type >, int > &contact,
+				     float cutoff)
+  {
+    vector< ResidueRange< iter_type > >::iterator i;
+    
+    for (i = range.begin (); i != range.end (); ++i)
+      {
+	vector< ResidueRange< iter_type > >::iterator j;
+	
+	for (j = i; j != range.end (); ++j)
+	  if (i != j)
+	    {
+	      if (j->lowerBound () - cutoff <= i->upperBound ())
+		{
+		  if (i->getResidue () < j->getResidue ())
+		    ++contact[make_pair (i->getResidue (), j->getResidue ())];
+		  else
+		    ++contact[make_pair (j->getResidue (), i->getResidue ())];
+		}
+	      else
+		break;
+	    }
+      }
+  }
+  
+  
+
 };
 
+}
 
 
-
-
-
-
-
+#endif

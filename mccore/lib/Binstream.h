@@ -1,11 +1,11 @@
 //                         -*- Mode: C++ -*-
 // Binstream.h
-// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:11:41 EDT
 // Last Modified By : Patrick Gendron
-// Last Modified On : Mon Feb 25 11:36:16 2002
+// Last Modified On : Thu Mar 27 11:12:42 2003
 // Update count     : 0
 // Status           : Ok.
 //
@@ -29,8 +29,9 @@
 #ifndef _Binstream_h_
 #define _Binstream_h_
 
-#include <iostream.h>
+#include <iostream>
 
+using namespace std;
 
 /**
  * @short Input binary stream for database and cache input.

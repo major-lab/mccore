@@ -1,12 +1,12 @@
 //                              -*- Mode: C++ -*-
 // zfPdbstream.h
-// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : ven 23 jui 1999 13:54:45 EDT
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:10:42 2001
-// Update Count     : 6
+// Last Modified By : Patrick Gendron
+// Last Modified On : Mon Mar 24 17:20:12 2003
+// Update Count     : 9
 // Status           : Ok.
 //
 //  This file is part of mccore.
@@ -35,6 +35,7 @@
 #include "Pdbstream.h"
 
 
+namespace mccore {
 
 /**
  * @short Compressed input pdb file stream.
@@ -158,5 +159,7 @@ public:
 
   // I/O -----------------------------------------------------------
 };
+
+}
 
 #endif

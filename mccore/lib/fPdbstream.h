@@ -1,12 +1,12 @@
 //                       -*- Mode: C++ -*-
 // fPdbstream.h
-// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>.
 // Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:35:06 2001
-// Update Count     : 6
+// Last Modified By : Patrick Gendron
+// Last Modified On : Tue Mar 18 19:34:01 2003
+// Update Count     : 9
 // Status           : Ok.
 //
 //  This file is part of mccore.
@@ -29,12 +29,14 @@
 #ifndef _fPdbstream_h_
 #define _fPdbstream_h_
 
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 
 #include "fstreambase.h"
 #include "Pdbstream.h"
 
+
+namespace mccore {
 
 /**
  * @short Input pdb file stream.
@@ -136,5 +138,7 @@ public:
 
   // I/O -----------------------------------------------------------
 };
+
+}
 
 #endif

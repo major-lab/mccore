@@ -1,12 +1,12 @@
 //                              -*- mode: C++ -*- 
 // Binstream.cc
-// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@orage.IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:18:52 EDT
 // Last Modified By : Patrick Gendron
-// Last Modified On : Mon Feb 25 11:36:08 2002
-// Update Count     : 14
+// Last Modified On : Mon Mar 24 17:57:53 2003
+// Update Count     : 15
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -31,14 +31,13 @@
 #include <config.h>
 #endif
 
-#include <string.h>
+#include <string>
 #if defined (__FreeBSD__)
 #include <sys/param.h>
 #else
 #include <netinet/in.h>
 #endif
 
-#include "McCore.h"
 #include "Binstream.h"
 
 

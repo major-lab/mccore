@@ -1,14 +1,9 @@
 //                              -*- Mode: C++ -*- 
 // Pdbstream.h
-// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
-//                           Université de Montréal.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Oct 25 11:21:10 2001
-// Update Count     : 13
-// Status           : Ok.
-// 
+// $Revision: 1.15 $
 //  This file is part of mccore.
 //  
 //  mccore is free software; you can redistribute it and/or
@@ -29,589 +24,474 @@
 #ifndef _Pdbstream_h_
 #define _Pdbstream_h_
 
-#include <iostream.h>
+#include <iostream>
+#include <algorithm>
+#include <string>
 
-#include "CResId.h"
-#include "CAtom.h"
+#include "PdbFileHeader.h"
+#include "ResId.h"
 
-class Model;
-class t_Residue;
-class t_Atom;
+using namespace std;
 
+namespace mccore {
 
-
-/**
- * @short Pdb file input stream.
- *
- * This stream is used to input residues from pdb files.  It reads raw
- * residues trying not to reject them.
- *
- * @author Martin Larose <larosem@iro.umontreal.ca>
- */
-class iPdbstream : public istream
-{
-  /**
-   * The previously read atom.
-   */
-  CAtom* previous_atom;
+  class AtomType;
+  class ResidueType;
+  class Atom;
+  class ResId;
+  class BasicResidue;
+  class AtomSet;
+  class Model;
 
   /**
-   * The type of the previous residue.
+   * @short Pdb file input stream.
+   *
+   * This stream is used to input residues from pdb files.  It reads raw
+   * residues trying not to reject them.
+   *
+   * <pre>
+   * ATOM FIELD
+   * COLUMNS        DATA TYPE       FIELD         DEFINITION
+   * ---------------------------------------------------------------------------------
+   *  1 -  6        Record name     "ATOM  "
+   *  7 - 11        Integer         serial        Atom serial number.
+   * 13 - 16        Atom            name          Atom name.
+   * 17             Character       altLoc        Alternate location indicator.
+   * 18 - 20        Residue name    resName       Residue name.
+   * 22             Character       chainID       Chain identifier.
+   * 23 - 26        Integer         resSeq        Residue sequence number.
+   * 27             AChar           iCode         Code for insertion of residues.
+   * 31 - 38        Real(8.3)       x             Orthogonal coordinates for X in
+   *                                              Angstroms.
+   * 39 - 46        Real(8.3)       y             Orthogonal coordinates for Y in
+   *                                              Angstroms.
+   * 47 - 54        Real(8.3)       z             Orthogonal coordinates for Z in                                             Angstroms.
+   * 55 - 60        Real(6.2)       occupancy     Occupancy.
+   * 61 - 66        Real(6.2)       tempFactor    Temperature factor.
+   * 73 - 76        LString(4)      segID         Segment identifier, left-justified.
+   * 77 - 78        LString(2)      element       Element symbol, right-justified.
+   * 79 - 80        LString(2)      charge        Charge on the atom.
+   * </pre>
+   *
+   * @author Martin Larose <larosem@iro.umontreal.ca>
+   * @version $Id: Pdbstream.h,v 1.15 2003-04-03 21:43:35 gendrop Exp $
    */
-  t_Residue *previous_res_type;
+  class iPdbstream : public istream
+  {
+    static const int LINELENGTH;
 
-  /**
-   * The id of the previous residue.
-   */
-  CResId previous_res_id;
-
-  /**
-   * The type of the current residue.
-   */
-  t_Residue *current_res_type;
-
-  /**
-   * The id of the current residue.
-   */
-  CResId current_res_id;
-
-  /**
-   * Indicates whether the reader reached the end of a chain.
-   */
-  bool end_of_chain;
+    /**
+     * The PDB header (only the part that we read!).
+     */
+    PdbFileHeader header;
   
-  /**
-   * Indicates whether the reader reached the end of a model.
-   */
-  bool end_of_model;
+    /** 
+     * The cached residue type.
+     */
+    const ResidueType *rtype;
 
-  /**
-   * Indicates whether the reader reached the end of the pdb file (END
-   * record type).
-   */
-  bool end_of_pdb;
+    /**
+     * The cached res id.
+     */
+    ResId *rid;
 
-  /**
-   * The input buffer that keeps the pdb line.
-   */
-  char line [256];
-
-  /**
-   * Temporary buffer.
-   */
-  mutable char buffer [256];
-
-  /**
-   * Strips the whitespaces around the strings.
-   * @param cp the string to strip.
-   * @return the stripped string.
-   */
-  static char* Strip (char *cp);
-
-public:
-
-  /**
-   * Gets the residue type given it's string representation.
-   * @param s the residue type representation.
-   * @return the residue type.
-   */
-  static t_Residue* GetResidueType (char *s);
-
-  /**
-   * Gets the atom type given it's string representation.
-   * @param s the atom type representation.
-   * @param res_type the residue type.
-   * @return the atom type.
-   */
-  static t_Atom* GetAtomType (char *s, t_Residue *res_type = 0);
-
-  // LIFECYCLE -----------------------------------------------------
-
-  /**
-   * Initializes the stream.
-   */
-  iPdbstream ()
-    : istream (cin.rdbuf ()),
-      previous_atom (0),
-      previous_res_type (0),
-      current_res_type (0),
-      end_of_chain (false),
-      end_of_model (false),
-      end_of_pdb (false)
-  { }
-
-  /**
-   * Initializes the stream with a predefined stream buffer.
-   * @param sb the stream buffer.
-   */
-  iPdbstream (streambuf* sb)
-    : istream (sb),
-      previous_atom (0),
-      previous_res_type (0),
-      current_res_type (0),
-      end_of_chain (false),
-      end_of_model (false),
-      end_of_pdb (false)
-  { }
-
-  // OPERATORS -----------------------------------------------------
-
-  /**
-   * Casts the pdb stream to a istream.
-   * @return the istream.
-   */
-  operator istream* () { return dynamic_cast<istream*>(this); }
-
-  /**
-   * Reads the pdb stream to an object.
-   * @param obj the templated object.
-   * @return itself.
-   */
-  template< class T >iPdbstream& operator>> (T& obj);
-
-  // ACCESS ---------------------------------------------------------------
-
-  /**
-   * Tests whether the stream has reached the end of a chain.
-   * @return the truth value.
-   */
-  bool eoc () const { return end_of_chain; }
+    /**
+     * The cached atom
+     */
+    Atom *ratom;
   
-  /**
-   * Tests whether the stream has reached the end of a model.
-   * @return the truth value.
-   */
-  bool eom () const { return end_of_model; }
+    /**
+     * Current model nb.
+     */
+    int modelNb;
 
-  /**
-   * Tests whether the stream has reached the end of the pdb.
-   * @return the truth value.
-   */
-  bool eop () const { return end_of_pdb; }
+  public:
 
-  /**
-   * Gets the value of the previous atom.
-   * @return the atom previously read.
-   */
-  CAtom* GetAtom () const { return previous_atom; }
+    // LIFECYCLE -----------------------------------------------------------------
 
-  /**
-   * Gets the type of the previously read residue.
-   * @return the residue type.
-   */
-  t_Residue* GetPrevResType () const { return previous_res_type; }
+    /**
+     * Initializes the stream.
+     */
+    iPdbstream ();
 
-  /**
-   * Gets the id of the previously read residue.
-   * @return the residue id.
-   */
-  const CResId& GetPrevResId () const { return previous_res_id; }
+    /**
+     * Initializes the stream with a predefined stream buffer.
+     * @param sb the stream buffer.
+     */
+    iPdbstream (streambuf* sb);
 
-  /**
-   * Gets the residue type of the pdb atom record.
-   * @return the residue type.
-   */
-  t_Residue* GetResType () const { return current_res_type; }
+    /**
+     * Destroys the object.
+     */
+    virtual ~iPdbstream ();
 
-  /**
-   * Gets the residue id of the pdb atom record.
-   * @return the residue id.
-   */
-  CResId GetResId () const { return current_res_id; }
+    // OPERATORS -----------------------------------------------------------------
 
-  // METHODS --------------------------------------------------------------
+    // ACCESS --------------------------------------------------------------------
 
-  /**
-   * Gets a text line.  Same as the inherited one except that the endline
-   * may be one of \n or \r.
-   * @param buffer the buffer where the characters are copied.
-   * @param sz the maximum reading number of characters.
-   * @return the input stream.
-   */
-  iPdbstream& getline (char *buffer, unsigned int sz);
+    /**
+     * Gets the header information.
+     * @return the PDBFileHeader
+     */
+    const PdbFileHeader& getHeader ();
 
-  /**
-   * Reads the next line from the pdb stream and put it in the line buffer.
-   * Triggers the end of model and end of pdb flags.
-   * @return the number of character read.
-   */
-  size_t getline ();
+    /**
+     * Gets the number of the model currently being read.
+     */
+    int getModelNb () { return modelNb; }
 
-  /**
-   * Gets the record name of the pdb line.
-   * @return the record name.
-   */
-  const char* GetRecordType () const;
+    // METHODS -------------------------------------------------------------------
 
-  /**
-   * Gets the atom type of the pdb atom record.
-   * @return the atom type.
-   */
-  t_Atom* GetAtomType () const;
+    /**
+     * Gets a text line.  Same as the inherited one except that the endline
+     * may be one of \n or \r.
+     * @param buffer the buffer where the characters are copied.
+     * @param sz the maximum reading number of characters.
+     * @return the input stream.
+     */
+    iPdbstream& getline (char*, unsigned int sz);
 
-  /**
-   * Gets the alternate location id of the pdb atom record.
-   * @return the alternate location id.
-   */
-  char GetAltLocId () const;
+    /**
+     * Opens the stream and initializes the slots.
+     */
+    void open ();
 
-  /**
-   * Gets the x coordinate of the pdb atom record.
-   * @return the x coordinate.
-   */
-  float GetX () const;
+    /**
+     * Closes the stream.
+     */
+    virtual void close ();
+    
+    /**
+     * Reads an atom from the stream and cache it.
+     * @return the Atom or null if EOF was reached.
+     */
+    Atom* cacheAtom ();
 
-  /**
-   * Gets the y coordinate of the pdb atom record.
-   * @return the y coordinate.
-   */
-  float GetY () const;
+    /**
+     * Trims the whitespaces around the string.
+     * @param cp the string to trim.
+     * @return the stripped trim (actually a ptr on the original string with the end moved).
+     */
+    char* trim (char* cp);
 
-  /**
-   * Gets the z coordinate of the pdb atom record.
-   * @return the z coordinate.
-   */
-  float GetZ () const;
+    // I/O ---------------------------------------------------------------------
+
+    /**
+     * Reads an atom from the stream.
+     * @param at the atom to read.
+     * @return the Pdbstream.
+     */
+    iPdbstream& operator>> (Atom &at);
+    
+    /**
+     * Reads a residue from the stream.
+     * @param r the residue to read.
+     * @return the Pdbstream.
+     */
+    iPdbstream& operator>> (BasicResidue &r);
+
+  };
+
 
   /**
-   * Gets the atom coordinates and type.
-   * @param atom the atom to fill.
-   * @return the atom.
+   * @short Pdb file output stream.
+   *
+   * This stream is used to output residues to pdb files.
+   *
+   * @author Martin Larose <larosem@iro.umontreal.ca>
    */
-  CAtom& getatom (CAtom &atom);
+  class oPdbstream : public ostream
+  {
+    static const int LINELENGTH;
 
-  /**
-   * Keeps the atom for the next residue input.
-   * @param atom the atom to keep.
-   */
-  void KeepAtom (const CAtom &atom);
+    /**
+     * The PDB header (only the part that we read!).
+     */
+    PdbFileHeader header;
+    
+    /**
+     * Wether or not the header has been output yet.
+     */
+    bool headerdone;
 
-  /**
-   * Removes the atom from the previous atom slot.
-   */
-  void DeleteAtom ();
+    /**
+     * Atom set filter function.
+     */
+    AtomSet *atomset;
 
-  /**
-   * Places the current residue id and type to their respective previous
-   * slots.
-   */
-  void NewRes ();
+    /**
+     * The current residue type.
+     */
+    const ResidueType *rtype;
 
-  /**
-   * Opens the stream and initializes the slots.
-   */
-  void open ();
+    /**
+     * The current residue id.
+     */
+    ResId *rid;
 
-  /**
-   * Closes the stream.
-   */
-  void close () { }
+    /**
+     * The current model number.
+     */
+    int modelnb;
 
-  // I/O ------------------------------------------------------------------
-};
+    /**
+     * Atom counter.
+     */
+    int n;    
+
+    /**
+     * Nb of bytes written on the current line
+     */
+    
+    
+  public:
+
+    // LIFECYCLE ---------------------------------------------------------------
+
+    /**
+     * Initializes the stream.
+     */
+    oPdbstream ();
+
+    /**
+     * Initializes the stream with a predefined stream buffer.
+     * @param sb the stream buffer.
+     */
+    oPdbstream (streambuf* sb);
+
+    
+    /**
+     * Destroys the stream.
+     */
+    virtual ~oPdbstream ();
 
 
+    // OPERATORS ---------------------------------------------------------------
 
-/**
- * @short Pdb file output stream.
- *
- * This stream is used to output residues to pdb files.
- *
- * @author Martin Larose <larosem@iro.umontreal.ca>
- */
-class oPdbstream : public ostream
-{
-  /**
-   * Atom set filter function.
-   */
-  AtomSet *atomset;
+    /**
+     * Casts the pdb stream to a ostream.
+     * @return the ostream.
+     */
+    operator ostream* () { return dynamic_cast<ostream*>(this); }
+    
 
-  /**
-   * The residue type of the saved residue.
-   */
-  const t_Residue *restype;
+    // ACCESS ------------------------------------------------------------------
 
-  /**
-   * The residue number of the saved residue.
-   */
-  int resno;
+    /**
+     * Sets the atomset filter used for dumping residues.
+     * @param s the atom set filter.
+     */
+    void setAtomSet (AtomSet *s) { atomset = s; }
+    
+    /**
+     * Sets the residue type of all successive calls to write (atom).
+     * @param t the residue type.
+     */
+    void setResidueType (const ResidueType *t) { rtype = t; }
 
-  /**
-   * The chain id of the saved residue.
-   */
-  char chainid;
+    /**
+     * Sets the residue id of all successive calls to write (atom).
+     * @param r the ResId.
+     */
+    void setResId (const ResId &r) { 
+      if (!rid) rid = new ResId (r); 
+      else *rid = r;
+    }    
 
-  /**
-   * The insertion code of the saved residue.
-   */
-  char iCode;
+    /**
+     * Sets the header for the file.
+     */
+    void setHeader (const PdbFileHeader &h) { header = h; } 
 
-  /**
-   * The atom serial number of the saved atom.
-   */
-  int mCurrentAtomNo;
 
-  /**
-   * The model number.
-   */
-  int mModelNo;
+    // METHODS -----------------------------------------------------------------
+    
+    /**
+     * Opens a pdb stream.  Resets the slots.
+     */
+    void open ();
+    
+    /**
+     * Closes a pdb stream.  It writes the END record.
+     */
+    virtual void close ();
+
+    /**
+     * Writes the current header to the stream.
+     */
+    void writeHeader ();
+
+    /**
+     * Writes a remark.
+     * @param k the type of remark.
+     * @param rem the remark.
+     */
+    void writeRemark (int k, const char* rem);
+
+    /**
+     * Writes a MODEL record to the pdb stream.
+     */
+    void startModel ();
+    
+    /**
+     * Writes a ENDMDL record to the pdb stream.
+     */
+    void endModel ();
+
+    /**
+     * Writes a TER record to the pdb stream.
+     */
+    void ter ();
+
+    /**
+     * Writes a END record to the pdb stream.
+     */
+    void end ();
+
+    /**
+     * Write i whitespace to the stream
+     */ 
+    void pad (int i);
+
+  protected:
+    
+    // I/O ---------------------------------------------------------------------
+
+    /**
+     * Writes a character to the pdb stream.
+     * @param c the character to write.
+     * @return itself.
+     */
+    oPdbstream& operator<< (char c)
+    { *(ostream*)this << c; return *this; }
+    
+    /**
+     * Writes a unsigned char to the pdb stream.
+     * @param c the unsigned char to write.
+     * @return itself.
+     */
+    oPdbstream& operator<< (unsigned char c) { return operator<< ((char)c); }
+    
+    /**
+     * Writes a signed char to the pdb stream.
+     * @param c the signed char to write.
+     * @return itself.
+     */
+    oPdbstream& operator<< (signed char c) { return operator<< ((char)c); }
+    
+    /**
+     * Writes a string to the pdb stream.
+     * @param s the string to write.
+     * @return itself.
+     */
+    oPdbstream& operator<< (const char *s)
+    { *(ostream*)this << s; return *this; }
+
+    /**
+     * Writes an unsigned string to the pdb stream.
+     * @param s the unsigned string to write.
+     * @return itself.
+     */
+    oPdbstream& operator<< (const unsigned char *s)
+    { return operator<< ((const char*)s); }
+
+    /**
+     * Writes a signed string to the pdb stream.
+     * @param s the signed string to write.
+     * @return itself.
+     */
+    oPdbstream& operator<< (const signed char *s)
+    { return operator<< ((const char*)s); }
+
+    /**
+     * Writes an integer to the pdb stream.
+     * @param n the integer to write.
+     * @return itself.
+     */
+    oPdbstream& operator<< (int n)
+    { *(ostream*)this << n; return *this; }
+
+    /**
+     * Writes an unsigned integer to the pdb stream.
+     * @param n the unsigned integer to write.
+     * @return itself.
+     */
+    oPdbstream& operator<< (unsigned int n)
+    { *(ostream*)this << n; return *this; }
+
+    /**
+     * Writes a long integer to the pdb stream.
+     * @param n the long integer to write.
+     * @return itself.
+     */
+    oPdbstream& operator<< (long n)
+    { *(ostream*)this << n; return *this; }
+
+    /**
+     * Writes an unsigned long integer to the pdb stream.
+     * @param n the unsigned long integer to write.
+     * @return itself.
+     */
+    oPdbstream& operator<<(unsigned long n)
+    { *(ostream*)this << n; return *this; }
+
+    /**
+     * Writes a double real to the pdb stream.
+     * @param n the double real to write.
+     * @return itself.
+     */
+    oPdbstream& operator<< (double n)
+    { *(ostream*)this << n; return *this; }
+
+    /**
+     * Writes a float to the pdb stream.
+     * @param n the float to write.
+     * @return itself.
+     */
+    oPdbstream& operator<< (float n) { return operator<< ((double)n); }
+
+    /**
+     * Writes a long double to the pdb stream.
+     * @param n the long double to write.
+     * @return itself.
+     */
+    oPdbstream& operator<< (long double n) { return operator<< ((double)n); }
+
+    /**
+     * Modifies the pdb stream.
+     * @param func the ios manipulator function.
+     * @return itself.
+     */
+    oPdbstream& operator<< (ios& (*func)(ios&))
+    { (*func)(*(ostream*)this); return *this; }
+
+    /**
+     * Modifies the pdb stream.
+     * @param func the ostream manipulator function.
+     * @return itself.
+     */
+    oPdbstream& operator<< (ostream& (*func)(ostream&))
+    { (*func)(*(ostream*)this); return *this; }
+
+
+  public:
+
+    /**
+     * Writes an atom to the pdb stream.
+     * @param at the atom to write.
+     * @return itself.
+     */
+    oPdbstream& operator<< (const Atom& at);
+
+    /**
+     * Writes a residue to the pdb stream.
+     * @param at the residue to write.
+     * @return itself.
+     */
+    oPdbstream& operator<< (const BasicResidue& r);
+
+  };  
   
-  /**
-   * Line buffer.
-   */
-  char line[81];
-
-public:
-
-  // LIFECYCLE -----------------------------------------------------
-
-  /**
-   * Initializes the stream.
-   */
-  oPdbstream ()
-    : ostream (cout.rdbuf ()),
-      atomset (new no_pse_lp_atom_set ()),
-      restype (0),
-      mCurrentAtomNo (1),
-      mModelNo (1)
-  { }
-
-  /**
-   * Initializes the stream with a predefined stream buffer.
-   * @param sb the stream buffer.
-   */
-  oPdbstream (streambuf* sb)
-    : ostream (sb),
-      atomset (new no_pse_lp_atom_set ()),
-      restype (0),
-      mCurrentAtomNo (1),
-      mModelNo (1)
-  { }
-
-  /**
-   * Destructs the stream.
-   */
-  virtual ~oPdbstream () { delete atomset; }
-
-  // OPERATORS -----------------------------------------------------
-
-  /**
-   * Casts the pdb stream to a ostream.
-   * @return the ostream.
-   */
-  operator ostream* () { return dynamic_cast<ostream*>(this); }
-
-  /**
-   * Writes a character to the pdb stream.
-   * @param c the character to write.
-   * @return itself.
-   */
-  oPdbstream& operator<< (char c)
-  { *(ostream*)this << c; return *this; }
-
-  /**
-   * Writes a unsigned char to the pdb stream.
-   * @param c the unsigned char to write.
-   * @return itself.
-   */
-  oPdbstream& operator<< (unsigned char c) { return operator<< ((char)c); }
-
-  /**
-   * Writes a signed char to the pdb stream.
-   * @param c the signed char to write.
-   * @return itself.
-   */
-  oPdbstream& operator<< (signed char c) { return operator<< ((char)c); }
-
-  /**
-   * Writes a string to the pdb stream.
-   * @param s the string to write.
-   * @return itself.
-   */
-  oPdbstream& operator<< (const char *s)
-  { *(ostream*)this << s; return *this; }
-
-  /**
-   * Writes an unsigned string to the pdb stream.
-   * @param s the unsigned string to write.
-   * @return itself.
-   */
-  oPdbstream& operator<< (const unsigned char *s)
-  { return operator<< ((const char*)s); }
-
-  /**
-   * Writes a signed string to the pdb stream.
-   * @param s the signed string to write.
-   * @return itself.
-   */
-  oPdbstream& operator<< (const signed char *s)
-  { return operator<< ((const char*)s); }
-
-  /**
-   * Writes an integer to the pdb stream.
-   * @param n the integer to write.
-   * @return itself.
-   */
-  oPdbstream& operator<< (int n)
-  { *(ostream*)this << n; return *this; }
-
-  /**
-   * Writes an unsigned integer to the pdb stream.
-   * @param n the unsigned integer to write.
-   * @return itself.
-   */
-  oPdbstream& operator<< (unsigned int n)
-  { *(ostream*)this << n; return *this; }
-
-  /**
-   * Writes a long integer to the pdb stream.
-   * @param n the long integer to write.
-   * @return itself.
-   */
-  oPdbstream& operator<< (long n)
-  { *(ostream*)this << n; return *this; }
-
-  /**
-   * Writes an unsigned long integer to the pdb stream.
-   * @param n the unsigned long integer to write.
-   * @return itself.
-   */
-  oPdbstream& operator<<(unsigned long n)
-  { *(ostream*)this << n; return *this; }
-
-  /**
-   * Writes a double real to the pdb stream.
-   * @param n the double real to write.
-   * @return itself.
-   */
-  oPdbstream& operator<< (double n)
-  { *(ostream*)this << n; return *this; }
-
-  /**
-   * Writes a float to the pdb stream.
-   * @param n the float to write.
-   * @return itself.
-   */
-  oPdbstream& operator<< (float n) { return operator<< ((double)n); }
-
-  /**
-   * Writes a long double to the pdb stream.
-   * @param n the long double to write.
-   * @return itself.
-   */
-  oPdbstream& operator<< (long double n) { return operator<< ((double)n); }
-
-  /**
-   * Modifies the pdb stream.
-   * @param func the ios manipulator function.
-   * @return itself.
-   */
-  oPdbstream& operator<< (ios& (*func)(ios&))
-  { (*func)(*(ostream*)this); return *this; }
-
-  /**
-   * Modifies the pdb stream.
-   * @param func the ostream manipulator function.
-   * @return itself.
-   */
-  oPdbstream& operator<< (ostream& (*func)(ostream&))
-  { (*func)(*(ostream*)this); return *this; }
-
-
-  // ACCESS ---------------------------------------------------------------
-
-  /**
-   * Gets the atom set function.
-   * @return the atom set function.
-   */
-  const AtomSet* GetAtomSet () const { return atomset; }
-
-  /**
-   * Sets the atom set function.
-   * @param as the new atom set function.
-   */
-  void SetAtomSet (AtomSet *as) { delete atomset; atomset = as; }
-
-  /**
-   * Sets the residue type of the outputted atom.
-   * @param type the residue type.
-   */
-  void SetResType (const t_Residue *type) { restype = type; }
-
-  /**
-   * Sets the residue id of the outputted atom.
-   * @param resid the residue id.
-   */
-  void SetResId (const CResId &resid);
-
-  // METHODS --------------------------------------------------------------
-
-  /**
-   * Opens a pdb stream.  Resets the slots.
-   */
-  void open ();
-
-  /**
-   * Closes a pdb stream.  It writes the END record.
-   */
-  virtual void close () { END (); }
-
-  // I/O ------------------------------------------------------------------
-
-  /**
-   * Writes the header of the pdb file.  EXPDTA, AUTHOR, REMARKs 220 and
-   * 225.
-   */
-  void putheader ();
-
-  /**
-   * Writes a REMARK record to the pdb stream.
-   * @param k the remark number.
-   * @param rem the remark string.
-   */
-  void putremark (unsigned int k, const char *rem);
-
-  /**
-   * Writes an ATOM record or a HETATM atom to the pdb stream.  The residue
-   * type determines witch is used.
-   * @param atom the atom to put.
-   */
-  void putatom (const CAtom &atom);
-
-  /**
-   * Writes a model to the pdb stream.  It writes the MODEL, the model and
-   * the ENDMDL records.
-   * @param model the model to output.
-   */
-  void putmodel (const Model &model);
-
-  /**
-   * Writes the CONECT records.
-   * @param model the model to write the conect for.
-   */
-  void putconect (const Model &model);
-
-  /**
-   * Writes a MODEL record to the pdb stream.
-   */
-  void MODEL ();
-
-  /**
-   * Writes a TER record to the pdb stream.
-   */
-  void TER ();
-
-  /**
-   * Writes a ENDMDL record to the pdb stream.
-   */
-  void ENDMDL ();
-
-  /**
-   * Writes a END record to the pdb stream.
-   */
-  void END ();
-
-};
-
+}
 
 #endif

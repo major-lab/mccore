@@ -1,11 +1,11 @@
 //                        -*- Mode: C++ -*-
 // fBinstream.h
-// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:20:58 EDT
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:10:29 2001
+// Last Modified By : Patrick Gendron
+// Last Modified On : Thu Mar 27 12:35:15 2003
 // Update count     : 0
 // Status           : Ok.
 //
@@ -29,8 +29,10 @@
 #ifndef _fBinstream_h_
 #define _fBinstream_h_
 
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
+
+using namespace std;
 
 #include "fstreambase.h"
 #include "Binstream.h"

@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // fstreambase.h
-// Copyright © 2002 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Fri Jan 25 15:17:28 2002
 // Last Modified By : Patrick Gendron
-// Last Modified On : Mon Feb 25 11:36:35 2002
-// Update Count     : 1
+// Last Modified On : Mon Mar 10 16:27:18 2003
+// Update Count     : 2
 // Status           : Unknown.
 // 
 // 
@@ -28,7 +28,7 @@
 #ifndef _fstreambase_h_
 #define _fstreambase_h_
 
-#include <fstream.h>
+#include <fstream>
 
 // We want to keep the version that's implemented in the libstdc++ 
 // when available...

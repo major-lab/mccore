@@ -1,13 +1,9 @@
 //                              -*- Mode: C++ -*- 
 // Model.cc
-// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique.
-//                  Université de Montréal.
+// Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// Last Modified By : Patrick Gendron
-// Last Modified On : Tue Apr  9 14:40:46 2002
-// Update Count     : 8
-// Status           : Unknown.
+// $Revision: 1.11 $
 // 
 //  This file is part of mccore.
 //  
@@ -30,546 +26,556 @@
 #include <config.h>
 #endif
 
-#include <string.h>
-#include <list.h>
-#include <algo.h>
+#include <list>
 
-#include "AbstractResidue.h"
-#include "Binstream.h"
-#include "McCore.h"
-#include "CResidueFM.h"
 #include "Model.h"
+
+#include "Binstream.h"
+#include "BasicResidue.h"
+#include "ResidueFactoryMethod.h"
 #include "Pdbstream.h"
-#include "ResidueFM.h"
-#include "ResidueType.h"
-#include "Messagestream.h"
-#include "Algo.h"
-
-bool less_deref_func (AbstractResidue *x, AbstractResidue *y)
-{
-  return *x < *y;
-}
 
 
-//  Model::model_iterator&
-//  Model::model_iterator::operator= (const list< AbstractResidue* >::iterator &right)
-//  {
-//    if (this != &right)
-//      list< AbstractResidue* >::iterator::operator= (right);
-//    return *this;
-//  }
+namespace mccore {
 
 
+  bool less_deref (BasicResidue *x, BasicResidue *y)
+  {
+    return *x < *y;
+  }
 
-unsigned int
-Model::model_iterator::operator- (const Model::model_iterator &right) const
-{
-  model_iterator it = *this;
-  unsigned int dist = 0;
+  
+  // LIFECYCLE -----------------------------------------------------------------
 
-  while (it != right)
-    {
-      --it;
-      ++dist;
-    }
-  return dist;
-}
+  
+  Model::Model (ResidueFactoryMethod *fm)
+  {
+    residueFM = (fm == 0) ? new ResidueFM () : fm;
+  }
 
 
   
-//  Model::model_const_iterator&
-//  Model::model_const_iterator::operator= (const list< AbstractResidue* >::const_iterator &right)
-//  {
-//    if (this != &right)
-//      list< AbstractResidue* >::const_iterator::operator= (right);
-//    return *this;
-//  }
+  Model::Model (const Model &right)
+  {
+    const_iterator cit;
+    
+    residueFM = right.residueFM->clone ();
+    for (cit = right.begin (); cit != right.end (); ++cit)
+      push_back (*cit);
+  }
 
 
 
-//  Model::model_const_iterator&
-//  Model::model_const_iterator::operator= (const Model::model_iterator &right)
-//  {
-//    list< AbstractResidue* >::const_iterator::operator= (right);
-//    return *this;
-//  }
+  Model::~Model ()
+  {
+    delete residueFM;
+    clear ();
+  }
 
 
-
-unsigned int
-Model::model_const_iterator::operator- (const Model::model_const_iterator &right) const
-{
-  model_const_iterator it = *this;
-  unsigned int dist = 0;
-
-  while (it != right)
-    {
-      --it;
-      ++dist;
-    }
-  return dist;
-}
+  // OPERATORS -----------------------------------------------------------------
 
 
-  
-Model::Model (ResidueFactoryMethod *fm)
-{
-  residueFM = (fm == 0) ? new CResidueFM () : fm;
-}
+  Model&
+  Model::operator= (const Model &right)
+  {
+    if (this != &right)
+      {
+	iterator it;
+	const_iterator cit;
 
-
-  
-Model::Model (const Model &right)
-{
-  const_iterator cit;
-
-  residueFM = right.residueFM->clone ();
-  for (cit = right.begin (); cit != right.end (); ++cit)
-    push_back (cit->clone ());
-}
-
-
-
-Model::~Model ()
-{
-  iterator it;
-
-  delete residueFM;
-  for (it = begin (); it != end (); ++it)
-    delete &*it;
-}
-
-
-
-Model&
-Model::operator= (const Model &right)
-{
-  if (this != &right)
-    {
-      iterator it;
-      const_iterator cit;
-
-      delete residueFM;
-      residueFM = right.residueFM->clone ();
-      for (it = begin (); it != end (); ++it)
-	delete &*it;
-      clear ();
-
-      for (cit = right.begin (); cit != right.end (); ++cit)
-	push_back (cit->clone ());
-    }
-  return *this;
-}
-
-
-
-AbstractResidue&
-Model::operator[] (size_type nth)
-{
-  if (nth > size ())
-    return *end ();
-  else
-    {
-      iterator it;
-      
-      for (it = begin (); nth > 0; --nth, ++it);
-      return *it;
-    }
-}
-
-
-
-const AbstractResidue&
-Model::operator[] (size_type nth) const
-{
-  if (nth > size ())
-    return *end ();
-  else
-    {
-      const_iterator cit;
-      
-      for (cit = begin (); nth > 0; --nth, ++cit);
-      return *cit;
-    }
-}
-
-
-
-void
-Model::setResidueFM (ResidueFactoryMethod *fm)
-{
-  delete residueFM;
-  residueFM = fm;
-}
-
-
-
-AbstractResidue::iterator
-Model::find (const char *str)
-{
-  char *s = strdup (str);
-  char *p = s;
-  char *argum;
-  vector< char* > tok;
-  Model::iterator mit;
-  AbstractResidue::iterator it;
-  
-  argum = strsep (&p, ":");
-  while (argum)
-    {
-      if (strlen (argum) > 0) 
-	tok.push_back (argum);
-      argum = strsep (&p, ":");
-    }
-
-  if (tok.size () != 2
-      || (mit = find (CResId (tok[0]))) == end ()
-      || (it = mit->find (iPdbstream::GetAtomType (tok[1]))) == mit->end ())
-    it = AbstractResidue::iterator ();
-  delete[] s;
-  return it;
-}
-
-
-
-AbstractResidue::const_iterator
-Model::find (const char *str) const
-{
-  char *s = strdup (str);
-  char *p = s;
-  char *argum;
-  vector< char* > tok;
-  Model::const_iterator mit;
-  AbstractResidue::const_iterator it;
-  
-  argum = strsep (&p, ":");
-  while (argum)
-    {
-      if (strlen (argum) > 0) 
-	tok.push_back (argum);
-      argum = strsep (&p, ":");
-    }
-
-  if (tok.size () != 2
-      || (mit = find (CResId (tok[0]))) == end ()
-      || (it = mit->find (iPdbstream::GetAtomType (tok[1]))) == mit->end ())
-    it = AbstractResidue::const_iterator ();
-  delete[] s;
-  return it;
-}
-
-
-
-Model::iterator
-Model::find (const CResId &id)
-{
-  iterator it;
-
-  for (it = begin (); it != end (); ++it)
-    if (id == (CResId &)*it)
-      break;
-  return it;
-}
-
-
-
-Model::const_iterator
-Model::find (const CResId &id) const
-{
-  const_iterator it;
-
-  for (it = begin (); it != end (); ++it)
-    if (id == *it)
-      break;
-  return it;
-}
-
-
-void
-Model::sort ()
-{
-  list< AbstractResidue* >::sort (less_deref_func);
-}
-
-
-void
-Model::validate ()
-{
-  iterator it = begin ();
-
-  while (it != end ())
-    {
-      it->validate ();
-      if (it->GetType ()->is_NucleicAcid ()
-	  || it->GetType ()->is_AminoAcid ())
-	++it;
-      else
-	{
+	delete residueFM;
+	residueFM = right.residueFM->clone ();
+	for (it = begin (); it != end (); ++it)
 	  delete &*it;
-	  it = erase (it);
-	}
-    }
-}
+	clear ();
 
-
-
-void
-Model::removeOptionals ()
-{
-  iterator it;
-
-  for (it = begin (); it != end (); ++it)
-    it->removeOptionals ();
-}
-
-
-
-void
-Model::removeAminoAcid ()
-{
-  iterator modelIt = begin ();
-
-  while (modelIt != end ())
-    {
-      if (modelIt->GetType ()->is_AminoAcid ())
-	{
-	  delete &*modelIt;
-	  modelIt = erase (modelIt);
-	}
-      else
-	++modelIt;
-    }
-}
-
-
-
-void
-Model::removeNucleicAcid ()
-{
-  iterator modelIt;
-
-  for (modelIt = begin (); modelIt != end ();)
-    {
-      if (modelIt->GetType ()->is_NucleicAcid ())
-	{
-	  delete &*modelIt;
-	  modelIt = erase (modelIt);
-	}
-      else
-	++modelIt;
-    }
-}
-
-
-
-void
-Model::keepAminoAcid ()
-{
-  iterator modelIt;
-
-  for (modelIt = begin (); modelIt != end ();)
-    {
-      if (modelIt->GetType ()->is_AminoAcid ())
-	++modelIt;
-      else
-	{
-	  delete &*modelIt;
-	  modelIt = erase (modelIt);
-	}
-    }
-}
-
-
-
-void
-Model::keepNucleicAcid ()
-{
-  iterator modelIt;
-
-  for (modelIt = begin (); modelIt != end ();)
-    {
-      if (modelIt->GetType ()->is_NucleicAcid ())
-	++modelIt;
-      else
-	{
-	  delete &*modelIt;
-	  modelIt = erase (modelIt);
-	}
-    }
-}
-
-
-
-void 
-Model::removeClashes ()
-{
-  iterator i, j;
-  vector< pair< iterator, iterator > > possibleContacts;
-  vector< pair< iterator, iterator > >::iterator m;
-
-  possibleContacts = 
-    Algo::ExtractContact_AABB (begin (), end (), 2.0);
-
-  AbstractResidue::iterator k, l;
-
-  set< iterator > toremove;
-  set< iterator >::iterator t;
-
-  for (m=possibleContacts.begin (); m!=possibleContacts.end (); ++m)
-    {
-      i = m->first;
-      j = m->second;
-
-      if (*(i->begin ()) | *(j->end ()) < 3.0) {
-	bool clash = false;
-	for (k=i->begin (new atomset_and (new no_pse_lp_atom_set (),
-					  new no_hydrogen_set ())); 
-	     k!=i->end (); ++k) {
-	  for (l=j->begin (new atomset_and (new no_pse_lp_atom_set (),
-					    new no_hydrogen_set ())); 
-	       l!=j->end (); ++l) {
-	    if ((*k | *l) < 0.8) {
-	      clash=true;
-	      break;
-	    }
-	  }
-	  if (clash) break;
-	}
-	if (clash) {
-	  gOut (3) << "Rejecting " << (CResId&)*j
-		   << " because of clashes with " << (CResId&)*i << endl;
-	  toremove.insert (j);
-	}
+	for (cit = right.begin (); cit != right.end (); ++cit)
+	  push_back (*cit);
       }
-    }
-
-  for (t=toremove.begin (); t!=toremove.end (); ++t) {    
-    delete &**t;
-    erase (*t);
-  }  
-}
+    return *this;
+  }
 
 
 
-oBinstream&
-Model::write (oBinstream &obs) const
-{
-  const_iterator cit;
+  BasicResidue&
+  Model::operator[] (size_type nth)
+  {
+    if (nth > size ())
+      return *end ();
+    else
+      {
+	iterator it;
+      
+	for (it = begin (); nth > 0; --nth, ++it);
+	return *it;
+      }
+  }
+
+
+
+  const BasicResidue&
+  Model::operator[] (size_type nth) const
+  {
+    if (nth > size ())
+      return *end ();
+    else
+      {
+	const_iterator cit;
+      
+	for (cit = begin (); nth > 0; --nth, ++cit);
+	return *cit;
+      }
+  }
+
+
+  // ACCESS --------------------------------------------------------------------
+
+
+  void
+  Model::setResidueFM (ResidueFactoryMethod *fm)
+  {
+    delete residueFM;
+    residueFM = fm;
+  }
+
+
+  // METHODS -------------------------------------------------------------------
+
+
+//   BasicResidue::iterator
+//   Model::find (const char *str)
+//   {
+//     char *s = strdup (str);
+//     char *p = s;
+//     char *argum;
+//     vector< char* > tok;
+//     Model::iterator mit;
+//     BasicResidue::iterator it;
   
-  obs << size ();
-  for (cit = begin (); cit != end (); ++cit)
-    obs << *cit;
-  return obs;
-}
+//     argum = strsep (&p, ":");
+//     while (argum)
+//       {
+// 	if (strlen (argum) > 0) 
+// 	  tok.push_back (argum);
+// 	argum = strsep (&p, ":");
+//       }
+
+//     if (tok.size () != 2
+// 	|| (mit = find (CResId (tok[0]))) == end ()
+// 	|| (it = mit->find (iPdbstream::GetAtomType (tok[1]))) == mit->end ())
+//       it = BasicResidue::iterator ();
+//     delete[] s;
+//     return it;
+//   }
 
 
 
-oPdbstream&
-Model::write (oPdbstream &ops) const
-{
-  const_iterator cit;
+//   BasicResidue::const_iterator
+//   Model::find (const char *str) const
+//   {
+//     char *s = strdup (str);
+//     char *p = s;
+//     char *argum;
+//     vector< char* > tok;
+//     Model::const_iterator mit;
+//     BasicResidue::const_iterator it;
+  
+//     argum = strsep (&p, ":");
+//     while (argum)
+//       {
+// 	if (strlen (argum) > 0) 
+// 	  tok.push_back (argum);
+// 	argum = strsep (&p, ":");
+//       }
 
-  if ((cit = begin ()) != end ())
-    {
-      char last_chain_id = ((CResId)*cit).GetChainId ();
-
-      while (cit != end ())
-	{
-	  if (((CResId)*cit).GetChainId () != last_chain_id)
-	    {
-	      ops.TER ();
-	      last_chain_id = ((CResId)*cit).GetChainId ();
-	    }
-	  ops << *cit;
-	  ++cit;
-	}
-      ops.TER ();
-    }
-  return ops;
-}
-
-
-
-bool
-operator< (const Model::iterator &left, const Model::iterator &right)
-{
-  return *left < *right;
-}
+//     if (tok.size () != 2
+// 	|| (mit = find (CResId (tok[0]))) == end ()
+// 	|| (it = mit->find (iPdbstream::GetAtomType (tok[1]))) == mit->end ())
+//       it = BasicResidue::const_iterator ();
+//     delete[] s;
+//     return it;
+//   }
 
 
 
-bool
-operator< (const Model::const_iterator &left, const Model::const_iterator &right)
-{
-  return *left < *right;
-}
+  Model::iterator
+  Model::find (const ResId &id)
+  {
+    iterator it;
 
-
-
-iPdbstream&
-operator>> (iPdbstream &ips, Model &obj)
-{
-  obj.clear ();
-  while (! (ips.eof () || ips.eop ()))
-    {
-      AbstractResidue *res = obj.getResidueFM ()->createResidue ();
-
-      ips >> *res;
-      if (res->size () != 0)
-	obj.push_back (res);
-      else
-	delete res;
-      if (ips.eom ())
+    for (it = begin (); it != end (); ++it)
+      if (id == it->getResId ())
 	break;
-    }
-  return ips;
-}
+    return it;
+  }
+
+
+  Model::const_iterator
+  Model::find (const ResId &id) const
+  {
+    const_iterator it;
+
+    for (it = begin (); it != end (); ++it)
+      if (id == it->getResId ())
+	break;
+    return it;
+  }
+
+
+  void
+  Model::sort ()
+  {
+    list< BasicResidue* >::sort (less_deref);
+  }
+
+  
+  bool
+  Model::empty () const
+  {
+    return list< BasicResidue* >::empty ();
+  }
+
+
+  void 
+  Model::clear()
+  {
+    iterator it;
+
+    for (it = begin (); it != end (); ++it)
+      delete &*it;
+    list< BasicResidue* >::clear ();    
+  }
+
+
+  void
+  Model::validate ()
+  {
+    iterator it = begin ();
+
+    while (it != end ())
+      {
+	it->validate ();
+	if (it->getType ()->isNucleicAcid ()
+	    || it->getType ()->isAminoAcid ())
+	  ++it;
+	else
+	  {
+	    delete &*it;
+	    it = erase (it);
+	  }
+      }
+  }
 
 
 
-oPdbstream&
-operator<< (oPdbstream &ops, const Model &obj)
-{
-  return obj.write (ops);
-}
+  void
+  Model::removeOptionals ()
+  {
+    iterator it;
+
+    for (it = begin (); it != end (); ++it)
+      it->removeOptionals ();
+  }
 
 
 
-iBinstream&
-operator>> (iBinstream &ibs, Model &obj)
-{
-  Model::size_type sz;
+  void
+  Model::removeAminoAcid ()
+  {
+    iterator modelIt = begin ();
 
-  ibs >> sz;
-  for (; sz > 0; --sz)
-    {
-      AbstractResidue *res = obj.getResidueFM ()->createResidue ();
-
-      ibs >> *res;
-      obj.push_back (res);
-    }
-  return ibs;
-}
-
-
-
-oBinstream&
-operator<< (oBinstream &obs, const Model &obj)
-{
-  return obj.write (obs);
-}
+    while (modelIt != end ())
+      {
+	if (modelIt->getType ()->isAminoAcid ())
+	  {
+	    delete &*modelIt;
+	    modelIt = erase (modelIt);
+	  }
+	else
+	  ++modelIt;
+      }
+  }
 
 
 
-ostream&
-operator<< (ostream &os, const Model &model)
-{
-  Model::const_iterator cit;
+  void
+  Model::removeNucleicAcid ()
+  {
+    iterator modelIt;
 
-  for (cit = model.begin (); cit != model.end (); ++cit)
-    os << *cit;
-  return os;
-}
+    for (modelIt = begin (); modelIt != end ();)
+      {
+	if (modelIt->getType ()->isNucleicAcid ())
+	  {
+	    delete &*modelIt;
+	    modelIt = erase (modelIt);
+	  }
+	else
+	  ++modelIt;
+      }
+  }
+
+
+
+  void
+  Model::keepAminoAcid ()
+  {
+    iterator modelIt;
+
+    for (modelIt = begin (); modelIt != end ();)
+      {
+	if (modelIt->getType ()->isAminoAcid ())
+	  ++modelIt;
+	else
+	  {
+	    delete &*modelIt;
+	    modelIt = erase (modelIt);
+	  }
+      }
+  }
+
+
+
+  void
+  Model::keepNucleicAcid ()
+  {
+    iterator modelIt;
+
+    for (modelIt = begin (); modelIt != end ();)
+      {
+	if (modelIt->getType ()->isNucleicAcid ())
+	  ++modelIt;
+	else
+	  {
+	    delete &*modelIt;
+	    modelIt = erase (modelIt);
+	  }
+      }
+  }
+
+
+
+//   void 
+//   Model::removeClashes ()
+//   {
+//     iterator i, j;
+//     vector< pair< iterator, iterator > > possibleContacts;
+//     vector< pair< iterator, iterator > >::iterator m;
+
+//     possibleContacts = 
+//       Algo::ExtractContact_AABB (begin (), end (), 2.0);
+
+//     BasicResidue::iterator k, l;
+
+//     set< iterator > toremove;
+//     set< iterator >::iterator t;
+
+//     for (m=possibleContacts.begin (); m!=possibleContacts.end (); ++m)
+//       {
+// 	i = m->first;
+// 	j = m->second;
+
+// 	if (*(i->begin ()) | *(j->end ()) < 3.0) {
+// 	  bool clash = false;
+// 	  for (k=i->begin (new atomset_and (new no_pse_lp_atom_set (),
+// 					    new no_hydrogen_set ())); 
+// 	       k!=i->end (); ++k) {
+// 	    for (l=j->begin (new atomset_and (new no_pse_lp_atom_set (),
+// 					      new no_hydrogen_set ())); 
+// 		 l!=j->end (); ++l) {
+// 	      if ((*k | *l) < 0.8) {
+// 		clash=true;
+// 		break;
+// 	      }
+// 	    }
+// 	    if (clash) break;
+// 	  }
+// 	  if (clash) {
+// 	    gOut (3) << "Rejecting " << (CResId&)*j
+// 		     << " because of clashes with " << (CResId&)*i << endl;
+// 	    toremove.insert (j);
+// 	  }
+// 	}
+//       }
+
+//     for (t=toremove.begin (); t!=toremove.end (); ++t) {    
+//       delete &**t;
+//       erase (*t);
+//     }  
+//   }
+
+
+  // I/O -----------------------------------------------------------------------
+
+
+  ostream& 
+  Model::output (ostream &os) const
+  {
+    const_iterator cit;
+    
+    os << "MODEL :" << flush;
+    for (cit = begin (); cit != end (); ++cit)
+      os << cit->getResId ()  << " ";
+    return os;
+  }
+  
+  
+  
+  oPdbstream& 
+  Model::output (oPdbstream &ops) const
+  {
+    const_iterator cit;
+    
+    ops.startModel ();
+    for (cit = begin (); cit != end (); ++cit)
+      ops << *cit;
+    ops.endModel ();
+    return ops;
+  }
+  
+  
+  iPdbstream& 
+  Model::input (iPdbstream &ips)
+  {
+    clear ();
+    int currNb = ips.getModelNb ();
+    
+    while (! (ips.eof ()) && currNb == ips.getModelNb () )
+      {
+	BasicResidue *res = getResidueFM ()->createResidue ();
+	
+	ips >> *res;
+	
+ 	if (res->size () != 0) {
+	  // Optimized insertion that bypasses the copy: 
+ 	  list< BasicResidue* >::push_back (res); 
+	} else
+	  delete res;
+      }    
+    return ips;
+  }
+
+
+  oBinstream& 
+  Model::output (oBinstream &obs) const
+  {
+    const_iterator cit;
+    
+    obs << size ();
+    for (cit = begin (); cit != end (); ++cit)
+      obs << *cit;
+    return obs;
+  }
+
+
+  iBinstream& 
+  Model::input (iBinstream &ibs)
+  {
+    clear ();
+    
+    Model::size_type sz;
+    
+    ibs >> sz;
+    for (; sz > 0; --sz)
+      {
+	BasicResidue *res = getResidueFM ()->createResidue ();
+	
+	ibs >> *res;
+	// Optimized insertion that bypasses the copy: 
+	list< BasicResidue* >::push_back (res); 
+      }
+    return ibs;
+  }
+  
+
+  // ITERATORS -------------------------------------------------------------------
+
+
+  unsigned int
+  Model::model_iterator::operator- (const Model::model_iterator &right) const
+  {
+    model_iterator it = *this;
+    unsigned int dist = 0;
+
+    while (it != right)
+      {
+	--it;
+	++dist;
+      }
+    return dist;
+  }
+
+
+  unsigned int
+  Model::model_const_iterator::operator- (const Model::model_const_iterator &right) const
+  {
+    model_const_iterator it = *this;
+    unsigned int dist = 0;
+
+    while (it != right)
+      {
+	--it;
+	++dist;
+      }
+    return dist;
+  }
+
+
+  // NON-MEMBER FUNCTIONS ------------------------------------------------------
+
+  ostream&
+  operator<< (ostream &os, const Model &model)
+  {
+    return model.output (os);
+  }
+
 
  
+  iPdbstream&
+  operator>> (iPdbstream &ips, Model &obj)
+  {
+    return obj.input (ips);
+  }
 
+
+
+  oPdbstream&
+  operator<< (oPdbstream &ops, const Model &obj)
+  {
+    return obj.output (ops);
+  }
+
+
+
+  iBinstream&
+  operator>> (iBinstream &ibs, Model &obj)
+  {
+    return obj.input (ibs);
+  }
+
+
+
+  oBinstream&
+  operator<< (oBinstream &obs, const Model &obj)
+  {
+    return obj.output (obs);
+  }
+
+
+
+  bool
+  operator< (const Model::iterator &left, const Model::iterator &right)
+  {
+    return *left < *right;
+  }
+
+
+
+  bool
+  operator< (const Model::const_iterator &left, const Model::const_iterator &right)
+  {
+    return *left < *right;
+  }
+
+}

@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // zfstream.h
-// Copyright © 2002 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Mon Jan 28 16:13:00 2002
-// Last Modified By : 
-// Last Modified On : 
-// Update Count     : 0
+// Last Modified By : Patrick Gendron
+// Last Modified On : Thu Mar 27 12:08:32 2003
+// Update Count     : 2
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -28,12 +28,12 @@
 #ifndef _zfstream_h_
 #define _zfstream_h_
 
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
+
+using namespace std;
 
 #include <zlib.h>
-
-
 
 /**
  * @short Implementation of compressed file buffer.

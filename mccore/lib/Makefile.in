@@ -1,12 +1,12 @@
 ############################ -*- Mode: Makefile -*- ###########################
 ## Makefile.in
-## Copyright © 2000-02 Laboratoire de Biologie Informatique et Théorique.
+## Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
 ##                     Université de Montréal.
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:57:11 2000
-## Last Modified By : Philippe Thibault
-## Last Modified On : Thu Oct 17 08:45:22 2002
-## Update Count     : 25
+## Last Modified By : Patrick Gendron
+## Last Modified On : Thu Apr  3 16:35:55 2003
+## Update Count     : 61
 ## Status           : Ok.
 ###############################################################################
 #
@@ -70,38 +70,42 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 	$(CXX) $(CXXSHFLAGS) $(DEFS) -I.. -I$(srcdir) -c $< -o $@
 
 
-SOURCES = zfstream.cc \
+SOURCES = Vector3D.cc \
+	  HomogeneousTransfo.cc \
+\
+	  AtomType.cc \
+	  AtomTypeStore.cc \
+	  Atom.cc \
+	  AtomSet.cc \
+\
+	  ResId.cc \
+	  ResIdSet.cc \
+	  ResidueType.cc \
+	  ResidueTypeStore.cc \
+	  BasicResidue.cc \
+	  Residue.cc \
+	  ResidueFactoryMethod.cc \
+	  ResidueTopology.cc \
+\
+	  CException.cc \
+	  zfstream.cc \
 	  sockstream.cc \
 	  ServerSocket.cc \
 	  Binstream.cc \
+	  PdbFileHeader.cc \
 	  Pdbstream.cc \
-	  CException.cc \
 \
-	  DirectedGraph.cc \
+	  Rmsd.cc \
 \
-          CPoint3D.cc \
-	  CAtom.cc \
-	  AtomTypeImp.cc \
+	  HBond.cc \
 \
-	  AbstractResidue.cc \
-          CResId.cc \
-	  CResIdSet.cc \
-          CResidue.cc \
-	  CResidueFM.cc \
-	  Residue.cc \
-	  ResidueFM.cc \
-          ResidueTypeImp.cc \
-\
-          CHBond.cc \
-          CTransfo.cc \
-	  Model.cc \
-	  McCore.cc
+	  Model.cc
 
 
-HEADERS = $(SOURCES:.cc=.h) Algo.h AtomType.h Graph.h Graph.cc \
-Messagestream.h ResidueFactoryMethod.h ResidueType.h SocketCommand.h \
-fBinstream.h fPdbstream.h fstreambase.h oMessagestream.h sBinstream.h \
-zfBinstream.h zfPdbstream.h SymmetricalMatrix.h SymmetricalMatrix.cc
+HEADERS = $(SOURCES:.cc=.h) Algo.h Path.h Graph.h UndirectedGraph.h \
+fstreambase.h fPdbstream.h zfPdbstream.h fBinstream.h zfBinstream.h \
+sBinstream.h SocketCommand.h Messagestream.h oMessagestream.h \
+SymmetricalMatrix.h SymmetricalMatrix.cc
 
 OBJECTS = $(SOURCES:.cc=.o)
 

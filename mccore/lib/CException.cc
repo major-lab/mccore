@@ -1,12 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // CException.cc
-// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Mon Oct  1 14:56:27 2001
-// Update Count     : 14
+// Last Modified By : Patrick Gendron
+// Last Modified On : Thu Mar 27 11:32:31 2003
+// Update Count     : 16
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -30,9 +30,9 @@
 #include <config.h>
 #endif
 
-#include <iostream.h>
-#include <stdio.h>
-#include <string.h>
+#include <iostream>
+#include <cstdio>
+#include <string>
 
 #include "CException.h"
 

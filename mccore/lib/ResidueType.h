@@ -1,13 +1,9 @@
 //                              -*- Mode: C++ -*- 
 // ResidueType.h
-// Copyright © 2000-02 Laboratoire de Biologie Informatique et Théorique.
-//                     Université de Montréal.
-// Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
-// Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Wed Sep  5 16:32:07 2001
-// Update Count     : 6
-// Status           : Ok.
+// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+// Author           : Patrick Gendron
+// Created On       : Wed Mar 12 10:26:33 2003
+// $Revision: 1.8 $
 // 
 //  This file is part of mccore.
 //  
@@ -29,368 +25,385 @@
 #ifndef _ResidueType_h_
 #define _ResidueType_h_
 
+#include <iostream>
+#include <typeinfo>
+
+using namespace std;
 
 class iBinstream;
 class oBinstream;
-class ostream;
 
+namespace mccore { 
 
-
-/**
- * @short Basic residue type.
- *
- * The basic residue type defines a set of methods witch describes the
- * residue.  The base class always return false or 0 for these methods; the
- * derived classes defines the needed property method to return true.
- *
- * @author Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
- */
-class t_Residue
-{
-
-public:
-
-  // LIFECYCLE ------------------------------------------------------------
-
-  /**
-   * Initializes the objet.
-   */
-  t_Residue () { }
-
-  /**
-   * Initializes the objet with the right's content.
-   * @param right the objet to copy.
-   */
-  t_Residue (const t_Residue &right) { }
-
-  /**
-   * Destructs the object.
-   */
-  virtual ~t_Residue () { }
-  
-  // OPERATORS ------------------------------------------------------------
-
-  /**
-   * Assigns the right's content to the object.
-   * @param right the object to copy.
-   * @return itself.
-   */
-  virtual const t_Residue& operator= (const t_Residue &right) { return *this; }
-
-  /**
-   * Converts the residue type to a string.
-   * @return "RES"
-   */
-  virtual operator const char* () const { return "RES"; }
-  
-  // ACCESS ---------------------------------------------------------------
-
-  // METHODS --------------------------------------------------------------
-
-  /**
-   * Gets the residue type representation in PDB format.
-   * @return the string representing the residue type.
-   */
-  virtual const char* getPDBRep () const = 0;
+  class ResidueTypeStore;
   
   /**
-   * Gets the one letter representation of the type.
-   * @return the character representing the residue type.
+   * Residue types.<br>
+   *
+   * Implicit information: <br>
+   *   - Mapping from string to actual type.<br>
+   *   - The nature of a type (nucleic acid (pur/pyr) or amino acid)<br>
+   *
+   * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
+   * @version $Id: ResidueType.h,v 1.8 2003-04-03 21:43:38 gendrop Exp $
    */
-  virtual const char getOneLetterRep () const = 0;
+  class ResidueType
+  {    
+    /**
+     * Container for string to type associations.
+     */
+    static ResidueTypeStore rtstore;
+
+    /**
+     * The type.
+     */
+    char* type;
+
+    /**
+     * The long type.
+     */
+    char* longtype;
+
+    protected: 
+
+    // LIFECYCLE ---------------------------------------------------------------
+    
+    /**
+     * Initializes the object.
+     */
+    ResidueType ();
+
+    /**
+     * Initializes the object.
+     * @param t the string representation of the type.
+     * @param lt the long string representation of the type.
+     */
+    ResidueType (const char* t, const char* lt);
+
+    /**
+     * (Disallow copy constructor) Initializes the object with another residue type.
+     * @param other another type.
+     */
+    ResidueType (const ResidueType &t);
+
+    /**
+     * Destroys the object.
+     */
+    virtual ~ResidueType ();
+    
+    /**
+     * AtomTypeStore is a friend since the destructor is private.
+     */
+    friend class ResidueTypeStore;
+
+  public:
+
+    // FUNCTION OBJECTS --------------------------------------------------------
+
+    /**
+     * @short less comparator for Residuetypes.
+     */
+    struct less
+    {
+      /**
+       * Tests whether the first atomtype is less than the second. 
+       * @param s1 the first string.
+       * @param s2 the second string.
+       * @return the result of the test.
+       */
+      bool operator() (const ResidueType* t1, const ResidueType* t2) const
+      { return *t1 < *t2; }
+    };
+    
+    // OPERATORS ---------------------------------------------------------------
+    
+    /**
+     * Indicates whether some other residuetype is "equal to" this one.
+     * @param obj the reference object with which to compare.
+     * @param true if this object is the same as the obj argument;
+     * false otherwise.
+     */
+    bool operator== (const ResidueType &other) const
+    { return strcmp (type, other.type) == 0; }
+
+    /**
+     * Indicates whether some other residue is "not equal to" this one.
+     * @param obj the reference object with which to compare.
+     * @param true if this object is the same as the obj argument;
+     * false otherwise.
+     */
+    bool operator!= (const ResidueType &other) const 
+    { return ! operator== (other); }
+
+    /**
+     * Imposes a total ordering on the ResidueType objects.
+     * @param obj the residue type to compare.
+     * @return true if this residue type is less than the other.
+     */
+    bool operator< (const ResidueType &other) const
+    { return strcmp (type, other.type) < 0; }
+
+    // METHODS -----------------------------------------------------------------
+    
+    /**
+     * Converts the residuetype into a string.
+     * @return the string.
+     */
+    virtual operator const char* () const { return type; }
+ 
+    /**
+     * Converts the residuetype into a string.
+     * @return the string.
+     */
+    virtual const char* toLongString () const { return longtype; }
+
+    /**
+     * Identifies the type of residue stored in a string.
+     * @param s the string.
+     * @return a residue type for the string.
+     */
+    static ResidueType* parseType (const char* t);
+
+    /**
+     * Invalidates the residue type.  
+     * @return a new ResidueType with the current strings as content.
+     */
+    ResidueType* invalidate () const {
+      return new ResidueType (type, longtype);
+    }
+    
+    /**
+     * General is method for use when both objects to compare are of
+     * unknown type.
+     */
+    virtual bool is (const ResidueType *t) const {
+      return t->describe (this);
+    }
+
+    /**
+     * Tests whether the type t is a ResidueType or derived class.
+     * @param the type to test.
+     * @return the truth value of the test.
+     */
+    virtual bool describe (const ResidueType *t) const {
+      return dynamic_cast< const ResidueType* >(t);
+    }
+    
+    /** 
+     * is Nucleic Acid?
+     */
+    virtual bool isNucleicAcid () const {
+      return false;
+    }
+
+    /**
+     * is RNA?
+     */
+    virtual bool isRNA () const {
+	return false;
+    }
+
+    /**
+     * is DNA?
+     */
+    virtual bool isDNA () const {
+	return false;
+    }
+    
+    /** 
+     * is Amino Acid?
+     */
+    virtual bool isAminoAcid () const {
+	return false;
+    }
+
+    /** 
+     * is Purine?
+     */
+    virtual bool isPurine () const {
+	return false;
+    }
+
+    /** 
+     * is Pyrimidine?
+     */
+    virtual bool isPyrimidine () const {
+	return false;
+    }
+
+    /**
+     * Tests wheter the residue type is a A.
+     * @return true if the residue type is a A.
+     */
+    virtual bool isA() const {	
+	return false;
+    }
+
+    /**
+     * Tests wheter the residue type is a C.
+     * @return true if the residue type is a C.
+     */
+    virtual bool isC() const {
+	return false;
+    }
+
+    /**
+     * Tests wheter the residue type is a G.
+     * @return true if the residue type is a G.
+     */
+    virtual bool isG() const {
+	return false;
+    }
+
+    /**
+     * Tests wheter the residue type is a U.
+     * @return true if the residue type is a G.
+     */
+    virtual bool isU() const {
+	return false;
+    }
+
+    /**
+     * Tests wheter the residue type is a T.
+     * @return true if the residue type is a T.
+     */
+    virtual bool isT() const {
+	return false;
+    }
+
+    /**
+     * Tests wheter the residue type is unknown (a miscelaneous residue)
+     * @return true if the object is exactly a ResidueType
+     */
+    virtual bool isUnknown() const {
+      return (typeid (*this) == typeid (ResidueType));
+    }
+
+  public:
+    
+    // I/O ---------------------------------------------------------------------
+
+    /**
+     * Outputs to a stream.
+     * @param out the output stream.
+     * @return the output stream used.
+     */
+    ostream &output (ostream &out) const;
+
+    /**
+     * Outputs to a binary stream.
+     * @param out the output stream.
+     * @return the output stream used.
+     */
+    oBinstream &output (oBinstream &out) const;
+
+  public:
+
+    // TYPE POINTERS -----------------------------------------------------------
+
+    static ResidueType* rUnknown;
+    static ResidueType* rNucleicAcid;
+    static ResidueType* rAminoAcid;
+    // static ResidueType* rPhosphate;
+    static ResidueType* rRNA;
+    static ResidueType* rDNA;
+    static ResidueType* rPurine; // (R = A || G)
+    static ResidueType* rPyrimidine; // (Y = C || U)
+    static ResidueType* rRPurine;
+    static ResidueType* rRPyrimidine;
+    static ResidueType* rDPurine;
+    static ResidueType* rDPyrimidine;
+
+    static ResidueType* rW; // (A || U)
+    static ResidueType* rS; // (C || G)
+    static ResidueType* rM; // (A || C)
+    static ResidueType* rK; // (G || U)
+    static ResidueType* rB; // (C || G || U || S || Y || K)
+    static ResidueType* rD; // (A || G || U || R || W || K)
+    static ResidueType* rH; // (A || C || U || M || W || Y)
+    static ResidueType* rV; // (A || C || G || M || R || S)
+
+    static ResidueType* rRW;
+    static ResidueType* rRS;
+    static ResidueType* rRM;
+    static ResidueType* rRK;
+    static ResidueType* rRB;
+    static ResidueType* rRD;
+    static ResidueType* rRH;
+    static ResidueType* rRV;
+
+    static ResidueType* rDW;
+    static ResidueType* rDS;
+    static ResidueType* rDM;
+    static ResidueType* rDK;
+    static ResidueType* rDB;
+    static ResidueType* rDD;
+    static ResidueType* rDH;
+    static ResidueType* rDV;
+
+    static ResidueType* rRA;
+    static ResidueType* rRC;
+    static ResidueType* rRG;
+    static ResidueType* rRU;
+    static ResidueType* rDA;
+    static ResidueType* rDC;
+    static ResidueType* rDG;
+    static ResidueType* rDT;
+
+    static ResidueType* rALA;
+    static ResidueType* rARG;
+    static ResidueType* rASN;
+    static ResidueType* rASP;
+    static ResidueType* rCYS;
+    static ResidueType* rGLN;
+    static ResidueType* rGLU;
+    static ResidueType* rGLY;
+    static ResidueType* rHIS;
+    static ResidueType* rILE;
+    static ResidueType* rLEU;
+    static ResidueType* rLYS;
+    static ResidueType* rMET;
+    static ResidueType* rPHE;
+    static ResidueType* rPRO;
+    static ResidueType* rSER;
+    static ResidueType* rTHR;
+    static ResidueType* rTRP;
+    static ResidueType* rTYR;
+    static ResidueType* rVAL;
+  };
 
   /**
-   * Tells if the residue is unknown.
-   * @return false.
+   * Outputs to a stream.
+   * @param out the output stream.
+   * @return the output stream used.
    */
-  virtual bool is_Misc () const { return false; }
+  ostream &operator<< (ostream &out, const ResidueType &t);
 
   /**
-   * Tells if the residue is a nucleic acid.
-   * @return false.
+   * Outputs to a stream.
+   * @param out the output stream.
+   * @return the output stream used.
    */
-  virtual bool is_NucleicAcid () const { return false; }
+  ostream &operator<< (ostream &out, const ResidueType *t);
 
   /**
-   * Tells if the residue is an amino acid.
-   * @return false.
+   * Inputs the residue type.  The integer type is read and the type object is
+   * assigned to the pointer.
+   * @param ibs the input binary stream.
+   * @param t the residue type pointer to fill.
+   * @return the input binary stream used.
    */
-  virtual bool is_AminoAcid () const { return false; }
-
+  iBinstream& operator>> (iBinstream &in, const ResidueType *&t);
+  
   /**
-   * Tells if the residue is a phosphate.
-   * @return false.
-   */
-  virtual bool is_Phosphate () const { return false; }
-
-  /**
-   * Tells if the residue is a purine.
-   * @return false.
-   */
-  virtual bool is_Purine () const { return false; }
-
-  /**
-   * Tells if the residue is a pyrimidine.
-   * @return false.
-   */
-  virtual bool is_Pyrimidine () const { return false; }
-
-  /**
-   * Tells if the residue is a DNA.
-   * @return false.
-   */
-  virtual bool is_DNA () const { return false; }
-
-  /**
-   * Tells if the residue is a RNA.
-   * @return false.
-   */
-  virtual bool is_RNA () const { return false; }
-
-  /**
-   * Tells if the residue is an adenine.
-   * @return false.
-   */
-  virtual bool is_A () const { return false; }
-
-  /**
-   * Tells if the residue is a cytosine.
-   * @return false.
-   */
-  virtual bool is_C () const { return false; }
-
-  /**
-   * Tells if the residue is a guanine.
-   * @return false.
-   */
-  virtual bool is_G () const { return false; }
-
-  /**
-   * Tells if the residue is a uracil.
-   * @return false.
-   */
-  virtual bool is_U () const { return false; }
-
-  /**
-   * Tells if the residue is a thymine.
-   * @return false.
-   */
-  virtual bool is_T () const { return false; }
-
-  /**
-   * Tells if the residue is a RNA adenine.
-   * @return false
-   */
-  virtual bool is_rA () const { return false; }
-
-  /**
-   * Tells if the residue is a RNA cytosine.
-   * @return false.
-   */
-  virtual bool is_rC () const { return false; }
-
-  /**
-   * Tells if the residue is a RNA guanine.
-   * @return false
-   */
-  virtual bool is_rG () const { return false; }
-
-  /**
-   * Tells if the residue is a RNA uracil.
-   * @return false.
-   */
-  virtual bool is_rU () const { return false; }
-
-  /**
-   * Tells if the residue is a DNA adenine.
-   * @return false.
-   */
-  virtual bool is_dA () const { return false; }
-
-  /**
-   * Tells if the residue is a DNA cytosine.
-   * @return false.
-   */
-  virtual bool is_dC () const { return false; }
-
-  /**
-   * Tells if the residue is a DNA guanine.
-   * @return false.
-   */
-  virtual bool is_dG () const { return false; }
-
-  /**
-   * Tells if the residue is a DNA thymine.
-   * @return false.
-   */
-  virtual bool is_dT () const { return false; }
-
-  /**
-   * Tells if the residue is an alanine.
-   * @return false.
-   */
-  virtual bool is_ALA () const { return false; }
-
-  /**
-   * Tells if the residue is an arginine.
-   * @return false.
-   */
-  virtual bool is_ARG () const { return false; }
-
-  /**
-   * Tells if the residue is an asparagine.
-   * @return false.
-   */
-  virtual bool is_ASN () const { return false; }
-
-  /**
-   * Tells if the residue is an aspartic acid.
-   * @return false.
-   */
-  virtual bool is_ASP () const { return false; }
-
-  /**
-   * Tells if the residue is a cysteine.
-   * @return false.
-   */
-  virtual bool is_CYS () const { return false; }
-
-  /**
-   * Tells if the residue is a glutamine.
-   * @return false.
-   */
-  virtual bool is_GLN () const { return false; }
-
-  /**
-   * Tells if the residue is a glutamic acid.
-   * @return false.
-   */
-  virtual bool is_GLU () const { return false; }
-
-  /**
-   * Tells if the residue is a glycine.
-   * @return false.
-   */
-  virtual bool is_GLY () const { return false; }
-
-  /**
-   * Tells if the residue is a histidine.
-   * @return false.
-   */
-  virtual bool is_HIS () const { return false; }
-
-  /**
-   * Tells if the residue is an isoleucine.
-   * @return false.
-   */
-  virtual bool is_ILE () const { return false; }
-
-  /**
-   * Tells if the residue is a leucine.
-   * @return false.
-   */
-  virtual bool is_LEU () const { return false; }
-
-  /**
-   * Tells if the residue is a lysine.
-   * @return false.
-   */
-  virtual bool is_LYS () const { return false; }
-
-  /**
-   * Tells if the residue is a methionine.
-   * @return false.
-   */
-  virtual bool is_MET () const { return false; }
-
-  /**
-   * Tells if the residue is a phenylalanine.
-   * @return false.
-   */
-  virtual bool is_PHE () const { return false; }
-
-  /**
-   * Tells if the residue is a proline.
-   * @return false.
-   */
-  virtual bool is_PRO () const { return false; }
-
-  /**
-   * Tells if the residue is a serine.
-   * @return false.
-   */
-  virtual bool is_SER () const { return false; }
-
-  /**
-   * Tells if the residue is a threonine.
-   * @return false.
-   */
-  virtual bool is_THR () const { return false; }
-
-  /**
-   * Tells if the residue is a tryptophan.
-   * @return false.
-   */
-  virtual bool is_TRP () const { return false; }
-
-  /**
-   * Tells if the residue is a tyrosine.
-   * @return false.
-   */
-  virtual bool is_TYR () const { return false; }
-
-  /**
-   * Tells if the residue is a valine.
-   * @return false.
-   */
-  virtual bool is_VAL () const { return false; }
-
-  /**
-   * Tests whether the current object is the same class or a derived class
-   * of t.
-   * @param t the other residue type.
-   * @return the truth value.
-   */
-  virtual bool is (const t_Residue *t) const { return t->describe (this); }
-
-  /**
-   * Tests whether the type t is a t_Residue or derived class.
-   * @param the type to test.
-   * @return the truth value of the test.
-   */
-  virtual bool describe (const t_Residue *t) const
-  { return dynamic_cast< const t_Residue* >(t); }
-
-  // I/O  -----------------------------------------------------------------
-
-  /**
-   * Outputs the type value in the binary stream.  Each type must define a
-   * unique integer value.
+   * Outputs the residue type through a binary stream.  The type is dumped as an
+   * integer.
    * @param obs the binary output stream.
+   * @param t the type to dump.
+   * @return the output binary stream used.
    */
-  virtual void Binoutput (oBinstream &obs) const;
-};
-
-
-
-/**
- * Inputs the residue type.  The integer type is read and the type object is
- * assigned to the pointer.
- * @param ibs the input binary stream.
- * @param t the residue type pointer to fill.
- * @return the input binary stream used.
- */
-iBinstream& operator>> (iBinstream &ibs, t_Residue *&t);
-
-
-
-/**
- * Outputs the residue type through a binary stream.  The type is dumped as
- * an integer.
- * @param obs the binary output stream.
- * @param t the type to dump.
- * @return the output binary stream used.
- */
-oBinstream& operator<< (oBinstream &obs, const t_Residue *t);
+  oBinstream& operator<< (oBinstream &out, const ResidueType *t);
+  
+}
 
 #endif

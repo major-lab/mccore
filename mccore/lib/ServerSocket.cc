@@ -1,12 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // ServerSocket.cc
-// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:56 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Tue Oct  2 10:27:54 2001
-// Update Count     : 9
+// Last Modified By : Patrick Gendron
+// Last Modified On : Thu Mar 27 11:36:20 2003
+// Update Count     : 13
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -31,8 +31,9 @@
 
 #include "ServerSocket.h"
 
+#include <iostream>
+
 #include <errno.h>
-#include <iostream.h>
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -44,7 +45,6 @@
 #include <netdb.h>
 #include <fcntl.h>
 
-//  #include "CException.h"
 
 #if defined(__sgi) || defined (__sun)
 #include <strings.h>

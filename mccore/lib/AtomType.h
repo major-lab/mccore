@@ -1,13 +1,9 @@
 //                              -*- Mode: C++ -*- 
 // AtomType.h
-// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-01, 03 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
-// Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Oct 25 11:15:51 2001
-// Update Count     : 12
-// Status           : Ok.
+// $Revision: 1.13 $
 // 
 //  This file is part of mccore.
 //  
@@ -29,1149 +25,457 @@
 #ifndef _AtomType_h_
 #define _AtomType_h_
 
+#include <iostream>
+#include <typeinfo>
+#include <set>
 
-class AbstractResidue;
-class t_Residue;
+
+using namespace std;
+
 class iBinstream;
 class oBinstream;
 
-
-
-/**
- * @short Base atom type.
- *
- * The base atom type defines a set of methods witch describes the atom.
- * The base class always return false or 0 for these methods; the derived
- * classes defines the needed property method to return true.
- *
- * @author Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
- */
-class t_Atom
-{
-
-public:
-  // LIFECYCLE ------------------------------------------------------------
-
-  /**
-   * Initializes the objet.  Nothing to do.
-   */
-  t_Atom () { }
-
-  /**
-   * Initializes the objet with the right's content.
-   * @param right the object to copy.
-   */
-  t_Atom (const t_Atom &right) { }
-
-  /**
-   * Destructs the objet.  Nothing to do.
-   */
-  virtual ~t_Atom () { }
-
-  // OPERATORS ------------------------------------------------------------
-
-  /**
-   * Assigns the right's content to the object.
-   * @param right the object to copy.
-   * @return itself.
-   */
-  virtual const t_Atom& operator= (const t_Atom &right) { return *this; }
-
-  /**
-   * Converts the atom type to a string.
-   * @return "ATOM".
-   */
-  virtual operator const char* () const { return "ATOM"; }
-  
-  // ACCESS ---------------------------------------------------------------
-
-  // METHODS --------------------------------------------------------------
-
-  /**
-   * Converts the atom type to an PDB string representation.
-   * @return the PDB string representation of the atom.
-   */
-  virtual const char* getPDBRep () const = 0;
-  
-  /**
-   * Converts the atom type to an Amber string representation.
-   * @return the Amber string representation of the atom.
-   */
-  virtual const char* getAmberRep () const = 0;
-  
-  /**
-   * Tells if the atom is unknown.
-   * @return if the atom is unknown.
-   */
-  virtual bool is_Misc () const { return false; }
-
-  /**
-   * Tells if the atom is part of a nucleic acid.
-   * @return if the atom is part of a nucleic acid.
-   */
-  virtual bool is_NucleicAcid () const { return false; }
-
-  /**
-   * Tells if the atom is part of a protein.
-   * @return if the atom is part of a protein.
-   */
-  virtual bool is_AminoAcid () const { return false; }
-
-  /**
-   * Tells if the atom is part of the backbone.
-   * @return if the atom is part of the backbone.
-   */
-  virtual bool is_Backbone () const { return false; }
-
-  /**
-   * Tells if the atom is part of the sidechain.
-   * @return if the atom is part of the sidechain.
-   */
-  virtual bool is_SideChain () const { return false; }
-  /**
-   * Tells if the atom is a carbon.
-   * @return if the atom is a carbon.
-   */
-  virtual bool is_Carbon () const { return false; }
-  
-  /**
-   * Tells if the atom is a hydrogen.
-   * @return if the atom is a hydrogen.
-   */
-  virtual bool is_Hydrogen () const { return false; }
-
-  /**
-   * Tells if the atom is a nitrogen.
-   * @return if the atom is a nitrogen.
-   */
-  virtual bool is_Nitrogen () const { return false; }
-
-  /**
-   * Tells if the atom is a phosphate.
-   * @return if the atom is a phosphate.
-   */
-  virtual bool is_Phosphate () const { return false; }
-
-  /**
-   * Tells if the atom is an oxygen.
-   * @return if the atom is an oxygen.
-   */
-  virtual bool is_Oxygen () const { return false; }
-
-  /**
-   * Tells if the atom is a sulfur.
-   * @return if the atom is a sulfur.
-   */
-  virtual bool is_Sulfur () const { return false; }
-
-  /**
-   * Tells if the atom is a magnesium.
-   * @return if the atom is a magnesium.
-   */
-  virtual bool is_Magnesium () const { return false; }
-
-  /**
-   * Tells if the atom is a lonepair.
-   * @return if the atom is a lonepair.
-   */
-  virtual bool is_LonePair () const { return false; }
-
-  /**
-   * Tells if the atom is a pseudo.
-   * @return if the atom is a pseudo.
-   */
-  virtual bool is_Pseudo () const { return false; }
-  
-  /**
-   * Tells if the atom is a C1p.
-   * @return if the atom is a C1p.
-   */
-  virtual bool is_C1p () const { return false; }
-  
-  /**
-   * Tells if the atom is a C2p.
-   * @return if the atom is a C2p.
-   */
-  virtual bool is_C2p () const { return false; }
-  
-  /**
-   * Tells if the atom is a C3p.
-   * @return if the atom is a C3p.
-   */
-  virtual bool is_C3p () const { return false; }
-  
-  /**
-   * Tells if the atom is a C4p.
-   * @return if the atom is a C4p.
-   */
-  virtual bool is_C4p () const { return false; }
-  
-  /**
-   * Tells if the atom is a C5p.
-   * @return if the atom is a C5p.
-   */
-  virtual bool is_C5p () const { return false; }
-  
-  /**
-   * Tells if the atom is a H1p.
-   * @return if the atom is a H1p.
-   */
-  virtual bool is_H1p () const { return false; }
-  
-  /**
-   * Tells if the atom is a H2p.
-   * @return if the atom is a H2p.
-   */
-  virtual bool is_H2p () const { return false; }
-  
-  /**
-   * Tells if the atom is a H3p.
-   * @return if the atom is a H3p.
-   */
-  virtual bool is_H3p () const { return false; }
-  
-  /**
-   * Tells if the atom is a H4p.
-   * @return if the atom is a H4p.
-   */
-  virtual bool is_H4p () const { return false; }
-  
-  /**
-   * Tells if the atom is a H5p.
-   * @return if the atom is a H5p.
-   */
-  virtual bool is_H5p () const { return false; }
-  
-  /**
-   * Tells if the atom is a O1P.
-   * @return if the atom is a O1P.
-   */
-  virtual bool is_O1P () const { return false; }
-  
-  /**
-   * Tells if the atom is a O2p.
-   * @return if the atom is a O2p.
-   */
-  virtual bool is_O2p () const { return false; }
-  
-  /**
-   * Tells if the atom is a O2P.
-   * @return if the atom is a O2P.
-   */
-  virtual bool is_O2P () const { return false; }
-  
-  /**
-   * Tells if the atom is a O3p.
-   * @return if the atom is a O3p.
-   */
-  virtual bool is_O3p () const { return false; }
-  
-  /**
-   * Tells if the atom is a O3P.
-   * @return if the atom is a O3P.
-   */
-  virtual bool is_O3P () const { return false; }
-  
-  /**
-   * Tells if the atom is a O4p.
-   * @return if the atom is a O4p.
-   */
-  virtual bool is_O4p () const { return false; }
-  
-  /**
-   * Tells if the atom is a O5p.
-   * @return if the atom is a O5p.
-   */
-  virtual bool is_O5p () const { return false; }
-  
-  /**
-   * Tells if the atom is a P.
-   * @return if the atom is a P.
-   */
-  virtual bool is_P () const { return false; }
-  
-  /**
-   * Tells if the atom is a 1H2p.
-   * @return if the atom is a 1H2p.
-   */
-  virtual bool is_1H2p () const { return false; }
-  
-  /**
-   * Tells if the atom is a 1H5p.
-   * @return if the atom is a 1H5p.
-   */
-  virtual bool is_1H5p () const { return false; }
-  
-  /**
-   * Tells if the atom is a 2H2p.
-   * @return if the atom is a 2H2p.
-   */
-  virtual bool is_2H2p () const { return false; }
-  
-  /**
-   * Tells if the atom is a 2H5p.
-   * @return if the atom is a 2H5p.
-   */
-  virtual bool is_2H5p () const { return false; }
-  
-  /**
-   * Tells if the atom is a HO2p.
-   * @return if the atom is a HO2p.
-   */
-  virtual bool is_HO2p () const { return false; }
-  
-  /**
-   * Tells if the atom is a HO3p.
-   * @return if the atom is a HO3p.
-   */
-  virtual bool is_HO3p () const { return false; }
-  
-  /**
-   * Tells if the atom is a C2.
-   * @return if the atom is a C2.
-   */
-  virtual bool is_C2 () const { return false; }
-  
-  /**
-   * Tells if the atom is a C4.
-   * @return if the atom is a C4.
-   */
-  virtual bool is_C4 () const { return false; }
-  
-  /**
-   * Tells if the atom is a C5.
-   * @return if the atom is a C5.
-   */
-  virtual bool is_C5 () const { return false; }
-  
-  /**
-   * Tells if the atom is a C5M.
-   * @return if the atom is a C5M.
-   */
-  virtual bool is_C5M () const { return false; }
-  
-  /**
-   * Tells if the atom is a C6.
-   * @return if the atom is a C6.
-   */
-  virtual bool is_C6 () const { return false; }
-  
-  /**
-   * Tells if the atom is a C8.
-   * @return if the atom is a C8.
-   */
-  virtual bool is_C8 () const { return false; }
-  
-  /**
-   * Tells if the atom is a H1.
-   * @return if the atom is a H1.
-   */
-  virtual bool is_H1 () const { return false; }
-  
-  /**
-   * Tells if the atom is a H2.
-   * @return if the atom is a H2.
-   */
-  virtual bool is_H2 () const { return false; }
-  
-  /**
-   * Tells if the atom is a H3.
-   * @return if the atom is a H3.
-   */
-  virtual bool is_H3 () const { return false; }
-  
-  /**
-   * Tells if the atom is a H5.
-   * @return if the atom is a H5.
-   */
-  virtual bool is_H5 () const { return false; }
-  
-  /**
-   * Tells if the atom is a H6.
-   * @return if the atom is a H6.
-   */
-  virtual bool is_H6 () const { return false; }
-  
-  /**
-   * Tells if the atom is a H7.
-   * @return if the atom is a H7.
-   */
-  virtual bool is_H7 () const { return false; }
-  
-  /**
-   * Tells if the atom is a H8.
-   * @return if the atom is a H8.
-   */
-  virtual bool is_H8 () const { return false; }
-  
-  /**
-   * Tells if the atom is a N1.
-   * @return if the atom is a N1.
-   */
-  virtual bool is_N1 () const { return false; }
-  
-  /**
-   * Tells if the atom is a N2.
-   * @return if the atom is a N2.
-   */
-  virtual bool is_N2 () const { return false; }
-  
-  /**
-   * Tells if the atom is a N3.
-   * @return if the atom is a N3.
-   */
-  virtual bool is_N3 () const { return false; }
-  
-  /**
-   * Tells if the atom is a N4.
-   * @return if the atom is a N4.
-   */
-  virtual bool is_N4 () const { return false; }
-  
-  /**
-   * Tells if the atom is a N6.
-   * @return if the atom is a N6.
-   */
-  virtual bool is_N6 () const { return false; }
-  
-  /**
-   * Tells if the atom is a N7.
-   * @return if the atom is a N7.
-   */
-  virtual bool is_N7 () const { return false; }
-  
-  /**
-   * Tells if the atom is a N9.
-   * @return if the atom is a N9.
-   */
-  virtual bool is_N9 () const { return false; }
-  
-  /**
-   * Tells if the atom is a O2.
-   * @return if the atom is a O2.
-   */
-  virtual bool is_O2 () const { return false; }
-  
-  /**
-   * Tells if the atom is a O4.
-   * @return if the atom is a O4.
-   */
-  virtual bool is_O4 () const { return false; }
-  
-  /**
-   * Tells if the atom is a O6.
-   * @return if the atom is a O6.
-   */
-  virtual bool is_O6 () const { return false; }
-  
-  /**
-   * Tells if the atom is a 1H2.
-   * @return if the atom is a 1H2.
-   */
-  virtual bool is_1H2 () const { return false; }
-  
-  /**
-   * Tells if the atom is a 1H4.
-   * @return if the atom is a 1H4.
-   */
-  virtual bool is_1H4 () const { return false; }
-  
-  /**
-   * Tells if the atom is a 1H5M.
-   * @return if the atom is a 1H5M.
-   */
-  virtual bool is_1H5M () const { return false; }
-  
-  /**
-   * Tells if the atom is a 1H6.
-   * @return if the atom is a 1H6.
-   */
-  virtual bool is_1H6 () const { return false; }
-  
-  /**
-   * Tells if the atom is a 2H2.
-   * @return if the atom is a 2H2.
-   */
-  virtual bool is_2H2 () const { return false; }
-  
-  /**
-   * Tells if the atom is a 2H4.
-   * @return if the atom is a 2H4.
-   */
-  virtual bool is_2H4 () const { return false; }
-  
-  /**
-   * Tells if the atom is a 2H5M.
-   * @return if the atom is a 2H5M.
-   */
-  virtual bool is_2H5M () const { return false; }
-  
-  /**
-   * Tells if the atom is a 2H6.
-   * @return if the atom is a 2H6.
-   */
-  virtual bool is_2H6 () const { return false; }
-  
-  /**
-   * Tells if the atom is a 3H5M.
-   * @return if the atom is a 3H5M.
-   */
-  virtual bool is_3H5M () const { return false; }
-  
-  /**
-   * Tells if the atom is a PSY.
-   * @return if the atom is a PSY.
-   */
-  virtual bool is_PSY () const { return false; }
-  
-  /**
-   * Tells if the atom is a PSZ.
-   * @return if the atom is a PSZ.
-   */
-  virtual bool is_PSZ () const { return false; }
-  
-  /**
-   * Tells if the atom is a 2LP6.
-   * @return if the atom is a 2LP6.
-   */
-  virtual bool is_2LP6 () const { return false; }
-  
-  /**
-   * Tells if the atom is a 1LP6.
-   * @return if the atom is a 1LP6.
-   */
-  virtual bool is_1LP6 () const { return false; }
-  
-  /**
-   * Tells if the atom is a LP7.
-   * @return if the atom is a LP7.
-   */
-  virtual bool is_LP7 () const { return false; }
-  
-  /**
-   * Tells if the atom is a LP3.
-   * @return if the atom is a LP3.
-   */
-  virtual bool is_LP3 () const { return false; }
-  
-  /**
-   * Tells if the atom is a LP1.
-   * @return if the atom is a LP1.
-   */
-  virtual bool is_LP1 () const { return false; }
-  
-  /**
-   * Tells if the atom is a 2LP2.
-   * @return if the atom is a 2LP2.
-   */
-  virtual bool is_2LP2 () const { return false; }
-  
-  /**
-   * Tells if the atom is a 1LP2.
-   * @return if the atom is a 1LP2.
-   */
-  virtual bool is_1LP2 () const { return false; }
-  
-  /**
-   * Tells if the atom is a 2LP4.
-   * @return if the atom is a 2LP4.
-   */
-  virtual bool is_2LP4 () const { return false; }
-  
-  /**
-   * Tells if the atom is a 1LP4.
-   * @return if the atom is a 1LP4.
-   */
-  virtual bool is_1LP4 () const { return false; }
-  
-  /**
-   * Tells if the atom is a H3T.
-   * @return if the atom is a H3T.
-   */
-  virtual bool is_H3T () const { return false; }
-  
-  /**
-   * Tells if the atom is a H5T.
-   * @return if the atom is a H5T.
-   */
-  virtual bool is_H5T () const { return false; }
-  
-  /**
-   * Tells if the atom is a C.
-   * @return if the atom is a C.
-   */
-  virtual bool is_C () const { return false; }
-  
-  /**
-   * Tells if the atom is a CA.
-   * @return if the atom is a CA.
-   */
-  virtual bool is_CA () const { return false; }
-  
-  /**
-   * Tells if the atom is a CB.
-   * @return if the atom is a CB.
-   */
-  virtual bool is_CB () const { return false; }
-  
-  /**
-   * Tells if the atom is a CD.
-   * @return if the atom is a CD.
-   */
-  virtual bool is_CD () const { return false; }
-  
-  /**
-   * Tells if the atom is a CD1.
-   * @return if the atom is a CD1.
-   */
-  virtual bool is_CD1 () const { return false; }
-  
-  /**
-   * Tells if the atom is a CD2.
-   * @return if the atom is a CD2.
-   */
-  virtual bool is_CD2 () const { return false; }
-  
-  /**
-   * Tells if the atom is a CE.
-   * @return if the atom is a CE.
-   */
-  virtual bool is_CE () const { return false; }
-  
-  /**
-   * Tells if the atom is a CE1.
-   * @return if the atom is a CE1.
-   */
-  virtual bool is_CE1 () const { return false; }
-  
-  /**
-   * Tells if the atom is a CE2.
-   * @return if the atom is a CE2.
-   */
-  virtual bool is_CE2 () const { return false; }
-  
-  /**
-   * Tells if the atom is a CE3.
-   * @return if the atom is a CE3.
-   */
-  virtual bool is_CE3 () const { return false; }
-  
-  /**
-   * Tells if the atom is a CG.
-   * @return if the atom is a CG.
-   */
-  virtual bool is_CG () const { return false; }
-  
-  /**
-   * Tells if the atom is a CG1.
-   * @return if the atom is a CG1.
-   */
-  virtual bool is_CG1 () const { return false; }
-  
-  /**
-   * Tells if the atom is a CG2.
-   * @return if the atom is a CG2.
-   */
-  virtual bool is_CG2 () const { return false; }
-  
-  /**
-   * Tells if the atom is a CH2.
-   * @return if the atom is a CH2.
-   */
-  virtual bool is_CH2 () const { return false; }
-  
-  /**
-   * Tells if the atom is a CZ.
-   * @return if the atom is a CZ.
-   */
-  virtual bool is_CZ () const { return false; }
-  
-  /**
-   * Tells if the atom is a CZ2.
-   * @return if the atom is a CZ2.
-   */
-  virtual bool is_CZ2 () const { return false; }
-  
-  /**
-   * Tells if the atom is a CZ3.
-   * @return if the atom is a CZ3.
-   */
-  virtual bool is_CZ3 () const { return false; }
-  
-  /**
-   * Tells if the atom is a H.
-   * @return if the atom is a H.
-   */
-  virtual bool is_H () const { return false; }
-  
-  /**
-   * Tells if the atom is a HA.
-   * @return if the atom is a HA.
-   */
-  virtual bool is_HA () const { return false; }
-  
-  /**
-   * Tells if the atom is a HA1.
-   * @return if the atom is a HA1.
-   */
-  virtual bool is_HA1 () const { return false; }
-  
-  /**
-   * Tells if the atom is a HA2.
-   * @return if the atom is a HA2.
-   */
-  virtual bool is_HA2 () const { return false; }
-  
-  /**
-   * Tells if the atom is a HB.
-   * @return if the atom is a HB.
-   */
-  virtual bool is_HB () const { return false; }
-  
-  /**
-   * Tells if the atom is a HB1.
-   * @return if the atom is a HB1.
-   */
-  virtual bool is_HB1 () const { return false; }
-
-  /**
-   * Tells if the atom is a HB2.
-   * @return if the atom is a HB2.
-   */
-  virtual bool is_HB2 () const { return false; }
-
-  /**
-   * Tells if the atom is a HB3.
-   * @return if the atom is a HB3.
-   */
-  virtual bool is_HB3 () const { return false; }
-
-  /**
-   * Tells if the atom is a HD1.
-   * @return if the atom is a HD1.
-   */
-  virtual bool is_HD1 () const { return false; }
-
-  /**
-   * Tells if the atom is a HD2.
-   * @return if the atom is a HD2.
-   */
-  virtual bool is_HD2 () const { return false; }
-
-  /**
-   * Tells if the atom is a HD3.
-   * @return if the atom is a HD3.
-   */
-  virtual bool is_HD3 () const { return false; }
-
-  /**
-   * Tells if the atom is a HE.
-   * @return if the atom is a HE.
-   */
-  virtual bool is_HE () const { return false; }
-
-  /**
-   * Tells if the atom is a HE1.
-   * @return if the atom is a HE1.
-   */
-  virtual bool is_HE1 () const { return false; }
-
-  /**
-   * Tells if the atom is a HE2.
-   * @return if the atom is a HE2.
-   */
-  virtual bool is_HE2 () const { return false; }
-
-  /**
-   * Tells if the atom is a HE3.
-   * @return if the atom is a HE3.
-   */
-  virtual bool is_HE3 () const { return false; }
-
-  /**
-   * Tells if the atom is a HG.
-   * @return if the atom is a HG.
-   */
-  virtual bool is_HG () const { return false; }
-
-  /**
-   * Tells if the atom is a HG1.
-   * @return if the atom is a HG1.
-   */
-  virtual bool is_HG1 () const { return false; }
-
-  /**
-   * Tells if the atom is a HG2.
-   * @return if the atom is a HG2.
-   */
-  virtual bool is_HG2 () const { return false; }
-
-  /**
-   * Tells if the atom is a HG3.
-   * @return if the atom is a HG3.
-   */
-  virtual bool is_HG3 () const { return false; }
-
-  /**
-   * Tells if the atom is a HH.
-   * @return if the atom is a HH.
-   */
-  virtual bool is_HH () const { return false; }
-
-  /**
-   * Tells if the atom is a HH2.
-   * @return if the atom is a HH2.
-   */
-  virtual bool is_HH2 () const { return false; }
-
-  /**
-   * Tells if the atom is a HXT.
-   * @return if the atom is a HXT.
-   */
-  virtual bool is_HXT () const { return false; }
-
-  /**
-   * Tells if the atom is a HZ.
-   * @return if the atom is a HZ.
-   */
-  virtual bool is_HZ () const { return false; }
-
-  /**
-   * Tells if the atom is a HZ1.
-   * @return if the atom is a HZ1.
-   */
-  virtual bool is_HZ1 () const { return false; }
-
-  /**
-   * Tells if the atom is a HZ2.
-   * @return if the atom is a HZ2.
-   */
-  virtual bool is_HZ2 () const { return false; }
-
-  /**
-   * Tells if the atom is a HZ3.
-   * @return if the atom is a HZ3.
-   */
-  virtual bool is_HZ3 () const { return false; }
-
-  /**
-   * Tells if the atom is a N.
-   * @return if the atom is a N.
-   */
-  virtual bool is_N () const { return false; }
-
-  /**
-   * Tells if the atom is a ND1.
-   * @return if the atom is a ND1.
-   */
-  virtual bool is_ND1 () const { return false; }
-
-  /**
-   * Tells if the atom is a ND2.
-   * @return if the atom is a ND2.
-   */
-  virtual bool is_ND2 () const { return false; }
-
-  /**
-   * Tells if the atom is a NE.
-   * @return if the atom is a NE.
-   */
-  virtual bool is_NE () const { return false; }
-
-  /**
-   * Tells if the atom is a NE1.
-   * @return if the atom is a NE1.
-   */
-  virtual bool is_NE1 () const { return false; }
-
-  /**
-   * Tells if the atom is a NE2.
-   * @return if the atom is a NE2.
-   */
-  virtual bool is_NE2 () const { return false; }
-
-  /**
-   * Tells if the atom is a NH1.
-   * @return if the atom is a NH1.
-   */
-  virtual bool is_NH1 () const { return false; }
-
-  /**
-   * Tells if the atom is a NH2.
-   * @return if the atom is a NH2.
-   */
-  virtual bool is_NH2 () const { return false; }
-
-  /**
-   * Tells if the atom is a NZ.
-   * @return if the atom is a NZ.
-   */
-  virtual bool is_NZ () const { return false; }
-
-  /**
-   * Tells if the atom is a O.
-   * @return if the atom is a O.
-   */
-  virtual bool is_O () const { return false; }
-
-  /**
-   * Tells if the atom is a OD1.
-   * @return if the atom is a OD1.
-   */
-  virtual bool is_OD1 () const { return false; }
-
-  /**
-   * Tells if the atom is a OD2.
-   * @return if the atom is a OD2.
-   */
-  virtual bool is_OD2 () const { return false; }
-
-  /**
-   * Tells if the atom is a OE1.
-   * @return if the atom is a OE1.
-   */
-  virtual bool is_OE1 () const { return false; }
-
-  /**
-   * Tells if the atom is a OE2.
-   * @return if the atom is a OE2.
-   */
-  virtual bool is_OE2 () const { return false; }
-
-  /**
-   * Tells if the atom is a OG.
-   * @return if the atom is a OG.
-   */
-  virtual bool is_OG () const { return false; }
-
-  /**
-   * Tells if the atom is a OG1.
-   * @return if the atom is a OG1.
-   */
-  virtual bool is_OG1 () const { return false; }
-
-  /**
-   * Tells if the atom is a OH.
-   * @return if the atom is a OH.
-   */
-  virtual bool is_OH () const { return false; }
-
-  /**
-   * Tells if the atom is a OXT.
-   * @return if the atom is a OXT.
-   */
-  virtual bool is_OXT () const { return false; }
-  
-  /**
-   * Tells if the atom is a SD.
-   * @return if the atom is a SD.
-   */
-  virtual bool is_SD () const { return false; }
-
-  /**
-   * Tells if the atom is a SG.
-   * @return if the atom is a SG.
-   */
-  virtual bool is_SG () const { return false; }
-
-  /**
-   * Tells if the atom is a 1H.
-   * @return false.
-   */
-  virtual bool is_1H () const { return false; }
-
-  /**
-   * Tells if the atom is a 2H.
-   * @return false.
-   */
-  virtual bool is_2H () const { return false; }
-
-  /**
-   * Tells if the atom is a 3H.
-   * @return false.
-   */
-  virtual bool is_3H () const { return false; }
-
-  /**
-   * Tells if the atom is a 1HD1.
-   * @return if the atom is a 1HD1.
-   */
-  virtual bool is_1HD1 () const { return false; }
-
-  /**
-   * Tells if the atom is a 1HD2.
-   * @return if the atom is a 1HD2.
-   */
-  virtual bool is_1HD2 () const { return false; }
-
-  /**
-   * Tells if the atom is a 1HE2.
-   * @return if the atom is a 1HE2.
-   */
-  virtual bool is_1HE2 () const { return false; }
-
-  /**
-   * Tells if the atom is a 1HG1.
-   * @return if the atom is a 1HG1.
-   */
-  virtual bool is_1HG1 () const { return false; }
-
-  /**
-   * Tells if the atom is a 1HG2.
-   * @return if the atom is a 1HG2.
-   */
-  virtual bool is_1HG2 () const { return false; }
-
-  /**
-   * Tells if the atom is a 1HH1.
-   * @return if the atom is a 1HH1.
-   */
-  virtual bool is_1HH1 () const { return false; }
-
-  /**
-   * Tells if the atom is a 1HH2.
-   * @return if the atom is a 1HH2.
-   */
-  virtual bool is_1HH2 () const { return false; }
-
-  /**
-   * Tells if the atom is a 2HD1.
-   * @return if the atom is a 2HD1.
-   */
-  virtual bool is_2HD1 () const { return false; }
-
-  /**
-   * Tells if the atom is a 2HD2.
-   * @return if the atom is a 2HD2.
-   */
-  virtual bool is_2HD2 () const { return false; }
-
-  /**
-   * Tells if the atom is a 2HE2.
-   * @return if the atom is a 2HE2.
-   */
-  virtual bool is_2HE2 () const { return false; }
-
-  /**
-   * Tells if the atom is a 2HG1.
-   * @return if the atom is a 2HG1.
-   */
-  virtual bool is_2HG1 () const { return false; }
-
-  /**
-   * Tells if the atom is a 2HG2.
-   * @return if the atom is a 2HG2.
-   */
-  virtual bool is_2HG2 () const { return false; }
-
-  /**
-   * Tells if the atom is a 2HH1.
-   * @return if the atom is a 2HH1.
-   */
-  virtual bool is_2HH1 () const { return false; }
-
-  /**
-   * Tells if the atom is a 2HH2.
-   * @return if the atom is a 2HH2.
-   */
-  virtual bool is_2HH2 () const { return false; }
-
-  /**
-   * Tells if the atom is a 3HD1.
-   * @return if the atom is a 3HD1.
-   */
-  virtual bool is_3HD1 () const { return false; }
-
-  /**
-   * Tells if the atom is a 3HD2.
-   * @return if the atom is a 3HD2.
-   */
-  virtual bool is_3HD2 () const { return false; }
-
-  /**
-   * Tells if the atom is a 3HG1.
-   * @return if the atom is a 3HG1.
-   */
-  virtual bool is_3HG1 () const { return false; }
-
-  /**
-   * Tells if the atom is a 3HG2.
-   * @return if the atom is a 3HG2.
-   */
-  virtual bool is_3HG2 () const { return false; }
-
-  /**
-   * Tells if the atom is a MG.
-   * @return if the atom is a MG.
-   */
-  virtual bool is_MG () const { return false; }
-
-  /**
-   * Tells if the atom is a PSAZ.
-   * @return if the atom is a PSAZ.
-   */
-  virtual bool is_PSAZ () const { return false; }
-
-  /**
-   * Tells if the atom is connected to the type in the residue.
-   * @param type the second atom.
-   * @param res the residue where the atoms are.
-   * @return wheter the atom is connected to type in res.
-   */
-  virtual bool is_connected (const t_Atom *type, const t_Residue *res) const
-  { return false; }
-
-  /**
-   * Gets the Van Der Waals radius value for the atom.
-   * @param res the residue that contains the atom.
-   * @return the Van Der Waals radius value.
-   */
-  virtual float getVDWR (const AbstractResidue *res) const = 0;
-
-  /**
-   * Gets the Amber epsilon value for the atom.
-   * @param res the residue that contains the atom.
-   * @return the Amber epsilon value.
-   */
-  virtual float getAmberEpsilon (const AbstractResidue *res) const = 0;
-
-  /**
-   * Gets the Amber charge value for the atom in the given residue type.
-   * @param res the residue type.
-   * @return the Amber charge.
-   */
-  virtual float getAmberCharge (const AbstractResidue *res) const = 0;
-
-  // I/O  -----------------------------------------------------------------
-
-  /**
-   * Outputs the type value in the binary stream.  Each type must define a
-   * unique integer value.
+namespace mccore { 
+
+  class AtomTypeStore;
+
+  /**
+   * @short Atom types.
+   *
+   * <br>
+   * Implicit information:<br>
+   *   - Mapping from string to actual type.<br>
+   *   - The chemical nature of each type.<br>
+   *   - The localization of each atom type (backbone or sidechain)<br>
+   *   - The charge and van der Waals radius<br>
+   *
+   * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
+   * @version $Id: AtomType.h,v 1.13 2003-04-03 21:42:56 gendrop Exp $ 
+   */
+  class AtomType 
+  {
+    /**
+     * Container for string to type associations.
+     */
+    static AtomTypeStore atstore;
+    
+    /**
+     * The type.
+     */
+    char* type;
+
+  protected: 
+
+    // LIFECYCLE ---------------------------------------------------------------
+    
+    /**
+     * Initializes the object.
+     */
+    AtomType ();
+
+    /**
+     * Initializes the object.
+     * @param t the string representation of the type.
+     * @param p the set of properties for this type.
+     */
+    AtomType (const char* t);
+    
+    /**
+     * (Disallow copy constructor) Initializes the object with another atom type.
+     * @param other another type.
+     */
+    AtomType (const AtomType &other);
+
+    /**
+     * Destroys the object.
+     */
+    virtual ~AtomType ();
+    
+    /**
+     * AtomTypeStore is a friend since the destructor is private.
+     */
+    friend class AtomTypeStore;
+
+  public:
+
+    // FUNCTION OBJECTS --------------------------------------------------------
+
+    /**
+     * @short less comparator for Atomtypes.
+     */
+    struct less
+    {
+      /**
+       * Tests whether the first atomtype is less than the second. 
+       * @param s1 the first string.
+       * @param s2 the second string.
+       * @return the result of the test.
+       */
+      bool operator() (const AtomType* t1, const AtomType* t2) const
+      { return *t1 < *t2; }
+    };
+    
+    // OPERATORS ---------------------------------------------------------------
+
+    /**
+     * Indicates whether some other atomtype is "equal to" this one.
+     * @param obj the reference object with which to compare.
+     * @param true if this object is the same as the obj argument;
+     * false otherwise.
+     */
+    bool operator== (const AtomType &other) const
+    { return strcmp (type, other.type) == 0; }
+
+    /**
+     * Indicates whether some other atom is "not equal to" this one.
+     * @param obj the reference object with which to compare.
+     * @param true if this object is the same as the obj argument;
+     * false otherwise.
+     */
+    bool operator!= (const AtomType &other) const 
+    { return ! operator== (other); }
+
+    /**
+     * Imposes a total ordering on the AtomType objects.
+     * @param obj the atom type to compare.
+     * @return true if this atom type is less than the other.
+     */
+    bool operator< (const AtomType &other) const
+    { return strcmp (type, other.type) < 0; }
+
+    // METHODS -----------------------------------------------------------------
+    
+    /**
+     * Converts the atomtype into a string.
+     * @return the string.
+     */
+    virtual operator const char* () const { return type; }
+        
+    /**
+     * Identifies the type of atom stored in a string.
+     * @param s the string.
+     * @return an atom type for the string.
+     */
+    static AtomType* parseType (const char* t);
+
+    
+    /** 
+     * is NucleicAcid?
+     */
+    virtual bool isNucleicAcid () const {
+      return false;
+    }
+
+    /** 
+     * is AminoAcid?
+     */
+    virtual bool isAminoAcid () const {
+      return false;
+    }
+    
+    /** 
+     * is Hydrogen?
+     */
+    virtual bool isHydrogen () const {
+      return (getFirstLetter () == 'H');
+    }
+
+    /** 
+     * is Carbon?
+     */
+    virtual bool isCarbon () const {
+      return (getFirstLetter () == 'C');
+    }
+    
+    /** 
+     * is Nitrogen?
+     */
+    virtual bool isNitrogen () const {
+      return (getFirstLetter () == 'N');
+    }
+    
+    /** 
+     * is Phosphate?
+     */
+    virtual bool isPhosphate () const {
+      return (getFirstLetter () == 'P' && !isPseudo ());
+    }
+    
+    /** 
+     * is Oxygen?
+     */
+    virtual bool isOxygen () const {
+      return (getFirstLetter () == 'O');
+    }
+
+    /** 
+     * is Sulfur?
+     */
+    virtual bool isSulfur () const {
+      return (getFirstLetter () == 'S');
+    }
+    
+    /** 
+     * is Lone pair?
+     */
+    virtual bool isLonePair () const {
+      return (getFirstLetter () == 'L');
+    }
+    
+    /** 
+     * is Magnesium?
+     */
+    virtual bool isMagnesium () const {
+      return (getFirstLetter () == 'M');
+    }
+    
+    /** 
+     * is Pseudo?
+     */
+    virtual bool isPseudo () const {
+      return (strlen (type) > 1 && type[0] == 'P' && type[1] == 'S');
+    }
+    
+    /**
+     * is Backbone?
+     */
+    virtual bool isBackbone () const {
+      return false;
+    }
+
+    /**
+     * is Side Chain?
+     */
+    virtual bool isSideChain () const {
+      return false;
+    }
+
+    /**
+     * is Unknown?  
+     */
+    virtual bool isUnknown () const {
+      return (typeid (*this) == typeid (AtomType));
+    }
+    
+  private:
+
+    // PRIVATE METHODS ---------------------------------------------------------
+    
+    /**
+     * Identifies the first letter in the type.
+     * @return the letter.
+     */
+    char getFirstLetter () const;
+ 
+  public:
+
+    // I/O ---------------------------------------------------------------------
+
+    /**
+     * Outputs to a stream.
+     * @param out the output stream.
+     * @return the output stream used.
+     */
+    ostream &output (ostream &out) const;
+
+    /**
+     * Outputs to a binary stream.
+     * @param out the output stream.
+     * @return the output stream used.
+     */
+    oBinstream &output (oBinstream &out) const;
+
+  public:
+
+    // TYPE POINTERS -----------------------------------------------------------
+
+    static AtomType* aC1p;
+    static AtomType* aC2p;
+    static AtomType* aC3p;
+    static AtomType* aC4p;
+    static AtomType* aC5p;
+    static AtomType* aH1p;
+    static AtomType* aH2p;
+    static AtomType* aH3p;
+    static AtomType* aH4p;
+    static AtomType* aH5p;
+    static AtomType* aO1P;
+    static AtomType* aO2p;
+    static AtomType* aO2P;
+    static AtomType* aO3p;
+    static AtomType* aO3P;
+    static AtomType* aO4p;
+    static AtomType* aO5p;
+    static AtomType* aP;
+    static AtomType* a1H2p;
+    static AtomType* a1H5p;
+    static AtomType* a2H2p;
+    static AtomType* a2H5p;
+    static AtomType* aHO2p;
+    static AtomType* aHO3p;
+    static AtomType* aC2;
+    static AtomType* aC4;
+    static AtomType* aC5;
+    static AtomType* aC5M;
+    static AtomType* aC6;
+    static AtomType* aC8;
+    static AtomType* aH1;
+    static AtomType* aH2;
+    static AtomType* aH3;
+    static AtomType* aH5;
+    static AtomType* aH6;
+    static AtomType* aH7;
+    static AtomType* aH8;
+    static AtomType* aN1;
+    static AtomType* aN2;
+    static AtomType* aN3;
+    static AtomType* aN4;
+    static AtomType* aN6;
+    static AtomType* aN7;
+    static AtomType* aN9;
+    static AtomType* aO2;
+    static AtomType* aO4;
+    static AtomType* aO6;
+    static AtomType* a1H2;
+    static AtomType* a1H4;
+    static AtomType* a1H5M;
+    static AtomType* a1H6;
+    static AtomType* a2H2;
+    static AtomType* a2H4;
+    static AtomType* a2H5M;
+    static AtomType* a2H6;
+    static AtomType* a3H5M;
+    static AtomType* aPSY;
+    static AtomType* aPSZ;
+    static AtomType* aLP1;
+    static AtomType* aLP3;
+    static AtomType* aLP7;
+    static AtomType* a1LP2;
+    static AtomType* a1LP4;
+    static AtomType* a1LP6;
+    static AtomType* a2LP2;
+    static AtomType* a2LP4;
+    static AtomType* a2LP6;
+    static AtomType* aH3T;
+    static AtomType* aH5T;
+    static AtomType* aC;
+    static AtomType* aCA;
+    static AtomType* aCB;
+    static AtomType* aCD;
+    static AtomType* aCD1;
+    static AtomType* aCD2;
+    static AtomType* aCE;
+    static AtomType* aCE1;
+    static AtomType* aCE2;
+    static AtomType* aCE3;
+    static AtomType* aCG;
+    static AtomType* aCG1;
+    static AtomType* aCG2;
+    static AtomType* aCH2;
+    static AtomType* aCZ;
+    static AtomType* aCZ2;
+    static AtomType* aCZ3;
+    static AtomType* aH;
+    static AtomType* a1H;
+    static AtomType* a2H;
+    static AtomType* a3H;
+    static AtomType* aHA;
+    static AtomType* aHA1;
+    static AtomType* aHA2;
+    static AtomType* aHB;
+    static AtomType* aHB1;
+    static AtomType* aHB2;
+    static AtomType* aHB3;
+    static AtomType* aHD1;
+    static AtomType* aHD2;
+    static AtomType* aHE;
+    static AtomType* aHE1;
+    static AtomType* aHE2;
+    static AtomType* aHE3;
+    static AtomType* aHG;
+    static AtomType* aHG1;
+    static AtomType* aHG2;
+    static AtomType* aHH;
+    static AtomType* aHH2;
+    static AtomType* aHXT;
+    static AtomType* aHZ;
+    static AtomType* aHZ1;
+    static AtomType* aHZ2;
+    static AtomType* aHZ3;
+    static AtomType* aN;
+    static AtomType* aND1;
+    static AtomType* aND2;
+    static AtomType* aNE;
+    static AtomType* aNE1;
+    static AtomType* aNE2;
+    static AtomType* aNH1;
+    static AtomType* aNH2;
+    static AtomType* aNZ;
+    static AtomType* aO;
+    static AtomType* aOD1;
+    static AtomType* aOD2;
+    static AtomType* aOE1;
+    static AtomType* aOE2;
+    static AtomType* aOG;
+    static AtomType* aOG1;
+    static AtomType* aOH;
+    static AtomType* aOXT;
+    static AtomType* aSD;
+    static AtomType* aSG;
+    static AtomType* a1HD1;
+    static AtomType* a1HD2;
+    static AtomType* a1HE2;
+    static AtomType* a1HG1;
+    static AtomType* a1HG2;
+    static AtomType* a1HH1;
+    static AtomType* a1HH2;
+    static AtomType* a2HD1;
+    static AtomType* a2HD2;
+    static AtomType* a2HE2;
+    static AtomType* a2HG1;
+    static AtomType* a2HG2;
+    static AtomType* a2HH1;
+    static AtomType* a2HH2;
+    static AtomType* a3HD1;
+    static AtomType* a3HD2;
+    static AtomType* a3HG1;
+    static AtomType* a3HG2;
+    static AtomType* aMG;
+    static AtomType* aPSAZ;
+  };
+  
+  /**
+   * Outputs to a stream.
+   * @param out the output stream.
+   * @return the output stream used.
+   */
+  ostream &operator<< (ostream &out, const AtomType &a);
+
+  /**
+   * Outputs to a stream.
+   * @param out the output stream.
+   * @return the output stream used.
+   */
+  ostream &operator<< (ostream &out, const AtomType *a);
+
+  /**
+   * Inputs the atom type.  The integer type is read and the type object is
+   * assigned to the pointer.
+   * @param ibs the input binary stream.
+   * @param t the atom type pointer to fill.
+   * @return the input binary stream used.
+   */
+  iBinstream& operator>> (iBinstream &in, const AtomType *&t);
+  
+  /**
+   * Outputs the atom type through a binary stream.  The type is dumped as an
+   * integer.
    * @param obs the binary output stream.
+   * @param t the type to dump.
+   * @return the output binary stream used.
    */
-  virtual void Binoutput (oBinstream &obs) const;
-};
-
-
-
-/**
- * Inputs the atom type.  The integer type is read and the type object is
- * assigned to the pointer.
- * @param ibs the input binary stream.
- * @param t the atom type pointer to fill.
- * @return the input binary stream used.
- */
-iBinstream& operator>> (iBinstream &in, t_Atom *&t);
-
-
-
-/**
- * Outputs the atom type through a binary stream.  The type is dumped as an
- * integer.
- * @param obs the binary output stream.
- * @param t the type to dump.
- * @return the output binary stream used.
- */
-oBinstream& operator<< (oBinstream &out, const t_Atom *t);
+  oBinstream& operator<< (oBinstream &out, const AtomType *t);
+  
+}
 
 #endif

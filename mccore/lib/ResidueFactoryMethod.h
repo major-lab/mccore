@@ -1,12 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // ResidueFactoryMethod.h
-// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001, 2003 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct 12 14:31:19 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Oct 25 11:21:41 2001
-// Update Count     : 2
+// Last Modified By : Patrick Gendron
+// Last Modified On : Thu Mar 20 18:40:06 2003
+// Update Count     : 9
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -29,54 +29,152 @@
 #ifndef _ResidueFactoryMethod_h_
 #define _ResidueFactoryMethod_h_
 
-class AbstractResidue;
 
+namespace mccore {
 
-
-/**
- * @short Abstract class for residue factory methods.
- *
- * This class is used in Model to generate a given type of residue on input
- * methods.
- *
- * @author Martin Larose <larosem@iro.umontreal.ca>
- */
-class ResidueFactoryMethod
-{
-
-public:
-
-  // LIFECYCLE ------------------------------------------------------------
+  class BasicResidue;
 
   /**
-   * Initializes the object.
+   * @short Abstract class for residue factory methods.
+   *
+   * This class is used in Model to generate a given type of residue on input
+   * methods.
+   *
+   * @author Martin Larose <larosem@iro.umontreal.ca>
    */
-  ResidueFactoryMethod () { }
+  class ResidueFactoryMethod
+  {
 
-  /**
-   * Copies the object.
-   */
-  virtual ResidueFactoryMethod* clone () const = 0;
+  public:
+
+    // LIFECYCLE ------------------------------------------------------------
+
+    /**
+     * Initializes the object.
+     */
+    ResidueFactoryMethod () { }
+
+    /**
+     * Copies the object.
+     */
+    virtual ResidueFactoryMethod* clone () const = 0;
   
+    /**
+     * Destroys the object.
+     */
+    virtual ~ResidueFactoryMethod () { }
+
+    // OPERATORS ------------------------------------------------------------
+
+    // ACCESS ---------------------------------------------------------------
+
+    // METHODS --------------------------------------------------------------
+
+    // I/O  -----------------------------------------------------------------
+
+    /**
+     * Creates the residue.
+     * @return the newly created empty residue.
+     */
+    virtual BasicResidue* createResidue () const = 0;
+
+  };
+
+
   /**
-   * Destroys the object.
+   * @short ResidueFactoryMethod implementation for BasicResidue class.
+   *
+   * This is the residue factory method implementation for the BasicResidue class.
+   *
+   * @author Martin Larose <larosem@iro.umontreal.ca>
    */
-  virtual ~ResidueFactoryMethod () { }
+  class BasicResidueFM : public ResidueFactoryMethod
+  {
 
-  // OPERATORS ------------------------------------------------------------
+  public:
 
-  // ACCESS ---------------------------------------------------------------
+    // LIFECYCLE ------------------------------------------------------------
 
-  // METHODS --------------------------------------------------------------
+    /**
+     * Initializes the object.
+     */
+    BasicResidueFM () { }
 
-  // I/O  -----------------------------------------------------------------
+    /**
+     * Clones the object.
+     * @return the copy of the object.
+     */
+    virtual ResidueFactoryMethod* clone () const { return new BasicResidueFM (); }
+  
+    /**
+     * Destroys the object.
+     */
+    virtual ~BasicResidueFM () { }
+
+    // OPERATORS ------------------------------------------------------------
+
+    // ACCESS ---------------------------------------------------------------
+
+    // METHODS --------------------------------------------------------------
+
+    /**
+     * Creates a new residue of Residue type.
+     * @return the newly created empty residue.
+     */
+    virtual BasicResidue* createResidue () const;
+
+    // I/O  -----------------------------------------------------------------
+
+  };
+
+
 
   /**
-   * Creates the residue.
-   * @return the newly created empty residue.
+   * @short ResidueFactoryMethod implementation for Residue class.
+   *
+   * This is the residue factory method implementation for the Residue class.
+   *
+   * @author Martin Larose <larosem@iro.umontreal.ca>
    */
-  virtual AbstractResidue* createResidue () const = 0;
+  class ResidueFM : public ResidueFactoryMethod
+  {
 
-};
+  public:
+
+    // LIFECYCLE ------------------------------------------------------------
+
+    /**
+     * Initializes the object.
+     */
+    ResidueFM () { }
+
+    /**
+     * Clones the object.
+     * @return the copy of the object.
+     */
+    virtual ResidueFactoryMethod* clone () const { return new ResidueFM (); }
+  
+    /**
+     * Destroys the object.
+     */
+    virtual ~ResidueFM () { }
+
+    // OPERATORS ------------------------------------------------------------
+
+    // ACCESS ---------------------------------------------------------------
+
+    // METHODS --------------------------------------------------------------
+
+    /**
+     * Creates a new residue of Residue type.
+     * @return the newly created empty residue.
+     */
+    virtual BasicResidue* createResidue () const;
+
+    // I/O  -----------------------------------------------------------------
+
+  };
+
+}
 
 #endif
