@@ -4,9 +4,9 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Patrick Gendron
-// Last Modified On : Tue Jul  8 16:07:38 2003
-// Update Count     : 241
+// Last Modified By : Martin Larose
+// Last Modified On : Tue Jul  8 16:58:01 2003
+// Update Count     : 242
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -364,7 +364,6 @@ namespace mccore {
   
   void oPdbstream::close () 
   {
-    ter ();
     end ();
 
     header = PdbFileHeader ();
@@ -421,7 +420,7 @@ namespace mccore {
     setf (ios::left, ios::adjustfield);
     *this << setw (6) << "MODEL";
     setf (ios::right, ios::adjustfield);
-    *this << setw (8) << modelnb;
+    *this << setw (8) << modelnb++;
     setf (ios::right, ios::adjustfield);
     pad (66);
     *this << endl;
@@ -441,7 +440,17 @@ namespace mccore {
   {
     setf (ios::left, ios::adjustfield);
     *this << setw (6) << "TER";
-    pad (74);
+    setf (ios::right, ios::adjustfield);
+    *this << setw (5) << n++;
+    *this << "      ";  // EMPTY SPACE.
+    setf (ios::right, ios::adjustfield);
+    *this << setw (3) << (const char*)*rtype;
+    *this << ' ';
+    *this << rid->getChainId ();
+    setf (ios::right, ios::adjustfield);
+    *this << setw (4) << rid->getResNo ();
+    *this << rid->getInsertionCode ();
+    pad (53);
     *this << endl;
   }
 
@@ -467,7 +476,10 @@ namespace mccore {
   oPdbstream::operator<< (const Atom& at)
   {
     setf (ios::left, ios::adjustfield);
-    *this << setw (6) << "ATOM";
+    if (rtype->isUnknown ())
+      *this << setw (6) << "HETATM";
+    else
+      *this << setw (6) << "ATOM";
     setf (ios::right, ios::adjustfield);
     *this << setw (5) << n++;
 
