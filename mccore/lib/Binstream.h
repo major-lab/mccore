@@ -1,10 +1,10 @@
 //                         -*- Mode: C++ -*-
 // Binstream.h
-// Copyright © 1999, 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:11:41 EDT
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:14:23 2000
+// Last Modified On : Mon Jan 22 15:10:26 2001
 // Update count     : 0
 // Status           : Ok.
 //
@@ -97,6 +97,13 @@ public:
    */
   iBinstream& operator>> (unsigned char** str)
   { return operator>> ((char**)str); }
+
+  /**
+   * Inputs booleans from the binary stream.
+   * @param b the boolean to read.
+   * @return itself.
+   */
+  iBinstream& operator>> (bool &b) { return operator>> ((char&)b); }
 
   /**
    * Inputs integers from the binary stream.  Reads the integer with read
@@ -211,6 +218,13 @@ public:
    */
   oBinstream& operator<< (const unsigned char* str)
   { return operator<< ((const char*)str); }
+
+  /**
+   * Outputs booleans to binary stream.
+   * @param b the boolean to ouput.
+   * @return itself.
+   */
+  oBinstream& operator<< (bool b) { return operator<< ((char)b); }
 
   /**
    * Outputs integers to binary stream.  We convert the integer to network
