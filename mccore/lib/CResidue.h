@@ -4,9 +4,9 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Thu Sep 28 16:59:32 2000
-// Last Modified By : Patrick Gendron
-// Last Modified On : Fri Mar 15 14:11:33 2002
-// Update Count     : 25
+// Last Modified By : Philippe Thibault
+// Last Modified On : Wed Mar 19 08:28:35 2003
+// Update Count     : 26
 // Status           : Ok.
 // 
 //  This file is part of mccore.

@@ -4,9 +4,9 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// Last Modified By : Patrick Gendron
-// Last Modified On : Fri Mar 15 14:11:47 2002
-// Update Count     : 5
+// Last Modified By : Philippe Thibault
+// Last Modified On : Wed Mar 19 08:28:32 2003
+// Update Count     : 6
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
