@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.36 $
-// $Id: Pdbstream.cc,v 1.36 2004-05-13 21:49:19 larosem Exp $
+// $Revision: 1.37 $
+// $Id: Pdbstream.cc,v 1.37 2004-06-18 15:19:37 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -185,6 +185,7 @@ namespace mccore {
 	  }
 	else if ("TER   " == tag)
 	  {
+	    
 	  }
 	else if ("END   " == tag)
 	  {
@@ -211,6 +212,7 @@ namespace mccore {
 	    break;
 	  }
       }
+
     return ratom;
   }
 
@@ -263,9 +265,9 @@ namespace mccore {
     // No atom was found, return.
     if (ratom)
       {
-	ResId previd;
+	ResId previd (*rid);
+	const ResidueType* prevtype = rtype;
 
-	previd = *rid;
 	eomFlag = false;
 	
 	r.clear ();
@@ -274,14 +276,24 @@ namespace mccore {
 	r.insert (*ratom);
 	
 	cacheAtom ();
-	while (!eom () && (rid == 0 || *rid == previd)) {
-	  // Insert the atom.
-	  previd = *rid;
-	  r.insert (*ratom);      
-	  
-	  // Cache another atom in order to detect endfiles.
-	  cacheAtom ();
-	}
+
+	/*
+	  Inserts read atom for this residue.
+	  Stops inserting in any of those three cases:
+	    1) Either an END or ENDMDL tag was read or EOF was reached (eom() result).
+	    2) ResID for current cached atom is different from last read atom.
+	    3) Residue type for current cached atom is different from last read atom.
+	*/
+	while (!eom () &&
+	       *rid == previd &&
+	       rtype == prevtype)
+	  {
+	    // Insert the atom.
+	    r.insert (*ratom);      
+	    
+	    // Cache another atom in order to detect endfiles.
+	    cacheAtom ();
+	  }
 	
 	// Post reading processing
 	if (r.size () > 0) {
@@ -299,7 +311,7 @@ namespace mccore {
 	      else if (r.getType () == ResidueType::rRU) r.setType (ResidueType::rDT);
 	    }
 	  }
-	  
+
 	  // Finalize
 	  r.finalize ();
 	}
