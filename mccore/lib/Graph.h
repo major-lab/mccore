@@ -3,8 +3,8 @@
 // Copyright © 2003, 2004 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Apr 30 16:04:32 2003
-// $Revision: 1.19 $
-// $Id: Graph.h,v 1.19 2004-01-09 21:47:00 gendrop Exp $
+// $Revision: 1.20 $
+// $Id: Graph.h,v 1.20 2004-02-19 15:43:47 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -60,7 +60,7 @@ namespace mccore {
    * correct node comparator if needed.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: Graph.h,v 1.19 2004-01-09 21:47:00 gendrop Exp $
+   * @version $Id: Graph.h,v 1.20 2004-02-19 15:43:47 larosem Exp $
    */
   template< class node_type, 
 	    class edge_type = bool,
@@ -391,7 +391,8 @@ namespace mccore {
     /**
      * Removes all of the elements from the graph.  
      */
-    virtual void clear() {
+    virtual void clear () {
+      mapping.clear ();
       graph.clear ();
       nodes.clear ();
       edges.clear ();
@@ -655,35 +656,35 @@ namespace mccore {
     
   public:
     
-//     virtual ostream& output (ostream& os) const
-//     {
-//       typename Graph::const_iterator ki, kj;
-//       typename vector< node_type >::const_iterator i;
-//       typename vector< edge_type >::const_iterator j;
+    virtual ostream& output (ostream& os) const
+    {
+      typename Graph::const_iterator ki, kj;
+      typename vector< node_type >::const_iterator i;
+      typename vector< edge_type >::const_iterator j;
  
-//       os << "Nodes:" << endl;
-//       for (i=nodes.begin (); i!=nodes.end (); ++i) {
-// 	os << i-nodes.begin () << " : " << *i << " (" 
-// 	   << nodeWeights[i-nodes.begin ()] << ")" << endl;
-//       }
-//       os << "Edges:" << endl;
-//       for (j=edges.begin (); j!=edges.end (); ++j) {
-// 	os << j-edges.begin () << " : " << *j << " (" 
-// 	   << edgeWeights[j-edges.begin ()] << ")" << endl;
-//       }
-//       os << "Adjacency (size = " << size () << ")" << endl;
+      os << "Nodes:" << endl;
+      for (i=nodes.begin (); i!=nodes.end (); ++i) {
+	os << i-nodes.begin () << " : " << *i << " (" 
+	   << nodeWeights[i-nodes.begin ()] << ")" << endl;
+      }
+      os << "Edges:" << endl;
+      for (j=edges.begin (); j!=edges.end (); ++j) {
+	os << j-edges.begin () << " : " << *j << " (" 
+	   << edgeWeights[j-edges.begin ()] << ")" << endl;
+      }
+      os << "Adjacency (size = " << size () << ")" << endl;
 
-//       for (ki=begin (); ki!=end (); ++ki) {      
-// 	os << *ki << "(" << getWeight (*ki) << ")" << " : ";      
-// 	for (kj=begin (); kj!=end (); ++kj) {
-// 	  if (areConnected (*ki, *kj)) 
-// 	    os << *kj << "(" << getEdge (*ki, *kj) << ") ";
-// 	}
-// 	os << endl;
-//       }
+      for (ki=begin (); ki!=end (); ++ki) {      
+	os << *ki << "(" << getWeight (*ki) << ")" << " : ";      
+	for (kj=begin (); kj!=end (); ++kj) {
+	  if (areConnected (*ki, *kj)) 
+	    os << *kj << "(" << getEdge (*ki, *kj) << ") ";
+	}
+	os << endl;
+      }
       
-//       return os;
-//     }
+      return os;
+    }
 
   };
 }
