@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.64 $
-// $Id: Residue.cc,v 1.64 2005-01-27 19:13:18 larosem Exp $
+// $Revision: 1.65 $
+// $Id: Residue.cc,v 1.65 2005-01-27 21:40:53 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -149,6 +149,326 @@ namespace mccore
       {
 	delete *it;
       }
+  }
+
+
+  Residue& 
+  Residue::operator= (const Residue& right)
+  {
+    if (this != &right)
+    {
+      vector< Atom* >::const_iterator cit;
+      
+      this->type = right.type;
+      this->resId = right.resId;
+      this->clear ();
+      
+      for (cit = right.atomGlobal.begin (); cit != right.atomGlobal.end (); ++cit)
+	this->atomGlobal.push_back ((*cit)->clone ());
+
+      this->rib_built_valid = right.rib_built_valid;
+      this->rib_built_count = right.rib_built_count;
+      this->atomIndex = right.atomIndex;
+    }
+    return *this;
+  }
+
+  
+  bool 
+  Residue::operator== (const Residue &other) const
+  { 
+    return resId == other.resId 
+      && *type == *other.getType (); 
+  }
+  
+
+  bool 
+  Residue::operator!= (const Residue &other) const 
+  { 
+    return ! operator== (other); 
+  }
+  
+  
+  const ResId& 
+  Residue::getResId () const 
+  { 
+    return resId; 
+  }
+
+
+  void 
+  Residue::setResId (const ResId& id) 
+  { 
+    resId = id; 
+  }
+
+
+  const ResidueType* 
+  Residue::getType() const 
+  { 
+    return type; 
+  }
+
+
+  void 
+  Residue::setType (const ResidueType* t) 
+  { 
+    type = t == 0 ? ResidueType::rNull : t; 
+  }
+
+  Residue::iterator 
+  Residue::begin () 
+  {
+    iterator it (this, atomIndex.begin ());
+    return it;
+  }
+  
+  Residue::iterator 
+  Residue::begin (const AtomSet& atomset) 
+  {
+    iterator it (this, atomIndex.begin (), atomset);
+    return it;
+  }
+  
+  
+  Residue::iterator 
+  Residue::end () 
+  {
+    iterator it (this, atomIndex.end ()); 
+    return it;
+  }
+  
+
+  Residue::const_iterator 
+  Residue::begin () const 
+  {
+    const_iterator it (this, atomIndex.begin ());
+    return it;
+  }
+
+  
+  Residue::const_iterator 
+  Residue::begin (const AtomSet& atomset) const 
+  {
+    const_iterator it (this, atomIndex.begin (), atomset);
+    return it;
+  }
+
+
+  Residue::const_iterator 
+  Residue::end () const 
+  {
+    const_iterator it (this, atomIndex.end ()); 
+    return it;
+  }
+  
+  
+  Residue::iterator 
+  Residue::find (const AtomType *k) 
+  {
+    AtomMap::iterator it = atomIndex.find (k);
+
+    if (it == atomIndex.end ())
+      return end ();
+    else
+    {
+      iterator it (this, it);
+      return it;
+    }
+  }
+
+
+  Residue::const_iterator 
+  Residue::find (const AtomType *k) const
+  {
+    AtomMap::const_iterator cit = atomIndex.find (k);
+
+    if (cit == atomIndex.end ())
+      return end ();
+    else
+    {
+      const_iterator it (this, cit);
+      return it;
+    }
+  }
+
+  
+  Residue::iterator 
+  Residue::safeFind (const AtomType *k) 
+  {
+    AtomMap::iterator mit = atomIndex.find (k);
+
+    if (mit == atomIndex.end ())
+    {
+      NoSuchAtomException ex ("", __FILE__, __LINE__);
+      ex << "residue " << *this << " is missing atom " << k;
+      throw ex;
+    }
+
+    iterator it (this, mit);
+    return it;
+  }
+
+
+  Residue::const_iterator 
+  Residue::safeFind (const AtomType *k) const
+  {
+    AtomMap::const_iterator cit = atomIndex.find (k);
+
+    if (cit == atomIndex.end ())
+    {
+      NoSuchAtomException ex ("", __FILE__, __LINE__);
+      ex << "residue " << *this << " is missing atom " << k;
+      throw ex;
+    }
+
+    const_iterator it (this, cit);
+    return it;
+  }
+
+  
+  bool 
+  Residue::contains (const AtomType *k) const 
+  { 
+    return find (k) != end (); 
+  }
+  
+
+  bool
+  Residue::validateRiboseBuilding () const
+  {
+    return rib_built_valid;
+  }
+
+  
+  unsigned int
+  Residue::getRiboseBuiltCount () const
+  {
+    return rib_built_count;
+  }
+
+
+  const HomogeneousTransfo
+  Residue::getReferential () const
+  {
+    return _compute_referential ();
+  }
+
+
+  void 
+  Residue::setReferential (const HomogeneousTransfo& m) 
+  {
+    // Align the residue to the origin and transform.
+    unsigned int i;
+    HomogeneousTransfo t (m * _compute_referential ().invert ());
+    for (i = 0; i < atomGlobal.size (); ++i)
+      atomGlobal[i]->transform (t);
+  }
+
+
+  void
+  Residue::transform (const HomogeneousTransfo &m)
+  {
+    setReferential (m * getReferential ());
+  }
+  
+
+  void 
+  Residue::insert (const Atom &atom)
+  {
+    int pos = size ();
+    pair< AtomMap::iterator, bool > inserted =
+      atomIndex.insert (make_pair (atom.getType (), pos));
+
+    if (inserted.second)
+    {
+      atomGlobal.push_back (atom.clone ());
+      rib_dirty_ref = true;
+    }
+    else
+    {
+      *atomGlobal[inserted.first->second] = atom;
+    }
+  }
+
+
+  Residue::iterator 
+  Residue::erase (const AtomType *atype)
+  {
+    return erase (find (atype));
+  }
+
+
+  Residue::iterator 
+  Residue::erase (const iterator& rit)
+  {
+    if (end () != rit)
+    {
+      vector< Atom* >::iterator avit;
+      vector< Atom* >::const_iterator cavit;
+      const AtomType* next = 0;
+      size_type index = 0;
+      iterator next_rit = rit + 1;
+
+      // invalidate ribose pointers
+      rib_dirty_ref = true;
+      
+      // get next atom type before deletion
+      if (end () != next_rit)
+	next = next_rit.pos->first;
+      
+      // delete atom
+      avit = atomGlobal.begin () + rit.pos->second;
+      delete *avit;
+      atomGlobal.erase (avit);
+
+      // fix atom map
+      atomIndex.clear ();
+      for (cavit = atomGlobal.begin (); cavit != atomGlobal.end (); ++cavit, ++index)
+	atomIndex.insert (make_pair ((*cavit)->getType (), index));
+
+      if (next)
+      {
+	// fetch iterator to saved atom type and set its filter.
+	next_rit = find (next);
+	delete next_rit.filter;
+	next_rit.filter = rit.filter->clone ();
+	return next_rit;
+      }
+    }
+    return end (); 
+  }
+
+
+  unsigned int
+  Residue::size () const
+  {
+    return atomIndex.size ();
+  }
+  
+
+  bool
+  Residue::empty () const
+  {
+    return atomIndex.empty ();
+  }
+
+  
+  void 
+  Residue::clear () 
+  {
+    vector< Atom* >::iterator it;
+    
+    for (it = atomGlobal.begin (); it != atomGlobal.end (); ++it)
+      {
+	delete *it;
+      }
+    atomGlobal.clear ();
+    atomIndex.clear();
+
+    rib_C1p = rib_C2p = rib_C3p = rib_C4p = rib_C5p = rib_O2p = rib_O3p = rib_O4p = rib_O5p = rib_O1P = rib_O2P = rib_P = 0;
+    rib_dirty_ref = true;
+    rib_built_valid = false;
   }
 
 
@@ -313,6 +633,7 @@ namespace mccore
     setReferential (HomogeneousTransfo::identity);
   }
 
+
   void
   Residue::setFullTheoretical ()
   {
@@ -327,307 +648,6 @@ namespace mccore
     
     // create a C3' endo anti ribose
     buildRibose (PropertyType::pC3p_endo, PropertyType::pAnti, true, true);
-  }
-  
-
-  Residue& 
-  Residue::operator= (const Residue &other)
-  {
-    vector< Atom* >::const_iterator cit;
-
-    if (this != &other)
-    {
-      type = other.type;
-      resId = other.resId;
-      clear ();
-      
-      for (cit = other.atomGlobal.begin (); cit != other.atomGlobal.end (); ++cit)
-	atomGlobal.push_back ((*cit)->clone ());
-
-      rib_built_valid = other.rib_built_valid;
-      rib_built_count = other.rib_built_count;
-      atomIndex = other.atomIndex;
-    }
-
-    return *this;
-  }
-
-  
-  bool 
-  Residue::operator== (const Residue &other) const
-  { 
-    return resId == other.resId 
-      && *type == *other.getType (); 
-  }
-  
-
-  bool 
-  Residue::operator!= (const Residue &other) const 
-  { 
-    return ! operator== (other); 
-  }
-  
-  
-  const ResId& 
-  Residue::getResId () const 
-  { 
-    return resId; 
-  }
-
-
-  void 
-  Residue::setResId (const ResId& id) 
-  { 
-    resId = id; 
-  }
-
-
-  const ResidueType* 
-  Residue::getType() const 
-  { 
-    return type; 
-  }
-
-
-  void 
-  Residue::setType (const ResidueType* t) 
-  { 
-    type = t == 0 ? ResidueType::rNull : t; 
-  }
-
-  Residue::iterator 
-  Residue::begin () 
-  {
-    return iterator (this, atomIndex.begin ());
-  }
-  
-  Residue::iterator 
-  Residue::begin (const AtomSet& atomset) 
-  {
-    return iterator (this, atomIndex.begin (), atomset);
-  }
-  
-  
-  Residue::iterator 
-  Residue::end () 
-  {
-    return iterator (this, atomIndex.end ()); 
-  }
-  
-
-  Residue::const_iterator 
-  Residue::begin () const 
-  {
-    return const_iterator (this, atomIndex.begin ());
-  }
-
-  
-  Residue::const_iterator 
-  Residue::begin (const AtomSet& atomset) const 
-  {
-    return const_iterator (this, atomIndex.begin (), atomset);
-  }
-
-
-  Residue::const_iterator 
-  Residue::end () const 
-  {
-    return const_iterator (this, atomIndex.end ()); 
-  }
-  
-  
-  Residue::iterator 
-  Residue::find (const AtomType *k) 
-  {
-    AtomMap::iterator it = atomIndex.find (k);
-    if (it == atomIndex.end ())
-      return end ();
-    else
-      return iterator (this, it);
-  }
-
-
-  Residue::const_iterator 
-  Residue::find (const AtomType *k) const
-  {
-    AtomMap::const_iterator cit = atomIndex.find (k);
-    if (cit == atomIndex.end ())
-      return end ();
-    else
-      return const_iterator (this, cit);
-  }
-
-  
-  Residue::iterator 
-  Residue::safeFind (const AtomType *k) 
-  {
-    AtomMap::iterator it = atomIndex.find (k);
-    if (it == atomIndex.end ())
-    {
-      NoSuchAtomException ex ("", __FILE__, __LINE__);
-      ex << "residue " << *this << " is missing atom " << k;
-      throw ex;
-    }
-    return iterator (this, it);
-  }
-
-
-  Residue::const_iterator 
-  Residue::safeFind (const AtomType *k) const
-  {
-    AtomMap::const_iterator cit = atomIndex.find (k);
-    if (cit == atomIndex.end ())
-    {
-      NoSuchAtomException ex ("", __FILE__, __LINE__);
-      ex << "residue " << *this << " is missing atom " << k;
-      throw ex;
-    }
-    return const_iterator (this, cit);
-  }
-
-  
-  bool 
-  Residue::contains (const AtomType *k) const 
-  { 
-    return find (k) != end (); 
-  }
-  
-
-  bool
-  Residue::validateRiboseBuilding () const
-  {
-    return rib_built_valid;
-  }
-
-  
-  unsigned int
-  Residue::getRiboseBuiltCount () const
-  {
-    return rib_built_count;
-  }
-
-
-  const HomogeneousTransfo
-  Residue::getReferential () const
-  {
-    return _compute_referential ();
-  }
-
-
-  void 
-  Residue::setReferential (const HomogeneousTransfo& m) 
-  {
-    // Align the residue to the origin and transform.
-    unsigned int i;
-    HomogeneousTransfo t (m * _compute_referential ().invert ());
-    for (i = 0; i < atomGlobal.size (); ++i)
-      atomGlobal[i]->transform (t);
-  }
-
-
-  void
-  Residue::transform (const HomogeneousTransfo &m)
-  {
-    setReferential (m * getReferential ());
-  }
-  
-
-  void 
-  Residue::insert (const Atom &atom)
-  {
-    int pos = size ();
-    pair< AtomMap::iterator, bool > inserted =
-      atomIndex.insert (make_pair (atom.getType (), pos));
-
-    if (inserted.second)
-    {
-      atomGlobal.push_back (atom.clone ());
-      rib_dirty_ref = true;
-    }
-    else
-    {
-      *atomGlobal[inserted.first->second] = atom;
-    }
-  }
-
-
-  Residue::iterator 
-  Residue::erase (const AtomType *atype)
-  {
-    return erase (find (atype));
-  }
-
-
-  Residue::iterator 
-  Residue::erase (const iterator& rit)
-  {
-    if (end () != rit)
-    {
-      vector< Atom* >::iterator avit;
-      vector< Atom* >::const_iterator cavit;
-      const AtomType* next = 0;
-      size_type index = 0;
-      iterator next_rit = rit + 1;
-
-      // invalidate ribose pointers
-      rib_dirty_ref = true;
-      
-      // get next atom type before deletion
-      if (end () != next_rit)
-	next = next_rit.pos->first;
-      
-      // delete atom
-      avit = atomGlobal.begin () + rit.pos->second;
-      delete *avit;
-      atomGlobal.erase (avit);
-
-      // fix atom map
-      atomIndex.clear ();
-      for (cavit = atomGlobal.begin (); cavit != atomGlobal.end (); ++cavit, ++index)
-	atomIndex.insert (make_pair ((*cavit)->getType (), index));
-
-      if (next)
-      {
-	// fetch iterator to saved atom type and set its filter.
-	next_rit = find (next);
-	delete next_rit.filter;
-	next_rit.filter = rit.filter->clone ();
-	return next_rit;
-      }
-    }
-    return end (); 
-  }
-
-
-  unsigned int
-  Residue::size () const
-  {
-    return atomIndex.size ();
-  }
-  
-
-  bool
-  Residue::empty () const
-  {
-    return atomIndex.empty ();
-  }
-
-  
-  void 
-  Residue::clear () 
-  {
-    vector< Atom* >::iterator it;
-    
-    for (it = atomGlobal.begin (); it != atomGlobal.end (); ++it)
-      {
-	delete *it;
-      }
-    atomGlobal.clear ();
-    atomIndex.clear();
-
-    rib_C1p = rib_C2p = rib_C3p = rib_C4p = rib_C5p = rib_O2p = rib_O3p = rib_O4p = rib_O5p = rib_O1P = rib_O2P = rib_P = 0;
-    rib_dirty_ref = true;
-    rib_built_valid = false;
   }
 
 

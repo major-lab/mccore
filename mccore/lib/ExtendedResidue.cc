@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.28 $
-// $Id: ExtendedResidue.cc,v 1.28 2005-01-27 19:11:56 larosem Exp $
+// $Revision: 1.29 $
+// $Id: ExtendedResidue.cc,v 1.29 2005-01-27 21:40:53 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -47,17 +47,39 @@ namespace mccore
   }
 
 
-  ExtendedResidue::ExtendedResidue (const ExtendedResidue &other)
-    : Residue (other),
-      tfo (other.tfo),
-      placed (other.placed)
+  ExtendedResidue::ExtendedResidue (const ResidueType *t, const ResId &i, vector< Atom > &vec)
+      : Residue (t, i, vec), 
+	placed (true)
   {
     vector< Atom* >::const_iterator cit;
     
-    for (cit = other.atomLocal.begin (); cit != other.atomLocal.end (); ++cit)
+    for (this->atomGlobal.begin (); cit != this->atomGlobal.end (); ++cit)
+	this->atomLocal.push_back ((*cit)->clone ());
+  }
+
+
+  ExtendedResidue::ExtendedResidue (const ExtendedResidue& right)
+    : Residue (right),
+      tfo (right.tfo),
+      placed (right.placed)
+  {
+    vector< Atom* >::const_iterator cit;
+    
+    for (cit = right.atomLocal.begin (); cit != right.atomLocal.end (); ++cit)
       {
 	atomLocal.push_back ((*cit)->clone ());
       }
+  }
+
+
+  ExtendedResidue::ExtendedResidue (const Residue& right)
+    : Residue (right),
+      placed (true)
+  {
+    vector< Atom* >::const_iterator cit;
+    
+    for (cit = this->atomGlobal.begin (); cit != this->atomGlobal.end (); ++cit)
+      this->atomLocal.push_back ((*cit)->clone ());
   }
 
 
@@ -71,28 +93,28 @@ namespace mccore
       }
   }
 
-  
-  ExtendedResidue& 
-  ExtendedResidue::operator= (const ExtendedResidue &other)
-  {
-    if (this != &other)
-      {
-	vector< Atom* >::iterator it;
-	vector< Atom* >::const_iterator cit;
 
-	Residue::operator= (other);
-	for (it = atomLocal.begin (); it != atomLocal.end (); ++it)
-	  {
-	    delete *it;
-	  }
-	atomLocal.clear ();
-	for (cit = other.atomLocal.begin (); cit != other.atomLocal.end (); ++cit)
-	  {
-	    atomLocal.push_back ((*cit)->clone ());
-	  }
-	tfo = other.tfo;
-	placed = other.placed;
-      }
+  ExtendedResidue& 
+  ExtendedResidue::operator= (const ExtendedResidue& right)
+  {
+    if (this != &right)
+    {
+      vector< Atom* >::iterator it;
+      vector< Atom* >::const_iterator cit;
+
+      this->Residue::operator= (right);
+
+      for (it = this->atomLocal.begin (); it != this->atomLocal.end (); ++it)
+	delete *it;
+
+      this->atomLocal.clear ();
+
+      for (cit = right.atomLocal.begin (); cit != right.atomLocal.end (); ++cit)
+	this->atomLocal.push_back ((*cit)->clone ());
+
+      this->tfo = right.tfo;
+      this->placed = right.placed;
+    }
     return *this;
   }
 
@@ -125,10 +147,8 @@ namespace mccore
 	*atomLocal[inserted.first->second] = atom;
       }
 
-    if (! tfo.isIdentity ())
-      {
-	atomLocal[inserted.first->second]->transform (tfo.invert ());
-      }
+    if (placed)
+      atomLocal[inserted.first->second]->transform (tfo.invert ());
   }
 
 

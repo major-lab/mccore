@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.16 $
+// $Revision: 1.17 $
 // 
 // This file is part of mccore.
 // 
@@ -54,7 +54,7 @@ namespace mccore
    * the atom types.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ExtendedResidue.h,v 1.16 2005-01-27 19:12:05 larosem Exp $
+   * @version $Id: ExtendedResidue.h,v 1.17 2005-01-27 21:40:53 thibaup Exp $
    */
   class ExtendedResidue : public Residue
   {
@@ -110,15 +110,19 @@ namespace mccore
      * @param i the residue id.
      * @param vec the atom container.
      */
-    ExtendedResidue (const ResidueType *t, const ResId &i, vector< Atom > &vec)
-      : Residue (t, i, vec), placed (true)
-    { }
+    ExtendedResidue (const ResidueType *t, const ResId &i, vector< Atom > &vec);
     
     /**
-     * Initializes the object with the other's content.
-     * @param other the object to copy.
+     * Initializes the object with another's content.
+     * @param right the object to copy.
      */
-    ExtendedResidue (const ExtendedResidue &other);
+    ExtendedResidue (const ExtendedResidue& right);
+
+   /**
+     * Initializes the object with a @ref Residue object's content.
+     * @param right the object to copy.
+     */
+    ExtendedResidue (const Residue& right);
 
     /**
      * Clones the residue.
@@ -135,11 +139,11 @@ namespace mccore
     // OPERATORS ------------------------------------------------------------
 
     /**
-     * Assigns the object with the other's content.
-     * @param other the object to copy.
+     * Assigns the object's content from another object.
+     * @param right the object from which to copy.
      * @return itself.
      */
-    ExtendedResidue& operator= (const ExtendedResidue &other);
+    ExtendedResidue& operator= (const ExtendedResidue& right);
 
     // ACCESS ---------------------------------------------------------------
  
@@ -157,11 +161,6 @@ namespace mccore
      * @param m the new referential.
      */
     virtual void setReferential (const HomogeneousTransfo& m);
-//     {
-//       tfo = m;
-// //       _displace ();
-//       placed = false;
-//     }
     
     /**
      * Inserts an atom in the residue.  It crushes the existing atom if it

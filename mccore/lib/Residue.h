@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.31 $
+// $Revision: 1.32 $
 //
 // This file is part of mccore.
 // 
@@ -62,7 +62,7 @@ namespace mccore
    * the atom types.
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: Residue.h,v 1.31 2005-01-27 19:13:24 larosem Exp $
+   * @version $Id: Residue.h,v 1.32 2005-01-27 21:40:52 thibaup Exp $
    */
   class Residue
   {
@@ -568,22 +568,6 @@ namespace mccore
      * Destroys the object.
      */
     virtual ~Residue ();
-
-    /**
-     * Sets all atoms according to standard coordinates as defined by
-     * G.Parkinson et al., ACTA CRYST.D (1996) v. 52, 57-64.
-     * Handled types are nitrogen bases (nucleic acid types), phosphates and riboses.
-     * @exception IntLibException
-     */
-    void setTheoretical ();
-
-    /**
-     * Sets all atoms according to standard coordinates as defined by
-     * G.Parkinson et al., ACTA CRYST.D (1996) v. 52, 57-64.
-     * A full nucleic acid residue is created.
-     * @exception IntLibException
-     */
-    void setFullTheoretical ();
 				 
     // OPERATORS ------------------------------------------------------------
 
@@ -592,8 +576,10 @@ namespace mccore
      * @param other the object to copy.
      * @return itself.
      */
-    Residue& operator= (const Residue &other);
-    
+    Residue& operator= (const Residue& right);
+
+  public:
+
     /**
      * Indicates whether some other residue is "equal to" this one.
      * @param other the reference object with which to compare.
@@ -799,6 +785,22 @@ namespace mccore
      * Removes all of the atoms from the residue.  
      */
     virtual void clear();
+
+    /**
+     * Sets all atoms according to standard coordinates as defined by
+     * G.Parkinson et al., ACTA CRYST.D (1996) v. 52, 57-64.
+     * Handled types are nitrogen bases (nucleic acid types), phosphates and riboses.
+     * @exception IntLibException
+     */
+    void setTheoretical ();
+
+    /**
+     * Sets all atoms according to standard coordinates as defined by
+     * G.Parkinson et al., ACTA CRYST.D (1996) v. 52, 57-64.
+     * A full nucleic acid residue is created.
+     * @exception IntLibException
+     */
+    void setFullTheoretical ();
 
     /**
      * Verifies wether all the obligatory atoms are in the residue and
