@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.55 $
-// $Id: Residue.cc,v 1.55 2004-12-08 19:24:27 thibaup Exp $
+// $Revision: 1.56 $
+// $Id: Residue.cc,v 1.56 2004-12-09 19:53:20 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -1603,7 +1603,7 @@ namespace mccore {
 	gOut (3) << "Unknown pseudo-atoms for residue type " << *this << endl;
       }
     }
-    catch (NoSuchAtomException& ex)
+    catch (IntLibException& ex)
     {
       gOut (3) << "Unknown pseudo-atoms for residue "<< *this << ": " << ex << endl;
     }

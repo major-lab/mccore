@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct  1 14:45:13 2004
-// $Revision: 1.3 $
-// $Id: TypeRepresentationTables.cc,v 1.3 2004-12-02 20:20:14 larosem Exp $
+// $Revision: 1.4 $
+// $Id: TypeRepresentationTables.cc,v 1.4 2004-12-09 19:53:34 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -101,6 +101,7 @@ namespace mccore
     typeTable["H72"] = AtomType::a2H5M;
     typeTable["H62"] = AtomType::a2H6;
     typeTable["H73"] = AtomType::a3H5M;
+    typeTable["PSX"] = AtomType::aPSX;
     typeTable["PSY"] = AtomType::aPSY;
     typeTable["PSZ"] = AtomType::aPSZ;
     typeTable["LP1"] = AtomType::aLP1;
@@ -256,6 +257,7 @@ namespace mccore
     representationTable[AtomType::a2H5M] = "H72";
     representationTable[AtomType::a2H6] = "H62";
     representationTable[AtomType::a3H5M] = "H73";
+    representationTable[AtomType::aPSX] = "PSX";
     representationTable[AtomType::aPSY] = "PSY";
     representationTable[AtomType::aPSZ] = "PSZ";
     representationTable[AtomType::aLP1] = "LP1";
@@ -433,6 +435,7 @@ namespace mccore
     typeTable["1LP2"] = AtomType::a1LP2;
     typeTable["2LP4"] = AtomType::a2LP4;
     typeTable["1LP4"] = AtomType::a1LP4;
+    typeTable["PSX"] = AtomType::aPSX;
     typeTable["PSY"] = AtomType::aPSY;
     typeTable["PSZ"] = AtomType::aPSZ;
     typeTable["H3T"] = AtomType::aH3T;
@@ -591,6 +594,7 @@ namespace mccore
     representationTable[AtomType::a1LP2] = "1LP2";
     representationTable[AtomType::a2LP4] = "2LP4";
     representationTable[AtomType::a1LP4] = "1LP4";
+    representationTable[AtomType::aPSX] = "PSX";
     representationTable[AtomType::aPSY] = "PSY";
     representationTable[AtomType::aPSZ] = "PSZ";
     representationTable[AtomType::aH3T] = "H3T";

@@ -4,9 +4,9 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 21 15:30:27 2003
-// Last Modified By : Martin Larose
-// Last Modified On : Wed Mar 17 15:43:26 2004
-// Update Count     : 32
+// Last Modified By : Philippe Thibault
+// Last Modified On : Thu Dec  9 14:53:24 2004
+// Update Count     : 33
 // Status           : Unknown.
 // 
 
@@ -763,106 +763,135 @@ namespace mccore {
   set< const AtomType* >
   ResidueTopology::getOblSet (const ResidueType* type)
   {
-    static const AtomType* DAOblSet[23] = { (const AtomType*)AtomType::aC1p, (const AtomType*)AtomType::aC2,
-					    (const AtomType*)AtomType::aC2p, (const AtomType*)AtomType::aC3p,
-					    (const AtomType*)AtomType::aC4,  (const AtomType*)AtomType::aC4p,					    
-					    (const AtomType*)AtomType::aC5,  (const AtomType*)AtomType::aC5p,
-					    (const AtomType*)AtomType::aC6,  (const AtomType*)AtomType::aC8,
-					    (const AtomType*)AtomType::aN1,  (const AtomType*)AtomType::aN3,					    
-					    (const AtomType*)AtomType::aN6,  (const AtomType*)AtomType::aN7,
-					    (const AtomType*)AtomType::aN9,  (const AtomType*)AtomType::aO1P,
-					    (const AtomType*)AtomType::aO2P, (const AtomType*)AtomType::aO3p,					    
-					    (const AtomType*)AtomType::aO4p, (const AtomType*)AtomType::aO5p,
-					    (const AtomType*)AtomType::aP,   (const AtomType*)AtomType::aPSY,
-					    (const AtomType*)AtomType::aPSZ };
+    static const AtomType* DAOblSet[24] =
+      {
+	(const AtomType*)AtomType::aC1p, (const AtomType*)AtomType::aC2,
+	(const AtomType*)AtomType::aC2p, (const AtomType*)AtomType::aC3p,
+	(const AtomType*)AtomType::aC4,  (const AtomType*)AtomType::aC4p,					    
+	(const AtomType*)AtomType::aC5,  (const AtomType*)AtomType::aC5p,
+	(const AtomType*)AtomType::aC6,  (const AtomType*)AtomType::aC8,
+	(const AtomType*)AtomType::aN1,  (const AtomType*)AtomType::aN3,					    
+	(const AtomType*)AtomType::aN6,  (const AtomType*)AtomType::aN7,
+	(const AtomType*)AtomType::aN9,  (const AtomType*)AtomType::aO1P,
+	(const AtomType*)AtomType::aO2P, (const AtomType*)AtomType::aO3p,					    
+	(const AtomType*)AtomType::aO4p, (const AtomType*)AtomType::aO5p,
+	(const AtomType*)AtomType::aP,   (const AtomType*)AtomType::aPSX,
+	(const AtomType*)AtomType::aPSY, (const AtomType*)AtomType::aPSZ
+      };
     
-    static const AtomType* RAOblSet[24] = { (const AtomType*)AtomType::aC1p, (const AtomType*)AtomType::aC2,
-					    (const AtomType*)AtomType::aC2p, (const AtomType*)AtomType::aC3p,
-					    (const AtomType*)AtomType::aC4,  (const AtomType*)AtomType::aC4p,					    
-					    (const AtomType*)AtomType::aC5,  (const AtomType*)AtomType::aC5p,
-					    (const AtomType*)AtomType::aC6,  (const AtomType*)AtomType::aC8,
-					    (const AtomType*)AtomType::aN1,  (const AtomType*)AtomType::aN3,					    
-					    (const AtomType*)AtomType::aN6,  (const AtomType*)AtomType::aN7,
-					    (const AtomType*)AtomType::aN9,  (const AtomType*)AtomType::aO1P,
-					    (const AtomType*)AtomType::aO2P, (const AtomType*)AtomType::aO2p,					    
-					    (const AtomType*)AtomType::aO3p, (const AtomType*)AtomType::aO4p,
-					    (const AtomType*)AtomType::aO5p, (const AtomType*)AtomType::aP,
-					    (const AtomType*)AtomType::aPSY, (const AtomType*)AtomType::aPSZ };
+    static const AtomType* RAOblSet[25] =
+      {
+	(const AtomType*)AtomType::aC1p, (const AtomType*)AtomType::aC2,
+	(const AtomType*)AtomType::aC2p, (const AtomType*)AtomType::aC3p,
+	(const AtomType*)AtomType::aC4,  (const AtomType*)AtomType::aC4p,					    
+	(const AtomType*)AtomType::aC5,  (const AtomType*)AtomType::aC5p,
+	(const AtomType*)AtomType::aC6,  (const AtomType*)AtomType::aC8,
+	(const AtomType*)AtomType::aN1,  (const AtomType*)AtomType::aN3,					    
+	(const AtomType*)AtomType::aN6,  (const AtomType*)AtomType::aN7,
+	(const AtomType*)AtomType::aN9,  (const AtomType*)AtomType::aO1P,
+	(const AtomType*)AtomType::aO2P, (const AtomType*)AtomType::aO2p,					    
+	(const AtomType*)AtomType::aO3p, (const AtomType*)AtomType::aO4p,
+	(const AtomType*)AtomType::aO5p, (const AtomType*)AtomType::aP,
+	(const AtomType*)AtomType::aPSX, (const AtomType*)AtomType::aPSY,
+	(const AtomType*)AtomType::aPSZ
+      };
 
-    static const AtomType* DCOblSet[21] = { (const AtomType*)AtomType::aC1p, (const AtomType*)AtomType::aC2,
-					    (const AtomType*)AtomType::aC2p, (const AtomType*)AtomType::aC3p,
-					    (const AtomType*)AtomType::aC4,  (const AtomType*)AtomType::aC4p,					    
-					    (const AtomType*)AtomType::aC5,  (const AtomType*)AtomType::aC5p,
-					    (const AtomType*)AtomType::aC6,  (const AtomType*)AtomType::aN1,
-					    (const AtomType*)AtomType::aN3,  (const AtomType*)AtomType::aN4,					    
-					    (const AtomType*)AtomType::aO1P, (const AtomType*)AtomType::aO2,
-					    (const AtomType*)AtomType::aO2P, (const AtomType*)AtomType::aO3p,
-					    (const AtomType*)AtomType::aO4p, (const AtomType*)AtomType::aO5p,					    
-					    (const AtomType*)AtomType::aP,   (const AtomType*)AtomType::aPSY,
-					    (const AtomType*)AtomType::aPSZ };
+    static const AtomType* DCOblSet[22] =
+      {
+	(const AtomType*)AtomType::aC1p, (const AtomType*)AtomType::aC2,
+	(const AtomType*)AtomType::aC2p, (const AtomType*)AtomType::aC3p,
+	(const AtomType*)AtomType::aC4,  (const AtomType*)AtomType::aC4p,					    
+	(const AtomType*)AtomType::aC5,  (const AtomType*)AtomType::aC5p,
+	(const AtomType*)AtomType::aC6,  (const AtomType*)AtomType::aN1,
+	(const AtomType*)AtomType::aN3,  (const AtomType*)AtomType::aN4,					    
+	(const AtomType*)AtomType::aO1P, (const AtomType*)AtomType::aO2,
+	(const AtomType*)AtomType::aO2P, (const AtomType*)AtomType::aO3p,
+	(const AtomType*)AtomType::aO4p, (const AtomType*)AtomType::aO5p,					    
+	(const AtomType*)AtomType::aP,   (const AtomType*)AtomType::aPSX,
+	(const AtomType*)AtomType::aPSY, (const AtomType*)AtomType::aPSZ
+      };
 
-    static const AtomType* RCOblSet[22] = { (const AtomType*)AtomType::aC1p, (const AtomType*)AtomType::aC2,
-					    (const AtomType*)AtomType::aC2p, (const AtomType*)AtomType::aC3p,
-					    (const AtomType*)AtomType::aC4,  (const AtomType*)AtomType::aC4p,
-					    (const AtomType*)AtomType::aC5,  (const AtomType*)AtomType::aC5p,
-					    (const AtomType*)AtomType::aC6,  (const AtomType*)AtomType::aN1,
-					    (const AtomType*)AtomType::aN3,  (const AtomType*)AtomType::aN4,					    
-					    (const AtomType*)AtomType::aO1P, (const AtomType*)AtomType::aO2,
-					    (const AtomType*)AtomType::aO2P, (const AtomType*)AtomType::aO2p,
-					    (const AtomType*)AtomType::aO3p, (const AtomType*)AtomType::aO4p,					    
-					    (const AtomType*)AtomType::aO5p, (const AtomType*)AtomType::aP,
-					    (const AtomType*)AtomType::aPSY, (const AtomType*)AtomType::aPSZ };
+    static const AtomType* RCOblSet[23] =
+      {
+	(const AtomType*)AtomType::aC1p, (const AtomType*)AtomType::aC2,
+	(const AtomType*)AtomType::aC2p, (const AtomType*)AtomType::aC3p,
+	(const AtomType*)AtomType::aC4,  (const AtomType*)AtomType::aC4p,
+	(const AtomType*)AtomType::aC5,  (const AtomType*)AtomType::aC5p,
+	(const AtomType*)AtomType::aC6,  (const AtomType*)AtomType::aN1,
+	(const AtomType*)AtomType::aN3,  (const AtomType*)AtomType::aN4,					    
+	(const AtomType*)AtomType::aO1P, (const AtomType*)AtomType::aO2,
+	(const AtomType*)AtomType::aO2P, (const AtomType*)AtomType::aO2p,
+	(const AtomType*)AtomType::aO3p, (const AtomType*)AtomType::aO4p,					    
+	(const AtomType*)AtomType::aO5p, (const AtomType*)AtomType::aP,
+	(const AtomType*)AtomType::aPSX, (const AtomType*)AtomType::aPSY,
+	(const AtomType*)AtomType::aPSZ
+      };
 
-    static const AtomType* DGOblSet[24] = { (const AtomType*)AtomType::aC1p, (const AtomType*)AtomType::aC2,  
-					    (const AtomType*)AtomType::aC2p, (const AtomType*)AtomType::aC3p, 
-					    (const AtomType*)AtomType::aC4,  (const AtomType*)AtomType::aC4p, 
-					    (const AtomType*)AtomType::aC5,  (const AtomType*)AtomType::aC5p, 
-					    (const AtomType*)AtomType::aC6,  (const AtomType*)AtomType::aC8,  
-					    (const AtomType*)AtomType::aN1,  (const AtomType*)AtomType::aN2,
-					    (const AtomType*)AtomType::aN3,  (const AtomType*)AtomType::aN7,  
-					    (const AtomType*)AtomType::aN9,  (const AtomType*)AtomType::aO1P, 
-					    (const AtomType*)AtomType::aO2P, (const AtomType*)AtomType::aO3p,
-					    (const AtomType*)AtomType::aO4p, (const AtomType*)AtomType::aO5p, 
-					    (const AtomType*)AtomType::aO6,  (const AtomType*)AtomType::aP,   
-					    (const AtomType*)AtomType::aPSY, (const AtomType*)AtomType::aPSZ };
+    static const AtomType* DGOblSet[25] =
+      {
+	(const AtomType*)AtomType::aC1p, (const AtomType*)AtomType::aC2,  
+	(const AtomType*)AtomType::aC2p, (const AtomType*)AtomType::aC3p, 
+	(const AtomType*)AtomType::aC4,  (const AtomType*)AtomType::aC4p, 
+	(const AtomType*)AtomType::aC5,  (const AtomType*)AtomType::aC5p, 
+	(const AtomType*)AtomType::aC6,  (const AtomType*)AtomType::aC8,  
+	(const AtomType*)AtomType::aN1,  (const AtomType*)AtomType::aN2,
+	(const AtomType*)AtomType::aN3,  (const AtomType*)AtomType::aN7,  
+	(const AtomType*)AtomType::aN9,  (const AtomType*)AtomType::aO1P, 
+	(const AtomType*)AtomType::aO2P, (const AtomType*)AtomType::aO3p,
+	(const AtomType*)AtomType::aO4p, (const AtomType*)AtomType::aO5p, 
+	(const AtomType*)AtomType::aO6,  (const AtomType*)AtomType::aP,   
+	(const AtomType*)AtomType::aPSX, (const AtomType*)AtomType::aPSY,
+	(const AtomType*)AtomType::aPSZ
+      };
 
-    static const AtomType* RGOblSet[25] = { (const AtomType*)AtomType::aC1p, (const AtomType*)AtomType::aC2,
-					    (const AtomType*)AtomType::aC2p, (const AtomType*)AtomType::aC3p,
-					    (const AtomType*)AtomType::aC4,  (const AtomType*)AtomType::aC4p,					    
-					    (const AtomType*)AtomType::aC5,  (const AtomType*)AtomType::aC5p,
-					    (const AtomType*)AtomType::aC6,  (const AtomType*)AtomType::aC8,
-					    (const AtomType*)AtomType::aN1,  (const AtomType*)AtomType::aN2,					    
-					    (const AtomType*)AtomType::aN3,  (const AtomType*)AtomType::aN7,
-					    (const AtomType*)AtomType::aN9,  (const AtomType*)AtomType::aO1P,
-					    (const AtomType*)AtomType::aO2p, (const AtomType*)AtomType::aO2P,					    
-					    (const AtomType*)AtomType::aO3p, (const AtomType*)AtomType::aO4p,
-					    (const AtomType*)AtomType::aO5p, (const AtomType*)AtomType::aO6,
-					    (const AtomType*)AtomType::aP,   (const AtomType*)AtomType::aPSY,					    
-					    (const AtomType*)AtomType::aPSZ };
+    static const AtomType* RGOblSet[26] =
+      {
+	(const AtomType*)AtomType::aC1p, (const AtomType*)AtomType::aC2,
+	(const AtomType*)AtomType::aC2p, (const AtomType*)AtomType::aC3p,
+	(const AtomType*)AtomType::aC4,  (const AtomType*)AtomType::aC4p,					    
+	(const AtomType*)AtomType::aC5,  (const AtomType*)AtomType::aC5p,
+	(const AtomType*)AtomType::aC6,  (const AtomType*)AtomType::aC8,
+	(const AtomType*)AtomType::aN1,  (const AtomType*)AtomType::aN2,					    
+	(const AtomType*)AtomType::aN3,  (const AtomType*)AtomType::aN7,
+	(const AtomType*)AtomType::aN9,  (const AtomType*)AtomType::aO1P,
+	(const AtomType*)AtomType::aO2p, (const AtomType*)AtomType::aO2P,					    
+	(const AtomType*)AtomType::aO3p, (const AtomType*)AtomType::aO4p,
+	(const AtomType*)AtomType::aO5p, (const AtomType*)AtomType::aO6,
+	(const AtomType*)AtomType::aP,   (const AtomType*)AtomType::aPSX,					    
+	(const AtomType*)AtomType::aPSY, (const AtomType*)AtomType::aPSZ
+      };
 
-    static const AtomType* DTOblSet[22] = { (const AtomType*)AtomType::aC1p, (const AtomType*)AtomType::aC2,
-					    (const AtomType*)AtomType::aC2p, (const AtomType*)AtomType::aC3p,
-					    (const AtomType*)AtomType::aC4,  (const AtomType*)AtomType::aC4p,					    
-					    (const AtomType*)AtomType::aC5,  (const AtomType*)AtomType::aC5p,
-					    (const AtomType*)AtomType::aC5M, (const AtomType*)AtomType::aC6,
-					    (const AtomType*)AtomType::aN1,  (const AtomType*)AtomType::aN3,					    
-					    (const AtomType*)AtomType::aO1P, (const AtomType*)AtomType::aO2,
-					    (const AtomType*)AtomType::aO2P, (const AtomType*)AtomType::aO3p,
-					    (const AtomType*)AtomType::aO4,  (const AtomType*)AtomType::aO4p,					    
-					    (const AtomType*)AtomType::aO5p, (const AtomType*)AtomType::aP,
-					    (const AtomType*)AtomType::aPSY, (const AtomType*)AtomType::aPSZ };
+    static const AtomType* DTOblSet[23] =
+      {
+	(const AtomType*)AtomType::aC1p, (const AtomType*)AtomType::aC2,
+	(const AtomType*)AtomType::aC2p, (const AtomType*)AtomType::aC3p,
+	(const AtomType*)AtomType::aC4,  (const AtomType*)AtomType::aC4p,					    
+	(const AtomType*)AtomType::aC5,  (const AtomType*)AtomType::aC5p,
+	(const AtomType*)AtomType::aC5M, (const AtomType*)AtomType::aC6,
+	(const AtomType*)AtomType::aN1,  (const AtomType*)AtomType::aN3,					    
+	(const AtomType*)AtomType::aO1P, (const AtomType*)AtomType::aO2,
+	(const AtomType*)AtomType::aO2P, (const AtomType*)AtomType::aO3p,
+	(const AtomType*)AtomType::aO4,  (const AtomType*)AtomType::aO4p,					    
+	(const AtomType*)AtomType::aO5p, (const AtomType*)AtomType::aP,
+	(const AtomType*)AtomType::aPSX, (const AtomType*)AtomType::aPSY,
+	(const AtomType*)AtomType::aPSZ
+      };
 
-    static const AtomType* RUOblSet[22] = { (const AtomType*)AtomType::aC1p, (const AtomType*)AtomType::aC2,  
-					    (const AtomType*)AtomType::aC2p, (const AtomType*)AtomType::aC3p, 
-					    (const AtomType*)AtomType::aC4,  (const AtomType*)AtomType::aC4p,
-					    (const AtomType*)AtomType::aC5,  (const AtomType*)AtomType::aC5p, 
-					    (const AtomType*)AtomType::aC6,  (const AtomType*)AtomType::aN1,  
-					    (const AtomType*)AtomType::aN3,  (const AtomType*)AtomType::aO1P,
-					    (const AtomType*)AtomType::aO2,  (const AtomType*)AtomType::aO2p, 
-					    (const AtomType*)AtomType::aO2P, (const AtomType*)AtomType::aO3p, 
-					    (const AtomType*)AtomType::aO4,  (const AtomType*)AtomType::aO4p,
-					    (const AtomType*)AtomType::aO5p, (const AtomType*)AtomType::aP,   
-					    (const AtomType*)AtomType::aPSY, (const AtomType*)AtomType::aPSZ };
+    static const AtomType* RUOblSet[23] =
+      {
+	(const AtomType*)AtomType::aC1p, (const AtomType*)AtomType::aC2,  
+	(const AtomType*)AtomType::aC2p, (const AtomType*)AtomType::aC3p, 
+	(const AtomType*)AtomType::aC4,  (const AtomType*)AtomType::aC4p,
+	(const AtomType*)AtomType::aC5,  (const AtomType*)AtomType::aC5p, 
+	(const AtomType*)AtomType::aC6,  (const AtomType*)AtomType::aN1,  
+	(const AtomType*)AtomType::aN3,  (const AtomType*)AtomType::aO1P,
+	(const AtomType*)AtomType::aO2,  (const AtomType*)AtomType::aO2p, 
+	(const AtomType*)AtomType::aO2P, (const AtomType*)AtomType::aO3p, 
+	(const AtomType*)AtomType::aO4,  (const AtomType*)AtomType::aO4p,
+	(const AtomType*)AtomType::aO5p, (const AtomType*)AtomType::aP,   
+	(const AtomType*)AtomType::aPSX, (const AtomType*)AtomType::aPSY,
+	(const AtomType*)AtomType::aPSZ
+      };
 
     static const AtomType* ALAOblSet[5]  = { (const AtomType*)AtomType::aN,  (const AtomType*)AtomType::aC,
 					     (const AtomType*)AtomType::aO,  (const AtomType*)AtomType::aCA,
