@@ -1,11 +1,11 @@
 ############################ -*- Mode: Makefile -*- ###########################
 ## Makefile.in
-## Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
+## Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 ## Author           : Martin Larose
 ## Created On       : Tue Sep 19 18:53:22 2000
 ## Last Modified By : Martin Larose
-## Last Modified On : Thu Nov  9 10:45:54 2000
-## Update Count     : 3
+## Last Modified On : Fri Feb  9 11:14:15 2001
+## Update Count     : 4
 ## Status           : Ok.
 ###############################################################################
 
@@ -30,37 +30,39 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 .SUFFIXES:
 .SUFFIXES: .tex
 
-DISTFILES = Makefile.in Manual.tex
+MANUAL = McCoreManual
+
+DISTFILES = Makefile.in $(MANUAL).tex
 
 
 all all-static static:
 
-doc: Manual.pdf Manual.html
+doc: $(MANUAL).pdf $(MANUAL).html
 
-Manual.dvi: Manual.tex
+$(MANUAL).dvi: $(MANUAL).tex
 	@ latex $<
-	@- makeindex Manual
+	@- makeindex $(MANUAL)
 	@ latex $<
 
-Manual.ps: Manual.dvi
+$(MANUAL).ps: $(MANUAL).dvi
 	@ dvips -z -Pcm -o $@ $^
 
-Manual.pdf: Manual.ps
+$(MANUAL).pdf: $(MANUAL).ps
 	@ ps2pdf $^ $@
 
-Manual.html: Manual.dvi
-	@- ln -s $(srcdir)/Manual.tex 2> /dev/null
-	@ latex2html -address "<a href=\"mailto:Webmaster <adbit@iro.umontreal.ca>\">Webmaster</a>" -info "" -no_navigation Manual.tex
+$(MANUAL).html: $(MANUAL).dvi
+	@- ln -s $(srcdir)/$(MANUAL).tex 2> /dev/null
+	@ latex2html -address "<a href=\"mailto:Webmaster <adbit@iro.umontreal.ca>\">Webmaster</a>" -info "" -no_navigation $(MANUAL).tex
 
 
 install install-static: doc
 	@ $(srcdir)/../mkinstalldirs $(datadir)/$(PACKAGE)/$(VERSION)/doc
-	@ for file in Manual.ps Manual.pdf; do \
+	@ for file in $(MANUAL).ps $(MANUAL).pdf; do \
 	   $(INSTALL_DATA) $$file $(datadir)/$(PACKAGE)/$(VERSION)/doc; \
 	  done;
 
 uninstall:
-	@ for file in Manual.ps Manual.pdf; do \
+	@ for file in $(MANUAL).ps $(MANUAL).pdf; do \
 	   rm -f $(datadir)/$(PACKAGE)/$(VERSION)/doc/$$file; \
 	  done;
 
@@ -69,8 +71,8 @@ mostlyclean:
 	@ rm -f *.aux *.dvi *.log *.toc *.ilg *.ind *.out body.tmp head.tmp
 
 clean: mostlyclean
-	@ rm Manual.pdf Manual.ps
-	@ rm -fr Manual docbook html texi
+	@ rm $(MANUAL).pdf $(MANUAL).ps
+	@ rm -fr $(MANUAL) docbook html texi
 
 distclean: clean
 	@ rm -f Makefile
