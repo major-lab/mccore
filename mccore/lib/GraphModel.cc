@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.1.2.4 $
-// $Id: GraphModel.cc,v 1.1.2.4 2004-12-27 04:25:04 larosem Exp $
+// $Revision: 1.1.2.5 $
+// $Id: GraphModel.cc,v 1.1.2.5 2004-12-29 21:11:39 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -47,11 +47,21 @@ using namespace std;
 namespace mccore
 {
 
-  GraphModel::GraphModel (const GraphModel &right)
-    : AbstractModel (right),
-      annotated (right.annotated)
+  GraphModel::GraphModel (const AbstractModel &right)
+    : AbstractModel (right)
   {
-    deepCopy (right);
+    const GraphModel *model;
+    
+    if (0 == (model = dynamic_cast< const GraphModel* > (&right)))
+      {
+	annotated = false;
+	AbstractModel::insert (right.begin (), right.end ());
+      }
+    else
+      {
+	annotated = model->annotated;
+	deepCopy (*model);
+      }
   }
   
 
@@ -97,23 +107,44 @@ namespace mccore
   
   
   GraphModel&
-  GraphModel::operator= (const GraphModel &right)
+  GraphModel::operator= (const AbstractModel &right)
   {
     if (this != &right)
       {
+	const GraphModel *model;
+	
+	clear ();
 	AbstractModel::operator= (right);
-	annotated = right.annotated;
-	deepCopy (right);
+	if (0 == (model = dynamic_cast< const GraphModel* > (&right)))
+	  {
+	    AbstractModel::insert (right.begin (), right.end ());
+	  }
+	else
+	  {
+	    annotated = model->annotated;
+	    deepCopy (*model);
+	  }
       }
     return *this;
   }
     
 
+  GraphModel::iterator
+  GraphModel::erase (AbstractModel::iterator pos) 
+  {
+    Residue *res = &*pos;
+    iterator ret (graphsuper::erase (&*pos));
+
+    delete res;
+    return ret;
+  }
+
+  
   void
   GraphModel::sort ()
   {
     vector< Residue* > orig = vertices;
-    vector< float > origWeights = vertexWeights;
+    vector< int > origWeights = vertexWeights;
     graphsuper::size_type vIndex;
     graphsuper::size_type *corresp;
     EV2ELabel origEdgeMap = ev2elabel;
@@ -212,8 +243,76 @@ namespace mccore
   ostream&
   GraphModel::output (ostream &os) const
   {
-    os << "[GraphModel]" << endl;
-    Graph< Residue*, Relation*, float, float, less_deref< Residue > >::write (os);
+    const_iterator vit;
+    vector< int >::const_iterator vwit;
+    edge_const_iterator eit;
+    vector< int >::const_iterator ewit;
+    EV2ELabel::const_iterator evit;
+    label counter;
+    label linecounter;
+
+    os << "[GraphModel]" << endl
+       << "[Vertices]" << endl;
+    for (vit = vertices.begin (), vwit = vertexWeights.begin (), counter = 0; vertices.end () != vit; ++vit, ++vwit, ++counter)
+      {
+	os << setw (5) << counter << "  " << *vit << "  " << *vwit << endl;
+      }
+    os << "[Edges]" << endl;
+    for (eit = edges.begin (), ewit = edgeWeights.begin (), counter = 0; edges.end () != eit; ++eit, ++ewit, ++counter)
+      {
+	os << setw (5) << counter << "  " << **eit << "  " << *ewit << endl;
+      }
+    os << "[Adjacency matrix]" << endl;
+    os << "     ";
+    for (counter = 0; vertices.size () > counter; ++counter)
+      {
+	os << setw (5) << counter;
+      }
+    linecounter = 0;
+    if (! empty ())
+      {
+	os << endl << setw (5) << linecounter;
+      }
+    for (counter = 0, evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit, ++counter)
+      {
+	label evline;
+	label evcolumn;
+
+	evline = evit->first.getHeadLabel ();
+	evcolumn = evit->first.getTailLabel ();
+	while (linecounter < evline)
+	  {
+	    while (size () > counter)
+	      {
+		os << setw (5) << '.';
+		++counter;
+	      }
+	    counter = 0;
+	    ++linecounter;
+	    os << endl << setw (5) << linecounter;
+	  }
+	while (counter < evcolumn)
+	  {
+	    os << setw (5) << '.';
+	    ++counter;
+	  }
+	os << setw (5) << evit->second;
+      }
+    while (linecounter < size ())
+      {
+	while (counter < size ())
+	  {
+	    os << setw (5) << '.';
+	    ++counter;
+	  }
+	counter = 0;
+	++linecounter;
+	if (linecounter < size ())
+	  {
+	    os << endl << setw (5) << linecounter;
+	  }
+      }
+    os << endl;      
     return os;
   }
 
@@ -221,10 +320,14 @@ namespace mccore
   iPdbstream&
   GraphModel::input (iPdbstream &ips)
   {
-    int currNb = ips.getModelNb ();
+//     int currNb = ips.getModelNb ();
 
     clear ();
-    while (! (ips.eof ()) && currNb == ips.getModelNb ())
+    if (! ips)
+      {
+	return ips;
+      }
+    while (! ips.eof ())
       {
 	Residue *res = getResidueFM ()->createResidue ();
 	

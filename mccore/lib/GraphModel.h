@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:31:01 2004
-// $Revision: 1.1.2.6 $
+// $Revision: 1.1.2.7 $
 // 
 // This file is part of mccore.
 // 
@@ -46,11 +46,11 @@ namespace mccore
    * iterators.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.h,v 1.1.2.6 2004-12-27 04:25:08 larosem Exp $
+   * @version $Id: GraphModel.h,v 1.1.2.7 2004-12-29 21:11:43 larosem Exp $
    */
-  class GraphModel : public AbstractModel, public OrientedGraph< Residue*, Relation*, float, float, less_deref< Residue > >
+  class GraphModel : public AbstractModel, public OrientedGraph< Residue*, Relation*, int, int, less_deref< Residue > >
   {
-    typedef OrientedGraph< Residue*, Relation*, float, float, less_deref< Residue > > graphsuper;
+    typedef OrientedGraph< Residue*, Relation*, int, int, less_deref< Residue > > graphsuper;
     
   public:
 
@@ -86,7 +86,7 @@ namespace mccore
      * Initializes the object with the right's content (deep copy).
      * @param right the object to copy.
      */
-    GraphModel (const GraphModel &right);
+    GraphModel (const AbstractModel &right);
 
     /**
      * Clones the model.
@@ -116,7 +116,7 @@ namespace mccore
      * @param right the object to copy.
      * @return itself.
      */
-    GraphModel& operator= (const GraphModel &right);
+    GraphModel& operator= (const AbstractModel &right);
 
     /**
      * Gets the model reference at nth position.
@@ -207,7 +207,7 @@ namespace mccore
      * @param w the vertex weight.
      * @return true if the element was inserted, false if already present.
      */
-    virtual bool insert (const Residue *&v, const float &w) { return false; }
+    virtual bool insert (const Residue *&v, const int &w) { return false; }
 
   public:
     
@@ -227,7 +227,7 @@ namespace mccore
      * @param w the Residue weight.
      * @return the position where the residue was inserted.
      */
-    virtual iterator insert (const Residue &res, float w)
+    virtual iterator insert (const Residue &res, int w)
     {
       annotated = false;
       graphsuper::insert (res.clone (), w);
@@ -235,27 +235,11 @@ namespace mccore
     }
       
     /**
-     * Inserts the residue range before pos.
-     * @param pos the iterator where the residue will be placed.
-     * @param f the first iterator in the range.
-     * @param l the last iterator in the range.
-     */
-    template <class InputIterator>
-    void insert (InputIterator f, InputIterator l)
-    {
-      annotated = false;
-      graphsuper::insertRange (f, l);
-    }
-
-    /**
      * Erases a residue from the model.
      * @param pos the position to erase.
      * @return an iterator on the next residue.
      */ 
-    virtual iterator erase (iterator pos) 
-    {
-      return iterator (graphsuper::erase (&*pos));
-    }
+    virtual iterator erase (AbstractModel::iterator pos);
 
     /**
      * Finds a residue given it's residue id.  Returns an iterator
