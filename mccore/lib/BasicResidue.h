@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 //
 //  This file is part of mccore.
 //  
@@ -56,7 +56,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Patrick Gendron <gendrop@iro.umontreal.ca>
-   * @version $Id: BasicResidue.h,v 1.2 2003-04-11 01:33:44 gendrop Exp $
+   * @version $Id: BasicResidue.h,v 1.3 2003-05-15 19:10:51 thibaup Exp $
    */
   class BasicResidue
   {
@@ -143,9 +143,10 @@ namespace mccore {
      * Creates a residue containing idealized coordinates of a
      * standard residue as defined by G.Parkinson et al., ACTA CRYST.D
      * (1996) v. 52, 57-64.
+     * @param h_lp flag for hydrogens and lone pairs addition.
      * @return true if the operation was successful.
      */
-    virtual bool setIdeal ();
+    virtual bool setIdeal (bool h_lp = true);
 
     // OPERATORS ------------------------------------------------------------
 

@@ -79,7 +79,7 @@ namespace mccore {
 
 
   bool 
-  BasicResidue::setIdeal ()
+  BasicResidue::setIdeal (bool h_lp)
   {
     if (!type->isNucleicAcid ()) return false;
 
@@ -141,7 +141,14 @@ namespace mccore {
       insert (Atom (0.279f, 0.500f, 3.685f, AtomType::aC5)); 
       insert (Atom (0.231f, -0.299f, 4.949f, AtomType::aC5M)); 
       insert (Atom (0.000f, 0.000f, 0.000f, AtomType::aC1p));	    
-    } else {
+    } else if (type == ResidueType::rPhosphate) {
+      insert (Atom ( 4.691f,  0.327f, -2.444f, AtomType::aP));
+      insert (Atom ( 5.034f,  1.678f, -1.932f, AtomType::aO1P));
+      insert (Atom ( 4.718f,  0.068f, -3.906f, AtomType::aO2P));
+      insert (Atom ( 3.246f, -0.057f, -1.895f, AtomType::aO5p));
+      insert (Atom ( 5.662f, -0.712f, -1.734f, AtomType::aO3p));
+    }
+    else {
       return false;
     }
 
@@ -175,8 +182,11 @@ namespace mccore {
     }
 
     finalize ();
-    addHydrogens();
-    addLonePairs();
+
+    if (h_lp) {
+      addHydrogens();
+      addLonePairs();
+    }
 
     return true;    
   }
@@ -330,7 +340,11 @@ namespace mccore {
     } else if (type->isAminoAcid ()) {
       pivot[0] = get (AtomType::aCA);
       pivot[1] = get (AtomType::aN);
-      pivot[2] = get (AtomType::aPSAZ);	   
+      pivot[2] = get (AtomType::aPSAZ);
+    } else if (type->isPhosphate ()) {
+      pivot[0] = get (AtomType::aP);
+      pivot[1] = get (AtomType::aO3p);
+      pivot[2] = get (AtomType::aO5p);
     } else if (size() >= 3) {
       pivot[0] = (Atom*) atomGlobal[0];
       pivot[1] = (Atom*) atomGlobal[1];
@@ -364,7 +378,11 @@ namespace mccore {
     } else if (type->isAminoAcid ()) {
       pivot[0] = get (AtomType::aCA);
       pivot[1] = get (AtomType::aN);
-      pivot[2] = get (AtomType::aPSAZ);	   
+      pivot[2] = get (AtomType::aPSAZ);
+    } else if (type->isPhosphate ()) {
+      pivot[0] = get (AtomType::aP);
+      pivot[1] = get (AtomType::aO3p);
+      pivot[2] = get (AtomType::aO5p);      
     } else if (size() >= 3) {
       pivot[0] = (Atom*) atomGlobal[0];
       pivot[1] = (Atom*) atomGlobal[1];
@@ -540,6 +558,8 @@ namespace mccore {
       insert (Atom (y, AtomType::aPSY));
       insert (Atom (z, AtomType::aPSZ));
 
+    } else if (type->isPhosphate ()) {
+      // no pseudo atoms in phosphate residue, nothing to do!
     } else if (type->isAminoAcid ()) {
       if ((v1 = get (AtomType::aCA)) != 0 &&
 	  (v2 = get (AtomType::aN)) != 0 &&

@@ -354,7 +354,11 @@ namespace mccore {
     } else if (type->isAminoAcid ()) {
       pivot[0] = get (AtomType::aCA);
       pivot[1] = get (AtomType::aN);
-      pivot[2] = get (AtomType::aPSAZ);	   
+      pivot[2] = get (AtomType::aPSAZ);
+    } else if (type->isPhosphate ()) {
+      pivot[0] = get (AtomType::aP);
+      pivot[1] = get (AtomType::aO3p);
+      pivot[2] = get (AtomType::aO5p);      
     } else if (size() >= 3) {
       pivot[0] = (Atom*) atomGlobal[0];
       pivot[1] = (Atom*) atomGlobal[1];
