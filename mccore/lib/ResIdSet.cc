@@ -3,7 +3,7 @@
 // Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Oct 26 10:24:02 2000
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 // 
 //  This file is part of mccore.
 //  
@@ -95,6 +95,8 @@ namespace mccore {
   {
     if (str)
       {
+	if (strlen (str) == 0) return;
+
 	char* str_copy = new char[strlen (str) + 1];
 	char* str_copy_ptr = str_copy;
 	char* token = 0;
