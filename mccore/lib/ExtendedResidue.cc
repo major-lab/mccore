@@ -3,7 +3,7 @@
 // Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.13 $
+// $Revision: 1.14 $
 // 
 //  This file is part of mccore.
 //  
@@ -279,7 +279,7 @@ namespace mccore {
   }
 
 
-  void ExtendedResidue::finalize ()
+  void ExtendedResidue::finalize (bool h_lp)
   {
     unsigned int i;
     Vector3D *pivot[3];
@@ -290,9 +290,11 @@ namespace mccore {
     if (!getType ()->isPhosphate ()) {
     
       if (getType ()->isNucleicAcid ()) {
-	removeOptionals ();
-	addHydrogens ();
-	addLonePairs ();
+	removeOptionals ()q;
+	if (h_lp) {
+	  addHydrogens ();
+	  addLonePairs ();
+	}
       }
 
       /* Compute the location of the pseudo atoms. */
