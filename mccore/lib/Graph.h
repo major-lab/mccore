@@ -4,7 +4,7 @@
 //                  Université de Montréal
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 00:05:15 2004
-// $Revision: 1.23.4.4 $
+// $Revision: 1.23.4.5 $
 // 
 // This file is part of mccore.
 // 
@@ -28,6 +28,7 @@
 
 #include <exception>
 #include <functional>
+#include <iomanip>
 #include <iostream>
 #include <list>
 #include <utility>
@@ -60,7 +61,7 @@ namespace mccore
    * costly.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Graph.h,v 1.23.4.4 2004-12-13 04:34:22 larosem Exp $
+   * @version $Id: Graph.h,v 1.23.4.5 2004-12-13 07:13:22 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -654,7 +655,7 @@ namespace mccore
      */
     V& internalGetVertex (Graph::label l) throw (NoSuchElementException)
     {
-      if (vertices.size <= l)
+      if (vertices.size () <= l)
 	{
 	  throw NoSuchElementException ();
 	}
@@ -670,7 +671,7 @@ namespace mccore
      */
     const V& internalGetVertex (Graph::label l) const throw (NoSuchElementException)
     {
-      if (vertices.size <= l)
+      if (vertices.size () <= l)
 	{
 	  throw NoSuchElementException ();
 	}
@@ -686,7 +687,7 @@ namespace mccore
      */
     VW& internalGetVertexWeight (Graph::label l) throw (NoSuchElementException)
     {
-      if (vertexWeights.size <= l)
+      if (vertexWeights.size () <= l)
 	{
 	  throw NoSuchElementException ();
 	}
@@ -702,7 +703,7 @@ namespace mccore
      */
     const VW& internalGetVertexWeight (Graph::label l) const throw (NoSuchElementException)
     {
-      if (vertexWeights.size <= l)
+      if (vertexWeights.size () <= l)
 	{
 	  throw NoSuchElementException ();
 	}
@@ -718,7 +719,7 @@ namespace mccore
      */
     void internalSetVertexWeight (Graph::label l, VW &w) throw (NoSuchElementException)
     {
-      if (vertexWeights.size <= l)
+      if (vertexWeights.size () <= l)
 	{
 	  throw NoSuchElementException ();
 	}
@@ -734,7 +735,7 @@ namespace mccore
      */
     E& internalGetEdge (Graph::label l) throw (NoSuchElementException)
     {
-      if (edges.size <= l)
+      if (edges.size () <= l)
 	{
 	  throw NoSuchElementException ();
 	}
@@ -750,7 +751,7 @@ namespace mccore
      */
     const E& internalGetEdge (Graph::label l) const throw (NoSuchElementException)
     {
-      if (edges.size <= l)
+      if (edges.size () <= l)
 	{
 	  throw NoSuchElementException ();
 	}
@@ -832,7 +833,7 @@ namespace mccore
      */
     EW& internalGetEdgeWeight (Graph::label l) throw (NoSuchElementException)
     {
-      if (edgeWeights.size <= l)
+      if (edgeWeights.size () <= l)
 	{
 	  throw NoSuchElementException ();
 	}
@@ -848,7 +849,7 @@ namespace mccore
      */
     const EW& internalGetEdgeWeight (Graph::label l) const throw (NoSuchElementException)
     {
-      if (edgeWeights.size <= l)
+      if (edgeWeights.size () <= l)
 	{
 	  throw NoSuchElementException ();
 	}
@@ -947,7 +948,7 @@ namespace mccore
      * @param v the vertex to insert.
      * @return true if the element was inserted, false if already present.
      */
-    virtual bool insert (const V &v) = 0;
+    virtual bool insert (V &v) = 0;
     
     /**
      * Inserts a vertex in the graph.
@@ -955,7 +956,7 @@ namespace mccore
      * @param w the vertex weight.
      * @return true if the element was inserted, false if already present.
      */
-    virtual bool insert (const V &v, VW &w) = 0;
+    virtual bool insert (V &v, VW &w) = 0;
     
     /**
      * Inserts a vertex range.
@@ -979,6 +980,14 @@ namespace mccore
      * @return an iterator over the next vertex element.
      */
     virtual Graph::iterator erase (const V &v) = 0;
+
+    /**
+     * Erase a vertex label from the graph.  If an edge is connected to this
+     * vertex label it is also removed.
+     * @param l the vertex label to remove.
+     * @return an iterator over the next vertex element.
+     */
+    virtual Graph::iterator internalErase (Graph::label l) = 0;
 
     /**
      * Finds a vertex in the graph.
@@ -1056,24 +1065,119 @@ namespace mccore
      * @param w the weight of this edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool connect (const V &o, const V &p, E &e, W &w) = 0;
+    virtual bool connect (const V &h, const V &t, E &e, W &w) = 0;
     
     /**
-     * Disconnects two vertices of the graph.
+     * Connects two vertices labels of the graph with an edge.
+     * @param h the head vertex label of the edge.
+     * @param t the tail vertex label of the edge.
+     * @param e the edge.
+     * @return true if the connect operation succeeded.
+     */
+    virtual bool internalConnect (Graph::label h, Graph::label t, E &e) = 0;
+    
+    /**
+     * Connects two vertices labels of the graph with an edge and weight.
+     * @param h the head vertex label of the edge.
+     * @param t the tail vertex label of the edge.
+     * @param e the edge.
+     * @param w the weight of this edge.
+     * @return true if the connect operation succeeded.
+     */
+    virtual bool internalConnect (Graph::label h, Graph::label t, E &e, W &w) = 0;
+    
+    /**
+     * Disconnects two endvertices of the graph.
      * @param h the head vertex of the edge.
      * @param t the tail vertex of the edge.
      * @return true if the vertices were disconnected.
      */
-    virtual bool disconnect (const V &o, const V &p) = 0;
+    virtual bool disconnect (const V &t, const V &h) = 0;
+    
+    /**
+     * Disconnects two endvertices labels of the graph.
+     * @param h the head vertex of the edge.
+     * @param t the tail vertex of the edge.
+     * @return true if the vertices were disconnected.
+     */
+    virtual bool internalDisconnect (Graph::label h, Graph::label t) = 0;
     
     // I/O  -----------------------------------------------------------------
 
     /**
      * Writes the object to a stream.
-     * @param os The stream.
-     * @return The written stream.
+     * @param os the stream.
+     * @return the stream.
      */
-    virtual ostream& write (ostream& os) const = 0;
+    virtual ostream& write (ostream& os) const
+    {
+      vector< V >::const_iterator vit;
+      vector< VW >::const_iterator vwit;
+      vector< E >::const_iterator eit;
+      vector< EW >::const_iterator ewit;
+      EV2ELabel::const_iterator evit;
+      Graph::label counter;
+      Graph::label linecounter;
+
+      os << "[Vertices]" << endl;
+      for (vit = vertices.begin (), vwit = vertexWeights.begin (), counter = 0; vertices.end () != vit; ++vit, ++vwit, ++counter)
+	{
+	  os << setw (5) << counter << "  " << *vit << "  " << *vwit << endl;
+	}
+      os << endl << "[Edges]" << endl;
+      for (eit = edges.begin (), ewit = edgeWeights.begin (), counter = 0; edges.end () != eit; ++eit, ++ewit, ++counter)
+	{
+	  os << setw (5) << counter << "  " << *eit << "  " << *ewit << endl;
+	}
+      os << endl << "[Adjacency matrix]" << endl;
+      for (counter = 0; vertices.size () > counter; ++counter)
+	{
+	  os << setw (5) << counter;
+	}
+      linecounter = 0;
+      os << endl << setw (5) << linecounter;      
+      for (counter = 0, evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit, ++counter)
+	{
+	  Graph::label evline;
+	  Graph::label evcolumn;
+
+	  evline = evit->first.getHeadLabel ();
+	  evcolumn = evit->first.getTailLabel ();
+	  while (linecounter < evline)
+	    {
+	      while (vertices.size () > counter)
+		{
+		  os << setw (5) << '.';
+		  ++counter;
+		}
+	      counter = 0;
+	      ++linecounter;
+	      os << endl << setw (5) << linecounter;
+	    }
+	  while (counter < evcolumn)
+	    {
+	      os << setw (5) << '.';
+	      ++counter;
+	    }
+	  os << setw (5) << evit->second;
+	}
+      while (linecounter < vertices.size ())
+	{
+	  while (counter < vertices.size ())
+	    {
+	      os << setw (5) << '.';
+	      ++counter;
+	    }
+	  counter = 0;
+	  ++linecounter;
+	  if (linecounter < vertices.size ())
+	    {
+	      os << endl << setw (5) << linecounter;
+	    }
+	}
+      os << endl;      
+      return os;
+    }
     
   };
 

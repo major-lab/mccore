@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Dec 10 19:09:13 2004
-// $Revision: 1.12.2.2 $
+// $Revision: 1.12.2.3 $
 // 
 // This file is part of mccore.
 // 
@@ -27,8 +27,8 @@
 #define _mccore_UndirectedGraph_h_
 
 #include <functional>
-#include <iostream>
-#include <map>
+#include <list>
+#include <utility>
 #include <vector>
 
 #include "Graph.h"
@@ -43,42 +43,15 @@ namespace mccore
    * Undirected graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: UndirectedGraph.h,v 1.12.2.2 2004-12-13 04:34:26 larosem Exp $
+   * @version $Id: UndirectedGraph.h,v 1.12.2.3 2004-12-13 07:13:35 larosem Exp $
    */
   template< class V,
 	    class E,
 	    class VW = float,
 	    class EW = float,
 	    class Vertex_Comparator = less< V > >	    
-  class UndirectedGraph : public Graph<V,E,VW,EW,Vertex_Comparator>
+  class UndirectedGraph : public Graph< V, E, VW, EW, Vertex_Comparator>
   {
-
-  protected:
-    
-    /**
-     * The vertex collection.
-     */
-    vector< V > vertices;
-
-    /**
-     * The vertex weight collection.
-     */
-    vector< VW > vertexWeights;
-
-    /**
-     * The EdgeEntry collection.
-     */
-    vector< Graph::EdgeEntry< E, EW > > edges;
-
-    /**
-     * The map between a vertex and its index.
-     */
-    map< V, size_type, Vertex_Comparator > vertex2ind;
-    
-    /**
-     * The map between a vertex id and a map of vertex id to edge entry index.
-     */
-    map< size_type, map< size_type, typename vector< Graph::EdgeEntry< E, EW > >::size_type > > internalGraph;
 
   public:
 
@@ -87,19 +60,13 @@ namespace mccore
     /**
      * Initializes the object.
      */
-    UndirectedGraph () { }
+    UndirectedGraph () : Graph () { }
 
     /**
      * Initializes the object with the right's content.
      * @param right the object to copy.
      */
-    UndirectedGraph (const UndirectedGraph &right)
-      : vertices (right.vertices),
-	vertexWeights (right.vertexWeights),
-	edges (right.edges),
-	vertex2ind (right.vertex2ind),
-	internalGraph (right.internalGraph)
-    { }
+    UndirectedGraph (const UndirectedGraph &right) : Graph (right) { }
 
     /**
      * Clones the object.
@@ -107,11 +74,11 @@ namespace mccore
      */
     virtual Graph* clone () const
     {
-      return new UndirectedGraph<V,VW,E,EW,Vertex_Comparator> (*this);
+      return new UndirectedGraph< V, VW, E, EW, Vertex_Comparator> (*this);
     }
 
     /**
-     * Destructs the object.
+     * Destroys the object.
      */
     virtual ~UndirectedGraph () { }
 
@@ -126,260 +93,338 @@ namespace mccore
     {
       if (this != &right)
 	{
-	  vertices = right.vertices;
-	  vertexWeights = right.vertexWeights;
-	  edges = right.edges;
-	  vertex2ind = right.vertex2ind;
-	  internalGraph = right.internalGraph;
+	  Graph::operator= (right);
 	}
       return *this;
     }	  
 
     // ACCESS ---------------------------------------------------------------
 
-    /**
-     * Gets the vertex weight.
-     * @param n the vertex.
-     * @return the vertex weight.
-     */
-    virtual VW& getVertexWeight (const V &n) throw (NoSuchElementException)
-    {
-      map<
-
-    /**
-     * Gets the vertex weight.
-     * @param n the vertex.
-     * @return the vertex weight.
-     */
-    virtual const VW& getVertexWeight (const V &n) const = 0;
-
-    /**
-     * Sets the vertex weight.
-     * @param n the vertex.
-     * @param w the vertex weight.
-     */
-    virtual void setVertexWeight (const V &n, const VW &w) = 0;
-
-    /**
-     * Gets the edge that exists between vertices o and p.
-     * @param o an extremity of the edge.
-     * @param p an extremity of the edge.
-     * @return the edge.
-     */
-    virtual E& getEdge (const V &o, const V &p) = 0;
-
-    /**
-     * Gets the edge that exists between vertices o and p.
-     * @param o an extremity of the edge.
-     * @param p an extremity of the edge.
-     * @return the edge.
-     */
-    virtual const E& getEdge (const V &o, const V &p) const = 0;
-
-    /**
-     * Gets the edge weight.
-     * @param o the origin vertex.
-     * @param p the destination vertex.
-     * @return the edge weight.
-     */
-    virtual EW& getWeight (const V &o, const V &p) = 0;
-    
-    /**
-     * Gets the edge weight.
-     * @param o the origin vertex.
-     * @param p the destination vertex.
-     * @return the edge weight.
-     */
-    virtual const EW& getWeight (const V &o, const V &p) const = 0;
-
-    /**
-     * Sets the edge weight.
-     * @param o the origin vertex.
-     * @param p the destination vertex.
-     * @param w the new weight.
-     */
-    virtual void setEdgeWeight (const V &o, const V &p, const EW &w) = 0;
-
-    /**
-     * Gets the id of the vertex.
-     * @param v the vertex.
-     * @return the vertex id.
-     */
-    virtual size_type getVertexIndex (const V &v) const = 0;
-    
-    /**
-     * Determines if the vertex is in the graph.
-     * @param v the vertex to find.
-     * @return wheter this graph containst the vertex v.
-     */
-    virtual bool contains (const V &v) const = 0;
-
-    /**
-     * Returns true if there exists an edge between vertices o and p.
-     * @param o an extremity of the edge.
-     * @param p an extremity of the edge.
-     * @return true if there exists an edge between vertices o and p.
-     */
-    virtual bool areConnected (const V &o, const V &p) const = 0;
-
-    /**
-     * Returns the neighbors of the given vertex.
-     * @param o a vertex in the graph.
-     * @return the list of neighbors.
-     */
-    virtual list< V > getNeighbors (const V& o) const = 0;
-
-    /**
-     * Gets a vertex given its id.
-     * @param idx the vertex id.
-     * @return the vertex.
-     */
-    virtual V& internalGetVertex (size_type idx) = 0;
-
-    /**
-     * Gets a vertex given its id.
-     * @param idx the vertex id.
-     * @return the vertex.
-     */
-    virtual const V& internalGetVertex (size_type idx) const = 0;
-
-    /**
-     * Gets the vertex index weight.
-     * @param idx the vertex index.
-     * @return the vertex weight.
-     */
-    virtual VW& internalGetVertexWeight (size_type idx) = 0;
-
-    /**
-     * Gets the vertex index weight.
-     * @param idx the vertex index.
-     * @return the vertex weight.
-     */
-    virtual const VW& internalGetVertexWeight (size_type idx) const = 0;
-
-    /**
-     * Sets the vertex index weight.
-     * @param idx the vertex index.
-     * @param w the new vertex weight.
-     */
-    virtual void internalSetVertexWeight (size_type idx, const VW &w) = 0;
-
-    /**
-     * Gets the edge given its index.
-     * @param idx the edge index.
-     * @return the edge.
-     */
-    virtual E& internalGetEdge (size_type idx) = 0;
-
-    /**
-     * Gets the edge given its index.
-     * @param idx the edge index.
-     * @return the edge.
-     */
-    virtual const E& internalGetEdge (size_type idx) const = 0;
-
-    /**
-     * Gets the edge index that exists between vertices indexes o and p.
-     * @param o an extremity of the edge.
-     * @param p an extremity of the edge.
-     * @return the edge index.
-     */
-    virtual size_type internalGetEdgeIndex (size_type o, size_type p) const = 0;
-    
-    /**
-     * Gets the edge weight.
-     * @param o the origin vertex index.
-     * @param p the destination vertex index.
-     * @return the edge weight.
-     */
-    virtual EW& internalGetEdgeWeight (size_type o, size_type p) = 0;
-
-    /**
-     * Gets the edge weight.
-     * @param o the origin vertex index.
-     * @param p the destination vertex index.
-     * @return the edge weight.
-     */
-    virtual const EW& internalGetEdgeWeight (size_type o, size_type p) const = 0;
-
-    /**
-     * Gets the edge weight given the edge index.
-     * @param idx the edge index.
-     * @return the edge weight.
-     */
-    virtual EW& internalGetEdgeWeight (size_type idx) = 0;
-
-    /**
-     * Gets the edge weight given the edge index.
-     * @param idx the edge index.
-     * @return the edge weight.
-     */
-    virtual const EW& internalGetEdgeWeight (size_type idx) const = 0;
-
-    /**
-     * Determines if the vertex index is in the graph.
-     * @param idx the vertex index to find.
-     * @return whether the index is within the range of vertices.
-     */
-    virtual bool internalContains (size_type idx) const = 0;
-
-    /**
-     * Returns true if there exists an edge between vertices indexes o and p.
-     * @param o an extremity of the edge.
-     * @param p an extremity of the edge.
-     * @return true if there exists an edge between o and p.
-     */
-    virtual bool internalAreConnected (size_type o, size_type p) const = 0;
-
-    /**
-     * Returns the neighbors of the given node.
-     * @param o a node in the graph.
-     * @return the list of neighbors.
-     */
-    virtual list< size_type > internalGetNeighbors (size_type o) const = 0;
-
-    /**
-     * Gets the iterator pointing to the beginning of the graph vertices.
-     * @return the iterator.
-     */
-    virtual iterator begin () = 0;
-
-    /**
-     * Gets the iterator pointing to the end of the graph vertices.
-     * @return the iterator.
-     */
-    virtual iterator end () = 0;
-
-    /**
-     * Gets the const_iterator pointing to the beginning of the graph vertices.
-     * @return the iterator.
-     */
-    virtual const_iterator begin () const = 0;
-
-    /**
-     * Gets the const_iterator pointing to the end of the graph vertices.
-     * @return the iterator.
-     */
-    virtual const_iterator end () const = 0;
-
     // METHODS --------------------------------------------------------------
 
-    // I/O  -----------------------------------------------------------------
+    /**
+     * Inserts a vertex in the graph.
+     * @param v the vertex to insert.
+     * @return true if the element was inserted, false if already present.
+     */
+    virtual bool insert (V &v)
+    {
+      V2VLabel::iterator it;
+
+      if (v2vlabel.end () == (it = v2vlabel.find (&v)))
+	{
+	  vertices.push_back (v);
+	  v2vlabel.insert (make_pair (&vertices.back (), vertices.size () - 1));
+	  vertexWeights.resize (vertexWeights.size () + 1);
+	  return true;
+	}
+      return false;
+    }
+    
+    /**
+     * Inserts a vertex in the graph.
+     * @param v the vertex to insert.
+     * @param w the vertex weight.
+     * @return true if the element was inserted, false if already present.
+     */
+    virtual bool insert (V &v, VW &w)
+    {
+      V2VLabel::iterator it;
+
+      if (v2vlabel.end () == (it = v2vlabel.find (&v)))
+	{
+	  vertices.push_back (v);
+	  vertexWeights.push_back (w);
+	  v2vlabel.insert (make_pair (&vertices.back (), vertices.size () - 1));
+	  return true;
+	}
+      return false;
+    }
+
+  private:
 
     /**
-     * Writes the object to a stream.
-     * @param os The stream.
-     * @return The written stream.
+     * Erase a vertex label from the graph.  If an edge is connected to this
+     * vertex label it is also removed.  No check is made on label validity.
+     * @param l the vertex label to remove.
+     * @return an iterator over the next vertex element.
      */
-    ostream& write (ostream& os) const;
+    Graph::iterator internalEraseNoCheck (Graph::label l)
+    {
+      list< Graph::label > neighbors = internalGetNeighbors (l);
+
+      if (! neighbors.empty ())
+	{
+	  list< Graph::label > lit;
+	  vector< V >::iterator vit;
+	  EV2ELabel::iterator evit;
+	  EV2ELabel newEV2;
+
+	  for (lit = neighbors.begin (), neighbors.end () != lit; ++lit)
+	    {
+	      internalDisconnectNoCheck (l, *lit);
+	    }
+	  vertices.erase (vertices.begin () + l);
+	  vertexWeights.erase (vertexWeights.begin () + l);
+	  v2vlabel.clear ();
+	  for (vit = vertices.begin (); vertices.end () != vit; ++vit)
+	    {
+	      v2vlabel.insert (make_pair (&*vit, vit - vertices.begin ()));
+	    }
+	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
+	    {
+	      Graph::label h;
+	      Graph::label t;
+	      
+	      h = evit->first.getHeadLabel ();
+	      t = evit->first.getTailLabel ();
+	      if (h > l)
+		{
+		  --h;
+		}
+	      if (t > l)
+		{
+		  --t;
+		}
+
+	      EndVertices ev (h, t);
+	      newEV2.insert (make_pair (ev, evit->second));
+	    }
+	  ev2elabel = newEV2;
+	  return true;
+	}
+      return false;
+    }
+
+  public:
+    
+    /**
+     * Erase a vertex from the graph.  If an edge is connected to this
+     * vertex it is also removed.
+     * @param v the vertex to remove.
+     * @return an iterator over the next vertex element.
+     */
+    virtual Graph::iterator erase (const V &v)
+    {
+      V2VLabel::iterator it;
+      
+      return (v2vlabel.end () != (it = v2vlabel.find (&v))
+	      ? internalEraseNoCheck (it->second)
+	      : false);
+    }
+
+    /**
+     * Erase a vertex label from the graph.  If an edge is connected to this
+     * vertex label it is also removed.
+     * @param l the vertex label to remove.
+     * @return an iterator over the next vertex element.
+     */
+    virtual Graph::iterator internalErase (Graph::label l)
+    {
+      return (vertices.size () > l
+	      ? internalEraseNoCheck (l)
+	      : false);
+    }
+    
+  private:
+    
+    /**
+     * Connects two vertices labels of the graph with an edge.  Two
+     * endvertices are added, pointing to the same edge.  No check are
+     * made on vertex labels validity.
+     * @param h the head vertex label of the edge.
+     * @param t the tail vertex label of the edge.
+     * @param e the edge.
+     * @return true if the connect operation succeeded.
+     */
+    bool internalConnectNoCheck (Graph::label h, Graph::label t, E &e)
+    {
+      EndVertices ev (h, t);
+      EV2ELabel::const_iterator evit;
+      
+      if (ev2elabel.end () == (evit = ev2elabel.find (ev)))
+	{
+	  EndVertices ev2 (t, h);
+	  
+	  ev2elabel.insert (make_pair (ev, edges.size ()));
+	  ev2elabel.insert (make_pair (ev2, edges.size ()));
+	  edges.push_back (e);
+	  edgeWeights.resize (edgeWeights.size () + 1);
+	  return true;
+	}
+      return false;
+    }
+
+    /**
+     * Connects two vertices of the graph with an edge and weight.  Two
+     * endvertices are added, pointing to the same edge.  No check are
+     * made on vertex labels validity.
+     * @param h the head vertex of the edge.
+     * @param t the tail vertex of the edge.
+     * @param e the edge.
+     * @param w the weight of this edge.
+     * @return true if the connect operation succeeded.
+     */
+    bool internalConnectNoCheck (Graph::label h, Graph::label t, E &e, EW &w)
+    {
+      EndVertices ev (h, t);
+      EV2ELabel::const_iterator evit;
+      
+      if (ev2elabel.end () == (evit = ev2elabel.find (ev)))
+	{
+	  EndVertices ev2 (t, h);
+	  
+	  ev2elabel.insert (make_pair (ev, edges.size ()));
+	  ev2elabel.insert (make_pair (ev2, edges.size ()));
+	  edges.push_back (e);
+	  edgeWeights.push_back (w);
+	  return true;
+	}
+      return false;
+    }
+    
+  public:
+    
+    /**
+     * Connects two vertices of the graph with an edge.  Two endvertices are
+     * added, pointing to the same edge.
+     * @param h the head vertex of the edge.
+     * @param t the tail vertex of the edge.
+     * @param e the edge.
+     * @return true if the connect operation succeeded.
+     */
+    virtual bool connect (const V &h, const V &t, E &e)
+    {
+      V2VLabel::const_iterator ith;
+      V2VLabel::const_iterator itt;
+
+      return (v2vlabel.end () != (ith = v2vlabel.find (&h))
+	      && v2vlabel.end () != (itt = v2vlabel.find (&t))
+	      ? internalConnectNoCheck (ith->second, itt->second, e)
+	      : false);
+    }
+    
+    /**
+     * Connects two vertices of the graph with an edge and weight.  Two
+     * endvertices are added, pointing to the same edge.
+     * @param h the head vertex of the edge.
+     * @param t the tail vertex of the edge.
+     * @param e the edge.
+     * @param w the weight of this edge.
+     * @return true if the connect operation succeeded.
+     */
+    virtual bool connect (const V &o, const V &p, E &e, W &w)
+    {
+      V2VLabel::const_iterator ith;
+      V2VLabel::const_iterator itt;
+
+      return (v2vlabel.end () != (ith = v2vlabel.find (&h))
+	      && v2vlabel.end () != (itt = v2vlabel.find (&t))
+	      ? internalConnectNoCheck (ith->second, itt->second, e, w)
+	      : false);
+    }
+
+    /**
+     * Connects two vertices labels of the graph with an edge.
+     * @param h the head vertex label of the edge.
+     * @param t the tail vertex label of the edge.
+     * @param e the edge.
+     * @return true if the connect operation succeeded.
+     */
+    virtual bool internalConnect (Graph::label h, Graph::label t, E &e)
+    {
+      return (vertices.size () > h && vertices.size () > t
+	      ? internalConnectNoCheck (h, t, e)
+	      : false);
+    }
+    
+    /**
+     * Connects two vertices labels of the graph with an edge and weight.
+     * @param h the head vertex label of the edge.
+     * @param t the tail vertex label of the edge.
+     * @param e the edge.
+     * @param w the weight of this edge.
+     * @return true if the connect operation succeeded.
+     */
+    virtual bool internalConnect (Graph::label h, Graph::label t, E &e, W &w)
+    {
+      return (vertices.size () > h && vertices.size () > t
+	      ? internalConnectNoCheck (h, t, e, w)
+	      : false);
+    }
+
+  private:
+    
+    /**
+     * Disconnects two endvertices labels of the graph.  No check are
+     * made on vertex labels validity.
+     * @param h the head vertex of the edge.
+     * @param t the tail vertex of the edge.
+     * @return true if the vertices were disconnected.
+     */
+    bool internalDisconnectNoCheck (Graph::label h, Graph::label t)
+    {
+      EndVertices ev (h, t);
+      EV2ELabel::iterator evit;
+      
+      if (ev2elabel.end () != (evit = ev2elabel.find (ev)))
+	{
+	  EndVertices ev2 (t, h);
+	  Graph::label l;
+	  
+	  l = evit->second;
+	  edges.erase (edges.begin () + l);
+	  edgeWeights.erase (edgeWeights.begin () + l);
+	  ev2elabel.erase (evit);
+	  ev2elabel.erase (ev2elabel.find (ev2));
+	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
+	    {
+	      if (evit->second > l)
+		{
+		  --evit->second;
+		}
+	    }
+	  return true;
+	}
+      return false;
+    }      
+
+  public:
+    
+    /**
+     * Disconnects the edge between two endvertices.
+     * @param h the head vertex of the edge.
+     * @param t the tail vertex of the edge.
+     * @return true if the vertices were disconnected.
+     */
+    virtual bool disconnect (const V &h, const V &t)
+    {
+      V2VLabel::const_iterator ith;
+      V2VLabel::const_iterator itt;
+
+      return (v2vlabel.end () != (ith = v2vlabel.find (&h))
+	      && v2vlabel.end () != (itt = v2vlabel.find (&t))
+	      ? internalDisconnectNoCheck (h, t)
+	      : false);
+    }
+
+    /**
+     * Disconnects two endvertices labels of the graph.
+     * @param h the head vertex of the edge.
+     * @param t the tail vertex of the edge.
+     * @return true if the vertices were disconnected.
+     */
+    virtual bool internalDisconnect (Graph::label h, Graph::label t)
+    {
+      return (vertices.size () > h && vertices.size () > t
+	      ? internalDisconnectNoCheck (h, t)
+	      : false);
+    }
+    
+    // I/O  -----------------------------------------------------------------
 
   };
 
-}
-
-namespace std
-{
-  ostream& operator<< (ostream &os, const mccore::UndirectedGraph& obj);
 }
 
 #endif
