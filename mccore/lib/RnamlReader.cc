@@ -4,8 +4,8 @@
 //                  UniversitÅÈ de MontrÅÈal.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
-// $Revision: 1.1.2.2 $
-// $Id: RnamlReader.cc,v 1.1.2.2 2003-11-11 19:55:13 larosem Exp $
+// $Revision: 1.1.2.3 $
+// $Id: RnamlReader.cc,v 1.1.2.3 2003-11-18 16:21:59 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -28,8 +28,8 @@
 #include <config.h>
 #endif
 
-#include <cstring>
-#include <cerrno>
+#include <string.h>
+#include <errno.h>
 
 #include "AbstractResidue.h"
 #include "CAtom.h"
@@ -124,7 +124,7 @@ RnamlReader::toMccore (const rnaml::Base &base)
   AbstractResidue *r;
   const char *str;
   char *type;
-  char c;
+  int c;
   const std::vector< rnaml::Atom* > &atoms = ((rnaml::Base&) base).getAtoms ();
   std::vector< rnaml::Atom* >::const_iterator cit;
 

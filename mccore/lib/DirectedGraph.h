@@ -4,9 +4,9 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu May 10 14:49:18 2001
-// Last Modified By : Patrick Gendron
-// Last Modified On : Wed Jan 15 13:22:09 2003
-// Update Count     : 6
+// Last Modified By : Martin Larose
+// Last Modified On : Tue Nov 18 11:19:45 2003
+// Update Count     : 7
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -29,8 +29,12 @@
 #ifndef _DirectedGraph_h_
 #define _DirectedGraph_h_
 
-#include <vector.h>
+#include <iostream>
 #include <map.h>
+#include <vector.h>
+
+using namespace std;
+
 
 
 /**

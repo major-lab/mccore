@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.1.4.3 $
-// $Id: RnamlWriter.cc,v 1.1.4.3 2003-11-11 19:55:19 larosem Exp $
+// $Revision: 1.1.4.4 $
+// $Id: RnamlWriter.cc,v 1.1.4.4 2003-11-18 16:22:03 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -29,10 +29,10 @@
 #endif
 
 #include <iostream>
-#include <cstring>
 #include <string>
+#include <string.h>
 #include <sstream>
-#include <cerrno>
+#include <errno.h>
 
 #include "AbstractResidue.h"
 #include "AtomType.h"

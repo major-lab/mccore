@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
-# $Revision: 1.14.8.3 $
-# $Id: configure.in,v 1.14.8.3 2003-11-13 21:06:34 larosem Exp $
+# $Revision: 1.14.8.4 $
+# $Id: configure.in,v 1.14.8.4 2003-11-18 16:19:42 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -62,7 +62,7 @@ AC_MSG_RESULT($ac_cv_have_fstreambase)
 if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
     case "$host" in
     *-sgi-*)
-        CXXSHFLAGS="$CXXFLAGS -O2 -woff 1681 -woff 3303 -ptused"
+        CXXSHFLAGS="$CXXFLAGS -O2 -woff 1681 -woff 3303 -ptused -LANG:std"
 	CXXFLAGS="$CXXFLAGS -O2 -woff 1681 -woff 3303 -ptused"
   	DEPFLAGS="-M"
 	echo "appending values of CPLUS_INCLUDE_PATH to include path..."
