@@ -234,8 +234,6 @@ namespace mccore
 	anc_O3p = *anc_O3p_it;
 	anc_O3p.transform (tmp);
       }
-
-    gamma = 3.1416;
   }
   
 

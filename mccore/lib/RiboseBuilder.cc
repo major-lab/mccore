@@ -140,8 +140,8 @@ namespace mccore
   RiboseBuilder::RiboseBuilder (char quality)
     : rho (0),
       chi (0),
-      gamma (0),
-      beta (0),
+      gamma (M_PI),
+      beta (M_PI),
       epsilon (0),
       built_count (0)
   {

@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Philippe Thibault <thibaup@iro.umontreal.ca>
 // Created On       : Mon Sep 29 14:59:19 2003
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 //
 //  This file is part of mccore.
 //  
@@ -34,10 +34,12 @@ namespace mccore
 {
 
   /**
-   * @short Interface class. Builds a theoretical ribose between a RNA base and its two adjacent phosphates.
+   * @short Interface class. Builds a theoretical ribose between a RNA
+   * base and its two adjacent phosphates.
    *
-   * Interface class. Builds a theoretical ribose between a RNA base and its two adjacent phosphates.
-   * Building is addressed in torsion space < rho, chi, gamma, beta, epsilon >
+   * Interface class. Builds a theoretical ribose between a RNA base
+   * and its two adjacent phosphates.  Building is addressed in
+   * torsion space < rho, chi, gamma, beta, epsilon >
    *
    * @author Philippe Thibault <thibaup@iro.umontreal.ca>
    */

@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Philippe Thibault <thibaup@iro.umontreal.ca> 
 // Created On       : Mon Sep 29 14:59:19 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 //
 //  This file is part of mccore.
 //  
@@ -221,8 +221,9 @@ namespace mccore
     virtual void init ();
 
     /**
-     * Build ribose's atoms according to current torsions value and building referential.
-     * @return Built ribose quality.
+     * Build ribose's atoms according to current torsions value and
+     * building referential.  
+     @return Built ribose quality.
      */
     virtual float build ();
   
