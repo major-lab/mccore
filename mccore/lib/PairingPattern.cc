@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Thu May 31 08:17:56 2001
-// $Revision: 1.8 $
-// $Id: PairingPattern.cc,v 1.8 2004-09-16 15:19:19 larosem Exp $
+// $Revision: 1.9 $
+// $Id: PairingPattern.cc,v 1.9 2004-09-17 22:06:15 larosem Exp $
 
 
 #ifdef HAVE_CONFIG_H
@@ -774,7 +774,7 @@ namespace mccore {
       obs << "! ";
     else
       obs << "  ";
-    obs << desc.direction << " " << desc.hbond << endl;
+    return obs << desc.direction << " " << desc.hbond << endl;
   }
 
 }
