@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.18 $
+// $Revision: 1.19 $
 //
 // This file is part of mccore.
 // 
@@ -61,7 +61,7 @@ namespace mccore {
    * details).
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Model.h,v 1.18 2004-07-12 19:37:07 thibaup Exp $
+   * @version $Id: Model.h,v 1.19 2004-08-26 15:18:24 thibaup Exp $
    */
   class Model
   {
@@ -343,7 +343,7 @@ namespace mccore {
      * @param id the residue id.
      * @return a Model iterator.
      */
-    iterator find (const ResId &id);
+    virtual iterator find (const ResId &id);
 
     /**
      * Finds a residue given it's residue id.  Returns a Model iterator
@@ -352,7 +352,7 @@ namespace mccore {
      * @param id the residue id.
      * @return a Model iterator.
      */
-    const_iterator find (const ResId &id) const;
+    virtual const_iterator find (const ResId &id) const;
     
     /**
      * Sorts the model according to the Residue::operator<
@@ -374,7 +374,7 @@ namespace mccore {
     /**
      * Removes all of the residues from the model.  
      */
-    void clear();
+    virtual void clear();
 
     /**
      * Validates residues contained in the model.  The validated residues (amino
