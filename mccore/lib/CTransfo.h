@@ -236,6 +236,16 @@ public:
   float Strength () const;
 
   /**
+   * Computes the distance between two transfo.  For more details,
+   * see a discussion of the metric used in P. Gendron, S. Lemieuxs
+   * and F. Major (2001) Quantitative analysis of nucleic acid
+   * three-dimensional structures, J. Mol. Biol. 308(5):919-936
+   * @param m the other transfo.
+   * @return the computed distance.
+   */
+  float Distance (const CTransfo &m) const;
+  
+  /**
    * Applies the rotation given an angle about a given axis.
    * @param axis the vector representing normalised rotation axis.
    * @param theta the angle to rotate by (in radians).

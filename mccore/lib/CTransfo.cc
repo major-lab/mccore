@@ -4,9 +4,9 @@
 //                           Université de Montréal.
 // Author           : Patrick Gendron <gendrop@IRO.UMontreal.CA>
 // Created On       : Fri Oct  1 18:22:41 1999
-// Last Modified By : Patrick Gendron
-// Last Modified On : Wed Nov 13 16:49:38 2002
-// Update Count     : 11
+// Last Modified By : Philippe Thibault
+// Last Modified On : Mon Sep 29 11:39:54 2003
+// Update Count     : 12
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -264,6 +264,17 @@ CTransfo::Strength () const
 }
 
 
+float 
+CTransfo::Distance (const CTransfo &m) const 
+{
+  CTransfo a = *this;
+  CTransfo bi = m;
+  bi.Inverse ();
+    
+  CTransfo a_bi = a * bi;
+  CTransfo bi_a = bi * a;
+  return (a_bi.Strength () + bi_a.Strength ()) / 2;
+}
 
 CTransfo&
 CTransfo::Rotate (const CPoint3D &axis, float theta)

@@ -110,7 +110,7 @@ Residue::setIdeal ()
     insert (CAtom (0.579, 2.170, 2.844, a_C5));
     insert (CAtom (0.747, 0.934, 3.454, a_N7));
     insert (CAtom (0.520, 0.074, 2.491, a_C8));
-    insert (CAtom (0.000, 0.000, 0.000, a_C1p));
+    insert (CAtom (-0.094, -0.005, 0.017, a_C1p));
   } else if (mType->is_rC ()) {
     insert (CAtom (0.212, 0.668, 1.294, a_N1)); 
     insert (CAtom (0.193, -0.043, 2.462, a_C6));
@@ -120,7 +120,7 @@ Residue::setIdeal ()
     insert (CAtom (0.491, 1.984, 3.638, a_C4)); 
     insert (CAtom (0.631, 2.649, 4.788, a_N4)); 
     insert (CAtom (0.328, 0.569, 3.645, a_C5)); 
-    insert (CAtom (0.000, 0.000, 0.000, a_C1p));
+    insert (CAtom (0.064, -0.006, 0.002, a_C1p));
   } else if (mType->is_rG ()) {
     insert (CAtom (0.214, 0.659, 1.283, a_N9)); 
     insert (CAtom (0.254, 2.014, 1.509, a_C4)); 
@@ -133,7 +133,7 @@ Residue::setIdeal ()
     insert (CAtom (0.562, 2.154, 2.846, a_C5)); 
     insert (CAtom (0.712, 0.912, 3.448, a_N7)); 
     insert (CAtom (0.498, 0.057, 2.485, a_C8)); 
-    insert (CAtom (0.000, 0.000, 0.000, a_C1p));
+    insert (CAtom (-0.075,  -0.005,   0.009, a_C1p));
   } else if (mType->is_rU ()) {
     insert (CAtom (0.212, 0.676, 1.281, a_N1)); 
     insert (CAtom (0.195, -0.023, 2.466, a_C6));
@@ -143,13 +143,8 @@ Residue::setIdeal ()
     insert (CAtom (0.497, 1.990, 3.725, a_C4)); 
     insert (CAtom (0.629, 2.653, 4.755, a_O4)); 
     insert (CAtom (0.329, 0.571, 3.657, a_C5)); 
-    insert (CAtom (0.000, 0.000, 0.000, a_C1p));
+    insert (CAtom (0.063,  -0.008,  -0.006, a_C1p));
   } else if (mType->is_Phosphate ()) {
-//       insert (CAtom ( 99.755, 106.228, 6.380, a_O3p));
-//       insert (CAtom (100.821, 105.050, 6.479, a_P));
-//       insert (CAtom (100.856, 104.272, 5.224, a_O1P));
-//       insert (CAtom (100.658, 104.316, 7.746, a_O2P));
-//       insert (CAtom (102.198, 105.850, 6.595, a_O5p));
     insert (CAtom ( 4.691f,  0.327f, -2.444f, a_P));
     insert (CAtom ( 5.034f,  1.678f, -1.932f, a_O1P));
     insert (CAtom ( 4.718f,  0.068f, -3.906f, a_O2P));
