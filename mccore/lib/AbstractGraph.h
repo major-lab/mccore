@@ -3,7 +3,7 @@
 // Copyright © 2003, 2004 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Dec  5 16:47:20 2003
-// $Revision: 1.2 $
+// $Revision: 1.2.2.1 $
 // 
 //  This file is part of mccore.
 //  
@@ -48,7 +48,7 @@ namespace mccore {
    * correct node comparator if needed.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: AbstractGraph.h,v 1.2 2004-04-06 21:08:11 larosem Exp $
+   * @version $Id: AbstractGraph.h,v 1.2.2.1 2004-12-10 03:44:45 larosem Exp $
    */
   template< class node_type, 
 	    class edge_type = bool,
@@ -211,7 +211,6 @@ namespace mccore {
       return 0;
     }
 
-
     /**
      * Finds a node in the graph.
      * @param n the node to find.
@@ -244,7 +243,7 @@ namespace mccore {
      * Get the number of elements in this graph.
      * @return the number of elements in the graph.
      */
-    virtual int size () const = 0;
+    virtual size_type size () const = 0;
 
 
     /**
@@ -489,7 +488,7 @@ namespace mccore {
   /**
    * Abstract base class for Undirected graphs. 
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: AbstractGraph.h,v 1.2 2004-04-06 21:08:11 larosem Exp $
+   * @version $Id: AbstractGraph.h,v 1.2.2.1 2004-12-10 03:44:45 larosem Exp $
    */
   template< class node_type, 
 	    class edge_type = bool,

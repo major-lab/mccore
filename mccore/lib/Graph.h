@@ -3,8 +3,8 @@
 // Copyright © 2003, 2004 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Apr 30 16:04:32 2003
-// $Revision: 1.23 $
-// $Id: Graph.h,v 1.23 2004-11-25 16:22:34 larosem Exp $
+// $Revision: 1.23.4.1 $
+// $Id: Graph.h,v 1.23.4.1 2004-12-10 03:44:53 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -53,7 +53,7 @@ namespace mccore {
    * correct node comparator if needed.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: Graph.h,v 1.23 2004-11-25 16:22:34 larosem Exp $
+   * @version $Id: Graph.h,v 1.23.4.1 2004-12-10 03:44:53 larosem Exp $
    */
   template< class node_type, 
 	    class edge_type = bool,
@@ -348,6 +348,17 @@ namespace mccore {
       return 0;
     }
 
+    /**
+     * Erase a node from the graph.
+     * @param it the iterator over the element to erase.
+     * @return an iterator to the element immediately following the one that
+     * was erased.
+     */ 
+    virtual iterator erase (iterator it)
+    {
+      cerr << "Undefined method (erase)" << endl;
+      return end ();
+    }
 
     /**
      * Determines if the node is in the graph
@@ -363,7 +374,7 @@ namespace mccore {
      * Get the number of elements in this graph.
      * @return the number of elements in the graph.
      */
-    int size () const {
+    size_type size () const {
       return nodes.size ();
     }
 

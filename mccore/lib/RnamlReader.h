@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // RnamlReader.h
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
-// $Revision: 1.2 $
+// $Revision: 1.2.2.1 $
 // 
 // This file is part of mccore.
 // 
@@ -45,7 +45,7 @@ using namespace std;
 namespace mccore {
   
   class Atom;
-  class Model;
+  class AbstractModel;
   class Molecule;
   class Residue;
   class ResidueFactoryMethod;
@@ -58,7 +58,7 @@ namespace mccore {
    * molecule.
    *
    * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: RnamlReader.h,v 1.2 2003-12-23 14:58:09 larosem Exp $
+   * @version $Id: RnamlReader.h,v 1.2.2.1 2004-12-10 03:45:15 larosem Exp $
    */
   class RnamlReader
   {
@@ -137,11 +137,11 @@ namespace mccore {
     Residue* toMccore (const rnaml::Base &base);
     
     /**
-     * Converts the rnaml Model to a mccore Model.
+     * Converts the rnaml Model to a mccore AbstractModel.
      * @param model the rnaml Model to convert.
-     * @return the mccore Model.
+     * @return the mccore AbstractModel.
      */
-    Model* toMccore (const rnaml::Model &model);
+    AbstractModel* toMccore (const rnaml::Model &model);
     
     /**
      * Converts the rnaml Molecule to a mccore Molecule.

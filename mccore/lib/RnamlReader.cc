@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // RnamlReader.cc
-// Copyright Å© 2003 Laboratoire de Biologie Informatique et ThÅÈorique
-//                  UniversitÅÈ de MontrÅÈal.
+// Copyright Å© 2003-04 Laboratoire de Biologie Informatique et ThÅÈorique
+//                     UniversitÅÈ de MontrÅÈal.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
-// $Revision: 1.3 $
-// $Id: RnamlReader.cc,v 1.3 2004-12-06 21:38:52 thibaup Exp $
+// $Revision: 1.3.2.1 $
+// $Id: RnamlReader.cc,v 1.3.2.1 2004-12-10 03:45:11 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -31,6 +31,7 @@
 #include <string.h>
 #include <errno.h>
 
+#include "AbstractModel.h"
 #include "Atom.h"
 #include "AtomType.h"
 #include "Messagestream.h"
@@ -155,10 +156,10 @@ namespace mccore {
   
   
   
-  Model*
+  AbstractModel*
   RnamlReader::toMccore (const rnaml::Model &model)
   {
-    Model *m;
+    AbstractModel *m;
     const vector< rnaml::Base* > &bases = ((rnaml::Model&) model).getBases ();
     vector< rnaml::Base* >::const_iterator cit;
     
@@ -207,7 +208,7 @@ namespace mccore {
 	
 	for (cit = models.begin (); models.end () != cit; ++cit)
 	{
-	  Model* mdl = toMccore (**cit);
+	  AbstractModel* mdl = toMccore (**cit);
 	  m->insert (*mdl);
 	  delete mdl;
 	}

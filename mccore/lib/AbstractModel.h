@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 16:12:42 2004
-// $Revision: 1.1 $
+// $Revision: 1.1.2.1 $
 //
 // This file is part of mccore.
 // 
@@ -46,22 +46,10 @@ namespace mccore
 
 
   /**
-   * @short Container for residues using a simple list.
-   *
-   * This object is the container for residues.  It is an unsorted list
-   * of residues.  Random access is simulated with sequential access.
-   * This class should be the replacement for nearly all Residue containers.
-   *
-   * NOTES:
-   *
-   * - The container contains pointers to residues but dereferenced
-   *   iterators yields object.
-   *
-   *  - Please do not change the STL container (see removeClash for
-   * details).
+   * Abstract class for Models.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: AbstractModel.h,v 1.1 2004-12-10 00:29:33 larosem Exp $
+   * @version $Id: AbstractModel.h,v 1.1.2.1 2004-12-10 03:44:49 larosem Exp $
    */
   class AbstractModel
   {
@@ -176,13 +164,21 @@ namespace mccore
   
     // LIFECYCLE ------------------------------------------------------------
 
+  private:
+
+    /**
+     * Initializes the object.
+     */
+    AbstractModel () { }
+
   protected:
     
     /**
      * Initializes the object.
-     * @param fm the residue factory methods that will instanciate new residues (default is @ref ExtendedResidueFM).
+     * @param fm the residue factory methods that will instanciate new
+     * residues (default is @ref ExtendedResidueFM).
      */
-    AbstractModel (const ResidueFactoryMethod *fm = 0);
+    AbstractModel (const ResidueFactoryMethod *fm);
 
     /**
      * Initializes the object with the right's content.

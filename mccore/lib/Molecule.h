@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // Molecule.h
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:36 2003
-// $Revision: 1.4 $
+// $Revision: 1.4.2.1 $
 // 
 // This file is part of mccore.
 // 
@@ -31,15 +31,12 @@
 #include <map>
 #include <string>
 
-#include "Model.h"
-
-
 using namespace std;
 
 
 namespace mccore
 {
-
+  class AbstractModel;
   class ResidueFactoryMethod;
   class iPdbstream;
   class oPdbstream;
@@ -52,7 +49,7 @@ namespace mccore
    * This is a collection of mccore Models in a simple STL list.
    *
    * @author Martin Larose (<larosem@iro.umontreal.ca>)
-   * @version $Id: Molecule.h,v 1.4 2004-12-07 21:10:23 thibaup Exp $
+   * @version $Id: Molecule.h,v 1.4.2.1 2004-12-10 03:45:07 larosem Exp $
    */
   class Molecule
   {
@@ -65,7 +62,7 @@ namespace mccore
     /**
      * Container for Models.
      */
-    list< Model* > models;
+    list< AbstractModel* > models;
 
     /**
      * Properties for the molecule class.
@@ -86,7 +83,7 @@ namespace mccore
      *
      * @author Martin Larose <larosem@iro.umontreal.ca>
      */
-    class molecule_iterator : public list< Model* >::iterator
+    class molecule_iterator : public list< AbstractModel* >::iterator
     {
     public:
 
@@ -95,14 +92,14 @@ namespace mccore
       /**
        * Initializes the iterator.
        */
-      molecule_iterator () : list< Model* >::iterator () { }
+      molecule_iterator () : list< AbstractModel* >::iterator () { }
     
       /**
        * Initializes the iterator with the list iterator.
        * @param lIt the list iterator.
        */
-      molecule_iterator (const list< Model* >::iterator &lIt)
-	: list< Model* >::iterator (lIt)
+      molecule_iterator (const list< AbstractModel* >::iterator &lIt)
+	: list< AbstractModel* >::iterator (lIt)
       { }
 
       // OPERATORS ------------------------------------------------------------
@@ -118,16 +115,16 @@ namespace mccore
        * Redefines the access operator* to get the dereferenced residue.
        * @return the referenced residue.
        */
-      Model& operator* () const
+      AbstractModel& operator* () const
       { 
-	return *list< Model* >::iterator::operator* (); 
+	return *list< AbstractModel* >::iterator::operator* (); 
       }
 
       /**
        * Redefines the access operator-> to get the dereferenced residue.
        * @return the pointed residue.
        */
-      Model* operator-> () const { return &(operator* ()); }
+      AbstractModel* operator-> () const { return &(operator* ()); }
     };
   
     /**
@@ -135,21 +132,21 @@ namespace mccore
      *
      * @author Martin Larose <larosem@iro.umontreal.ca>
      */
-    class molecule_const_iterator : public list< Model* >::const_iterator
+    class molecule_const_iterator : public list< AbstractModel* >::const_iterator
     {
     public:
 
       /**
        * Initializes the const iterator.
        */
-      molecule_const_iterator () : list< Model* >::const_iterator () { }
+      molecule_const_iterator () : list< AbstractModel* >::const_iterator () { }
     
       /**
        * Initializes the iterator with the list iterator.
        * @param lIt the list iterator.
        */
-      molecule_const_iterator (const list< Model* >::const_iterator &lIt)
-	: list< Model* >::const_iterator (lIt)
+      molecule_const_iterator (const list< AbstractModel* >::const_iterator &lIt)
+	: list< AbstractModel* >::const_iterator (lIt)
       { }
 
       /**
@@ -157,7 +154,7 @@ namespace mccore
        * @param it the molecule iterator.
        */
       molecule_const_iterator (const molecule_iterator& it)
-	: list< Model* >::const_iterator (it)
+	: list< AbstractModel* >::const_iterator (it)
       { }
 
       // OPERATORS ------------------------------------------------------------
@@ -173,14 +170,14 @@ namespace mccore
        * Redefines the access operator* to get the dereferenced residue.
        * @return the referenced residue.
        */
-      const Model& operator* () const
-      { return *list< Model* >::const_iterator::operator* (); }
+      const AbstractModel& operator* () const
+      { return *list< AbstractModel* >::const_iterator::operator* (); }
 
       /**
        * Redefines the access operator-> to get the dereferenced residue.
        * @return the pointed residue.
        */
-      const Model* operator-> () const { return &(operator* ()); }
+      const AbstractModel* operator-> () const { return &(operator* ()); }
     };
 
   public:
@@ -227,14 +224,14 @@ namespace mccore
      * @param nth the position of the reference to get.
      * @return the nth reference.
      */
-    Model& operator[] (size_type nth);
+    AbstractModel& operator[] (size_type nth);
 
     /**
      * Gets the model const_reference at nth position.
      * @param nth the position of the const_reference to get.
      * @return the nth const_reference.
      */
-    const Model& operator[] (size_type nth) const;
+    const AbstractModel& operator[] (size_type nth) const;
     
     // ACCESS ---------------------------------------------------------------
     
@@ -321,7 +318,7 @@ namespace mccore
      * @param model the model to insert.
      * @return the position where the residue was inserted.
      */
-    iterator insert (const Model& model)
+    iterator insert (const AbstractModel& model)
     {
       return this->models.insert (models.end (), model.clone ());
     }

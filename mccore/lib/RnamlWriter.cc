@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // RnamlWriter.cc
-// Copyright © 2003, 2004 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.5 $
-// $Id: RnamlWriter.cc,v 1.5 2004-12-06 21:38:56 thibaup Exp $
+// $Revision: 1.5.2.1 $
+// $Id: RnamlWriter.cc,v 1.5.2.1 2004-12-10 03:45:35 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -32,9 +32,9 @@
 #include <stdio.h>
 #include <string>
 #include <string.h>
-// #include <sstream>
 #include <errno.h>
 
+#include "AbstractModel.h"
 #include "Atom.h"
 #include "AtomType.h"
 #include "Messagestream.h"
@@ -147,10 +147,10 @@ namespace mccore {
   
   
   rnaml::Model*
-  RnamlWriter::toRnaml (const Model &model)
+  RnamlWriter::toRnaml (const AbstractModel &model)
   {
     rnaml::Model *m;
-    Model::const_iterator cit;
+    AbstractModel::const_iterator cit;
     
     m = new rnaml::Model ();
     for (cit = model.begin (); model.end () != cit; ++cit)
