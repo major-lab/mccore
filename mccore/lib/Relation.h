@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.12 $
+// $Revision: 1.13 $
 //
 //  This file is part of mccore.
 //  
@@ -64,7 +64,7 @@ namespace mccore {
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.12 2004-08-17 18:30:10 thibaup Exp $
+   * @version $Id: Relation.h,v 1.13 2004-09-15 22:38:22 larosem Exp $
    */
   class Relation
   {
@@ -345,7 +345,8 @@ namespace mccore {
      */
     static const PropertyType* 
     translatePairing (const Residue* ra, const Residue *rb, 
-		      list< HBondFlow > &hbf, float total_flow, int size_hint);
+		      list< HBondFlow > &hbf, float total_flow,
+		      unsigned int size_hint);
 
     // I/O  -----------------------------------------------------------------
 

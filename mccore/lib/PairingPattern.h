@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // PairingPattern.h
-// Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-04 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Thu May 31 08:17:56 2001
-// Last Modified By : Patrick Gendron
-// Last Modified On : Thu Jul 31 14:07:49 2003
-// $Revision: 1.4 $
+// $Revision: 1.5 $
+// $Id: PairingPattern.h,v 1.5 2004-09-15 22:38:14 larosem Exp $
 // 
 //  This file is part of mccore.
 //  
@@ -38,6 +38,10 @@
 #include "Relation.h"
 #include "Residue.h"
 
+using namespace std;
+
+
+
 namespace mccore {
 
   /**
@@ -62,23 +66,41 @@ namespace mccore {
       const ResidueType* typeA;
       const ResidueType* typeB;
 
-      /** 
-       * Index of Bonds that should not be present in the pairing. 
-       */
-      vector< bool > ignored;
+    public:
+      
+      class Description
+      {
+      public:
+
+	/**
+	 * Initializes the description.
+	 */
+	Description (bool i, char d, HBond &h)
+	  : ignored (i), direction (d), hbond (h) { }
+
+	/**
+	 * Indicates if the bond should be ignored.
+	 */
+	bool ignored;
+	
+	/**
+	 * The description. '>' indicates a bond from A to B, '<' indicates a
+	 * bond from B to A.
+	 */
+	char direction;
+	
+	HBond hbond;
+      };
+
+    private:
+
+      vector< Description > descriptions;
 
       /**
-       * The description. mDirection=='>' indicates a bond from A to B and
-       * mDirection=='<' indicates a bond from B to A
+       * The number of non ignored descriptions.
        */
-      vector< char > directions; 
-      vector< HBond > hbonds;
-
-      /**
-       * Number of H-bonds in the pairing (ignored are not counted).
-       */
-      int mSize;
-
+      unsigned int msize;
+      
       /**
        * The patterns.
        */
@@ -133,21 +155,51 @@ namespace mccore {
 
     public:
 
-      int size () const { return mSize; }
-
-      static list< PairingPattern >& patternList () { 
-	if (!isInit) { init (); isInit = true; }
-	return patterns; 
-      }
-
-      // METHODS --------------------------------------------------------------
-
       /**
        * Gets the MC-Sym property type.
        * @return the type
        */
-      const PropertyType* getName () { return name; }
+      const PropertyType* getName () const { return name; }
 
+      /**
+       * Gets the type of residue in start position.
+       * @return the residue type.
+       */
+      const ResidueType* getTypeA () const { return typeA; }
+
+      /**
+       * Gets the type of residue in end position.
+       * @return the residue type.
+       */
+      const ResidueType* getTypeB () const { return typeB; }
+
+      /**
+       * Gets the descriptions of a pattern.
+       * @return the descriptions of the pattern.
+       */
+      const vector< Description >& getDescriptions () const { return descriptions; }
+
+      /**
+       * Gets all pairing patterns.
+       * @return the list of the pairing patterns.
+       */
+      static list< PairingPattern >& patternList ()
+      {
+	if (!isInit)
+	  {
+	    init ();
+	    isInit = true;
+	  }
+	return patterns;
+      }
+
+      /**
+       * Gets the size of the Pattern witch is the number of descriptions.
+       * @return the size of the Description collection.
+       */
+      unsigned int size () const { return msize; }
+
+      // METHODS --------------------------------------------------------------
 
       /**
        * Add an H-Bond to the pattern.
@@ -206,6 +258,14 @@ namespace mccore {
    */
   ostream& operator<< (ostream &obs, const PairingPattern &pat);
 
+
+  /**
+   * Outputs the pairing pattern to an output stream.
+   * @param obs the output stream.
+   * @param obj the Description to output.
+   * @return the output stream.
+   */
+  ostream& operator<< (ostream &obs, const PairingPattern::Description &desc);
 
 }
 

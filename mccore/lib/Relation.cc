@@ -1187,12 +1187,12 @@ namespace mccore
   const PropertyType* 
   Relation::translatePairing (const Residue* ra, const Residue *rb, 
 			      list< HBondFlow > &hbf, 
-			      float total_flow, int size_hint)
+			      float total_flow, unsigned int size_hint)
   {
     list< PairingPattern >::iterator i;
     const PropertyType *type;
     const PropertyType *best_type = 0;
-    int best_size = 0;
+    unsigned int best_size = 0;
 
     for (i=PairingPattern::patternList().begin ();
 	 i!=PairingPattern::patternList().end (); ++i) {

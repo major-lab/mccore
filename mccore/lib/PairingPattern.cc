@@ -1,143 +1,133 @@
 //                              -*- Mode: C++ -*- 
 // PairingPattern.cc
-// Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-04 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Thu May 31 08:17:56 2001
-// Last Modified By : Philippe Thibault
-// Last Modified On : Wed Jun 30 14:14:25 2004
-// Update Count     : 52
-// Status           : Unknown.
-// 
+// $Revision: 1.7 $
+// $Id: PairingPattern.cc,v 1.7 2004-09-15 22:37:59 larosem Exp $
 
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
+#include <algorithm>
+
+#include "Messagestream.h"
 #include "PairingPattern.h"
+#include "stlio.h"
+
 
 
 namespace mccore {
-
-  bool _verbose = false;
-
-  // STATIC MEMBERS ------------------------------------------------------------
 
   list< PairingPattern > PairingPattern::patterns;
   bool PairingPattern::isInit = false;
 
 
-  // LIFECYCLE ------------------------------------------------------------
+  PairingPattern::PairingPattern ()
+    : name (0), typeA (0), typeB (0), msize (0)
+  { }
 
 
-  PairingPattern::PairingPattern (void)
-    : name (0), typeA (0), typeB (0), mSize (0)
-  {}
-
-
-  PairingPattern::PairingPattern (const PropertyType* id, const ResidueType* type_a, 
-				  const ResidueType* type_b)
-    : name (id), typeA (type_a), typeB (type_b), mSize (0)
-  {}
-
+  PairingPattern::PairingPattern (const PropertyType* id, const ResidueType* type_a, const ResidueType* type_b)
+    : name (id), typeA (type_a), typeB (type_b), msize (0)
+  { }
 
 
   PairingPattern::PairingPattern (const PairingPattern &other)
-    : name (other.name), typeA (other.typeA), typeB (other.typeB),
-      ignored (other.ignored), directions (other.directions), 
-      hbonds (other.hbonds), mSize (other.mSize)
-  {}
+    : name (other.name),
+      typeA (other.typeA),
+      typeB (other.typeB),
+      descriptions (other.descriptions),
+      msize (other.msize)
+  { }
 
 
-  PairingPattern::~PairingPattern (void)
+  PairingPattern::~PairingPattern ()
+  { }
+
+
+  const PairingPattern&
+  PairingPattern::operator= (const PairingPattern &other)
   {
-    //    cout << "deleting" << endl;
-    //     if (isInit) {
-    //       isInit = false;
-    //       list< PairingPattern
-    
-    //     }
-  }
-
-
-  // OPERATORS ------------------------------------------------------------
-
-
-  const PairingPattern &PairingPattern::operator= (const PairingPattern &other)
-  {
-    if (this != &other) { 
-      name = other.name;
-      typeA = other.typeA;
-      typeB = other.typeB;
-      ignored = other.ignored;
-      directions = other.directions;
-      hbonds = other.hbonds;
-      mSize = other.mSize;
-    }
+    if (this != &other)
+      {
+	name = other.name;
+	typeA = other.typeA;
+	typeB = other.typeB;
+	descriptions = other.descriptions;
+	msize = other.msize;
+      }
     return *this;
   }
 
 
-  // ACCESS ---------------------------------------------------------------
-
-
-  // METHODS --------------------------------------------------------------
-
-
   void 
-  PairingPattern::addBond (char dir, const AtomType* donor, const AtomType* hydro,
-			   const AtomType* acceptor, const AtomType* lonepair, 
-			   bool ignore)
+  PairingPattern::addBond (char dir, const AtomType* donor, const AtomType* hydro, const AtomType* acceptor, const AtomType* lonepair, bool ignore)
   {
-    directions.push_back (dir);
-    hbonds.push_back (HBond (donor, hydro, acceptor, lonepair));
-    ignored.push_back (ignore);
-    if (!ignore) mSize++;
+    HBond hb (donor, hydro, acceptor, lonepair);
+    
+    descriptions.push_back (Description (ignore, dir, hb));
+    if (! ignore)
+      msize++;
   }
 
 
   const PropertyType*
   PairingPattern::evaluate (const Residue* ra, const Residue *rb, list< HBondFlow > &hbf) const
   {
-    int j;
-    list< HBondFlow >::reverse_iterator k;
-  
-    hbf.sort ();
-
     bool ab = true;
     bool ba = true;
 
+    hbf.sort ();
+
     // One direction...
 
-    if (_verbose) cout << "Testing " << *this << endl;
+    gOut (3) << "Testing " << *this << endl;
 
     if (ra->getType ()->is (typeA) && rb->getType ()->is (typeB))
       {
-	for (j=0; j<(int)hbonds.size (); ++j) {
-	  if (_verbose) cout << directions[j] << hbonds[j] << "   " << flush;
-	  if (ignored[j]) {}
-	  else {
-	    bool found = false;
-	    for (k=hbf.rbegin (); k!=hbf.rend (); ++k) {
-	      if (k->hbond.getDonorResidue () == ra && directions[j] == '>') {
-		if (hbonds[j] == k->hbond) { found = true; break; } 
-	      } else if (k->hbond.getDonorResidue () == rb && directions[j] == '<') {
-		if (hbonds[j] == k->hbond) { found = true; break; } 
+	vector< Description >::const_iterator descIt;
+
+	for (descIt = descriptions.begin (); descriptions.end () != descIt; ++descIt)
+	  {
+	    gOut (3) << descIt->direction << descIt->hbond << "   " << flush;
+	    if (! descIt->ignored)
+	      {
+		list< HBondFlow >::reverse_iterator k;
+		bool found = false;
+		
+		for (k = hbf.rbegin (); k != hbf.rend (); ++k)
+		  {
+		    if ((k->hbond.getDonorResidue () == ra
+			 && '>' == descIt->direction
+			 && descIt->hbond == k->hbond)
+			|| (k->hbond.getDonorResidue () == rb
+			    && '<' == descIt->direction
+			    && descIt->hbond == k->hbond))
+		      {
+			found = true;
+			break;
+		      }
+		  }
+		if (! found)
+		  {
+		    ab = false;
+		    gOut (3) << "ANot found " << endl;
+		    break;
+		  }
+		else
+		  {
+		    if (k->hbond.getDonorResidue () == rb)
+		      gOut (3) << '>';
+		    else
+		      gOut (3) << '<';
+		    gOut (3) << (HBond) k->hbond << " " << k->flow << endl;
+		  }
 	      }
-	    }
-	    if (!found) {
-	      ab = false;
-	      if (_verbose) cout << "ANot found " << endl;
-	      break;
-	    } else {
-	      if (_verbose) {
-		if (k->hbond.getDonorResidue () == rb) cout << '>' << flush;
-		else cout << '<' << flush;
-		cout << (HBond)k->hbond << " " << k->flow << endl;
-	      }
-	    }
 	  }
-	}
       }
     else
       {
@@ -146,43 +136,52 @@ namespace mccore {
   
     // The other direction
     if (rb->getType ()->is (typeA) && ra->getType ()->is (typeB))
-      { 
-	for (j=0; j<(int)hbonds.size (); ++j) {
-	  if (_verbose) cout << directions[j] << hbonds[j] << "   " << flush;
-	  if (ignored[j]) {}
-	  else {
-	    bool found = false;
-	    for (k=hbf.rbegin (); k!=hbf.rend (); ++k) {
-	     	     
-	      if (k->hbond.getDonorResidue () == rb && directions[j] == '>') {
-		if (hbonds[j] == k->hbond) { found = true; break; } 
-	      } else if (k->hbond.getDonorResidue () == ra && directions[j] == '<') {
-		if (hbonds[j] == k->hbond) { found = true; break; } 
+      {
+	vector< Description >::const_iterator descIt;
+
+	for (descIt = descriptions.begin (); descriptions.end () != descIt; ++descIt)
+	  {
+	    gOut (0) << descIt->direction << descIt->hbond << "   ";
+	    if (! descIt->ignored)
+	      {
+		list< HBondFlow >::reverse_iterator k;
+		bool found = false;
+		
+		for (k = hbf.rbegin (); k != hbf.rend (); ++k)
+		  {
+		    if ((k->hbond.getDonorResidue () == rb
+			 &&  '>' == descIt->direction
+			 && descIt->hbond == k->hbond)
+			|| (k->hbond.getDonorResidue () == ra
+			    && '<' == descIt->direction))
+		      {
+			found = true;
+			break;
+		      }
+		  }
+		if (! found)
+		  {
+		    gOut (3) << "BNot found " << endl;
+		    ba = false;
+		    break;
+		  }
+		else
+		  {
+		    if (k->hbond.getDonorResidue () == rb)
+		      gOut (3) << '>';
+		    else
+		      gOut (3) << '<';
+		    gOut (3) << (HBond) k->hbond << " " << k->flow << endl;
+		  }
 	      }
-	    }
-	    if (!found) {
-	      if (_verbose) cout << "BNot found " << endl;
-	      ba = false;
-	      break;
-	    } else {
-	      if (_verbose) {
-		if (k->hbond.getDonorResidue () == rb) cout << '>' << flush;
-		else cout << '<' << flush;
-		cout << (HBond)k->hbond << " " << k->flow << endl;
-	      }
-	    }
 	  }
-	}
       }
     else
       {
 	ba = false;
       }
 
-    if (!ab && !ba) return 0;
-    return name;
-    
-    return 0;
+    return (!ab && !ba) ? 0 : name;
   }
 
 
@@ -811,21 +810,27 @@ namespace mccore {
   ostream& 
   PairingPattern::output (ostream &os) const
   {
-    os << name << ": " << flush;
-    os << typeA << " " << typeB << endl;
-    for (int i=0; i<(int)hbonds.size (); ++i) {
-      if (ignored[i]) os << "! ";
-      else os << "  ";
-      os << directions[i] << " ";
-      os << hbonds[i] << endl;
-    }
+    os << name << ": " << typeA << " " << typeB << endl;
+    for_each (descriptions.begin (), descriptions.end (), Print< const PairingPattern::Description > (os));
     return os;
   }
 
+  
   ostream&
   operator<< (ostream &os, const PairingPattern &pat)
   {
     return pat.output (os);
+  }
+
+  
+  ostream&
+  operator<< (ostream &obs, const PairingPattern::Description &desc)
+  {
+    if (desc.ignored)
+      obs << "! ";
+    else
+      obs << "  ";
+    obs << desc.direction << " " << desc.hbond << endl;
   }
 
 }
