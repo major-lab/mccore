@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.33 $
-// $Id: Residue.cc,v 1.33 2004-06-01 20:14:24 thibaup Exp $
+// $Revision: 1.34 $
+// $Id: Residue.cc,v 1.34 2004-06-09 20:48:15 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -507,7 +507,6 @@ namespace mccore {
       {
 	atomGlobal.push_back (atom.clone ());
 	rib_dirty_ref = true;
-	rib_built_valid = false;
       }
     else
       {
@@ -528,7 +527,6 @@ namespace mccore {
       size_type index;
 
       rib_dirty_ref = true;
-      rib_built_valid = false;
       
       delete atomGlobal[i->second];
       atomGlobal.erase (atomGlobal.begin () + i->second);
@@ -573,7 +571,7 @@ namespace mccore {
 
 
   void 
-  Residue::clear() 
+  Residue::clear () 
   {
     vector< Atom* >::iterator it;
     for (it = atomGlobal.begin (); it != atomGlobal.end (); ++it)
@@ -1235,31 +1233,26 @@ namespace mccore {
   float
   Residue::getRho () const
   {
-    if (!getType ()->isNucleicAcid ())
-      throw CLibException ("cannot evaluate pucker pseudorotation for residue type ")
-	<< (const char*)*type;
-
+    Atom *c1p, *c2p, *c3p, *c4p, *o4p;
     double nu0, nu1, nu2, nu3, nu4, rho;
     
-    // Evaluation of the pucker mode
+    if ((c1p = get (AtomType::aC1p)) == 0)
+      throw CLibException ("missing ") << (const char*)*AtomType::aC1p << " in pseudorotation calculation of " << resId << ' ' << (const char*)*getType ();
+    if ((c2p = get (AtomType::aC2p)) == 0)
+      throw CLibException ("missing ") << (const char*)*AtomType::aC2p << " in pseudorotation calculation of " << resId << ' ' << (const char*)*getType ();
+    if ((c3p = get (AtomType::aC3p)) == 0)
+      throw CLibException ("missing ") << (const char*)*AtomType::aC3p << " in pseudorotation calculation of " << resId << ' ' << (const char*)*getType ();
+    if ((c4p = get (AtomType::aC4p)) == 0)
+      throw CLibException ("missing ") << (const char*)*AtomType::aC4p << " in pseudorotation calculation of " << resId << ' ' << (const char*)*getType ();
+    if ((o4p = get (AtomType::aO4p)) == 0)
+      throw CLibException ("missing ") << (const char*)*AtomType::aO4p << " in pseudorotation calculation of " << resId << ' ' << (const char*)*getType ();
     
-    nu0 = get (AtomType::aO4p)->torsionAngle (*get (AtomType::aC4p),
-					      *get (AtomType::aC1p),
-					      *get (AtomType::aC2p));
-    nu1 = get (AtomType::aC1p)->torsionAngle (*get (AtomType::aO4p),
-					      *get (AtomType::aC2p),
-					      *get (AtomType::aC3p));
-    nu2 = get (AtomType::aC2p)->torsionAngle (*get (AtomType::aC1p),
-					      *get (AtomType::aC3p),
-					      *get (AtomType::aC4p));    
-    nu3 = get (AtomType::aC3p)->torsionAngle (*get (AtomType::aC2p),
-					      *get (AtomType::aC4p),
-					      *get (AtomType::aO4p));    
-    nu4 = get (AtomType::aC4p)->torsionAngle (*get (AtomType::aC3p),
-					      *get (AtomType::aO4p),
-					      *get (AtomType::aC1p));
-    
-    rho = atan2 (nu4+nu1-nu3-nu0, nu2*3.07768354 );
+    nu0 = o4p->torsionAngle (*c4p, *c1p, *c2p);
+    nu1 = c1p->torsionAngle (*o4p, *c2p, *c3p);
+    nu2 = c2p->torsionAngle (*c1p, *c3p, *c4p);
+    nu3 = c3p->torsionAngle (*c2p, *c4p, *o4p);
+    nu4 = c4p->torsionAngle (*c3p, *o4p, *c1p);
+    rho = atan2 (nu4 + nu1 - nu3 - nu0, nu2 * 3.07768354);
 
     return rho > 0 ? rho : s_2xpi + rho;
   }
@@ -1284,22 +1277,31 @@ namespace mccore {
   float
   Residue::getChi () const
   {
-    if (!getType ()->isNucleicAcid ())
-      throw CLibException ("cannot evaluate glycosyl torsion for residue type ")
-	<< (const char*)*type;
-
-    float chi;
+    Atom *c24, *n19, *c1p, *o4p;
     
-    if  (getType ()->isPurine ())
-      chi = get (AtomType::aC1p)->torsionAngle (*get (AtomType::aO4p),
-						 *get (AtomType::aN9),
-						*get (AtomType::aC4));
-    else 
-      chi = get (AtomType::aC1p)->torsionAngle (*get (AtomType::aO4p),
-						*get (AtomType::aN1),
-						*get (AtomType::aC2));
+    if  (getType ()->isPyrimidine ())
+      {
+	if ((c24 = get (AtomType::aC2)) == 0)
+	  throw CLibException ("missing ") << (const char*)*AtomType::aC2 << " in glycosyl torsion calculation of " << resId << ' ' << (const char*)*getType ();
+	if ((n19 = get (AtomType::aN1)) == 0)
+	  throw CLibException ("missing ") << (const char*)*AtomType::aN1 << " in glycosyl torsion calculation of " << resId << ' ' << (const char*)*getType ();
+      }
+    else if  (getType ()->isPurine ())
+      {
+	if ((c24 = get (AtomType::aC4)) == 0)
+	  throw CLibException ("missing ") << (const char*)*AtomType::aC4 << " in glycosyl torsion calculation of " << resId << ' ' << (const char*)*getType ();
+	if ((n19 = get (AtomType::aN9)) == 0)
+	  throw CLibException ("missing ") << (const char*)*AtomType::aN9 << " in glycosyl torsion calculation of " << resId << ' ' << (const char*)*getType ();
+      }
+    else
+      throw CLibException ("cannot evaluate glycosyl torsion for ") << resId << ' ' << (const char*)*getType ();
 
-    return chi;
+    if ((c1p = get (AtomType::aC1p)) == 0)
+      throw CLibException ("missing ") << (const char*)*AtomType::aC1p << " in glycosyl torsion calculation of " << resId << ' ' << (const char*)*getType ();
+    if ((o4p = get (AtomType::aO4p)) == 0)
+      throw CLibException ("missing ") << (const char*)*AtomType::aO4p << " in glycosyl torsion calculation of " << resId << ' ' << (const char*)*getType ();
+    
+    return c1p->torsionAngle (*o4p, *n19, *c24);
   }
 
   
@@ -1751,7 +1753,6 @@ namespace mccore {
       throw CLibException ("3' phosphate is mandatory to estimate ribose for ")
 	<< resId;
 
-    
     /** preprocessing **/
     
     _build_ribose_preprocess (po4_5p, po4_3p,
@@ -1769,14 +1770,14 @@ namespace mccore {
     
     /** pseudorotation estimation  **/
     
-    // O3' YZ plane projection vector length
+    // O3' XZ plane projection vector length
     x = anchor_O3p.getX ();
     z = anchor_O3p.getZ ();
     xz_len = sqrt (x*x + z*z);
-   
+
     // rho estimation with respect to O3'
     erho1 = (xz_len - s_cosf_vshift) / s_cosf_amplitude;
-
+    
     // +/- 0.2 tolerance on cos amplitude
     if (erho1 < -1.2 || erho1 > 1.2)
       {
@@ -1798,24 +1799,20 @@ namespace mccore {
 	erho1 = s_2xpi + erho1;
 	erho2 = s_4xpi - s_cosf_phase - erho1;
       }
-  
-  
+
     /** glycosyl torsion estimation **/
 
     // Y rotation from X axis to anchored O3'
-    x = anchor_O3p.getX ();
-    z = anchor_O3p.getZ ();
-    xz_len = sqrt (x*x + z*z);
-    anchor_yrot = z < 0 ? acos (z / xz_len) : s_2xpi - acos (z / xz_len);
+    anchor_yrot = z < 0 ? acos (x / xz_len) : s_2xpi - acos (x / xz_len);
     
-    // build with first rho. Must build O3'!
+    // build with first rho. Must build O3'! 
     _build_ribose (erho1, 0, 1, M_PI, build5p, true);
   
     // Y rotation from X axis to built O3'
     x = rib_O3p->getX ();
     z = rib_O3p->getZ ();
     xz_len = sqrt (x*x + z*z);
-    built_yrot = z < 0 ? acos (z / xz_len) : s_2xpi - acos (z / xz_len);
+    built_yrot = z < 0 ? acos (x / xz_len) : s_2xpi - acos (x / xz_len);
 
     // compute estimated chi and apply Y rotation
     _transform_ribose (rotation.rotate (0.0, anchor_yrot - built_yrot, 0.0), build5p, false);
@@ -1844,12 +1841,12 @@ namespace mccore {
     x = rib_O3p->getX ();
     z = rib_O3p->getZ ();
     xz_len = sqrt (x*x + z*z);
-    built_yrot = z < 0 ? acos (z / xz_len) : s_2xpi - acos (z / xz_len);
+    built_yrot = z < 0 ? acos (x / xz_len) : s_2xpi - acos (x / xz_len);
   
     // compute estimated chi and apply Y rotation
     _transform_ribose (rotation.rotate (0.0, anchor_yrot - built_yrot, 0.0), build5p, false);
     value2 = _evaluate_ribose (anchor_O5p, anchor_O3p, build5p, false);
-
+    
     if (value1 < value2)
       {
 	// set as first estimation: retrieve back upped ribose.
@@ -1869,12 +1866,12 @@ namespace mccore {
 	  }
 	final_value = value1;
       }
-
+    
     // set as second estimation: keep current ribose.
     final_value = value2;
     _build_ribose_postprocess (tfo, build5p, false);
     rib_O3p = 0;
-
+    
     return sqrt (final_value / 2.0);
   }
 
@@ -2093,7 +2090,6 @@ namespace mccore {
       {
 	atomGlobal.push_back (new Atom (0.0, 0.0, 0.0, aType));
 	rib_dirty_ref = true;
-	rib_built_valid = false;
 	return atomGlobal[pos];
       }
     else

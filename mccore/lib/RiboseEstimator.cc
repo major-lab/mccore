@@ -253,7 +253,7 @@ namespace mccore
     // rho estimation
 
     erho1 = (yz_len - s_cosf_vshift) / s_cosf_amplitude;
-
+    
     // +/- 0.2 tolerance on cos amplitude
     if (erho1 < -1.2 || erho1 > 1.2)
       {
@@ -318,9 +318,6 @@ namespace mccore
     ribose.transform (rotation1.rotate (xrot1, 0.0, 0.0));
     value1 = (*qfct) ();
 
-
-    cerr << "found rotation " << xrot1 * 180.0 / M_PI << endl;
-    
     // save this ribose
 
     ribose1 = ribose;
@@ -359,14 +356,13 @@ namespace mccore
 	ribose = ribose1;
 	rho = erho1;
 	chi = xrot1;
-
 	return value1;
       }
 
     // set as second rho: keep current ribose.
 
     chi = xrot2;
-
+    
     return value2;
   }
 

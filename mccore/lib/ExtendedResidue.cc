@@ -3,7 +3,7 @@
 // Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.17 $
+// $Revision: 1.18 $
 // 
 //  This file is part of mccore.
 //  
@@ -200,7 +200,6 @@ namespace mccore {
 	atomLocal.push_back (atom.clone ());
 	atomGlobal.push_back (atom.clone ());
 	rib_dirty_ref = true;
-	rib_built_valid = false;
       }
     else
       {
@@ -224,7 +223,6 @@ namespace mccore {
       size_type index;
 
       rib_dirty_ref = true;
-      rib_built_valid = false;
       
       delete atomGlobal[i->second];
       atomGlobal.erase (atomGlobal.begin () + i->second);
@@ -430,7 +428,6 @@ namespace mccore {
 	atomLocal.push_back (new Atom (0.0, 0.0, 0.0, aType));
 	atomGlobal.push_back (new Atom (0.0, 0.0, 0.0, aType));
 	rib_dirty_ref = true;
-	rib_built_valid = false;
 	return atomLocal[pos];
       }
     else
