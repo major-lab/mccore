@@ -5,8 +5,8 @@
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:57:11 2000
 ## Last Modified By : Martin Larose
-## Last Modified On : Thu Sep  6 17:24:38 2001
-## Update Count     : 17
+## Last Modified On : Fri Sep  7 11:43:48 2001
+## Update Count     : 18
 ## Status           : Ok.
 ###############################################################################
 #
@@ -105,7 +105,7 @@ DISTFILES = Makefile.in $(SOURCES) $(HEADERS)
 
 all: $(LIBRARY).so.$(VERSION) TAGS
 
-all-static static: $(LIBRARY).a TAGS
+static: $(LIBRARY).a TAGS
 
 $(LIBRARY).so.$(VERSION): $(SHOBJECTS)
 	$(LD) $(LINKOPTIONS) -shared $(LDFLAGS) -o $@ -Wl,-soname,$@ $^
