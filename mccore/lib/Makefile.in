@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.52 $
-# $Id: Makefile.in,v 1.52 2004-10-04 22:14:11 larosem Exp $
+# $Revision: 1.53 $
+# $Id: Makefile.in,v 1.53 2004-11-22 20:28:13 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -43,6 +43,7 @@ DEFS = @DEFS@
 LD = @CXX@
 LINKOPTIONS = @LINKOPTIONS@
 LDNAMEPARAM = @LDNAMEPARAM@
+LIBEXT = @LIBEXT@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
 LIBALLFLAGSTART = @LIBALLFLAGSTART@
@@ -155,7 +156,7 @@ all: $(LIBRARY).so.$(VERSION) TAGS
 
 static: $(LIBRARY).a TAGS
 
-$(LIBRARY).so.$(VERSION): $(OBJECTS)
+$(LIBRARY).$(LIBEXT).$(VERSION): $(OBJECTS)
 	$(LD) $(LINKOPTIONS) -o $@ $(LDNAMEPARAM)$@ $^ $(LDFLAGS) $(LIBS)
 
 $(LIBRARY).a: $(OBJECTS)
@@ -179,12 +180,12 @@ docbook: $(HEADERS)
 
 
 install: all
-	@ echo Installing $(LIBRARY).so in $(libdir)
+	@ echo Installing $(LIBRARY).$(LIBEXT) in $(libdir)
 	@ $(srcdir)/../mkinstalldirs $(libdir)
 	@ $(srcdir)/../mkinstalldirs $(includedir)/$(PACKAGE)-$(VERSION)
-	@ $(INSTALL_DATA) $(LIBRARY).so.$(VERSION) $(libdir)/$(LIBRARY).so.$(VERSION)
-	@ $(RM) $(libdir)/$(LIBRARY).so
-	@ ln -s $(LIBRARY).so.$(VERSION) $(libdir)/$(LIBRARY).so
+	@ $(INSTALL_DATA) $(LIBRARY).$(LIBEXT).$(VERSION) $(libdir)/$(LIBRARY).$(LIBEXT).$(VERSION)
+	@ $(RM) $(libdir)/$(LIBRARY).$(LIBEXT)
+	@ ln -s $(LIBRARY).$(LIBEXT).$(VERSION) $(libdir)/$(LIBRARY).$(LIBEXT)
 	@ echo Installing headers in $(includedir)/$(PACKAGE)-$(VERSION)
 	@ for file in $(HEADERS); do \
            $(INSTALL_DATA) $(srcdir)/$$file $(includedir)/$(PACKAGE)-$(VERSION)/$$file; \
@@ -209,8 +210,8 @@ install-static: static
 uninstall:
 	@ $(RM) $(libdir)/$(LIBRARY).a
 	@ $(RM) $(libdir)/$(LIBRARY)-$(VERSION).a
-	@ $(RM) $(libdir)/$(LIBRARY).so
-	@ $(RM) $(libdir)/$(LIBRARY).so.$(VERSION)
+	@ $(RM) $(libdir)/$(LIBRARY).$(LIBEXT)
+	@ $(RM) $(libdir)/$(LIBRARY).$(LIBEXT).$(VERSION)
 	@ for file in $(HEADERS); do \
            $(RM) $(includedir)/$(PACKAGE)-$(VERSION)/$$file; \
           done;
@@ -223,7 +224,7 @@ mostlyclean:
 
 clean: mostlyclean
 	@ echo "Cleaning project"
-	@ $(RM) $(LIBRARY).so $(LIBRARY).so.$(VERSION) $(LIBRARY).a
+	@ $(RM) $(LIBRARY).$(LIBEXT) $(LIBRARY).$(LIBEXT).$(VERSION) $(LIBRARY).a
 	@ $(RM) $(OBJECTS) TAGS
 	@ $(RM) *.d
 

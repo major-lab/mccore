@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
-# $Revision: 1.30 $
-# $Id: configure.in,v 1.30 2004-11-01 16:18:57 boisgona Exp $
+# $Revision: 1.31 $
+# $Id: configure.in,v 1.31 2004-11-22 20:28:29 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -62,7 +62,6 @@ ac_cv_cxx_have_numeric_limits,
 if test "$ac_cv_cxx_have_numeric_limits" = yes; then
   AC_DEFINE(HAVE_NUMERIC_LIMITS,,[define if the compiler has numeric_limits<T>])
 fi
-
 
 if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
     case "$host" in
@@ -148,12 +147,22 @@ elif eval "test \"`echo $GXX`\" = yes"; then     # gnu compiler
 	)
 	CXXFLAGS="$CXXFLAGS -Wall -Wno-deprecated"
 	DEPFLAGS="-MM"
-	LINKOPTIONS="-shared"
-	LDNAMEPARAM="-Wl,-soname,"
-	LIBALLFLAGSTART="-Wl,-whole-archive"
-	LIBALLFLAGSTOP="-Wl,-no-whole-archive";
-	ARXX="$AR"
-	AROPTIONS="crs"
+	case "$host" in
+	    *-Darwin-*)
+		LINKOPTIONS="-dynamiclib"
+		LDNAMEPARAM="-install_name,"
+		LIBEXT="dylib"
+		LIBALLFLAGSTART=""
+		LIBALLFLAGSTOP="";;
+	    *)
+		LINKOPTIONS="-shared"
+		LDNAMEPARAM="-Wl,-soname,"
+		LIBEXT="so"
+		LIBALLFLAGSTART="-Wl,-whole-archive"
+		LIBALLFLAGSTOP="-Wl,-no-whole-archive";
+		ARXX="$AR"
+		AROPTIONS="crs";;
+	esac;
 fi
 
 
@@ -168,6 +177,7 @@ AC_SUBST(CXXFLAGS)
 AC_SUBST(DEPFLAGS)
 AC_SUBST(LINKOPTIONS)
 AC_SUBST(LDNAMEPARAM)
+AC_SUBST(LIBEXT)
 AC_SUBST(LDFLAGS)
 AC_SUBST(LIBALLFLAGSTART)
 AC_SUBST(LIBALLFLAGSTOP)
