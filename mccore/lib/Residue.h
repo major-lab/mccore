@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.30 $
+// $Revision: 1.31 $
 //
 // This file is part of mccore.
 // 
@@ -62,7 +62,7 @@ namespace mccore
    * the atom types.
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: Residue.h,v 1.30 2005-01-26 20:50:50 larosem Exp $
+   * @version $Id: Residue.h,v 1.31 2005-01-27 19:13:24 larosem Exp $
    */
   class Residue
   {
@@ -757,10 +757,10 @@ namespace mccore
      * @param aTransfo the transfo to apply.
      * @return itself.
      */
-    virtual void transform (const HomogeneousTransfo &aTransfo)
-    {
-      setReferential (aTransfo * getReferential ());
-    }
+    virtual void transform (const HomogeneousTransfo &aTransfo);
+//     {
+//       setReferential (aTransfo * getReferential ());
+//     }
 
     /**
      * Inserts an atom in the residue.  It crushes the existing atom if it

@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Jan  5 17:12:54 2005
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 //
 // This file is part of mccore.
 // 
@@ -43,7 +43,7 @@ namespace mccore
    * methods.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ModelFactoryMethod.h,v 1.4 2005-01-26 19:57:58 thibaup Exp $
+   * @version $Id: ModelFactoryMethod.h,v 1.5 2005-01-27 19:12:50 larosem Exp $
    */
   class ModelFactoryMethod
   {
@@ -93,6 +93,14 @@ namespace mccore
     virtual AbstractModel* createModel () const = 0;
 
     /**
+     * Creates the model initialized with right.  This is like a copy
+     * constructor.
+     * @param right the model to copy.
+     * @return the newly created copied model.
+     */
+    virtual AbstractModel* createModel (const AbstractModel &model) const = 0;
+
+    /**
      * Creates a residue using the factory method.
      * @return the newly created empty residue.
      */
@@ -134,7 +142,7 @@ namespace mccore
    * This is the model factory method implementation for the Model class.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ModelFactoryMethod.h,v 1.4 2005-01-26 19:57:58 thibaup Exp $
+   * @version $Id: ModelFactoryMethod.h,v 1.5 2005-01-27 19:12:50 larosem Exp $
    */
   class ModelFM : public ModelFactoryMethod
   {
@@ -177,6 +185,14 @@ namespace mccore
      */
     virtual AbstractModel* createModel () const;
 
+    /**
+     * Creates the model initialized with right.  This is like a copy
+     * constructor.
+     * @param right the model to copy.
+     * @return the newly created copied model.
+     */
+    virtual AbstractModel* createModel (const AbstractModel &model) const;
+
     // I/O  -----------------------------------------------------------------
 
     /**
@@ -196,7 +212,7 @@ namespace mccore
    * This is the model factory method implementation for the GraphModel class.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ModelFactoryMethod.h,v 1.4 2005-01-26 19:57:58 thibaup Exp $
+   * @version $Id: ModelFactoryMethod.h,v 1.5 2005-01-27 19:12:50 larosem Exp $
    */
   class GraphModelFM : public ModelFactoryMethod
   {
@@ -238,6 +254,14 @@ namespace mccore
      * @return the newly created empty model.
      */
     virtual AbstractModel* createModel () const;
+
+    /**
+     * Creates the model initialized with right.  This is like a copy
+     * constructor.
+     * @param right the model to copy.
+     * @return the newly created copied model.
+     */
+    virtual AbstractModel* createModel (const AbstractModel &model) const;
 
     // I/O  -----------------------------------------------------------------
 

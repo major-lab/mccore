@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:36 2003
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 // 
 // This file is part of mccore.
 // 
@@ -51,7 +51,7 @@ namespace mccore
    * This is a collection of mccore Models in a simple STL list.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Molecule.h,v 1.8 2005-01-26 19:57:58 thibaup Exp $
+   * @version $Id: Molecule.h,v 1.9 2005-01-27 19:13:12 larosem Exp $
    */
   class Molecule
   {
@@ -134,7 +134,11 @@ namespace mccore
        * Redefines the access operator-> to get the dereferenced residue.
        * @return the pointed residue.
        */
-      AbstractModel* operator-> () const { return &(operator* ()); }
+      AbstractModel* operator-> () const
+      {
+	return *list< AbstractModel* >::iterator::operator-> ();
+      }
+      
     };
   
     /**
@@ -197,13 +201,19 @@ namespace mccore
        * @return the referenced residue.
        */
       const AbstractModel& operator* () const
-      { return *list< AbstractModel* >::const_iterator::operator* (); }
+      {
+	return *list< AbstractModel* >::const_iterator::operator* ();
+      }
 
       /**
        * Redefines the access operator-> to get the dereferenced residue.
        * @return the pointed residue.
        */
-      const AbstractModel* operator-> () const { return &(operator* ()); }
+      const AbstractModel* operator-> () const
+      {
+	return *list< AbstractModel* >::const_iterator::operator-> ();
+      }
+      
     };
 
   public:
@@ -332,11 +342,11 @@ namespace mccore
      * @param l the last iterator in the range.
      */
     template <class InputIterator>
-    void insert(InputIterator f, InputIterator l)
+    void insert (InputIterator f, InputIterator l)
     {
       while (f != l)
 	{
-	  this->insert (*f);
+	  insert (*f);
 	  ++f;
 	}
     }

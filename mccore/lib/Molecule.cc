@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:35 2003
-// $Revision: 1.11 $
-// $Id: Molecule.cc,v 1.11 2005-01-26 19:57:58 thibaup Exp $
+// $Revision: 1.12 $
+// $Id: Molecule.cc,v 1.12 2005-01-27 19:13:04 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -81,7 +81,7 @@ namespace mccore
     : properties (right.properties),
       modelFM (right.modelFM->clone ())
   {
-    this->insert (right.models.begin (), right.models.end ());
+    insert (right.begin (), right.end ());
   }
   
   
@@ -105,13 +105,13 @@ namespace mccore
 	const_iterator it;
 
 	// clear all
-	this->clear ();
-	delete this->modelFM;
+	clear ();
+	delete modelFM;
 
 	// copy 
-	this->modelFM = right.modelFM->clone ();
-	this->properties = right.properties;
-	this->insert (right.models.begin (), right.models.end ());
+	modelFM = right.modelFM->clone ();
+	properties = right.properties;
+	insert (right.begin (), right.end ());
       }
     return *this;
   }
@@ -151,9 +151,10 @@ namespace mccore
   Molecule::iterator
   Molecule::insert (const AbstractModel& model)
   {
-    AbstractModel* cloned = this->modelFM->createModel ();
-    *cloned = model;
-    return this->models.insert (models.end (), cloned);
+    AbstractModel *cloned;
+
+    cloned = modelFM->createModel (model);
+    return iterator (models.insert (models.end (), cloned));
   }
   
     
@@ -161,7 +162,7 @@ namespace mccore
   Molecule::erase (iterator pos)
   {
     delete &*pos;
-    return models.erase (pos);
+    return iterator (models.erase (pos));
   }
 
   
@@ -271,24 +272,24 @@ namespace mccore
     string kcs, vcs;
 
     // -- reset object
-    this->clear ();
-    delete this->modelFM;
+    clear ();
+    delete modelFM;
 
     // -- read ModelFactoryMethod
-    this->modelFM = ModelFactoryMethod::read (ibs);
+    modelFM = ModelFactoryMethod::read (ibs);
 
     // -- read models using restored factory method for object creation
     for (ibs >> qty; qty > 0; --qty)
     {
       this->models.push_back (modelFM->createModel ());
-      ibs >> *this->models.back ();
+      ibs >> *models.back ();
     }
 
     // -- read properties
     for (ibs >> qty; qty > 0; --qty)
     {
       ibs >> kcs >> vcs;
-      this->setProperty (kcs, vcs);
+      setProperty (kcs, vcs);
     }
 
     return ibs;

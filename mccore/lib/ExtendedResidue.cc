@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.27 $
-// $Id: ExtendedResidue.cc,v 1.27 2005-01-26 20:42:42 larosem Exp $
+// $Revision: 1.28 $
+// $Id: ExtendedResidue.cc,v 1.28 2005-01-27 19:11:56 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -97,6 +97,15 @@ namespace mccore
   }
 
 
+  void
+  ExtendedResidue::setReferential (const HomogeneousTransfo& m)
+  {
+    tfo = m;
+    //       _displace ();
+    placed = false;
+  }
+  
+  
   void 
   ExtendedResidue::insert (const Atom &atom)
   {

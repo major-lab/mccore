@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.5 $
-// $Id: GraphModel.cc,v 1.5 2005-01-14 20:23:01 larosem Exp $
+// $Revision: 1.6 $
+// $Id: GraphModel.cc,v 1.6 2005-01-27 19:12:24 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -29,6 +29,7 @@
 #endif
 
 #include <algorithm>
+#include <list>
 #include <set>
 #include <vector>
 
@@ -47,8 +48,8 @@ using namespace std;
 namespace mccore
 {
 
-  GraphModel::GraphModel (const AbstractModel &right)
-    : AbstractModel (right),
+  GraphModel::GraphModel (const AbstractModel &right, const ResidueFactoryMethod *fm)
+    : AbstractModel (fm),
       annotated (false)
   {
     const GraphModel *model;
@@ -65,8 +66,8 @@ namespace mccore
   }
   
 
-  GraphModel::GraphModel (const GraphModel &right)
-    : AbstractModel (right),
+  GraphModel::GraphModel (const GraphModel &right, const ResidueFactoryMethod *fm)
+    : AbstractModel (fm),
       annotated (right.annotated)
   {
     deepCopy (right);
@@ -151,6 +152,40 @@ namespace mccore
   }
     
 
+  GraphModel::iterator
+  GraphModel::insert (const Residue &res, int w)
+  {
+    iterator found;
+
+    if (end () == (found = find (res.getResId ())))
+      {
+	Residue *r;
+	
+	r = residueFM->createResidue ();
+	*r = res;
+	graphsuper::insert (r, w);
+	found = graphsuper::find (r);
+      }
+    else
+      {
+	GraphModel::label lab;
+	list< label > neighboors;
+	list< label >::const_iterator it;
+
+	lab = getVertexLabel (&*found);
+	neighboors = internalInNeighborhood (lab);
+	for (it = neighboors.begin (); neighboors.end () != it; ++it)
+	  {
+	    internalDisconnect (lab, *it);
+	    internalDisconnect (*it, lab);
+	  }
+	*found = res;
+      }
+    annotated = false;
+    return found;
+  }
+
+  
   GraphModel::iterator
   GraphModel::erase (AbstractModel::iterator pos) 
   {

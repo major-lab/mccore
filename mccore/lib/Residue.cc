@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.63 $
-// $Id: Residue.cc,v 1.63 2005-01-26 20:50:42 larosem Exp $
+// $Revision: 1.64 $
+// $Id: Residue.cc,v 1.64 2005-01-27 19:13:18 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -524,6 +524,13 @@ namespace mccore
       atomGlobal[i]->transform (t);
   }
 
+
+  void
+  Residue::transform (const HomogeneousTransfo &m)
+  {
+    setReferential (m * getReferential ());
+  }
+  
 
   void 
   Residue::insert (const Atom &atom)

@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Wed Jan  5 17:20:53 2005
-// $Revision: 1.3 $
-// $Id: ModelFactoryMethod.cc,v 1.3 2005-01-26 19:57:58 thibaup Exp $
+// $Revision: 1.4 $
+// $Id: ModelFactoryMethod.cc,v 1.4 2005-01-27 19:12:39 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -119,6 +119,13 @@ namespace mccore
   }
 
 
+  AbstractModel*
+  ModelFM::createModel (const AbstractModel &model) const
+  {
+    return new Model (model, rFM);
+  }
+  
+
   oBinstream& 
   ModelFM::write (oBinstream& obs) const
   {
@@ -129,9 +136,16 @@ namespace mccore
   AbstractModel* 
   GraphModelFM::createModel () const
   {
-    return new GraphModel (this->rFM);
+    return new GraphModel (rFM);
   }
 
+
+  AbstractModel*
+  GraphModelFM::createModel (const AbstractModel &model) const
+  {
+    return new GraphModel (model, rFM);
+  }
+  
 
   oBinstream& 
   GraphModelFM::write (oBinstream& obs) const

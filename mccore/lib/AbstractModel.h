@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // AbstractModel.h
-// Copyright © 2004 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2004, 2005 Laboratoire de Biologie Informatique et Théorique
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 16:12:42 2004
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 //
 // This file is part of mccore.
 // 
@@ -51,7 +51,7 @@ namespace mccore
    * Abstract class for Models.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: AbstractModel.h,v 1.2 2005-01-03 22:48:56 larosem Exp $
+   * @version $Id: AbstractModel.h,v 1.3 2005-01-27 19:11:49 larosem Exp $
    */
   class AbstractModel
   {

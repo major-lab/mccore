@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.15 $
+// $Revision: 1.16 $
 // 
 // This file is part of mccore.
 // 
@@ -54,7 +54,7 @@ namespace mccore
    * the atom types.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ExtendedResidue.h,v 1.15 2005-01-26 20:42:46 larosem Exp $
+   * @version $Id: ExtendedResidue.h,v 1.16 2005-01-27 19:12:05 larosem Exp $
    */
   class ExtendedResidue : public Residue
   {
@@ -156,12 +156,12 @@ namespace mccore
      * Sets the homogeneous matrix representing the local referential.
      * @param m the new referential.
      */
-    virtual void setReferential (const HomogeneousTransfo& m)
-    {
-      tfo = m;
-//       _displace ();
-      placed = false;
-    }
+    virtual void setReferential (const HomogeneousTransfo& m);
+//     {
+//       tfo = m;
+// //       _displace ();
+//       placed = false;
+//     }
     
     /**
      * Inserts an atom in the residue.  It crushes the existing atom if it

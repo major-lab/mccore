@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.29 $
-// $Id: Model.cc,v 1.29 2005-01-06 21:07:46 larosem Exp $
+// $Revision: 1.30 $
+// $Id: Model.cc,v 1.30 2005-01-27 19:12:34 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -45,15 +45,15 @@
 namespace mccore
 {
   
-  Model::Model (const AbstractModel &right)
-    : AbstractModel (right)
+  Model::Model (const AbstractModel &right, const ResidueFactoryMethod *fm)
+    : AbstractModel (fm)
   {
     AbstractModel::insert (right.begin (), right.end ());
   }
 
 
-  Model::Model (const Model &right)
-    : AbstractModel (right)
+  Model::Model (const Model &right, const ResidueFactoryMethod *fm)
+    : AbstractModel (fm)
   {
     const_iterator cit;
 
@@ -119,8 +119,22 @@ namespace mccore
 
   Model::iterator 
   Model::insert (const Residue &res)
-  { 
-    return iterator (residues.insert (residues.end (), res.clone ()));
+  {
+    iterator found;
+
+    if (end () == (found = find (res.getResId ())))
+      {
+	Residue *newRes;
+	
+	newRes = residueFM->createResidue ();
+	*newRes = res;
+	found = end () - 1;
+      }
+    else
+      {
+	*found = res;
+      }
+    return found;
   }
   
   

@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:31:01 2004
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 // 
 // This file is part of mccore.
 // 
@@ -46,7 +46,7 @@ namespace mccore
    * iterators.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.h,v 1.6 2005-01-15 02:17:12 larosem Exp $
+   * @version $Id: GraphModel.h,v 1.7 2005-01-27 19:12:29 larosem Exp $
    */
   class GraphModel : public AbstractModel, public OrientedGraph< Residue*, Relation*, int, int, less_deref< Residue > >
   {
@@ -88,14 +88,18 @@ namespace mccore
     /**
      * Initializes the object with the right's content (deep copy).
      * @param right the object to copy.
+     * @param fm the residue factory methods that will instanciate new
+     * residues (default is @ref ExtendedResidueFM).
      */
-    GraphModel (const AbstractModel &right);
+    GraphModel (const AbstractModel &right, const ResidueFactoryMethod *fm = 0);
 
     /**
      * Initializes the object with the right's content (deep copy).
      * @param right the object to copy.
+     * @param fm the residue factory methods that will instanciate new
+     * residues (default is @ref ExtendedResidueFM).
      */
-    GraphModel (const GraphModel &right);
+    GraphModel (const GraphModel &right, const ResidueFactoryMethod *fm = 0);
 
     /**
      * Clones the model.
@@ -243,15 +247,7 @@ namespace mccore
      * @param w the Residue weight.
      * @return the position where the residue was inserted.
      */
-    virtual iterator insert (const Residue &res, int w)
-    {
-      Residue *r;
-
-      r = res.clone ();
-      annotated = false;
-      graphsuper::insert (r, w);
-      return iterator (graphsuper::find (r));
-    }
+    virtual iterator insert (const Residue &res, int w);
       
     /**
      * Erases a residue from the model.
