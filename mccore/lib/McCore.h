@@ -3,9 +3,9 @@
 // Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Patrick Gendron
-// Last Modified On : Mon May 28 16:29:28 2001
-// Update Count     : 9
+// Last Modified By : Martin Larose
+// Last Modified On : Tue Jan 23 15:02:15 2001
+// Update Count     : 10
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -1535,96 +1535,6 @@ extern t_Residue *r_VAL;
 
 
 /**
- * Table indicating the number of donors.
- */
-extern const unsigned int hbond_nbDon[5];
-
-
-
-/**
- * Table indicating the number of acceptors.
- */
-extern const unsigned int hbond_nbAcc[5];
-
-
-
-/**
- * The ideal angle between the donor, the hydrogen and the acceptor.
- * Central value (prob=1 if x<=ideal).  Value of 20.0.
- */
-extern const float hbond_angleH_ideal;
-
-
-
-/**
- * The variance over the angle between the donor, the hydrogen and the
- * acceptor.  Probability of 0.5.  Value of 20.0.
- */
-extern const float hbond_angleH_var;
-
-
-
-/**
- * The ideal angle between the donor, the lone pair and the acceptor.
- * Central value (prob=1 if x<=ideal).  Value of 20.0.
- */
-extern const float hbond_angleL_ideal;
-
-
-
-/**
- * The variance over the angle between the donor, the lone pair and the
- * acceptor.  Probability of 0.5.  Value of 20.0.
- */
-extern const float hbond_angleL_var;
-
-
-
-/**
- * The ideal distance between the donor and the acceptor.
- * Central value (prob=1 if x<=ideal).  Value of 3.10.
- */
-extern const float hbond_dist_ideal;
-
-
-
-/**
- * The variance over the angle between the donor and the acceptor.
- * Probability of 0.5.  Value of 0.50.
- */
-extern const float hbond_dist_var;
-
-
-
-/**
- * Table of donors atom types.
- */
-extern t_Atom *hbond_don[5][3];
-
-
-
-/**
- * Table of hydrogen atom types.
- */
-extern t_Atom *hbond_hyd[5][3];
-
-
-
-/**
- * Table of lone pair atom types.
- */
-extern t_Atom *hbond_lop[5][4];
-
-
-
-/**
- * Table of acceptor atom types.
- */
-extern t_Atom *hbond_acc[5][4];
-
-
-
-/**
  * Set of obligatory atoms types in a dA.
  */
 extern set< t_Atom* > gdAOblAtomSet;
@@ -1847,10 +1757,68 @@ float rmsd (const CResidue::const_iterator &begin_a, const CResidue::const_itera
  * @param t the transfo created (default = 0).
  * @return the rmsd value.
  */
-float rmsd_with_align (const vector< CResidue::iterator > &x,
-		       const vector< CResidue::iterator > &y, 
-		       CTransfo *t = 0);
+template< class T >
+float rmsd_with_align (T x_begin, T x_end, 
+		       T y_begin, T y_end,
+		       CTransfo *t = 0) {
+  // Extracting translations
+  CPoint3D center_a (0, 0, 0);
+  CPoint3D center_b (0, 0, 0);
+  int count = 0;
+  T cii, cij;
+  double r[3 * 3];
+  int i, j;
+  double e0 = 0;
 
+  for (cii = x_begin, cij = y_begin; cii != x_end && cij != y_end; ++cii, ++cij)
+    {
+      center_a += **cii;
+      center_b += **cij;
+      count++;
+    }
+  
+  center_a /= count;
+  center_b /= count;
+
+  // Calcul de R
+
+  for (i = 0; i < 3; ++i)
+    for (j = 0; j < 3; ++j)
+      r[i * 3 + j] = 0;
+  
+  for (cii = x_begin, cij = y_begin; cii != x_end && cij != y_end; ++cii, ++cij)
+    {
+      r[0*3+0] += ((*cij)->GetX () - center_b.GetX ()) * ((*cii)->GetX () - center_a.GetX ());
+      r[0*3+1] += ((*cij)->GetX () - center_b.GetX ()) * ((*cii)->GetY () - center_a.GetY ());
+      r[0*3+2] += ((*cij)->GetX () - center_b.GetX ()) * ((*cii)->GetZ () - center_a.GetZ ());
+      r[1*3+0] += ((*cij)->GetY () - center_b.GetY ()) * ((*cii)->GetX () - center_a.GetX ());
+      r[1*3+1] += ((*cij)->GetY () - center_b.GetY ()) * ((*cii)->GetY () - center_a.GetY ());
+      r[1*3+2] += ((*cij)->GetY () - center_b.GetY ()) * ((*cii)->GetZ () - center_a.GetZ ());
+      r[2*3+0] += ((*cij)->GetZ () - center_b.GetZ ()) * ((*cii)->GetX () - center_a.GetX ());
+      r[2*3+1] += ((*cij)->GetZ () - center_b.GetZ ()) * ((*cii)->GetY () - center_a.GetY ());
+      r[2*3+2] += ((*cij)->GetZ () - center_b.GetZ ()) * ((*cii)->GetZ () - center_a.GetZ ());
+    }
+  
+  // Calcul de E0
+  
+  for (cii = x_begin, cij = y_begin; cii != x_end && cij != y_end; ++cii, ++cij)
+    {
+      e0 += (((*cii)->GetX () - center_a.GetX ()) * ((*cii)->GetX () - center_a.GetX ()) +
+	     ((*cii)->GetY () - center_a.GetY ()) * ((*cii)->GetY () - center_a.GetY ()) +
+	     ((*cii)->GetZ () - center_a.GetZ ()) * ((*cii)->GetZ () - center_a.GetZ ()) +
+	     ((*cij)->GetX () - center_b.GetX ()) * ((*cij)->GetX () - center_b.GetX ()) +
+	     ((*cij)->GetY () - center_b.GetY ()) * ((*cij)->GetY () - center_b.GetY ()) +
+	     ((*cij)->GetZ () - center_b.GetZ ()) * ((*cij)->GetZ () - center_b.GetZ ()));
+    }
+  e0 /= 2;
+
+  return __rmsd_with_align_aux (center_a, center_b, r, e0, count, t);
+}
+
+
+
+float __rmsd_with_align_aux (CPoint3D &center_a, CPoint3D &center_b, 
+			     double *r, double e0, int n, CTransfo *t);
 
 
 /**

@@ -256,25 +256,6 @@ t_Residue *r_VAL = 0;
 
 
 
-const unsigned int hbond_nbDon[5] = { 3, 1, 2, 2, 1 };
-const unsigned int hbond_nbAcc[5] = { 4, 4, 3, 3, 4 };
-
-const float hbond_angleH_ideal = 25.0;
-const float hbond_angleH_var =   30.0;
-
-const float hbond_angleL_ideal = 30.0;
-const float hbond_angleL_var =   17.0;
-
-const float hbond_dist_ideal = 3.00;
-const float hbond_dist_var =   0.50;
-
-t_Atom *hbond_don[5][3];
-t_Atom *hbond_hyd[5][3];
-t_Atom *hbond_acc[5][4];
-t_Atom *hbond_lop[5][4];
-
-
-
 set< t_Atom* > gdAOblAtomSet;
 set< t_Atom* > grAOblAtomSet;
 set< t_Atom* > gdCOblAtomSet;
@@ -293,92 +274,7 @@ set< t_Atom* > gdTOptAtomSet;
 set< t_Atom* > grUOptAtomSet;
 
 
-
 CMessageQueue gOut (cerr, 2);
-
-
-
-// SetBondsParam : initialise les atomes contenus dans hydro, donor,
-// acceptor, etc 0 = G, 1 = U, 2 = C, 3 = A, 4 = T
-
-void
-SetBondsParam ()
-{
-  hbond_don[0][0] = a_N2;
-  hbond_don[0][1] = a_N2;
-  hbond_don[0][2] = a_N1;
-  hbond_don[1][0] = a_N3;
-  hbond_don[1][1] = 0;
-  hbond_don[1][2] = 0;
-  hbond_don[2][0] = a_N4;
-  hbond_don[2][1] = a_N4;
-  hbond_don[2][2] = 0;
-  hbond_don[3][0] = a_N6;
-  hbond_don[3][1] = a_N6;
-  hbond_don[3][2] = 0;
-  hbond_don[4][0] = a_N3;
-  hbond_don[4][1] = 0;
-  hbond_don[4][2] = 0;
-  
-  hbond_hyd[0][0] = a_1H2;
-  hbond_hyd[0][1] = a_2H2;
-  hbond_hyd[0][2] = a_H1;
-  hbond_hyd[1][0] = a_H3;
-  hbond_hyd[1][1] = 0;
-  hbond_hyd[1][2] = 0;
-  hbond_hyd[2][0] = a_1H4;
-  hbond_hyd[2][1] = a_2H4;
-  hbond_hyd[2][2] = 0;
-  hbond_hyd[3][0] = a_1H6;
-  hbond_hyd[3][1] = a_2H6;
-  hbond_hyd[3][2] = 0;
-  hbond_hyd[4][0] = a_H3;
-  hbond_hyd[4][1] = 0;
-  hbond_hyd[4][2] = 0;
-
-  hbond_acc[0][0] = a_N3;
-  hbond_acc[0][1] = a_N7;
-  hbond_acc[0][2] = a_O6;
-  hbond_acc[0][3] = a_O6;
-  hbond_acc[1][0] = a_O2;
-  hbond_acc[1][1] = a_O2;
-  hbond_acc[1][2] = a_O4;
-  hbond_acc[1][3] = a_O4;
-  hbond_acc[2][0] = a_N3;
-  hbond_acc[2][1] = a_O2;
-  hbond_acc[2][2] = a_O2;
-  hbond_acc[2][3] = 0;
-  hbond_acc[3][0] = a_N1;
-  hbond_acc[3][1] = a_N3;
-  hbond_acc[3][2] = a_N7;
-  hbond_acc[3][3] = 0;
-  hbond_acc[4][0] = a_O2;
-  hbond_acc[4][1] = a_O2;
-  hbond_acc[4][2] = a_O4;
-  hbond_acc[4][3] = a_O4;
-
-  hbond_lop[0][0] = a_LP3;
-  hbond_lop[0][1] = a_LP7;
-  hbond_lop[0][2] = a_1LP6;
-  hbond_lop[0][3] = a_2LP6;
-  hbond_lop[1][0] = a_1LP2;
-  hbond_lop[1][1] = a_2LP2;
-  hbond_lop[1][2] = a_1LP4;
-  hbond_lop[1][3] = a_2LP4;
-  hbond_lop[2][0] = a_LP3;
-  hbond_lop[2][1] = a_1LP2;
-  hbond_lop[2][2] = a_2LP2;
-  hbond_lop[2][3] = 0;
-  hbond_lop[3][0] = a_LP1;
-  hbond_lop[3][1] = a_LP3;
-  hbond_lop[3][2] = a_LP7;
-  hbond_lop[3][3] = 0;
-  hbond_lop[4][0] = a_1LP2;
-  hbond_lop[4][1] = a_2LP2;
-  hbond_lop[4][2] = a_1LP4;
-  hbond_lop[4][3] = a_2LP4;
-}
-
 
 
 void
@@ -622,64 +518,12 @@ rmsd (const CResidue::const_iterator &begin_a, const CResidue::const_iterator &e
 
 
 float 
-rmsd_with_align (const vector< CResidue::iterator > &x,
-		 const vector< CResidue::iterator > &y, 
-		 CTransfo *t)
+__rmsd_with_align_aux (CPoint3D &center_a, CPoint3D &center_b, 
+		       double *r, double e0, int n, CTransfo *t)
 {
   // Removing translations
-  CPoint3D center_a (0, 0, 0);
-  CPoint3D center_b (0, 0, 0);
-  int count = 0;
-  vector< CResidue::iterator >::const_iterator cii, cij;
-  double r[3 * 3];
   int i, j, k;
-  int n = x.size ();
-  double e0 = 0;
   double rr[3 * 3];
-
-  for (cii = x.begin (), cij = y.begin ();
-       cii != x.end () && cij != y.end ();
-       ++cii, ++cij)
-    {
-      center_a += **cii;
-      center_b += **cij;
-      count++;
-    }
-
-  center_a /= count;
-  center_b /= count;
-
-  // Calcul de R
-
-  for (i = 0; i < 3; ++i)
-    for (j = 0; j < 3; ++j)
-      r[i * 3 + j] = 0;
-  
-  for (k = 0; k < n; ++k)
-    {
-      r[0*3+0] += (y[k]->GetX () - center_b.GetX ()) * (x[k]->GetX () - center_a.GetX ());
-      r[0*3+1] += (y[k]->GetX () - center_b.GetX ()) * (x[k]->GetY () - center_a.GetY ());
-      r[0*3+2] += (y[k]->GetX () - center_b.GetX ()) * (x[k]->GetZ () - center_a.GetZ ());
-      r[1*3+0] += (y[k]->GetY () - center_b.GetY ()) * (x[k]->GetX () - center_a.GetX ());
-      r[1*3+1] += (y[k]->GetY () - center_b.GetY ()) * (x[k]->GetY () - center_a.GetY ());
-      r[1*3+2] += (y[k]->GetY () - center_b.GetY ()) * (x[k]->GetZ () - center_a.GetZ ());
-      r[2*3+0] += (y[k]->GetZ () - center_b.GetZ ()) * (x[k]->GetX () - center_a.GetX ());
-      r[2*3+1] += (y[k]->GetZ () - center_b.GetZ ()) * (x[k]->GetY () - center_a.GetY ());
-      r[2*3+2] += (y[k]->GetZ () - center_b.GetZ ()) * (x[k]->GetZ () - center_a.GetZ ());
-    }
-  
-  // Calcul de E0
-  
-  for (k = 0; k < n; ++k)
-    {
-      e0 += ((x[k]->GetX () - center_a.GetX ()) * (x[k]->GetX () - center_a.GetX ()) +
-	     (x[k]->GetY () - center_a.GetY ()) * (x[k]->GetY () - center_a.GetY ()) +
-	     (x[k]->GetZ () - center_a.GetZ ()) * (x[k]->GetZ () - center_a.GetZ ()) +
-	     (y[k]->GetX () - center_b.GetX ()) * (y[k]->GetX () - center_b.GetX ()) +
-	     (y[k]->GetY () - center_b.GetY ()) * (y[k]->GetY () - center_b.GetY ()) +
-	     (y[k]->GetZ () - center_b.GetZ ()) * (y[k]->GetZ () - center_b.GetZ ()));
-    }
-  e0 /= 2;
 
   // Calcul de RR
 
@@ -1111,10 +955,6 @@ McCoreInit ()
   r_TRP = new rt_TRP;
   r_TYR = new rt_TYR;
   r_VAL = new rt_VAL;
-
-  // Initializing hbond parameters -----------------------------------
-
-  SetBondsParam ();
 
   // Initializing obligatory atom sets -------------------------------
 
