@@ -272,7 +272,7 @@ PACKAGE_STRING=
 PACKAGE_BUGREPORT=
 
 ac_unique_file="lib/Atom.h"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS SET_MAKE CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CXX CXXFLAGS ac_ct_CXX build build_cpu build_vendor build_os host host_cpu host_vendor host_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA AR PACKAGE VERSION DEPFLAGS LINKOPTIONS LDNAMEPARAM LIBALLFLAGSTART LIBALLFLAGSTOP ARXX AROPTIONS LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS SET_MAKE CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CXX CXXFLAGS ac_ct_CXX build build_cpu build_vendor build_os host host_cpu host_vendor host_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA AR PACKAGE VERSION DEPFLAGS LINKOPTIONS LDNAMEPARAM LIBALLFLAGSTART LIBALLFLAGSTOP ARXX AROPTIONS HAVE_XMLCPG LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -3506,7 +3506,6 @@ fi
 echo "$as_me:$LINENO: result: $ac_cv_cxx_have_numeric_limits" >&5
 echo "${ECHO_T}$ac_cv_cxx_have_numeric_limits" >&6
 
-
 if test "$ac_cv_cxx_have_numeric_limits" = yes; then
 
 cat >>confdefs.h <<\_ACEOF
@@ -3608,8 +3607,7 @@ _ACEOF
 
 fi
 
-
-echo "$as_me:$LINENO: checking for xmlcpginit in -lrnamlc++" >&5
+	echo "$as_me:$LINENO: checking for xmlcpginit in -lrnamlc++" >&5
 echo $ECHO_N "checking for xmlcpginit in -lrnamlc++... $ECHO_C" >&6
 if test "${ac_cv_lib_rnamlcpp_xmlcpginit+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -3674,12 +3672,7 @@ fi
 echo "$as_me:$LINENO: result: $ac_cv_lib_rnamlcpp_xmlcpginit" >&5
 echo "${ECHO_T}$ac_cv_lib_rnamlcpp_xmlcpginit" >&6
 if test $ac_cv_lib_rnamlcpp_xmlcpginit = yes; then
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBRNAMLC__ 1
-_ACEOF
-
-  LIBS="-lrnamlc++ $LIBS"
-
+  HAVE_XMLCPG=true
 fi
 
 	LIBALLFLAGSTART="-all"
@@ -3777,8 +3770,7 @@ _ACEOF
 
 fi
 
-
-echo "$as_me:$LINENO: checking for xmlcpginit in -lrnamlc++" >&5
+	echo "$as_me:$LINENO: checking for xmlcpginit in -lrnamlc++" >&5
 echo $ECHO_N "checking for xmlcpginit in -lrnamlc++... $ECHO_C" >&6
 if test "${ac_cv_lib_rnamlcpp_xmlcpginit+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -3843,12 +3835,7 @@ fi
 echo "$as_me:$LINENO: result: $ac_cv_lib_rnamlcpp_xmlcpginit" >&5
 echo "${ECHO_T}$ac_cv_lib_rnamlcpp_xmlcpginit" >&6
 if test $ac_cv_lib_rnamlcpp_xmlcpginit = yes; then
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBRNAMLC__ 1
-_ACEOF
-
-  LIBS="-lrnamlc++ $LIBS"
-
+  HAVE_XMLCPG=true
 fi
 
 	LIBALLFLAGSTART="-z allextract"
@@ -3926,8 +3913,7 @@ _ACEOF
 
 fi
 
-
-echo "$as_me:$LINENO: checking for main in -lrnamlc++" >&5
+        echo "$as_me:$LINENO: checking for main in -lrnamlc++" >&5
 echo $ECHO_N "checking for main in -lrnamlc++... $ECHO_C" >&6
 if test "${ac_cv_lib_rnamlcpp_main+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -3986,12 +3972,7 @@ fi
 echo "$as_me:$LINENO: result: $ac_cv_lib_rnamlcpp_main" >&5
 echo "${ECHO_T}$ac_cv_lib_rnamlcpp_main" >&6
 if test $ac_cv_lib_rnamlcpp_main = yes; then
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBRNAMLC__ 1
-_ACEOF
-
-  LIBS="-lrnamlc++ $LIBS"
-
+  HAVE_XMLCPG=true
 fi
 
 	CXXFLAGS="$CXXFLAGS -Wall"
@@ -4014,6 +3995,7 @@ if test "${with_malloc+set}" = set; then
 _ACEOF
 
 fi;
+
 
 
 
@@ -4679,6 +4661,7 @@ s,@LIBALLFLAGSTART@,$LIBALLFLAGSTART,;t t
 s,@LIBALLFLAGSTOP@,$LIBALLFLAGSTOP,;t t
 s,@ARXX@,$ARXX,;t t
 s,@AROPTIONS@,$AROPTIONS,;t t
+s,@HAVE_XMLCPG@,$HAVE_XMLCPG,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t
 s,@LTLIBOBJS@,$LTLIBOBJS,;t t
 CEOF

@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
-# $Revision: 1.24 $
-# $Id: configure.in,v 1.24 2004-01-09 21:15:10 larosem Exp $
+# $Revision: 1.25 $
+# $Id: configure.in,v 1.25 2004-08-24 19:40:31 gendrop Exp $
 # 
 # This file is part of mccore.
 # 
@@ -59,7 +59,6 @@ ac_cv_cxx_have_numeric_limits,
  AC_LANG_RESTORE
 ])
 
-
 if test "$ac_cv_cxx_have_numeric_limits" = yes; then
   AC_DEFINE(HAVE_NUMERIC_LIMITS,,[define if the compiler has numeric_limits<T>])
 fi
@@ -84,7 +83,7 @@ if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
 	  echo "        " $t;
 	done
 	AC_CHECK_LIB(z,gzopen)
-	AC_CHECK_LIB(rnamlc++,xmlcpginit)
+	AC_CHECK_LIB(rnamlc++,xmlcpginit,HAVE_XMLCPG=true)
 	LIBALLFLAGSTART="-all"
 	LIBALLFLAGSTOP="-notall"
 	ARXX="$CXX"
@@ -107,7 +106,7 @@ if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
 	  echo "        " $t;
 	done
 	AC_CHECK_LIB(z,gzopen)
-	AC_CHECK_LIB(rnamlc++,xmlcpginit)
+	AC_CHECK_LIB(rnamlc++,xmlcpginit,HAVE_XMLCPG=true)
 	LIBALLFLAGSTART="-z allextract"
 	LIBALLFLAGSTOP="-z defaultextract"
 	ARXX="$CXX"
@@ -116,7 +115,7 @@ if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
     esac;
 elif eval "test \"`echo $GXX`\" = yes"; then     # gnu compiler
         AC_CHECK_LIB(z,main)
-        AC_CHECK_LIB(rnamlc++,main)
+        AC_CHECK_LIB(rnamlc++,main,HAVE_XMLCPG=true)
 	CXXFLAGS="$CXXFLAGS -Wall"
 	DEPFLAGS="-MM"
 	LINKOPTIONS="-shared"
@@ -144,5 +143,6 @@ AC_SUBST(LIBALLFLAGSTART)
 AC_SUBST(LIBALLFLAGSTOP)
 AC_SUBST(ARXX)
 AC_SUBST(AROPTIONS)
+AC_SUBST(HAVE_XMLCPG)
 
 AC_OUTPUT( Makefile docs/Makefile lib/Makefile, echo timestamp > stamp-h )

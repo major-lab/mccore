@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.48 $
-# $Id: Makefile.in,v 1.48 2004-07-05 20:19:25 larosem Exp $
+# $Revision: 1.49 $
+# $Id: Makefile.in,v 1.49 2004-08-24 19:40:58 gendrop Exp $
 # 
 # This file is part of mccore.
 # 
@@ -56,6 +56,7 @@ INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 
+HAVE_XMLCPG = @HAVE_XMLCPG@
 
 .SUFFIXES:
 
@@ -70,15 +71,23 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 % : %.cc
 % : %.o
 
-SOURCES = Binstream.cc \
+ifeq ($(HAVE_XMLCPG),true)
+        XMLCPG_SOURCES = RnamlReader.cc \
+		   	 RnamlWriter.cc	
+else
+	XMLCPG_SOURCES = 
+endif
+
+
+
+SOURCES = $(XMLCPG_SOURCES) \
+	  Binstream.cc \
 	  Exception.cc \
 	  Fastastream.cc \
 	  Genbankstream.cc \
 	  Messagestream.cc \
 	  PdbFileHeader.cc \
 	  Pdbstream.cc \
-	  RnamlReader.cc \
-	  RnamlWriter.cc \
 	  ServerSocket.cc \
 	  Sequence.cc \
 	  sockstream.cc \
