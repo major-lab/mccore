@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:34 2001
 // Last Modified By : Philippe Thibault
-// Last Modified On : Fri Aug 24 10:02:49 2001
-// Update Count     : 4
+// Last Modified On : Fri Sep  7 15:23:38 2001
+// Update Count     : 5
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -86,7 +86,7 @@ sockbuf::open (const char* host, int port)
   
   if ((n = ::connect (socket_id, 
 		      (sockaddr*)&sin, sizeof (sin))) < 0) {
-    CSocketException exc ("connection to ");
+    CConnectionException exc ("connection to ");
     exc << host << " via port #" << port << " failed:\n\t" << sys_errlist[errno];
     throw exc;
   }
@@ -134,13 +134,20 @@ sockbuf::sys_read (char* buf, streamsize size)
   nleft = size;
 
   while (nleft > 0) {
-    if ((nread = ::recv (socket_id, ptr, nleft, MSG_NOSIGNAL)) < 0) {
-      if (errno == EINTR)	
-	nread = 0;
-      else
-	return -1;
-    } else if (nread == 0)
-      break; 
+    if ((nread = ::recv (socket_id, ptr, nleft, MSG_NOSIGNAL)) < 0)
+      {
+	//cerr << "**(inside sys-read)** recv returned -1" << endl;
+	if (errno == EINTR)	
+	  nread = 0;
+	else
+	  return -1;
+      } 
+    else if (nread == 0)
+      {
+	//cerr << "**(inside sys-read)** recv returned 0 (" 
+	//     << sys_errlist[errno] << ')' <<  endl;
+	break;
+      } 
     nleft -= nread;
     ptr += nread;
   }
@@ -171,11 +178,13 @@ sockbuf::sys_write (const char *buf, streamsize size)
   ptr = buf;
   nleft = size;
   while (nleft > 0) {
-    if ((nsent = ::send (socket_id, ptr, nleft, MSG_NOSIGNAL)) < 0) {
-      if (errno == EINTR)
-	nsent = 0;
-      else return -1;
-    }
+    if ((nsent = ::send (socket_id, ptr, nleft, MSG_NOSIGNAL)) < 0) 
+      {
+	//cerr << "**(inside sys-write)** recv returned -1" << endl;
+	if (errno == EINTR)
+	  nsent = 0;
+	else return -1;
+      }
     nleft -= nsent;
     ptr += nsent;
   }
@@ -187,13 +196,15 @@ int
 sockbuf::sys_close ()
 {
   overflow (EOF);
-  
-  if (::shutdown (socket_id, SHUT_RDWR) == -1) {
+
+  if (::shutdown (socket_id, SHUT_RDWR) == -1 && errno != ENOTCONN) {
     CFatalSocketException exc ("socket shutdown failed",
 			       __FILE__, __LINE__);
     exc << ": " << sys_errlist[errno];
     throw exc;
   }
+  
+
   if (::close (socket_id) == -1) {
     CFatalSocketException exc ("socket closing failed",
 			       __FILE__, __LINE__);
@@ -240,6 +251,10 @@ streamsize sockbuf::xsgetn (char* s, streamsize n)
   if (r!=n) {
     CSocketException exc ("Warning: incomplete read (");
     exc << r << "/" << n << " bytes):\n\t" << sys_errlist[errno];
+
+    //cout << "**(inside xsgetn)** : Warning: incomplete read ("
+    //	 << r << "/" << n << " bytes):\n\t" << sys_errlist[errno] << endl;
+
     throw exc;
   }
 
@@ -255,6 +270,10 @@ streamsize sockbuf::xsputn (const char* s, streamsize n)
   if (w!=n) {
     CSocketException exc ("Warning: incomplete write (");
     exc << w << "/" << n << " bytes):\n\t" << sys_errlist[errno];
+
+    //cout << "**(inside xsputn)** : Warning: incomplete write ("
+    // << w << "/" << n << " bytes):\n\t" << sys_errlist[errno] << endl;
+
     throw exc;
   }
 

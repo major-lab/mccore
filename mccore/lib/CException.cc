@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Philippe Thibault
-// Last Modified On : Fri Aug 24 09:58:11 2001
-// Update Count     : 12
+// Last Modified On : Fri Sep  7 15:23:32 2001
+// Update Count     : 13
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -335,4 +335,21 @@ operator<< (ostream &os, const CFatalSocketException &exc)
 {
   return os << exc.GetFileName () << ":" << exc.GetLine () << ": "
 	    << (CException&) exc;
+}
+
+
+
+const CConnectionException&
+CConnectionException::operator= (const CConnectionException &right)
+{
+  if (this != &right)
+    CSocketException::operator= (right);
+  return *this;
+}	
+
+
+ostream&
+operator<< (ostream &os, const CConnectionException &exc)
+{
+  return os << (CException&) exc;
 }

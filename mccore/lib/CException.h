@@ -5,8 +5,8 @@
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 16:27:35 1999
 // Last Modified By : Philippe Thibault
-// Last Modified On : Fri Aug 24 09:58:16 2001
-// Update Count     : 13
+// Last Modified On : Fri Sep  7 15:23:36 2001
+// Update Count     : 14
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -592,6 +592,73 @@ public:
  * @return the used output stream.
  */
 ostream& operator<< (ostream &os, const CFatalSocketException &exc);
+
+
+/**
+ * @short Fatal exceptions produced by a connection to a socket.
+ *
+ * This exception class is specific for socket connection.  This class is
+ * reserved for error caused by connections to sockets.  It is needed to 
+ * terminate the execution for this kind of exception.
+ *
+ * @author Philippe Thibault <thibaup@iro.umontreal.ca>
+ */
+class CConnectionException : public CSocketException
+{
+
+public:
+
+  // LIFECYCLE ------------------------------------------------------------
+
+  /**
+   * Initializes the exeption.
+   */
+  CConnectionException () : CSocketException () { }
+
+  /**
+   * Initializes the exeption with a message and where it was produced.
+   * @param theMessage the information string.
+   * @param file the file where the exception occured (default = 0).
+   * @param line the line number where the exception occured (default = -1).
+   */
+  CConnectionException (const char *theMessage)
+    : CSocketException (theMessage)
+  { }
+    
+
+  /**
+   * Initializes the exeption with the right's content.
+   * @param right the exception to copy.
+   */
+  CConnectionException (const CConnectionException &right)
+    : CSocketException (right)
+  { }
+
+  /**
+   * Destructs the exception.
+   */
+  ~CConnectionException () { }
+
+  // OPERATORS ------------------------------------------------------------
+
+  /**
+   * Assigns the exception with the right's content.
+   * @param right the exception to copy.
+   * @return itself.
+   */
+  const CConnectionException& operator= (const CConnectionException &right);
+
+  // ACCESS ---------------------------------------------------------------
+
+ 
+
+  // METHODS --------------------------------------------------------------
+
+  // I/O ------------------------------------------------------------------
+};
+
+
+
 
 
 #endif
