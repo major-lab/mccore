@@ -4,9 +4,9 @@
 //                           Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 16:27:35 1999
-// Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:33:53 2001
-// Update Count     : 12
+// Last Modified By : Philippe Thibault
+// Last Modified On : Fri Aug 24 09:58:16 2001
+// Update Count     : 13
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -449,5 +449,149 @@ public:
 
   // I/O ------------------------------------------------------------------
 };
+
+/**
+ * @short Exceptions produced by sockets.
+ *
+ * This exception class is specific for socket exceptions.  This class is
+ * reserved for error caused by sockets manipulation.  It is not needed to
+ * terminate the execution for this kind of exception.
+ *
+ * @author Philippe Thibault <thibaup@iro.umontreal.ca>
+ */
+class CSocketException : public CException
+{
+
+public:
+
+  // LIFECYCLE ------------------------------------------------------------
+
+  /**
+   * Initializes the exeption.
+   */
+  CSocketException () : CException () { } ;
+
+  /**
+   * Initializes the exeption with a message and where it was produced.
+   * @param theMessage the information string.
+   * @param file the file where the exception occured (default = 0).
+   * @param line the line number where the exception occured (default = -1).
+   */
+  CSocketException (const char *theMessage) : CException (theMessage) { }
+
+  /**
+   * Initializes the exeption with the right's content.
+   * @param right the exception to copy.
+   */
+  CSocketException (const CSocketException &right) : CException (right) { }
+
+
+  // OPERATORS ------------------------------------------------------------
+
+  /**
+   * Assigns the exception with the right's content.
+   * @param right the exception to copy.
+   * @return itself.
+   */
+  const CSocketException& operator= (const CSocketException &right);
+
+  // ACCESS ---------------------------------------------------------------
+
+  // METHODS --------------------------------------------------------------
+
+  // I/O ------------------------------------------------------------------
+};
+
+
+
+/**
+ * @short Fatal exceptions produced by sockets.
+ *
+ * This exception class is specific for socket exceptions.  This class is
+ * reserved for error caused by socket manipulation.  It is needed to 
+ * terminate the execution for this kind of exception.
+ *
+ * @author Philippe Thibault <thibaup@iro.umontreal.ca>
+ */
+class CFatalSocketException : public CException
+{
+  /**
+   * The file name.
+   */
+  char *mFile;
+
+  /**
+   * The line number.
+   */
+  int mLine;
+
+public:
+
+  // LIFECYCLE ------------------------------------------------------------
+
+  /**
+   * Initializes the exeption.
+   */
+  CFatalSocketException ();
+
+  /**
+   * Initializes the exeption with a message and where it was produced.
+   * @param theMessage the information string.
+   * @param file the file where the exception occured (default = 0).
+   * @param line the line number where the exception occured (default = -1).
+   */
+  CFatalSocketException (const char *theMessage,
+		    const char *file = 0,
+		    int line = -1);
+
+  /**
+   * Initializes the exeption with the right's content.
+   * @param right the exception to copy.
+   */
+  CFatalSocketException (const CFatalSocketException &right);
+
+  /**
+   * Destructs the exception.
+   */
+  ~CFatalSocketException () { delete[] mFile; }
+
+  // OPERATORS ------------------------------------------------------------
+
+  /**
+   * Assigns the exception with the right's content.
+   * @param right the exception to copy.
+   * @return itself.
+   */
+  const CFatalSocketException& operator= (const CFatalSocketException &right);
+
+  // ACCESS ---------------------------------------------------------------
+
+  /**
+   * Gets the file name where the exception occured.
+   * @return the file name.
+   */
+  const char* GetFileName () const { return mFile; }
+
+  /**
+   * Gets the line number where the exception occured.
+   * @return the line number.
+   */
+  int GetLine () const { return mLine; }
+
+  // METHODS --------------------------------------------------------------
+
+  // I/O ------------------------------------------------------------------
+};
+
+
+/**
+ * Outputs the CFatalSocketException exception
+ * messages.  Prints the filename, the line number and the message.
+ * @param os the output stream.
+ * @param exc the exception to display.
+ * @return the used output stream.
+ */
+ostream& operator<< (ostream &os, const CFatalSocketException &exc);
+
 
 #endif

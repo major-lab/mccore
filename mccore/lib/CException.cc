@@ -4,9 +4,9 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:09:34 2001
-// Update Count     : 11
+// Last Modified By : Philippe Thibault
+// Last Modified On : Fri Aug 24 09:58:11 2001
+// Update Count     : 12
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -265,4 +265,74 @@ CFatalIntLibException::operator= (const CFatalIntLibException &right)
   if (this != &right)
     CIntLibException::operator= (right);
   return *this;
+}
+
+
+
+const CSocketException&
+CSocketException::operator= (const CSocketException &right)
+{
+  if (this != &right)
+    CException::operator= (right);
+  return *this;
+}
+
+
+
+CFatalSocketException::CFatalSocketException ()
+  : CException (), mLine (0)
+{
+  mFile = new char[1];
+  mFile[0] = '\0';
+}
+
+
+
+CFatalSocketException::CFatalSocketException (const char *theMessage,
+				    const char *file, int line)
+  : CException (theMessage), mLine (line)
+{
+  if (file)
+    {
+      mFile = new char[strlen (file) + 1];
+      strcpy (mFile, file);
+    }
+  else
+    {
+      mFile = new char[1];
+      mFile[0] = '\0';
+    }
+}
+
+
+
+CFatalSocketException::CFatalSocketException (const CFatalSocketException &right)
+  : CException (right), mLine (right.mLine)
+{
+  mFile = new char[strlen (right.mFile) + 1];
+  strcpy (mFile, right.mFile);
+}
+
+
+
+const CFatalSocketException&
+CFatalSocketException::operator= (const CFatalSocketException &right)
+{
+  if (this != &right)
+    {
+      CException::operator= (right);
+      mFile = new char[strlen (right.mFile) + 1];
+      strcpy (mFile, right.mFile);
+      mLine = right.mLine;
+    }
+  return *this;
+}
+
+
+
+ostream&
+operator<< (ostream &os, const CFatalSocketException &exc)
+{
+  return os << exc.GetFileName () << ":" << exc.GetLine () << ": "
+	    << (CException&) exc;
 }
