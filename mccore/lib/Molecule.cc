@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:35 2003
-// $Revision: 1.1 $
-// $Id: Molecule.cc,v 1.1 2003-07-08 21:12:49 larosem Exp $
+// $Revision: 1.1.2.1 $
+// $Id: Molecule.cc,v 1.1.2.1 2003-07-15 13:54:30 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -29,106 +29,108 @@
 #endif
 
 #include <iostream>
+#include <string>
+#include <sstream>
 
 #include "Model.h"
 #include "Molecule.h"
 #include "Pdbstream.h"
 #include "stlio.h"
 
-using namespace mccore;
 
 
-
-Molecule::Molecule (const Molecule &right)
-  : header (right.header)
+namespace mccore
 {
-  Molecule::const_iterator cit;
-
-  for (cit = right.begin (); right.end () != cit; ++cit)
-    push_back ((*cit)->clone ());
-}
-
-
-
-Molecule::~Molecule ()
-{
-  Molecule::iterator it;
+  Molecule::Molecule (const Molecule &right)
+    : header (right.header)
+  {
+    Molecule::const_iterator cit;
+    
+    for (cit = right.begin (); right.end () != cit; ++cit)
+      push_back ((*cit)->clone ());
+  }
   
-  for (it = begin (); end () != it; ++it)
-    delete (*it);
+  
+  
+  Molecule::~Molecule ()
+  {
+    Molecule::iterator it;
+    
+    for (it = begin (); end () != it; ++it)
+      delete (*it);
+  }
+  
+  
+  
+  Molecule&
+  Molecule::operator= (const Molecule &right)
+  {
+    if (&right != this)
+      {
+	Molecule::iterator it;
+	Molecule::const_iterator cit;
+	
+	header = right.header;
+	for (it = begin (); end () != it; ++it)
+	  delete (*it);
+	clear ();
+	for (cit = right.begin (); right.end () != cit; ++cit)
+	  push_back ((*cit)->clone ());
+      }
+    return *this;
+  }
+  
+  
+  
+  ostream&
+  mccore::operator<< (ostream &obs, const Molecule &obj)
+  {
+    return obs << "MOLECULE: " << endl << obj.getPdbFileHeader () << endl
+	       << (const list< Model* >&) obj << endl;
+  }
+  
+  
+  
+  iPdbstream&
+  mccore::operator>> (iPdbstream &ips, Molecule &obj)
+  {
+    Molecule::iterator it;
+    
+    for (it = obj.begin (); obj.end () != it; ++it)
+      delete (*it);
+    obj.clear ();
+    obj.setPdbFileHeader (ips.getHeader ());
+    while (! ips.eof ())
+      {
+	Model *model;
+	
+	model = new Model ();
+	ips >> *model;
+	if (! model->empty ())
+	  obj.push_back (model);
+      }
+    return ips;
+  }
+  
+  
+  
+  oPdbstream&
+  mccore::operator<< (oPdbstream &ops, const Molecule &obj)
+  {
+    Molecule::const_iterator cit;
+    bool modelHeaders;
+    
+    ops.setHeader (obj.getPdbFileHeader ());
+    ops.writeHeader ();
+    modelHeaders = 1 < obj.size ();
+    for (cit = obj.begin (); obj.end () != cit; ++cit)
+      {
+	if (modelHeaders)
+	  ops.startModel ();
+	ops << **cit;
+	if (modelHeaders)
+	  ops.endModel ();
+      }
+    return ops;
+  }
 }
-
-
-
-Molecule&
-Molecule::operator= (const Molecule &right)
-{
-  if (&right != this)
-    {
-      Molecule::iterator it;
-      Molecule::const_iterator cit;
-
-      header = right.header;
-      for (it = begin (); end () != it; ++it)
-	delete (*it);
-      clear ();
-      for (cit = right.begin (); right.end () != cit; ++cit)
-	push_back ((*cit)->clone ());
-    }
-  return *this;
-}
-
-
-
-ostream&
-mccore::operator<< (ostream &obs, const Molecule &obj)
-{
-  return obs << "MOLECULE: " << endl << obj.getPdbFileHeader () << endl
-	     << (const list< Model* >&) obj << endl;
-}
-
-
-
-iPdbstream&
-mccore::operator>> (iPdbstream &ips, Molecule &obj)
-{
-  Molecule::iterator it;
-
-  for (it = obj.begin (); obj.end () != it; ++it)
-    delete (*it);
-  obj.clear ();
-  obj.setPdbFileHeader (ips.getHeader ());
-  while (! ips.eof ())
-    {
-      Model *model;
-
-      model = new Model ();
-      ips >> *model;
-      if (! model->empty ())
-	obj.push_back (model);
-    }
-  return ips;
-}
-
-
-
-oPdbstream&
-mccore::operator<< (oPdbstream &ops, const Molecule &obj)
-{
-  Molecule::const_iterator cit;
-  bool modelHeaders;
-
-  ops.setHeader (obj.getPdbFileHeader ());
-  ops.writeHeader ();
-  modelHeaders = 1 < obj.size ();
-  for (cit = obj.begin (); obj.end () != cit; ++cit)
-    {
-      if (modelHeaders)
-	ops.startModel ();
-      ops << **cit;
-      if (modelHeaders)
-	ops.endModel ();
-    }
-  return ops;
-}
-
