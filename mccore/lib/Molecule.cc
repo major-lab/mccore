@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Molecule.cc
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
-//                     Université de Montréal.
+// Copyright Â© 2003-05 Laboratoire de Biologie Informatique et ThÃ©orique
+//                     UniversitÃ© de MontrÃ©al.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:35 2003
-// $Revision: 1.12 $
-// $Id: Molecule.cc,v 1.12 2005-01-27 19:13:04 larosem Exp $
+// $Revision: 1.13 $
+// $Id: Molecule.cc,v 1.13 2005-01-27 19:37:59 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -105,13 +105,13 @@ namespace mccore
 	const_iterator it;
 
 	// clear all
-	clear ();
-	delete modelFM;
+	this->clear ();
+	delete this->modelFM;
 
 	// copy 
-	modelFM = right.modelFM->clone ();
-	properties = right.properties;
-	insert (right.begin (), right.end ());
+	this->modelFM = right.modelFM->clone ();
+	this->properties = right.properties;
+	this->insert (right.begin (), right.end ());
       }
     return *this;
   }
@@ -154,7 +154,7 @@ namespace mccore
     AbstractModel *cloned;
 
     cloned = modelFM->createModel (model);
-    return iterator (models.insert (models.end (), cloned));
+    return (iterator)models.insert (models.end (), cloned);
   }
   
     
@@ -162,7 +162,7 @@ namespace mccore
   Molecule::erase (iterator pos)
   {
     delete &*pos;
-    return iterator (models.erase (pos));
+    return (iterator)models.erase (pos);
   }
 
   
@@ -272,24 +272,24 @@ namespace mccore
     string kcs, vcs;
 
     // -- reset object
-    clear ();
-    delete modelFM;
+    this->clear ();
+    delete this->modelFM;
 
     // -- read ModelFactoryMethod
-    modelFM = ModelFactoryMethod::read (ibs);
+    this->modelFM = ModelFactoryMethod::read (ibs);
 
     // -- read models using restored factory method for object creation
     for (ibs >> qty; qty > 0; --qty)
     {
       this->models.push_back (modelFM->createModel ());
-      ibs >> *models.back ();
+      ibs >> *this->models.back ();
     }
 
     // -- read properties
     for (ibs >> qty; qty > 0; --qty)
     {
       ibs >> kcs >> vcs;
-      setProperty (kcs, vcs);
+      this->setProperty (kcs, vcs);
     }
 
     return ibs;
