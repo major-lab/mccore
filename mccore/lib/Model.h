@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Nov  5 11:40:20 2001
-// Update Count     : 4
+// Last Modified On : Wed Nov 14 16:43:56 2001
+// Update Count     : 5
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -438,5 +438,15 @@ iBinstream& operator>> (iBinstream &ibs, Model &obj);
  * @return the output binary stream.
  */
 oBinstream& operator<< (oBinstream &obs, const Model &obj);
+
+
+
+/**
+ * Outputs the model to an output stream.
+ * @param obs the output stream.
+ * @param obj the model to output.
+ * @return the output stream.
+ */
+ostream& operator<< (ostream &obs, const Model &obj);
 
 #endif
