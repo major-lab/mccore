@@ -1,9 +1,9 @@
 //                              -*- Mode: C++ -*- 
 // HomogeneousTransfo.cc
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 //
 //  This file is part of mccore.
 //  
@@ -455,6 +455,16 @@ namespace mccore
     HomogeneousTransfo a_bi = a * bi;
     HomogeneousTransfo bi_a = bi * a;
     return (a_bi.strength () + bi_a.strength ()) / 2;
+  }
+  
+  
+  float
+  HomogeneousTransfo::squareDistance (const HomogeneousTransfo &m) const
+  {
+    float val;
+
+    val = distance (m);
+    return val * val;
   }
   
   

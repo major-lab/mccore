@@ -1,9 +1,9 @@
 //                              -*- Mode: C++ -*- 
 // HomogeneousTransfo.h
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 //
 //  This file is part of mccore.
 //  
@@ -55,7 +55,7 @@ namespace mccore
    * </pre>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: HomogeneousTransfo.h,v 1.9 2003-12-23 14:48:19 larosem Exp $
+   * @version $Id: HomogeneousTransfo.h,v 1.10 2004-05-13 15:39:31 larosem Exp $
    */
   class HomogeneousTransfo
   {
@@ -324,6 +324,16 @@ namespace mccore
      * @return the computed distance.
      */
     float distance (const HomogeneousTransfo &m) const;
+    
+    /**
+     * Computes the distance between two transfo.  For more details,
+     * see a discussion of the metric used in P. Gendron, S. Lemieuxs
+     * and F. Major (2001) Quantitative analysis of nucleic acid
+     * three-dimensional structures, J. Mol. Biol. 308(5):919-936
+     * @param m the other transfo.
+     * @return the computed distance.
+     */
+    float squareDistance (const HomogeneousTransfo &m) const;
     
     /**
      * Returns the transfo needed to align the points p1, p2, p3 with
