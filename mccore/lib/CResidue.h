@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Thu Sep 28 16:59:32 2000
 // Last Modified By : Labo Lbit
-// Last Modified On : Fri Nov 10 08:56:42 2000
-// Update Count     : 5
+// Last Modified On : Fri Nov 10 18:36:05 2000
+// Update Count     : 6
 // Status           : Ok.
 // 
 
@@ -376,9 +376,11 @@ public:
  */
 class CResidue : public CResId
 {
+public:
   typedef vector< CAtom >::size_type size_type;
   typedef residue_iterator iterator;
   typedef const_residue_iterator const_iterator;
+private:
   
   /**
    * The residue type.
