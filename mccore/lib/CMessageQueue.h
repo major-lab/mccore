@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Jan 23 15:01:38 2001
-// Update Count     : 3
+// Last Modified On : Fri Feb  9 11:12:32 2001
+// Update Count     : 4
 // Status           : Ok.
 // 
 
@@ -93,6 +93,38 @@ public:
    */
   template< class T >
   CMessageQueue& operator<< (const T &o) { output (o); return *this; }
+
+  /**
+   * Modifies the CMessageQueue's stream.
+   * @param func the ios manipulator function.
+   * @return itself.
+   */
+  CMessageQueue& operator<< (ios& (*func)(ios&))
+  {
+    if (mCurrentVerbose <= mVerbose)
+      {
+	if (mOst)
+	  *mOst << func;
+	*mStream << func;
+      }
+    return *this;
+  }
+
+  /**
+   * Modifies the CMessageQueue's stream.
+   * @param func the ostream manipulator function.
+   * @return itself.
+   */
+  CMessageQueue& operator<< (ostream& (*func)(ostream&))
+  {
+    if (mCurrentVerbose <= mVerbose)
+      {
+	if (mOst)
+	  *mOst << func;
+	*mStream << func;
+      }
+    return *this;
+  }
 
   // ACCESS ---------------------------------------------------------------
 
