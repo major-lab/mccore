@@ -4,8 +4,8 @@
 // Author           : Martin Larose
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Fri Feb  2 14:56:25 2001
-// Update Count     : 7
+// Last Modified On : Wed Feb 28 17:13:24 2001
+// Update Count     : 8
 // Status           : Ok.
 // 
 
@@ -898,8 +898,7 @@ void
 oPdbstream::open ()
 {
   mCurrentAtomNo = 1;
-  atomset = new all_atom_set ();
-  atomsetopt = new no_pse_lp_atom_set ();
+  atomset = new no_pse_lp_atom_set ();
   restype = 0;
   mModelNo = 1;
 }
@@ -946,7 +945,7 @@ oPdbstream::putremark (unsigned int k, const char *rem)
 void
 oPdbstream::putatom (const CAtom &atom)
 {
-  if (atomset->operator() (atom) && atomsetopt->operator() (atom))
+  if (atomset->operator() (atom))
     {
       setf (ios::left, ios::adjustfield);
       if (restype->is_NucleicAcid () || restype->is_AminoAcid ())

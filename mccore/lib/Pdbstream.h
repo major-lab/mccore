@@ -4,8 +4,8 @@
 // Author           : Martin Larose
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Fri Feb  9 11:12:56 2001
-// Update Count     : 6
+// Last Modified On : Wed Feb 28 17:13:28 2001
+// Update Count     : 7
 // Status           : Ok.
 // 
 
@@ -311,11 +311,6 @@ class oPdbstream : public ostream
   AtomSet *atomset;
 
   /**
-   * Atom set option filter function.
-   */
-  AtomSet *atomsetopt;
-
-  /**
    * The residue type of the saved residue.
    */
   const t_Residue *restype;
@@ -370,8 +365,7 @@ public:
    */
   oPdbstream ()
     : ostream (),
-      atomset (new all_atom_set ()),
-      atomsetopt (new no_pse_lp_atom_set ()),
+      atomset (new no_pse_lp_atom_set ()),
       restype (0),
       mCurrentAtomNo (1),
       mModelNo (1)
@@ -383,8 +377,7 @@ public:
    */
   oPdbstream (streambuf* sb)
     : ostream (sb),
-      atomset (new all_atom_set ()),
-      atomsetopt (new no_pse_lp_atom_set ()),
+      atomset (new no_pse_lp_atom_set ()),
       restype (0),
       mCurrentAtomNo (1),
       mModelNo (1)
@@ -393,7 +386,7 @@ public:
   /**
    * Destructs the stream.
    */
-  virtual ~oPdbstream () { delete atomset; delete atomsetopt; }
+  virtual ~oPdbstream () { delete atomset; }
 
   // OPERATORS -----------------------------------------------------
 
@@ -529,22 +522,10 @@ public:
   const AtomSet* GetAtomSet () const { return atomset; }
 
   /**
-   * Gets the atom set option function.
-   * @return the atom set option function.
-   */
-  const AtomSet* GetAtomSetOpt () const { return atomsetopt; }
-
-  /**
    * Sets the atom set function.
    * @param as the new atom set function.
    */
   void SetAtomSet (AtomSet *as) { delete atomset; atomset = as; }
-
-  /**
-   * Sets the atom set option function.
-   * @param as the atom set option function.
-   */
-  void SetAtomSetOption (AtomSet *as) { delete atomsetopt; atomsetopt = as; }
 
   /**
    * Sets the residue type of the outputted atom.
