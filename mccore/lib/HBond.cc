@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu Mar 20 18:05:28 2003
-// $Revision: 1.11.4.1 $
-// $Id: HBond.cc,v 1.11.4.1 2004-12-16 17:08:22 larosem Exp $
+// $Revision: 1.11.4.2 $
+// $Id: HBond.cc,v 1.11.4.2 2004-12-24 08:33:27 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -122,14 +122,14 @@ namespace mccore
 
   HBond::HBond ()
     : donor (0), hydrogen (0), acceptor (0), lonepair (0),
-      value (1), resD (0), resA (0)
+      value (0), resD (0), resA (0)
   { }
 
 
   HBond::HBond (const AtomType *d, const AtomType *h, 
 		const AtomType *a, const AtomType *l)
     : donor (d), hydrogen (h), acceptor (a), lonepair (l),
-      value (1), resD (0), resA (0)
+      value (0), resD (0), resA (0)
   { }
   
   
@@ -254,7 +254,7 @@ namespace mccore
     resA = &rb;
     
     // PreCheck on the donor/acceptor distance
-    if (getDonor ().distance (getAcceptor ()) > 5) return 0;
+    if (getDonor ().distance (getAcceptor ()) > 5) return (value = 0);
     
     if (donor == AtomType::aC5M) {
       Vector3D px, py, pz, up, pv;

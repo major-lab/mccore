@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.5.4.1 $
+// $Revision: 1.5.4.2 $
 // 
 // This file is part of mccore.
 // 
@@ -46,7 +46,7 @@ namespace mccore
    * between any two atoms.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: HBond.h,v 1.5.4.1 2004-12-16 17:08:27 larosem Exp $
+   * @version $Id: HBond.h,v 1.5.4.2 2004-12-24 08:33:39 larosem Exp $
    */
   class HBond
     {
@@ -225,7 +225,17 @@ namespace mccore
 	return resA;
       }
 
+      /**
+       * Gets the probability of forming h-bond.  Initially 0.
+       * @return the probability of forming h-bond.
+       */
       float getValue () const { return value; }
+
+      /**
+       * Sets the initial probability.
+       * @param val the initial value.
+       */
+      void setInitialValue (float val) { value = val; }
 
       // METHODS ---------------------------------------------------------------
 
