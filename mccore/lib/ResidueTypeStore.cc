@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -57,7 +57,7 @@ namespace mccore {
     stringType["RV"] = ResidueType::rRV = new RV ("(RV)", "(RV)");
     stringType["DV"] = ResidueType::rDV = new DV ("(DV)", "(DV)");
     
-    ResidueType::rA = new A ("A", "ADE"); 
+    stringType["Adenine"] = t = ResidueType::rA = new A ("A", "ADE"); 
     stringType["A"] = t = ResidueType::rRA = new RA ("A", "ADE"); 
     stringType["ADE"] = t; 
     stringType["RA"] = t; 
@@ -67,7 +67,7 @@ namespace mccore {
     stringType["DA5"] = t; 
     stringType["DA3"] = t; 
     
-    ResidueType::rC = new C ("C", "CYT");
+    stringType["Cytosine"] = t = ResidueType::rC = new C ("C", "CYT");
     stringType["C"] = t = ResidueType::rRC = new RC ("C", "CYT");
     stringType["CYT"] = t; 
     stringType["RC"] = t; 
@@ -77,7 +77,7 @@ namespace mccore {
     stringType["DC5"] = t; 
     stringType["DC3"] = t; 
     
-    ResidueType::rG = new G ("G", "GUA"); 
+    stringType["Guanine"] = t = ResidueType::rG = new G ("G", "GUA"); 
     stringType["G"] = t = ResidueType::rRG = new RG ("G", "GUA"); 
     stringType["GUA"] = t;
     stringType["RG"] = t; 
@@ -87,7 +87,7 @@ namespace mccore {
     stringType["DG5"] = t; 
     stringType["DG3"] = t; 
     
-    ResidueType::rU = new U ("U", "URA");
+    stringType["Uracyle"] = t = ResidueType::rU = new U ("U", "URA");
     stringType["U"] = t = ResidueType::rRU = new RU ("U", "URA"); 
     stringType["RU"] = t;
     stringType["URI"] = t; 
@@ -95,7 +95,7 @@ namespace mccore {
     stringType["RU5"] = t; 
     stringType["RU3"] = t; 
     
-    ResidueType::rT = new T ("T", "TYM"); 
+    stringType["Thymine"] = t = ResidueType::rT = new T ("T", "TYM"); 
     stringType["T"] = t = ResidueType::rDT = new DT ("T", "TYM"); 
     stringType["DT"] = t;
     stringType["TYM"] = t; 
@@ -130,18 +130,23 @@ namespace mccore {
   {
     set< ResidueType* > bag;
     map< const char*, ResidueType*, less_string >::iterator i;
+    set< ResidueType* >::iterator j;
+
     for (i=stringType.begin (); i!=stringType.end (); ++i) {
       bag.insert (i->second);
     }
-    set< ResidueType* >::iterator j;
+    for (i=invalidType.begin (); i!=invalidType.end (); ++i) {
+      bag.insert (i->second);
+    }
     for (j=bag.begin (); j!=bag.end (); ++j) {
       delete *j;
     }
+    bag.clear ();
   }
     
     // METHODS -----------------------------------------------------------------
     
-  ResidueType* 
+  const ResidueType* 
   ResidueTypeStore::get (const char* s) 
   {
     ResidueType* t = 0;
@@ -160,4 +165,27 @@ namespace mccore {
     delete[] str;
     return t;
   } 
+
+
+  const ResidueType* 
+  ResidueTypeStore::getInvalid (const char* s) 
+  {
+    ResidueType* t = 0;
+    char* str = new char[strlen (s) + 1];
+    strcpy (str, s);
+    for (char* i=str; *i; ++i) {
+      *i = toupper (*i);
+    }
+    
+    if (invalidType.find (str) != invalidType.end ()) {
+      t = invalidType[str];
+    } else {
+      t = new ResidueType (str, str);
+      invalidType[*t] = t;      
+    }
+    delete[] str;
+    return t;
+  } 
+
+
 }

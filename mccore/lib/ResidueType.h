@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:26:33 2003
-// $Revision: 1.12 $
+// $Revision: 1.13 $
 // 
 //  This file is part of mccore.
 //  
@@ -45,7 +45,7 @@ namespace mccore {
    *   - The nature of a type (nucleic acid (pur/pyr) or amino acid)<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueType.h,v 1.12 2003-06-18 22:25:49 gendrop Exp $
+   * @version $Id: ResidueType.h,v 1.13 2003-07-11 21:25:10 gendrop Exp $
    */
   class ResidueType
   {    
@@ -168,9 +168,7 @@ namespace mccore {
      * Invalidates the residue type.  
      * @return a new ResidueType with the current strings as content.
      */
-    const ResidueType* invalidate () const {
-      return new ResidueType (type, longtype);
-    }
+    const ResidueType* invalidate () const;
     
     /**
      * General is method for use when both objects to compare are of

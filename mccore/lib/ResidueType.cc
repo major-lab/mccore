@@ -131,6 +131,12 @@ namespace mccore {
     return rtstore.get (s);
   }
 
+  const ResidueType* 
+  ResidueType::invalidate () const
+  {
+    return ResidueType::rtstore.getInvalid (longtype);
+  }
+  
 
   const ResidueType* 
   ResidueType::generalizeBase (const ResidueType *aResType1, const ResidueType *aResType2)

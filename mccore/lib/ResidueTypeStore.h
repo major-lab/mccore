@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 // 
 //  This file is part of mccore.
 //  
@@ -41,7 +41,7 @@ namespace mccore {
    * Repository of residue types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueTypeStore.h,v 1.2 2003-05-15 13:35:53 thibaup Exp $
+   * @version $Id: ResidueTypeStore.h,v 1.3 2003-07-11 21:25:16 gendrop Exp $
    */
   class ResidueTypeStore
   {
@@ -65,6 +65,8 @@ namespace mccore {
      * Container for string to type associations.
      */
     map< const char*, ResidueType*, less_string > stringType;
+
+    map< const char*, ResidueType*, less_string > invalidType;
 
   public:
 
@@ -92,7 +94,13 @@ namespace mccore {
      * Gets the residue type represented by the string if one exists.
      * @return the matching residue type or a new one if none existed.
      */
-    ResidueType* get (const char* s);
+    const ResidueType* get (const char* s);
+
+    /**
+     * Gets the residue type represented by the string if one exists.
+     * @return the matching residue type or a new one if none existed.
+     */
+    const ResidueType* getInvalid (const char* s);
 
   private:
     
