@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.35 $
-// $Id: Relation.cc,v 1.35 2005-01-07 17:19:07 thibaup Exp $
+// $Revision: 1.36 $
+// $Id: Relation.cc,v 1.36 2005-01-10 16:47:09 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -1182,12 +1182,6 @@ namespace mccore
   //     return inv;
   //   }
   
-  Relation
-  Relation::invert (const Relation& rel)
-  {
-    Relation inv = rel;
-    return inv.invert ();
-  }
 
   Relation&
   Relation::invert ()

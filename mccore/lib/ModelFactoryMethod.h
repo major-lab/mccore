@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Jan  5 17:12:54 2005
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 //
 // This file is part of mccore.
 // 
@@ -42,7 +42,7 @@ namespace mccore
    * methods.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ModelFactoryMethod.h,v 1.1 2005-01-06 21:08:00 larosem Exp $
+   * @version $Id: ModelFactoryMethod.h,v 1.2 2005-01-10 16:47:06 thibaup Exp $
    */
   class ModelFactoryMethod
   {
@@ -102,7 +102,7 @@ namespace mccore
    * This is the model factory method implementation for the Model class.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ModelFactoryMethod.h,v 1.1 2005-01-06 21:08:00 larosem Exp $
+   * @version $Id: ModelFactoryMethod.h,v 1.2 2005-01-10 16:47:06 thibaup Exp $
    */
   class ModelFM : public ModelFactoryMethod
   {
@@ -157,7 +157,7 @@ namespace mccore
    * This is the model factory method implementation for the GraphModel class.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ModelFactoryMethod.h,v 1.1 2005-01-06 21:08:00 larosem Exp $
+   * @version $Id: ModelFactoryMethod.h,v 1.2 2005-01-10 16:47:06 thibaup Exp $
    */
   class GraphModelFM : public ModelFactoryMethod
   {
@@ -169,7 +169,7 @@ namespace mccore
     /**
      * Initializes the object.
      */
-    GraphModelFM (const ResidueFactoryMethod *fm = 0);
+    GraphModelFM (const ResidueFactoryMethod *fm = 0) : ModelFactoryMethod (fm) { }
 
     /**
      * Initializes the object with the right content.

@@ -3,7 +3,7 @@
 // Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.16 $
+// $Revision: 1.17 $
 // 
 // This file is part of mccore.
 // 
@@ -66,7 +66,7 @@ namespace mccore
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.16 2005-01-07 17:19:17 thibaup Exp $
+   * @version $Id: Relation.h,v 1.17 2005-01-10 16:47:13 thibaup Exp $
    */
   class Relation
   {
@@ -377,13 +377,6 @@ namespace mccore
     void areStacked_old ();
 
   public:
-    
-    /**
-     * Inverts the relation.
-     * @param rel The relation to invert.
-     * @return The inverted relation.
-     */
-    static Relation invert (const Relation& rel);
 
     /**
      * Inverts this relation.

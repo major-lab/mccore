@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.3 $
-// $Id: GraphModel.cc,v 1.3 2005-01-06 21:07:22 larosem Exp $
+// $Revision: 1.4 $
+// $Id: GraphModel.cc,v 1.4 2005-01-10 16:46:56 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -223,10 +223,8 @@ namespace mccore
 
 	    if (rel->annotate ())
 	      {
-		Relation invert = rel->invert ();
-	    
 		connect (i, j, rel, 0);
-		connect (j, i, invert.clone (), 0);
+		connect (j, i, &rel->clone ()->invert (), 0);
 	      }
 	    else
 	      {

@@ -4,8 +4,8 @@
 //                  Université de Montréal
 // Author           : Martin Larose
 // Created On       : Wed Dec 29 00:44:53 2004
-// $Revision: 1.2 $
-// $Id: GraphModel.cc,v 1.2 2005-01-03 23:11:15 larosem Exp $
+// $Revision: 1.3 $
+// $Id: GraphModel.cc,v 1.3 2005-01-10 16:47:34 thibaup Exp $
 //
 // This file is part of mccore.
 //
@@ -33,6 +33,7 @@
 #include "GraphModel.h"
 #include "Messagestream.h"
 #include "Pdbstream.h"
+#include "Exception.h"
 #include "stlio.h"
 
 using namespace mccore;
@@ -43,18 +44,33 @@ using namespace std;
 int
 main (int argc, char *argv[])
 {
-  izfPdbstream ifs;
-  GraphModel model;
+  try
+  {
+    izfPdbstream ifs;
+    GraphModel model;
+    
+    ifs.open ("1L8V.pdb.gz");
 
-  ifs.open ("1L8V.pdb.gz");
-  ifs >> model;
-  ifs.close ();
+    if (ifs.fail ())
+    {
+      IntLibException ex ("failed to open \"1L8V.pdb.gz\"", __FILE__, __LINE__);
+      throw ex;
+    }
+
+    ifs >> model;
+    ifs.close ();
 
 //   gOut (0) << model << endl;
-  model.removeWater ();
-  model.addHLP ();
-  model.annotate ();
-  gOut (0) << model << endl;
+    model.removeWater ();
+    model.addHLP ();
+    model.annotate ();
+    gOut (0) << model << endl;
+  }
+  catch (Exception& ex)
+  {
+    gErr (0) << argv[0] << ": " << ex << endl;
+    return EXIT_FAILURE;
+  }
   return EXIT_SUCCESS;
 }
   
