@@ -545,7 +545,7 @@ public:
    * @param k the atom type key.
    * @return the iterator to the element or end () if it is not found.
    */
-  const_iterator find (t_Atom *k) const;
+  const_iterator find (const t_Atom *k) const;
 
   /**
    * Check if an element with key k exists.
