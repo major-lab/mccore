@@ -3,9 +3,9 @@
 // Copyright © 2002 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Mon Feb 18 16:07:09 2002
-// Last Modified By : Patrick Gendron
-// Last Modified On : Fri Mar 15 14:12:39 2002
-// Update Count     : 1
+// Last Modified By : Labo Lbit
+// Last Modified On : Tue Apr  2 14:33:07 2002
+// Update Count     : 2
 // Status           : Unknown.
 // 
 
@@ -15,6 +15,7 @@
 
 #include <iostream.h>
 #include <map.h>
+#include <vector.h>
 
 /**
  * @short Description
