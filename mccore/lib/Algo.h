@@ -78,7 +78,7 @@ public:
     vector< ResidueRange< iterator > > X_range;
     vector< ResidueRange< iterator > > Y_range;
     vector< ResidueRange< iterator > > Z_range;
-    
+
     for (iterator i = begin; i != end; ++i) 
       if (i->GetType ()->is_NucleicAcid ()) {
 	ResidueRange< iterator > tmp_X (i, FLT_MAX, -FLT_MAX);
@@ -99,7 +99,7 @@ public:
     sort (X_range.begin (), X_range.end ());
     sort (Y_range.begin (), Y_range.end ());
     sort (Z_range.begin (), Z_range.end ());
-    
+
     map< pair< iterator, iterator >, int > contact;
     
     ExtractContact_OneDim (X_range, contact, cutoff);
@@ -109,6 +109,9 @@ public:
 	 i != contact.end (); ++i) {
       map< pair< iterator, iterator >, int >::iterator tmp = i;  tmp++;
       if (i->second < 2) contact.erase (i);
+      // For an unknown reason, when the map is empty, 
+      // i-- does not points to contact.begin (), so this test is added:
+      if (contact.size () == 0) break;
       i = tmp;  i--;
     }
     
