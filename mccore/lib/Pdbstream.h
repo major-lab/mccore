@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.25 $
-// $Id: Pdbstream.h,v 1.25 2004-06-29 20:58:28 thibaup Exp $
+// $Revision: 1.26 $
+// $Id: Pdbstream.h,v 1.26 2004-06-29 21:00:46 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -27,13 +27,13 @@
 #ifndef _Pdbstream_h_
 #define _Pdbstream_h_
 
-#include <typeinfo>
-
 #include <iostream>
 #include <algorithm>
 #include <fstream>
 #include <string>
 #include <zlib.h>
+
+#include <stdio.h>
 
 #include "PdbFileHeader.h"
 #include "ResId.h"
@@ -84,7 +84,7 @@ namespace mccore {
    * </pre>
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Pdbstream.h,v 1.25 2004-06-29 20:58:28 thibaup Exp $
+   * @version $Id: Pdbstream.h,v 1.26 2004-06-29 21:00:46 thibaup Exp $
    */
   class iPdbstream : public istream
   {
