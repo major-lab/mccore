@@ -1,21 +1,21 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -*- Mode: Outline -*- ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; NEWS
-;; Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
-;;                  Université de Montréal.
-;; Author           : Martin Larose
-;; Created On       : Tue Sep 19 18:15:25 2000
-;; Last Modified By : Patrick Gendron
-;; Last Modified On : Thu Apr 10 21:27:16 2003
-;; Update Count     : 5
-;; Status           : Ok.
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;                      -*- Mode: Outline -*-
+; NEWS
+; Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique.
+;                  Université de Montréal.
+; Author           : Martin Larose
+; Created On       : Tue Sep 19 18:15:25 2000
+; $Revision: 1.6 $
+; $Id: NEWS,v 1.6 2004-01-29 21:42:06 larosem Exp $
 
 * Version 1.4
 
 Redesign of almost all the classes.
-- Using new standard C++ headers.
+- PropertyType B (Bifurcated) was removed.
+- PropertyType Bh and Bs inherits directly from PropertyType.
+- Using standard C++ headers.
 - Vector3D and HomogeneousTransfo are not compliant with standard
-mathematical convention (i.e. concerning the order of application of operations).
+mathematical convention (i.e. concerning the order of application of
+operations).
 - Using Basic residue that is as small in memory as possible.
 - Elimination of the McCore file and all global variables as well as
 the need to initialize the library in every program.
@@ -33,6 +33,9 @@ part of a hierarchy.
 
 
 * Version 1.3
+
+The library must link with librnamlc++ to enable rnaml reader and writer
+classes.
 
 New stream classes.  For compatibility with GCC 3 and the most recent
 C++ standard library, all stream classes have been recoded.
