@@ -1,3 +1,115 @@
+2004-07-12  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* lib/Model.h, lib/HomogeneousTransfo.cc: *** empty log message ***
+
+	* lib/Relation.cc, lib/HBond.cc:
+	The annotation methods trap NoSuchAtomException and send a warning message when a mandatory atom is missing.
+
+	* lib/Residue.h, lib/Residue.cc, lib/ExtendedResidue.h, lib/ExtendedResidue.cc:
+	New public method safeFind(AtomType*) that either finds  the requested atom or throw a NoSuchAtomException
+
+	* lib/Exception.h, lib/Exception.cc:
+	New exception class NoSuchAtomException extends IntLibException.
+	Thrown when a mandatory atom is not found.
+
+2004-07-09  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/Exception.h, lib/Exception.cc:
+	operator= should never return a const reference.
+
+	* lib/Exception.h: Exception now derives from std::exception
+
+2004-07-06  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* lib/Relation.cc: areHBonded is now broken...
+
+2004-07-06  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/Relation.cc:
+	areHBonded only called if no pairing was found in the relation.
+
+2004-07-05  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/Makefile.in, configure, Makefile.in:
+	config.status input format changed.
+
+2004-07-05  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* lib/RiboseBuilder.cc, lib/Residue.cc, lib/Relation.cc:
+	updated to last mccore changes
+
+	* lib/HomogeneousTransfo.h, lib/HomogeneousTransfo.cc:
+	new public static member "identity": HomogeneousTransfo object set to identity.
+
+2004-06-30  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* lib/Pdbstream.h: *** empty log message ***
+
+	* lib/sockstream.cc, lib/SymmetricalMatrix.cc, lib/ServerSocket.cc, lib/RiboseOptimizer5D.cc, lib/RiboseOptimizer2D.cc, lib/RiboseEstimator.cc, lib/RiboseBuilder.cc, lib/ResidueType.h, lib/ResidueType.cc, lib/Residue.h, lib/Residue.cc, lib/ResIdSet.h, lib/ResIdSet.cc, lib/ResId.h, lib/ResId.cc, lib/Relation.cc, lib/PropertyType.h, lib/PropertyType.cc, lib/PairingPattern.cc, lib/Makefile.in, lib/HomogeneousTransfo.cc, lib/ExtendedResidue.cc, lib/AtomType.h, lib/AtomType.cc:
+	CException -> Exception
+
+	* lib/Exception.h, lib/Exception.cc: New files
+
+	* lib/CException.cc, lib/CException.h: removed files
+
+2004-06-29  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* lib/Pdbstream.h: *** empty log message ***
+
+2004-06-25  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* lib/ResidueTypeStore.cc: Binstream i/o correction.
+
+	* lib/ExtendedResidue.cc, lib/Residue.cc, lib/Residue.h:
+	- setTheoretical () nows creates a partial nucleic acid residue: either a base (NucleicAcid type family), a phosphate (Phosphate type family) or a ribose (Ribose type family). Hydrogens are included.
+	_ setFullTheoretical() creates a full standard nucleic acid residue in C3' endo anti puckering mode. Hydrogens are included.
+	- Polished some internal methods.
+
+	* lib/CException.cc, lib/CException.h: Inserted into mccore namespace.
+
+	* lib/AtomType.cc, lib/PropertyType.cc, lib/PropertyType.h, lib/ResId.cc, lib/ResId.h, lib/ResidueType.cc, lib/ResidueType.h, lib/AtomType.h:
+	Added ouput operators to CException stream.
+
+	* lib/Residue.cc: *** empty log message ***
+
+2004-06-18  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* lib/Pdbstream.cc: improved reading robustness
+
+2004-06-17  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* lib/Residue.cc: lib/Residue.cc
+
+	* lib/Residue.cc: *** empty log message ***
+
+	* lib/Residue.cc:
+	O3P is removed (or renamed to O3') in residue validation.
+
+2004-06-15  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* lib/Graph.h, lib/ResidueType.cc, lib/ResidueType.h, lib/ResidueTypeStore.cc, lib/ResidueTypeStore.h, ChangeLog:
+	lib/Graph.h
+
+2004-06-10  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* lib/ResidueTypeStore.cc:
+	Prepended an '_' to the stringType key for residue matcher types (N,W,S,M,K,B,D,H,V,Y,R)
+
+2004-06-09  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* lib/RiboseEstimator.cc, lib/Residue.cc, lib/ExtendedResidue.cc:
+	small corrections
+
+2004-06-01  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* lib/AtomSet.cc, lib/AtomSet.h: New filter for Phosphate atom group.
+
+	* lib/Residue.cc: setTheoretical() now adds hydrogens and lone pairs
+
+	* lib/AtomTypeStore.h, lib/AtomType.h, lib/AtomType.cc:
+	- Phosphate atom group type is now known as Phosphorous, for P atom.
+	- New Phosphate atom group: { P, O1P, O2P, O3P, O3', O5' } (stays also in Backbone atom group)
+
 2004-06-01  Philippe Thibault  <thibaup@iro.umontreal.ca>
 
 	* lib/AtomTypeStore.h, lib/AtomType.h, lib/AtomType.cc:
