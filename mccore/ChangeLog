@@ -1,3 +1,10 @@
+2001-09-13  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* CResidue.cc: Bug corrected.  The index counter must be increased
+	only when an atom is pushed in the residue.
+
+	* CResidue.cc: Html format removed from output.
+
 2001-09-07  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* docs/McCoreManual.tex: File will be reinserted when the article
