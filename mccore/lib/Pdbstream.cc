@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.46 $
-// $Id: Pdbstream.cc,v 1.46 2004-12-02 20:19:57 larosem Exp $
+// $Revision: 1.47 $
+// $Id: Pdbstream.cc,v 1.47 2004-12-03 20:54:24 sebastienl Exp $
 // 
 // This file is part of mccore.
 // 
@@ -417,8 +417,10 @@ namespace mccore
 	// Post reading processing
 	if (r.size () > 0)
 	  {
-	    // Fix type.
-	    if (r.getType ()->isNucleicAcid () && ! r.contains (AtomType::aO2p))
+	    // Fix type:  The type is converted to DNA only if it
+	    // contains a deoxyribose
+	    if (r.getType ()->isNucleicAcid () && ! r.contains (AtomType::aO2p) &&
+		r.contains (AtomType::aC2p))
 	      {
 		if (r.getType () == ResidueType::rRA)
 		  r.setType (ResidueType::rDA);
