@@ -3,9 +3,9 @@
 // Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Fri May 11 18:02:31 2001
-// Update Count     : 44
+// Last Modified By : Philippe Thibault
+// Last Modified On : Wed Aug  8 13:49:55 2001
+// Update Count     : 45
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -69,7 +69,7 @@ CAtom::CAtom (const CAtom &right)
 
 
 CAtom::CAtom (float x, float y, float z, t_Atom *type)
-  : CPoint3D (x, y, z), mType (type), altLocId (' ')
+  : CPoint3D (x, y, z), mType (type), altLocId (' '), mAtomSerNo (0)
 {
   count++;
 }
