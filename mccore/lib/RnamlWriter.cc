@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // RnamlWriter.cc
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003, 2004 Laboratoire de Biologie Informatique et Théorique
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.2 $
-// $Id: RnamlWriter.cc,v 1.2 2003-12-23 14:57:49 larosem Exp $
+// $Revision: 1.3 $
+// $Id: RnamlWriter.cc,v 1.3 2004-01-06 18:52:46 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -66,16 +66,18 @@ namespace mccore {
   {
     if (0 != name)
       {
+	string filename;
 	rnaml::OutputStream *os;
 
+	filename = string (name);
 	if (zipped)
-	  name = string (name).append (".gz").c_str ();
-	os = new rnaml::FileOutputStream (name);
+	  filename = filename.append (".gz");
+	os = new rnaml::FileOutputStream (filename.c_str());
 	if (0 == os)
-	  gOut (2) << "File " << name << ": " << strerror (errno) << endl;
+	  gOut (2) << "File " << filename << ": " << strerror (errno) << endl;
 	else if (os->getError ())
 	  {
-	    gOut (2) << "File " << name << ": " << os->getErrorString () << endl;
+	    gOut (2) << "File " << filename << ": " << os->getErrorString () << endl;
 	    delete os;
 	  }
 	else
