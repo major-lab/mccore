@@ -3,7 +3,7 @@
 // Copyright © 2000-01, 03 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
-// $Revision: 1.15 $
+// $Revision: 1.16 $
 // 
 //  This file is part of mccore.
 //  
@@ -29,6 +29,8 @@
 #include <typeinfo>
 #include <set>
 
+#include "Vector3D.h"
+
 
 using namespace std;
 
@@ -39,6 +41,8 @@ namespace mccore {
 
   class Residue;
   class AtomTypeStore;
+
+  
 
   /**
    * @short Atom types.
@@ -51,7 +55,7 @@ namespace mccore {
    *   - The charge and van der Waals radius<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: AtomType.h,v 1.15 2003-08-28 14:28:51 gendrop Exp $ 
+   * @version $Id: AtomType.h,v 1.16 2003-10-03 22:32:58 larosem Exp $ 
    */
   class AtomType 
   {
@@ -278,6 +282,13 @@ namespace mccore {
      * @return the Amber charge.
      */
     virtual float getAmberCharge (const Residue *res) const { return 0; }
+
+    /**
+     * Gets the color of the atom type.
+     * @param type the atom type.
+     * @return the Vector3D color in RGB format.
+     */
+    static Vector3D getColor (const AtomType &type);
     
   private:
 
