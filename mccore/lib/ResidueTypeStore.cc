@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.18 $
+// $Revision: 1.19 $
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -13,17 +13,11 @@
 
 #include "ResidueTypeStore.h"
 
-namespace mccore {
+namespace mccore
+{
 
-  // LIFECYCLE -----------------------------------------------------------------
-
-  ResidueTypeStore::ResidueTypeStore () 
+  ResidueTypeStore::ResidueTypeStore ()
   {
-    
-    /**
-     * utilitaries
-     */
-
     ResidueType::rNull = *this->repository.insert (new Null (string (""), string ("null"))).first;
     ResidueType::rUnknown = *this->repository.insert (new Unknown (string ("UNKNOWN"), string ("Unknown"))).first;
     
@@ -35,7 +29,7 @@ namespace mccore {
      * D:? DNA type variety for ?
      * ? follows IUPAC
      */
-
+    
     ResidueType::rA  = *this->repository.insert (new A  (string ("N:A"), string("Adenine"))).first;
     ResidueType::rRA = *this->repository.insert (new RA (string ("R:A"), string("RNA_Adenine"))).first;
     ResidueType::rDA = *this->repository.insert (new DA (string ("D:A"), string("DNA_Adenine"))).first;
@@ -49,7 +43,7 @@ namespace mccore {
     ResidueType::rDT = *this->repository.insert (new DT (string ("D:T"), string("DNA_Thymine"))).first;
     ResidueType::rU  = *this->repository.insert (new U  (string ("N:U"), string("Uracil"))).first;
     ResidueType::rRU = *this->repository.insert (new RU (string ("R:U"), string("RNA_Uracil"))).first;
-
+    
     ResidueType::rK  = *this->repository.insert (new K  (string ("N:K"), string("K"))).first;
     ResidueType::rRK = *this->repository.insert (new RK (string ("R:K"), string("RNA_K"))).first;
     ResidueType::rDK = *this->repository.insert (new DK (string ("D:K"), string("DNA_K"))).first;
@@ -68,7 +62,7 @@ namespace mccore {
     ResidueType::rPurine  = *this->repository.insert (new Purine  (string ("N:R"), string("Purine"))).first;
     ResidueType::rRPurine = *this->repository.insert (new RPurine (string ("R:R"), string("RNA_Purine"))).first;
     ResidueType::rDPurine = *this->repository.insert (new DPurine (string ("D:R"), string("DNA_Purine"))).first;
- 
+    
     ResidueType::rB  = *this->repository.insert (new B  (string ("N:B"), string("B"))).first;
     ResidueType::rRB = *this->repository.insert (new RB (string ("R:B"), string("RNA_B"))).first;
     ResidueType::rDB = *this->repository.insert (new DB (string ("D:B"), string("DNA_B"))).first;
@@ -81,7 +75,7 @@ namespace mccore {
     ResidueType::rV  = *this->repository.insert (new V  (string ("N:V"), string("V"))).first;
     ResidueType::rRV = *this->repository.insert (new RV (string ("R:V"), string("RNA_V"))).first;
     ResidueType::rDV = *this->repository.insert (new DV (string ("D:V"), string("DNA_V"))).first;
-
+    
     ResidueType::rNucleicAcid = *this->repository.insert (new NucleicAcid (string ("N:N"), string("N"))).first;
     ResidueType::rRNA = *this->repository.insert (new RV (string ("R:N"), string("RNA_N"))).first;
     ResidueType::rDNA = *this->repository.insert (new DV (string ("D:N"), string("DNA_N"))).first;
@@ -128,11 +122,10 @@ namespace mccore {
     ResidueType::rASX = *this->repository.insert (new ASX (string ("ASX"), string ("ASX"))).first;
     ResidueType::rGLX = *this->repository.insert (new GLX (string ("GLX"), string ("GLX"))).first;
     ResidueType::rAminoAcid = *this->repository.insert (new AminoAcid (string ("XAA"), string ("XAA"))).first;
-
-  
+    
   }
-
-
+  
+    
   ResidueTypeStore::~ResidueTypeStore () 
   {
     set< ResidueType*, ResidueType::less_deref >::iterator it;

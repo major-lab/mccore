@@ -3,7 +3,7 @@
 // Copyright © 2003, 2004 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.12 $
+// $Revision: 1.13 $
 // 
 //  This file is part of mccore.
 //  
@@ -42,7 +42,7 @@ namespace mccore
    * Repository of residue types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueTypeStore.h,v 1.12 2004-10-15 20:35:15 thibaup Exp $
+   * @version $Id: ResidueTypeStore.h,v 1.13 2004-12-02 20:16:19 larosem Exp $
    */
   class ResidueTypeStore
   {
@@ -70,7 +70,7 @@ namespace mccore
      * Destroys the object.  
      */
     ~ResidueTypeStore ();
-    
+
     // METHODS --------------------------------------------------------------
 
     /**

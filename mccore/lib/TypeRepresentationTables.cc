@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct  1 14:45:13 2004
-// $Revision: 1.2 $
-// $Id: TypeRepresentationTables.cc,v 1.2 2004-10-15 20:39:00 thibaup Exp $
+// $Revision: 1.3 $
+// $Id: TypeRepresentationTables.cc,v 1.3 2004-12-02 20:20:14 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -28,11 +28,9 @@
 #include <config.h>
 #endif
 
-#include <utility>
-
 #include "AtomType.h"
-#include "TypeRepresentationTables.h"
 #include "ResidueType.h"
+#include "TypeRepresentationTables.h"
 
 
 
