@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // AbstractResidue.cc
-// Copyright © 2001-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : Fri Oct 12 18:21:12 2001
 // Last Modified By : Patrick Gendron
-// Last Modified On : Tue Nov 19 16:29:01 2002
-// Update Count     : 7
+// Last Modified On : Tue Feb  4 12:16:49 2003
+// Update Count     : 16
 // Status           : Unknown.
 // 
 
@@ -587,6 +587,20 @@ AbstractResidue::addHydrogens ()
 	}
       
       //  HO3p  // optionel
+      r1 = ref (a_O3p);
+      r2 = ref (a_C3p);
+      r3 = ref (a_C4p);
+      if (r1 && r2 && r3/* && !ref (a_HO3p)*/)
+	{
+	  x = (*r2 - *r3).Normalize ();
+	  y = (*r1 - *r2).Normalize ();
+	  z = x.Cross (y).Cross (y).Normalize ();
+	  
+	  CPoint3D HO3p = *r1 + (y*0.354+z).Normalize () * 1.03;
+	  insert_local (CAtom (HO3p.GetX (), HO3p.GetY (), HO3p.GetZ (), a_HO3p));
+	}
+	  
+
       
       if (mType->is_RNA ())
 	{
@@ -609,7 +623,7 @@ AbstractResidue::addHydrogens ()
 	  r1 = ref (a_O2p);
 	  r2 = ref (a_C2p);
 	  r3 = ref (a_C1p);
-	  if (r1 && r2 && r3 && !ref (a_HO2p))
+	  if (r1 && r2 && r3/* && !ref (a_HO2p)*/)
 	    {
 	      x = (*r2 - *r3).Normalize ();
 	      y = (*r1 - *r2).Normalize ();
