@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Oct 26 10:24:02 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:09:50 2001
-// Update Count     : 8
+// Last Modified On : Fri Oct  5 16:56:52 2001
+// Update Count     : 9
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -35,10 +35,10 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "CResIdSet.h"
-
-#include "McCore.h"
+#include "Binstream.h"
 #include "CException.h"
+#include "CResIdSet.h"
+#include "McCore.h"
 
 
 
@@ -189,3 +189,33 @@ operator<< (ostream &os, const CResIdSet &residset)
 }
 
 
+
+iBinstream&
+operator>> (iBinstream &ibs, CResIdSet &obj)
+{
+  CResIdSet::size_type sz;
+
+  obj.clear ();
+  ibs >> sz;
+  for (; sz > 0; --sz)
+    {
+      CResId id;
+
+      ibs >> id;
+      obj.insert (obj.end (), id);
+    }
+  return ibs;
+}
+
+
+
+oBinstream&
+operator<< (oBinstream &obs, const CResIdSet &obj)
+{
+  CResIdSet::const_iterator cit;
+  
+  obs << obj.size ();
+  for (cit = obj.begin (); cit != obj.end (); ++cit)
+    obs << *cit;
+  return obs;
+}

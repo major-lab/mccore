@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Oct 26 10:24:02 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:34:19 2001
-// Update Count     : 5
+// Last Modified On : Fri Oct  5 16:56:58 2001
+// Update Count     : 6
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -35,6 +35,8 @@
 #include "CResId.h"
 
 class ostream;
+class iBinstream;
+class oBinstream;
 
 
 
@@ -205,5 +207,23 @@ public:
  * @return the output stream.
  */
 ostream& operator<< (ostream &os, const CResIdSet &residset);
+
+/**
+ * Inputs the residue id set from a binary stream.
+ * @param ibs the input binary stream.
+ * @param obj the residue id set where to put the residue ids.
+ * @return the input binary stream.
+ */
+iBinstream& operator>> (iBinstream &ibs, CResIdSet &obj);
+
+
+
+/**
+ * Outputs the residue id set to a binary stream.
+ * @param obs the output binary stream.
+ * @param obj the residue id set to output.
+ * @return the output binary stream.
+ */
+oBinstream& operator<< (oBinstream &obs, const CResIdSet &obj);
 
 #endif
