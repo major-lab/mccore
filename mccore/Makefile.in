@@ -5,8 +5,8 @@
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:10:38 2000
 ## Last Modified By : Martin Larose
-## Last Modified On : Tue Sep 25 12:41:34 2001
-## Update Count     : 9
+## Last Modified On : Wed Sep 26 10:20:29 2001
+## Update Count     : 10
 ## Status           : Ok.
 ###############################################################################
 #
@@ -97,7 +97,7 @@ clean-local: mostlyclean-local
 distclean: distclean-recursive distclean-local
 
 distclean-local: clean-local
-	@ rm -f Makefile config.cache config.h config.log config.status
+	@ rm -f Makefile config.cache config.h config.log config.status stamp-h
 
 topclean: topclean-recursive topclean-local
 
