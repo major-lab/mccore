@@ -3,7 +3,7 @@
 // Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.15 $
+// $Revision: 1.16 $
 // 
 //  This file is part of mccore.
 //  
@@ -190,25 +190,45 @@ namespace mccore {
 
   void 
   ExtendedResidue::insert (const Atom &atom)
-  {    
-    AtomMap::iterator it;
-    it = atomIndex.find (atom.getType ());
+  {
     int pos = size ();
+    pair< AtomMap::iterator, bool > inserted =
+      atomIndex.insert (make_pair (atom.getType (), pos));
 
-    if (it==atomIndex.end ()) {
-      atomIndex[atom.getType ()] = pos;
-      atomLocal.push_back (atom.clone ());
-      atomGlobal.push_back (atom.clone ());
-      it = atomIndex.find (atom.getType ());
-    } else {
-      *atomLocal[it->second] = atom;
-      *atomGlobal[it->second] = atom;
-    }
+    if (inserted.second)
+      {
+	atomLocal.push_back (atom.clone ());
+	atomGlobal.push_back (atom.clone ());
+	rib_dirty_ref = true;
+	rib_built_valid = false;
+      }
+    else
+      {
+	*atomLocal[inserted.first->second] = atom;
+	*atomGlobal[inserted.first->second] = atom;
+      }
 
-    // Transform the atom to the origin
-    if (!tfo.isIdentity ()) {
-      (*atomLocal[it->second]).transform (tfo.invert ());
-    }    
+    if (!tfo.isIdentity ())
+      (*atomLocal[inserted.first->second]).transform (tfo.invert ());
+    
+//     AtomMap::iterator it;
+//     it = atomIndex.find (atom.getType ());
+//     int pos = size ();
+
+//     if (it==atomIndex.end ()) {
+//       atomIndex[atom.getType ()] = pos;
+//       atomLocal.push_back (atom.clone ());
+//       atomGlobal.push_back (atom.clone ());
+//       it = atomIndex.find (atom.getType ());
+//     } else {
+//       *atomLocal[it->second] = atom;
+//       *atomGlobal[it->second] = atom;
+//     }
+
+//     // Transform the atom to the origin
+//     if (!tfo.isIdentity ()) {
+//       (*atomLocal[it->second]).transform (tfo.invert ());
+//     }    
   }
 
 
@@ -221,6 +241,9 @@ namespace mccore {
       vector< Atom* >::const_iterator cit;
       const AtomType* next;
       size_type index;
+
+      rib_dirty_ref = true;
+      rib_built_valid = false;
       
       delete atomGlobal[i->second];
       atomGlobal.erase (atomGlobal.begin () + i->second);
@@ -289,12 +312,10 @@ namespace mccore {
 
     if (!getType ()->isPhosphate ()) {
     
-      if (getType ()->isNucleicAcid ()) {
+      if (getType ()->isNucleicAcid () && h_lp) {
 	removeOptionals ();
-	if (h_lp) {
-	  addHydrogens ();
-	  addLonePairs ();
-	}
+	addHydrogens ();
+	addLonePairs ();
       }
 
       /* Compute the location of the pseudo atoms. */
@@ -421,25 +442,49 @@ namespace mccore {
   // PRIVATE METHODS------------------------------------------------------------
 
 
-  Atom& 
-  ExtendedResidue::get (size_type pos) const
-  {
-    return *atomGlobal[pos];
-  }
+ 
+//   Atom& 
+//   ExtendedResidue::get (size_type pos) const
+//   {
+//     return *atomGlobal[pos];
+//   }
 
 
-  Atom* 
-  ExtendedResidue::get (const AtomType* aType) const 
+//   Atom* 
+//   ExtendedResidue::get (const AtomType* aType) const 
+//   {
+//     AtomMap::const_iterator it = atomIndex.find (aType);
+//     if (it == atomIndex.end ())
+//       return 0;
+//     else
+//       return atomGlobal[it->second];
+//   }
+
+  Atom*
+  ExtendedResidue::_get_or_create (const AtomType *aType)
   {
-    AtomMap::const_iterator it = atomIndex.find (aType);
-    if (it == atomIndex.end ())
-      return 0;
+    // ribose pointers to local container!
+    
+    int pos = size ();
+    pair< AtomMap::iterator, bool > inserted =
+      atomIndex.insert (make_pair (aType, pos));
+
+    if (inserted.second)
+      {
+	atomLocal.push_back (new Atom (0.0, 0.0, 0.0, aType));
+	atomGlobal.push_back (new Atom (0.0, 0.0, 0.0, aType));
+	rib_dirty_ref = true;
+	rib_built_valid = false;
+	return atomLocal[pos];
+      }
     else
-      return atomGlobal[it->second];
+      {
+	return atomLocal[inserted.first->second];
+      }
   }
 
-
-  void ExtendedResidue::place () const
+  void
+  ExtendedResidue::place () const
   {
     if (!isPlaced ()) {
 
@@ -463,7 +508,17 @@ namespace mccore {
     place ();
   }
 
+  void
+  ExtendedResidue::_build_ribose_postprocess (const HomogeneousTransfo& referential,
+					      bool build5p, bool build3p)
+  {
+    // place built ribose's atoms back in referential
 
+    
+    // TODO: place only ribose atoms...
+    displace (); // -> place all atoms :(
+  }
+  
   // I/O -----------------------------------------------------------------------
 
 

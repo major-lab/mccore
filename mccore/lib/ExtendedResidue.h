@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 // 
 //  This file is part of mccore.
 //  
@@ -56,7 +56,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: ExtendedResidue.h,v 1.7 2004-03-12 14:24:03 thibaup Exp $
+   * @version $Id: ExtendedResidue.h,v 1.8 2004-05-14 15:01:18 thibaup Exp $
    */
   class ExtendedResidue : public Residue
   {
@@ -255,9 +255,14 @@ namespace mccore {
     virtual void finalize (bool h_lp = true);
 
     /**
+     * DEPRECATED
      * Copies the atom of other into *this without verification.  It
      * is implied that both residues ar of the same type and contain
-     * the same atoms.  
+     * the same atoms.
+     *
+     * Warning: Both residues must respect the same atom insertion order or else
+     * the destination residue will be corrupted!
+     *
      * @param other the residue from which to copy atom locations.
      */
     virtual void atomCopy (const Residue& other); 
@@ -266,19 +271,38 @@ namespace mccore {
 
   protected:
     
-    /**
-     * Gets the atom at a position given by an index.  This is used by the iterators.
-     * @param pos the position of the atom in the atom vector;
-     * @return the atom.
-     */
-    virtual Atom& get (size_type pos) const;
+ //    /**
+//      * Gets the atom at a position given by an index.  This is used by the iterators.
+//      * @param pos the position of the atom in the atom vector;
+//      * @return the atom.
+//      */
+//     virtual Atom& get (size_type pos) const;
     
+//     /**
+//      * Gets the atom of given type.  
+//      * @param type the atom type.
+//      * @return the atom.
+//      */
+//     virtual Atom* get (const AtomType* type) const;
+
     /**
-     * Gets the atom of given type.  
-     * @param type the atom type.
-     * @return the atom.
+     * Fetches the atom specified by its type. If the atom is missing, a new
+     * atom of the given type is created and placed at the global origin.
+     * Internal method used for ribose building.
+     * @param aType The atom type.
+     * @return A pointer to the atom in the internal container.
      */
-    virtual Atom* get (const AtomType* type) const;
+    virtual Atom* _get_or_create (const AtomType *aType);
+
+    /**
+     * Postprocesses ribose building. Places ribose's atoms back in global referential.
+     * Internal method used for ribose building. Assumes that the ribose's atom pointers are set!
+     * @param referential Residue's saved referential.
+     * @param build5p Flag to enable 5' branch construction (O5' and P atoms).
+     * @param build3p Flag to enable 3' branch construction (O3' atom).    
+     */
+    virtual void _build_ribose_postprocess (const HomogeneousTransfo& referential,
+					    bool build5p, bool build3p);
     
     /**
      *  Updates the atom containers so that the residue is placed in space.

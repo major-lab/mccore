@@ -3,8 +3,8 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.17 $
-// $Id: Residue.h,v 1.17 2004-03-12 14:24:03 thibaup Exp $
+// $Revision: 1.18 $
+// $Id: Residue.h,v 1.18 2004-05-14 15:01:32 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -44,6 +44,7 @@ using namespace std;
 namespace mccore {
 
   class PropertyType;
+  class ResidueFactoryMethod;
   class iBinstream;
   class iPdbstream;
   class oBinstream;
@@ -61,7 +62,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Patrick Gendron <gendrop@iro.umontreal.ca>
-   * @version $Id: Residue.h,v 1.17 2004-03-12 14:24:03 thibaup Exp $
+   * @version $Id: Residue.h,v 1.18 2004-05-14 15:01:32 thibaup Exp $
    */
   class Residue
   {
@@ -101,8 +102,44 @@ namespace mccore {
      */
     AtomMap atomIndex;  
 
+    /**
+     * Ribose's atom aliases used in the theoretical building method.
+     */
+    Atom *rib_C1p, *rib_C2p, *rib_C3p, *rib_C4p, *rib_C5p, *rib_O2p, *rib_O3p, *rib_O4p, *rib_O5p, *rib_P;
+
+    /**
+     * Flag asserting ribose's atoms pointer validity. Any methods modifying the atoms' container should raise this flag.
+     */
+    bool rib_dirty_ref;
+
+    /**
+     * Flag asserting ribose's building validity.
+     */
+    bool rib_built_valid;
+
+    /**
+     *
+     */
+    unsigned int rib_built_count;
+
+    /**
+     * Constants for the ribose theoretical building by estimation.
+     */
+    static const float s_cosf_amplitude, s_cosf_vshift, s_cosf_phase, s_cosf_2xphase;
+
+    /**
+     * Respectively two times and four times the value of PI.
+     */
+    static const float s_2xpi, s_4xpi;
     
-//   public:
+  public:
+    
+    /**
+     * Default parameter values for the ribose theoretical building by optimization.
+     */
+    static float s_rib_minshift, s_rib_mindrop, s_rib_shiftrate;
+    
+
   protected:
 
     // PRIVATE METHODS ------------------------------------------------------
@@ -114,7 +151,7 @@ namespace mccore {
      * @param pos the position of the atom in the atom vector;
      * @return the atom.
      */
-    virtual Atom& get (size_type pos) const;
+    /*virtual*/ Atom& get (size_type pos) const;
 
   public:
 
@@ -157,9 +194,11 @@ namespace mccore {
        */
       AtomSet *filter;
       
-    public:
+   
       
       // LIFECYCLE ------------------------------------------------------------
+
+    public:
       
       /**
        * Initializes the iterator.
@@ -314,15 +353,15 @@ namespace mccore {
        */
       AtomSet *filter;
 
-    public:
-
       // LIFECYCLE ------------------------------------------------------------
-    
+
+    public:
+      
       /**
        * Initializes the iterator.
        */
       ResidueConstIterator ();
-    
+      
       /**
        * Initializes the iterator.
        * @param r the residue owning the iterator.
@@ -452,7 +491,8 @@ namespace mccore {
     };
     
     friend class Residue::ResidueConstIterator;
-    
+
+     
   public:
 
     typedef ResidueIterator iterator;
@@ -612,7 +652,19 @@ namespace mccore {
      * @return the presence of an element with key k.
      */
     virtual bool contains (const AtomType *k) const;
-    
+
+    /**
+     * Verifies last ribose theoretical building's validity. An invalid ribose
+     * should be ignored.
+     * @return The ribose theoretical building's validity.
+     */
+    bool validateRiboseBuilding () const;
+
+    /**
+     * Gets the ribose theoretical building iteration count.
+     * @return The ribose theoretical building iteration count.
+     */
+    unsigned int getRiboseBuiltCount () const;
     
     // METHODS -----------------------------------------------------------------
 
@@ -708,12 +760,22 @@ namespace mccore {
      * Adds the lone pairs to the residue.
      */
     virtual void addLonePairs ();
-   
+
+    /**
+     * Determines the pucker pseudorotation (rho) of the NucleicAcid backbone.
+     */
+    virtual float getRho () const;
+    
     /**
      * Determines the pucker mode of the NucleicAcid backbone.
      */
     virtual const PropertyType* getPucker () const;
 
+    /**
+     * Determines the glycosyl torsion (chi) of the NucleicAcid backbone.
+     */
+    virtual float getChi () const;
+    
     /**
      * Determines the glycosidic angle classification.
      */
@@ -740,13 +802,205 @@ namespace mccore {
     float distance (const Residue &r) const;
 
     /**
+     * DEPRECATED
      * Copies the atom of other into *this without verification.  It
      * is implied that both residues ar of the same type and contain
-     * the same atoms.  
+     * the same atoms.
+     *
+     * Warning: Both residues must respect the same atom insertion order or else
+     * the destination residue will be corrupted!
+     *
      * @param other the residue from which to copy atom locations.
      */
     virtual void atomCopy (const Residue& other); 
 
+    /**
+     * Builds a theoretical ribose onto a nucleic acid's nitrogen base.
+     * The ribose's conformation is parameterized by symbolic types, while
+     * its 5' branch is optionnaly parameterized by gamma and beta torsion values. 
+     * @param pucker Pucker conformation type.
+     * @param glycosyl Glycosyl torsion type.
+     * @param build5p Flag to enable 5' branch construction (O5' and P atoms).
+     * @param build3p Flag to enable 3' branch construction (O3' atom).
+     */
+    void buildRibose (const PropertyType* pucker, const PropertyType* glycosyl,
+		      bool build5p, bool build3p);
+
+    /**
+     * Builds a theoretical ribose onto a nucleic acid's nitrogen base.
+     * The ribose's conformation is parameterized by the pseudorotation (rho) and the glycosyl torsion (chi), while
+     * its 5' branch is optionnaly parameterized by gamma and beta torsions. 
+     * @param pucker Pucker pseudorotation (rad).
+     * @param glycosyl Glycosyl torsion (rad).
+     * @param gamma Gamma torsion (rad).
+     * @param beta Beta torsion (rad).
+     * @param build5p Flag to enable 5' branch construction (O5' and P atoms).
+     * @param build3p Flag to enable 3' branch construction (O3' atom).
+     */
+    void buildRibose (float rho, float chi,
+		      float gamma, float beta,
+		      bool build5p, bool build3p);
+
+    /**
+     * Builds a theoretical ribose onto a nucleic acid's nitrogen base that fits the global
+     * position of two adjacent phosphates (toward 5' and 3'). The optimal value for rho
+     * and chi are estimated in constant time using 3' phosphate position (which is therefore
+     * mandatory). Fitting is quantified by the rms deviation for the implicit C5'-O5'
+     * and C3'-O3' bond lengths. Only the 5' phosphate can be ommited (set to NULL) resulting
+     * in the unconstrained building of the corresponding ribose branch. No conformation
+     * restriction is allowed with this building method.
+     *
+     * @param po4_5p Phosphate residue toward 5' (set it to NULL for an unconstrained branch).
+     * @param po4_3p Phosphate residue toward 3' (mandatory!)
+     * @return Rms deviation for the implicit C5'-O5' and C3'-O3' bond lengths (Angstroms).
+     * @exception CLibException is thrown if 3' phosphate is unspecified.
+     */
+    float buildRiboseByEstimation (const Residue* po4_5p, const Residue* po4_3p);
+
+    /**
+     * Builds a theoretical ribose onto a nucleic acid's nitrogen base that fits the global
+     * position of two adjacent phosphates (toward 5' and 3'). A constant step cyclic
+     * coordinates method solves the optimization problem in the 2D torsion space created
+     * by rho and chi. Both pucker and glycosyl types can be forced, otherwise
+     * the best geometrical fit is favored. Fitting is quantified by the rms deviation for
+     * the implicit C5'-O5' and C3'-O3' bond lengths. Any of the two phosphates can be ommited
+     * (set to NULL) resulting in the unconstrained building of the corresponding ribose branch.
+     * Default optimization paramaters are used.
+     *
+     * @param po4_5p Phosphate residue toward 5' (set it to NULL for an unconstrained branch).
+     * @param po4_3p Phosphate residue toward 3' (set it to NULL for an unconstrained branch).
+     * @param pucker Optional pucker type restriction.
+     * @param glycosyl Optional glycosyl torsion type restriction.
+     * @return Rms deviation for the implicit C5'-O5' and C3'-O3' bond lengths (Angstroms).
+     * @exception CLibException is thrown if both phosphates are unspecified.
+     */
+    float buildRiboseByCCM2D (const Residue* po4_5p,
+			      const Residue* po4_3p,
+			      const PropertyType* pucker = 0,
+			      const PropertyType* glycosyl = 0);
+    
+    /**
+     * Builds a theoretical ribose onto a nucleic acid's nitrogen base that fits the global
+     * position of two adjacent phosphates (toward 5' and 3'). A constant step cyclic
+     * coordinates method solves the optimization problem in the 2D torsion space created
+     * by rho and chi. Both pucker and glycosyl types can be forced, otherwise
+     * the best geometrical fit is favored. Fitting is quantified by the rms deviation for
+     * the implicit C5'-O5' and C3'-O3' bond lengths. Any of the two phosphates can be ommited
+     * (set to NULL) resulting in the unconstrained building of the corresponding ribose branch.
+     * Optimization paramaters are specified.
+     *
+     * @param po4_5p Phosphate residue toward 5' (set it to NULL for an unconstrained branch).
+     * @param po4_3p Phosphate residue toward 3' (set it to NULL for an unconstrained branch).
+     * @param minshift Torsion shift threshold during optimization (rad).
+     * @param mindrop Displacement threshold in the optimization's objective function.
+     * @param shiftrate Torsion shift reduction rate during optimization (assumed < 1).
+     * @param pucker Optional pucker type restriction.
+     * @param glycosyl Optional glycosyl torsion type restriction.
+     * @return Rms deviation for the implicit C5'-O5' and C3'-O3' bond lengths (Angstroms).
+     * @exception CLibException is thrown if both phosphates are unspecified.
+     */
+    float buildRiboseByCCM2D (const Residue* po4_5p,
+			      const Residue* po4_3p,
+			      float minshift,
+			      float mindrop,
+			      float shiftrate,
+			      const PropertyType* pucker = 0,
+			      const PropertyType* glycosyl = 0);
+
+    /**
+     * Builds a theoretical ribose onto a nucleic acid's nitrogen base that fits the global
+     * position of two adjacent phosphates (toward 5' and 3'). A constant step cyclic
+     * coordinates method solves the optimization problem in the 4D torsion space created
+     * by rho, chi, gamma and beta. Both pucker and glycosyl types can be forced, otherwise
+     * the best geometrical fit is favored. Fitting is quantified by the rms deviation for
+     * the implicit C5'-O5' and C3'-O3' bond lengths. Any of the two phosphates can be ommited
+     * (set to NULL) resulting in the unconstrained building of the corresponding ribose branch.
+     * Default optimization paramaters are used.
+     *
+     * @param po4_5p Phosphate residue toward 5' (set it to NULL for an unconstrained branch).
+     * @param po4_3p Phosphate residue toward 3' (set it to NULL for an unconstrained branch).
+     * @param pucker Optional pucker type restriction.
+     * @param glycosyl Optional glycosyl torsion type restriction.
+     * @return Rms deviation for the implicit C5'-O5' and C3'-O3' bond lengths (Angstroms).
+     * @exception CLibException is thrown if both phosphates are unspecified.
+     */
+    float buildRiboseByCCM4D (const Residue* po4_5p,
+			      const Residue* po4_3p,
+			      const PropertyType* pucker = 0,
+			      const PropertyType* glycosyl = 0);
+
+    /**
+     * Builds a theoretical ribose onto a nucleic acid's nitrogen base that fits the global
+     * position of two adjacent phosphates (toward 5' and 3'). A constant step cyclic
+     * coordinates method solves the optimization problem in the 4D torsion space created
+     * by rho, chi, gamma and beta. Both pucker and glycosyl types can be forced, otherwise
+     * the best geometrical fit is favored. Fitting is quantified by the rms deviation for
+     * the implicit C5'-O5' and C3'-O3' bond lengths. Any of the two phosphates can be ommited
+     * (set to NULL) resulting in the unconstrained building of the corresponding ribose branch.
+     * Optimization paramaters are specified.
+     *
+     * @param po4_5p Phosphate residue toward 5' (set it to NULL for an unconstrained branch).
+     * @param po4_3p Phosphate residue toward 3' (set it to NULL for an unconstrained branch).
+     * @param minshift Torsion shift threshold during optimization (rad).
+     * @param mindrop Displacement threshold in the optimization's objective function.
+     * @param shiftrate Torsion shift reduction rate during optimization (assumed < 1).
+     * @param pucker Optional pucker type restriction.
+     * @param glycosyl Optional glycosyl torsion type restriction.
+     * @return Rms deviation for the implicit C5'-O5' and C3'-O3' bond lengths (Angstroms).
+     * @exception CLibException is thrown if both phosphates are unspecified.
+     */
+    float buildRiboseByCCM4D (const Residue* po4_5p,
+			      const Residue* po4_3p,
+			      float minshift,
+			      float mindrop,
+			      float shiftrate,
+			      const PropertyType* pucker = 0,
+			      const PropertyType* glycosyl = 0);
+    
+    /**
+     * Creates and returns a new phosphate typed residue with its O5'-P bond aligned onto
+     * reference residue's  O5'-P bond.
+     * @param reference Residue onto which phosphate should be aligned.
+     * @param fm Residue factory method used to create phosphate (default: creates ExtendedResidue)
+     * @return Newly created phosphate residue. The object is dynamically created, therefore caller has ownership on memory (caller should delete it...).
+     * @exception CLibException is thrown if reference is missing the needed atoms.
+     */
+    static Residue* createPhosphate5p (const Residue& reference,
+				       const ResidueFactoryMethod* fm = 0);
+
+    /**
+     * Gets the pucker type associated with the specified pseudorotation (rho) value.
+     * @param rho The pseudorotation (rho) value (rad).
+     * @return The associated pucker type.
+     */
+    static const PropertyType* getPuckerType (float rho);
+
+    /**
+     * Gets the glycosyl torsion type associated with the specified glycosyl torsion (chi) value.
+     * @param chi The glycosyl torsion (chi) value (rad).
+     * @return The associated glycosyl torsion type.
+     */
+    static const PropertyType* getGlycosylType (float chi);
+
+    /**
+     * Gets the range of pseudorotation (rho) values associated with the specified pucker type.
+     * @param pucker The pucker type.
+     * @return The minimal or maximal pseudorotation (rho) value (rad).
+     * @exception CLibException is thrown if pucker type is unknown.
+     */
+    static float getMinRho (const PropertyType* pucker);
+    static float getMaxRho (const PropertyType* pucker);
+
+    /**
+     * Gets the range of glycosyl torsion (chi) values associated with the specified glycosyl torsion type.
+     * @param pucker The pucker type.
+     * @return The minimal or maximal glycosyl torsion (chi) value (rad).
+     * @exception CLibException is thrown if glycosyl torsion type is unknown.
+     */
+    static float getMinChi (const PropertyType* glycosyl);
+    static float getMaxChi (const PropertyType* glycosyl);
+    
+    
   protected:
 
     // PRIVATE METHODS ------------------------------------------------------
@@ -758,8 +1012,88 @@ namespace mccore {
      * @param type the atom type.
      * @return the atom.
      */
-    virtual Atom* get (const AtomType* type) const;
+    /*virtual*/ Atom* get (const AtomType* type) const;
 
+    /**
+     * Fetches the atom specified by its type. If the atom is missing, a new
+     * atom of the given type is created and placed at the global origin.
+     * Internal method used for ribose building.
+     * @param aType The atom type.
+     * @return A pointer to the atom in the internal container.
+     */
+    virtual Atom* _get_or_create (const AtomType *aType);
+
+    /**
+     * Preprocesses ribose building. Setups atom pointers if needed. Fetches, copies
+     * and align in the residue's referential the anchor atoms from the phosphates.
+     * Internal method used for ribose building.
+     * @param po4_5p Phosphate residue toward 5'.
+     * @param po4_3p Phosphate residue toward 3'.
+     * @param build5p Flag to enable 5' branch construction (O5' and P atoms).
+     * @param build3p Flag to enable 3' branch construction (O3' atom).
+     * @param o5p Atom to receive O5' aligned copy from 5' phosphate.
+     * @param o3p Atom to receive O3' aligned copy from 3' phosphate.
+     * @param referential Transfo to receive a copy of the residue's referential.
+     * @exception CLibException is thrown if residue type is not of the nucleic acid family or if anchor atoms are missing in the phosphates.
+     */
+    void _build_ribose_preprocess (const Residue* po4_5p, const Residue* po4_3p,
+				   bool build5p, bool build3p,
+				   Atom& o5p, Atom& o3p,
+				   HomogeneousTransfo& referential);
+
+    /**
+     * Builds ribose atom-wise according to the given torsion parameters. Uses idealized
+     * geometries as defined by G.Parkinson et al., ACTA CRYST.D (1996) v. 52, 57-64.
+     * Internal method used for ribose building. Assumes that the ribose's atom pointers are set!
+     * @param build5p Flag to enable 5' branch construction (O5' and P atoms).
+     * @param build3p Flag to enable 3' branch construction (O3' atom).
+     */
+    void _build_ribose (float rho, float chi, float gamma, float beta,
+			bool build5p, bool build3p);
+
+    /**
+     * Builds ribose atom-wise according to the given torsion parameters. Uses idealized
+     * geometries as defined by G.Parkinson et al., ACTA CRYST.D (1996) v. 52, 57-64.
+     * Internal method used for ribose building. Assumes that the ribose's atom pointers are set!
+     * Construction method apply explicit transformation (slower than premultiplying, but kept for maintenance)
+     * @param build5p Flag to enable 5' branch construction (O5' and P atoms).
+     * @param build3p Flag to enable 3' branch construction (O3' atom).
+     */
+    void _build_ribose_explicitly (float rho, float chi, float gamma, float beta,
+				   bool build5p, bool build3p);
+
+    /**
+     * Transforms ribose's atoms directly.
+     * Internal method used for ribose building. Assumes that the ribose's atom pointers are set!
+     * @param tfo Transfo applied.
+     * @param build5p Flag to enable 5' branch construction (O5' and P atoms).
+     * @param build3p Flag to enable 3' branch construction (O3' atom).
+     */
+    void _transform_ribose (const HomogeneousTransfo& tfo,
+			    bool build5p, bool build3p);
+    
+    /**
+     * Computes the sum of the implicit C5'-O5' and C3'-O3' squared bond lengths.
+     * Internal method used for ribose building. Assumes that the ribose's atom pointers are set!
+     * @param o5p Anchoring O5' atom.
+     * @param o3p Anchoring O3' atom.
+     * @param build5p If true then C5'-O5' length is assumed perfect.
+     * @param build3p If true then C3'-O3' length is assumed perfect.
+     * @return The squared bond lengths sum (Angstroms*Angstroms).
+     */
+    float _evaluate_ribose (const Atom& o5p, const Atom& o3p,
+			    bool build5p, bool build3p) const;
+
+    /**
+     * Postprocesses ribose building. Places ribose's atoms back in global referential.
+     * Internal method used for ribose building. Assumes that the ribose's atom pointers are set!
+     * @param referential Residue's saved referential.
+     * @param build5p Flag to enable 5' branch construction (O5' and P atoms).
+     * @param build3p Flag to enable 3' branch construction (O3' atom).    
+     */
+    virtual void _build_ribose_postprocess (const HomogeneousTransfo& referential,
+					    bool build5p, bool build3p);
+    
   public:
 
     // I/O  --------------------------------------------------------------------
