@@ -4,8 +4,8 @@
 // Author           : Martin Larose
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Jan 23 15:02:21 2001
-// Update Count     : 5
+// Last Modified On : Fri Feb  9 11:12:56 2001
+// Update Count     : 6
 // Status           : Ok.
 // 
 
@@ -519,8 +519,6 @@ public:
   oPdbstream& operator<< (ostream& (*func)(ostream&))
   { (*func)(*(ostream*)this); return *this; }
 
-//    template< class T >oPdbstream& operator<< (const T &obj)
-//    { *(ostream*)this << obj; return *this; }
 
   // ACCESS ---------------------------------------------------------------
 
