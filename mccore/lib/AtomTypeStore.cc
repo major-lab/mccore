@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Tue Mar 11 13:56:50 2003
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -202,7 +202,11 @@ namespace mccore {
     char* kp;
 
     for (kp = key_copy; 0 != *kp; ++kp)
+    {
       *kp = toupper (*kp);
+      if ('\'' == *kp)
+	*kp = '*';
+    }
 
     pair< map< const char*, AtomType*, less_string >::iterator, bool > inserted =
       stringType.insert (make_pair (key_copy, AtomType::aNull));
