@@ -4,8 +4,8 @@
 // Author           : Martin Larose
 // Created On       : Thu Sep 28 15:55:29 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Nov  9 10:45:03 2000
-// Update Count     : 2
+// Last Modified On : Mon Dec  4 15:40:55 2000
+// Update Count     : 3
 // Status           : Ok.
 // 
 
@@ -47,7 +47,13 @@ public:
    * @param c the residue chain id (default = ' ').
    */
   CResId (int n = -1, char c = ' ') : no (n), chain (c) { }
-    
+
+  /**
+   * Initializes the structure with a text representation.
+   * @param str the text representation.
+   */
+  CResId (const char *str);
+  
   /**
    * Initializes the object with the right's content.
    * @param right the object to copy.
