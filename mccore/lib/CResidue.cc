@@ -488,7 +488,7 @@ CResidue::operator[] (const t_Atom *type) const
 {
   ResMap::const_iterator cit = mAtomIndex.find (type);
 
-  return ref (cit->second);
+  return res (cit->second);
 }
 
 

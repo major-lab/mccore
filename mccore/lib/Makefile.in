@@ -46,6 +46,7 @@ DEPFLAGS = @DEPFLAGS@
 DEFS = @DEFS@ -DDATADIR=\"@datadir@\"
 LD = @CXX@
 LIBS = @LIBS@
+LINKOPTIONS = @LINKOPTIONS@
 
 AR = @AR@
 
@@ -107,7 +108,7 @@ all: $(LIBRARY).so.$(VERSION) TAGS
 all-static static: $(LIBRARY).a TAGS
 
 $(LIBRARY).so.$(VERSION): $(SHOBJECTS)
-	$(LD) -shared $(LDFLAGS) -o $@ -Wl,-soname,$@ $^
+	$(LD) $(LINKOPTIONS) -shared $(LDFLAGS) -o $@ -Wl,-soname,$@ $^
 
 $(LIBRARY).a: $(OBJECTS)
 	$(AR) crs $@ $^

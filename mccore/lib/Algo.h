@@ -27,6 +27,7 @@
 
 
 #include <math.h>
+#include <values.h>
 #include <vector.h>
 #include <pair.h>
 #include <map.h>

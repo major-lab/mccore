@@ -78,6 +78,7 @@ private:
    */
   char* mResName;
 
+public:
   /**
    * The atom container in global referential.
    */
@@ -92,6 +93,7 @@ private:
   /**
    * The atom container in local referential.
    */
+
   mutable vector< CAtom > mAtomRes;
 
   /**

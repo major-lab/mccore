@@ -260,7 +260,6 @@ t_Residue *r_TYR = 0;
 t_Residue *r_VAL = 0;
 
 
-
 set< t_Atom* > gdAOblAtomSet;
 set< t_Atom* > grAOblAtomSet;
 set< t_Atom* > gdCOblAtomSet;
