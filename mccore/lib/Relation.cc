@@ -116,7 +116,9 @@ namespace mccore {
       labels.insert (PropertyType::pDIR_ANY);
     }
 
-    if (is (PropertyType::pAdjacent))
+    if (ref->getType ()->isNucleicAcid () &&
+	res->getType ()->isNucleicAcid () &&
+	is (PropertyType::pAdjacent))
       {
 	// compute transfo from 5' base to phosphate
 	
@@ -146,6 +148,10 @@ namespace mccore {
 	pRes.finalize ();
 	
 	po4_tfo = r5->getReferential ().invert () * pRes.getReferential ();
+      }
+    else 
+      {
+	po4_tfo.setIdentity ();
       }
     
     return !empty ();
@@ -595,7 +601,7 @@ namespace mccore {
 
       hbf.sort ();
 
-      while (hbf.size () != size_hint) hbf.pop_front ();
+      while ((int)hbf.size () != size_hint) hbf.pop_front ();
 
       const PropertyType *pp = translatePairing (ra, rb, hbf, sum_flow, size_hint);
       if (pp) ts.insert (pp);
