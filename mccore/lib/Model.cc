@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.23 $
-// $Id: Model.cc,v 1.23 2003-12-23 14:50:13 larosem Exp $
+// $Revision: 1.24 $
+// $Id: Model.cc,v 1.24 2004-05-27 17:34:03 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -289,7 +289,20 @@ namespace mccore {
       }
   }
 
+  
+  void
+  Model::addHLP ()
+  {
+    iterator it;
 
+    for (it = begin (); it != end (); ++it)
+      {
+	it->addHydrogens ();
+	it->addLonePairs ();
+      }
+  }
+
+  
 
   void
   Model::removeOptionals ()
