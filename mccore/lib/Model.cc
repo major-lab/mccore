@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.26.2.1 $
-// $Id: Model.cc,v 1.26.2.1 2004-12-27 01:42:30 larosem Exp $
+// $Revision: 1.26.2.2 $
+// $Id: Model.cc,v 1.26.2.2 2004-12-27 04:25:40 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -52,7 +52,7 @@ namespace mccore
     
     for (cit = right.begin (); cit != right.end (); ++cit)
       {
-	this->insert ((*cit)->clone ());
+	insert (*cit);
       }
   }
 
@@ -61,7 +61,7 @@ namespace mccore
   {
     vector< Residue* >::iterator it;
     
-    for (it = this->residues.begin (); it != this->residues.end (); ++it)
+    for (it = residues.begin (); it != residues.end (); ++it)
       {
 	delete *it;
       }
@@ -79,7 +79,8 @@ namespace mccore
 	this->clear ();	
 	for (cit = right.begin (); cit != right.end (); ++cit)
 	  {
-	    this->insert ((*cit)->clone ());
+	    insert (*cit);
+	  }
       }
     return *this;
   }
