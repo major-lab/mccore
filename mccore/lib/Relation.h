@@ -3,7 +3,7 @@
 // Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.15 $
+// $Revision: 1.16 $
 // 
 // This file is part of mccore.
 // 
@@ -66,7 +66,7 @@ namespace mccore
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.15 2005-01-06 21:08:25 larosem Exp $
+   * @version $Id: Relation.h,v 1.16 2005-01-07 17:19:17 thibaup Exp $
    */
   class Relation
   {
@@ -114,6 +114,11 @@ namespace mccore
     set< const PropertyType* > labels;
 
     /**
+     * The three-bits annotation type: msb<-[adjacent][stacking][pairing]->lsb
+     */
+    unsigned char type_asp;
+    
+    /**
      * The collection of hbond.  Empty if not a pairing.
      */
     vector< HBondFlow > hbonds;
@@ -123,13 +128,56 @@ namespace mccore
      */
     float sum_flow;
 
+
+    // STATIC MEMBERS -------------------------------------------------------
+
+
+  public:
+    
+    /**
+     * The adjacent type mask (100).
+     */
+    static const unsigned char adjacent_mask;
+
+    /**
+     * The stacking type mask (010).
+     */
+    static const unsigned char stacking_mask;
+
+    /**
+     * The pairing type mask (001).
+     */
+    static const unsigned char pairing_mask;
+
+  protected:
+
     static vector< pair< Vector3D, const PropertyType* > > faces_A;
     static vector< pair< Vector3D, const PropertyType* > > faces_C;
     static vector< pair< Vector3D, const PropertyType* > > faces_G;
     static vector< pair< Vector3D, const PropertyType* > > faces_U;
     static vector< pair< Vector3D, const PropertyType* > > faces_T;
+
+    static bool face_init;
+
+    /**
+     * The O3'-P squared bond length cutoff between adjacent nucleotides (Angstroms square).
+     */
+    static float adjacency_distance_cutoff_square;
     
-    static bool isInit;
+    /**
+     * The nitrogen base center squared distance cutoff for a stacking (Angstroms square).
+     */
+    static float stack_distance_cutoff_square;
+
+    /**
+     * The nitrogen base plane tilt cutoff for a stacking (radian).
+     */
+    static float stack_tilt_cutoff;
+
+    /**
+     * The nitrogen base plane overlap cutoff for a stacking (radian).
+     */
+    static float stack_overlap_cutoff;
 
   public:
     
@@ -202,15 +250,24 @@ namespace mccore
     const set< const PropertyType* >& getLabels () const { return labels; }
 
     /**
+     * Gets the annotation type bits.
+     * @return The annotation type bits.
+     */
+    unsigned char getAnnotationType () const
+    {
+      return this->type_asp;
+    }
+    
+    /**
      * Returns the transformation between the residues of the relation.
      */
-    HomogeneousTransfo getTransfo () const { return tfo; }
+    const HomogeneousTransfo& getTransfo () const { return tfo; }
 
     /**
      * Returns the transformation between the phosphate and the reference
      * residue of the relation.
      */
-    HomogeneousTransfo getPhosphateTransfo () const { return po4_tfo; }
+    const HomogeneousTransfo& getPhosphateTransfo () const { return po4_tfo; }
 
     /**
      * Gets the hbonds flow collection.  Empty in case of a non pairing
@@ -237,10 +294,44 @@ namespace mccore
 
     // METHODS --------------------------------------------------------------
 
-    bool is (const PropertyType* t) const
-    {
-      return (labels.find (t) != labels.end ());
-    }
+    /**
+     * Check if a label or its children is in the annotation.
+     * @param t The property type label to find.
+     * @return True only if the label or its children is in the annotation.
+     */
+    bool is (const PropertyType* t) const;
+
+    /**
+     * Check if a label is in the annotation (not its children).
+     * @param t The property type label to find.
+     * @return True only if the label is in the annotation.
+     */
+    bool has (const PropertyType* t) const;
+
+    /**
+     * Tells is the annotated relation is from the adjacent family.
+     * Return True only if the annotated relation is from the adjacent family.
+     */
+    bool isAdjacent () const;
+
+    /**
+     * Tells is the annotated relation is from the stacking family.
+     * Return True only if the annotated relation is from the stacking family.
+     */
+    bool isStacking () const;
+
+    /**
+     * Tells is the annotated relation is from the pairing family.
+     * Return True only if the annotated relation is from the pairing family.
+     */
+    bool isPairing () const;
+
+    /**
+     * Resets the relation's annotation data and set it up from two new residues.
+     * @param rA The new origin.
+     * @param rB The new destination.
+     */
+    void reset (const Residue* org, const Residue* dest);
     
     /** 
      * Describes the interaction.
@@ -279,19 +370,33 @@ namespace mccore
      */
     void areStacked ();
 
+    /**
+     * DEPRECATED
+     * Tests for stacking relation.
+     */
+    void areStacked_old ();
+
   public:
     
     /**
      * Inverts the relation.
+     * @param rel The relation to invert.
+     * @return The inverted relation.
      */
-    Relation invert () const;
+    static Relation invert (const Relation& rel);
+
+    /**
+     * Inverts this relation.
+     * @return itself.
+     */
+    Relation& invert ();
     
     /**
      * Determines if there are properties in the relation.
      * @return true if there is no property in the relation.
      */
-    bool empty () { return labels.empty (); }
-
+    bool empty () const { return labels.empty (); }
+    
     // STATIC METHODS -------------------------------------------------------
     
     /**
@@ -310,7 +415,19 @@ namespace mccore
      * @param rb another residue.
      * @return a set of properties describing the stacked state.
      */
-    static set< const PropertyType* > areStacked (const Residue *ra, const Residue *rb);
+    static set< const PropertyType* > 
+    areStacked (const Residue* ra, const Residue *rb);
+
+    /**
+     * DEPRECATED
+     * Determines if the given residues are stacked in space based
+     * on the position of their rings.
+     * @param ra a residue.
+     * @param rb another residue.
+     * @return a set of properties describing the stacked state.
+     */
+    static set< const PropertyType* > 
+    areStacked_old (const Residue* ra, const Residue *rb);
     
     /**
      * Determines if the given residues are paired in space based on
@@ -341,15 +458,66 @@ namespace mccore
   protected:
     
     /**
-     *
+     * DEPRECATED
      */
     static Vector3D pyrimidineNormal (const Residue *r);
 
     /**
-     *
+     * DEPRECATED
      */
     static Vector3D imidazolNormal (const Residue *r);
 
+    /**
+     * Calculates the pyrimidine ring's geometrical center from a nucleic acid residue.
+     * @param res The residue.
+     * @return The ring center.
+     * @exception NoSuchAtomException
+     */
+    static Vector3D _pyrimidine_ring_center (const Residue& res);
+
+    /**
+     * Calculates the imidazole ring's geometrical center from a nucleic acid residue.
+     * @param res The residue.
+     * @return The ring center.
+     * @exception NoSuchAtomException
+     */
+    static Vector3D _imidazole_ring_center (const Residue& res);
+
+    /**
+     * Calculates the pyrimidine ring's normal vector from a nucleic acid residue using
+     * the Cremer and Pople method.
+     * Cremer D., Pople J.A., J. Am. Chem. Soc. 1975, 97, 1354-1358
+     * @param res The residue.
+     * @param center The ring center.
+     * @return The normal vector (normalized).
+     * @exception NoSuchAtomException
+     */
+    static Vector3D _pyrimidine_ring_normal (const Residue& res, const Vector3D& center);
+
+    /**
+     * Calculates the imidazole ring's normal vector from a nucleic acid residue using
+     * the Cremer and Pople method.
+     * Cremer D., Pople J.A., J. Am. Chem. Soc. 1975, 97, 1354-1358
+     * @param res The residue.
+     * @param center The ring center.
+     * @return The normal vector (normalized).
+     * @exception NoSuchAtomException
+     */
+    static Vector3D _imidazole_ring_normal (const Residue& res, const Vector3D& center);
+
+    /**
+     * Check if two nitrogen base rings are stacking on each other. Three criteria are to be
+     * satisfied: the rings' center distance, the rings' plane tilt angle and horizontal overlapping. 
+     * @param centerA The first ring's center.
+     * @param normalA The first ring's normal.
+     * @param centerB The second ring's center.
+     * @param normalB The second ring's normal.
+     * @return The stacking annotation as a pair of property types (both set to Null when not stacked)
+     */
+    const PropertyType*
+    _ring_stacking (const Vector3D& centerA, const Vector3D& normalA,
+		    const Vector3D& centerB, const Vector3D& normalB);
+    
     /**
      * 
      */
@@ -376,40 +544,8 @@ namespace mccore
      */
     virtual ostream& write (ostream &os) const;
     
-//     /**
-//      * Inputs the residue from the stream. Not virtual so that only
-//      * the minimum data is transfered.
-//      * @param ibs the input stream.
-//      * @return the used output stream.
-//      */
-//     iBinstream& input (iBinstream &ibs);
-    
-//     /**
-//      * Ouputs the residue to the stream.  Not virtual so that only the
-//      * minimum data is transfered.
-//      * @param os the output stream.
-//      * @return the used output stream.
-//      */
-//     oBinstream& output (oBinstream &obs) const;
-    
   };
 
-//   /**
-//    * Inputs the relation from the binary stream.
-//    * @param ibs the input binary stream.
-//    * @param res the relation to fill.
-//    * @return the input binary stream used.
-//    */
-//   iBinstream& operator>> (iBinstream &ibs, Relation &res);
-
-  
-//   /**
-//    * Outputs the relation to the binary stream.
-//    * @param obs the output binary stream.
-//    * @param res the relation.
-//    * @return the output binary stream used.
-//    */
-//   oBinstream& operator<< (oBinstream &obs, const Relation &res);
 }
 
 
