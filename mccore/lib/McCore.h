@@ -4,9 +4,9 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Patrick Gendron
-// Last Modified On : Thu Jun 20 13:35:22 2002
-// Update Count     : 15
+// Last Modified By : Philippe Thibault
+// Last Modified On : Tue Jun 25 10:01:19 2002
+// Update Count     : 16
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -41,6 +41,7 @@
 class t_Atom;
 class t_Residue;
 class Messagestream;
+class CPoint3D;
 class CAtom;
 class CTransfo;
 
@@ -83,6 +84,13 @@ struct less_deref
     return (x && y && *x < *y); 
   }
 };
+
+
+
+/**
+ * Atomic bond fixed length (A).
+ */
+extern map< t_Atom*, map < t_Atom*, float > > gAtomicBond;
 
 
 

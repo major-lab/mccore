@@ -4,9 +4,9 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Patrick Gendron
-// Last Modified On : Thu Jun 20 13:35:04 2002
-// Update Count     : 20
+// Last Modified By : Philippe Thibault
+// Last Modified On : Tue Jun 25 10:01:06 2002
+// Update Count     : 21
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -45,6 +45,8 @@
 #include "ResidueTypeImp.h"
 #include "oMessagestream.h"
 
+
+map< t_Atom*, map < t_Atom*, float > > gAtomicBond;
 map< const char *, t_Atom*, less_string > gMiscAtomString;
 map< const char *, t_Residue*, less_string > gMiscResidueString;
 
@@ -580,6 +582,33 @@ setAtomSets ()
     gVALOptAtomSet.insert (*(oVAL[i]));
 }
 
+
+void
+atomicBondSymetricInsertion (t_Atom* a1, t_Atom* a2, 
+			     map< t_Atom*, map < t_Atom*, float > >& bonds, 
+			     float value)
+{
+  bonds[a1][a2] = bonds[a2][a1] = value;
+}
+
+
+void
+setAtomicGeometry ()
+{
+  atomicBondSymetricInsertion (a_N1,  a_C1p, gAtomicBond, 1.45);
+  atomicBondSymetricInsertion (a_N9,  a_C1p, gAtomicBond, 1.45);
+  atomicBondSymetricInsertion (a_C1p, a_C2p, gAtomicBond, 1.53);
+  atomicBondSymetricInsertion (a_C2p, a_O2p, gAtomicBond, 1.43);
+  atomicBondSymetricInsertion (a_C1p, a_O4p, gAtomicBond, 1.45);
+  atomicBondSymetricInsertion (a_O4p, a_C4p, gAtomicBond, 1.45);
+  atomicBondSymetricInsertion (a_C2p, a_C3p, gAtomicBond, 1.51);
+  atomicBondSymetricInsertion (a_C3p, a_C4p, gAtomicBond, 1.51);
+  atomicBondSymetricInsertion (a_C4p, a_C5p, gAtomicBond, 1.52);
+  atomicBondSymetricInsertion (a_C5p, a_O5p, gAtomicBond, 1.45);
+  atomicBondSymetricInsertion (a_O5p, a_P,   gAtomicBond, 1.59);
+  atomicBondSymetricInsertion (a_C3p, a_O3p, gAtomicBond, 1.43);
+  atomicBondSymetricInsertion (a_O3p, a_P,   gAtomicBond, 1.56);
+}
 
 
 float
@@ -1184,6 +1213,7 @@ McCoreInit ()
   // Initializing atom sets -------------------------------
 
   setAtomSets ();
+  setAtomicGeometry ();
 }
 
 
