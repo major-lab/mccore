@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 // 
 //  This file is part of mccore.
 //  
@@ -43,7 +43,7 @@ namespace mccore {
    * General property types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: PropertyType.h,v 1.3 2003-07-11 21:27:30 gendrop Exp $
+   * @version $Id: PropertyType.h,v 1.4 2003-09-26 21:16:51 gendrop Exp $
    */
 class PropertyType
 {
@@ -167,7 +167,7 @@ public:
    * @return the truth value of the test.
    */
   virtual bool describe (const PropertyType *t) const {
-    return dynamic_cast< const PropertyType* >(t);
+    return t == this;
   }
 
   // I/O  -----------------------------------------------------------------

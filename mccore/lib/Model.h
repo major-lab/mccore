@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.13 $
+// $Revision: 1.14 $
 // 
 //  This file is part of mccore.
 //  
@@ -57,7 +57,7 @@ namespace mccore {
    * details).
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Model.h,v 1.13 2003-08-28 14:29:30 gendrop Exp $
+   * @version $Id: Model.h,v 1.14 2003-09-26 21:16:34 gendrop Exp $
    */
   class Model
   {
@@ -183,10 +183,7 @@ namespace mccore {
      * @param res the residue to insert.
      * @return the position where the residue was inserted.
      */
-    iterator insert (const Residue &res)
-    { 
-      return residues.insert (residues.end (), res.clone ()); 
-    }
+    iterator insert (const Residue &res);
 
     /**
      * Inserts the residue range before pos.  It calls the list<> method.

@@ -3,7 +3,7 @@
 // Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.20 $
+// $Revision: 1.21 $
 //  This file is part of mccore.
 //  
 //  mccore is free software; you can redistribute it and/or
@@ -74,7 +74,7 @@ namespace mccore {
    * </pre>
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Pdbstream.h,v 1.20 2003-08-28 14:41:36 gendrop Exp $
+   * @version $Id: Pdbstream.h,v 1.21 2003-09-26 21:16:47 gendrop Exp $
    */
   class iPdbstream : public istream
   {
@@ -275,6 +275,7 @@ namespace mccore {
      */
     oPdbstream (streambuf* sb);
 
+    oPdbstream (ostream &os);
     
     /**
      * Destroys the stream.
@@ -381,7 +382,7 @@ namespace mccore {
      */ 
     void pad (int i);
 
-  protected:
+  public:
     
     // I/O ---------------------------------------------------------------------
 

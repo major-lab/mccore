@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 21 15:30:27 2003
 // Last Modified By : Patrick Gendron
-// Last Modified On : Mon Apr  7 17:12:52 2003
-// Update Count     : 28
+// Last Modified On : Fri Sep 26 17:17:18 2003
+// Update Count     : 31
 // Status           : Unknown.
 // 
 
@@ -396,8 +396,7 @@ namespace mccore {
       g.connect (AtomType::a2LP4, AtomType::aO4);
 
       return true;
-    }
-
+    }      
     return false;
   }
 

@@ -5,8 +5,8 @@
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
 # Last Modified By : Patrick Gendron
-# Last Modified On : Wed Jul 30 18:35:33 2003
-# Update Count     : 21
+# Last Modified On : Thu Aug 21 13:30:08 2003
+# Update Count     : 42
 # Status           : Ok.
 # 
 #  This file is part of mccore.
@@ -62,6 +62,22 @@ if test $ac_cv_have_fstreambase = "yes"; then
 fi
 AC_MSG_RESULT($ac_cv_have_fstreambase)
 
+
+AC_CACHE_CHECK(whether the compiler has numeric_limits<T>,
+ac_cv_cxx_have_numeric_limits,
+[AC_LANG_SAVE
+ AC_LANG_CPLUSPLUS
+ AC_TRY_COMPILE([#include <limits> 
+ using namespace std; 
+ ],[double e = numeric_limits<double>::epsilon(); return 0;],
+ ac_cv_cxx_have_numeric_limits=yes, ac_cv_cxx_have_numeric_limits=no)
+ AC_LANG_RESTORE
+])
+if test "$ac_cv_cxx_have_numeric_limits" = yes; then
+  AC_DEFINE(HAVE_NUMERIC_LIMITS,,[define if the compiler has numeric_limits<T>])
+fi
+
+
 if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
     case "$host" in
     *-sgi-*)
@@ -90,8 +106,8 @@ if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
         LINKOPTIONS= ;;
     esac;
 elif eval "test \"`echo $GXX`\" = yes"; then     # gnu compiler
-	CXXSHFLAGS=" ";
-	CXXFLAGS="";
+	CXXSHFLAGS=" -fmessage-length=0";
+	CXXFLAGS=" -fmessage-length=0";
 	DEPFLAGS="-MM -Wno-deprecated"
 	LDFLAGS="-static $LDFLAGS"
 	LINKOPTIONS=;
@@ -105,8 +121,8 @@ AC_DEFINE(__USE_MALLOC),
 
 AC_ARG_WITH(optimization,
 [  --with-optimization     Use optimization],
-CXXFLAGS="-O2 $CXXFLAGS";
-CXXSHFLAGS="-O2 $CXXSHFLAGS";
+CXXFLAGS="-O2 $CXXFLAGS -pg";
+CXXSHFLAGS="-O2 $CXXSHFLAGS -pg";
 )
 
 AC_SUBST(PACKAGE)

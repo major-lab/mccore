@@ -3,6 +3,7 @@
 // Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
+// $Revision: 1.7 $
 // 
 //  This file is part of mccore.
 //  
@@ -315,7 +316,7 @@ namespace mccore {
 	
 	insert (Atom(z, AtomType::aPSAZ));
       } else {
-	gOut (2) << "Residue " << getResId () << "-" << getType()
+	gOut (4) << "Residue " << getResId () << "-" << getType()
 		 << " is missing one or more critical atoms." << endl;	
       }	
     }
@@ -343,7 +344,7 @@ namespace mccore {
       pivot[0] = 0;
       pivot[1] = 0;
       pivot[2] = 0;
-      gOut (2) << "Residue " << getType () << " " << getResId () 
+      gOut (4) << "Residue " << getType () << " " << getResId () 
 	       << " has less than 3 atoms and cannot be moved: " << endl;
     }
     
@@ -440,13 +441,14 @@ namespace mccore {
   ExtendedResidue::output (ostream &os) const 
   {
     os << resId << type;
-    os << endl << tfo;
-    AtomMap::const_iterator cit;
-    os << "\n\tLocal coordinates\t\tGlobal coordinates";
-    for (cit=atomIndex.begin (); cit!=atomIndex.end (); ++cit) {
-      os << "\n\t" << *(atomLocal[cit->second]) << "\t" << *(atomGlobal[cit->second]) 
-	 << ((!isPlaced ())?" [invalid]":"") << flush;
-    }
+//     os << endl << tfo;
+//     os << endl;
+//     AtomMap::const_iterator cit;
+//     os << "\n\tLocal coordinates\t\tGlobal coordinates";
+//     for (cit=atomIndex.begin (); cit!=atomIndex.end (); ++cit) {
+//       os << "\n\t" << *(atomLocal[cit->second]) << " \t " << *(atomGlobal[cit->second]) 
+// 	 << ((!isPlaced ())?" [invalid]":"") << flush;
+//     }
     return os;
   }
   

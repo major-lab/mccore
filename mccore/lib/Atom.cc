@@ -39,7 +39,8 @@ namespace mccore {
   Atom::Atom (const Atom &other) 
     : Vector3D (other),
       type (other.type) 
-  {}
+  {
+  }
   
 
   Atom* 
@@ -86,7 +87,7 @@ namespace mccore {
 // METHODS --------------------------------------------------------------
 
   Vector3D 
-  Atom::color () const 
+  Atom::getColor () const 
   {
     if (type->isHydrogen ())       return Vector3D (1.00f, 1.00f, 1.00f);
     else if (type->isOxygen ())    return Vector3D (0.76f, 0.00f, 0.00f);

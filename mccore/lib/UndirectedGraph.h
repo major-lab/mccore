@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 24 21:30:26 2003
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 // 
 //  This file is part of mccore.
 //  
@@ -43,7 +43,7 @@ namespace mccore {
  * a node ordering determined by the node_comparator function object.
  *
  * @author Patrick Gendron (gendrop@iro.umontreal.ca)
- * @version $Id: UndirectedGraph.h,v 1.6 2003-08-28 14:49:55 gendrop Exp $
+ * @version $Id: UndirectedGraph.h,v 1.7 2003-09-26 21:17:35 gendrop Exp $
  */
 template< class node_type, 
 	  class edge_type = bool, 
@@ -199,14 +199,15 @@ public:
   /**
    * Horton's algorithm for the minimum cycle basis.
    */
-  vector< Path< node_type, float > > cycleBase () { return cycleBaseHorton (); }
-  vector< Path< node_type, float > > cycleBaseUnion () { return cycleBaseHorton (true); }
+  vector< Path< node_type, float > > cycleBase () { return cycleBaseHorton (0); }
+  vector< Path< node_type, float > > cycleBaseUnion () { return cycleBaseHorton (1); }
+  vector< Path< node_type, float > > minimumCycles () { return cycleBaseHorton (2); }
   
   
 private:
 
   
-  vector< Path< node_type, float > > cycleBaseHorton (bool minBasisUnion = false)
+  vector< Path< node_type, float > > cycleBaseHorton (int searchType = 0)
   {
     vector< Path< node_type, float > > realbag;
 
@@ -225,15 +226,15 @@ private:
     
     
     for (i=0; i<size (); ++i) {
-      //      cout << "Step: " << i << endl;
-
+//       cout << "Step: " << i << endl;
+      
       for (j=0; j!=size (); ++j) {
 	list< int > ln = internalGetNeighbors (j);
 	list< int >::iterator k;
 	for (k=ln.begin (); k!=ln.end (); ++k) {
-
-	  // 	  cout << "Step: " << i << " (" << j << " " << *k << ")" << endl;
-	 
+	  
+// 	  cout << "Step: " << i << " (" << j << " " << *k << ")" << endl;
+	  
 	  Path< int, float > Pvx = paths[i][j];	  
 	  Path< int, float > Pvy = paths[i][*k];
 
@@ -249,7 +250,7 @@ private:
 			    Pvyp.begin (), Pvyp.end (),
 			    inserter (inter, inter.begin ()));
 
-	  //	  cout << "Inter = " << inter << endl;
+// 	  cout << "Inter = " << inter << endl;
 
 	  if (inter.size () == 1 && inter.front () == i) {
 	    Path< int, float > C = Pvx;
@@ -264,7 +265,7 @@ private:
 	    }
 	    if (p==bag.end ()) {
 	      bag.push_back (C);
-	      //cout << "Inserting " << C << endl;
+// 	      cout << "Inserting " << C << endl;
 	    }
 	  }
 	}	  
@@ -273,7 +274,12 @@ private:
     
     sort (bag.begin (), bag.end ());
 
-    bag = gaussianElimination (bag, minBasisUnion);
+    cout << "Found " << bag.size () << " potential cycles before the Gaussian elimination" << endl;
+
+    if (searchType == 2)
+      bag = nonSimpleCycleElimination (bag);
+    else
+      bag = gaussianElimination (bag, searchType);    
 
     Path< int, float >::iterator pi;
     for (p=bag.begin (); p!=bag.end (); ++p) {
@@ -288,6 +294,34 @@ private:
     return realbag;
   }
   
+
+  vector< Path< int, float > >
+  nonSimpleCycleElimination (vector< Path< int, float > >& bag)
+  {
+    vector< Path< int, float > > newbag;
+    vector< Path< int, float > >::iterator p;
+    Path< int, float >::iterator i, j, k, l, m;
+
+    
+    for (p=bag.begin (); p!=bag.end (); ++p) {
+      cout << *p << endl;
+      for (i=p->begin (); i!=p->end (); ++i) {
+	for (j=p->begin (); j!=p->end (); ++j) {
+	  k = l = j;
+	  m = i;
+	  if (j!=i && (++k)!=i && (--l)!=i && 
+	      !(i==p->begin () && k==p->end ()) &&
+	      !(j==p->begin () && (++m)==p->end ()) &&
+	      internalAreConnected (*i, *j))
+	    break;
+	}
+	if (j!=p->end ()) break;
+      }
+      if (i==p->end ())
+	newbag.push_back (*p);
+    }
+    return newbag;
+  }
 
   
   vector< Path< int, float > >
@@ -307,13 +341,13 @@ private:
     vector< vpiterator > marked;
     marked.clear ();
 
-    bool* row = new bool[edges.size ()];
+    bool* row = new bool[edges.size ()];    
 
     for (p=bag.begin (); p!=bag.end (); ++p) {
       memset (row, false, edges.size () * sizeof (bool));
       
       // Let's see if *p is linearly independent to the content of newbag 
-      //       cout << "Treating " << *p << endl;
+//       cout << "Treating " << *p << endl;
       
       Path< int, float >::iterator r, s;
       for (r=p->begin (), s=r, ++s; r!=p->end (); ++r, ++s) {
@@ -324,16 +358,17 @@ private:
       bool inserted = false;
 
       for (n=matrix.begin (), q=newbag.begin (); q!=newbag.end (); ++n, ++q) {
-	// 	for (j=0; j<edgesize; ++j) { cout << row[j] << " "; } 
-	// 	cout << "  ->  " << flush; 
-	// 	for (j=0; j<edgesize; ++j) { cout << (*n)[j] << " "; } cout << endl;
+// 	cout << "row " << flush;
+// 	for (j=0; j<edges.size (); ++j) { cout << row[j] << " "; } 
+// 	cout << endl << "nj  " << flush; 
+// 	for (j=0; j<edges.size (); ++j) { cout << (*n)[j] << " "; } cout << endl;
 	
 	j=0;
 	while (j<(int)edges.size () && row[j] == false && (*n)[j] == false) ++j;
 	if (j == (int)edges.size ()) continue;
 	
 	if (row[j] == true && (*n)[j] == false) {
-	  // 	  cout << "Marking " << *p << endl;
+// 	  cout << "Marking " << *p << endl;
 	  marked.push_back (p);
 	  inserted = true;
 	  break;
@@ -353,16 +388,16 @@ private:
 	  if (row[j] == true) break;
 	}
 	if (j!=(int)edges.size ()) {
-	  // 	  cout << "Marking " << *p << endl;
+// 	  cout << "Marking " << *p << endl;
 	  marked.push_back (p);
 	} else {
-	  // 	  cout << "Rejecting " << *p << endl;
+// 	  cout << "Rejecting " << *p << endl;
 	}
       }
     
       //Let's see if we should try to insert the marked...
       if (p+1==bag.end () || (p+1)->size () > p->size ()) {
-	// 	cout << "Inserting marked cycles" << endl;
+// 	cout << endl << "Inserting marked cycles (" << marked.size () << ")" << endl << endl;
 
 	for (i=0; i<(int)marked.size (); ++i) {
 	  bool* row2 = new bool[edges.size ()];	  
@@ -380,7 +415,7 @@ private:
 	    if (j == (int)edges.size ()) continue;
 	    
 	    if (row2[j] == true && (*n)[j] == false) {
-	      // 	      cout << "Inserting " << *marked[i] << endl;
+// 	      cout << "Inserting " << *marked[i] << endl;
 	      matrix.insert (n, row2);
 	      newbag.insert (q, *marked[i]);
 	      inserted = true;
@@ -398,7 +433,7 @@ private:
 	  
 	  if (!inserted) {
 	    if (minBasisUnion) {
-// 	      cout << "Accepting " << *marked[i] << endl;
+//  	      cout << "Accepting " << *marked[i] << endl;
 	      matrix.push_back (row2);
 	      newbag.push_back (*marked[i]);
 	    } else {	    
@@ -406,17 +441,18 @@ private:
 		if (row2[j] == true) break;
 	      }
 	      if (j!=(int)edges.size ()) {
-// 		cout << "Accepting " << *marked[i] << endl;
+//  		cout << "Accepting " << *marked[i] << endl;
 		matrix.push_back (row2);
 		newbag.push_back (*marked[i]);
 	      } else {
-// 		cout << "Rejecting " << *marked[i] << endl;
-		delete[] row;
+//  		cout << "Rejecting " << *marked[i] << endl;
+		delete[] row2;
 	      }
-	    }	
+	    }
 	  }
 	}
 	marked.clear ();
+// 	cout << "done" << endl;
       }      
     }
 

@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Patrick Gendron
-// Last Modified On : Thu Aug 28 10:41:28 2003
-// Update Count     : 301
+// Last Modified On : Fri Sep 26 17:16:40 2003
+// Update Count     : 304
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -345,6 +345,18 @@ namespace mccore {
 
   oPdbstream::oPdbstream (streambuf* sb)
     : ostream (sb),
+      header (),
+      headerdone (false),
+      atomset (new AtomSetNot (new AtomSetOr (new AtomSetLP (), new AtomSetPSE ()))),
+      rtype (ResidueType::parseType ("UNK")),
+      rid (new ResId ()),
+      modelnb (1),
+      n (1)
+  { 
+  }
+
+  oPdbstream::oPdbstream (ostream &os)
+    : ostream (os.rdbuf ()),
       header (),
       headerdone (false),
       atomset (new AtomSetNot (new AtomSetOr (new AtomSetLP (), new AtomSetPSE ()))),

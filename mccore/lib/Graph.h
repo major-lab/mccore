@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Apr 30 16:04:32 2003
-// $Revision: 1.15 $
+// $Revision: 1.16 $
 // 
 //  This file is part of mccore.
 //  
@@ -54,7 +54,7 @@ namespace mccore {
    * to object by passing the correct node comparator if needed.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: Graph.h,v 1.15 2003-08-28 14:29:12 gendrop Exp $
+   * @version $Id: Graph.h,v 1.16 2003-09-26 21:16:18 gendrop Exp $
    */
   template< class node_type, 
 	    class edge_type = bool,
@@ -80,7 +80,7 @@ namespace mccore {
     /**
      * Mapping from the node to its internal id.
      */
-    map< node_type, int > mapping;
+    map< node_type, int, node_comparator > mapping;
 
     /**
      * Mapping from the internal id to the node.
@@ -123,7 +123,7 @@ namespace mccore {
     class graph_const_iterator;
     typedef graph_const_iterator const_iterator;
 
-
+        
     // LIFECYCLE ---------------------------------------------------------------
 
 
@@ -684,7 +684,8 @@ namespace mccore {
 	os << j-edges.begin () << " : " << *j << " (" 
 	   << edgeWeights[j-edges.begin ()] << ")" << endl;
       }
-      os << "Adjacency:" << endl;
+      os << "Adjacency (size = " << size () << ")" << endl;
+
       for (ki=begin (); ki!=end (); ++ki) {      
 	os << *ki << "(" << getWeight (*ki) << ")" << " : ";      
 	for (kj=begin (); kj!=end (); ++kj) {

@@ -3,7 +3,23 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.5 $
+// $Revision: 1.6 $
+//
+//  This file is part of mccore.
+//  
+//  mccore is free software; you can redistribute it and/or
+//  modify it under the terms of the GNU Lesser General Public
+//  License as published by the Free Software Foundation; either
+//  version 2.1 of the License, or (at your option) any later version.
+//  
+//  mccore is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+//  Lesser General Public License for more details.
+//  
+//  You should have received a copy of the GNU Lesser General Public
+//  License along with mccore; if not, write to the Free Software
+//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifndef _HomogeneousTransfo_h_
@@ -34,7 +50,7 @@ namespace mccore
  * </pre>
  *
  * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
- * @version $Id: HomogeneousTransfo.h,v 1.5 2003-09-26 21:14:17 gendrop Exp $
+ * @version $Id: HomogeneousTransfo.h,v 1.6 2003-09-26 21:16:23 gendrop Exp $
  */
 class HomogeneousTransfo
 {

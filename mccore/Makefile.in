@@ -5,8 +5,8 @@
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:10:38 2000
 ## Last Modified By : Patrick Gendron
-## Last Modified On : Wed Jul 30 11:57:31 2003
-## Update Count     : 41
+## Last Modified On : Thu Aug 14 13:06:45 2003
+## Update Count     : 45
 ## Status           : Ok.
 ###############################################################################
 #
@@ -77,7 +77,7 @@ doc:
 #	  done
 
 test: basic.cc
-	$(CXX) -O2 -DHAVE_CONFIG_H -I$(srcdir)/lib -I$(srcdir) -I. -o basic $(srcdir)/basic.cc -lmccore -lz
+	$(CXX) -O2 -fmessage-length=0 -DHAVE_CONFIG_H -I$(srcdir)/lib -I$(srcdir) -I. -o basic $(srcdir)/basic.cc -lmccore -lz
 
 install install-static:
 	@ for subdir in $(SUBDIRS); do \

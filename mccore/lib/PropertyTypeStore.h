@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:42:25 2003
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 // 
 //  This file is part of mccore.
 //  
@@ -104,6 +104,9 @@ namespace mccore {
     public:
       Theo () {}
       Theo (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const Theo* > (t); 
+      }
     };
     
     /**
@@ -113,6 +116,9 @@ namespace mccore {
     public:
       Pairing () {}
       Pairing (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const Pairing* > (t); 
+      }
     };
     
     /**
@@ -122,6 +128,9 @@ namespace mccore {
     public:
       Cis () {}
       Cis (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const Cis* > (t); 
+      }
     };
 
     /**
@@ -131,6 +140,9 @@ namespace mccore {
     public:
       Trans () {}
       Trans (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const Trans* > (t); 
+      }
     };
 
     /**
@@ -140,6 +152,9 @@ namespace mccore {
     public:
       Stack () {}
       Stack (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const Stack* > (t); 
+      }
     };
 
     /**
@@ -149,6 +164,9 @@ namespace mccore {
     public:
       Reverse () {}
       Reverse (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const Reverse* > (t); 
+      }
     };
 
     /**
@@ -158,6 +176,9 @@ namespace mccore {
     public:
       Adjacent () {}
       Adjacent (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const Adjacent* > (t); 
+      }
     };
 
     /**
@@ -167,6 +188,9 @@ namespace mccore {
     public:
       Type_A () {}
       Type_A (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const Type_A* > (t); 
+      }
     };
 
     /**
@@ -176,6 +200,9 @@ namespace mccore {
     public:
       Type_B () {}
       Type_B (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const Type_B* > (t); 
+      }
     };
     
     /**
@@ -185,6 +212,9 @@ namespace mccore {
     public:
       Helix () {}
       Helix (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const Helix* > (t); 
+      }
     };
     
     /**
@@ -194,6 +224,9 @@ namespace mccore {
     public:
       C1p_endo () {}
       C1p_endo (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const C1p_endo* > (t); 
+      }
     };
 
     /**
@@ -203,6 +236,9 @@ namespace mccore {
     public:
       C1p_exo () {}
       C1p_exo (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const C1p_exo* > (t); 
+      }
     };
 
     /**
@@ -212,6 +248,9 @@ namespace mccore {
     public:
       C2p_endo () {}
       C2p_endo (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const C2p_endo* > (t); 
+      }
     };
 
     /**
@@ -221,6 +260,9 @@ namespace mccore {
     public:
       C2p_exo () {}
       C2p_exo (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const C2p_exo* > (t); 
+      }
     };
 
     /**
@@ -230,6 +272,9 @@ namespace mccore {
     public:
       C3p_endo () {}
       C3p_endo (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const C3p_endo* > (t); 
+      }
     };
 
     /**
@@ -239,6 +284,9 @@ namespace mccore {
     public:
       C3p_exo () {}
       C3p_exo (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const C3p_exo* > (t); 
+      }
     };
 
     /**
@@ -248,6 +296,9 @@ namespace mccore {
     public:
       C4p_endo () {}
       C4p_endo (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const C4p_endo* > (t); 
+      }
     };
 
     /**
@@ -257,6 +308,9 @@ namespace mccore {
     public:
       C4p_exo () {}
       C4p_exo (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const C4p_exo* > (t); 
+      }
     };
 
     /**
@@ -266,6 +320,9 @@ namespace mccore {
     public:
       O4p_endo () {}
       O4p_endo (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const O4p_endo* > (t); 
+      }
     };
 
     /**
@@ -275,6 +332,9 @@ namespace mccore {
     public:
       O4p_exo () {}
       O4p_exo (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const O4p_exo* > (t); 
+      }
     };
 
     /**
@@ -284,6 +344,9 @@ namespace mccore {
     public:
       Anti () {}
       Anti (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const Anti* > (t); 
+      }
     };
 
     /**
@@ -293,6 +356,9 @@ namespace mccore {
     public:
       Syn () {}
       Syn (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const Syn* > (t); 
+      }
     };
 
     /**
@@ -302,6 +368,9 @@ namespace mccore {
     public:
       DIR_5p () {}
       DIR_5p (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const DIR_5p* > (t); 
+      }
     };
 
     /**
@@ -311,6 +380,9 @@ namespace mccore {
     public:
       DIR_3p () {}
       DIR_3p (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const DIR_3p* > (t); 
+      }
     };
 
     /**
@@ -320,6 +392,9 @@ namespace mccore {
     public:
       DIR_ANY () {}
       DIR_ANY (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const DIR_ANY* > (t); 
+      }
     };
 
     //     /**
@@ -341,6 +416,9 @@ namespace mccore {
     public:
       Saenger () {}
       Saenger (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const Saenger* > (t); 
+      }
     };
 
     /**
@@ -350,6 +428,9 @@ namespace mccore {
     public:
       WC () {}
       WC (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const WC* > (t); 
+      }
     };
 
     /**
@@ -359,6 +440,9 @@ namespace mccore {
     public:
       Wobble () {}
       Wobble (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const Wobble* > (t); 
+      }
     };
 
     /**
@@ -368,6 +452,9 @@ namespace mccore {
     public:
       PI () {}
       PI (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PI* > (t); 
+      }
     };
 
     /**
@@ -377,6 +464,9 @@ namespace mccore {
     public:
       PII () {}
       PII (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PII* > (t); 
+      }
     };
 
     /**
@@ -386,6 +476,9 @@ namespace mccore {
     public:
       PIII () {}
       PIII (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PIII* > (t); 
+      }
     };
 
     /**
@@ -395,6 +488,9 @@ namespace mccore {
     public:
       PIV () {}
       PIV (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PIV* > (t); 
+      }
     };
 
     /**
@@ -404,6 +500,9 @@ namespace mccore {
     public:
       PV () {}
       PV (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PV* > (t); 
+      }
     };
 
     /**
@@ -413,6 +512,9 @@ namespace mccore {
     public:
       PVI () {}
       PVI (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PVI* > (t); 
+      }
     };
 
     /**
@@ -422,6 +524,9 @@ namespace mccore {
     public:
       PVII () {}
       PVII (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PVII* > (t); 
+      }
     };
 
     /**
@@ -431,6 +536,9 @@ namespace mccore {
     public:
       PVIII () {}
       PVIII (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PVIII* > (t); 
+      }
     };
 
     /**
@@ -440,6 +548,9 @@ namespace mccore {
     public:
       PIX () {}
       PIX (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PIX* > (t); 
+      }
     };
 
     /**
@@ -449,6 +560,9 @@ namespace mccore {
     public:
       PX () {}
       PX (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PX* > (t); 
+      }
     };
 
     /**
@@ -458,6 +572,9 @@ namespace mccore {
     public:
       PXI () {}
       PXI (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PXI* > (t); 
+      }
     };
 
     /**
@@ -467,6 +584,9 @@ namespace mccore {
     public:
       PXII () {}
       PXII (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PXII* > (t); 
+      }
     };
 
     /**
@@ -476,6 +596,9 @@ namespace mccore {
     public:
       PXIII () {}
       PXIII (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PXIII* > (t); 
+      }
     };
 
     /**
@@ -485,6 +608,9 @@ namespace mccore {
     public:
       PXIV () {}
       PXIV (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PXIV* > (t); 
+      }
     };
 
     /**
@@ -494,6 +620,9 @@ namespace mccore {
     public:
       PXV () {}
       PXV (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PXV* > (t); 
+      }
     };
 
     /**
@@ -503,6 +632,9 @@ namespace mccore {
     public:
       PXVI () {}
       PXVI (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PXVI* > (t); 
+      }
     };
 
     /**
@@ -512,6 +644,9 @@ namespace mccore {
     public:
       PXVII () {}
       PXVII (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PXVII* > (t); 
+      }
     };
 
     /**
@@ -521,6 +656,9 @@ namespace mccore {
     public:
       PXVIII () {}
       PXVIII (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PXVIII* > (t); 
+      }
     };
 
     /**
@@ -530,6 +668,9 @@ namespace mccore {
     public:
       PXIX () {}
       PXIX (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PXIX* > (t); 
+      }
     };
 
     /**
@@ -539,6 +680,9 @@ namespace mccore {
     public:
       PXX () {}
       PXX (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PXX* > (t); 
+      }
     };
 
     /**
@@ -548,6 +692,9 @@ namespace mccore {
     public:
       PXXI () {}
       PXXI (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PXXI* > (t); 
+      }
     };
 
     /**
@@ -557,6 +704,9 @@ namespace mccore {
     public:
       PXXII () {}
       PXXII (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PXXII* > (t); 
+      }
     };
 
     /**
@@ -566,6 +716,9 @@ namespace mccore {
     public:
       PXXIII () {}
       PXXIII (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PXXIII* > (t); 
+      }
     };
 
     /**
@@ -575,6 +728,9 @@ namespace mccore {
     public:
       PXXIV () {}
       PXXIV (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PXXIV* > (t); 
+      }
     };
 
     /**
@@ -584,6 +740,9 @@ namespace mccore {
     public:
       PXXV () {}
       PXXV (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PXXV* > (t); 
+      }
     };
 
     /**
@@ -593,6 +752,9 @@ namespace mccore {
     public:
       PXXVI () {}
       PXXVI (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PXXVI* > (t); 
+      }
     };
 
     /**
@@ -602,6 +764,9 @@ namespace mccore {
     public:
       PXXVII () {}
       PXXVII (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PXXVII* > (t); 
+      }
     };
 
     /**
@@ -611,6 +776,9 @@ namespace mccore {
     public:
       PXXVIII () {}
       PXXVIII (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PXXVIII* > (t); 
+      }
     };
 
     /**
@@ -620,6 +788,9 @@ namespace mccore {
     public:
       OneHbond () {}
       OneHbond (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const OneHbond* > (t); 
+      }
     };
 
     /**
@@ -629,6 +800,9 @@ namespace mccore {
     public:
       P29 () {}
       P29 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P29* > (t); 
+      }
     };
 
     /**
@@ -638,6 +812,9 @@ namespace mccore {
     public:
       P30 () {}
       P30 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P30* > (t); 
+      }
     };
 
     /**
@@ -647,6 +824,9 @@ namespace mccore {
     public:
       P31 () {}
       P31 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P31* > (t); 
+      }
     };
 
     /**
@@ -656,6 +836,9 @@ namespace mccore {
     public:
       P32 () {}
       P32 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P32* > (t); 
+      }
     };
 
     /**
@@ -665,6 +848,9 @@ namespace mccore {
     public:
       P33 () {}
       P33 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P33* > (t); 
+      }
     };
 
     /**
@@ -674,6 +860,9 @@ namespace mccore {
     public:
       P34 () {}
       P34 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P34* > (t); 
+      }
     };
 
     /**
@@ -683,6 +872,9 @@ namespace mccore {
     public:
       P35 () {}
       P35 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P35* > (t); 
+      }
     };
 
     /**
@@ -692,6 +884,9 @@ namespace mccore {
     public:
       P36 () {}
       P36 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P36* > (t); 
+      }
     };
 
     /**
@@ -701,6 +896,9 @@ namespace mccore {
     public:
       P37 () {}
       P37 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P37* > (t); 
+      }
     };
 
     /**
@@ -710,6 +908,9 @@ namespace mccore {
     public:
       P38 () {}
       P38 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P38* > (t); 
+      }
     };
 
     /**
@@ -719,6 +920,9 @@ namespace mccore {
     public:
       P39 () {}
       P39 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P39* > (t); 
+      }
     };
 
     /**
@@ -728,6 +932,9 @@ namespace mccore {
     public:
       P40 () {}
       P40 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P40* > (t); 
+      }
     };
 
     /**
@@ -737,6 +944,9 @@ namespace mccore {
     public:
       P41 () {}
       P41 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P41* > (t); 
+      }
     };
 
     /**
@@ -746,6 +956,9 @@ namespace mccore {
     public:
       P42 () {}
       P42 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P42* > (t); 
+      }
     };
 
     /**
@@ -755,6 +968,9 @@ namespace mccore {
     public:
       P43 () {}
       P43 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P43* > (t); 
+      }
     };
 
     /**
@@ -764,6 +980,9 @@ namespace mccore {
     public:
       P44 () {}
       P44 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P44* > (t); 
+      }
     };
 
     /**
@@ -773,6 +992,9 @@ namespace mccore {
     public:
       P45 () {}
       P45 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P45* > (t); 
+      }
     };
 
     /**
@@ -782,6 +1004,9 @@ namespace mccore {
     public:
       P46 () {}
       P46 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P46* > (t); 
+      }
     };
 
     /**
@@ -791,6 +1016,9 @@ namespace mccore {
     public:
       P47 () {}
       P47 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P47* > (t); 
+      }
     };
 
     /**
@@ -800,6 +1028,9 @@ namespace mccore {
     public:
       P48 () {}
       P48 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P48* > (t); 
+      }
     };
 
     /**
@@ -809,6 +1040,9 @@ namespace mccore {
     public:
       P49 () {}
       P49 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P49* > (t); 
+      }
     };
 
     /**
@@ -818,6 +1052,9 @@ namespace mccore {
     public:
       P50 () {}
       P50 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P50* > (t); 
+      }
     };
 
     /**
@@ -827,6 +1064,9 @@ namespace mccore {
     public:
       P51 () {}
       P51 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P51* > (t); 
+      }
     };
 
     /**
@@ -836,6 +1076,9 @@ namespace mccore {
     public:
       P52 () {}
       P52 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P52* > (t); 
+      }
     };
 
     /**
@@ -845,6 +1088,9 @@ namespace mccore {
     public:
       P53 () {}
       P53 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P53* > (t); 
+      }
     };
 
     /**
@@ -854,6 +1100,9 @@ namespace mccore {
     public:
       P54 () {}
       P54 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P54* > (t); 
+      }
     };
 
     /**
@@ -863,6 +1112,9 @@ namespace mccore {
     public:
       P55 () {}
       P55 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P55* > (t); 
+      }
     };
 
     /**
@@ -872,6 +1124,9 @@ namespace mccore {
     public:
       P56 () {}
       P56 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P56* > (t); 
+      }
     };
 
     /**
@@ -881,6 +1136,9 @@ namespace mccore {
     public:
       P57 () {}
       P57 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P57* > (t); 
+      }
     };
 
     /**
@@ -890,6 +1148,9 @@ namespace mccore {
     public:
       P58 () {}
       P58 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P58* > (t); 
+      }
     };
 
     /**
@@ -899,6 +1160,9 @@ namespace mccore {
     public:
       P59 () {}
       P59 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P59* > (t); 
+      }
     };
 
     /**
@@ -908,6 +1172,9 @@ namespace mccore {
     public:
       P60 () {}
       P60 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P60* > (t); 
+      }
     };
 
     /**
@@ -917,6 +1184,9 @@ namespace mccore {
     public:
       P61 () {}
       P61 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P61* > (t); 
+      }
     };
 
     /**
@@ -926,6 +1196,9 @@ namespace mccore {
     public:
       P62 () {}
       P62 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P62* > (t); 
+      }
     };
 
     /**
@@ -935,6 +1208,9 @@ namespace mccore {
     public:
       P63 () {}
       P63 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P63* > (t); 
+      }
     };
 
     /**
@@ -944,6 +1220,9 @@ namespace mccore {
     public:
       P64 () {}
       P64 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P64* > (t); 
+      }
     };
 
     /**
@@ -953,6 +1232,9 @@ namespace mccore {
     public:
       P65 () {}
       P65 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P65* > (t); 
+      }
     };
 
     /**
@@ -962,6 +1244,9 @@ namespace mccore {
     public:
       P66 () {}
       P66 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P66* > (t); 
+      }
     };
 
     /**
@@ -971,6 +1256,9 @@ namespace mccore {
     public:
       P67 () {}
       P67 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P67* > (t); 
+      }
     };
 
     /**
@@ -980,6 +1268,9 @@ namespace mccore {
     public:
       P68 () {}
       P68 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P68* > (t); 
+      }
     };
 
     /**
@@ -989,6 +1280,9 @@ namespace mccore {
     public:
       P69 () {}
       P69 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P69* > (t); 
+      }
     };
 
     /**
@@ -998,6 +1292,9 @@ namespace mccore {
     public:
       P70 () {}
       P70 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P70* > (t); 
+      }
     };
 
     /**
@@ -1007,6 +1304,9 @@ namespace mccore {
     public:
       P71 () {}
       P71 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P71* > (t); 
+      }
     };
 
     /**
@@ -1016,6 +1316,9 @@ namespace mccore {
     public:
       P72 () {}
       P72 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P72* > (t); 
+      }
     };
 
     /**
@@ -1025,6 +1328,9 @@ namespace mccore {
     public:
       P73 () {}
       P73 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P73* > (t); 
+      }
     };
 
     /**
@@ -1034,6 +1340,9 @@ namespace mccore {
     public:
       P74 () {}
       P74 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P74* > (t); 
+      }
     };
 
     /**
@@ -1043,6 +1352,9 @@ namespace mccore {
     public:
       P75 () {}
       P75 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P75* > (t); 
+      }
     };
 
     /**
@@ -1052,6 +1364,9 @@ namespace mccore {
     public:
       P76 () {}
       P76 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P76* > (t); 
+      }
     };
 
     /**
@@ -1061,6 +1376,9 @@ namespace mccore {
     public:
       P77 () {}
       P77 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P77* > (t); 
+      }
     };
 
     /**
@@ -1070,6 +1388,9 @@ namespace mccore {
     public:
       P78 () {}
       P78 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P78* > (t); 
+      }
     };
 
     /**
@@ -1079,6 +1400,9 @@ namespace mccore {
     public:
       P79 () {}
       P79 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P79* > (t); 
+      }
     };
 
     /**
@@ -1088,6 +1412,9 @@ namespace mccore {
     public:
       P80 () {}
       P80 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P80* > (t); 
+      }
     };
 
     /**
@@ -1097,6 +1424,9 @@ namespace mccore {
     public:
       P81 () {}
       P81 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P81* > (t); 
+      }
     };
 
     /**
@@ -1106,6 +1436,9 @@ namespace mccore {
     public:
       P82 () {}
       P82 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P82* > (t); 
+      }
     };
 
     /**
@@ -1115,6 +1448,9 @@ namespace mccore {
     public:
       P83 () {}
       P83 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P83* > (t); 
+      }
     };
 
     /**
@@ -1124,6 +1460,9 @@ namespace mccore {
     public:
       P84 () {}
       P84 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P84* > (t); 
+      }
     };
 
     /**
@@ -1133,6 +1472,9 @@ namespace mccore {
     public:
       P85 () {}
       P85 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P85* > (t); 
+      }
     };
 
     /**
@@ -1142,6 +1484,9 @@ namespace mccore {
     public:
       P86 () {}
       P86 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P86* > (t); 
+      }
     };
 
     /**
@@ -1151,6 +1496,9 @@ namespace mccore {
     public:
       P87 () {}
       P87 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P87* > (t); 
+      }
     };
 
     /**
@@ -1160,6 +1508,9 @@ namespace mccore {
     public:
       P88 () {}
       P88 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P88* > (t); 
+      }
     };
 
     /**
@@ -1169,6 +1520,9 @@ namespace mccore {
     public:
       P89 () {}
       P89 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P89* > (t); 
+      }
     };
 
     /**
@@ -1178,6 +1532,9 @@ namespace mccore {
     public:
       P90 () {}
       P90 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P90* > (t); 
+      }
     };
 
     /**
@@ -1187,6 +1544,9 @@ namespace mccore {
     public:
       P91 () {}
       P91 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P91* > (t); 
+      }
     };
 
     /**
@@ -1196,6 +1556,9 @@ namespace mccore {
     public:
       P92 () {}
       P92 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P92* > (t); 
+      }
     };
 
     /**
@@ -1205,6 +1568,9 @@ namespace mccore {
     public:
       P93 () {}
       P93 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P93* > (t); 
+      }
     };
 
     /**
@@ -1214,6 +1580,9 @@ namespace mccore {
     public:
       P94 () {}
       P94 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P94* > (t); 
+      }
     };
 
     /**
@@ -1223,6 +1592,9 @@ namespace mccore {
     public:
       P95 () {}
       P95 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P95* > (t); 
+      }
     };
 
     /**
@@ -1232,6 +1604,9 @@ namespace mccore {
     public:
       P96 () {}
       P96 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P96* > (t); 
+      }
     };
 
     /**
@@ -1241,6 +1616,9 @@ namespace mccore {
     public:
       P97 () {}
       P97 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P97* > (t); 
+      }
     };
 
     /**
@@ -1250,6 +1628,9 @@ namespace mccore {
     public:
       P98 () {}
       P98 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P98* > (t); 
+      }
     };
 
     /**
@@ -1259,6 +1640,9 @@ namespace mccore {
     public:
       P99 () {}
       P99 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P99* > (t); 
+      }
     };
 
     /**
@@ -1268,6 +1652,9 @@ namespace mccore {
     public:
       P100 () {}
       P100 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P100* > (t); 
+      }
     };
 
     /**
@@ -1277,6 +1664,9 @@ namespace mccore {
     public:
       P101 () {}
       P101 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P101* > (t); 
+      }
     };
 
     /**
@@ -1286,6 +1676,9 @@ namespace mccore {
     public:
       P102 () {}
       P102 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P102* > (t); 
+      }
     };
 
     /**
@@ -1295,6 +1688,9 @@ namespace mccore {
     public:
       P103 () {}
       P103 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P103* > (t); 
+      }
     };
 
     /**
@@ -1304,6 +1700,9 @@ namespace mccore {
     public:
       P104 () {}
       P104 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P104* > (t); 
+      }
     };
 
     /**
@@ -1313,6 +1712,9 @@ namespace mccore {
     public:
       P105 () {}
       P105 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P105* > (t); 
+      }
     };
 
     /**
@@ -1322,6 +1724,9 @@ namespace mccore {
     public:
       P106 () {}
       P106 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P106* > (t); 
+      }
     };
 
     /**
@@ -1331,6 +1736,9 @@ namespace mccore {
     public:
       P108 () {}
       P108 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P108* > (t); 
+      }
     };
 
     /**
@@ -1340,6 +1748,9 @@ namespace mccore {
     public:
       P109 () {}
       P109 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P109* > (t); 
+      }
     };
 
     /**
@@ -1349,6 +1760,9 @@ namespace mccore {
     public:
       P110 () {}
       P110 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P110* > (t); 
+      }
     };
 
     /**
@@ -1358,6 +1772,9 @@ namespace mccore {
     public:
       P111 () {}
       P111 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P111* > (t); 
+      }
     };
 
     /**
@@ -1367,6 +1784,9 @@ namespace mccore {
     public:
       P112 () {}
       P112 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P112* > (t); 
+      }
     };
 
     /**
@@ -1376,6 +1796,9 @@ namespace mccore {
     public:
       P113 () {}
       P113 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P113* > (t); 
+      }
     };
 
     /**
@@ -1385,6 +1808,9 @@ namespace mccore {
     public:
       P114 () {}
       P114 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P114* > (t); 
+      }
     };
 
     /**
@@ -1394,6 +1820,9 @@ namespace mccore {
     public:
       P115 () {}
       P115 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P115* > (t); 
+      }
     };
 
     /**
@@ -1403,6 +1832,9 @@ namespace mccore {
     public:
       P116 () {}
       P116 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P116* > (t); 
+      }
     };
 
     /**
@@ -1412,6 +1844,9 @@ namespace mccore {
     public:
       P117 () {}
       P117 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P117* > (t); 
+      }
     };
 
     /**
@@ -1421,6 +1856,9 @@ namespace mccore {
     public:
       P118 () {}
       P118 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P118* > (t); 
+      }
     };
 
     /**
@@ -1430,6 +1868,9 @@ namespace mccore {
     public:
       P119 () {}
       P119 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P119* > (t); 
+      }
     };
 
     /**
@@ -1439,6 +1880,9 @@ namespace mccore {
     public:
       P120 () {}
       P120 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P120* > (t); 
+      }
     };
 
     /**
@@ -1448,6 +1892,9 @@ namespace mccore {
     public:
       P121 () {}
       P121 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P121* > (t); 
+      }
     };
 
     /**
@@ -1457,6 +1904,9 @@ namespace mccore {
     public:
       P122 () {}
       P122 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P122* > (t); 
+      }
     };
 
     /**
@@ -1466,6 +1916,9 @@ namespace mccore {
     public:
       P123 () {}
       P123 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P123* > (t); 
+      }
     };
 
     /**
@@ -1475,6 +1928,9 @@ namespace mccore {
     public:
       P124 () {}
       P124 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P124* > (t); 
+      }
     };
 
     /**
@@ -1484,6 +1940,9 @@ namespace mccore {
     public:
       P125 () {}
       P125 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P125* > (t); 
+      }
     };
 
     /**
@@ -1493,6 +1952,9 @@ namespace mccore {
     public:
       P126 () {}
       P126 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P126* > (t); 
+      }
     };
 
     /**
@@ -1502,6 +1964,9 @@ namespace mccore {
     public:
       P127 () {}
       P127 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P127* > (t); 
+      }
     };
 
     /**
@@ -1511,6 +1976,9 @@ namespace mccore {
     public:
       P128 () {}
       P128 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P128* > (t); 
+      }
     };
 
     /**
@@ -1520,6 +1988,9 @@ namespace mccore {
     public:
       P129 () {}
       P129 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P129* > (t); 
+      }
     };
 
     /**
@@ -1529,6 +2000,9 @@ namespace mccore {
     public:
       P130 () {}
       P130 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P130* > (t); 
+      }
     };
 
     /**
@@ -1538,6 +2012,9 @@ namespace mccore {
     public:
       P131 () {}
       P131 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P131* > (t); 
+      }
     };
 
     /**
@@ -1547,6 +2024,9 @@ namespace mccore {
     public:
       P132 () {}
       P132 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P132* > (t); 
+      }
     };
 
     /**
@@ -1556,6 +2036,9 @@ namespace mccore {
     public:
       P133 () {}
       P133 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P133* > (t); 
+      }
     };
 
     /**
@@ -1565,6 +2048,9 @@ namespace mccore {
     public:
       P134 () {}
       P134 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P134* > (t); 
+      }
     };
 
     /**
@@ -1574,6 +2060,9 @@ namespace mccore {
     public:
       P135 () {}
       P135 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P135* > (t); 
+      }
     };
 
     /**
@@ -1583,6 +2072,9 @@ namespace mccore {
     public:
       P136 () {}
       P136 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P136* > (t); 
+      }
     };
 
     /**
@@ -1592,6 +2084,9 @@ namespace mccore {
     public:
       P137 () {}
       P137 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const P137* > (t); 
+      }
     };
 
     //     /**
@@ -1643,6 +2138,9 @@ namespace mccore {
     public:
       PW () {}
       PW (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PW* > (t); 
+      }
     };
 
     /**
@@ -1652,6 +2150,9 @@ namespace mccore {
     public:
       PS () {}
       PS (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PS* > (t); 
+      }
     };
 
     /**
@@ -1661,6 +2162,9 @@ namespace mccore {
     public:
       PH () {}
       PH (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PH* > (t); 
+      }
     };
 
     /**
@@ -1670,6 +2174,9 @@ namespace mccore {
     public:
       PB () {}
       PB (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PB* > (t); 
+      }
     };
 
     /**
@@ -1679,6 +2186,9 @@ namespace mccore {
     public:
       PWs () {}
       PWs (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PWs* > (t); 
+      }
     };
 
     /**
@@ -1688,6 +2198,9 @@ namespace mccore {
     public:
       PWw () {}
       PWw (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PWw* > (t); 
+      }
     };
 
     /**
@@ -1697,6 +2210,9 @@ namespace mccore {
     public:
       PWh () {}
       PWh (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PWh* > (t); 
+      }
     };
 
     /**
@@ -1706,6 +2222,9 @@ namespace mccore {
     public:
       PSw () {}
       PSw (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PSw* > (t); 
+      }
     };
 
     /**
@@ -1715,6 +2234,9 @@ namespace mccore {
     public:
       PSs () {}
       PSs (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PSs* > (t); 
+      }
     };
 
     /**
@@ -1724,6 +2246,9 @@ namespace mccore {
     public:
       PHw () {}
       PHw (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PHw* > (t); 
+      }
     };
 
     /**
@@ -1733,6 +2258,9 @@ namespace mccore {
     public:
       PHh () {}
       PHh (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PHh* > (t); 
+      }
     };
 
     /**
@@ -1742,6 +2270,9 @@ namespace mccore {
     public:
       PC8 () {}
       PC8 (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PC8* > (t); 
+      }
     };
 
     /**
@@ -1751,6 +2282,9 @@ namespace mccore {
     public:
       PBs () {}
       PBs (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PBs* > (t); 
+      }
     };
 
     /**
@@ -1760,6 +2294,9 @@ namespace mccore {
     public:
       PBh () {}
       PBh (const char* t) : PropertyType (t) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PBh* > (t); 
+      }
     };
 
   };

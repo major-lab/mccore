@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:42:25 2003
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 
 
 #ifdef HAVE_CONFIG_H
@@ -30,57 +30,57 @@ namespace mccore {
     stringType["stack"] = PropertyType::pStack = new Stack ("stack");
     stringType["reverse"] = PropertyType::pReverse = new Reverse ("reverse");
     stringType["adjacent"] = PropertyType::pAdjacent = new Adjacent ("adjacent");
-    stringType["type_a"] = PropertyType::pType_A = new Type_A ("type_A");
-    stringType["type_b"] = PropertyType::pType_B = new Type_B ("type_B");
+    stringType["type_A"] = PropertyType::pType_A = new Type_A ("type_A");
+    stringType["type_B"] = PropertyType::pType_B = new Type_B ("type_B");
     stringType["helix"] = PropertyType::pHelix = new Helix ("helix");
-    stringType["c1p_endo"] = PropertyType::pC1p_endo = new C1p_endo ("C1p_endo");
-    stringType["c1p_exo"] = PropertyType::pC1p_exo = new C1p_exo ("C1p_exo");
-    stringType["c2p_endo"] = PropertyType::pC2p_endo = new C2p_endo ("C2p_endo");
-    stringType["c2p_exo"] = PropertyType::pC2p_exo = new C2p_exo ("C2p_exo");
-    stringType["c3p_endo"] = PropertyType::pC3p_endo = new C3p_endo ("C3p_endo");
-    stringType["c3p_exo"] = PropertyType::pC3p_exo = new C3p_exo ("C3p_exo");
-    stringType["c4p_endo"] = PropertyType::pC4p_endo = new C4p_endo ("C4p_endo");
-    stringType["c4p_exo"] = PropertyType::pC4p_exo = new C4p_exo ("C4p_exo");
-    stringType["o4p_endo"] = PropertyType::pO4p_endo = new O4p_endo ("O4p_endo");
-    stringType["o4p_exo"] = PropertyType::pO4p_exo = new O4p_exo ("O4p_exo");
+    stringType["C1p_endo"] = PropertyType::pC1p_endo = new C1p_endo ("C1p_endo");
+    stringType["C1p_exo"] = PropertyType::pC1p_exo = new C1p_exo ("C1p_exo");
+    stringType["C2p_endo"] = PropertyType::pC2p_endo = new C2p_endo ("C2p_endo");
+    stringType["C2p_exo"] = PropertyType::pC2p_exo = new C2p_exo ("C2p_exo");
+    stringType["C3p_endo"] = PropertyType::pC3p_endo = new C3p_endo ("C3p_endo");
+    stringType["C3p_exo"] = PropertyType::pC3p_exo = new C3p_exo ("C3p_exo");
+    stringType["C4p_endo"] = PropertyType::pC4p_endo = new C4p_endo ("C4p_endo");
+    stringType["C4p_exo"] = PropertyType::pC4p_exo = new C4p_exo ("C4p_exo");
+    stringType["O4p_endo"] = PropertyType::pO4p_endo = new O4p_endo ("O4p_endo");
+    stringType["O4p_exo"] = PropertyType::pO4p_exo = new O4p_exo ("O4p_exo");
     stringType["anti"] = PropertyType::pAnti = new Anti ("anti");
     stringType["syn"] = PropertyType::pSyn = new Syn ("syn");
-    stringType["dir_5p"] = PropertyType::pDIR_5p = new DIR_5p ("DIR_5p");
-    stringType["dir_3p"] = PropertyType::pDIR_3p = new DIR_3p ("DIR_3p");
-    stringType["dir_any"] = PropertyType::pDIR_ANY = new DIR_ANY ("DIR_ANY");
+    stringType["DIR_5p"] = PropertyType::pDIR_5p = new DIR_5p ("DIR_5p");
+    stringType["DIR_3p"] = PropertyType::pDIR_3p = new DIR_3p ("DIR_3p");
+    stringType["DIR_ANY"] = PropertyType::pDIR_ANY = new DIR_ANY ("DIR_ANY");
     // 	stringType.put ("dir_sh", pDIR_SH = new PropertyType.DIR_SH ("DIR_SH"));
     // 	stringType.put ("dir_hs", pDIR_HS = new PropertyType.DIR_HS ("DIR_HS"));
     stringType["saenger"] = PropertyType::pSaenger = new Saenger ("saenger");
     stringType["wc"] = PropertyType::pWC = new WC ("wc");
     stringType["wobble"] = PropertyType::pWobble = new Wobble ("wobble");
-    stringType["i"] = PropertyType::pI = new PI ("I");
-    stringType["ii"] = PropertyType::pII = new PII ("II");
-    stringType["iii"] = PropertyType::pIII = new PIII ("III");
-    stringType["iv"] = PropertyType::pIV = new PIV ("IV");
-    stringType["v"] = PropertyType::pV = new PV ("V");
-    stringType["vi"] = PropertyType::pVI = new PVI ("VI");
-    stringType["vii"] = PropertyType::pVII = new PVII ("VII");
-    stringType["viii"] = PropertyType::pVIII = new PVIII ("VIII");
-    stringType["ix"] = PropertyType::pIX = new PIX ("IX");
-    stringType["x"] = PropertyType::pX = new PX ("X");
-    stringType["xi"] = PropertyType::pXI = new PXI ("XI");
-    stringType["xii"] = PropertyType::pXII = new PXII ("XII");
-    stringType["xiii"] = PropertyType::pXIII = new PXIII ("XIII");
-    stringType["xiv"] = PropertyType::pXIV = new PXIV ("XIV");
-    stringType["xv"] = PropertyType::pXV = new PXV ("XV");
-    stringType["xvi"] = PropertyType::pXVI = new PXVI ("XVI");
-    stringType["xvii"] = PropertyType::pXVII = new PXVII ("XVII");
-    stringType["xviii"] = PropertyType::pXVIII = new PXVIII ("XVIII");
-    stringType["xix"] = PropertyType::pXIX = new PXIX ("XIX");
-    stringType["xx"] = PropertyType::pXX = new PXX ("XX");
-    stringType["xxi"] = PropertyType::pXXI = new PXXI ("XXI");
-    stringType["xxii"] = PropertyType::pXXII = new PXXII ("XXII");
-    stringType["xxiii"] = PropertyType::pXXIII = new PXXIII ("XXIII");
-    stringType["xxiv"] = PropertyType::pXXIV = new PXXIV ("XXIV");
-    stringType["xxv"] = PropertyType::pXXV = new PXXV ("XXV");
-    stringType["xxvi"] = PropertyType::pXXVI = new PXXVI ("XXVI");
-    stringType["xxvii"] = PropertyType::pXXVII = new PXXVII ("XXVII");
-    stringType["xxviii"] = PropertyType::pXXVIII = new PXXVIII ("XXVIII");
+    stringType["I"] = PropertyType::pI = new PI ("I");
+    stringType["II"] = PropertyType::pII = new PII ("II");
+    stringType["III"] = PropertyType::pIII = new PIII ("III");
+    stringType["IV"] = PropertyType::pIV = new PIV ("IV");
+    stringType["V"] = PropertyType::pV = new PV ("V");
+    stringType["VI"] = PropertyType::pVI = new PVI ("VI");
+    stringType["VII"] = PropertyType::pVII = new PVII ("VII");
+    stringType["VIII"] = PropertyType::pVIII = new PVIII ("VIII");
+    stringType["IX"] = PropertyType::pIX = new PIX ("IX");
+    stringType["X"] = PropertyType::pX = new PX ("X");
+    stringType["XI"] = PropertyType::pXI = new PXI ("XI");
+    stringType["XII"] = PropertyType::pXII = new PXII ("XII");
+    stringType["XIII"] = PropertyType::pXIII = new PXIII ("XIII");
+    stringType["XIV"] = PropertyType::pXIV = new PXIV ("XIV");
+    stringType["XV"] = PropertyType::pXV = new PXV ("XV");
+    stringType["XVI"] = PropertyType::pXVI = new PXVI ("XVI");
+    stringType["XVII"] = PropertyType::pXVII = new PXVII ("XVII");
+    stringType["XVIII"] = PropertyType::pXVIII = new PXVIII ("XVIII");
+    stringType["XIX"] = PropertyType::pXIX = new PXIX ("XIX");
+    stringType["XX"] = PropertyType::pXX = new PXX ("XX");
+    stringType["XXI"] = PropertyType::pXXI = new PXXI ("XXI");
+    stringType["XXII"] = PropertyType::pXXII = new PXXII ("XXII");
+    stringType["XXIII"] = PropertyType::pXXIII = new PXXIII ("XXIII");
+    stringType["XXIV"] = PropertyType::pXXIV = new PXXIV ("XXIV");
+    stringType["XXV"] = PropertyType::pXXV = new PXXV ("XXV");
+    stringType["XXVI"] = PropertyType::pXXVI = new PXXVI ("XXVI");
+    stringType["XXVII"] = PropertyType::pXXVII = new PXXVII ("XXVII");
+    stringType["XXVIII"] = PropertyType::pXXVIII = new PXXVIII ("XXVIII");
     stringType["one_hbond"] = PropertyType::pOneHbond = new OneHbond ("one_hbond");
     stringType["29"] = PropertyType::p29 = new P29 ("29");
     stringType["30"] = PropertyType::p30 = new P30 ("30");
@@ -197,20 +197,20 @@ namespace mccore {
     //     public static PropertyType pstrong;
     //     public static PropertyType pweak;
     //     public static PropertyType pnostack;
-    stringType["w"] = PropertyType::pW = new PW ("W");
-    stringType["s"] = PropertyType::pS = new PS ("S");
-    stringType["h"] = PropertyType::pH = new PH ("H");
-    stringType["b"] = PropertyType::pB = new PB ("B");
-    stringType["ws"] = PropertyType::pWs = new PWs ("Ws");
-    stringType["ww"] = PropertyType::pWw = new PWw ("Ww");
-    stringType["wh"] = PropertyType::pWh = new PWh ("Wh");
-    stringType["sw"] = PropertyType::pSw = new PSw ("Sw");
-    stringType["ss"] = PropertyType::pSs = new PSs ("Ss");
-    stringType["hw"] = PropertyType::pHw = new PHw ("Hw");
-    stringType["hh"] = PropertyType::pHh = new PHh ("Hh");
-    stringType["c8"] = PropertyType::pC8 = new PC8 ("C8");
-    stringType["bs"] = PropertyType::pBs = new PBs ("Bs");
-    stringType["bh"] = PropertyType::pBh = new PBh ("Bh");    
+    stringType["W"] = PropertyType::pW = new PW ("W");
+    stringType["S"] = PropertyType::pS = new PS ("S");
+    stringType["H"] = PropertyType::pH = new PH ("H");
+    stringType["B"] = PropertyType::pB = new PB ("B");
+    stringType["Ws"] = PropertyType::pWs = new PWs ("Ws");
+    stringType["Ww"] = PropertyType::pWw = new PWw ("Ww");
+    stringType["Wh"] = PropertyType::pWh = new PWh ("Wh");
+    stringType["Sw"] = PropertyType::pSw = new PSw ("Sw");
+    stringType["Ss"] = PropertyType::pSs = new PSs ("Ss");
+    stringType["Hw"] = PropertyType::pHw = new PHw ("Hw");
+    stringType["Hh"] = PropertyType::pHh = new PHh ("Hh");
+    stringType["C8"] = PropertyType::pC8 = new PC8 ("C8");
+    stringType["Bs"] = PropertyType::pBs = new PBs ("Bs");
+    stringType["Bh"] = PropertyType::pBh = new PBh ("Bh");    
   }
 
   PropertyTypeStore::~PropertyTypeStore () 
@@ -236,10 +236,10 @@ namespace mccore {
     char* str = new char[strlen (s) + 1];
     strcpy (str, s);
 
-    for (char* i=str; *i; ++i) {
-      if (*i == '\'') *i = '*';
-      *i = tolower (*i);
-    }
+//     for (char* i=str; *i; ++i) {
+//       if (*i == '\'') *i = '*';
+//       *i = tolower (*i);
+//     }
     
     if (stringType.find (str) != stringType.end ()) {
       t = stringType[str];

@@ -71,12 +71,13 @@ namespace mccore {
   Residue::Residue (const Residue &other)
   {
     vector< Atom* >::const_iterator cit;
+
     type = other.type;
     resId = other.resId;
-    
-    for (cit = other.atomGlobal.begin (); cit != other.atomGlobal.end (); ++cit)
-      atomGlobal.push_back ((*cit)->clone ());
-    
+    for (cit = other.atomGlobal.begin (); cit != other.atomGlobal.end (); ++cit) {
+      Atom* cl = (*cit)->clone ();
+      atomGlobal.push_back (cl);
+    }    
     atomIndex = other.atomIndex;
   }
 
@@ -374,7 +375,7 @@ namespace mccore {
       pivot[0] = 0;
       pivot[1] = 0;
       pivot[2] = 0;
-      gOut (2) << "Residue " << getType () << " " << getResId () 
+      gOut (4) << "Residue " << getType () << " " << getResId () 
 	       << " has less than 3 atoms and cannot be moved: " << endl;
     }
     
@@ -413,7 +414,7 @@ namespace mccore {
       pivot[0] = 0;
       pivot[1] = 0;
       pivot[2] = 0;
-      gOut (2) << "Residue " << getType () << " " << getResId () 
+      gOut (4) << "Residue " << getType () << " " << getResId () 
 	       << " has less than 3 atoms and cannot be moved: " << endl;
     }
     curr = HomogeneousTransfo::align (*pivot[0], *pivot[1], *pivot[2]);
@@ -512,12 +513,12 @@ namespace mccore {
     gOut (5) << "Validating " << resId << " " << type << endl;
 
     if (!type) {
-      gOut (2) << "Validate called on an empty residue" << endl;
+      gOut (4) << "Validate called on an empty residue" << endl;
       return;
     }
 
     if (!type->isNucleicAcid () && !type->isAminoAcid ()) {
-      gOut (2) << "Validate called on a unknown residue: " << type << endl;
+      gOut (4) << "Validate called on a unknown residue: " << type << endl;
       return;
     }
     
@@ -1376,10 +1377,10 @@ namespace mccore {
   Residue::output (ostream &os) const 
   {
     os << resId << type;
-    AtomMap::const_iterator cit;
-    for (cit=atomIndex.begin (); cit!=atomIndex.end (); ++cit) {
-      os << endl << *(atomGlobal[cit->second]);
-    }
+//     AtomMap::const_iterator cit;
+//     for (cit=atomIndex.begin (); cit!=atomIndex.end (); ++cit) {
+//       os << endl << *(atomGlobal[cit->second]);
+//     }
     return os;
   }
   

@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr 25 10:12:06 2003
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 // 
 //  This file is part of mccore.
 //  
@@ -27,6 +27,8 @@
 
 #include <iostream>
 #include <vector>
+
+#include "ResId.h"
 
 class iBinstream;
 class oBinstream;
@@ -106,7 +108,7 @@ namespace mccore
     /**
      * Produces the unique residue identifier for residue at position i.
      */
-    //    virtual ResId getResId (unsigned int index) const;
+    virtual ResId getResId (unsigned int index) const;
 
     /**
      * Returns the uniqueId of this sequence.

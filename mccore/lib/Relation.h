@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 //
 //  This file is part of mccore.
 //  
@@ -59,7 +59,7 @@ namespace mccore {
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.6 2003-07-11 21:28:02 gendrop Exp $
+   * @version $Id: Relation.h,v 1.7 2003-09-26 21:17:07 gendrop Exp $
    */
   class Relation
   {
@@ -167,8 +167,12 @@ namespace mccore {
      */
     const set< const PropertyType* >& getLabels () const { return labels; }
 
-
+    /**
+     * Returns the transformation between the residues of the relation.
+     */
     HomogeneousTransfo getTransfo () const { return tfo; }
+
+    void addLabel (const PropertyType* l) { labels.insert (l); }
 
     // METHODS --------------------------------------------------------------
 

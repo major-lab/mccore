@@ -225,12 +225,12 @@ Sequence::operator[] (unsigned int index) const
 }
 
 
-// CResId 
-// Sequence::getResId (unsigned int index) const 
-// {
-//   assert (index<size ());
-//   return CResId (index+1);
-// }
+ResId 
+Sequence::getResId (unsigned int index) const 
+{
+  assert (index<size ());
+  return ResId (' ', index+1);
+}
 
 
 

@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:00:09 2003
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 // 
 //  This file is part of mccore.
 //  
@@ -44,7 +44,7 @@ namespace mccore {
    * Derived from Vector3D, this class adds the type of the atom.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Atom.h,v 1.4 2003-08-28 14:28:42 gendrop Exp $
+   * @version $Id: Atom.h,v 1.5 2003-09-26 21:16:12 gendrop Exp $
    */
   class Atom : public Vector3D
   {
@@ -181,7 +181,7 @@ namespace mccore {
      * Returns the color of the given atom as a Vector3D in RGB space.
      * @return the atom color.
      */
-    Vector3D color () const;    
+    Vector3D getColor () const;    
     
 
     // I/O  -----------------------------------------------------------------
