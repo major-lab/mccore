@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.46 $
-// $Id: Residue.cc,v 1.46 2004-09-07 15:13:05 thibaup Exp $
+// $Revision: 1.47 $
+// $Id: Residue.cc,v 1.47 2004-09-09 13:48:49 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -2478,13 +2478,13 @@ namespace mccore {
     
     if (po4_5p)
     {
-      o5p = *this->_safe_get (AtomType::aO5p);
+      o5p = *po4_5p->_safe_get (AtomType::aO5p);
       o5p.transform (inv);
     }
     
     if (po4_3p)
     {
-      o3p = *this->_safe_get (AtomType::aO3p);
+      o3p = *po4_3p->_safe_get (AtomType::aO3p);
       o3p.transform (inv);
     }
 
