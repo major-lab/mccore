@@ -4,8 +4,8 @@
 //                  Université de Montréal
 // Author           : Martin Larose
 // Created On       : Wed Dec 29 00:44:53 2004
-// $Revision: 1.1.2.1 $
-// $Id: GraphModel.cc,v 1.1.2.1 2004-12-29 05:52:39 larosem Exp $
+// $Revision: 1.1.2.2 $
+// $Id: GraphModel.cc,v 1.1.2.2 2004-12-29 21:18:52 larosem Exp $
 //
 // This file is part of mccore.
 //
@@ -43,14 +43,16 @@ using namespace std;
 int
 main (int argc, char *argv[])
 {
-  izfPdbstream ifs ("1FFK.pdb.gz");
+  izfPdbstream ifs;
   GraphModel model;
 
+  ifs.open ("1L8V.pdb.gz");
   ifs >> model;
   ifs.close ();
 
-  model.addHLP ();
+//   gOut (0) << model << endl;
   model.removeWater ();
+  model.addHLP ();
   model.annotate ();
   gOut (0) << model << endl;
   return EXIT_SUCCESS;
