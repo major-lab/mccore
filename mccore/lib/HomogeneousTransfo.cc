@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 //
 //  This file is part of mccore.
 //  
@@ -87,7 +87,7 @@ namespace mccore
 
   HomogeneousTransfo::~HomogeneousTransfo () 
   {
-    delete matrix;
+    delete[] matrix;
   }
 
 

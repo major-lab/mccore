@@ -11,6 +11,7 @@
 
 #include <iterator>
 #include <vector>
+#include <cstdio>
 
 #include "Relation.h"
 #include "Residue.h"

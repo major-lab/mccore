@@ -3,7 +3,7 @@
 // Copyright © 1999, 2000-01, 03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.33 $
+// $Revision: 1.34 $
 // 
 //  This file is part of mccore.
 //  
@@ -30,6 +30,7 @@
 #include <iomanip>
 #include <cctype>
 #include <unistd.h>
+#include <cstdio>
 
 #include "Pdbstream.h"
 #include "Atom.h"
@@ -168,7 +169,7 @@ namespace mccore {
       } 
 
       if (strcmp (tag, "TITLE ") == 0) {
-	fieldp = trim (strncpy ((char*)memset (field, 0, LINELENGTH), line+10, length));
+	fieldp = trim (strncpy ((char*)memset (field, 0, LINELENGTH), line+10, 60));
 	header.setTitle (header.getTitle () + " " + string (fieldp));
       }
 
@@ -176,7 +177,7 @@ namespace mccore {
       }
 
       if (strcmp (tag, "EXPDTA") == 0) {
-	fieldp = trim (strncpy ((char*)memset (field, 0, LINELENGTH), line+10, length));
+	fieldp = trim (strncpy ((char*)memset (field, 0, LINELENGTH), line+10, 60));
 	header.setMethod (header.getMethod () + " " + string (fieldp));
 
       }

@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 //
 //  This file is part of mccore.
 //  
@@ -26,6 +26,7 @@
 #define _HomogeneousTransfo_h_
 
 #include <iostream>
+#include <utility>
 
 #include "Vector3D.h"
 
@@ -50,7 +51,7 @@ namespace mccore
  * </pre>
  *
  * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
- * @version $Id: HomogeneousTransfo.h,v 1.7 2003-09-29 19:37:26 thibaup Exp $
+ * @version $Id: HomogeneousTransfo.h,v 1.8 2003-10-28 16:14:03 gendrop Exp $
  */
 class HomogeneousTransfo
 {
@@ -233,7 +234,7 @@ public:
    * @return a pair.
    */
   pair< Vector3D, float > getRotationVector () const;
-
+  
   /**
    * Gets a transfo containing the rotation part of this transfo.
    * @return the transfo.

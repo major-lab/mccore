@@ -5,8 +5,8 @@
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:57:11 2000
 ## Last Modified By : Patrick Gendron
-## Last Modified On : Fri Sep  5 18:19:06 2003
-## Update Count     : 151
+## Last Modified On : Tue Oct 28 11:15:02 2003
+## Update Count     : 154
 ## Status           : Ok.
 ###############################################################################
 #
@@ -138,7 +138,7 @@ all: $(LIBRARY).so.$(VERSION) TAGS
 static: $(LIBRARY).a TAGS
 
 $(LIBRARY).so.$(VERSION): $(SHOBJECTS)
-	$(LD) $(LINKOPTIONS) -shared $(LDFLAGS) -o $@ -Wl,-soname,$@ $^
+	$(LD) $(CXXSHFLAGS) $(LINKOPTIONS) -shared $(LDFLAGS) -o $@ -Wl,-soname,$@ $^
 
 $(LIBRARY).a: $(OBJECTS)
 	$(AR) crs $@ $^
