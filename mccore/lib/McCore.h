@@ -3,9 +3,9 @@
 // Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Labo Lbit
-// Last Modified On : Thu Nov  9 16:50:29 2000
-// Update Count     : 3
+// Last Modified By : Martin Larose
+// Last Modified On : Thu Nov  9 17:54:08 2000
+// Update Count     : 4
 // Status           : Ok.
 // 
 
@@ -20,8 +20,7 @@
 #include <function.h>
 #include <string.h>
 
-#include "CResidue.h"
-
+class residue_iterator;
 class t_Atom;
 class t_Residue;
 class CMessageQueue;
@@ -1749,8 +1748,8 @@ float RadToDegree (float r);
  * @param mgr2 the second vector of atoms.
  * @return the rmsd value.
  */
-float rmsd (const vector< CResidue::iterator > &mgr1,
-	    const vector< CResidue::iterator > &mgr2);
+float rmsd (const vector< residue_iterator > &mgr1,
+	    const vector< residue_iterator > &mgr2);
 
 
 
@@ -1762,8 +1761,8 @@ float rmsd (const vector< CResidue::iterator > &mgr1,
  * @param t the transfo created (default = 0).
  * @return the rmsd value.
  */
-float rmsd_with_align (const vector< CResidue::iterator > &x,  
-		       const vector< CResidue::iterator > &y, 
+float rmsd_with_align (const vector< residue_iterator > &x,  
+		       const vector< residue_iterator > &y, 
 		       CTransfo *t = 0);
 
 

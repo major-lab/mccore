@@ -3,9 +3,9 @@
 // Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Labo Lbit
-// Last Modified On : Thu Nov  9 16:50:27 2000
-// Update Count     : 3
+// Last Modified By : Martin Larose
+// Last Modified On : Thu Nov  9 17:54:05 2000
+// Update Count     : 4
 // Status           : Ok.
 // 
 
@@ -18,6 +18,7 @@
 #include "AtomType.h"
 #include "CAtom.h"
 #include "CMessageQueue.h"
+#include "CResidue.h"
 #include "CTransfo.h"
 #include "ResidueType.h"
 
@@ -533,8 +534,8 @@ RadToDegree (float r)
 
 
 float 
-rmsd (const vector< CResidue::iterator > &mgr1,
-      const vector< CResidue::iterator > &mgr2)
+rmsd (const vector< residue_iterator > &mgr1,
+      const vector< residue_iterator > &mgr2)
 {
   float rmsd = 0;
   vector< CResidue::iterator >::const_iterator i, j;
@@ -547,8 +548,8 @@ rmsd (const vector< CResidue::iterator > &mgr1,
 
 
 float 
-rmsd_with_align (const vector< CResidue::iterator > &x,
-		 const vector< CResidue::iterator > &y, 
+rmsd_with_align (const vector< residue_iterator > &x,
+		 const vector< residue_iterator > &y, 
 		 CTransfo *t)
 {
   // Removing translations
