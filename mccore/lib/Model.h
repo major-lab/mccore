@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.16 $
+// $Revision: 1.17 $
 //
 // This file is part of mccore.
 // 
@@ -61,7 +61,7 @@ namespace mccore {
    * details).
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Model.h,v 1.16 2003-12-23 14:50:16 larosem Exp $
+   * @version $Id: Model.h,v 1.17 2004-05-27 17:35:19 thibaup Exp $
    */
   class Model
   {
@@ -382,6 +382,12 @@ namespace mccore {
      */
     void validate ();
 
+    /**
+     * Adds hydrogen and lone pairs to each nucleic acid residue. The terminal HO3'
+     * is not added by this method.
+     */
+    void addHLP ();
+    
     /**
      * Removes the optional atoms within the residues.
      */
