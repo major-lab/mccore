@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.42 $
-// $Id: Pdbstream.cc,v 1.42 2004-10-04 22:14:15 larosem Exp $
+// $Revision: 1.43 $
+// $Id: Pdbstream.cc,v 1.43 2004-10-15 20:37:42 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -39,13 +39,15 @@
 #include "Model.h"
 #include "Pdbstream.h"
 #include "Messagestream.h"
+#include "Exception.h"
 #include "ResId.h"
 #include "Residue.h"
 #include "ResidueType.h"
 
 
 
-namespace mccore {
+namespace mccore
+{
 
   const PdbAtomTypeRepresentationTable Pdbstream::pdbAtomTypeParseTable;
   const AmberAtomTypeRepresentationTable Pdbstream::amberAtomTypeParseTable;
@@ -55,6 +57,76 @@ namespace mccore {
   const unsigned int iPdbstream::LINELENGTH = 80;
   const int oPdbstream::LINELENGTH = 80;
 
+  
+  const ResidueType*
+  Pdbstream::parseResidueType (const char* str, unsigned int type)
+  {
+    string key (str);
+    if (Pdbstream::PDB == type)
+      return Pdbstream::pdbResidueTypeParseTable.parseType (key);
+    else if (Pdbstream::AMBER == type)
+      return Pdbstream::amberResidueTypeParseTable.parseType (key);
+    else
+    {
+      IntLibException ex ("", __FILE__, __LINE__);
+      ex << "Unknown table type " << type << " in Pdbstream::parseResidueType.";
+      throw ex;
+    }
+    return 0;
+  }
+
+  
+  const char*
+  Pdbstream::stringifyResidueType (const ResidueType* rtype, unsigned int type)
+  {
+    if (Pdbstream::PDB == type)
+      return Pdbstream::pdbResidueTypeParseTable.toString (rtype);
+    else if (Pdbstream::AMBER == type)
+      return Pdbstream::amberResidueTypeParseTable.toString (rtype);
+    else
+    {
+      IntLibException ex ("", __FILE__, __LINE__);
+      ex << "Unknown table type " << type << " in Pdbstream::stringifyResidueType.";
+      throw ex;
+    }
+    return 0;
+  }
+
+
+  const AtomType*
+  Pdbstream::parseAtomType (const char* str, unsigned int type)
+  {
+    string key (str);
+    if (Pdbstream::PDB == type)
+      return Pdbstream::pdbAtomTypeParseTable.parseType (key);
+    else if (Pdbstream::AMBER == type)
+      return Pdbstream::amberAtomTypeParseTable.parseType (key);
+    else
+    {
+      IntLibException ex ("", __FILE__, __LINE__);
+      ex << "Unknown table type " << type << " in Pdbstream::parseAtomType.";
+      throw ex;
+    }
+    return 0;
+  }
+
+  
+  const char*
+  Pdbstream::stringifyAtomType (const AtomType* rtype, unsigned int type)
+  {
+    if (Pdbstream::PDB == type)
+      return Pdbstream::pdbAtomTypeParseTable.toString (rtype);
+    else if (Pdbstream::AMBER == type)
+      return Pdbstream::amberAtomTypeParseTable.toString (rtype);
+    else
+    {
+      IntLibException ex ("", __FILE__, __LINE__);
+      ex << "Unknown table type " << type << " in Pdbstream::stringifyAtomType.";
+      throw ex;
+    }
+    return 0;
+  }
+  
 
   iPdbstream::iPdbstream ()
     : istream (cin.rdbuf ()),
@@ -547,7 +619,7 @@ namespace mccore {
 	*this << setw (5) << atomCounter++;
 	*this << "      ";  // EMPTY SPACE.
 	setf (ios::right, ios::adjustfield);
-	*this << setw (3) << rtype->toPdbString ();
+	*this << setw (3) << residueTypeParseTable->toString (rtype);
 	*this << ' ';
 	*this << rid->getChainId ();
 	setf (ios::right, ios::adjustfield);

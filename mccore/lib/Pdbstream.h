@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.29 $
-// $Id: Pdbstream.h,v 1.29 2004-10-04 22:14:22 larosem Exp $
+// $Revision: 1.30 $
+// $Id: Pdbstream.h,v 1.30 2004-10-15 20:37:46 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -43,7 +43,8 @@ using namespace std;
 
 
 
-namespace mccore {
+namespace mccore
+{
 
   class Atom;
   class AtomSet;
@@ -78,6 +79,35 @@ namespace mccore {
      * The residue type input parse table for Amber streams.
      */
     static const AmberResidueTypeRepresentationTable amberResidueTypeParseTable;
+
+    /**
+     * Uses specific type table to parse type string.
+     * @param str the sring representation to parse.
+     * @param type the table type (0 for PDB, 1 for Amber, default is 0)
+     */
+    static const ResidueType* parseResidueType (const char* str, unsigned int type = 0);
+
+    /**
+     * Uses specific type table to get type string representation.
+     * @param str the sring representation to parse.
+     * @param type the table type (0 for PDB, 1 for Amber, default is 0)
+     */
+    static const char* stringifyResidueType (const ResidueType* rtype, unsigned int type = 0);
+
+    /**
+     * Uses specific type table to parse type string.
+     * @param str the sring representation to parse.
+     * @param type the table type (0 for PDB, 1 for Amber, default is 0)
+     */
+    static const AtomType* parseAtomType (const char* str, unsigned int type = 0);
+
+    /**
+     * Uses specific type table to get type string representation.
+     * @param str the sring representation to parse.
+     * @param type the table type (0 for PDB, 1 for Amber, default is 0)
+     */
+    static const char* stringifyAtomType (const AtomType* rtype, unsigned int type = 0);
+    
   };
 
   
@@ -112,7 +142,7 @@ namespace mccore {
    * </pre>
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Pdbstream.h,v 1.29 2004-10-04 22:14:22 larosem Exp $
+   * @version $Id: Pdbstream.h,v 1.30 2004-10-15 20:37:46 thibaup Exp $
    */
   class iPdbstream : public istream
   {
