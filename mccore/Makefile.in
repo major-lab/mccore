@@ -5,8 +5,8 @@
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:10:38 2000
 ## Last Modified By : Martin Larose
-## Last Modified On : Fri Sep  7 11:43:43 2001
-## Update Count     : 7
+## Last Modified On : Thu Sep 20 12:43:31 2001
+## Update Count     : 8
 ## Status           : Ok.
 ###############################################################################
 #
@@ -50,7 +50,8 @@ SUBDIRS = lib docs
 RELEASESUBDIRS = $(SUBDIRS)
 
 DISTFILES = COPYING ChangeLog INSTALL Makefile.in NEWS README config.guess \
-config.h.in config.sub configure.in configure install-sh mkinstalldirs
+config.h.in config.sub configure.in configure install-sh mkinstalldirs \
+stamp-h.in
 
 
 .SUFFIXES:
@@ -150,14 +151,26 @@ dist:
 	@ rm -fr $(PACKAGE)-$(VERSION)
 
 
-Makefile: $(srcdir)/Makefile.in config.status
+
+configure: $(srcdir)/configure.in
+	@ cd $(srcdir) && autoconf
+
+$(srcdir)/config.h.in: $(srcdir)/stamp-h.in
+
+$(srcdir)/stamp-h.in: configure.in
+	@ echo timestamp > $@
+
+config.h: stamp-h
+
+stamp-h: $(srcdir)/config.h.in config.status
+	@ CONFIG_FILES= CONFIG_HEADERS=config.h ./config.status
+	@ echo timestamp > $@
+
+Makefile: $(srcdir)/Makefile.in config.status stamp-h
 	@ CONFIG_FILES=$@ CONFIG_HEADERS= ./config.status
 
 config.status: configure
 	@ ./config.status --recheck
-
-configure: $(srcdir)/configure.in
-	@ cd $(srcdir) && autoconf configure.in > configure
 
 # Tell versions [3.59,3.63) of GNU make not to export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

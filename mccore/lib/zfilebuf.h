@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Mar 10 15:24:55 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:10:49 2001
-// Update Count     : 6
+// Last Modified On : Thu Sep 20 12:48:18 2001
+// Update Count     : 7
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -63,7 +63,6 @@ class zfilebuf : public filebuf
   gzFile zf;
 
 #if defined(__sgi) && !defined(__GNUC__)
-//    int _switch_to_get_mode ();
   /**
    * Writes data to the file in sgi compilation mode.
    * @param data the characters to write.
@@ -239,7 +238,7 @@ public:
   {
     init (rdbuf ());
     if (!rdbuf ()->open (name, mode, level, prot))
-      set (ios::badbit);
+      setstate (ios::badbit);
   }
 
   /**
@@ -266,7 +265,7 @@ public:
   {
     clear ();
     if (!rdbuf ()->open (name, mode, level, prot))
-      set (ios::badbit);
+      setstate (ios::badbit);
   }
 
   /**
@@ -276,13 +275,13 @@ public:
   void attach (int fd)
   {
     if (!rdbuf ()->attach (fd))
-      set (ios::failbit);
+      setstate (ios::failbit);
   }
 
   /**
    * Closes the stream.
    */
-  void close () { if (!rdbuf ()->close ()) set (ios::failbit); }
+  void close () { if (!rdbuf ()->close ()) setstate (ios::failbit); }
 
   /**
    * Tests if the stream is open.

@@ -4,9 +4,9 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:56 2001
-// Last Modified By : Philippe Thibault
-// Last Modified On : Fri Aug 24 10:01:18 2001
-// Update Count     : 4
+// Last Modified By : Martin Larose
+// Last Modified On : Thu Sep 20 12:45:52 2001
+// Update Count     : 5
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -37,7 +37,6 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -45,6 +44,14 @@
 #include <fcntl.h>
 
 #include "CException.h"
+
+#if defined(__sgi)
+#include <strings.h>
+
+typedef int socklen_t;
+#endif
+
+
 
 ServerSocket::ServerSocket (int thePort)
   : port (thePort)
@@ -87,7 +94,7 @@ sBinstream*
 ServerSocket::accept ()
 {
   sockaddr_in client;
-  int clientlen;
+  socklen_t clientlen;
   int cid;
   sBinstream* stream;
 

@@ -5,8 +5,8 @@
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:57:11 2000
 ## Last Modified By : Martin Larose
-## Last Modified On : Fri Sep  7 11:43:48 2001
-## Update Count     : 18
+## Last Modified On : Thu Sep 20 12:45:17 2001
+## Update Count     : 19
 ## Status           : Ok.
 ###############################################################################
 #
@@ -51,7 +51,7 @@ LINKOPTIONS = @LINKOPTIONS@
 AR = @AR@
 
 INSTALL = @INSTALL@
-INSTALL_DATA = @INSTALL_DATA@ -p
+INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 
 
@@ -70,8 +70,7 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 	$(CXX) $(CXXSHFLAGS) $(DEFS) -I.. -I$(srcdir) -c $< -o $@
 
 
-SOURCES = Algo.cc \
-	  AtomTypeImp.cc \
+SOURCES = AtomTypeImp.cc \
           Binstream.cc \
           CAtom.cc \
           CException.cc \
@@ -90,7 +89,7 @@ SOURCES = Algo.cc \
 	  sockbuf.cc \
           zfilebuf.cc
 
-HEADERS = $(SOURCES:.cc=.h) AtomType.h Messagestream.h ResidueType.h \
+HEADERS = $(SOURCES:.cc=.h) Algo.h AtomType.h Messagestream.h ResidueType.h \
 SocketCommand.h fBinstream.h fPdbstream.h oMessagestream.h zfBinstream.h \
 zfPdbstream.h zfstream.h sBinstream.h
 
@@ -180,7 +179,7 @@ clean: mostlyclean
 	@ rm -f *.d
 
 distclean: clean
-	@ rm -f Makefile
+	@ rm -f Makefile stamp-h
 
 topclean: distclean
 	@ echo "The project is getting _top_ clean\!"
@@ -196,9 +195,6 @@ dist:
 
 Makefile: $(srcdir)/Makefile.in ../config.status
 	@ cd .. && CONFIG_FILES=lib/$@ CONFIG_HEADERS= ./config.status
-
-config.h: $(srcdir)/../config.h.in
-	@ cd .. && CONFIG_FILES= CONFIG_HEADERS=$@ ./config.status
 
 # Tell versions [3.59,3.63) of GNU make not to export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

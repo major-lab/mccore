@@ -4,9 +4,9 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:34 2001
-// Last Modified By : Philippe Thibault
-// Last Modified On : Fri Sep  7 15:23:38 2001
-// Update Count     : 5
+// Last Modified By : Martin Larose
+// Last Modified On : Thu Sep 20 12:46:27 2001
+// Update Count     : 6
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -37,16 +37,37 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
-
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <netinet/in.h>
 #include <netdb.h>
 #include <fcntl.h>
+#include <signal.h>
 
 #include "CException.h"
 #include "sockbuf.h"
+
+#if defined(__sgi)
+#include <strings.h>
+#endif
+
+
+
+#ifndef HAVE_ISFDTYPE
+int
+isfdtype (int fd, int fdtype)
+{
+  struct stat buf;
+
+  if (fstat (fd, &buf) < 0)
+    return -1;
+  if ((int)(buf.st_mode & S_IFMT) == fdtype)
+    return 1;
+  else
+    return 0;
+}
+#endif
 
 
 
@@ -54,11 +75,13 @@ sockbuf::sockbuf ()
   : streambuf ()
 {
   // Creating socket ---
-  if ((socket_id = ::socket (AF_INET, SOCK_STREAM, 0)) < 0) {
-    CFatalSocketException exc ("socket creation failed", __FILE__, __LINE__);
-    exc << ": " << sys_errlist[errno];
-    throw exc;
-  }
+  if ((socket_id = ::socket (AF_INET, SOCK_STREAM, 0)) < 0)
+    {
+      CFatalSocketException exc ("socket creation failed", __FILE__, __LINE__);
+
+      exc << ": " << sys_errlist[errno];
+      throw exc;
+    }
 }
 
 
@@ -67,16 +90,17 @@ sockbuf::open (const char* host, int port)
 {
   sockaddr_in sin;
   hostent *hp;
-  int n;
 
   // Getting host info ---
   hp = gethostbyname (host);
 
-  if (hp == NULL) {
-    CSocketException exc ("unknown host: ");
-    exc << host;
-    throw exc;
-  }
+  if (hp == NULL)
+    {
+      CSocketException exc ("unknown host: ");
+
+      exc << host;
+      throw exc;
+    }
 
   // Setting server parameters ---
   bzero ((char*)&sin, sizeof (sin));
@@ -84,12 +108,14 @@ sockbuf::open (const char* host, int port)
   sin.sin_family = hp->h_addrtype;
   sin.sin_port = htons (port);
   
-  if ((n = ::connect (socket_id, 
-		      (sockaddr*)&sin, sizeof (sin))) < 0) {
-    CConnectionException exc ("connection to ");
-    exc << host << " via port #" << port << " failed:\n\t" << sys_errlist[errno];
-    throw exc;
-  }
+  if (::connect (socket_id, (sockaddr*)&sin, sizeof (sin)) < 0)
+    {
+      CConnectionException exc ("connection to ");
+      
+      exc << host << " via port #" << port
+	  << " failed:\n\t" << sys_errlist[errno];
+      throw exc;
+    }
 
   return this;
 }
@@ -117,43 +143,40 @@ sockbuf::sys_read (char* buf, streamsize size)
   int nleft;
   int nread;
   char* ptr;
-
-  /*
-  cout << "## in sys_read: trying to read " << size << " bytes, <";
-  for (int i = 0; i < size; i++)
-    {
-      if (buf[i] < 32)
-	cout << '{' << (int)buf[i] << '}';
-      else
-	cout << buf[i];
-    }
-  cout << '>' << endl;
-  */
   
   ptr = buf;
   nleft = size;
 
-  while (nleft > 0) {
-    if ((nread = ::recv (socket_id, ptr, nleft, MSG_NOSIGNAL)) < 0)
-      {
-	//cerr << "**(inside sys-read)** recv returned -1" << endl;
-	if (errno == EINTR)	
-	  nread = 0;
-	else
-	  return -1;
-      } 
-    else if (nread == 0)
-      {
-	//cerr << "**(inside sys-read)** recv returned 0 (" 
-	//     << sys_errlist[errno] << ')' <<  endl;
+  while (nleft > 0)
+    {
+#if defined(__sgi)
+      signal (SIGPIPE, SIG_IGN);
+      if ((nread = ::recv (socket_id, ptr, nleft, 0)) < 0)
+#else
+      if ((nread = ::recv (socket_id, ptr, nleft, MSG_NOSIGNAL)) < 0)
+#endif
+	{
+	  if (errno == EINTR)	
+	    nread = 0;
+	  else
+	    {
+#if defined(__sgi)
+	      signal (SIGPIPE, SIG_DFL);
+#endif
+	      return -1;
+	    }
+	}
+      else if (nread == 0)
 	break;
-      } 
-    nleft -= nread;
-    ptr += nread;
-  }
-  
+      nleft -= nread;
+      ptr += nread;
+    }
+#if defined(__sgi)
+  signal (SIGPIPE, SIG_DFL);
+#endif
   return (size - nleft);
 }
+
 
 
 streamsize 
@@ -163,33 +186,36 @@ sockbuf::sys_write (const char *buf, streamsize size)
   int nsent;
   const char* ptr;
 
-  /*
-  cout << "## in sys_write: trying to write " << size << " bytes, <";
-  for (int i = 0; i < size; i++)
-    {
-      if (buf[i] < 32)
-	cout << '{' << (int)buf[i] << '}';
-      else
-	cout << buf[i];
-    }
-  cout << '>' << endl;
-  */
-
   ptr = buf;
   nleft = size;
-  while (nleft > 0) {
-    if ((nsent = ::send (socket_id, ptr, nleft, MSG_NOSIGNAL)) < 0) 
-      {
-	//cerr << "**(inside sys-write)** recv returned -1" << endl;
-	if (errno == EINTR)
-	  nsent = 0;
-	else return -1;
-      }
-    nleft -= nsent;
-    ptr += nsent;
-  }
+  while (nleft > 0)
+    {
+#if defined(__sgi)
+      signal (SIGPIPE, SIG_IGN);
+      if ((nsent = ::send (socket_id, ptr, nleft, 0)) < 0)
+#else
+      if ((nsent = ::send (socket_id, ptr, nleft, MSG_NOSIGNAL)) < 0)
+#endif
+	{
+	  if (errno == EINTR)
+	    nsent = 0;
+	  else
+	    {
+#if defined(__sgi)
+	      signal (SIGPIPE, SIG_DFL);
+#endif
+	      return -1;
+	    }
+	}
+      nleft -= nsent;
+      ptr += nsent;
+    }
+#if defined(__sgi)
+  signal (SIGPIPE, SIG_DFL);
+#endif
   return size;
 }
+
 
 
 int
@@ -197,85 +223,58 @@ sockbuf::sys_close ()
 {
   overflow (EOF);
 
-  if (::shutdown (socket_id, SHUT_RDWR) == -1 && errno != ENOTCONN) {
-    CFatalSocketException exc ("socket shutdown failed",
-			       __FILE__, __LINE__);
-    exc << ": " << sys_errlist[errno];
-    throw exc;
-  }
+  if (::shutdown (socket_id, SHUT_RDWR) == -1 && errno != ENOTCONN)
+    {
+      CFatalSocketException exc ("socket shutdown failed",
+				 __FILE__, __LINE__);
+      
+      exc << ": " << sys_errlist[errno];
+      throw exc;
+    }
   
-
-  if (::close (socket_id) == -1) {
-    CFatalSocketException exc ("socket closing failed",
-			       __FILE__, __LINE__);
-    exc << ": " << sys_errlist[errno];
-    throw exc;
-  }
-
+  if (::close (socket_id) == -1)
+    {
+      CFatalSocketException exc ("socket closing failed",
+				 __FILE__, __LINE__);
+      
+      exc << ": " << sys_errlist[errno];
+      throw exc;
+    }
   return true;
 }
 
 
-//  streamsize
-//  sockbuf::readline (char* buf, streamsize maxlen)
-//  {
-//    int n, rc;
-//    char c, *ptr;
 
-//    ptr = buf;
-//    for (n = 1; n < maxlen; n++) {
-//      if ( (rc = read(socket_id, &c, 1)) == 1) {
-//        *ptr++ = c;
-//        if (c == '\n')
-//  	break;
-//      } else if (rc == 0) {
-//        if (n == 1)
-//  	return(0);      /* EOF, no data read */
-//        else
-//  	break;          /* EOF, some data was read */
-//      } else
-//        return(-1);       /* error, errno set by read() */
-//    }
-  
-//    *ptr = 0;
-//    return(n);
-//  }
-
-
-streamsize sockbuf::xsgetn (char* s, streamsize n)
+streamsize
+sockbuf::xsgetn (char* s, streamsize n)
 {
   // More things to do if the read is incomplete
-
   streamsize r = sys_read (s, n);
   
-  if (r!=n) {
-    CSocketException exc ("Warning: incomplete read (");
-    exc << r << "/" << n << " bytes):\n\t" << sys_errlist[errno];
-
-    //cout << "**(inside xsgetn)** : Warning: incomplete read ("
-    //	 << r << "/" << n << " bytes):\n\t" << sys_errlist[errno] << endl;
-
-    throw exc;
-  }
-
+  if (r != n)
+    {
+      CSocketException exc ("Warning: incomplete read (");
+      
+      exc << r << "/" << n << " bytes):\n\t" << sys_errlist[errno];
+      throw exc;
+    }
   return r;
 }
 
-streamsize sockbuf::xsputn (const char* s, streamsize n)
+
+
+streamsize
+sockbuf::xsputn (const char* s, streamsize n)
 {
   // More things to do if the write is incomplete
-
   streamsize w = sys_write (s, n);
 
-  if (w!=n) {
-    CSocketException exc ("Warning: incomplete write (");
-    exc << w << "/" << n << " bytes):\n\t" << sys_errlist[errno];
-
-    //cout << "**(inside xsputn)** : Warning: incomplete write ("
-    // << w << "/" << n << " bytes):\n\t" << sys_errlist[errno] << endl;
-
-    throw exc;
-  }
-
+  if (w !=n )
+    {
+      CSocketException exc ("Warning: incomplete write (");
+      
+      exc << w << "/" << n << " bytes):\n\t" << sys_errlist[errno];
+      throw exc;
+    }
   return w;
 }

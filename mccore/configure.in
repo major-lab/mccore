@@ -5,8 +5,8 @@
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
 # Last Modified By : Martin Larose
-# Last Modified On : Thu Aug 23 15:09:10 2001
-# Update Count     : 6
+# Last Modified On : Thu Sep 20 12:44:39 2001
+# Update Count     : 7
 # Status           : Ok.
 # 
 #  This file is part of mccore.
@@ -33,7 +33,7 @@ AC_INIT(lib/McCore.h)
 AC_CONFIG_HEADER(config.h)
 
 PACKAGE=mccore
-VERSION=1.1
+VERSION=1.1.1
 AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE")
 AC_DEFINE_UNQUOTED(VERSION, "$VERSION")
 
@@ -47,25 +47,34 @@ AC_CANONICAL_HOST
 AC_PROG_INSTALL
 AC_PATH_PROG(AR,ar)
 AC_CHECK_FUNCS(strsep)
+AC_CHECK_FUNCS(isfdtype)
+AC_CHECK_FUNCS(acosf)
+AC_CHECK_FUNCS(sqrtf)
 
 
-case "$host" in
-*-linux-gnu) CXXFLAGS="-Wall -O2 -g";
-             CXXSHFLAGS="-Wall -O2 -g";
-	     DEPFLAGS="-MM"
-	     LDFLAGS="-static"
-	     LINKOPTIONS= ;;
-*-sgi-*)     CXXFLAGS="-O2 -g -woff 1681 -ptused";
-             CXXSHFLAGS="-O2 -g -woff 1681 -ptused";
-	     DEPFLAGS="-M"
-	     LDFLAGS=
-	     LINKOPTIONS= ;;
-*-sun-*)     CXXFLAGS="-Wall -O2 -g";
-             CXXSHFLAGS="-Wall -O2 -g -fPIC";
-	     DEPFLAGS="-MM"
-	     LDFLAGS="-static"
-	     LINKOPTIONS= ;;
-esac
+if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
+    case "$host" in
+    *-sgi-*)
+        CXXSHFLAGS="$CXXFLAGS -O2 -woff 1681 -ptused"
+	CXXFLAGS="$CXXFLAGS -O2 -woff 1681 -ptused"
+  	DEPFLAGS="-M"
+  	LDFLAGS=
+  	LINKOPTIONS= ;;
+    *-sun-*)
+        CXXSHFLAGS="$CXXFLAGS -O2 -fPIC"
+	CXXFLAGS="$CXXFLAGS -O2"
+	DEPFLAGS="-MM"
+        LDFLAGS="-static"
+        LINKOPTIONS= ;;
+    esac;
+elif eval "test \"`echo $GXX`\" = yes"; then     # gnu compiler
+	CXXSHFLAGS="$CXXFLAGS -Wall";
+	CXXFLAGS="$CXXFLAGS -Wall";
+	DEPFLAGS="-MM"
+	LDFLAGS="-static"
+	LINKOPTIONS=;
+fi
+
 
 AC_ARG_WITH(malloc,
 [  --with-malloc           replace STL allocator with malloc],
@@ -79,4 +88,4 @@ AC_SUBST(DEPFLAGS)
 AC_SUBST(LDFLAGS)
 AC_SUBST(LINKOPTIONS)
 
-AC_OUTPUT( Makefile docs/Makefile lib/Makefile )
+AC_OUTPUT( Makefile docs/Makefile lib/Makefile, echo timestamp > stamp-h )

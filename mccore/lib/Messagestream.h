@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Sep  5 17:06:24 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Sep  6 17:24:48 2001
-// Update Count     : 2
+// Last Modified On : Thu Sep 20 12:45:33 2001
+// Update Count     : 3
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -65,11 +65,12 @@ public:
 
   /**
    * Initializes the message system with verbose levels.
+   * @param buf the streambuf of the output stream.
    * @param level the verbose level.
    * @param clevel the level of messages.
    */
-  Messagestream (unsigned int level, unsigned int clevel)
-    : verboseLevel (level), currentVerboseLevel (clevel) { }
+  Messagestream (streambuf *buf, unsigned int level, unsigned int clevel)
+    : ostream (buf), verboseLevel (level), currentVerboseLevel (clevel) { }
 
   /**
    * Destructs the object.

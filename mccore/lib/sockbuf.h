@@ -4,9 +4,9 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:26 2001
-// Last Modified By : Philippe Thibault
-// Last Modified On : Fri Aug 24 10:02:53 2001
-// Update Count     : 4
+// Last Modified By : Martin Larose
+// Last Modified On : Thu Sep 20 12:48:01 2001
+// Update Count     : 6
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -31,7 +31,10 @@
 
 #include <iostream.h>
 
-#include <streambuf.h>
+#if defined (__sgi) && !defined(__GNUC__)
+typedef size_t streamsize;
+#endif
+
 
 
 /**
@@ -108,15 +111,6 @@ public:
    */
   virtual int sys_close ();
 
-  /**
-   * Socket readline method.  Reads up to "\r\n".
-   * @param buf the bytes to read
-   * @param maxlen the maximum number of bytes to read
-   * @return the number of bytes read (-1 on error)
-   */
-//    virtual streamsize readline (char* buf, streamsize maxlen);
-
-
   int GetSocketId () { return socket_id; } 
 
 protected:
@@ -166,7 +160,7 @@ public:
   {
     init (rdbuf ());
     if (!rdbuf ()->open (host, port))
-      set (ios::badbit);
+      setstate (ios::badbit);
   }
 
   /**
@@ -190,7 +184,7 @@ public:
   {
     clear ();
     if (!rdbuf ()->open (host, port))
-      set (ios::badbit);
+      setstate (ios::badbit);
   }
 
   /**
@@ -199,7 +193,7 @@ public:
   void  close ()
   {
     if (!rdbuf ()->close ())
-      set (ios::failbit);
+      setstate (ios::failbit);
   }
 
   /**

@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:09:45 2001
-// Update Count     : 12
+// Last Modified On : Thu Sep 20 12:45:00 2001
+// Update Count     : 13
 // Status           : Ok.
 //  
 //  This file is part of mccore.
@@ -40,10 +40,11 @@
 #include "CTransfo.h"
 #include "McCore.h"
 
-
-#ifdef  LIMITED_LIBMATH
+#ifndef HAVE_ACOSF
 #define   acosf      acos
-#define   atan2f     atan2
+#endif
+
+#ifndef HAVE_SQRTF
 #define   sqrtf      sqrt
 #endif
 

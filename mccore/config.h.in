@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Aug 23 11:34:50 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:09:05 2001
-// Update Count     : 2
+// Last Modified On : Thu Sep 20 12:43:51 2001
+// Update Count     : 3
 // Status           : Unknown.
 // 
 
@@ -36,6 +36,12 @@
 #undef VERSION
 
 #undef HAVE_STRSEP
+
+#undef HAVE_ISFDTYPE
+
+#undef HAVE_ACOSF
+
+#undef HAVE_SQRTF
 
 #undef __USE_MALLOC
 

@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Sep  5 18:11:06 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Sep  6 17:24:50 2001
-// Update Count     : 2
+// Last Modified On : Thu Sep 20 12:46:09 2001
+// Update Count     : 3
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -60,7 +60,7 @@ public:
    * @param level the initial verbose level.
    */
   oMessagestream (ostream &os, unsigned int level)
-    : Messagestream (level, level) { rdbuf (os.rdbuf ()); }
+    : Messagestream (os.rdbuf (), level, level) { }
   
   /**
    * Destructs the object.
