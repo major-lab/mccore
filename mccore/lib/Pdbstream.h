@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.28 $
-// $Id: Pdbstream.h,v 1.28 2004-09-24 22:21:24 larosem Exp $
+// $Revision: 1.29 $
+// $Id: Pdbstream.h,v 1.29 2004-10-04 22:14:22 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -35,6 +35,7 @@
 
 #include "PdbFileHeader.h"
 #include "ResId.h"
+#include "TypeRepresentationTables.h"
 #include "sockstream.h"
 #include "zstream.h"
 
@@ -51,6 +52,35 @@ namespace mccore {
   class ResidueType;
   class Model;
 
+  
+  class Pdbstream
+  {
+  public:
+    static const unsigned int PDB = 0;
+    static const unsigned int AMBER = 1;
+
+    /**
+     * The atom type input parse table for Pdb streams.
+     */
+    static const PdbAtomTypeRepresentationTable pdbAtomTypeParseTable;
+    
+    /**
+     * The atom type input parse table for Amber streams.
+     */
+    static const AmberAtomTypeRepresentationTable amberAtomTypeParseTable;
+    
+    /**
+     * The residue type input parse table for Pdb streams.
+     */
+    static const PdbResidueTypeRepresentationTable pdbResidueTypeParseTable;
+    
+    /**
+     * The residue type input parse table for Amber streams.
+     */
+    static const AmberResidueTypeRepresentationTable amberResidueTypeParseTable;
+  };
+
+  
   /**
    * @short Pdb file input stream.
    *
@@ -82,7 +112,7 @@ namespace mccore {
    * </pre>
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Pdbstream.h,v 1.28 2004-09-24 22:21:24 larosem Exp $
+   * @version $Id: Pdbstream.h,v 1.29 2004-10-04 22:14:22 larosem Exp $
    */
   class iPdbstream : public istream
   {
@@ -118,6 +148,22 @@ namespace mccore {
      */
     bool eomFlag;
 
+    /**
+     * The input type.  Possible values are: Pdbstream::PDB (default) and
+     * Pdbstream::AMBER.
+     */
+    unsigned int pdbType;
+
+    /**
+     * The current parse table for atom types.
+     */
+    const TypeRepresentationTables< AtomType > *atomTypeParseTable;
+    
+    /**
+     * The current parse table for residue types.
+     */
+    const TypeRepresentationTables< ResidueType > *residueTypeParseTable;
+    
   public:
 
     // LIFECYCLE -----------------------------------------------------------
@@ -152,6 +198,12 @@ namespace mccore {
      * Gets the number of the model currently being read.
      */
     int getModelNb () { return modelNb; }
+
+    /**
+     * Sets the PDB type.
+     * @param type the PDB type.
+     */
+    void setPDBType (unsigned int type);
 
     // METHODS -------------------------------------------------------------
 
@@ -215,13 +267,6 @@ namespace mccore {
    */
   class oPdbstream : public ostream
   {
-  public:
-
-    static const unsigned int PDB   = 0;
-    static const unsigned int AMBER = 1;
-
-  private:
-    
     static const int LINELENGTH;
 
     /**
@@ -260,10 +305,20 @@ namespace mccore {
     int atomCounter;    
 
     /**
-     * The output type.  Possible values are: oPdbstream::PDB (default) and
-     * oPdbstream::AMBER.
+     * The output type.  Possible values are: AtomType::PDB (default) and
+     * AtomType::AMBER.
      */
     unsigned int pdbType;    
+    
+    /**
+     * The current parse table for atom types.
+     */
+    const TypeRepresentationTables< AtomType > *atomTypeParseTable;
+    
+    /**
+     * The current parse table for residue types.
+     */
+    const TypeRepresentationTables< ResidueType > *residueTypeParseTable;
     
   public:
 
@@ -331,12 +386,7 @@ namespace mccore {
      * Sets the PDB type.
      * @param type the PDB type.
      */
-    void setPDBType (unsigned int type)
-    {
-      pdbType = type;
-      if (oPdbstream::AMBER == type)
-	headerdone = true;
-    }
+    void setPDBType (unsigned int type);
 
     // METHODS -------------------------------------------------------------
     

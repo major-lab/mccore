@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.51 $
-# $Id: Makefile.in,v 1.51 2004-09-03 15:43:28 boisgona Exp $
+# $Revision: 1.52 $
+# $Id: Makefile.in,v 1.52 2004-10-04 22:14:11 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -100,6 +100,7 @@ SOURCES = $(RNAML_SOURCES) \
 	  Pdbstream.cc \
 	  ServerSocket.cc \
 	  Sequence.cc \
+	  TypeRepresentationTables.cc \
 	  sockstream.cc \
 	  zstream.cc \
 \

@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.41 $
-// $Id: Pdbstream.cc,v 1.41 2004-09-30 19:15:49 larosem Exp $
+// $Revision: 1.42 $
+// $Id: Pdbstream.cc,v 1.42 2004-10-04 22:14:15 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -47,11 +47,14 @@
 
 namespace mccore {
 
+  const PdbAtomTypeRepresentationTable Pdbstream::pdbAtomTypeParseTable;
+  const AmberAtomTypeRepresentationTable Pdbstream::amberAtomTypeParseTable;
+  const PdbResidueTypeRepresentationTable Pdbstream::pdbResidueTypeParseTable;
+  const AmberResidueTypeRepresentationTable Pdbstream::amberResidueTypeParseTable;
+  
   const unsigned int iPdbstream::LINELENGTH = 80;
   const int oPdbstream::LINELENGTH = 80;
 
-  
-  // LIFECYCLE -----------------------------------------------------------------
 
   iPdbstream::iPdbstream ()
     : istream (cin.rdbuf ()),
@@ -59,7 +62,10 @@ namespace mccore {
       rid (0),
       ratom (0),
       modelNb (1),
-      eomFlag (false)
+      eomFlag (false),
+      pdbType (Pdbstream::PDB),
+      atomTypeParseTable (&Pdbstream::pdbAtomTypeParseTable),
+      residueTypeParseTable (&Pdbstream::pdbResidueTypeParseTable)
   { }
   
   
@@ -69,7 +75,10 @@ namespace mccore {
       rid (0),
       ratom (0),
       modelNb (1),
-      eomFlag (false)
+      eomFlag (false),
+      pdbType (Pdbstream::PDB),
+      atomTypeParseTable (&Pdbstream::pdbAtomTypeParseTable),
+      residueTypeParseTable (&Pdbstream::pdbResidueTypeParseTable)
   { }
   
   iPdbstream::~iPdbstream ()
@@ -79,20 +88,30 @@ namespace mccore {
   }
 
 
-  // OPERATORS -----------------------------------------------------------------
-
-  // ACCESS --------------------------------------------------------------------
-
-
   const PdbFileHeader&
   iPdbstream::getHeader () 
   { 
-    if (!ratom) cacheAtom ();
+    if (!ratom)
+      cacheAtom ();
     return header; 
   }
 
-
-  // METHODS -------------------------------------------------------------------
+  
+  void
+  iPdbstream::setPDBType (unsigned int type)
+  {
+    pdbType = type;
+    if (Pdbstream::AMBER == type)
+      {
+	atomTypeParseTable = &Pdbstream::amberAtomTypeParseTable;
+	residueTypeParseTable = &Pdbstream::amberResidueTypeParseTable;
+      }
+    else
+      {
+	atomTypeParseTable = &Pdbstream::pdbAtomTypeParseTable;
+	residueTypeParseTable = &Pdbstream::pdbResidueTypeParseTable;
+      }	
+  }
   
 
   void
@@ -100,9 +119,11 @@ namespace mccore {
   { 
     header = PdbFileHeader ();
     rtype = 0;
-    if (rid) delete rid;
+    if (rid)
+      delete rid;
     rid = 0;
-    if (ratom) delete ratom;
+    if (ratom)
+      delete ratom;
     ratom = 0;
     modelNb = 1;
     eomFlag = false;
@@ -114,9 +135,11 @@ namespace mccore {
   { 
     header = PdbFileHeader ();
     rtype = 0;
-    if (rid) delete rid;
+    if (rid)
+      delete rid;
     rid = 0;
-    if (ratom) delete ratom;
+    if (ratom)
+      delete ratom;
     ratom = 0;
     modelNb = 1;
     eomFlag = true;
@@ -201,9 +224,9 @@ namespace mccore {
 	    y = atof (trim (copy = line.substr (38, 8)).c_str ());	    
 	    z = atof (trim (copy = line.substr (46, 8)).c_str ());
 	    
-	    at = AtomType::parseType (trim (copy = line.substr (12, 4)).c_str ());
+	    at = atomTypeParseTable->parseType (trim (copy = line.substr (12, 4)));
 
-	    rtype = ResidueType::parseType (trim (copy = line.substr (17, 3)).c_str ());
+	    rtype = residueTypeParseTable->parseType (trim (copy = line.substr (17, 3)));
 	    
 	    rid = new ResId (line[21],
 			     atoi (trim (copy = line.substr (22, 4)).c_str ()),
@@ -330,7 +353,9 @@ namespace mccore {
       rid (new ResId ()),
       modelnb (1),
       atomCounter (1),
-      pdbType (oPdbstream::PDB)
+      pdbType (Pdbstream::PDB),
+      atomTypeParseTable (&Pdbstream::pdbAtomTypeParseTable),
+      residueTypeParseTable (&Pdbstream::pdbResidueTypeParseTable)
   { }
   
 
@@ -344,7 +369,9 @@ namespace mccore {
       rid (new ResId ()),
       modelnb (1),
       atomCounter (1),
-      pdbType (oPdbstream::PDB)
+      pdbType (Pdbstream::PDB),
+      atomTypeParseTable (&Pdbstream::pdbAtomTypeParseTable),
+      residueTypeParseTable (&Pdbstream::pdbResidueTypeParseTable)
   { }
 
 
@@ -357,7 +384,9 @@ namespace mccore {
       rid (new ResId ()),
       modelnb (1),
       atomCounter (1),
-      pdbType (oPdbstream::PDB)
+      pdbType (Pdbstream::PDB),
+      atomTypeParseTable (&Pdbstream::pdbAtomTypeParseTable),
+      residueTypeParseTable (&Pdbstream::pdbResidueTypeParseTable)
   { }
 
 
@@ -370,14 +399,24 @@ namespace mccore {
   }
   
   
-  // OPERATORS -----------------------------------------------------------------
-
-
-  // ACCESS --------------------------------------------------------------------
-
-
-  // METHODS -------------------------------------------------------------------
-
+  void
+  oPdbstream::setPDBType (unsigned int type)
+  {
+    pdbType = type;
+    if (Pdbstream::AMBER == type)
+      {
+	headerdone = true;
+	atomTypeParseTable = &Pdbstream::amberAtomTypeParseTable;
+	residueTypeParseTable = &Pdbstream::amberResidueTypeParseTable;
+      }
+    else
+      {
+	headerdone = false;
+	atomTypeParseTable = &Pdbstream::pdbAtomTypeParseTable;
+	residueTypeParseTable = &Pdbstream::pdbResidueTypeParseTable;
+      }	
+  }
+  
 
   void
   oPdbstream::open () 
@@ -500,7 +539,7 @@ namespace mccore {
   void
   oPdbstream::ter () 
   {
-    if (oPdbstream::PDB == pdbType)
+    if (Pdbstream::PDB == pdbType)
       {
 	setf (ios::left, ios::adjustfield);
 	*this << setw (6) << "TER";
@@ -575,8 +614,7 @@ namespace mccore {
       writeHeader ();
 
     setf (ios::left, ios::adjustfield);
-    if (rtype->isUnknown ()
-	&& pdbType != oPdbstream::AMBER)
+    if (rtype->isUnknown ())
       *this << setw (6) << "HETATM";
     else
       *this << setw (6) << "ATOM";
@@ -587,9 +625,7 @@ namespace mccore {
 
     setf (ios::left, ios::adjustfield);
     
-    type = (PDB == pdbType
-	    ? at.getType ()->toPdbString ()
-	    : at.getType ()->toAmberString ());
+    type = atomTypeParseTable->toString (at.getType ());
     if (isdigit (type[0]) || 4 == type.size ())
       *this << setw (4);
     else 
@@ -597,7 +633,7 @@ namespace mccore {
     *this << type << ' ';  // ALTLOC
     
     setf (ios::right, ios::adjustfield);
-    *this << setw (3) << rtype->toPdbString ();
+    *this << setw (3) << residueTypeParseTable->toString (rtype);
 
     *this << ' ';
 
@@ -617,7 +653,7 @@ namespace mccore {
     *this << setw (8) << at.getY ();
     *this << setw (8) << at.getZ ();
 
-    if (oPdbstream::PDB == pdbType)
+    if (Pdbstream::PDB == pdbType)
       {
 	*this << "  1.00  0.00";  // DUMMY VALUES
 	pad (14);
