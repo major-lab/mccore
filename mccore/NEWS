@@ -4,8 +4,8 @@
 ;                  Université de Montréal.
 ; Author           : Martin Larose
 ; Created On       : Tue Sep 19 18:15:25 2000
-; $Revision: 1.8 $
-; $Id: NEWS,v 1.8 2004-12-10 00:29:59 larosem Exp $
+; $Revision: 1.9 $
+; $Id: NEWS,v 1.9 2005-01-11 19:43:51 thibaup Exp $
 
 * Version 1.5
 
@@ -40,7 +40,7 @@ us to create GraphModels.
 
 ** New SQL reader and writer class using MySQL++ library (enable at configure).
 
-** Planning some revision of the annotation methods:
+** Annotation updates:
   o Four different stack annotation to identify plane direction alignment
     (aligned or opposed) and target base position relative to its reference
     (upward or downward), regardless of strand direction in the case of adjacent
