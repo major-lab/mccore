@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.20 $
+// $Revision: 1.21 $
 // 
 // This file is part of mccore.
 // 
@@ -97,8 +97,8 @@ namespace mccore
     ResidueType::rDV = *this->repository.insert (new DV (string ("D:V"), string("DNA_V"))).first;
     
     ResidueType::rNucleicAcid = *this->repository.insert (new NucleicAcid (string ("N:N"), string("N"))).first;
-    ResidueType::rRNA = *this->repository.insert (new RV (string ("R:N"), string("RNA_N"))).first;
-    ResidueType::rDNA = *this->repository.insert (new DV (string ("D:N"), string("DNA_N"))).first;
+    ResidueType::rRNA = *this->repository.insert (new RNA (string ("R:N"), string("RNA_N"))).first;
+    ResidueType::rDNA = *this->repository.insert (new DNA (string ("D:N"), string("DNA_N"))).first;
     
     /**
      * specialized residue types
