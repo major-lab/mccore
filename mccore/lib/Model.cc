@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Nov  5 11:40:13 2001
-// Update Count     : 5
+// Last Modified On : Wed Nov 14 16:43:40 2001
+// Update Count     : 6
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -372,8 +372,8 @@ Model::keepNucleicAcid ()
 	++modelIt;
       else
 	{
-	  modelIt = erase (modelIt);
 	  delete &*modelIt;
+	  modelIt = erase (modelIt);
 	}
     }
 }
