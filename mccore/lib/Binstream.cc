@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@orage.IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:18:52 EDT
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Sep 26 18:40:50 2001
-// Update Count     : 11
+// Last Modified On : Mon Oct  1 14:10:36 2001
+// Update Count     : 12
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -32,7 +32,11 @@
 #endif
 
 #include <string.h>
+#if defined (__FreeBSD__)
+#include <sys/param.h>
+#else
 #include <netinet/in.h>
+#endif
 
 #include "Binstream.h"
 
