@@ -3,9 +3,9 @@
 // Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sebastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Wed Feb 14 15:45:51 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Fri May 11 18:01:23 2001
-// Update Count     : 5
+// Last Modified By : Sebastien Lemieux
+// Last Modified On : Wed Feb 14 17:15:24 2001
+// Update Count     : 6
 // Status           : Unknown.
 //
 //  This file is part of mccore.

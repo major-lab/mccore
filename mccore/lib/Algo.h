@@ -3,9 +3,9 @@
 // Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sebastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Wed Feb 14 15:33:58 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Mon Jul 16 12:38:16 2001
-// Update Count     : 34
+// Last Modified By : Sebastien Lemieux
+// Last Modified On : Wed Feb 14 17:15:15 2001
+// Update Count     : 42
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -32,6 +32,7 @@
 #include <algo.h>
 #include "CResidue.h"
 #include "ResidueType.h"
+#include "CAtom.h"
 
 class Algo {
 private:
