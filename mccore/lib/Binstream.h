@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:11:41 EDT
-// Last Modified By : Martin Larose
-// Last Modified On : Mon Oct  1 14:35:50 2001
+// Last Modified By : Patrick Gendron
+// Last Modified On : Mon Feb 25 11:36:16 2002
 // Update count     : 0
 // Status           : Ok.
 //
@@ -271,7 +271,6 @@ public:
    */
   oBinstream& operator<< (const unsigned char *str)
   { 
-    cout << "Dumping " << str << endl;
     return operator<< ((const char*)str); 
   }
 

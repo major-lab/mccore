@@ -4,9 +4,9 @@
 //                           Université de Montréal.
 // Author           : Patrick Gendron <gendrop@IRO.UMontreal.CA>
 // Created On       : Fri Oct  1 18:22:41 1999
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:09:57 2001
-// Update Count     : 9
+// Last Modified By : Patrick Gendron
+// Last Modified On : Mon Feb 25 11:36:22 2002
+// Update Count     : 10
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -411,9 +411,8 @@ operator>> (iBinstream &ibs, CTransfo &obj)
   for (i = 0; i < 12; ++i)
     {
       float x;
-      char t[2];
 
-      ibs >> t >> x >> t;
+      ibs >> x;
       obj.SetElement (i, x);
     }
   return ibs;
@@ -427,7 +426,6 @@ operator<< (oBinstream &obs, const CTransfo &obj)
   int i;
   
   for (i = 0; i < 12; ++i)
-    obs << "{" << obj.GetElement (i) << "}";
-  //obs << "{" << 0 << "}";
+    obs << obj.GetElement (i);
   return obs;
 }

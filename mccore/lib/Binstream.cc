@@ -4,9 +4,9 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@orage.IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:18:52 EDT
-// Last Modified By : Martin Larose
-// Last Modified On : Mon Oct  1 14:35:45 2001
-// Update Count     : 13
+// Last Modified By : Patrick Gendron
+// Last Modified On : Mon Feb 25 11:36:08 2002
+// Update Count     : 14
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -95,7 +95,6 @@ iBinstream::operator>> (short int &n)
 iBinstream&
 iBinstream::operator>> (int &n)
 {
-
   int nl;
 
   this->read ((char*)&nl, sizeof (int));
@@ -185,12 +184,10 @@ oBinstream::operator<< (short int n)
 oBinstream&
 oBinstream::operator<< (int n)
 {
-  return operator<< ((long int)n); 
-
-//    int nl = htonl (n);
-
-//    this->write ((char*)&nl, sizeof (int));
-//    return *this;
+  int nl = htonl (n);
+  
+  this->write ((char*)&nl, sizeof (int));
+  return *this;
 }
 
 

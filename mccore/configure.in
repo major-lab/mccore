@@ -1,12 +1,12 @@
 #                              -*- Mode: Sh -*- 
 # configure.in
-# Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+# Copyright © 2000-02 Laboratoire de Biologie Informatique et Théorique.
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
-# Last Modified By : Martin Larose
-# Last Modified On : Thu Oct 25 11:28:18 2001
-# Update Count     : 9
+# Last Modified By : Patrick Gendron
+# Last Modified On : Mon Feb 25 11:36:00 2002
+# Update Count     : 10
 # Status           : Ok.
 # 
 #  This file is part of mccore.
@@ -33,7 +33,7 @@ AC_INIT(lib/McCore.h)
 AC_CONFIG_HEADER(config.h)
 
 PACKAGE=mccore
-VERSION=1.2
+VERSION=1.3
 AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE")
 AC_DEFINE_UNQUOTED(VERSION, "$VERSION")
 
@@ -51,15 +51,38 @@ AC_CHECK_FUNCS(isfdtype)
 AC_CHECK_FUNCS(acosf)
 AC_CHECK_FUNCS(sqrtf)
 
+AC_MSG_CHECKING(for fstreambase)
+AC_CACHE_VAL(ac_cv_have_fstreambase, 
+             AC_TRY_COMPILE([#include <fstream.h>], 
+                            fstreambase f;, 
+                            ac_cv_have_fstreambase="yes", 
+                            ac_cv_have_fstreambase="no"))
+if test $ac_cv_have_fstreambase = "yes"; then
+    AC_DEFINE(HAVE_FSTREAMBASE)
+fi
+AC_MSG_RESULT($ac_cv_have_fstreambase)
+
 
 if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
     case "$host" in
     *-sgi-*)
-        CXXSHFLAGS="$CXXFLAGS -O2 -woff 1681 -ptused"
-	CXXFLAGS="$CXXFLAGS -O2 -woff 1681 -ptused"
+        CXXSHFLAGS="$CXXFLAGS -O2 -woff 1681 -woff 3303 -ptused"
+	CXXFLAGS="$CXXFLAGS -O2 -woff 1681 -woff 3303 -ptused"
   	DEPFLAGS="-M"
+	echo "appending values of CPLUS_INCLUDE_PATH to include path..."
+	for t in `echo $CPLUS_INCLUDE_PATH | sed "s/\.*:/ /g"`; do
+	  CXXSHFLAGS="$CXXSHFLAGS -I$t";
+	  CXXFLAGS="$CXXFLAGS -I$t";
+ 	  DEPFLAGS="$DEPFLAGS -I$t";
+	  echo "        " $t;
+	done
   	LDFLAGS=
-  	LINKOPTIONS= ;;
+	echo "appending values of LIBRARY_PATH to lib path..."
+	for t in `echo $LIBRARY_PATH | sed "s/\.*:/ /g"`; do
+	  LINKOPTIONS="$LINKOPTIONS -L$t";    
+	  echo "        " $t;
+	done
+	;;
     *-sun-*)
         CXXSHFLAGS="$CXXFLAGS -O2 -fPIC"
 	CXXFLAGS="$CXXFLAGS -O2"

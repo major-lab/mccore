@@ -4,9 +4,9 @@
 ##                     Université de Montréal.
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:57:11 2000
-## Last Modified By : Martin Larose
-## Last Modified On : Thu Oct 25 11:18:36 2001
-## Update Count     : 21
+## Last Modified By : Patrick Gendron
+## Last Modified On : Mon Feb 25 11:36:29 2002
+## Update Count     : 22
 ## Status           : Ok.
 ###############################################################################
 #
@@ -99,10 +99,10 @@ SOURCES = zfstream.cc \
 	  McCore.cc
 
 
-HEADERS = $(SOURCES:.cc=.h) fstreambase.h fBinstream.h zfBinstream.h \
-Algo.h AtomType.h Messagestream.h \
+HEADERS = $(SOURCES:.cc=.h) Algo.h AtomType.h Messagestream.h \
 ResidueFactoryMethod.h ResidueType.h SocketCommand.h fBinstream.h \
-fPdbstream.h oMessagestream.h zfBinstream.h zfPdbstream.h
+fPdbstream.h fstreambase.h oMessagestream.h sBinstream.h \
+zfBinstream.h zfPdbstream.h
 
 OBJECTS = $(SOURCES:.cc=.o)
 

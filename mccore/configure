@@ -526,7 +526,7 @@ fi
 
 
 PACKAGE=mccore
-VERSION=1.2
+VERSION=1.3
 cat >> confdefs.h <<EOF
 #define PACKAGE "$PACKAGE"
 EOF
@@ -1186,15 +1186,60 @@ fi
 done
 
 
+echo $ac_n "checking for fstreambase""... $ac_c" 1>&6
+echo "configure:1191: checking for fstreambase" >&5
+if eval "test \"`echo '$''{'ac_cv_have_fstreambase'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  cat > conftest.$ac_ext <<EOF
+#line 1196 "configure"
+#include "confdefs.h"
+#include <fstream.h>
+int main() {
+fstreambase f;
+; return 0; }
+EOF
+if { (eval echo configure:1203: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+  rm -rf conftest*
+  ac_cv_have_fstreambase="yes"
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -rf conftest*
+  ac_cv_have_fstreambase="no"
+fi
+rm -f conftest*
+fi
+
+if test $ac_cv_have_fstreambase = "yes"; then
+    cat >> confdefs.h <<\EOF
+#define HAVE_FSTREAMBASE 1
+EOF
+
+fi
+echo "$ac_t""$ac_cv_have_fstreambase" 1>&6
+
 
 if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
     case "$host" in
     *-sgi-*)
-        CXXSHFLAGS="$CXXFLAGS -O2 -woff 1681 -ptused"
-	CXXFLAGS="$CXXFLAGS -O2 -woff 1681 -ptused"
+        CXXSHFLAGS="$CXXFLAGS -O2 -woff 1681 -woff 3303 -ptused"
+	CXXFLAGS="$CXXFLAGS -O2 -woff 1681 -woff 3303 -ptused"
   	DEPFLAGS="-M"
+	echo "appending values of CPLUS_INCLUDE_PATH to include path..."
+	for t in `echo $CPLUS_INCLUDE_PATH | sed "s/\.*:/ /g"`; do
+	  CXXSHFLAGS="$CXXSHFLAGS -I$t";
+	  CXXFLAGS="$CXXFLAGS -I$t";
+ 	  DEPFLAGS="$DEPFLAGS -I$t";
+	  echo "        " $t;
+	done
   	LDFLAGS=
-  	LINKOPTIONS= ;;
+	echo "appending values of LIBRARY_PATH to lib path..."
+	for t in `echo $LIBRARY_PATH | sed "s/\.*:/ /g"`; do
+	  LINKOPTIONS="$LINKOPTIONS -L$t";    
+	  echo "        " $t;
+	done
+	;;
     *-sun-*)
         CXXSHFLAGS="$CXXFLAGS -O2 -fPIC"
 	CXXFLAGS="$CXXFLAGS -O2"

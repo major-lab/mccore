@@ -1,15 +1,14 @@
 //                              -*- Mode: C++ -*- 
-// config.h.in
+// sBinstream.h
 // Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
-// Author           : Martin Larose <larosem@iro.umontreal.ca>
-// Created On       : Thu Aug 23 11:34:50 2001
+// Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
+// Created On       : Tue Apr 24 15:24:41 2001
 // Last Modified By : Patrick Gendron
-// Last Modified On : Mon Feb 25 11:35:47 2002
+// Last Modified On : Mon Feb 25 11:37:09 2002
 // Update Count     : 4
 // Status           : Unknown.
 // 
-
 //  This file is part of mccore.
 //  
 //  mccore is free software; you can redistribute it and/or
@@ -26,25 +25,14 @@
 //  License along with mccore; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+#ifndef _sBinstream_h_
+#define _sBinstream_h_
 
-#ifndef _config_h_
-#define _config_h_
+#include "sockstream.h"
+#include "Binstream.h"
 
-
-#undef PACKAGE
-
-#undef VERSION
-
-#undef HAVE_STRSEP
-
-#undef HAVE_ISFDTYPE
-
-#undef HAVE_ACOSF
-
-#undef HAVE_SQRTF
-
-#undef HAVE_FSTREAMBASE
-
-#undef __USE_MALLOC
+typedef Sockstream sBinstream;
+typedef iSockstream isBinstream;
+typedef oSockstream osBinstream;
 
 #endif
