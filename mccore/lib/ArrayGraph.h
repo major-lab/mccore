@@ -3,7 +3,7 @@
 // Copyright © 2003, 2004 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Dec  5 17:25:17 2003
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 // 
 //  This file is part of mccore.
 //  
@@ -51,7 +51,7 @@ namespace mccore {
    * comparator if needed.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: ArrayGraph.h,v 1.2 2004-04-06 21:08:17 larosem Exp $
+   * @version $Id: ArrayGraph.h,v 1.3 2004-09-02 20:52:19 larosem Exp $
    */
   template< class node_type, 
 	    class edge_type = bool,
@@ -585,49 +585,47 @@ namespace mccore {
     
   public:
     
-//     virtual ostream& output (ostream& os) const
-//     {
-//       typename ArrayGraph::const_iterator ki, kj;
-//       typename vector< node_type >::const_iterator i;
-//       typename vector< edge_type >::const_iterator j;
- 
-//       os << "Nodes:" << endl;
-//       for (i=nodes.begin (); i!=nodes.end (); ++i) {
-// 	os << i-nodes.begin () << " : " << *i << " (" 
-// 	   << nodeWeights[i-nodes.begin ()] << ")" << endl;
-//       }
-//       os << "Edges:" << endl;
-//       for (j=edges.begin (); j!=edges.end (); ++j) {
-// 	os << j-edges.begin () << " : " << *j << " (" 
-// 	   << edgeWeights[j-edges.begin ()] << ")" << endl;
-//       }
-//       os << "Adjacency (size = " << size () << ")" << endl;
-
-//       //       for (ki=begin (); ki!=end (); ++ki) {      
-//       // 	os << *ki << "(" << getWeight (*ki) << ")" << " : ";      
-//       // 	for (kj=begin (); kj!=end (); ++kj) {
-//       // 	  if (areConnected (*ki, *kj)) 
-//       // 	    os << *kj << "(" << getEdge (*ki, *kj) << ") ";
-//       // 	}
-//       // 	os << endl;
-//       //       }
-
-//       for (int i=0; i!=size (); ++i) {
-// 	os << i << " : "; 
-// 	for (int j=0; j!=size (); ++j) {
-// 	  if (graph[index (i, j)] == -1) os << "- ";
-// 	  else os << graph[index (i, j)] << " ";
-// 	}
-// 	os << endl;
-//       }
-//       return os;
-//     }
-
-
-
+    virtual
+    ostream& output (ostream& os) const
+    {
+      typename ArrayGraph::const_iterator ki, kj;
+      typename vector< node_type >::const_iterator i;
+      typename vector< edge_type >::const_iterator j;
+      
+      os << "Nodes:" << endl;
+      for (i=nodes.begin (); i!=nodes.end (); ++i) {
+	os << i-nodes.begin () << " : " << *i << " (" 
+	   << nodeWeights[i-nodes.begin ()] << ")" << endl;
+      }
+      os << "Edges:" << endl;
+      for (j=edges.begin (); j!=edges.end (); ++j) {
+	os << j-edges.begin () << " : " << *j << " (" 
+	   << edgeWeights[j-edges.begin ()] << ")" << endl;
+      }
+      os << "Adjacency (size = " << size () << ")" << endl;
+      
+      //       for (ki=begin (); ki!=end (); ++ki) {      
+      // 	os << *ki << "(" << getWeight (*ki) << ")" << " : ";      
+      // 	for (kj=begin (); kj!=end (); ++kj) {
+      // 	  if (areConnected (*ki, *kj)) 
+      // 	    os << *kj << "(" << getEdge (*ki, *kj) << ") ";
+      // 	}
+      // 	os << endl;
+      //       }
+      
+      for (int i = 0; i != size (); ++i)
+	{
+	  os << i << " : "; 
+	  for (int j=0; j!=size (); ++j)
+	    {
+	      if (graph[index (i, j)] == -1) os << "- ";
+	      else os << graph[index (i, j)] << " ";
+	    }
+	  os << endl;
+	}
+      return os;
+    }
   };
 }
 
 #endif
-
-

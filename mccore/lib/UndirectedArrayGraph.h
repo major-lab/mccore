@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 24 21:30:26 2003
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 // 
 //  This file is part of mccore.
 //  
@@ -34,6 +34,7 @@
 #include "AbstractGraph.h"
 #include "ArrayGraph.h"
 #include "GraphAlgo.h"
+#include "Messagestream.h"
 #include "Path.h"
 
 
@@ -46,7 +47,7 @@ namespace mccore {
    * a node ordering determined by the node_comparator function object.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: UndirectedArrayGraph.h,v 1.2 2004-04-06 21:08:59 larosem Exp $
+   * @version $Id: UndirectedArrayGraph.h,v 1.3 2004-09-02 20:52:37 larosem Exp $
    */
   template< class node_type, 
 	    class edge_type = bool, 
@@ -197,24 +198,23 @@ namespace mccore {
      * Computes a minimum cycle basis for this graph.
      */
     template< class value_type >
-    vector< Path< node_type, value_type > > cycleBase () { 
-
-      vector< Path< int, value_type > > paths;
-      typename vector< Path< int, value_type > >::iterator p;
-      typename Path< int, value_type >::iterator pi;
+    vector< Path< node_type, value_type > > cycleBase ()
+    {
+      vector< Path< unsigned int, int > > paths;
+      vector< Path< unsigned int, int > >::iterator p;
       vector< Path< node_type, value_type > > realpaths;
-
-      paths = GraphAlgo::cycleBaseHorton< node_type, edge_type, node_comparator, value_type > (*this, 0); 
       
-      for (p=paths.begin (); p!=paths.end (); ++p) {
-      	Path< node_type, value_type > aPath;
-      	for (pi=p->begin (); pi!=p->end (); ++pi) {
-      	  aPath.push_back (nodes[*pi]);
-      	}
-      	aPath.setValue (p->getValue ());
-      	realpaths.push_back (aPath);      
-      }
-      
+      paths = GraphAlgo::cycleBaseHorton< node_type, edge_type, node_comparator > (*this);
+      for (p = paths.begin (); p != paths.end (); ++p)
+	{
+	  Path< unsigned int, int >::iterator pi;
+	  realpaths.push_back (Path< node_type, value_type > ());
+	  Path< node_type, value_type > &path = realpaths.back ();
+	  
+	  for (pi = p->begin (); pi != p->end (); ++pi)
+	    path.push_back (nodes[*pi]);
+	  path.setValue (p->getValue ());
+	}
       return realpaths;
     }
 
@@ -222,51 +222,63 @@ namespace mccore {
      * Computes the union of the minimum cycle basis for this graph.
      */
     template< class value_type >
-    vector< Path< node_type, value_type > > cycleBaseUnion () { 
-
-      vector< Path< int, value_type > > paths;
-      typename vector< Path< int, value_type > >::iterator p;
-      typename Path< int, value_type >::iterator pi;
+    vector< Path< node_type, value_type > > cycleBaseUnion ()
+    {
+      vector< Path< unsigned int, int > > paths;
+      vector< Path< unsigned int, int > >::iterator p;
       vector< Path< node_type, value_type > > realpaths;
+      vector< AbstractGraph< unsigned int, bool, less< unsigned int > >* > digraphs;
+      vector< AbstractGraph< unsigned int, bool, less< unsigned int> >* >::iterator diit;
+      typename UndirectedArrayGraph< node_type, edge_type, node_comparator>::iterator it;
 
-      paths = GraphAlgo::cycleBaseHorton< node_type, edge_type , node_comparator, value_type > (*this, 1); 
+      for (it = begin (); end () != it; ++it)
+	digraphs.push_back (new ArrayGraph< unsigned int, bool, less< unsigned int > > ());
+      paths = GraphAlgo::unionMinimumCycleBases< node_type, edge_type, node_comparator > (*this, digraphs);
       
-      for (p=paths.begin (); p!=paths.end (); ++p) {
-      	Path< node_type, value_type > aPath;
-      	for (pi=p->begin (); pi!=p->end (); ++pi) {
-      	  aPath.push_back (nodes[*pi]);
-      	}
-      	aPath.setValue (p->getValue ());
-      	realpaths.push_back (aPath);      
-      }
-      
+      for (p = paths.begin (); p != paths.end (); ++p)
+	{
+	  realpaths.push_back (Path< node_type, value_type > ());
+	  Path< node_type, value_type > &path = realpaths.back ();
+	  Path< unsigned int, int >::iterator pi;
+	  
+	  for (pi = p->begin (); pi != p->end (); ++pi)
+	    path.push_back (nodes[*pi]);
+	  path.setValue (p->getValue ());
+	}
+      for (diit = digraphs.begin (); digraphs.end () != diit; ++diit)
+	{
+	  gOut (4) << **diit << " ";
+	  delete *diit;
+	}
       return realpaths;
     }
 
-    /**
-     * Computes the union of all the minimum cycles for this graph.
-     */
-    template< class value_type >
-    vector< Path< node_type, value_type > > minimumCycles () { 
+//     /**
+//      * Computes the union of all the minimum cycles for this graph.
+//      */
+//     template< class value_type >
+//     vector< Path< node_type, value_type > > minimumCycles () { 
 
-      vector< Path< int, value_type > > paths;
-      typename vector< Path< int, value_type > >::iterator p;
-      typename Path< int, value_type >::iterator pi;
-      vector< Path< node_type, value_type > > realpaths;
+//       vector< Path< int, value_type > > paths;
+//       typename vector< Path< int, value_type > >::iterator p;
+//       typename Path< int, value_type >::iterator pi;
+//       vector< Path< node_type, value_type > > realpaths;
 
-      paths = GraphAlgo::cycleBaseHorton< node_type, edge_type, node_comparator, value_type > (*this, 2);
+//       paths = GraphAlgo::cycleBaseHorton< node_type, edge_type, node_comparator, value_type > (*this, 2);
       
-      for (p=paths.begin (); p!=paths.end (); ++p) {
-      	Path< node_type, value_type > aPath;
-      	for (pi=p->begin (); pi!=p->end (); ++pi) {
-      	  aPath.push_back (nodes[*pi]);
-      	}
-      	aPath.setValue (p->getValue ());
-      	realpaths.push_back (aPath);      
-      }
+//       for (p=paths.begin (); p!=paths.end (); ++p) {
+//       	Path< node_type, value_type > aPath;
+//       	for (pi=p->begin (); pi!=p->end (); ++pi) {
+//       	  aPath.push_back (nodes[*pi]);
+//       	}
+//       	aPath.setValue (p->getValue ());
+//       	realpaths.push_back (aPath);      
+//       }
       
-      return realpaths;
-    }
+//       return realpaths;
+//       gOut (2) << "Not implemented." << endl;
+//       exit (1);
+//     }
 
     // I/O  -----------------------------------------------------------------
 

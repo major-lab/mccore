@@ -35,7 +35,7 @@ namespace mccore {
    * @short A path in a graph.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Path.h,v 1.5 2004-04-06 21:08:56 larosem Exp $
+   * @version $Id: Path.h,v 1.6 2004-09-02 20:52:32 larosem Exp $
    */
   template< class node_type, class valuetype >
   class Path : public vector< node_type >
@@ -64,15 +64,12 @@ namespace mccore {
      * Initializes the object with the other's content.
      * @param other the object to copy.
      */
-    Path (const Path &other)
-      : vector< node_type > (other),
-	value (other.value)
-    { }
+    Path (const Path &other) : vector< node_type > (other), value (other.value) { }
 
     /**
      * Destroys the object.
      */
-    ~Path () { }
+    virtual ~Path () { }
 
     // OPERATORS ------------------------------------------------------------
 
@@ -103,7 +100,6 @@ namespace mccore {
 		  && (size () < other.size ()
 		      || (size () == other.size ()
 			  && (const vector< node_type >&) *this < (const vector< node_type >&) other))));
-//       return  (size () < other.size ());
     }
 
     /**
@@ -145,7 +141,7 @@ namespace mccore {
     }
       
 
-    bool operator!= (const Path &other) const { return ! this->operator== (other); }
+    bool operator!= (const Path &other) const { return ! (*this == other); }
      
     // ACCESS ---------------------------------------------------------------
 
@@ -163,7 +159,7 @@ namespace mccore {
     
     // I/O  -----------------------------------------------------------------
 
-    ostream &output (ostream &out) const {
+    virtual ostream &output (ostream &out) const {
       out << "[ " << flush;
       const_iterator i;
       for (i=begin (); i!=end (); ++i) {
