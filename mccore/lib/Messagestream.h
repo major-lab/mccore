@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Sep  5 17:06:24 2001
-// $Revision: 1.8.2.1 $
+// $Revision: 1.8.2.2 $
 //
 // This file is part of mccore.
 // 
@@ -50,7 +50,7 @@ namespace mccore
    * 5 : debug
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Messagestream.h,v 1.8.2.1 2004-12-25 02:42:04 larosem Exp $
+   * @version $Id: Messagestream.h,v 1.8.2.2 2004-12-29 21:13:13 larosem Exp $
    */
   class Messagestream : public ostream
   {
@@ -101,6 +101,18 @@ namespace mccore
     Messagestream& operator() (unsigned int level)
     {
       currentVerboseLevel = level;
+      return *this;
+    }
+
+    /**
+     * Writes a boolean to the Message stream.
+     * @param p the boolean to write.
+     * @return itself.
+     */
+    Messagestream& operator<< (bool p)
+    {
+      if (currentVerboseLevel <= verboseLevel)
+	*(ostream*)this << p;
       return *this;
     }
 
@@ -241,7 +253,9 @@ namespace mccore
     Messagestream& operator<< (const _Object &obj)
     {
       if (currentVerboseLevel <= verboseLevel)
-	*(ostream*)this << obj;
+	{
+	  std::operator<< (*(ostream*)this, obj);
+	}
       return *this;
     }
   
@@ -291,7 +305,7 @@ namespace mccore
    * @short Text implementation of Messages.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Messagestream.h,v 1.8.2.1 2004-12-25 02:42:04 larosem Exp $
+   * @version $Id: Messagestream.h,v 1.8.2.2 2004-12-29 21:13:13 larosem Exp $
    */
   class oMessagestream : public Messagestream
   {
