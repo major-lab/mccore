@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -58,7 +58,7 @@ namespace mccore {
     stringType["DV"] = ResidueType::rDV = new DV ("(DV)", "(DV)");
     
     stringType["Adenine"] = t = ResidueType::rA = new A ("A", "ADE"); 
-    stringType["A"] = t = ResidueType::rRA = new RA ("A", "ADE"); 
+    stringType["A"] = t = ResidueType::rRA = new RA ("A", "RA"); 
     stringType["ADE"] = t; 
     stringType["RA"] = t; 
     stringType["RA5"] = t; 
@@ -68,7 +68,7 @@ namespace mccore {
     stringType["DA3"] = t; 
     
     stringType["Cytosine"] = t = ResidueType::rC = new C ("C", "CYT");
-    stringType["C"] = t = ResidueType::rRC = new RC ("C", "CYT");
+    stringType["C"] = t = ResidueType::rRC = new RC ("C", "RC");
     stringType["CYT"] = t; 
     stringType["RC"] = t; 
     stringType["RC5"] = t; 
@@ -78,7 +78,7 @@ namespace mccore {
     stringType["DC3"] = t; 
     
     stringType["Guanine"] = t = ResidueType::rG = new G ("G", "GUA"); 
-    stringType["G"] = t = ResidueType::rRG = new RG ("G", "GUA"); 
+    stringType["G"] = t = ResidueType::rRG = new RG ("G", "RG"); 
     stringType["GUA"] = t;
     stringType["RG"] = t; 
     stringType["RG5"] = t; 
@@ -88,7 +88,7 @@ namespace mccore {
     stringType["DG3"] = t; 
     
     stringType["Uracyle"] = t = ResidueType::rU = new U ("U", "URA");
-    stringType["U"] = t = ResidueType::rRU = new RU ("U", "URA"); 
+    stringType["U"] = t = ResidueType::rRU = new RU ("U", "RU"); 
     stringType["RU"] = t;
     stringType["URI"] = t; 
     stringType["URA"] = t; 
@@ -96,7 +96,7 @@ namespace mccore {
     stringType["RU3"] = t; 
     
     stringType["Thymine"] = t = ResidueType::rT = new T ("T", "TYM"); 
-    stringType["T"] = t = ResidueType::rDT = new DT ("T", "TYM"); 
+    stringType["T"] = t = ResidueType::rDT = new DT ("T", "DT"); 
     stringType["DT"] = t;
     stringType["TYM"] = t; 
     stringType["DT5"] = t; 

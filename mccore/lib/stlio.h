@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Wed Apr  9 13:38:51 2003
-// $Revision: 1.5 $
-// $Id: stlio.h,v 1.5 2003-07-08 19:08:24 larosem Exp $
+// $Revision: 1.6 $
+// $Id: stlio.h,v 1.6 2003-08-28 14:49:59 gendrop Exp $
 // 
 // This file is part of mccore.
 // 
@@ -53,7 +53,7 @@ namespace std
   ostream& operator<< (ostream &os, const set< T > &t)
   {
     typename set< T >::const_iterator i;
-    
+
     for (i=t.begin(); i!=t.end (); ++i)
       {
 	os << *i << " ";
@@ -76,10 +76,13 @@ namespace std
   {
     typename vector< T >::const_iterator i;
     
+    os << "[";
     for (i=t.begin(); i!=t.end (); ++i)
       {
-	os << *i << " ";
+	if (i!=t.begin ()) os << " ";
+	os << *i;
       }
+    os << "]";
     return os;
   }
 
@@ -88,8 +91,12 @@ namespace std
   {
     typename vector< T* >::const_iterator i;
     
-    for (i = t.begin (); i != t.end (); ++i)
+    os << "[";
+    for (i = t.begin (); i != t.end (); ++i) {
+      if (i!=t.begin ()) os << " ";
       os << **i << " ";
+    }
+    os << "]";
     return os;
   }
 

@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 //
 //  This file is part of mccore.
 //  
@@ -56,7 +56,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Patrick Gendron <gendrop@iro.umontreal.ca>
-   * @version $Id: Residue.h,v 1.11 2003-07-11 21:26:03 gendrop Exp $
+   * @version $Id: Residue.h,v 1.12 2003-08-28 14:49:45 gendrop Exp $
    */
   class Residue
   {
@@ -387,6 +387,14 @@ namespace mccore {
      * @return the computed distance.
      */
     float distance (const Residue &r) const;
+
+    /**
+     * Copies the atom of other into *this without verification.  It
+     * is implied that both residues ar of the same type and contain
+     * the same atoms.  
+     * @param other the residue from which to copy atom locations.
+     */
+    virtual void atomCopy (const Residue& other); 
 
   protected:
 
