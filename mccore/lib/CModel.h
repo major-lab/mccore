@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct  6 08:21:55 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Aug 29 11:51:27 2001
-// Update Count     : 8
+// Last Modified On : Fri Sep 28 13:12:31 2001
+// Update Count     : 9
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -115,16 +115,24 @@ public:
   CModel RemoveOptionals () const;
 
   /**
-   * Creates a new model with the amino acids removed.
-   * @return the new model.
+   * Removes the amino acids from the model.
    */
-  CModel removeAminoAcid () const;
+  void removeAminoAcid ();
 
   /**
-   * Creates a new model with the nucleic acids removed.
-   * @return the new model.
+   * Removes the nucleic acids from the model.
    */
-  CModel removeNucleicAcid () const;
+  void removeNucleicAcid ();
+
+  /**
+   * Removes every residue that is not an amino acid.
+   */
+  void keepAminoAcid ();
+
+  /**
+   * Removes every residue that is not a nucleic acid.
+   */
+  void keepNucleicAcid ();
 
   /**
    * Finds an atom given it's text representation of the form residue:atom.

@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct  6 08:21:55 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Aug 29 12:02:11 2001
-// Update Count     : 13
+// Last Modified On : Fri Sep 28 13:12:26 2001
+// Update Count     : 14
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -118,30 +118,66 @@ CModel::RemoveOptionals () const
 
 
 
-CModel
-CModel::removeAminoAcid () const
+void
+CModel::removeAminoAcid ()
 {
-  const_iterator modelIt;
-  CModel model;
+  iterator modelIt;
 
-  for (modelIt = begin (); modelIt != end (); ++modelIt)
-    if (! modelIt->GetType ()->is_AminoAcid ())
-      model.push_back (*modelIt);
-  return model;
+  for (modelIt = begin (); modelIt != end ();)
+    {
+      if (modelIt->GetType ()->is_AminoAcid ())
+	modelIt = erase (modelIt);
+      else
+	++modelIt;
+    }
 }
 
 
 
-CModel
-CModel::removeNucleicAcid () const
+void
+CModel::removeNucleicAcid ()
 {
-  const_iterator modelIt;
-  CModel model;
+  iterator modelIt;
 
-  for (modelIt = begin (); modelIt != end (); ++modelIt)
-    if (! modelIt->GetType ()->is_NucleicAcid ())
-      model.push_back (*modelIt);
-  return model;
+  for (modelIt = begin (); modelIt != end ();)
+    {
+      if (modelIt->GetType ()->is_NucleicAcid ())
+	modelIt = erase (modelIt);
+      else
+	++modelIt;
+    }
+}
+
+
+
+void
+CModel::keepAminoAcid ()
+{
+  iterator modelIt;
+
+  for (modelIt = begin (); modelIt != end ();)
+    {
+      if (modelIt->GetType ()->is_AminoAcid ())
+	++modelIt;
+      else
+	modelIt = erase (modelIt);
+    }
+}
+
+
+
+void
+CModel::keepNucleicAcid ()
+{
+  iterator modelIt;
+
+  for (modelIt = begin (); modelIt != end ();)
+    {
+      if (modelIt->GetType ()->is_NucleicAcid ())
+	++modelIt;
+      else
+	modelIt = erase (modelIt);
+    }
 }
 
 
