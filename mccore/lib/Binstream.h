@@ -4,7 +4,7 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:11:41 EDT
-// $Revision: 1.17 $
+// $Revision: 1.18 $
 //
 // This file is part of mccore.
 // 
@@ -26,6 +26,7 @@
 #ifndef _mccore_Binstream_h_
 #define _mccore_Binstream_h_
 
+#include <string>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -37,9 +38,9 @@
 using namespace std;
 
 
-
 namespace mccore
 {
+
   /**
    * @short Input binary stream for database and cache input.
    *
@@ -57,7 +58,7 @@ namespace mccore
    * this encoding.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Binstream.h,v 1.17 2005-01-05 01:42:52 larosem Exp $
+   * @version $Id: Binstream.h,v 1.18 2005-01-07 16:36:32 thibaup Exp $
    */
   class iBinstream : public istream
   {
@@ -130,7 +131,7 @@ namespace mccore
      */
     iBinstream& operator>> (unsigned char **str)
     { return operator>> ((char**)str); }
-    
+
     /**
      * Inputs a strings from the binary stream.
      * @param str the string to put the characters in.

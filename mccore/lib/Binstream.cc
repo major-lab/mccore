@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@orage.IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:18:52 EDT
-// $Revision: 1.21 $
-// $Id: Binstream.cc,v 1.21 2005-01-05 01:42:45 larosem Exp $
+// $Revision: 1.22 $
+// $Id: Binstream.cc,v 1.22 2005-01-07 16:36:27 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -29,7 +29,6 @@
 #endif
 
 #include <cstring>
-#include <string>
 #if defined (__FreeBSD__)
 #include <sys/param.h>
 #else
@@ -56,7 +55,7 @@ namespace mccore
   iBinstream&
   iBinstream::operator>> (char *str)
   {
-    short int length;
+    unsigned int length;
     
     *this >> length;
     iBinstream::read ((char*)str, sizeof (char) * length);
@@ -68,7 +67,7 @@ namespace mccore
   iBinstream&
   iBinstream::operator>> (char **str)
   {
-    short int length;
+    unsigned int length;
     
     *this >> length;
     *str = new char[length + 1];
@@ -77,7 +76,7 @@ namespace mccore
     return *this;
   }
   
-  
+
   iBinstream&
   iBinstream::operator>> (string &str)
   {
@@ -169,13 +168,13 @@ namespace mccore
   oBinstream&
   oBinstream::operator<< (const char *str)
   {
-    short int length = strlen (str);
+    unsigned int length = strlen (str);
     *this << length;
     oBinstream::write ((char*)str, sizeof (char) * length);
     return *this;
   }
   
-  
+
   oBinstream&
   oBinstream::operator<< (const string &str)
   {
