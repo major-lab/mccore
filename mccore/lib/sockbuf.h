@@ -4,9 +4,9 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:26 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:10:36 2001
-// Update Count     : 3
+// Last Modified By : Philippe Thibault
+// Last Modified On : Fri Aug 24 10:02:53 2001
+// Update Count     : 4
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -115,6 +115,9 @@ public:
    * @return the number of bytes read (-1 on error)
    */
 //    virtual streamsize readline (char* buf, streamsize maxlen);
+
+
+  int GetSocketId () { return socket_id; } 
 
 protected:
 
