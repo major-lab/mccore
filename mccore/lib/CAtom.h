@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Nov  9 10:44:49 2000
-// Update Count     : 2
+// Last Modified On : Mon Dec  4 15:38:07 2000
+// Update Count     : 3
 // Status           : Ok.
 // 
 
@@ -263,7 +263,7 @@ protected:
   AtomSet *op1;
   AtomSet *op2;
 public:
-  atomset_and (AtomSet *x, AtomSet *y) : op1(x), op2(y) {}
+  atomset_and (AtomSet *x, AtomSet *y) : op1(x), op2(y) { }
   virtual ~atomset_and () { delete op1; delete op2; }
   virtual atomset_and& operator= (const atomset_and &right)
   {
@@ -278,8 +278,8 @@ public:
     return *this;
   }
   virtual bool operator() (const CAtom& x) const
-  { return (*op1) (x) && (*op2) (x); }
-  virtual atomset_and* clone () const
+  { return op1->operator() (x) && op2->operator() (x); }
+  virtual AtomSet* clone () const
   { return new atomset_and (op1->clone (), op2->clone ()); }
 };
 
@@ -298,7 +298,7 @@ struct all_atom_set : public AtomSet
    * @return true.
    */
   virtual bool operator() (const CAtom &atom) const { return true; }
-  virtual all_atom_set* clone () const { return new all_atom_set (); }
+  virtual AtomSet* clone () const { return new all_atom_set (); }
 };
 
 
@@ -317,7 +317,7 @@ struct base_atom_set : public AtomSet
    */
   virtual bool operator() (const CAtom &atom) const
   { return atom.GetType ()->is_SideChain (); }
-  virtual base_atom_set* clone () const { return new base_atom_set (); }
+  virtual AtomSet* clone () const { return new base_atom_set (); }
 };
 
 
@@ -336,7 +336,7 @@ struct backbone_atom_set : public AtomSet
    */
   virtual bool operator() (const CAtom &atom) const
   { return atom.GetType ()->is_Backbone (); }
-  virtual backbone_atom_set* clone () const { return new backbone_atom_set (); }
+  virtual AtomSet* clone () const { return new backbone_atom_set (); }
 };
 
 
@@ -356,7 +356,7 @@ struct pse_atom_set : public AtomSet
   virtual bool operator() (const CAtom &atom) const
   { return (atom.GetType ()->is_C1p () || atom.GetType ()->is_PSY ()
 	    || atom.GetType ()->is_PSZ ()); }
-  virtual pse_atom_set* clone () const { return new pse_atom_set (); }
+  virtual AtomSet* clone () const { return new pse_atom_set (); }
 };
 
 
@@ -375,7 +375,7 @@ struct no_hydrogen_opt : public AtomSet
    */
   virtual bool operator() (const CAtom &atom) const
   { return ! atom.GetType ()->is_Hydrogen (); }
-  virtual no_hydrogen_opt* clone () const { return new no_hydrogen_opt (); }
+  virtual AtomSet* clone () const { return new no_hydrogen_opt (); }
 };
 
 
@@ -400,8 +400,7 @@ struct no_pse_lp_atom_set : public AtomSet
     return ! (atom.GetType ()->is_Pseudo ()
 	      || atom.GetType ()->is_LonePair ());
   }
-  virtual no_pse_lp_atom_set* clone () const
-  { return new no_pse_lp_atom_set (); }
+  virtual AtomSet* clone () const { return new no_pse_lp_atom_set (); }
 };
 
 #endif
