@@ -162,7 +162,7 @@ operator<< (ostream &os, const CResIdSet &residset)
       for (cit2 = cit1, ++cit2; cit2 != residset.end (); ++cit1, ++cit2)
 	{
 	  if (cit2->GetChainId () == cit1->GetChainId ()
-	      || cit2->GetResNo () == cit1->GetResNo () + 1)
+	      && cit2->GetResNo () == cit1->GetResNo () + 1)
 	    {
 	      if (!inrange)
 		{
