@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // Molecule.h
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:36 2003
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 // 
 // This file is part of mccore.
 // 
@@ -31,12 +31,14 @@
 #include <map>
 #include <string>
 
+#include "AbstractModel.h"
+#include "Exception.h"
+
 using namespace std;
 
 
 namespace mccore
 {
-  class AbstractModel;
   class ResidueFactoryMethod;
   class iPdbstream;
   class oPdbstream;
@@ -49,7 +51,7 @@ namespace mccore
    * This is a collection of mccore Models in a simple STL list.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Molecule.h,v 1.5 2005-01-03 22:57:29 larosem Exp $
+   * @version $Id: Molecule.h,v 1.6 2005-01-05 01:48:49 larosem Exp $
    */
   class Molecule
   {
@@ -219,30 +221,29 @@ namespace mccore
      */
     Molecule& operator= (const Molecule &right);
 
-    /**
-     * Gets the model reference at nth position.
-     * @param nth the position of the reference to get.
-     * @return the nth reference.
-     */
-    AbstractModel& operator[] (size_type nth);
+//     /**
+//      * Gets the model reference at nth position.
+//      * @param nth the position of the reference to get.
+//      * @return the nth reference.
+//      */
+//     AbstractModel& operator[] (size_type nth);
 
-    /**
-     * Gets the model const_reference at nth position.
-     * @param nth the position of the const_reference to get.
-     * @return the nth const_reference.
-     */
-    const AbstractModel& operator[] (size_type nth) const;
+//     /**
+//      * Gets the model const_reference at nth position.
+//      * @param nth the position of the const_reference to get.
+//      * @return the nth const_reference.
+//      */
+//     const AbstractModel& operator[] (size_type nth) const;
     
     // ACCESS ---------------------------------------------------------------
     
     /**
-     * Gets the property value of the key. Throws an @ref IntLibException
-     * if key isn't found.
+     * Gets the property value of the key.
      * @param key the key.
      * @return the value of the key.
-     * @throws IntLibException
+     * @exception NoSuchElementException if key isn't found.
      */
-    const char* getProperty (const char *key) const;
+    const string& getProperty (const string &key) const throw (NoSuchElementException);
     
     /**
      * Sets the key value pair.
@@ -255,19 +256,13 @@ namespace mccore
      * Gets the property map.
      * @return the property map.
      */
-    const map< string, string >& getProperties () const
-    {
-      return this->properties;
-    }
+    const map< string, string >& getProperties () const { return properties; }
 
    /**
      * Gets the residue factory method.
      * @return the residue factory method.
      */
-    const ResidueFactoryMethod* getResidueFM () const
-    {
-      return this->residueFM;
-    }
+    const ResidueFactoryMethod* getResidueFM () const { return residueFM; }
   
     /**
      * Sets the residue factory method.
@@ -320,7 +315,7 @@ namespace mccore
      */
     iterator insert (const AbstractModel& model)
     {
-      return this->models.insert (models.end (), model.clone ());
+      return iterator (models.insert (models.end (), model.clone ()));
     }
     
     /**
@@ -344,33 +339,24 @@ namespace mccore
      * @param pos the position to erase.
      * @return an iterator on the next model.
      */ 
-    iterator erase (iterator pos) 
-    {
-      return this->models.erase (pos);
-    }
+    iterator erase (iterator pos);
     
     /**
      * Returns the number of models present in the molecule.
      * @return a number of models.
      */
-    size_type size () const
-    {
-      return this->models.size ();
-    }
+    size_type size () const { return models.size (); }
 
     /**
      * Tells if there is no model in the molecule.
      * @return whether the molecule is empty.
      */
-    bool empty () const
-    {
-      return this->models.empty ();
-    }
+    bool empty () const { return models.empty (); }
 
     /**
      * Removes all of the models from the molecule.  
      */
-    virtual void clear();
+    virtual void clear ();
     
     // I/O  -----------------------------------------------------------------
 
@@ -411,16 +397,6 @@ namespace mccore
     
   };
   
-  // NON-MEMBER FUNCTION -------------------------------------------------------
-  
-  /**
-   * Outputs the molecule to an output stream.
-   * @param obs the output stream.
-   * @param obj the molecule to output.
-   * @return the output stream.
-   */
-  ostream& operator<< (ostream &obs, const Molecule &obj);
-  
   /**
    * Inputs the molecule from a pdb stream.
    * @param ips the input pdb stream.
@@ -439,4 +415,19 @@ namespace mccore
 
 }
 
+
+
+namespace std
+{
+  
+  /**
+   * Outputs the molecule to an output stream.
+   * @param obs the output stream.
+   * @param obj the molecule to output.
+   * @return the output stream.
+   */
+  ostream& operator<< (ostream &obs, const mccore::Molecule &obj);
+
+}
+  
 #endif

@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Molecule.cc
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:35 2003
-// $Revision: 1.8 $
-// $Id: Molecule.cc,v 1.8 2005-01-03 22:57:16 larosem Exp $
+// $Revision: 1.9 $
+// $Id: Molecule.cc,v 1.9 2005-01-05 01:48:31 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -28,9 +28,7 @@
 #include <config.h>
 #endif
 
-#include "AbstractModel.h"
 #include "Binstream.h"
-#include "Exception.h"
 #include "Model.h"
 #include "Molecule.h"
 #include "Pdbstream.h"
@@ -73,27 +71,31 @@ namespace mccore
   
   Molecule::Molecule (const ResidueFactoryMethod *fm)
     : residueFM (0 == fm ? new ExtendedResidueFM () : fm->clone ())
-  {
-
-  }
+  { }
 
   
   Molecule::Molecule (const Molecule &right)
-    : models (right.models),
-      properties (right.properties),
+    : properties (right.properties),
       residueFM (right.residueFM->clone ())
   {
-    // retrieve ownership
-    list< AbstractModel* >::iterator it;
-    for (it = this->models.begin (); it != this->models.end (); ++it)
-      *it = (*it)->clone ();
+    const_iterator it;
+    
+    for (it = right.begin (); it != right.end (); ++it)
+      {
+	models.push_back (it->clone ());
+      }
   }
   
   
   Molecule::~Molecule ()
   {
-    this->clear ();
-    delete this->residueFM;
+    list< AbstractModel* >::iterator mit;
+    
+    for (mit = models.begin (); mit != models.end (); ++mit)
+      {
+	delete *mit;
+      }
+    delete residueFM;
   }
   
   
@@ -101,71 +103,75 @@ namespace mccore
   Molecule::operator= (const Molecule &right)
   {
     if (&right != this)
-    {
-      list< AbstractModel* >::iterator it;
+      {
+	const_iterator it;
 
-      // clear all
-      this->clear ();
-      delete this->residueFM;
+	// clear all
+	clear ();
+	delete residueFM;
 
-      // copy 
-      this->models = right.models;
-      this->properties = right.properties;
-      this->residueFM = right.residueFM->clone ();
-
-      // retrieve ownership
-      for (it = this->models.begin (); it != this->models.end (); ++it)
-	*it = (*it)->clone ();
-    }
+	// copy 
+	for (it = right.begin (); it != right.end (); ++it)
+	  {
+	    models.push_back (it->clone ());
+	  }
+	properties = right.properties;
+	residueFM = right.residueFM->clone ();
+      }
     return *this;
   }
   
   
-  const char*
-  Molecule::getProperty (const char *key) const
+  const string&
+  Molecule::getProperty (const string &key) const throw (NoSuchElementException)
   {
     map< string, string >::const_iterator it;
-    string ks (key);
 
-    if (this->properties.end () == (it = this->properties.find (ks)))
-    {
-      IntLibException ex ("", __FILE__, __LINE__);
-      ex << "property key \"" << key << "\" not found in molecule";
-      throw ex;
-    }
-    
-    return it->second.c_str ();
+    if (properties.end () == (it = properties.find (key)))
+      {
+	NoSuchElementException ex ("", __FILE__, __LINE__);
+      
+	ex << "property key \"" << key << "\" not found in molecule";
+	throw ex;
+      }
+    return it->second;
   }
   
   
   void
   Molecule::setProperty (const string &key, const string &value)
   {
-    pair< map< string, string >::iterator, bool > inserted = properties.insert (make_pair (key, value));
-
-    if (! inserted.second)
-      {
-	inserted.first->second = value;
-      }
+    properties[key] = value;
   }
 
   
   void
   Molecule::setResidueFM (const ResidueFactoryMethod *fm)
   {
-    delete this->residueFM;
-    this->residueFM = 0 == fm ? new ExtendedResidueFM () : fm->clone ();
+    delete residueFM;
+    residueFM = 0 == fm ? new ExtendedResidueFM () : fm->clone ();
   }
   
+  
+  Molecule::iterator
+  Molecule::erase (iterator pos)
+  {
+    delete &*pos;
+    return models.erase (pos);
+  }
+
   
   void
   Molecule::clear ()
   {
-    list< AbstractModel* >::const_iterator mit;
-    for (mit = this->models.begin (); mit != this->models.end (); ++mit)
-      delete *mit;
-    this->models.clear ();
-    this->properties.clear ();
+    list< AbstractModel* >::iterator mit;
+    
+    for (mit = models.begin (); mit != models.end (); ++mit)
+      {
+	delete *mit;
+      }
+    models.clear ();
+    properties.clear ();
   }
 
   
@@ -173,13 +179,18 @@ namespace mccore
   Molecule::write (ostream &os) const
   {
     map< string, string >::const_iterator pit;
-    list< AbstractModel* >::const_iterator mit;
+    const_iterator mit;
     
     os << "MOLECULE:" << endl;
-    for (pit = this->properties.begin (); pit != this->properties.end (); ++pit)
-      os << "  " << pit->first.c_str () << " = " << pit->second.c_str () << endl;
-    for (mit = this->models.begin (); mit != this->models.end (); ++mit)
-      os << **mit << endl;
+    for (pit = properties.begin (); pit != properties.end (); ++pit)
+      {
+	os << "  " << pit->first.c_str () << " = " << pit->second.c_str ()
+	   << endl;
+      }
+    for (mit = begin (); mit != end (); ++mit)
+      {
+	os << *mit << endl;
+      }
     return os;
   }
 
@@ -187,54 +198,62 @@ namespace mccore
   oPdbstream&
   Molecule::write (oPdbstream &ops) const
   {
-    list< AbstractModel* >::const_iterator mit;
-    bool modelHeaders = this->size () > 1;
+    const_iterator mit;
+    bool modelHeaders = size () > 1;
 
-    for (mit = this->models.begin (); mit != this->models.end (); ++mit)
+    for (mit = begin (); mit != end (); ++mit)
     {
       if (modelHeaders)
 	ops.startModel ();
-      ops << **mit;
+      ops << *mit;
       if (modelHeaders)
 	ops.endModel ();
     }
-    
     return ops;
   }
+
 
   iPdbstream&
   Molecule::read (iPdbstream& ips)
   {
-    this->clear ();
+    clear ();
 
     while (!ips.eof ())
-    {
-      AbstractModel* model = new Model (this->residueFM);
-      ips >> *model;
-      if (!model->empty ())
-	this->models.push_back (model);
-      
-//       this->models.push_back (new Model (this->residueFM));
-//       ips >> *this->models.back ();
-    }
-    
+      {
+	AbstractModel* model;
+
+	model = new Model (this->residueFM);
+	ips >> *model;
+	if (model->empty ())
+	  {
+	    delete model;
+	  }
+	else
+	  {
+	    models.push_back (model);
+	  }
+      }
     return ips;
   }
 
+  
   oBinstream&
   Molecule::write (oBinstream &obs) const
   {
-    list< AbstractModel* >::const_iterator mit;
+    const_iterator mit;
     map< string, string >::const_iterator pit;
 
-    obs << (unsigned int)this->models.size ();
-    for (mit = this->models.begin (); mit != this->models.end (); ++mit)
-      obs << **mit;
+    obs << size ();
+    for (mit = begin (); mit != end (); ++mit)
+      {
+	obs << *mit;
+      }
 
-    obs << (unsigned int)this->properties.size ();
-    for (pit = this->properties.begin (); pit != this->properties.end (); ++pit)
-      obs << pit->first.c_str () << pit->second.c_str ();
-
+    obs << properties.size ();
+    for (pit = properties.begin (); pit != properties.end (); ++pit)
+      {
+	obs << pit->first.c_str () << pit->second.c_str ();
+      }
     return obs;
   }
 
@@ -243,34 +262,26 @@ namespace mccore
   Molecule::read (iBinstream &ibs)
   {
     unsigned int qty;
-    char *kcs, *vcs;
 
-    this->clear ();
-    
-    for (ibs >> qty; qty > 0; --qty)
-    {
-      this->models.push_back (new Model (this->residueFM));
-      ibs >> *this->models.back ();
-    }
+    clear ();
 
     for (ibs >> qty; qty > 0; --qty)
-    {
-      ibs >> &kcs >> &vcs;
-      this->setProperty (kcs, vcs);
-      delete[] kcs;
-      delete[] vcs;
-    }
+      {
+	models.push_back (new Model (this->residueFM));
+	ibs >> *models.back ();
+      }
 
+    for (ibs >> qty; qty > 0; --qty)
+      {
+	string kcs;
+	string vcs;
+      
+	ibs >> kcs >> vcs;
+	setProperty (kcs, vcs);
+      }
     return ibs;
   }
 
-  
-  ostream&
-  operator<< (ostream &os, const Molecule &obj)
-  {
-    return obj.write (os);
-  }
-  
   
   oPdbstream&
   operator<< (oPdbstream &ops, const Molecule &obj)
@@ -298,6 +309,18 @@ namespace mccore
   {
     return obj.read (ibs);
   }
-  
 
+}
+
+
+
+namespace std
+{
+  
+  ostream&
+  operator<< (ostream &os, const mccore::Molecule &obj)
+  {
+    return obj.write (os);
+  }
+    
 }
