@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.47 $
-# $Id: Makefile.in,v 1.47 2004-06-30 18:14:24 thibaup Exp $
+# $Revision: 1.48 $
+# $Id: Makefile.in,v 1.48 2004-07-05 20:19:25 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -119,9 +119,9 @@ SOURCES = Binstream.cc \
 
 
 HEADERS = $(SOURCES:.cc=.h) AbstractGraph.h AdjacencyMatrix.h Algo.h \
-ArrayGraph.h Graph.h GraphAlgo.h MaximumFlowGraph.h Path.h SocketCommand.h \
-SymmetricalMatrix.h SymmetricalMatrix.cc UndirectedArrayGraph.h \
-UndirectedGraph.h stlio.h
+ArrayGraph.h Graph.h GraphAlgo.h MaximumFlowGraph.h Path.h \
+SocketCommand.h SymmetricalMatrix.h SymmetricalMatrix.cc \
+UndirectedArrayGraph.h UndirectedGraph.h stlio.h
 
 
 OBJECTS = $(SOURCES:.cc=.o)
@@ -223,7 +223,7 @@ dist:
 	  done
 
 Makefile: $(srcdir)/Makefile.in ../config.status
-	@ cd .. && CONFIG_FILES=lib/$@ CONFIG_HEADERS= ./config.status
+	@ cd .. && ./config.status lib/$@
 
 # Tell versions [3.59,3.63) of GNU make not to export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -1,14 +1,11 @@
-############################ -*- Mode: Makefile -*- ###########################
-## Makefile.in
-## Copyright © 2000-01, 03 Laboratoire de Biologie Informatique et Théorique.
-##                     Université de Montréal.
-## Author           : Martin Larose <larosem@iro.umontreal.ca>
-## Created On       : Tue Sep 19 18:10:38 2000
-## Last Modified By : Patrick Gendron
-## Last Modified On : Thu Aug 14 13:06:45 2003
-## Update Count     : 45
-## Status           : Ok.
-###############################################################################
+#                            -*- Mode: Makefile -*-
+# Makefile.in
+# Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique.
+#                     Université de Montréal.
+# Author           : Martin Larose <larosem@iro.umontreal.ca>
+# Created On       : Tue Sep 19 18:10:38 2000
+# $Revision: 1.16 $
+# $Id: Makefile.in,v 1.16 2004-07-05 20:19:17 larosem Exp $
 #
 #  This file is part of mccore.
 #  
@@ -182,7 +179,7 @@ stamp-h: $(srcdir)/config.h.in config.status
 	@ echo timestamp > $@
 
 Makefile: $(srcdir)/Makefile.in config.status stamp-h
-	@ CONFIG_FILES=$@ CONFIG_HEADERS= ./config.status
+	@ ./config.status $@
 
 config.status: $(srcdir)/configure
 	@ ./config.status --recheck
