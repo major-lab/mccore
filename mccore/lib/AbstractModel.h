@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 16:12:42 2004
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 //
 // This file is part of mccore.
 // 
@@ -51,14 +51,14 @@ namespace mccore
    * Abstract class for Models.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: AbstractModel.h,v 1.3 2005-01-27 19:11:49 larosem Exp $
+   * @version $Id: AbstractModel.h,v 1.4 2005-03-31 22:33:01 larosem Exp $
    */
   class AbstractModel
   {
     
   public:
     
-    typedef unsigned int size_type;
+    typedef vector< Residue* >::size_type size_type;
 
   protected:
 
