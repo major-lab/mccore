@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // Residue.h
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.27 $
+// $Revision: 1.28 $
 //
 // This file is part of mccore.
 // 
@@ -62,7 +62,7 @@ namespace mccore
    * the atom types.
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: Residue.h,v 1.27 2005-01-03 23:02:07 larosem Exp $
+   * @version $Id: Residue.h,v 1.28 2005-01-05 01:50:56 larosem Exp $
    */
   class Residue
   {
@@ -125,17 +125,17 @@ namespace mccore
     /**
      * Constants used in hydrogens and lone pairs insertion. 
      */
-    static const float C_H_DIST_CYC;  
-    static const float C_H_DIST;      
-    static const float N_H_DIST;      
-    static const float O_H_DIST;
-    static const float O_LP_DIST;
-    static const float N_LP_DIST;
-    static const float TAN19;         
-    static const float TAN54;
-    static const float TAN60;         
-    static const float TAN70;         
-    static const float TAN30;
+    static const float C_H_DIST_CYC = 1.08f;    // C-H distance for aromatic C
+    static const float C_H_DIST     = 1.09f;    // C-H distance for SP3 C
+    static const float N_H_DIST     = 1.01f;    // N-H distance for NH2 confo  
+    static const float O_H_DIST     = 0.96f;
+    static const float O_LP_DIST    = 1.00f;
+    static const float N_LP_DIST    = 1.00f;
+    static const float TAN19        = 0.354f;   // O2' H 
+    static const float TAN54        = 1.376f;
+    static const float TAN60        = 1.7320508f;  // For NH2-like conformations
+    static const float TAN70        = 2.7474774f;  // For CH3-like conformations
+    static const float TAN30        = 0.57735027f;
     
     /**
      * Constants for the ribose theoretical building by estimation.

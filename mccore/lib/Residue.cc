@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Residue.cc
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.57 $
-// $Id: Residue.cc,v 1.57 2005-01-03 23:01:20 larosem Exp $
+// $Revision: 1.58 $
+// $Id: Residue.cc,v 1.58 2005-01-05 01:50:48 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -65,18 +65,6 @@ namespace mccore
 {
 
   // Parameters taken for AMBER all_nuc94.in
-  const float Residue::C_H_DIST_CYC = 1.08f;    // C-H distance for aromatic C
-  const float Residue::C_H_DIST = 1.09f;    // C-H distance for SP3 C
-  const float Residue::N_H_DIST = 1.01f;    // N-H distance for NH2 confo
-  const float Residue::O_H_DIST = 0.96f;
-  const float Residue::O_LP_DIST = 1.00f;
-  const float Residue::N_LP_DIST = 1.00f;
-  const float Residue::TAN19 = 0.354f;      // O2' H 
-  const float Residue::TAN54 = 1.376f;
-  const float Residue::TAN60 = 1.7320508f;  // For NH2-like conformations
-  const float Residue::TAN70 = 2.7474774f;  // For CH3-like conformations
-  const float Residue::TAN30 = 0.57735027f;
-  
   const float Residue::s_cosf_amplitude = 1.3305;
   const float Residue::s_cosf_vshift = 2.0778;
   const float Residue::s_cosf_phase = 0.3041;
@@ -101,59 +89,60 @@ namespace mccore
   
 
   Residue::Residue (const ResidueType *t, const ResId &i)
-    : rib_dirty_ref (true),
+    : resId (i),
+      rib_dirty_ref (true),
       rib_built_valid (false),
-      rib_built_count (0)
+      rib_built_count (0)      
   {
     this->setType (t);
-    this->setResId (i);
     rib_C1p = rib_C2p = rib_C3p = rib_C4p = rib_C5p = rib_O2p = rib_O3p = rib_O4p = rib_O5p = rib_O1P = rib_O2P = rib_P = 0;
   }
 
 
   Residue::Residue (const ResidueType *t, const ResId &i, const vector< Atom > &vec)
-    : rib_dirty_ref (true),
+    : resId (i),
+      rib_dirty_ref (true),
       rib_built_valid (false),
-      rib_built_count (0)
+      rib_built_count (0)      
   {
-    this->setType (t);
-    this->setResId (i);
     vector< Atom >::const_iterator j;
-    for (j=vec.begin (); j!=vec.end (); ++j) {
-      insert (*j);
-    }
 
+    this->setType (t);
+    for (j = vec.begin (); j != vec.end (); ++j)
+      {
+	insert (*j);
+      }
+    
     rib_C1p = rib_C2p = rib_C3p = rib_C4p = rib_C5p = rib_O2p = rib_O3p = rib_O4p = rib_O5p = rib_O1P = rib_O2P = rib_P = 0;
   }
 
 
   Residue::Residue (const Residue &other)
+    : type (other.type),
+      resId (other.resId),
+      atomIndex (other.atomIndex),
+      rib_dirty_ref (true),
+      rib_built_valid (other.rib_built_valid),
+      rib_built_count (other.rib_built_count)
   {
     vector< Atom* >::const_iterator cit;
 
-    type = other.type;
-    resId = other.resId;
     for (cit = other.atomGlobal.begin (); cit != other.atomGlobal.end (); ++cit)
-    {
-      Atom* cl = (*cit)->clone ();
-      atomGlobal.push_back (cl);
-    }    
-    atomIndex = other.atomIndex;
-
+      {
+	atomGlobal.push_back ((*cit)->clone ());
+      }
     rib_C1p = rib_C2p = rib_C3p = rib_C4p = rib_C5p = rib_O2p = rib_O3p = rib_O4p = rib_O5p = rib_O1P = rib_O2P = rib_P = 0;
-    rib_dirty_ref = true;
-    rib_built_valid = other.rib_built_valid;
-    rib_built_count = other.rib_built_count;
   }
 
 
   Residue::~Residue () 
   {
     vector< Atom* >::iterator it;
+    
     for (it = atomGlobal.begin (); it != atomGlobal.end (); ++it)
-      delete *it;
-    atomGlobal.clear ();
-    atomIndex.clear();
+      {
+	delete *it;
+      }
   }
 
 
@@ -615,8 +604,11 @@ namespace mccore
   Residue::clear () 
   {
     vector< Atom* >::iterator it;
+    
     for (it = atomGlobal.begin (); it != atomGlobal.end (); ++it)
-      delete *it;
+      {
+	delete *it;
+      }
     atomGlobal.clear ();
     atomIndex.clear();
 
