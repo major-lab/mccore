@@ -1,6 +1,6 @@
 //                              -*- mode: C++ -*- 
 // Binstream.cc
-// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@orage.IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:18:52 EDT
@@ -38,6 +38,7 @@
 #include <netinet/in.h>
 #endif
 
+#include "McCore.h"
 #include "Binstream.h"
 
 
@@ -83,7 +84,7 @@ iBinstream&
 iBinstream::operator>> (short int &n)
 {
   short int ns;
-
+  
   this->read ((char*) &ns, sizeof (short int));
   n = ntohs (ns);
   return *this;
@@ -94,6 +95,7 @@ iBinstream::operator>> (short int &n)
 iBinstream&
 iBinstream::operator>> (int &n)
 {
+
   int nl;
 
   this->read ((char*)&nl, sizeof (int));
@@ -118,10 +120,10 @@ iBinstream::operator>> (long int &n)
 iBinstream&
 iBinstream::operator>> (float &x)
 {
-  int nl;
-  int hl;
+  long int nl;
+  long int hl;
 
-  this->read ((char*)&nl, sizeof (int));
+  this->read ((char*)&nl, sizeof (long int));
   hl = ntohl (nl);
   x = *((float*)&hl);
   return *this;
@@ -162,7 +164,6 @@ oBinstream&
 oBinstream::operator<< (const char *str)
 {
   short int length = strlen (str);
-
   *this << length;
   this->write ((char*)str, sizeof (char) * length);
   return *this;
@@ -184,10 +185,12 @@ oBinstream::operator<< (short int n)
 oBinstream&
 oBinstream::operator<< (int n)
 {
-  int nl = htonl (n);
+  return operator<< ((long int)n); 
 
-  this->write ((char*)&nl, sizeof (int));
-  return *this;
+//    int nl = htonl (n);
+
+//    this->write ((char*)&nl, sizeof (int));
+//    return *this;
 }
 
 
@@ -206,9 +209,9 @@ oBinstream::operator<< (long int n)
 oBinstream&
 oBinstream::operator<< (float x)
 {
-  int nl = htonl (*((int*)&x));
+  long int nl = htonl (*((long int*)&x));
 
-  this->write ((char*)&nl, sizeof (int));
+  this->write ((char*)&nl, sizeof (long int));
   return *this;
 }
 

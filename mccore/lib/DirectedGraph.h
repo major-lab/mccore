@@ -43,9 +43,11 @@
  */
 class DirectedGraph
 {
+public:
   typedef map< int, int > neighbor;
   typedef map< int, int >::iterator neighbor_iterator;
 
+private:
   vector< neighbor > mAdj;
   vector< neighbor > mReverse;
 

@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // Model.cc
-// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
@@ -31,6 +31,7 @@
 #endif
 
 #include <string.h>
+#include <list.h>
 
 #include "AbstractResidue.h"
 #include "Binstream.h"
@@ -45,13 +46,13 @@
 
 
 
-Model::model_iterator&
-Model::model_iterator::operator= (const list< AbstractResidue* >::iterator &right)
-{
-  if (this != &right)
-    list< AbstractResidue* >::iterator::operator= (right);
-  return *this;
-}
+//  Model::model_iterator&
+//  Model::model_iterator::operator= (const list< AbstractResidue* >::iterator &right)
+//  {
+//    if (this != &right)
+//      list< AbstractResidue* >::iterator::operator= (right);
+//    return *this;
+//  }
 
 
 
@@ -71,13 +72,22 @@ Model::model_iterator::operator- (const Model::model_iterator &right) const
 
 
   
-Model::model_const_iterator&
-Model::model_const_iterator::operator= (const list< AbstractResidue* >::const_iterator &right)
-{
-  if (this != &right)
-    list< AbstractResidue* >::const_iterator::operator= (right);
-  return *this;
-}
+//  Model::model_const_iterator&
+//  Model::model_const_iterator::operator= (const list< AbstractResidue* >::const_iterator &right)
+//  {
+//    if (this != &right)
+//      list< AbstractResidue* >::const_iterator::operator= (right);
+//    return *this;
+//  }
+
+
+
+//  Model::model_const_iterator&
+//  Model::model_const_iterator::operator= (const Model::model_iterator &right)
+//  {
+//    list< AbstractResidue* >::const_iterator::operator= (right);
+//    return *this;
+//  }
 
 
 
@@ -251,7 +261,7 @@ Model::find (const CResId &id)
   iterator it;
 
   for (it = begin (); it != end (); ++it)
-    if (id == *it)
+    if (id == (CResId &)*it)
       break;
   return it;
 }
@@ -420,6 +430,14 @@ Model::write (oPdbstream &ops) const
 
 bool
 operator< (const Model::iterator &left, const Model::iterator &right)
+{
+  return *left < *right;
+}
+
+
+
+bool
+operator< (const Model::const_iterator &left, const Model::const_iterator &right)
 {
   return *left < *right;
 }

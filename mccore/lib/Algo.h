@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // Algo.h
-// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
 // Author           : Sebastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Wed Feb 14 15:33:58 2001
@@ -38,6 +38,15 @@
 #include "CAtom.h"
 
 
+/**
+ * @short A class for lone algorithms in the mccore library
+ * 
+ * Long This is a container for algorithms that are not part of any objects.  Note:
+ * const_iterator are now used as much as possible so that the functions may be called
+ * with const_iterator and iterator
+ *
+ * @author Sebastien Lemieux
+ */
 
 class Algo
 {
@@ -67,7 +76,7 @@ private:
       else
 	return mMin <= o.mMax;
     }
-    iterator GetResidue () { return mRes; }
+    iterator GetResidue () const { return mRes; }
     void Output (ostream &out)
     {
       out << (CResId)(*mRes) << " : " << mMin << "-" << mMax << endl;
@@ -115,7 +124,7 @@ public:
     
     for (i = begin; i != end; ++i) 
       {
-	AbstractResidue::iterator j;
+	AbstractResidue::const_iterator j;
 	ResidueRange< iterator > tmp_X (i, HUGE, -HUGE);
 	ResidueRange< iterator > tmp_Y (i, HUGE, -HUGE);
 	ResidueRange< iterator > tmp_Z (i, HUGE, -HUGE);
@@ -166,3 +175,11 @@ public:
     return result;
   }
 };
+
+
+
+
+
+
+
+

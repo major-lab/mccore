@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // AbstractResidue.cc
-// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : Fri Oct 12 18:21:12 2001
 // Last Modified By : Martin Larose
@@ -163,6 +163,14 @@ AbstractResidue::ResidueConstIterator::ResidueConstIterator (const AbstractResid
 
 
 
+AbstractResidue::ResidueConstIterator::ResidueConstIterator (const AbstractResidue::iterator &right)
+  : res (right.res),
+    pos (right.pos),
+    filter (right.filter->clone ())
+{ }
+
+
+
 AbstractResidue::ResidueConstIterator::~ResidueConstIterator ()
 {
   delete filter;
@@ -180,6 +188,19 @@ AbstractResidue::ResidueConstIterator::operator= (const AbstractResidue::const_i
       delete filter;
       filter = right.filter->clone ();
     }
+  return *this;
+}
+
+
+
+AbstractResidue::const_iterator&
+AbstractResidue::ResidueConstIterator::operator= (const AbstractResidue::iterator &right)
+{
+  res = right.res;
+  pos = right.pos;
+  delete filter;
+  filter = right.filter->clone ();
+
   return *this;
 }
 
@@ -260,7 +281,7 @@ AbstractResidue::addHydrogens ()
 	    && ref (a_N7) && ref (a_N9) && ref (a_C6) && ref (a_C5)
 	    && ref (a_N6) && ref (a_C4)))
 	{
-	  gOut (1) << "Residue " << *mType << "-" << resId
+	  gOut (2) << "Residue " << *mType << "-" << resId
 		   << " is missing one or more critical atoms." 
 		   << endl;
 	  // Invalid residue
@@ -309,7 +330,7 @@ AbstractResidue::addHydrogens ()
 	    && ref (a_N7) && ref (a_N9) && ref (a_N3) && ref (a_N2)
 	    && ref (a_C4) && ref (a_C5) && ref (a_O6)))
 	{
-	  gOut (1) << "Residue " << *mType << "-" << resId
+	  gOut (2) << "Residue " << *mType << "-" << resId
 		   << " is missing one or more critical atoms." 
 		   << endl;
 	  // invalid residue
@@ -358,7 +379,7 @@ AbstractResidue::addHydrogens ()
 	    && ref (a_N3) && ref (a_N4) && ref (a_C6) && ref (a_C5)
 	    && ref (a_C2) && ref (a_O2)))
 	{
-	  gOut (1) << "Residue " << *mType << "-" << resId
+	  gOut (2) << "Residue " << *mType << "-" << resId
 		   << " is missing one or more critical atoms." 
 		   << endl;
 	  // invalid residue
@@ -406,7 +427,7 @@ AbstractResidue::addHydrogens ()
       if (!(ref (a_N3) && ref (a_C2) && ref (a_C4) && ref (a_C5)
 	    && ref (a_C6) && ref (a_N1) && ref (a_O2) && ref (a_O4)))
 	{
-	  gOut (1) << "Residue " << *mType << "-" << resId
+	  gOut (2) << "Residue " << *mType << "-" << resId
 		   << " is missing one or more critical atoms." 
 		   << endl;
 	  // invalid residue
@@ -447,7 +468,7 @@ AbstractResidue::addHydrogens ()
       if (!(ref (a_N3) && ref (a_C2) && ref (a_C4) && ref (a_C5)
 	    && ref (a_C6) && ref (a_N1) && ref (a_O2) && ref (a_O4)))
 	{
-	  gOut (1) << "Residue " << *mType << "-" << resId
+	  gOut (2) << "Residue " << *mType << "-" << resId
 		   << " is missing one or more critical atoms." 
 		   << endl;
 	  // invalid residue

@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // CResId.cc
-// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-02 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Thu Sep 28 15:55:29 2000
@@ -122,6 +122,7 @@ CResId::operator= (const CResId &right)
 	  mRep = 0;
 	}
     }
+
   return *this;
 }
 
@@ -132,7 +133,6 @@ CResId::operator const char* () const
   if (!mRep)
     {
       mRep = new char[11];
-
       if (chain == ' ')
 	sprintf (mRep, "%d", no);
       else if (! isalpha (chain))
@@ -147,6 +147,7 @@ CResId::operator const char* () const
 	  strcat (mRep, ic);
 	}
     }
+
   return mRep;
 }
 

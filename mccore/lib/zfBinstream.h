@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // zfBinstream.h
-// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created on       : jeu 22 jui 1999 18:24:14 EDT
@@ -32,8 +32,9 @@
 
 #include <zlib.h>
 
+#include "fstreambase.h"
+#include "zfstream.h"
 #include "Binstream.h"
-#include "zfilebuf.h"
 
 
 
@@ -48,11 +49,12 @@
  * of compression level 0 is not recommended: the data is not compressed but
  * a gzip dependent header an footer is added to the file.  It is preferable
  * to use the fBinstream classes for uncompressed output binary streams.
- * For further details see @ref iBinstream and @ref zfstreambase.
+ * For further details see @ref iBinstream and @ref zfstreambase.  Note that
+ * the compression level is not used in input streams.
  *
  * @author Martin Larose <larosem@IRO.UMontreal.CA>
  */
-class izfBinstream : public zfstreambase, public iBinstream
+class izfBinstream : public iBinstream, public zfstreambase
 {
 
 public:
@@ -62,22 +64,15 @@ public:
   /**
    * Initializes the stream.
    */
-  izfBinstream () : zfstreambase (), iBinstream () { }
-
-  /**
-   * Initializes the objet with a file descriptor.
-   * @param fd the input file descriptor.
-   */
-  izfBinstream (int fd) : zfstreambase (fd), iBinstream () { }
+  izfBinstream () : iBinstream (zfstreambase::rdbuf ()) { }
   
   /**
    * Initializes the stream with file name and parameters.
    * @param name the path and file name to open.
    * @param mode the open mode (default ios::in).
-   * @param prot the protection (default 0644).
    */
-  izfBinstream(const char *name, int mode = ios::in, int prot = 0664)
-      : zfstreambase (name, mode, Z_BEST_SPEED, prot), iBinstream () { }
+  izfBinstream(const char *name, int mode = ios::in)
+      : iBinstream (zfstreambase::rdbuf ()), zfstreambase (name, mode) { }
 
   // OPERATORS ------------------------------------------------------------
 
@@ -89,11 +84,10 @@ public:
    * Opens the stream with file name and parameters.
    * @param name the path and file name to open.
    * @param mode the open mode (default ios::in).
-   * @param prot the protection (default 0644).
    */
-  void open (const char *name, int mode=ios::in, int prot = 0664)
+  void open (const char *name, int mode=ios::in)
   {
-    zfstreambase::open (name, mode, Z_BEST_SPEED, prot);
+    zfstreambase::open (name, mode);
     iBinstream::open ();
   }
 
@@ -123,7 +117,7 @@ public:
  *
  * @author Martin Larose <larosem@IRO.UMontreal.CA>
  */
-class ozfBinstream : public zfstreambase, public oBinstream
+class ozfBinstream : public oBinstream, public zfstreambase
 {
 
 public:
@@ -133,24 +127,17 @@ public:
   /**
    * Initializes the stream.
    */
-  ozfBinstream () : zfstreambase (), oBinstream () { }
-
-  /**
-   * Initializes the objet with a file descriptor.
-   * @param fd the input file descriptor.
-   */
-  ozfBinstream (int fd) : zfstreambase (fd), oBinstream () { }
+  ozfBinstream () : oBinstream (zfstreambase::rdbuf()) { }
 
   /**
    * Initializes the stream with file name and parameters.
    * @param name the path and file name to open.
    * @param level the compression level for output.
    * @param mode the open mode (default ios::out).
-   * @param prot the protection (default 0644).
    */
   ozfBinstream (const char *name, int level = Z_BEST_SPEED,
-		int mode = ios::out, int prot = 0664)
-    : zfstreambase (name, mode, level, prot), oBinstream () { }
+		int mode = ios::out)
+    : oBinstream (zfstreambase::rdbuf()), zfstreambase (name, mode, level) { }
 
   // OPERATORS ------------------------------------------------------------
 
@@ -166,9 +153,9 @@ public:
    * @param prot the protection (default 0644).
    */
   void open (const char *name, int level = Z_BEST_SPEED,
-	     int mode = ios::out, int prot = 0664)
+	     int mode = ios::out)
   {
-    zfstreambase::open (name, mode, level, prot);
+    zfstreambase::open (name, mode, level);
     oBinstream::open ();
   }
 
@@ -181,77 +168,6 @@ public:
 };
 
 
-
-/**
- * @short General compressed binary stream.
- *
- * I/O general classes using the GNU zip compression system.  These streams
- * adds the compression on the normal binary streams.  The input stream can
- * read an uncompressed file.  When creating a output stream the programmer
- * can specify a compression level from 0 (Z_NO_COMPRESSION) to 9
- * (Z_BEST_COMPRESSION), the default is level 1 (Z_BEST_SPEED).  The usage
- * of compression level 0 is not recommended: the data is not compressed but
- * a gzip dependent header an footer is added to the file.  It is preferable
- * to use the fBinstream classes for uncompressed output binary streams.
- * For further details see @ref Binstream and @ref zfstreambase.
- *
- * @author Martin Larose <larosem@IRO.UMontreal.CA>
- */
-class zfBinstream : public zfstreambase, public Binstream
-{
-
-public:
-
-  // LIFECYCLE ------------------------------------------------------------
-
-  /**
-   * Initializes the stream.
-   */
-  zfBinstream () : zfstreambase (), Binstream () { }
-
-  /**
-   * Initializes the objet with a file descriptor.
-   * @param fd the input file descriptor.
-   */
-  zfBinstream (int fd) : zfstreambase (fd), Binstream () { }
-
-  /**
-   * Initializes the stream with file name and parameters.
-   * @param name the path and file name to open.
-   * @param level the compression level for output.
-   * @param mode the open mode (default ios::in).
-   * @param prot the protection (default 0644).
-   */
-  zfBinstream (const char *name, int level = Z_BEST_SPEED,
-	       int mode = ios::in, int prot = 0664)
-    : zfstreambase (name, mode, level, prot), Binstream () { }
-  
-  // OPERATORS ------------------------------------------------------------
-
-  // ACCESS ---------------------------------------------------------------
-
-  // METHODS --------------------------------------------------------------
-
-  /**
-   * Opens the stream with file name and parameters.
-   * @param name the path and file name to open.
-   * @param level the compression level for output.
-   * @param mode the open mode (default ios::in).
-   * @param prot the protection (default 0644).
-   */
-  void open (const char *name, int level = Z_BEST_SPEED,
-	     int mode = ios::in, int prot = 0664)
-  {
-    zfstreambase::open (name, mode, level, prot);
-    Binstream::open ();
-  }
-  
-  /**
-   * Closes the stream.
-   */
-  virtual void close () { Binstream::close (); zfstreambase::close (); }
-
-  // I/O ------------------------------------------------------------------
-};
-
 #endif
+
+

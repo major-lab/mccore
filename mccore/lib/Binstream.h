@@ -1,6 +1,6 @@
 //                         -*- Mode: C++ -*-
 // Binstream.h
-// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:11:41 EDT
@@ -35,12 +35,12 @@
 /**
  * @short Input binary stream for database and cache input.
  *
- * I/O binary stream basically used for the MCSYM database and cache.  These
- * classes are defined to provide binary read and write on basic types with
- * the operators << and >> and to give the opportunity to create ways to
- * save user defined objets in binary format.  Basic types uses read and
- * write methods from istream and ostream.  Each new class that needs to be
- * saved in binary format must define operators << and >> on iBinstream and
+ * I/O binary stream.  These classes are defined to provide binary
+ * read and write on basic types with the operators << and >> and to
+ * give the opportunity to create ways to save user defined objets in
+ * binary format.  Basic types uses read and write methods from
+ * istream and ostream.  Each new class that needs to be saved in
+ * binary format must define operators << and >> on iBinstream and
  * oBinstream in their class implementation.
  *
  * Binary streams saves the types according to the big endianness
@@ -49,7 +49,7 @@
  * this encoding.
  *
  * @author Martin Larose <larosem@iro.umontreal.ca> 
-*/
+ */
 class iBinstream : public istream
 {
   
@@ -60,7 +60,13 @@ public:
   /**
    * Initializes the stream.  Nothing to be done.
    */
-  iBinstream () { }
+  iBinstream () : istream (cin.rdbuf ()) { }
+
+  /**
+   * Initializes the stream with a predefined stream buffer.
+   * @param sb the stream buffer.
+   */
+  iBinstream (streambuf *sb) : istream (sb) { }
 
   // OPERATORS ------------------------------------------------------------
   
@@ -216,7 +222,7 @@ public:
  *
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
-class oBinstream : virtual public ostream
+class oBinstream : public ostream
 {
   
 public:
@@ -226,12 +232,19 @@ public:
   /**
    * Initializes the stream.  Nothing to be done.
    */
-  oBinstream () { }
+  oBinstream () : ostream (cout.rdbuf ()) { }
+
+  /**
+   * Initializes the stream with a predefined stream buffer.
+   * @param sb the stream buffer.
+   */
+  oBinstream (streambuf *sb) : ostream (sb) { }
 
   // OPERATORS ------------------------------------------------------------
   
   /**
-   * Outputs characters.
+   * Outputs characters (htons is used since Java uses 16 bit long chars
+   * and we cannot suppose that chars have 8 bit...)
    * @param c the character to output.
    * @return itself.
    */
@@ -257,7 +270,10 @@ public:
    * @return itself.
    */
   oBinstream& operator<< (const unsigned char *str)
-  { return operator<< ((const char*)str); }
+  { 
+    cout << "Dumping " << str << endl;
+    return operator<< ((const char*)str); 
+  }
 
   /**
    * Outputs booleans to binary stream.
@@ -366,10 +382,11 @@ public:
   // LIFECYCLE ------------------------------------------------------------
 
   /**
-   * Initializes the stream.  Nothing to be done.
+   * Initializes the stream with a predefined stream buffer.
+   * @param sb the stream buffer.
    */
-  Binstream () { }
-
+  Binstream (streambuf *sb) : iBinstream (sb), oBinstream (sb) { }
+  
   // OPERATORS ------------------------------------------------------------
 
   // ACCESS ---------------------------------------------------------------

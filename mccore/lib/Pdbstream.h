@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // Pdbstream.h
-// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
@@ -131,7 +131,7 @@ public:
    * Initializes the stream.
    */
   iPdbstream ()
-    : istream (),
+    : istream (cin.rdbuf ()),
       previous_atom (0),
       previous_res_type (0),
       current_res_type (0),
@@ -369,7 +369,7 @@ public:
    * Initializes the stream.
    */
   oPdbstream ()
-    : ostream (),
+    : ostream (cout.rdbuf ()),
       atomset (new no_pse_lp_atom_set ()),
       restype (0),
       mCurrentAtomNo (1),

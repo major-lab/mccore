@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // CTransfo.h
-// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Patrick Gendron <gendrop@IRO.UMontreal.CA>
 // Created On       : Fri Oct  1 18:22:41 1999
@@ -29,6 +29,7 @@
 #ifndef _CTransfo_h_
 #define _CTransfo_h_
 
+#include <iostream.h>
 
 #include <vector.h>
 #include <pair.h>
@@ -36,7 +37,6 @@
 class CAtom;
 class CPoint3D;
 class CResidue;
-class ostream;
 class iBinstream;
 class oBinstream;
 

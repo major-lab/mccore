@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // CResIdSet.h
-// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique,
+// Copyright © 2000-02 Laboratoire de Biologie Informatique et Théorique,
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Oct 26 10:24:02 2000
@@ -49,10 +49,12 @@ class oBinstream;
  */
 class CResIdSet : public set< CResId >
 {
+public:
   typedef CResId     value_type;
   typedef CResId&    reference;
   typedef CResId*    pointer;
-  
+
+private:  
   /**
    * The index over the set.
    */

@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // AbstractResidue.h
-// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct 12 18:21:13 2001
@@ -29,7 +29,7 @@
 #ifndef _AbstractResidue_h_
 #define _AbstractResidue_h_
 
-
+#include <iostream.h>
 #include <map.h>
 
 #include "CResId.h"
@@ -41,7 +41,6 @@ class iBinstream;
 class oBinstream;
 class iPdbstream;
 class oPdbstream;
-class ostream;
 class t_Atom;
 class t_Residue;
 
@@ -77,6 +76,9 @@ protected:
   typedef map< const t_Atom*, size_type > ResMap;
 
 public:
+
+  class ResidueIterator;
+  class ResidueConstIterator;
   
   /**
    * @short Iterators for residues.
@@ -90,6 +92,7 @@ public:
    */
   class ResidueIterator
   {
+    friend class AbstractResidue::ResidueConstIterator;
 
   public:
 
@@ -251,6 +254,7 @@ public:
    */
   class ResidueConstIterator
   {
+    friend class AbstractResidue::ResidueIterator;
 
   public:
 
@@ -302,6 +306,14 @@ public:
      */
     ResidueConstIterator (const ResidueConstIterator &right);
     
+    
+    /**
+     * Initializes the ResidueConstIterator with the right's contents. 
+     * Adding constness is allowed.
+     * @param right the ResidueConstIterator to copy.
+     */
+    ResidueConstIterator (const ResidueIterator &right);
+
     /**
      * Destroys the object.
      */
@@ -315,6 +327,14 @@ public:
      * @return itself.
      */
     ResidueConstIterator& operator= (const ResidueConstIterator &right);
+    
+    /**
+     * Assigns the ResidueConstIterator with the right's content.
+     * Adding constness is allowed.
+     * @param right the object to copy.
+     * @return itself.
+     */
+    ResidueConstIterator& operator= (const ResidueIterator &right);
     
     /**
      * Advances and assigns the const_iterator of k positions.
@@ -402,8 +422,8 @@ public:
     // I/O  -----------------------------------------------------------------
   };
   
-  friend ResidueIterator;
-  friend ResidueConstIterator;
+  friend class ResidueIterator;
+  friend class ResidueConstIterator;
   typedef ResidueIterator iterator;
   typedef ResidueConstIterator const_iterator;
 
@@ -541,11 +561,21 @@ public:
   virtual const CAtom& operator[] (const t_Atom *type) const = 0;
 
   /**
+   * Gets the reference to the residue id.
+   * @return the residue id reference.
+   */
+  operator CResId& () { 
+    return resId; 
+  }
+
+  /**
    * Gets the const reference to the residue id.
    * @return the residue id reference.
    */
-  operator const CResId& () const { return resId; }
-
+  operator const CResId& () const { 
+    return resId; 
+  }
+  
   /**
    * Gets the const reference to the tranfo.
    * @return the transfo reference.

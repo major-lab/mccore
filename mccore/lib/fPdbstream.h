@@ -1,6 +1,6 @@
 //                       -*- Mode: C++ -*-
 // fPdbstream.h
-// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>.
 // Created On       : 
@@ -29,10 +29,11 @@
 #ifndef _fPdbstream_h_
 #define _fPdbstream_h_
 
+#include <iostream.h>
 #include <fstream.h>
 
+#include "fstreambase.h"
 #include "Pdbstream.h"
-
 
 
 /**
@@ -40,7 +41,7 @@
  *
  * @author Martin Larose <larosem@iro.umontreal.ca>.
  */
-class ifPdbstream : public fstreambase, public iPdbstream
+class ifPdbstream : public iPdbstream, public fstreambase
 {
 public:
 
@@ -49,23 +50,16 @@ public:
   /**
    * Initializes the stream.
    */
-  ifPdbstream () : fstreambase (), iPdbstream () { }
-
-  /**
-   * Initializes the stream with a file descriptor.
-   * @param fd the file descriptor.
-   */
-  ifPdbstream (int fd) : fstreambase (fd), iPdbstream () { }
+  ifPdbstream () : iPdbstream (fstreambase::rdbuf ()) { }
 
   /**
    * Initializes the stream with a file name and optional mode and
    * protection.
    * @param name the file name.
    * @param mode the ios mode (default = ios::in).
-   * @param prot the protection flag (default = 0664).
    */
-  ifPdbstream (const char *name, int mode = ios::in, int prot = 0664)
-    : fstreambase (name, mode, prot), iPdbstream () { }
+  ifPdbstream (const char *name, int mode = ios::in)
+    : iPdbstream (fstreambase::rdbuf ()), fstreambase (name, mode) { }
 
   // OPERATORS -----------------------------------------------------
 
@@ -78,10 +72,9 @@ public:
    * protection.
    * @param name the file name.
    * @param mode the ios mode (default = ios::in).
-   * @param prot the protection flag (default = 0664).
    */
-  void open (const char *name, int mode=ios::in, int prot=0664)
-    { fstreambase::open (name, mode, prot); iPdbstream::open (); }
+  void open (const char *name, int mode=ios::in)
+    { fstreambase::open (name, mode); iPdbstream::open (); }
 
   /**
    * Closes the stream.
@@ -101,7 +94,7 @@ public:
  *
  * @author Martin Larose <larosem@iro.umontreal.ca>.
  */
-class ofPdbstream : public fstreambase, public oPdbstream
+class ofPdbstream : public oPdbstream, public fstreambase
 {
 public:
 
@@ -110,24 +103,16 @@ public:
   /**
    * Initializes the stream.
    */
-  ofPdbstream () : fstreambase (), oPdbstream () { }
-
-  /**
-   * Initializes the stream with a file descriptor.
-   * @param fd the file descriptor.
-   */
-  ofPdbstream(int fd)
-    : fstreambase (fd), oPdbstream () { }
+  ofPdbstream () : oPdbstream (fstreambase::rdbuf ()) { }
 
   /**
    * Initializes the stream with a file name and an optional mode and
    * protection.
    * @param name the file name.
    * @param mode the ios mode (default = ios::out).
-   * @param prot the protection flag (default = 0664).
    */
-  ofPdbstream (const char *name, int mode = ios::out, int prot = 0664)
-    : fstreambase (name, mode, prot), oPdbstream () { }
+  ofPdbstream (const char *name, int mode = ios::out)
+    : oPdbstream (fstreambase::rdbuf ()), fstreambase (name, mode) { }
 
   // OPERATORS -----------------------------------------------------
 
@@ -140,10 +125,9 @@ public:
    * protection.
    * @param name the file name.
    * @param mode the ios mode (default = ios::out).
-   * @param prot the protection flag (default = 0664).
    */
-  void open (const char *name, int mode = ios::out, int prot = 0664)
-    { fstreambase::open (name, mode, prot); oPdbstream::open (); }
+  void open (const char *name, int mode = ios::out)
+    { fstreambase::open (name, mode); oPdbstream::open (); }
 
   /**
    * Closes the stream.

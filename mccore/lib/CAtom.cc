@@ -214,7 +214,7 @@ operator>> (iBinstream &ibs, AtomSet *&as)
       as = new no_O2p_atom_set ();
       break;
     default:
-      throw CFatalIntLibException ("Invalid atom set code.");
+      ;//throw CFatalIntLibException ("Invalid atom set code.");
     }
   return ibs;
 }
@@ -240,6 +240,8 @@ atomset_and::operator= (const atomset_and &right)
       delete op2;
       op1 = right.op1->clone ();
       op2 = right.op2->clone ();
+      if (str) delete[] str;
+      str = 0;
     }
   return *this;
 }
@@ -248,7 +250,7 @@ atomset_and::operator= (const atomset_and &right)
 
 atomset_and::operator const char* () const
 {
-  char str[256];
+  if (!str) str = new char[256];
   
   sprintf (str,
 	   "%s %s",

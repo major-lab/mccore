@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // CException.cc
-// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
@@ -193,13 +193,17 @@ CException::operator<< (char theChar)
 }
 
 
-
-ostream&
-operator<< (ostream& os, const CException &exc) 
+ostream& 
+CException::output (ostream &os) const
 {
-  return os << exc.GetMessage ();
+  return os << GetMessage ();
 }
 
+
+ostream& operator<< (ostream &os, const CException &exc)
+{
+  return exc.output (os);
+}
 
 
 const CInterruptException&
@@ -283,12 +287,14 @@ CIntLibException::operator= (const CIntLibException &right)
 
 
 
-ostream&
-operator<< (ostream &os, const CIntLibException &exc)
+ostream& 
+CIntLibException::output (ostream &os) const
 {
-  return os << exc.GetFileName () << ":" << exc.GetLine () << ": "
-	    << (CException&) exc << endl << endl
-	    << "Please send a bug report to 'bug-mcsym@iro.umontreal.ca'.";
+  os << GetFileName () << ":" << GetLine () << ": ";
+  CException::output (os);
+  os << endl << endl
+     << "Please send a bug report to 'bug-mcsym@iro.umontreal.ca'.";
+  return os;
 }
 
 
@@ -364,11 +370,12 @@ CFatalSocketException::operator= (const CFatalSocketException &right)
 
 
 
-ostream&
-operator<< (ostream &os, const CFatalSocketException &exc)
+ostream& 
+CFatalSocketException::output (ostream &os) const
 {
-  return os << exc.GetFileName () << ":" << exc.GetLine () << ": "
-	    << (CException&) exc;
+  os << GetFileName () << ":" << GetLine () << ": ";
+  CException::output (os);
+  return os;
 }
 
 
@@ -382,8 +389,3 @@ CConnectionException::operator= (const CConnectionException &right)
 }	
 
 
-ostream&
-operator<< (ostream &os, const CConnectionException &exc)
-{
-  return os << (CException&) exc;
-}

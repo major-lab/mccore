@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*-
 // zfPdbstream.h
-// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : ven 23 jui 1999 13:54:45 EDT
@@ -30,7 +30,8 @@
 #define _zfPdbstream_h_
 
 
-#include "zfilebuf.h"
+#include "fstreambase.h"
+#include "zfstream.h"
 #include "Pdbstream.h"
 
 
@@ -43,7 +44,7 @@
  *
  * @author Martin Larose <larosem@iro.umontreal.ca>.
  */
-class izfPdbstream : public zfstreambase, public iPdbstream
+class izfPdbstream : public iPdbstream, public zfstreambase
 {
 
 public:
@@ -53,13 +54,7 @@ public:
   /**
    * Initializes the objet.
    */
-  izfPdbstream () : zfstreambase (), iPdbstream () { }
-
-  /**
-   * Initializes the objet with a file descriptor.
-   * @param fd the file descriptor.
-   */
-  izfPdbstream (int fd) : zfstreambase (fd), iPdbstream () { }
+  izfPdbstream () : iPdbstream (zfstreambase::rdbuf ()) { }
 
   /**
    * Initializes the objet with a file name and optional mode and
@@ -67,10 +62,10 @@ public:
    * flag.
    * @param name the file name.
    * @param mode the ios mode (default = ios::in).
-   * @param prot the protection flag (default = 0664).
    */
-  izfPdbstream (const char *name, int mode = ios::in, int prot = 0664)
-    : zfstreambase (name, mode, Z_BEST_SPEED, prot), iPdbstream () { }
+  izfPdbstream (const char *name, int mode = ios::in)
+    : iPdbstream (zfstreambase::rdbuf ()), 
+      zfstreambase (name, mode) { }
 
   // OPERATORS -----------------------------------------------------
 
@@ -84,11 +79,10 @@ public:
    * flag.
    * @param name the file name.
    * @param mode the ios mode (default = ios::in).
-   * @param prot the protection flag (default = 0664).
    */
-  void open (const char *name, int mode = ios::in, int prot = 0664)
+  void open (const char *name, int mode = ios::in)
   {
-    zfstreambase::open (name, mode, Z_BEST_SPEED, prot);
+    zfstreambase::open (name, mode);
     iPdbstream::open ();
   }
 
@@ -113,7 +107,7 @@ public:
  *
  * @author Martin Larose <larosem@iro.umontreal.ca>.
  */
-class ozfPdbstream : public zfstreambase, public oPdbstream
+class ozfPdbstream : public oPdbstream, public zfstreambase
 {
 
 public:
@@ -123,13 +117,7 @@ public:
   /**
    * Initializes the pdb file stream.
    */
-  ozfPdbstream () : zfstreambase (), oPdbstream () { }
-
-  /**
-   * Initializes the pdb file stream with a file descriptor.
-   * @param fd the file descriptor.
-   */
-  ozfPdbstream (int fd) : zfstreambase (fd), oPdbstream () { }
+  ozfPdbstream () : oPdbstream (zfstreambase::rdbuf()) { }
 
   /**
    * Initializes the pdb file stream with a file name and optional mode,
@@ -137,11 +125,11 @@ public:
    * @param name the file name.
    * @param mode the ios mode (default = ios::out).
    * @param level the compression level (default = Z_BEST_SPEED).
-   * @param prot the protection flag (default = 0664).
    */
   ozfPdbstream (const char *name, int mode = ios::out,
-		int level = Z_BEST_SPEED, int prot = 0664)
-    : zfstreambase (name, mode, level, prot), oPdbstream () { }
+		int level = Z_BEST_SPEED)
+    : oPdbstream (zfstreambase::rdbuf()),
+      zfstreambase (name, mode, level) { }
 
   // OPERATORS -----------------------------------------------------
 
@@ -155,12 +143,11 @@ public:
    * @param name the file name.
    * @param mode the ios mode (default = ios::out).
    * @param level the compression level (default = Z_BEST_SPEED).
-   * @param prot the protection flag (default = 0664).
    */
   void open (const char *name, int mode = ios::out,
-	     int level = Z_BEST_SPEED, int prot = 0664)
+	     int level = Z_BEST_SPEED)
   {
-    zfstreambase::open (name, mode, level, prot);
+    zfstreambase::open (name, mode, level);
     oPdbstream::open ();
   }
 

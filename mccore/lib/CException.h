@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // CException.h
-// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 16:27:35 1999
@@ -73,7 +73,7 @@ public:
   /**
    * Destructs the exception.
    */
-  ~CException () { delete[] mMessage; }
+  virtual ~CException () { delete[] mMessage; }
 
   // OPERATORS ------------------------------------------------------------
 
@@ -158,6 +158,13 @@ public:
    * @return itself.
    */
   CException& operator<< (char theChar);
+
+  /** 
+   * Outputs the message to the stream.
+   * @param os the output stream.
+   * @return the used output stream.
+   */
+  virtual ostream& output (ostream &os) const;
 };  
 
 
@@ -397,19 +404,17 @@ public:
   // METHODS --------------------------------------------------------------
 
   // I/O ------------------------------------------------------------------
+
+  /**
+   * Outputs the CIntLibException and CFatalIntLibException exception
+   * messages.  Prints the filename, the line number, the message and a bug
+   * notice.
+   * @param os the output stream.
+   * @return the used output stream.
+   */
+  virtual ostream& output (ostream &os) const;
 };
 
-
-
-/**
- * Outputs the CIntLibException and CFatalIntLibException exception
- * messages.  Prints the filename, the line number, the message and a bug
- * notice.
- * @param os the output stream.
- * @param exc the exception to display.
- * @return the used output stream.
- */
-ostream& operator<< (ostream &os, const CIntLibException &exc);
 
 
 
@@ -599,17 +604,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   // I/O ------------------------------------------------------------------
+
+  /**
+   * Outputs the CFatalSocketException exception
+   * messages.  Prints the filename, the line number and the message.
+   * @param os the output stream.
+   * @return the used output stream.
+   */
+  virtual ostream& output (ostream &os) const;
 };
 
-
-/**
- * Outputs the CFatalSocketException exception
- * messages.  Prints the filename, the line number and the message.
- * @param os the output stream.
- * @param exc the exception to display.
- * @return the used output stream.
- */
-ostream& operator<< (ostream &os, const CFatalSocketException &exc);
 
 
 /**

@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // CAtom.h
-// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
@@ -388,6 +388,11 @@ class atomset_and : public AtomSet
    */
   atomset_and () : AtomSet () { }
   
+  /**
+   * A string used when using the const char* cast. 
+   */
+  mutable char *str;
+
 public:
 
   /**
@@ -395,7 +400,8 @@ public:
    * @param x the left function object.
    * @param y the right function object.
    */
-  atomset_and (AtomSet *x, AtomSet *y) : AtomSet (), op1(x), op2(y) { }
+  atomset_and (AtomSet *x, AtomSet *y) 
+    : AtomSet (), op1(x), op2(y), str (0) { }
 
   /**
    * Initializes the object with the right's content.
@@ -403,12 +409,19 @@ public:
    */
   atomset_and (const atomset_and &right)
     : AtomSet (right), op1 (right.op1->clone ()), op2 (right.op2->clone ())
-  { }
+  { 
+    if (str) delete[] str;
+    str = 0;
+  }
 
   /**
    * Destructs the operands.
    */
-  virtual ~atomset_and () { delete op1; delete op2; }
+  virtual ~atomset_and () { 
+    delete op1; delete op2; 
+    if (str) delete[] str;
+    str = 0;
+  }
 
   // OPERATORS -----------------------------------------------------
 

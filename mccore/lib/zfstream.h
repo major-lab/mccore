@@ -1,12 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // zfstream.h
-// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
-//                  Université de Montréal.
-// Author           : Martin Larose <larosem@iro.umontreal.ca
-// Created On       : Fri May 11 17:58:03 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:35:22 2001
-// Update Count     : 2
+// Copyright © 2002 Laboratoire de Biologie Informatique et Théorique.
+// Author           : Patrick Gendron
+// Created On       : Mon Jan 28 16:13:00 2002
+// Last Modified By : 
+// Last Modified On : 
+// Update Count     : 0
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -29,295 +28,258 @@
 #ifndef _zfstream_h_
 #define _zfstream_h_
 
-
 #include <iostream.h>
+#include <fstream.h>
 
-#include "zfilebuf.h"
+#include <zlib.h>
 
 
 
 /**
- * @short Compressed input file stream.
+ * @short Implementation of compressed file buffer.
  *
- * These streams behaves like regular fstream except that we are able to
- * sets it's compression ratio on open operation.  It uses zlib.
+ * This implementation of buffer suits for compressed file streams.  
  *
- * @author Martin Larose <larosem@iro.umontreal.ca>
+ * @author Patrick Gendron <gendrop@iro.umontreal.ca>
  */
-class izfstream : public istream
+class zfstreambuf : public streambuf
 {
   /**
-   * The compressed stream buffer.
+   * The compressed file pointer used in gzread, gzwrite, etc.
    */
-  mutable zfilebuf buf;
+  gzFile file;
+
+  /**
+   * The size of the input/output buffer. 
+   */
+  static const int buf_size = 1024;
+
+  /**
+   * The size of the putback region.
+   */ 
+  static const int putback_size = 4;
+
+  /**
+   * The buffer.
+   */ 
+  char buffer [buf_size+putback_size];
+  
+  /**
+   * Indicate if the file is opened.
+   */ 
+  bool opened;
+  
+  /**
+   * The open mode of the gzFile.
+   */ 
+  int _mode;
 
 public:
 
-  // LIFECYCLE ------------------------------------------------------------
-
   /**
-   * Initializes the stream.
+   * Initializes the object.
    */
-  izfstream () { init (rdbuf ()); }
-
-  /**
-   * Initializes the objet with a file descriptor.
-   * @param fd the input file descriptor.
-   */
-  izfstream (int fd) { 
-    init (rdbuf ());
-    rdbuf ()->attach (fd);
-  }
+  zfstreambuf ();
   
   /**
-   * Initializes the stream with file name and parameters.
-   * @param name the path and file name to open.
-   * @param mode the open mode (default ios::in).
-   * @param prot the protection (default 0644).
+   * Destroys the object.
    */
-  izfstream(const char *name, int mode = ios::in, int prot = 0664) { 
-    init (rdbuf ());
-    if (!rdbuf()->open (name, mode, Z_BEST_SPEED, prot))
-      setstate(ios::badbit);
-  }
-
-  // OPERATORS ------------------------------------------------------------
-
-  // ACCESS ---------------------------------------------------------------
-
-  // METHODS --------------------------------------------------------------
+  ~zfstreambuf();
 
   /**
-   * Opens the stream with file name and parameters.
-   * @param name the path and file name to open.
-   * @param mode the open mode (default ios::in).
-   * @param prot the protection (default 0644).
+   * Opens the compressed file buffer.
+   * @param name the name of the file.
+   * @param mode the open mode requested.
+   * @param level the compression level (default Z_BEST_SPEED).
+   * @return itself if the operation went successfull, 0 otherwise.
    */
-  void open(const char *name, int mode=ios::in, int prot = 0664) { 
-    clear ();
-    if (!rdbuf ()->open (name, mode, Z_BEST_SPEED, prot))
-      setstate(ios::badbit);
-  }
-
-  /**
-   * Closes the stream.  It calls zfstreambase close () method to empty the
-   * buffer and put the compression trailer at the end of the file.
-   */
-  void close () {
-    if (!rdbuf ()->close ())
-      setstate(ios::failbit); 
-  }
+  zfstreambuf* open(const char* name, int mode, int level = Z_BEST_SPEED);
   
   /**
-   * Gets the buffer.
-   * @return the compressed file buffer object.
+   * Closes the zipped files.  The buffer is first synched so that the
+   * buffer is flushed to disk.
+   * @return 0 if the operation is successfull, itself otherwise.
    */
-  zfilebuf* rdbuf () { return &buf; }
-  
+  zfstreambuf* close();
+
   /**
-   * Attaches the stream with a file descriptor.
-   * @param fd the file descriptor.
+   * Returns the state of the buffer.
    */
-  void attach (int fd) {
-    if (!rdbuf ()->attach (fd))
-      setstate(ios::failbit);
-  }
+  bool is_open() { return opened; }
 
+  /**
+   * Takes care of overflow in write methods.  This is the main output method
+   * in GCC 2.95, GCC3.0 and sgi CC.
+   * @param c the character to put in the buffer.
+   * @return 0 for success, -1 if EOF is reached.
+   */
+  virtual int overflow (int c = EOF);
 
-  // I/O ------------------------------------------------------------------
+  /**
+   * Takes care of underflow in read methods.  This is the main input method
+   * in GCC 2.95, GCC3.0 and sgi CC.
+   * @return the upstream character.
+   */
+  virtual int underflow ();
+
+  /**
+   * Takes care of synchronizing the file by flushing the output buffer
+   * when endl or flush are called
+   * @return 0 if the sync succeeded, -1 if EOF is reached.
+   */
+  virtual int sync (); 
 };
 
 
 
 /**
- * @short Compressed output file stream.
+ * @short Implementation of a base class for compressed file i/o streams.
  *
- * These streams behaves like regular fstream except that we are able to
- * sets it's compression ratio on open operation.  It uses zlib.
+ * You can use this buffer like fstreambase.
+ * Crucial note: ANY Class that derives from zfstreambase must
+ * initialize the zfstreambase parent last because stream state is
+ * determined at that time!
  *
- * @author Martin Larose <larosem@iro.umontreal.ca>
+ * @author Patrick Gendron <gendrop@iro.umontreal.ca>
  */
-class ozfstream : public ostream
+class zfstreambase : virtual public ios 
 {
+protected:
+
   /**
    * The compressed stream buffer.
    */
-  mutable zfilebuf buf;
-
+  mutable zfstreambuf buf;
+  
 public:
   
-  // LIFECYCLE ------------------------------------------------------------
-
   /**
    * Initializes the stream.
    */
-  ozfstream () { init (rdbuf ()); }
+  zfstreambase () { init(rdbuf ()); }
 
   /**
-   * Initializes the objet with a file descriptor.
-   * @param fd the input file descriptor.
+   * Initializes the stream with a filename.
+   * @param name the file name.
+   * @param mode the file mode.
+   * @param level the compression level (default Z_BEST_SPEED).
    */
-  ozfstream (int fd) { 
-    init (rdbuf ());
-    rdbuf ()->attach (fd);
-  }
+  zfstreambase (const char* name, int mode, int level = Z_BEST_SPEED);
 
   /**
-   * Initializes the stream with file name and parameters.
-   * @param name the path and file name to open.
-   * @param level the compression level for output.
-   * @param mode the open mode (default ios::out).
-   * @param prot the protection (default 0644).
+   * Destroys the stream by calling close on it.
    */
-  ozfstream (const char *name, int level = Z_BEST_SPEED,
-	     int mode = ios::out, int prot = 0664) { 
-    init (rdbuf ());
-    if (!rdbuf()->open (name, mode, level, prot))
-      setstate(ios::badbit);
-  }
-
-  // OPERATORS ------------------------------------------------------------
-
-  // ACCESS ---------------------------------------------------------------
-
-  // METHODS --------------------------------------------------------------
+  ~zfstreambase();
 
   /**
-   * Opens the stream with file name and parameters.
-   * @param name the path and file name to open.
-   * @param level the compression level for output.
-   * @param mode the open mode (default ios::out).
-   * @param prot the protection (default 0644).
+   * Opens the stream with a file name.
+   * @param name the file name.
+   * @param mode the file mode.
+   * @param level the compression level (default Z_BEST_SPEED).
    */
-  void open (const char *name, int level = Z_BEST_SPEED,
-	     int mode = ios::out, int prot = 0664) { 
-    clear ();
-    if (!rdbuf ()->open (name, mode, level, prot))
-      setstate(ios::badbit);
-  }
-  
+  void open (const char* name, int mode, int level = Z_BEST_SPEED);
+
   /**
-   * Closes the stream.  It calls zfstreambase close () method to empty the
-   * buffer and put the compression trailer at the end of the file.
+   * Closes the stream.
    */
-  void close () { 
-    if (!rdbuf ()->close ())
-      setstate(ios::failbit); 
-  }
+  void close ();
+
+  /**
+   * Tests if the stream is open.
+   */
+  bool is_open () const { return rdbuf ()->is_open (); }
+
+  /**
+   * Tests if the stream is open.
+   */
+  operator bool () { return is_open (); }
 
   /**
    * Gets the buffer.
    * @return the compressed file buffer object.
    */
-  zfilebuf* rdbuf () { return &buf; }
-  
-  /**
-   * Attaches the stream with a file descriptor.
-   * @param fd the file descriptor.
-   */
-  void attach (int fd) {
-    if (!rdbuf ()->attach (fd))
-      setstate(ios::failbit);
-  }
-
-  // I/O ------------------------------------------------------------------
+  zfstreambuf* rdbuf() const { return &buf; }
 };
 
 
-
 /**
- * @short General compressed file stream.
+ * @short Simple compressed input stream.
  *
- * These streams behaves like regular fstream except that we are able to
- * sets it's compression ratio on open operation.  It uses zlib.
+ * This is a simple stream that reads a compressed gzip file.
  *
- * @author Martin Larose <larosem@iro.umontreal.ca>
+ * @author Patrick Gendron <gendrop@iro.umontreal.ca>
  */
-class zfstream : public iostream
+class izfstream : public istream, public zfstreambase
 {
-  /**
-   * The compressed stream buffer.
-   */
-  mutable zfilebuf buf;
 
-  
 public:
-  
-  // LIFECYCLE ------------------------------------------------------------
-
   /**
    * Initializes the stream.
    */
-  zfstream () { init (rdbuf ()); }
+  izfstream() : istream(rdbuf ()) {} 
 
   /**
-   * Initializes the objet with a file descriptor.
-   * @param fd the input file descriptor.
+   * Initializes the stream with filename.
+   * @param name the file name.
+   * @param mode the file mode.
    */
-  zfstream (int fd) { 
-    init (rdbuf ());
-    rdbuf ()->attach (fd);
-  }
+  izfstream(const char* name, int mode = ios::in)
+    : istream(rdbuf ()), zfstreambase(name, mode) {}  
 
   /**
-   * Initializes the stream with file name and parameters.
-   * @param name the path and file name to open.
-   * @param level the compression level for output.
-   * @param mode the open mode (default ios::in).
-   * @param prot the protection (default 0644).
+   * Opens the stream with file name.
+   * @param name the file name.
+   * @param mode the file mode.
    */
-  zfstream (const char *name, int level = Z_BEST_SPEED,
-	    int mode = ios::in, int prot = 0664) {
-    init (rdbuf ());
-    if (!rdbuf()->open (name, mode, level, prot))
-      setstate(ios::badbit);
+  void open(const char* name, int mode = ios::in) {
+    zfstreambase::open(name, mode);
   }
 
-  // OPERATORS ------------------------------------------------------------
-
-  // ACCESS ---------------------------------------------------------------
-
-  // METHODS --------------------------------------------------------------
-
-  /**
-   * Opens the stream with file name and parameters.
-   * @param name the path and file name to open.
-   * @param level the compression level for output.
-   * @param mode the open mode (default ios::in).
-   * @param prot the protection (default 0644).
-   */
-  void open (const char *name, int level = Z_BEST_SPEED,
-	     int mode = ios::in, int prot = 0664) { 
-    clear ();
-    if (!rdbuf ()->open (name, mode, level, prot))
-      setstate(ios::badbit);
-  }
-
-  /**
-   * Closes the stream.  It calls zfstreambase close () method to empty the
-   * buffer and put the compression trailer at the end of the file.
-   */
-  void close () { 
-    if (!rdbuf ()->close ())
-      setstate(ios::failbit); 
-  }
-  
   /**
    * Gets the buffer.
    * @return the compressed file buffer object.
    */
-  zfilebuf* rdbuf () { return &buf; }
-  
+  zfstreambuf* rdbuf() { return zfstreambase::rdbuf(); }
+};
+
+
+/**
+ * @short Simple compressed output stream.
+ *
+ * This is a simple stream that writes to a compressed gzip file.
+ *
+ * @author Patrick Gendron <gendrop@iro.umontreal.ca>
+ */
+class ozfstream : public ostream, public zfstreambase
+{
+public:
   /**
-   * Attaches the stream with a file descriptor.
-   * @param fd the file descriptor.
+   * Initializes the stream.
    */
-  void attach (int fd) {
-    if (!rdbuf ()->attach (fd))
-      setstate(ios::failbit);
+  ozfstream() : ostream(rdbuf ()) {}
+
+  /**
+   * Initializes the stream with filename.
+   * @param name the file name.
+   * @param mode the file mode.
+   */
+  ozfstream(const char* name, int mode = ios::out)
+    : ostream(rdbuf ()), zfstreambase(name, mode) {}  
+
+  /**
+   * Opens the stream with file name.
+   * @param name the file name.
+   * @param mode the file mode.
+   */
+  void open(const char* name, int mode = ios::out) {
+    zfstreambase::open(name, mode);
   }
 
-  // I/O ------------------------------------------------------------------
+  /**
+   * Gets the buffer.
+   * @return the compressed file buffer object.
+   */
+  zfstreambuf* rdbuf() { return zfstreambase::rdbuf(); }
 };
 
 

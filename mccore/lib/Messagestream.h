@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // Messagestream.h
-// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Sep  5 17:06:24 2001
@@ -61,7 +61,8 @@ public:
   /**
    * Initializes the object.
    */
-  Messagestream () : verboseLevel (2), currentVerboseLevel (2) { }
+  Messagestream () 
+    : ostream (cout.rdbuf ()), verboseLevel (2), currentVerboseLevel (2) { }
 
   /**
    * Initializes the message system with verbose levels.

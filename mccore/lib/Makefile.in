@@ -1,6 +1,6 @@
 ############################ -*- Mode: Makefile -*- ###########################
 ## Makefile.in
-## Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+## Copyright © 2000-02 Laboratoire de Biologie Informatique et Théorique.
 ##                     Université de Montréal.
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:57:11 2000
@@ -70,33 +70,39 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 	$(CXX) $(CXXSHFLAGS) $(DEFS) -I.. -I$(srcdir) -c $< -o $@
 
 
-SOURCES = AbstractResidue.cc \
-	  AtomTypeImp.cc \
-          Binstream.cc \
-          CAtom.cc \
-          CException.cc \
-          CHBond.cc \
+SOURCES = zfstream.cc \
+	  sockstream.cc \
+	  ServerSocket.cc \
+	  Binstream.cc \
+	  Fastastream.cc \
+	  Pdbstream.cc \
+	  CException.cc \
+\
+	  DirectedGraph.cc \
+\
           CPoint3D.cc \
+	  CAtom.cc \
+	  AtomTypeImp.cc \
+\
+	  AbstractResidue.cc \
           CResId.cc \
 	  CResIdSet.cc \
           CResidue.cc \
 	  CResidueFM.cc \
-          CTransfo.cc \
-	  DirectedGraph.cc \
-	  McCore.cc \
-	  Model.cc \
-	  Pdbstream.cc \
 	  Residue.cc \
 	  ResidueFM.cc \
           ResidueTypeImp.cc \
-	  ServerSocket.cc \
-	  sockbuf.cc \
-          zfilebuf.cc
+\
+          CHBond.cc \
+          CTransfo.cc \
+	  Model.cc \
+	  McCore.cc
 
-HEADERS = $(SOURCES:.cc=.h) Algo.h AtomType.h Messagestream.h \
+
+HEADERS = $(SOURCES:.cc=.h) fstreambase.h fBinstream.h zfBinstream.h \
+Algo.h AtomType.h Messagestream.h \
 ResidueFactoryMethod.h ResidueType.h SocketCommand.h fBinstream.h \
-fPdbstream.h oMessagestream.h zfBinstream.h zfPdbstream.h zfstream.h \
-sBinstream.h
+fPdbstream.h oMessagestream.h zfBinstream.h zfPdbstream.h
 
 OBJECTS = $(SOURCES:.cc=.o)
 

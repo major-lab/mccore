@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // ResidueTypeImp.h
-// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-02 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Mar  6 12:24:34 2001
@@ -104,6 +104,12 @@ public:
   virtual const char* getPDBRep () const { return mName; }
   
   /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'X'; }
+
+  /**
    * Tells if the residue is a misc type.
    * @return true.
    */
@@ -181,6 +187,12 @@ public:
    */
   virtual const char* getPDBRep () const { return "Nucleic acid"; }
   
+  /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'N'; }
+
   /**
    * Tells if the residue is a NucleicAcid type.
    * @return true.
@@ -260,6 +272,12 @@ public:
   virtual const char* getPDBRep () const { return "Amino acid"; }
   
   /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return '?'; }
+
+  /**
    * Tells if the residue is a AminoAcid type.
    * @return true.
    */
@@ -336,6 +354,12 @@ public:
    * @return "Phosphate".
    */
   virtual const char* getPDBRep () const { return "Phosphate"; }
+  
+  /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return '?'; }
   
   /**
    * Tells if the residue is a Phosphate type.
@@ -728,6 +752,12 @@ public:
   virtual const char* getPDBRep () const { return "  A"; }
   
   /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'A'; }
+
+  /**
    * Tells if the residue is a A type.
    * @return true.
    */
@@ -804,6 +834,12 @@ public:
    * @return "  C".
    */
   virtual const char* getPDBRep () const { return "  C"; }
+  
+  /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'C'; }
   
   /**
    * Tells if the residue is a C type.
@@ -884,6 +920,12 @@ public:
   virtual const char* getPDBRep () const { return "  G"; }
   
   /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'G'; }
+
+  /**
    * Tells if the residue is a G type.
    * @return true.
    */
@@ -960,6 +1002,12 @@ public:
    * @return "  U".
    */
   virtual const char* getPDBRep () const { return "  U"; }
+  
+  /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'U'; }
   
   /**
    * Tells if the residue is a U type.
@@ -1040,6 +1088,12 @@ public:
   virtual const char* getPDBRep () const { return "  T"; }
   
   /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'T'; }
+
+  /**
    * Tells if the residue is a T type.
    * @return true.
    */
@@ -1117,6 +1171,12 @@ public:
    */
   virtual const char* getPDBRep () const { return rt_A::getPDBRep (); }
   
+  /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return rt_A::getOneLetterRep (); }
+
   /**
    * Tells if the residue is a rA type.
    * @return true.
@@ -1196,6 +1256,12 @@ public:
   virtual const char* getPDBRep () const { return rt_C::getPDBRep (); }
   
   /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return rt_C::getOneLetterRep (); }
+
+  /**
    * Tells if the residue is a rC type.
    * @return true.
    */
@@ -1273,6 +1339,12 @@ public:
    */
   virtual const char* getPDBRep () const { return rt_G::getPDBRep (); }
   
+  /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return rt_G::getOneLetterRep (); }
+
   /**
    * Tells if the residue is a rG type.
    * @return true.
@@ -1352,6 +1424,12 @@ public:
   virtual const char* getPDBRep () const { return rt_U::getPDBRep (); }
   
   /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return rt_U::getOneLetterRep (); }
+
+  /**
    * Tells if the residue is a rU type.
    * @return true.
    */
@@ -1429,6 +1507,12 @@ public:
    */
   virtual const char* getPDBRep () const { return rt_A::getPDBRep (); }
   
+  /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return rt_A::getOneLetterRep (); }
+
   /**
    * Tells if the residue is a dA type.
    * @return true.
@@ -1508,6 +1592,12 @@ public:
   virtual const char* getPDBRep () const { return rt_C::getPDBRep (); }
   
   /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return rt_C::getOneLetterRep (); }
+
+  /**
    * Tells if the residue is a dC type.
    * @return true.
    */
@@ -1585,6 +1675,12 @@ public:
    */
   virtual const char* getPDBRep () const { return rt_G::getPDBRep (); }
   
+  /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return rt_G::getOneLetterRep (); }
+
   /**
    * Tells if the residue is a dG type.
    * @return true.
@@ -1664,6 +1760,12 @@ public:
   virtual const char* getPDBRep () const { return rt_T::getPDBRep (); }
   
   /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return rt_T::getOneLetterRep (); }
+
+  /**
    * Tells if the residue is a dT type.
    * @return true.
    */
@@ -1741,6 +1843,12 @@ public:
    */
   virtual const char* getPDBRep () const { return "ALA"; }
   
+  /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'A'; }
+
   /**
    * Tells if the residue is a alanine type.
    * @return true.
@@ -1820,6 +1928,12 @@ public:
   virtual const char* getPDBRep () const { return "ARG"; }
   
   /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'R'; }
+
+  /**
    * Tells if the residue is a arginine type.
    * @return true.
    */
@@ -1897,6 +2011,12 @@ public:
    */
   virtual const char* getPDBRep () const { return "ASN"; }
   
+  /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'N'; }
+
   /**
    * Tells if the residue is a asparagine type.
    * @return true.
@@ -1976,6 +2096,12 @@ public:
   virtual const char* getPDBRep () const { return "ASP"; }
   
   /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'D'; }
+
+  /**
    * Tells if the residue is a asparticacid type.
    * @return true.
    */
@@ -2053,6 +2179,12 @@ public:
    */
   virtual const char* getPDBRep () const { return "CYS"; }
   
+  /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'C'; }
+
   /**
    * Tells if the residue is a cysteine type.
    * @return true.
@@ -2132,6 +2264,12 @@ public:
   virtual const char* getPDBRep () const { return "GLN"; }
   
   /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'Q'; }
+
+  /**
    * Tells if the residue is a glutamine type.
    * @return true.
    */
@@ -2209,6 +2347,12 @@ public:
    */
   virtual const char* getPDBRep () const { return "GLU"; }
   
+  /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'E'; }
+
   /**
    * Tells if the residue is a glutamicacid type.
    * @return true.
@@ -2288,6 +2432,12 @@ public:
   virtual const char* getPDBRep () const { return "GLY"; }
   
   /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'G'; }
+
+  /**
    * Tells if the residue is a glycine type.
    * @return true.
    */
@@ -2365,6 +2515,12 @@ public:
    */
   virtual const char* getPDBRep () const { return "HIS"; }
   
+  /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'H'; }
+
   /**
    * Tells if the residue is a histidine type.
    * @return true.
@@ -2444,6 +2600,12 @@ public:
   virtual const char* getPDBRep () const { return "ILE"; }
   
   /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'I'; }
+
+  /**
    * Tells if the residue is a isoleucine type.
    * @return true.
    */
@@ -2521,6 +2683,12 @@ public:
    */
   virtual const char* getPDBRep () const { return "LEU"; }
   
+  /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'L'; }
+
   /**
    * Tells if the residue is a leucine type.
    * @return true.
@@ -2600,6 +2768,12 @@ public:
   virtual const char* getPDBRep () const { return "LYS"; }
   
   /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'K'; }
+
+  /**
    * Tells if the residue is a lysine type.
    * @return true.
    */
@@ -2677,6 +2851,12 @@ public:
    */
   virtual const char* getPDBRep () const { return "MET"; }
   
+  /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'M'; }
+
   /**
    * Tells if the residue is a methionine type.
    * @return true.
@@ -2756,6 +2936,12 @@ public:
   virtual const char* getPDBRep () const { return "PHE"; }
   
   /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'F'; }
+
+  /**
    * Tells if the residue is a phenylalanine type.
    * @return true.
    */
@@ -2833,6 +3019,12 @@ public:
    */
   virtual const char* getPDBRep () const { return "PRO"; }
   
+  /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'P'; }
+
   /**
    * Tells if the residue is a proline type.
    * @return true.
@@ -2912,6 +3104,12 @@ public:
   virtual const char* getPDBRep () const { return "SER"; }
   
   /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'S'; }
+
+  /**
    * Tells if the residue is a serine type.
    * @return true.
    */
@@ -2989,6 +3187,12 @@ public:
    */
   virtual const char* getPDBRep () const { return "THR"; }
   
+  /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'T'; }
+
   /**
    * Tells if the residue is a threonine type.
    * @return true.
@@ -3068,6 +3272,12 @@ public:
   virtual const char* getPDBRep () const { return "TRP"; }
   
   /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'W'; }
+
+  /**
    * Tells if the residue is a tryptophan type.
    * @return true.
    */
@@ -3146,6 +3356,12 @@ public:
   virtual const char* getPDBRep () const { return "TYR"; }
   
   /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'Y'; }
+
+  /**
    * Tells if the residue is a tyrosine type.
    * @return true.
    */
@@ -3223,6 +3439,12 @@ public:
    */
   virtual const char* getPDBRep () const { return "VAL"; }
   
+  /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return 'V'; }
+
   /**
    * Tells if the residue is a valine type.
    * @return true.

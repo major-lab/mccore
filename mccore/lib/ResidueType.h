@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // ResidueType.h
-// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-02 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
@@ -93,6 +93,12 @@ public:
    */
   virtual const char* getPDBRep () const = 0;
   
+  /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const = 0;
+
   /**
    * Tells if the residue is unknown.
    * @return false.

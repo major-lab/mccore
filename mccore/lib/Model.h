@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // Model.h
-// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
@@ -38,7 +38,6 @@ class iPdbstream;
 class oPdbstream;
 class iBinstream;
 class oBinstream;
-
 
 
 /**
@@ -98,7 +97,7 @@ protected:
      * @param right the iterator to copy.
      * @return itself.
      */
-    model_iterator& operator= (const list< AbstractResidue* >::iterator &right);
+    //    model_iterator& operator= (const list< AbstractResidue* >::iterator &right);
 
     /**
      * Tests the equality between iterators.
@@ -128,7 +127,9 @@ protected:
      * @return the referenced residue.
      */
     AbstractResidue& operator* () const
-    { return *list< AbstractResidue* >::iterator::operator* (); }
+    { 
+      return *list< AbstractResidue* >::iterator::operator* (); 
+    }
 
     /**
      * Redefines the access operator-> to get the dereferenced residue.
@@ -159,6 +160,14 @@ protected:
       : list< AbstractResidue* >::const_iterator (lIt)
     { }
 
+    /**
+     * Initializes the iterator with a non const model_iterator.
+     * @param it the model iterator.
+     */
+    model_const_iterator (const model_iterator& it)
+      : list< AbstractResidue* >::const_iterator (it)
+    { }
+
     // OPERATORS ------------------------------------------------------------
 
     /**
@@ -166,7 +175,14 @@ protected:
      * @param right the iterator to copy.
      * @return itself.
      */
-    model_const_iterator& operator= (const list< AbstractResidue* >::const_iterator &right);
+    //    model_const_iterator& operator= (const list< AbstractResidue* >::const_iterator &right);
+
+    /**
+     * Assigns the iterator to the right's contents.
+     * @param right the iterator to copy.
+     * @return itself.
+     */
+    //    model_const_iterator& operator= (const model_iterator &right);
 
     /**
      * Tests the equality between iterators.
@@ -175,7 +191,7 @@ protected:
      */
     bool operator== (const model_const_iterator &right) const
     { return list< AbstractResidue* >::const_iterator::operator== (right); }
-     
+      
     /**
      * Tests the inequality between iterators.
      * @param right the iterator to test.
@@ -183,7 +199,7 @@ protected:
      */
     bool operator!= (const model_const_iterator &right) const
     { return !operator== (right); }
-     
+      
     /**
      * Defines a difference operator for Model const_iterators.
      * @param right the right iterator value in the difference.
@@ -472,6 +488,16 @@ public:
  * @return wheter the residue pointed by left is less than right.
  */
 bool operator< (const Model::iterator &left, const Model::iterator &right);
+
+
+
+/**
+ * Test the partial order (Residue order) between model const_iterators.
+ * @param left the left operand.
+ * @param right the right operand.
+ * @return wheter the residue pointed by left is less than right.
+ */
+bool operator< (const Model::const_iterator &left, const Model::const_iterator &right);
 
 
 

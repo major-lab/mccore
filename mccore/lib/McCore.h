@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // McCore.h
-// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2000-02 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
@@ -43,7 +43,6 @@ class t_Residue;
 class Messagestream;
 class CAtom;
 class CTransfo;
-
 
 
 /**

@@ -45,7 +45,6 @@
 #include "ResidueTypeImp.h"
 #include "oMessagestream.h"
 
-
 map< const char *, t_Atom*, less_string > gMiscAtomString;
 map< const char *, t_Residue*, less_string > gMiscResidueString;
 

@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // CTransfo.cc
-// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Patrick Gendron <gendrop@IRO.UMontreal.CA>
 // Created On       : Fri Oct  1 18:22:41 1999
@@ -407,12 +407,13 @@ iBinstream&
 operator>> (iBinstream &ibs, CTransfo &obj)
 {
   int i;
-  
+
   for (i = 0; i < 12; ++i)
     {
       float x;
-      
-      ibs >> x;
+      char t[2];
+
+      ibs >> t >> x >> t;
       obj.SetElement (i, x);
     }
   return ibs;
@@ -426,6 +427,7 @@ operator<< (oBinstream &obs, const CTransfo &obj)
   int i;
   
   for (i = 0; i < 12; ++i)
-    obs << obj.GetElement (i);
+    obs << "{" << obj.GetElement (i) << "}";
+  //obs << "{" << 0 << "}";
   return obs;
 }

@@ -1,6 +1,6 @@
 //                        -*- Mode: C++ -*-
 // fBinstream.h
-// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:20:58 EDT
@@ -29,10 +29,11 @@
 #ifndef _fBinstream_h_
 #define _fBinstream_h_
 
+#include <iostream.h>
 #include <fstream.h>
 
+#include "fstreambase.h"
 #include "Binstream.h"
-
 
 
 /**
@@ -45,7 +46,7 @@
  *
  * @author Martin Larose <larosem@IRO.UMontreal.CA>
  */
-class ifBinstream : public fstreambase, public iBinstream
+class ifBinstream : public iBinstream, public fstreambase
 {
 
 public:
@@ -55,22 +56,15 @@ public:
   /**
    * Initializes the objet.
    */
-  ifBinstream () : fstreambase (), iBinstream () { }
-
-  /**
-   * Initializes the objet with a file descriptor.
-   * @param fd the input file descriptor.
-   */
-  ifBinstream (int fd) : fstreambase (fd), iBinstream () { }
+  ifBinstream () : iBinstream (fstreambase::rdbuf ()) { }
 
   /**
    * Initializes the stream with file name and parameters.
    * @param name the path and file name to open.
    * @param mode the open mode (default ios::in).
-   * @param prot the protection (default 0644).
    */
-  ifBinstream (const char *name, int mode=ios::in, int prot=0644)
-    : fstreambase (name, mode, prot), iBinstream () { }
+  ifBinstream (const char *name, int mode=ios::in)
+    : iBinstream (fstreambase::rdbuf ()), fstreambase (name, mode) { }
 
   // OPERATORS ------------------------------------------------------------
 
@@ -82,11 +76,10 @@ public:
    * Opens the stream with file name and parameters.
    * @param name the path and file name to open.
    * @param mode the open mode (default ios::in).
-   * @param prot the protection (default 0644).
    */
-  void open (const char *name, int mode=ios::in, int prot=0644)
+  void open (const char *name, int mode=ios::in)
     {
-      fstreambase::open (name, mode, prot);
+      fstreambase::open (name, mode);
       iBinstream::open ();
     }
 
@@ -110,7 +103,7 @@ public:
  *
  * @author Martin Larose <larosem@IRO.UMontreal.CA>
  */
-class ofBinstream : public fstreambase, public oBinstream
+class ofBinstream : public oBinstream, public fstreambase
 {
 
 public:
@@ -120,22 +113,15 @@ public:
   /**
    * Initializes the stream.
    */
-  ofBinstream () : fstreambase (), oBinstream () { }
-
-  /**
-   * Initializes the objet with a file descriptor.
-   * @param fd the input file descriptor.
-   */
-  ofBinstream (int fd) : fstreambase (fd), oBinstream () { }
+  ofBinstream () : oBinstream (fstreambase::rdbuf ()) { }
 
   /**
    * Initializes the stream with file name and parameters.
    * @param name the path and file name to open.
    * @param mode the open mode (default ios::out).
-   * @param prot the protection (default 0644).
    */
-  ofBinstream (const char *name, int mode = ios::out, int prot = 0644)
-    : fstreambase (name, mode, prot), oBinstream () { }
+  ofBinstream (const char *name, int mode = ios::out)
+    : oBinstream (fstreambase::rdbuf ()), fstreambase (name, mode) { }
 
   // OPERATORS ------------------------------------------------------------
 
@@ -147,11 +133,10 @@ public:
    * Opens the stream with file name and optional mode and protection.
    * @param name the path and file name to open.
    * @param mode the open mode (default = ios::out).
-   * @param prot the protection (default = 0644).
    */
-  void open (const char *name, int mode = ios::out, int prot = 0644)
+  void open (const char *name, int mode = ios::out)
   {
-    fstreambase::open (name, mode, prot);
+    fstreambase::open (name, mode);
     oBinstream::open ();
   }
 
@@ -175,7 +160,7 @@ public:
  *
  * @author Martin Larose <larosem@IRO.UMontreal.CA>
  */
-class fBinstream : public fstreambase, public Binstream
+class fBinstream : public Binstream, public fstreambase
 {
   
 public:
@@ -185,13 +170,7 @@ public:
   /**
    * Initializes the stream.
    */
-  fBinstream () : fstreambase (), Binstream () { }
-
-  /**
-   * Initializes the objet with a file descriptor.
-   * @param fd the input file descriptor.
-   */
-  fBinstream (int fd) : fstreambase (fd), Binstream () { }
+  fBinstream () : Binstream (fstreambase::rdbuf ()) { }
 
   /**
    * Initializes the stream with file name and parameters.
@@ -199,8 +178,8 @@ public:
    * @param mode the open mode (default ios::in).
    * @param prot the protection (default 0644).
    */
-  fBinstream (const char *name, int mode = ios::in, int prot = 0664)
-    : fstreambase(name, mode, prot), Binstream () { }
+  fBinstream (const char *name, int mode = ios::in)
+    : Binstream (fstreambase::rdbuf ()), fstreambase(name, mode)  { }
 
   // OPERATORS ------------------------------------------------------------
 
@@ -214,9 +193,9 @@ public:
    * @param mode the open mode (default ios::in).
    * @param prot the protection (default 0644).
    */
-  void open (const char *name, int mode = ios::in, int prot = 0664)
+  void open (const char *name, int mode = ios::in)
   {
-    fstreambase::open (name, mode, prot);
+    fstreambase::open (name, mode);
     Binstream::open ();
   }
 

@@ -211,7 +211,7 @@ CResidue::init ()
       else
 	{
 	  // Create an invalid residue but keep it in misc residues.
-	  gOut (1) << "Residue " << *mType << "-" << resId
+	  gOut (2) << "Residue " << *mType << "-" << resId
 		   << " is missing one or more critical atoms." 
 		   << endl;
 	  map< const char *, t_Residue*, less_string >::iterator i
@@ -239,7 +239,7 @@ CResidue::init ()
       else
 	{
 	  // Create an invalid residue but keep it in misc residues.
-	  gOut (1) << "Residue " << *mType << "-" << resId
+	  gOut (2) << "Residue " << *mType << "-" << resId
 		   << " is missing one or more critical atoms." 
 		   << endl;
 	  map< const char *, t_Residue*, less_string >::iterator i
@@ -488,6 +488,7 @@ CResidue::select (t_Atom *at ...) const
       if (atom)
 	atom_vec.push_back (*atom);
     }
+
   res = new CResidue (mType, atom_vec, resId);
   return res;
 }

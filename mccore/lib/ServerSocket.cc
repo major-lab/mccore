@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // ServerSocket.cc
-// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:56 2001
@@ -44,7 +44,7 @@
 #include <netdb.h>
 #include <fcntl.h>
 
-#include "CException.h"
+//  #include "CException.h"
 
 #if defined(__sgi) || defined (__sun)
 #include <strings.h>
@@ -64,9 +64,9 @@ ServerSocket::ServerSocket (int thePort)
 
   // Creating socket ---
   if ((socket_id = ::socket (AF_INET, SOCK_STREAM, 0)) < 0) {
-    CFatalSocketException exc ("socket creation failed", __FILE__, __LINE__);
-    exc << ": " << strerror (errno);
-    throw exc;
+//      CFatalSocketException exc ("socket creation failed", __FILE__, __LINE__);
+//      exc << ": " << strerror (errno);
+//      throw exc;
   }
 
   // Binding a name to the socket ---
@@ -76,15 +76,15 @@ ServerSocket::ServerSocket (int thePort)
   sin.sin_port = htons (port);
 
   if (::bind (socket_id, (sockaddr*)&sin, sizeof (sin)) < 0) {
-    CFatalSocketException exc ("socket binding failed", __FILE__, __LINE__);
-    exc << ": " << strerror (errno);
-    throw exc;
+//      CFatalSocketException exc ("socket binding failed", __FILE__, __LINE__);
+//      exc << ": " << strerror (errno);
+//      throw exc;
   }
 
   if (listen (socket_id, MAX_QUEUE_LEN) < 0) {
-    CFatalSocketException exc ("socket listening failed", __FILE__, __LINE__);
-    exc << ": " << strerror (errno);
-    throw exc;
+//      CFatalSocketException exc ("socket listening failed", __FILE__, __LINE__);
+//      exc << ": " << strerror (errno);
+//      throw exc;
   }
 
 }
@@ -94,23 +94,23 @@ ServerSocket::~ServerSocket ()
 }
 
 
-sBinstream*
+Sockstream*
 ServerSocket::accept ()
 {
   sockaddr_in client;
   socklen_t clientlen;
   int cid;
-  sBinstream* stream;
+  Sockstream* stream;
 
   if ((cid = ::accept (socket_id, (sockaddr*)&client, 
 		       (socklen_t*)&clientlen)) < 0) {
-    CFatalSocketException exc ("socket connection accepting failed",
-			       __FILE__, __LINE__);
-    exc << ": " << strerror (errno);
-    throw exc;
+//      CFatalSocketException exc ("socket connection accepting failed",
+//  			       __FILE__, __LINE__);
+//      exc << ": " << strerror (errno);
+//      throw exc;
   }
 
-  stream = new sBinstream (cid);
+  stream = new Sockstream (cid);
 
   return stream;
 }
@@ -129,9 +129,9 @@ ServerSocket::close ()
   */
 
   if (::close (socket_id) == -1) {
-    CFatalSocketException exc ("socket closing failed",
-			       __FILE__, __LINE__);
-    exc << ": " << strerror (errno);
-    throw exc;
+//      CFatalSocketException exc ("socket closing failed",
+//  			       __FILE__, __LINE__);
+//      exc << ": " << strerror (errno);
+//      throw exc;
   }
 }
