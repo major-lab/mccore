@@ -3,7 +3,7 @@
 // Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.18 $
+// $Revision: 1.19 $
 //  This file is part of mccore.
 //  
 //  mccore is free software; you can redistribute it and/or
@@ -74,7 +74,7 @@ namespace mccore {
    * </pre>
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Pdbstream.h,v 1.18 2003-07-11 20:28:20 gendrop Exp $
+   * @version $Id: Pdbstream.h,v 1.19 2003-07-31 18:08:55 gendrop Exp $
    */
   class iPdbstream : public istream
   {
@@ -332,10 +332,14 @@ namespace mccore {
      */
     virtual void close ();
 
+  protected :
+
     /**
      * Writes the current header to the stream.
      */
     void writeHeader ();
+
+  public:
 
     /**
      * Writes a remark.
@@ -358,6 +362,8 @@ namespace mccore {
      * Writes a TER record to the pdb stream.
      */
     void ter ();
+
+  protected:
 
     /**
      * Writes a END record to the pdb stream.

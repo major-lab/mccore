@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Patrick Gendron
-// Last Modified On : Fri Jul 11 16:27:47 2003
-// Update Count     : 268
+// Last Modified On : Thu Jul 31 14:08:50 2003
+// Update Count     : 278
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -397,6 +397,10 @@ namespace mccore {
 
   void oPdbstream::writeHeader ()
   {
+    headerdone = true;
+
+    char line[81];
+
     setf (ios::left, ios::adjustfield);
     *this << setw (6) << "HEADER";
     *this << "    ";
@@ -418,12 +422,14 @@ namespace mccore {
       *this << endl;
     }
 
-    writeRemark (10, "FILE GENERATED WITH MCCORE");
-    headerdone = true;
+    sprintf (line, "FILE GENERATED WITH %s %s", PACKAGE, VERSION);
+    writeRemark (10, line);
   }
 
   void oPdbstream::writeRemark (int k, const char* rem)
   {
+    if (!headerdone) writeHeader ();
+
     setf (ios::left, ios::adjustfield);
     *this << setw (6) << "REMARK";
     *this << " ";
@@ -437,6 +443,8 @@ namespace mccore {
 
   void oPdbstream::startModel () 
   {
+    if (!headerdone) writeHeader ();
+
     setf (ios::left, ios::adjustfield);
     *this << setw (6) << "MODEL";
     setf (ios::right, ios::adjustfield);
@@ -449,6 +457,8 @@ namespace mccore {
   
   void oPdbstream::endModel () 
   {
+    if (!headerdone) writeHeader ();
+
     setf (ios::left, ios::adjustfield);
     *this << setw (6) << "ENDMDL";
     pad (74);
@@ -495,6 +505,8 @@ namespace mccore {
   oPdbstream& 
   oPdbstream::operator<< (const Atom& at)
   {
+    if (!headerdone) writeHeader ();
+
     setf (ios::left, ios::adjustfield);
     if (rtype->isUnknown ())
       *this << setw (6) << "HETATM";
@@ -552,7 +564,8 @@ namespace mccore {
     setResidueType (r.getType ());
     setResId (r.getResId ());
     
-    for (Residue::const_iterator i=r.begin (atomset->clone ()); i!=r.end (); ++i) {
+    //    for (Residue::const_iterator i=r.begin (atomset->clone ()); i!=r.end (); ++i) {
+    for (Residue::const_iterator i=r.begin (); i!=r.end (); ++i) {
       *this << *i << endl;
     }
 
