@@ -4,11 +4,25 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Wed Apr  9 13:38:51 2003
-// Last Modified By : Martin Larose
-// Last Modified On : Tue Jul  8 15:03:27 2003
-// Update Count     : 21
-// Status           : Unknown.
+// $Revision: 1.5 $
+// $Id: stlio.h,v 1.5 2003-07-08 19:08:24 larosem Exp $
 // 
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
 
 #ifndef _stlio_h_
 #define _stlio_h_
@@ -88,6 +102,16 @@ namespace std
       {
 	os << *i << " ";
       }
+    return os;
+  }
+  
+  template< typename T >
+  ostream& operator<< (ostream &os, const list< T* > &t)
+  {
+    typename list< T* >::const_iterator i;
+    
+    for (i = t.begin (); i != t.end (); ++i)
+      os << **i << " ";
     return os;
   }
   
