@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 // 
 //  This file is part of mccore.
 //  
@@ -57,7 +57,7 @@ namespace mccore {
    * details).
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Model.h,v 1.14 2003-09-26 21:16:34 gendrop Exp $
+   * @version $Id: Model.h,v 1.15 2003-12-04 23:00:55 gendrop Exp $
    */
   class Model
   {
@@ -282,12 +282,17 @@ namespace mccore {
     /**
      * Removes the amino acids from the model.
      */
-    void removeAminoAcid ();
+    void removeAminoAcid ();    
 
     /**
      * Removes the nucleic acids from the model.
      */
     void removeNucleicAcid ();
+
+    /**
+     * Removes the water from the model.
+     */
+    void removeWater ();
 
     /**
      * Removes every residue that is not an amino acid.
