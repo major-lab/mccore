@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // McCore.cc
-// Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Nov 22 14:39:41 2000
-// Update Count     : 6
+// Last Modified On : Mon Jan 22 15:18:52 2001
+// Update Count     : 7
 // Status           : Ok.
 // 
 
@@ -112,6 +112,7 @@ t_Atom *a_1LP2 = 0;
 t_Atom *a_2LP4 = 0;
 t_Atom *a_1LP4 = 0;
 t_Atom *a_H3T = 0;
+t_Atom *a_H5T = 0;
 t_Atom *a_C = 0;
 t_Atom *a_CA = 0;
 t_Atom *a_CB = 0;
@@ -151,9 +152,6 @@ t_Atom *a_HG1 = 0;
 t_Atom *a_HG2 = 0;
 t_Atom *a_HH = 0;
 t_Atom *a_HH2 = 0;
-t_Atom *a_HN1 = 0;
-t_Atom *a_HN2 = 0;
-t_Atom *a_HN3 = 0;
 t_Atom *a_HXT = 0;
 t_Atom *a_HZ = 0;
 t_Atom *a_HZ1 = 0;
@@ -247,13 +245,13 @@ t_Residue *r_VAL = 0;
 const unsigned int hbond_nbDon[5] = { 3, 1, 2, 2, 1 };
 const unsigned int hbond_nbAcc[5] = { 4, 4, 3, 3, 4 };
 
-const float hbond_angleH_ideal = 20.0;
-const float hbond_angleH_var =   20.0;
+const float hbond_angleH_ideal = 25.0;
+const float hbond_angleH_var =   30.0;
 
-const float hbond_angleL_ideal = 20.0;
-const float hbond_angleL_var =   20.0;
+const float hbond_angleL_ideal = 30.0;
+const float hbond_angleL_var =   17.0;
 
-const float hbond_dist_ideal = 3.10;
+const float hbond_dist_ideal = 3.00;
 const float hbond_dist_var =   0.50;
 
 t_Atom *hbond_don[5][3];
@@ -285,6 +283,9 @@ set< t_Atom* > grUOptAtomSet;
 CMessageQueue gOut (cout, 3);
 
 
+
+// SetBondsParam : initialise les atomes contenus dans hydro, donor,
+// acceptor, etc 0 = G, 1 = U, 2 = C, 3 = A, 4 = T
 
 void
 SetBondsParam ()
@@ -918,6 +919,7 @@ McCoreInit ()
   a_2LP4 = new at_2LP4;
   a_1LP4 = new at_1LP4;
   a_H3T = new at_H3T;
+  a_H5T = new at_H5T;
   a_C = new at_C;
   a_CA = new at_CA;
   a_CB = new at_CB;
@@ -957,9 +959,6 @@ McCoreInit ()
   a_HG2 = new at_HG2;
   a_HH = new at_HH;
   a_HH2 = new at_HH2;
-  a_HN1 = new at_HN1;
-  a_HN2 = new at_HN2;
-  a_HN3 = new at_HN3;
   a_HXT = new at_HXT;
   a_HZ = new at_HZ;
   a_HZ1 = new at_HZ1;

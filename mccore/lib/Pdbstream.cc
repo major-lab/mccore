@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Pdbstream.cc
-// Copyright © 1999, 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Dec  4 15:43:25 2000
-// Update Count     : 4
+// Last Modified On : Mon Jan 22 15:19:29 2001
+// Update Count     : 5
 // Status           : Ok.
 // 
 
@@ -236,11 +236,11 @@ iPdbstream::GetAtomType (char *s)
     return a_CZ3;
   if (strcmp (tmpstr, "H") == 0)
     return a_H;
-  if (strcmp (tmpstr, "1H") == 0)
+  if (strcmp (tmpstr, "1H") == 0 || strcmp (tmpstr, "HN1") == 0)
     return a_1H;
-  if (strcmp (tmpstr, "2H") == 0)
+  if (strcmp (tmpstr, "2H") == 0 || strcmp (tmpstr, "HN2") == 0)
     return a_2H;
-  if (strcmp (tmpstr, "3H") == 0)
+  if (strcmp (tmpstr, "3H") == 0 || strcmp (tmpstr, "HN3") == 0)
     return a_3H;
   if (strcmp (tmpstr, "HA") == 0)
     return a_HA;
@@ -278,12 +278,6 @@ iPdbstream::GetAtomType (char *s)
     return a_HH;
   if (strcmp (tmpstr, "HH2") == 0)
     return a_HH2;
-  if (strcmp (tmpstr, "H") == 0)
-    return a_HN1;
-  if (strcmp (tmpstr, "HN2") == 0)
-    return a_HN2;
-  if (strcmp (tmpstr, "H3") == 0)
-    return a_HN3;
   if (strcmp (tmpstr, "HXT") == 0)
     return a_HXT;
   if (strcmp (tmpstr, "HZ") == 0)
@@ -505,12 +499,28 @@ iPdbstream::operator>> (T& obj)
 
 
 
+iPdbstream&
+iPdbstream::getline (char *buffer, unsigned int sz)
+{
+  int c;
+  
+  while (sz > 1 && (c = get ()) != EOF && c != '\n' && c != '\r')
+    {
+      *buffer++ = c;
+      --sz;
+    }
+  *buffer = '\0';
+  return *this;
+}
+
+
+
 size_t
 iPdbstream::getline ()
 {
   end_of_model = false;
   end_of_chain = false;
-  istream::getline (line, 256);
+  getline (line, 256);
   if (strncmp (line, "TER   ", 6) == 0)
     end_of_chain = true;
   else if (strncmp (line, "ENDMDL", 6) == 0)
@@ -762,9 +772,6 @@ oPdbstream::GetAtomStr (const t_Atom *t)
           if (t->is_HG2 ()) return "2HG ";
           if (t->is_HH ()) return " HH ";
           if (t->is_HH2 ()) return " HH2";
-          if (t->is_HN1 ()) return " H  ";
-          if (t->is_HN2 ()) return " HN2";
-          if (t->is_HN3 ()) return " H3 ";
           if (t->is_HZ ()) return " HZ ";
           if (t->is_HZ1 ()) return "1HZ ";
           if (t->is_HZ2 ()) return "2HZ ";
@@ -982,7 +989,7 @@ oPdbstream::putconect (const CModel &model)
 {
   CModel::const_iterator cit1, cit2;
   
-  for (cit1 = model.begin (), cit2 = cit1 + 1;
+  for (cit2 = model.begin (), cit1 = cit2++;
        cit2 != model.end ();
        ++cit1, ++cit2)
     if ((*cit1).GetChainId () == (*cit2).GetChainId ()

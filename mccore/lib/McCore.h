@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // McCore.h
-// Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Nov 22 14:39:42 2000
-// Update Count     : 6
+// Last Modified On : Mon Jan 22 15:18:54 2001
+// Update Count     : 7
 // Status           : Ok.
 // 
 
@@ -640,6 +640,13 @@ extern t_Atom *a_H3T;
 
 
 /**
+ * Global H5T atom type.
+ */
+extern t_Atom *a_H5T;
+
+
+
+/**
  * Global C atom type.
  */
 extern t_Atom *a_C;
@@ -909,27 +916,6 @@ extern t_Atom *a_HH;
  * Global HH2 atom type.
  */
 extern t_Atom *a_HH2;
-
-
-
-/**
- * Global HN1 atom type.
- */
-extern t_Atom *a_HN1;
-
-
-
-/**
- * Global HN2 atom type.
- */
-extern t_Atom *a_HN2;
-
-
-
-/**
- * Global HN3 atom type.
- */
-extern t_Atom *a_HN3;
 
 
 

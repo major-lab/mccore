@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Pdbstream.h
-// Copyright © 1999, 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Dec  4 15:44:18 2000
-// Update Count     : 3
+// Last Modified On : Mon Jan 22 15:19:30 2001
+// Update Count     : 4
 // Status           : Ok.
 // 
 
@@ -93,14 +93,14 @@ class iPdbstream : public istream
    */
   static char* Strip (char *cp);
 
+public:
+
   /**
    * Gets the residue type given it's string representation.
    * @param s the residue type representation.
    * @return the residue type.
    */
   static t_Residue* GetResidueType (char *s);
-
-public:
 
   /**
    * Gets the atom type given it's string representation.
@@ -204,6 +204,15 @@ public:
   CResId GetResId () const { return current_res_id; }
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Gets a text line.  Same as the inherited one except that the endline
+   * may be one of \n or \r.
+   * @param buffer the buffer where the characters are copied.
+   * @param sz the maximum reading number of characters.
+   * @return the input stream.
+   */
+  iPdbstream& getline (char *buffer, unsigned int sz);
 
   /**
    * Reads the next line from the pdb stream and put it in the line buffer.
