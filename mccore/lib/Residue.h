@@ -3,8 +3,8 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.18 $
-// $Id: Residue.h,v 1.18 2004-05-14 15:01:32 thibaup Exp $
+// $Revision: 1.19 $
+// $Id: Residue.h,v 1.19 2004-05-27 15:40:57 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -62,7 +62,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Patrick Gendron <gendrop@iro.umontreal.ca>
-   * @version $Id: Residue.h,v 1.18 2004-05-14 15:01:32 thibaup Exp $
+   * @version $Id: Residue.h,v 1.19 2004-05-27 15:40:57 thibaup Exp $
    */
   class Residue
   {
@@ -118,10 +118,25 @@ namespace mccore {
     bool rib_built_valid;
 
     /**
-     *
+     * Ribose building counter.
      */
     unsigned int rib_built_count;
 
+    /**
+     * Constants used in hydrogens and lone pairs insertion. 
+     */
+    static const float C_H_DIST_CYC;  
+    static const float C_H_DIST;      
+    static const float N_H_DIST;      
+    static const float O_H_DIST;
+    static const float O_LP_DIST;
+    static const float N_LP_DIST;
+    static const float TAN19;         
+    static const float TAN54;
+    static const float TAN60;         
+    static const float TAN70;         
+    static const float TAN30;
+    
     /**
      * Constants for the ribose theoretical building by estimation.
      */
@@ -151,7 +166,7 @@ namespace mccore {
      * @param pos the position of the atom in the atom vector;
      * @return the atom.
      */
-    /*virtual*/ Atom& get (size_type pos) const;
+    Atom& get (size_type pos) const;
 
   public:
 
@@ -312,6 +327,17 @@ namespace mccore {
        * @return the residue pointed by the iterator.
        */
       operator Residue* () { return res; }
+
+      
+      // METHODS -----------------------------------------------------------------
+
+      
+      /**
+       * Overwrites currently pointed atom's coordinates in local referential
+       * @param coord The atom's new coordinates.
+       */
+      void setLocal (const Vector3D& coord) { res->_insert_local (coord, pos); }
+      
     };
     friend class Residue::ResidueIterator;
 
@@ -538,14 +564,14 @@ namespace mccore {
     virtual ~Residue ();
 
     /**
-     * Creates a residue containing idealized coordinates of a
+     * Creates a complete residue containing theoretical coordinates for a
      * standard residue as defined by G.Parkinson et al., ACTA CRYST.D
      * (1996) v. 52, 57-64.
-     * @param h_lp flag for hydrogens and lone pairs addition.
-     * @return true if the operation was successful.
+     * @param backbone Flag for full backbone addition (default: false). 
+     * @exception CIntLibException is thrown if type is neither nucleic acid nor phosphate.
      */
-    virtual bool setIdeal (bool h_lp = true);
-
+    virtual void setTheoretical (bool backbone = false);
+				 
     // OPERATORS ------------------------------------------------------------
 
     /**
@@ -757,27 +783,43 @@ namespace mccore {
     virtual void addHydrogens ();
 
     /**
+     * Adds the HO3' hydrogen. Mandatory if the residue ends a strand.
+     */
+    void addHO3p ();
+
+    /**
      * Adds the lone pairs to the residue.
      */
     virtual void addLonePairs ();
 
     /**
+     * Calls removeOptionals, addHydrogens and addLonePairs.
+     */
+    void setupHLP ();
+    
+    /**
      * Determines the pucker pseudorotation (rho) of the NucleicAcid backbone.
+     * @return The pseudorotation value (rad).
+     * @exception CLibException thrown if type isn't a nucleic acid.
      */
     virtual float getRho () const;
     
     /**
      * Determines the pucker mode of the NucleicAcid backbone.
+     * @return The property type label.
      */
     virtual const PropertyType* getPucker () const;
 
     /**
      * Determines the glycosyl torsion (chi) of the NucleicAcid backbone.
+     * @return The glycosyl torsion value (rad).
+     * @exception CLibException thrown if type isn't a nucleic acid.
      */
     virtual float getChi () const;
     
     /**
      * Determines the glycosidic angle classification.
+     * @return The property type label.
      */
     virtual const PropertyType* getGlycosyl () const;
     
@@ -785,9 +827,8 @@ namespace mccore {
      * Initializes all the internals of the residue.  It aligns the
      * residue to the origin of the global coordinate and stores the
      * transformation internally.
-     * @param h_lp flag for hydrogens and lone pairs addition.
      */
-    virtual void finalize (bool h_lp = true);
+    virtual void finalize ();
 
     /**
      * Computes the distance between two residues by first aligning
@@ -1012,7 +1053,7 @@ namespace mccore {
      * @param type the atom type.
      * @return the atom.
      */
-    /*virtual*/ Atom* get (const AtomType* type) const;
+    Atom* get (const AtomType* type) const;
 
     /**
      * Fetches the atom specified by its type. If the atom is missing, a new
@@ -1023,6 +1064,19 @@ namespace mccore {
      */
     virtual Atom* _get_or_create (const AtomType *aType);
 
+    /**
+     * Overwrites an atom's coordinates in local referential. The overwritten
+     * atom is pointed by an AtomMap iterator.
+     * @param coord The atom's new coordinates.
+     * @param posit The AtomMap iterator.
+     */
+    virtual void _insert_local (const Vector3D& coord, AtomMap::iterator posit);
+
+    /**
+     * Adds backbone's hydrogens only if they aren't already in the residue. 
+     */
+    void _add_ribose_hydrogens ();
+    
     /**
      * Preprocesses ribose building. Setups atom pointers if needed. Fetches, copies
      * and align in the residue's referential the anchor atoms from the phosphates.
