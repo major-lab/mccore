@@ -1099,9 +1099,26 @@ CResidue::AtomCopy (const CResidue &right)
 	  exc << (const char*)*right.mType << ".";
 	  throw exc;
 	}
-      mAtomRef = right.mAtomRef;
-      mAtomIndex = right.mAtomIndex;
-      mAtomRes = right.mAtomRes;
+
+      ResMap::iterator i;
+      ResMap::const_iterator j;
+
+      // Since the atom ordering must be the same for the two
+      // residues, we can do this:
+      for (i=mAtomIndex.begin (), j=right.mAtomIndex.begin ();
+	   i!=mAtomIndex.end () && j!=right.mAtomIndex.end (); ++i, ++j) {
+	mAtomRef[i->second] = right.mAtomRef[j->second];
+	mAtomRes[i->second] = right.mAtomRes[j->second];
+      }
+
+      // Otherwise, we must do this:
+      // for (i=mAtomIndex.begin (); i!=mAtomIndex.end (); ++i) {
+      // mAtomRef[i->second] = 
+      //   right.mAtomRef[right.mAtomIndex.find (i->first)->second];
+      // mAtomRes[i->second] = 
+      //   right.mAtomRes[right.mAtomIndex.find (i->first)->second];
+      // }
+
       isPlaced = right.isPlaced;
       isIdentity = right.isIdentity;
       mTfo = right.mTfo;

@@ -45,6 +45,8 @@ class sockbuf : public streambuf
 public:
   int socket_id;
 
+  char hostname[256];
+
 public:
 
   /**

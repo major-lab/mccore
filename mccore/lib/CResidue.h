@@ -709,7 +709,8 @@ private:
 public:
 
   /**
-   * Copies the atoms from the right residue.
+   * Copies the atoms from the right residue.  This function preserves the validity of 
+   * iterators on the original residue.  Only spatial positions of atoms are modified.
    * @param right the residue to copy.
    */
   void AtomCopy (const CResidue &right);
