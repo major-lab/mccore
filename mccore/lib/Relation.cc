@@ -393,20 +393,40 @@ namespace mccore {
     vector< Residue::const_iterator > rbn_at;
     int x, y;
 
-    AtomSet* as = new AtomSetOr (new AtomSetHydrogen (), new AtomSetLP ());
-    as = new AtomSetAnd (new AtomSetSideChain (), as);
+//     AtomSet* as = new AtomSetOr (new AtomSetHydrogen (), new AtomSetLP ());
+//     as = new AtomSetAnd (new AtomSetSideChain (), as);
 
-    const UndirectedGraph< const AtomType* > *ga = ResidueTopology::get (ra->getType ());
-    const UndirectedGraph< const AtomType* > *gb = ResidueTopology::get (rb->getType ());
+//     const UndirectedGraph< const AtomType* > *ga = ResidueTopology::get (ra->getType ());
+//     const UndirectedGraph< const AtomType* > *gb = ResidueTopology::get (rb->getType ());
 
-    for (i=ra->begin (as->clone ()); i!=ra->end (); ++i) {
-      ra_at.push_back (i);
-      ran_at.push_back (ra->find (ga->getNeighbors (i->getType ()).front ()));
+//     for (i=ra->begin (as->clone ()); i!=ra->end (); ++i) {
+//       ra_at.push_back (i);
+//       ran_at.push_back (ra->find (ga->getNeighbors (i->getType ()).front ()));
+//     }
+//     for (k=rb->begin (as); k!=rb->end (); ++k) {
+//       rb_at.push_back (k);
+//       rbn_at.push_back (rb->find (gb->getNeighbors (k->getType ()).front ()));
+//     }
+
+    AtomSet* hl = new AtomSetOr (new AtomSetHydrogen (), new AtomSetLP ());
+    AtomSet* da = new AtomSetNot (hl->clone ());
+
+    for (i=ra->begin (hl->clone ()); i!=ra->end (); ++i) {
+      for (j=ra->begin (da->clone ()); j!=ra->end (); ++j) {
+	if (i->distance (*j) < 1.7) {
+	  ra_at.push_back (i);
+	  ran_at.push_back (j);	  
+	}
+      }
     }
-    for (k=rb->begin (as); k!=rb->end (); ++k) {
-      rb_at.push_back (k);
-      rbn_at.push_back (rb->find (gb->getNeighbors (k->getType ()).front ()));
-    }
+    for (i=rb->begin (hl->clone ()); i!=rb->end (); ++i) {
+      for (j=rb->begin (da->clone ()); j!=rb->end (); ++j) {
+	if (i->distance (*j) < 1.7) {
+	  rb_at.push_back (i);
+	  rbn_at.push_back (j);	  
+	}
+      }
+    }    
 
     for (x=0; x<(int)ra_at.size (); ++x) {
       i = ra_at[x];
@@ -464,7 +484,7 @@ namespace mccore {
     
     graph.preFlowPush (0, 1);
     
-//     graph.output (cout);
+    //    graph.output (cout);
 
     float sum_flow = 0;
     map< Residue::const_iterator, int >::iterator m, n;
@@ -476,7 +496,7 @@ namespace mccore {
       }
     }
     
-//     cout << "Sum flow = " << sum_flow << endl;
+// //     cout << "Sum flow = " << sum_flow << endl;
 
     if (sum_flow >= PAIRING_CUTOFF) {
       ts.insert (PropertyType::pPairing);
@@ -499,7 +519,7 @@ namespace mccore {
 	    fl.hbond = graph.getEdge (m->second, n->second);
 	    fl.flow = graph.getFlow (m->second, n->second);
 	    hbf.push_back (fl);
-
+	    
 	    if (fl.hbond.getDonorResidue () == ra) {
 	      pa = pa + (fl.hbond.getHydrogen () * fl.flow);
 	      pb = pb + (fl.hbond.getLonePair () * fl.flow);
@@ -514,7 +534,7 @@ namespace mccore {
 	  }
 	}	   
       } 
-
+    
       pa = pa / sum_flow;
       pb = pb / sum_flow;
       pva = pva / sum_flow;
@@ -532,9 +552,9 @@ namespace mccore {
       const PropertyType *iso = (rad<M_PI/2) ?
 	PropertyType::parseType ("cis") :
 	PropertyType::parseType ("trans");
-
+      
       ts.insert (iso);
-
+      
       pta = getFace (ra, pa);
       ptb = getFace (rb, pb);
       
@@ -552,7 +572,6 @@ namespace mccore {
       while (hbf.size () != size_hint) hbf.pop_front ();
 
       const PropertyType *pp = translatePairing (ra, rb, hbf, sum_flow, size_hint);
-
       if (pp) ts.insert (pp);
       
     }
@@ -862,17 +881,17 @@ namespace mccore {
 			      list< HBondFlow > &hbf, 
 			      float total_flow, int size_hint)
   {
-    list< PairingPattern* >::iterator i;
+    list< PairingPattern >::iterator i;
     const PropertyType *type;
     const PropertyType *best_type = 0;
     int best_size = 0;
 
     for (i=PairingPattern::patternList().begin ();
 	 i!=PairingPattern::patternList().end (); ++i) {
-      if (size_hint >= (*i)->size () && 
-	  (type = (*i)->evaluate (ra, rb, hbf)) != 0) {
-	if ((*i)->size () > best_size) {
-	  best_size = (*i)->size ();
+      if (size_hint >= (*i).size () && 
+	  (type = (*i).evaluate (ra, rb, hbf)) != 0) {
+	if ((*i).size () > best_size) {
+	  best_size = (*i).size ();
 	  best_type = type;
 	}
       }
