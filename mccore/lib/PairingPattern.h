@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Thu May 31 08:17:56 2001
-// $Revision: 1.6 $
-// $Id: PairingPattern.h,v 1.6 2004-09-19 03:37:26 larosem Exp $
+// $Revision: 1.7 $
+// $Id: PairingPattern.h,v 1.7 2004-09-24 22:20:02 larosem Exp $
 // 
 //  This file is part of mccore.
 //  
@@ -200,7 +200,7 @@ namespace mccore {
        * Gets all pairing patterns.
        * @return the list of the pairing patterns.
        */
-      static list< PairingPattern >& patternList ()
+      static const list< PairingPattern >& patternList ()
       {
 	if (!isInit)
 	  {

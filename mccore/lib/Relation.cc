@@ -1189,7 +1189,7 @@ namespace mccore
 			      list< HBondFlow > &hbf, 
 			      float total_flow, unsigned int size_hint)
   {
-    list< PairingPattern >::iterator i;
+    list< PairingPattern >::const_iterator i;
     const PropertyType *type;
     const PropertyType *best_type = 0;
     unsigned int best_size = 0;
