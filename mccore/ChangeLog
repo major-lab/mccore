@@ -1,3 +1,219 @@
+2002-11-19  Patrick Gendron  <gendrop@flanelle.iro.umontreal.ca>
+
+	* lib/CHBond.cc, lib/AbstractResidue.cc: Header modification.
+
+	* lib/ResidueTypeImp.h, lib/Residue.h, lib/Residue.cc, lib/Model.h, lib/Model.cc, lib/McCore.cc, lib/Graph.h, lib/Graph.cc, lib/CTransfo.cc, lib/CResidue.h, lib/CResidue.cc, lib/CResIdSet.cc, lib/CPoint3D.cc, lib/CHBond.h, lib/CHBond.cc, lib/AbstractResidue.h, lib/AbstractResidue.cc:
+	Added CHBond computation involving CH3 on thymine.
+
+2002-11-13  Patrick Gendron  <gendrop@flanelle.iro.umontreal.ca>
+
+	* lib/CTransfo.h, lib/CTransfo.cc: Deprecated CTransfo::Referentiel.
+
+2002-11-01  Martin Larose  <larosem@flanelle.iro.umontreal.ca>
+
+	* lib/SymmetricalMatrix.cc, lib/Graph.cc:
+	Minor corrections for Irix CC compilation.
+
+2002-10-23  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* lib/SymmetricalMatrix.cc, lib/SymmetricalMatrix.h:
+	Added method clear()
+
+2002-10-22  Martin Larose  <larosem@flanelle.iro.umontreal.ca>
+
+	* configure.in, lib/CAtom.h: *** empty log message ***
+
+2002-10-17  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* lib/SymmetricalMatrix.cc, lib/SymmetricalMatrix.h:
+	added operator(int,int)
+
+	* lib/Makefile.in: updated for new class SymmetricalMatrix
+
+	* lib/SymmetricalMatrix.cc, lib/SymmetricalMatrix.h: new files
+
+2002-09-05  Patrick Gendron  <gendrop@flanelle.iro.umontreal.ca>
+
+	* lib/CAtom.h, configure.in: Removed xmlcpg dependencies.
+
+2002-09-05  Patrick Gendron  <gendrop@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/lib/CAtom.h, /cvsroot/mccore/mccore/configure.in:
+	Removed xmlcpg dependencies.
+
+2002-08-28  Melissa Jourdain  <jourdaim@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/configure, /cvsroot/mccore/mccore/configure.in, /cvsroot/mccore/mccore/lib/CAtom.h, /cvsroot/mccore/mccore/lib/Model.cc:
+	*** empty log message ***
+
+2002-07-26  Patrick Gendron  <gendrop@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/lib/Graph.h, /cvsroot/mccore/mccore/lib/Graph.cc:
+	Added the algo for the union of the minimum cycle basis.
+
+2002-07-11  Patrick Gendron  <gendrop@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/lib/McCore.cc:
+	Added 2H2p in DNA backbone optional atom list.
+
+2002-06-25  Philippe Thibault  <thibaup@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/lib/McCore.h, /cvsroot/mccore/mccore/lib/McCore.cc:
+	Added atomic geometry to record bond length.
+
+2002-06-20  Patrick Gendron  <gendrop@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/lib/McCore.h, /cvsroot/mccore/mccore/lib/McCore.cc:
+	Modified rmsd_with_align so that it doesn't set the CTransfo when the
+	value passed is NULL...
+
+2002-06-11  Patrick Gendron  <gendrop@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/lib/Graph.h, /cvsroot/mccore/mccore/lib/Graph.cc, /cvsroot/mccore/mccore/lib/CAtom.h, /cvsroot/mccore/mccore/lib/Algo.h:
+	Modified the Graph class by adding cycle detection algorithm.
+
+2002-05-14  Philippe Thibault  <thibaup@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/lib/Graph.cc: Corrected a tiny little bug.
+
+2002-05-14  Philippe Thibault  <thibaup@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/lib/Graph.cc: Corrected a tiny little bug.
+
+2002-05-07  Patrick Gendron  <gendrop@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/lib/Graph.h, /cvsroot/mccore/mccore/lib/Graph.cc:
+	Updated graph implementation.
+
+2002-05-07  Patrick Gendron  <gendrop@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/lib/Graph.h, /cvsroot/mccore/mccore/lib/Graph.cc:
+	Updated graph implementation.
+
+2002-04-15  Patrick Gendron  <gendrop@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/lib/AbstractResidue.cc:
+	Corrected the copy operator in the AbstractResidue.
+
+2002-04-09  Patrick Gendron  <gendrop@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/lib/Model.h, /cvsroot/mccore/mccore/lib/Model.cc:
+	Inversed the operator- so that it works as expected.
+
+2002-04-02  Labo Lbit  <adbit@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/lib/Makefile.in:
+	Graph.h and Graph.cc added in headers.  Graph.cc should not be compiled, it
+	only contains template definitions.
+
+	* /cvsroot/mccore/mccore/lib/Graph.h: vector.h added in headers.
+
+	* /cvsroot/mccore/mccore/lib/Graph.cc:
+	Default values removed from definitions.
+
+2002-03-15  Patrick Gendron  <gendrop@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/lib/Makefile.in, /cvsroot/mccore/mccore/lib/Graph.h, /cvsroot/mccore/mccore/lib/Graph.cc:
+	Added a new class for graphs using map< int, map< int, int > >.
+
+	* /cvsroot/mccore/mccore/lib/Residue.h, /cvsroot/mccore/mccore/lib/Residue.cc, /cvsroot/mccore/mccore/lib/CResidue.h, /cvsroot/mccore/mccore/lib/CResidue.cc:
+	Modified Residue parsing from PDB.
+
+2002-02-25  Patrick Gendron  <gendrop@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/lib/Fastastream.cc, /cvsroot/mccore/mccore/lib/Fastastream.h, /cvsroot/mccore/mccore/lib/Makefile.in:
+	Removed Fasta streams
+
+	* /cvsroot/mccore/mccore/lib/zfstream.cc, /cvsroot/mccore/mccore/lib/sockstream.h, /cvsroot/mccore/mccore/lib/sockstream.cc, /cvsroot/mccore/mccore/lib/sBinstream.h, /cvsroot/mccore/mccore/lib/fstreambase.h, /cvsroot/mccore/mccore/lib/Makefile.in, /cvsroot/mccore/mccore/lib/CTransfo.cc, /cvsroot/mccore/mccore/lib/Binstream.h, /cvsroot/mccore/mccore/lib/Binstream.cc:
+	Added new socket streams and zstreams.
+
+2002-02-22  Patrick Gendron  <gendrop@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/lib/AbstractResidue.cc, /cvsroot/mccore/mccore/lib/AbstractResidue.h, /cvsroot/mccore/mccore/lib/Algo.h, /cvsroot/mccore/mccore/lib/Binstream.cc, /cvsroot/mccore/mccore/lib/Binstream.h, /cvsroot/mccore/mccore/lib/CAtom.cc, /cvsroot/mccore/mccore/lib/CAtom.h, /cvsroot/mccore/mccore/lib/CException.cc, /cvsroot/mccore/mccore/lib/CException.h, /cvsroot/mccore/mccore/lib/CResId.cc, /cvsroot/mccore/mccore/lib/CResIdSet.h, /cvsroot/mccore/mccore/lib/CResidue.cc, /cvsroot/mccore/mccore/lib/CTransfo.cc, /cvsroot/mccore/mccore/lib/CTransfo.h, /cvsroot/mccore/mccore/lib/DirectedGraph.h, /cvsroot/mccore/mccore/lib/Fastastream.cc, /cvsroot/mccore/mccore/lib/Fastastream.h, /cvsroot/mccore/mccore/lib/Makefile.in, /cvsroot/mccore/mccore/lib/McCore.cc, /cvsroot/mccore/mccore/lib/McCore.h, /cvsroot/mccore/mccore/lib/Messagestream.h, /cvsroot/mccore/mccore/lib/Model.cc, /cvsroot/mccore/mccore/lib/Model.h, /cvsroot/mccore/mccore/lib/Pdbstream.h, /cvsroot/mccore/mccore/lib/ResidueType.h, /cvsroot/mccore/mccore/lib/ResidueTypeImp.h, /cvsroot/mccore/mccore/lib/ServerSocket.cc, /cvsroot/mccore/mccore/lib/ServerSocket.h, /cvsroot/mccore/mccore/lib/fBinstream.h, /cvsroot/mccore/mccore/lib/fPdbstream.h, /cvsroot/mccore/mccore/lib/sBinstream.h, /cvsroot/mccore/mccore/lib/sockbuf.cc, /cvsroot/mccore/mccore/lib/sockbuf.h, /cvsroot/mccore/mccore/lib/zfBinstream.h, /cvsroot/mccore/mccore/lib/zfPdbstream.h, /cvsroot/mccore/mccore/lib/zfilebuf.cc, /cvsroot/mccore/mccore/lib/zfilebuf.h, /cvsroot/mccore/mccore/lib/zfstream.h:
+	Implemented new streams for compatibility with GCC 3
+
+2002-01-16  Martin Larose  <larosem@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/lib/McCore.cc: Copyright 2002.
+
+	* /cvsroot/mccore/mccore/lib/CAtom.cc:
+	Bug corrected, the atom sets were written with an unsigned char but read
+	with an int.
+
+2002-01-09  Martin Larose  <larosem@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/lib/CResidue.cc:
+	The exception should not generate a mcsym bug error message; input errors
+	may be generated by invalid input structure files.
+
+2001-12-19  Martin Larose  <larosem@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/lib/Model.h:
+	Various insert and push_back methods added.
+
+	* /cvsroot/mccore/mccore/lib/Model.cc:
+	Minor corrections.  Leak corrected in find.
+
+	* /cvsroot/mccore/mccore/lib/Algo.h:
+	CResidue replaced with AbstractResidue.
+
+2001-11-16  Martin Larose  <larosem@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/lib/McCore.cc:
+	More explicit exception error messages added.
+
+	* /cvsroot/mccore/mccore/lib/Residue.h, /cvsroot/mccore/mccore/lib/Residue.cc, /cvsroot/mccore/mccore/lib/CResidue.h, /cvsroot/mccore/mccore/lib/CResidue.cc, /cvsroot/mccore/mccore/lib/AbstractResidue.h, /cvsroot/mccore/mccore/lib/AbstractResidue.cc:
+	The residue's type:index map moved to AbstractResidue to be able to keep an
+	equally sorted iteration.
+
+2001-11-14  Martin Larose  <larosem@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/lib/Model.h: ostream output added.
+
+	* /cvsroot/mccore/mccore/lib/Model.cc:
+	Bug in iterator deletion corrected.
+
+	* /cvsroot/mccore/mccore/lib/CResidue.h:
+	virtual added to find method declaration.
+
+	* /cvsroot/mccore/mccore/lib/AbstractResidue.cc: Output misplaced.
+
+2001-11-05  Martin Larose  <larosem@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/lib/Model.h, /cvsroot/mccore/mccore/lib/Model.cc:
+	Iterators follows more closely their normal behaviors.
+
+	* /cvsroot/mccore/mccore/lib/Residue.h, /cvsroot/mccore/mccore/lib/Residue.cc, /cvsroot/mccore/mccore/lib/CResidue.h, /cvsroot/mccore/mccore/lib/CResidue.cc, /cvsroot/mccore/mccore/lib/AbstractResidue.h:
+	operator= for CTransfo added in virtual table.
+
+2001-11-01  Martin Larose  <larosem@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/lib/Model.h, /cvsroot/mccore/mccore/lib/Model.cc:
+	Model iterator operator- added.
+
+2001-10-25  Martin Larose  <larosem@flanelle.iro.umontreal.ca>
+
+	* /cvsroot/mccore/mccore/lib/CModel.cc, /cvsroot/mccore/mccore/lib/CModel.h:
+	Files replaced by Model.
+
+	* /cvsroot/mccore/mccore/lib/Model.cc, /cvsroot/mccore/mccore/lib/AtomTypeImp.cc, /cvsroot/mccore/mccore/lib/AbstractResidue.h:
+	getType changed back to GetType.
+
+	* /cvsroot/mccore/mccore/lib/ResidueFactoryMethod.h, /cvsroot/mccore/mccore/lib/ResidueFM.h, /cvsroot/mccore/mccore/lib/ResidueFM.cc, /cvsroot/mccore/mccore/lib/Residue.h, /cvsroot/mccore/mccore/lib/Residue.cc, /cvsroot/mccore/mccore/lib/Pdbstream.h, /cvsroot/mccore/mccore/lib/Pdbstream.cc, /cvsroot/mccore/mccore/lib/Model.h, /cvsroot/mccore/mccore/lib/Model.cc, /cvsroot/mccore/mccore/lib/McCore.h, /cvsroot/mccore/mccore/lib/McCore.cc, /cvsroot/mccore/mccore/lib/Makefile.in, /cvsroot/mccore/mccore/lib/CResidueFM.h, /cvsroot/mccore/mccore/lib/CResidueFM.cc, /cvsroot/mccore/mccore/lib/CResidue.h, /cvsroot/mccore/mccore/lib/CResidue.cc, /cvsroot/mccore/mccore/lib/CHBond.h, /cvsroot/mccore/mccore/lib/CHBond.cc, /cvsroot/mccore/mccore/lib/CAtom.h, /cvsroot/mccore/mccore/lib/CAtom.cc, /cvsroot/mccore/mccore/lib/AtomTypeImp.h, /cvsroot/mccore/mccore/lib/AtomTypeImp.cc, /cvsroot/mccore/mccore/lib/AtomType.h, /cvsroot/mccore/mccore/lib/AbstractResidue.h, /cvsroot/mccore/mccore/lib/AbstractResidue.cc:
+	New Residue classes.  An abstract residue has been created to get the
+	possibility to use different kind of models.  The abstract class contains a
+	CResId, a residue type, a CTransfo and the iterators.  To implement a new
+	residue and use it in a model, create an implementation of
+	ResidueFactoryMethod and set it in the model constructor.
+
+	New Model class.  It stores pointers over AbstractResidues.  Its methods
+	and iterators returns AbstractResidues pointers and references.
+
+	New ResidueFactoryMethod abstract class.  It defines an interface for
+	creating residues of a given type inside models.  It's only method,
+	createResidue returns a new residue pointer for the implemented residue
+	class.  It is mainly used in the Model read methods.
+
 2001-10-25  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* lib/CModel.cc, lib/CModel.h: Files replaced by Model.

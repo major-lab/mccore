@@ -447,7 +447,7 @@ vector< Edge > Graph< Node, Edge >::minimum_spanning_tree (void) const
 	}
       }
   }
-  
+
   return T;
 }
 
