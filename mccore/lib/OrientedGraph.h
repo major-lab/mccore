@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // OrientedGraph.h
-// Copyright © 2001-04 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-05 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu May 10 14:49:18 2001
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 // 
 // This file is part of mccore.
 // 
@@ -32,6 +32,7 @@
 #include <vector>
 
 #include "Graph.h"
+#include "Path.h"
 
 using namespace std;
 
@@ -43,7 +44,7 @@ namespace mccore
    * Directed graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: OrientedGraph.h,v 1.2 2005-01-03 22:46:04 larosem Exp $
+   * @version $Id: OrientedGraph.h,v 1.3 2005-02-01 22:13:33 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -403,10 +404,64 @@ namespace mccore
       return false;
     }      
 
-    // I/O  -----------------------------------------------------------------
-
   public:
     
+    /**
+     * Finds the all the paths from the label q to the root.  Must be a non
+     * cyclic graph.  edge weights must implement operator+.
+     * @param Dr the oriented graph (with no cycles).
+     * @param q the starting label.
+     * @return a collection of Paths from q to the root in Dr.
+     */
+    vector< Path< V, EW > > breadthFirstPaths (label q) const
+    {
+      vector< Path< V, EW> > result;
+      list< Path< label, EW > > lst (1, Path< label, EW > ());
+      Path< label, EW > &tmp = lst.front ();
+      
+      tmp.push_back (q);
+      tmp.setValue (0);
+      while (! lst.empty ())
+	{
+	  Path< label, unsigned int > &front = lst.front ();
+	  label endNode;
+	  list< label > neighbors;
+	  typename list< label >::iterator neighborsIt;
+
+	  endNode = front.back ();
+	  neighbors = internalOutNeighborhood (endNode);
+	  neighborsIt = neighbors.begin ();
+	  if (neighbors.end () == neighborsIt)
+	    {
+	      typename Path< label, EW >::reverse_iterator rIt;
+
+	      result.push_back (Path< V, EW > ());
+	      Path< V, EW > &tmp = result.back ();
+	      
+	      for (rIt = front.rbegin (); front.rend () != rIt; ++rIt)
+		{
+		  tmp.push_back (internalGetVertex (*rIt));
+		}
+	      tmp.setValue (front.getValue ());
+	    }
+	  else
+	    {
+	      for (; neighbors.end () != neighborsIt; ++neighborsIt)
+		{
+		  lst.push_back (front);
+		  Path< label, EW > &tmp = lst.back ();
+
+		  tmp.push_back (*neighborsIt);
+		  tmp.setValue (tmp.getValue () + internalGetEdgeWeight (endNode, *neighborsIt));
+		}
+	    }
+	  lst.pop_front ();
+	}
+      return result;
+    }
+
+    // I/O  -----------------------------------------------------------------
+
     /**
      * Writes the object to a stream.
      * @param os the stream.

@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Dec 10 19:09:13 2004
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 // 
 // This file is part of mccore.
 // 
@@ -48,7 +48,7 @@ namespace mccore
    * Undirected graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: UndirectedGraph.h,v 1.14 2005-02-01 16:36:11 larosem Exp $
+   * @version $Id: UndirectedGraph.h,v 1.15 2005-02-01 22:13:33 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -58,6 +58,7 @@ namespace mccore
   class UndirectedGraph : public Graph< V, E, VW, EW, Vertex_Comparator>
   {
     static const int MAXVALUE = numeric_limits< int >::max ();
+    static const unsigned int MAXUIVALUE = numeric_limits< unsigned int >::max ();
 
   public:
 
@@ -442,7 +443,7 @@ namespace mccore
      * @param paths a collection of Path to fill with the SPT.
      */
     template< class Compare >
-    void sptDijkstraTiernan (label source, vector< Path< unsigned int, int > > &paths, const Compare &comparator = less< label > ())
+    void sptDijkstraTiernan (label source, vector< Path< label, unsigned int > > &paths, const Compare &comparator = less< label > ())
     {
       label w;
       size_type graphsize;
@@ -460,7 +461,7 @@ namespace mccore
 	  paths[w].push_back (source);
 	  if  (w == source)
 	    {
-	      value = MAXVALUE;
+	      value = MAXUIVALUE;
 	    }
 	  else
 	    {
@@ -471,7 +472,7 @@ namespace mccore
 		}
 	      else
 		{
-		  value = MAXVALUE;
+		  value = MAXUIVALUE;
 		}
 	      C.push_back (w);
 	    }
@@ -499,7 +500,7 @@ namespace mccore
 	  
 	  // Break if the elements remaining in C are not connected to the
 	  // source.
-	  if  (min_value == MAXVALUE)
+	  if  (min_value == MAXUIVALUE)
 	    {
 	      break;
 	    }
@@ -777,69 +778,24 @@ namespace mccore
     
     /**
      * Adds a Path in the digraph Dr.
-     * @param sp the Path to add.
-     * @param graph the studied graph.
+     * @param p the Path to add.
      * @param Dr the digraph.
      */
-    void addSP (Path< label, int > &sp, OrientedGraph< label, bool, less< label > > &Dr)
+    void addPath (Path< label, EW > &sp, OrientedGraph< label, bool, VW, EW > &Dr) const
     {
-      typename Path< label, int >::reverse_iterator fit;
-      typename Path< label, int >::reverse_iterator lit;
+      typename Path< label, EW >::reverse_iterator fit;
+      typename Path< label, EW >::reverse_iterator lit;
       
-      fit = sp.rbegin ();
+      fit = p.rbegin ();
       Dr.insert (*fit);
-      for (lit = fit++; sp.rend () != fit; ++fit, ++lit)
+      for (lit = fit++; p.rend () != fit; ++fit, ++lit)
 	{
 	  Dr.insert (*fit);
 	  if (! Dr.areConnected (*lit, *fit))
-	    Dr.connect (*lit, *fit, internalGetEdgeWeight (*lit, *fit));
-	}
-    }
-
-    /**
-     * Finds the all the paths from the label q to the root.  To be moved
-     * into OrientedGraph.
-     * @param Dr the oriented graph (with no cycles).
-     * @param q the starting label.
-     * @return a collection of Paths from q to the root in Dr.
-     */
-    vector< Path< label, int > > breadthFirstPaths (const OrientedGraph< label, bool > &Dr, label q)
-    {
-      vector< Path< label, int> > result;
-      list< Path< label, int> > lst (1, Path< label, int> ());
-      Path< label, int > &tmp = lst.front ();
-      
-      tmp.push_back (q);
-      tmp.setValue (0);
-      while (! lst.empty ())
-	{
-	  Path< label, int > &front = lst.front ();
-	  label endNode;
-	  list< label > neighbors;
-	  typename list< label >::iterator neighborsIt;
-
-	  endNode = front.back ();
-	  neighbors = Dr.outNeighborhood (endNode);
-	  neighborsIt = neighbors.begin ();
-	  if (neighbors.end () == neighborsIt)
 	    {
-	      reverse (front.begin (), front.end ());
-	      result.push_back (front);
+	      Dr.connect (*lit, *fit, internalGetEdgeWeight (*lit, *fit));
 	    }
-	  else
-	    {
-	      for (; neighbors.end () != neighborsIt; ++neighborsIt)
-		{
-		  lst.push_back (front);
-		  Path< label, int > &tmp = lst.back ();
-
-		  tmp.push_back (*neighborsIt);
-		  tmp.setValue (tmp.getValue () + 1);
-		}
-	    }
-	  lst.pop_front ();
 	}
-      return result;
     }
 
     pair< bool, vector< vector< bool > >::iterator > gElimination (vector< bool > &candidate, vector< vector< bool > > &matrix)
@@ -926,31 +882,29 @@ namespace mccore
       return newbag;
     }
     
-  public:
+  protected:
     
     /**
      * Vismara's union of minimum cycle bases algorithm.  It returns a
      * vector of Path (cycles where the first and last vertices are
-     * connected) in graph numerotation.
-     * @param graph the UndirectedAbstractGraph input graph.
-     * @param D a vector of digraphs witch has the same size as graph, it
-     * contains the shortest paths digraph from a vertice to the source (it
-     * is a turnaround due to GraphAlgo-AbstractGraph dependencies).
+     * connected) in graph numerotation.  We should be able to cast the edge
+     * weights to unsigned int.
      * @return a vector of Path.
      */
-    vector< mccore::Path< label, int > > unionMinimumCycleBases (vector< OrientedGraph< label, bool >* > &D)
+    vector< mccore::Path< label, unsigned int > > internalUnionMinimumCycleBases () const
     {
       label r;
-      vector< Path< label, int > > prototypes;
-      typename vector< Path< label, int > >::iterator protIt;
-      vector< mccore::Path< label, int > > CR;
-      typename vector< Path< label, int > >::iterator it;
-      
+      vector< Path< label, unsigned int > > prototypes;
+      typename vector< Path< label, unsigned int > >::iterator protIt;
+      vector< Path< label, unsigned int > > CR;
+      typename vector< Path< label, unsigned int > >::iterator it;
+      vector< OrientedGraph< label, bool, bool, unsigned int > > D (size ());
+
       for (r = 0; size () > r; ++r)
 	{
-	  vector< Path< label, int > > spt;
+	  vector< Path< label, unsigned int > > spt;
 	  label y;
-	  OrientedGraph< label, bool > &Dr = *D[r];
+	  OrientedGraph< label, bool, bool, unsigned int > &Dr = D[r];
 	  
 	  sptDijkstraTiernan (r, spt, greater< unsigned int > ());
 	  for (y = 0; size () > y && y < r; ++y)

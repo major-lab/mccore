@@ -4,7 +4,7 @@
 //                  Université de Montréal
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 00:05:15 2004
-// $Revision: 1.24 $
+// $Revision: 1.25 $
 // 
 // This file is part of mccore.
 // 
@@ -35,6 +35,7 @@
 
 #include "Algo.h"
 #include "Exception.h"
+#include "Path.h"
 
 using namespace std;
 
@@ -47,7 +48,7 @@ namespace mccore
    * costly.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Graph.h,v 1.24 2005-01-03 22:54:30 larosem Exp $
+   * @version $Id: Graph.h,v 1.25 2005-02-01 22:13:08 larosem Exp $
    */
   template< class V,
 	    class E,
