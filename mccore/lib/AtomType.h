@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // AtomType.h
-// Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Nov 22 14:35:19 2000
-// Update Count     : 2
+// Last Modified On : Mon Jan 22 15:08:59 2001
+// Update Count     : 3
 // Status           : Ok.
 // 
 
@@ -70,6 +70,12 @@ public:
 
   // METHODS --------------------------------------------------------------
 
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "ATOM".
+   */
+  virtual const char* AmberRep () const { return "ATOM"; }
+  
   /**
    * Tells if the atom is unknown.
    * @return if the atom is unknown.
@@ -562,6 +568,12 @@ public:
   virtual bool is_H3T () const { return false; }
   
   /**
+   * Tells if the atom is a H5T.
+   * @return if the atom is a H5T.
+   */
+  virtual bool is_H5T () const { return false; }
+  
+  /**
    * Tells if the atom is a C.
    * @return if the atom is a C.
    */
@@ -788,24 +800,6 @@ public:
    * @return if the atom is a HH2.
    */
   virtual bool is_HH2 () const { return false; }
-
-  /**
-   * Tells if the atom is a HN1.
-   * @return if the atom is a HN1.
-   */
-  virtual bool is_HN1 () const { return false; }
-
-  /**
-   * Tells if the atom is a HN2.
-   * @return if the atom is a HN2.
-   */
-  virtual bool is_HN2 () const { return false; }
-
-  /**
-   * Tells if the atom is a HN3.
-   * @return if the atom is a HN3.
-   */
-  virtual bool is_HN3 () const { return false; }
 
   /**
    * Tells if the atom is a HXT.
@@ -1223,6 +1217,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return the name of the atom.
+   */
+  virtual const char* AmberRep () const { return mName; }
+  
+  /**
    * Tells if the atom is an unknown atom.
    * @return true.
    */
@@ -1329,6 +1329,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "NucleicAcid".
+   */
+  virtual const char* AmberRep () const { return "NucleicAcid"; }
+  
+  /**
    * Tells if the atom is a nucleic acid.
    * @return true.
    */
@@ -1391,6 +1397,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "AminoAcid".
+   */
+  virtual const char* AmberRep () const { return "AminoAcid"; }
 
   /**
    * Tells if the atom is a protein.
@@ -1457,6 +1469,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "Backbone".
+   */
+  virtual const char* AmberRep () const { return "Backbone"; }
+
+  /**
    * Tells if the atom is part of the backbone.
    * @return true.
    */
@@ -1519,6 +1537,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "SideChain".
+   */
+  virtual const char* AmberRep () const { return "SideChain"; }
 
   /**
    * Tells if the atom is part of the side chain.
@@ -1585,6 +1609,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "C".
+   */
+  virtual const char* AmberRep () const { return "C"; }
+
+  /**
    * Tells if the atom is a carbon.
    * @return true.
    */
@@ -1647,6 +1677,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H".
+   */
+  virtual const char* AmberRep () const { return "H"; }
 
   /**
    * Tells if the atom is a hydrogen.
@@ -1713,6 +1749,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "N".
+   */
+  virtual const char* AmberRep () const { return "N"; }
+
+  /**
    * Tells if the atom is a nitrogen.
    * @return true.
    */
@@ -1775,6 +1817,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "P".
+   */
+  virtual const char* AmberRep () const { return "P"; }
 
   /**
    * Tells if the atom is a phosphate.
@@ -1841,6 +1889,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "O".
+   */
+  virtual const char* AmberRep () const { return "O"; }
+
+  /**
    * Tells if the atom is an oxygen.
    * @return true.
    */
@@ -1903,6 +1957,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "S".
+   */
+  virtual const char* AmberRep () const { return "S"; }
 
   /**
    * Tells if the atom is a carbon.
@@ -1969,6 +2029,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "MG".
+   */
+  virtual const char* AmberRep () const { return "MG"; }
+
+  /**
    * Tells if the atom is a magnesium.
    * @return true.
    */
@@ -2033,6 +2099,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "LonePair".
+   */
+  virtual const char* AmberRep () const { return "LonePair"; }
+
+  /**
    * Tells if the atom is a lone pair.
    * @return true.
    */
@@ -2095,6 +2167,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "Pseudo".
+   */
+  virtual const char* AmberRep () const { return "Pseudo"; }
 
   /**
    * Tells if the atom is a pseudo atom.
@@ -2162,6 +2240,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "C1'".
+   */
+  virtual const char* AmberRep () const { return "C1'"; }
 
   /**
    * Tells if the atom is a C1p.
@@ -2258,6 +2342,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "C2'".
+   */
+  virtual const char* AmberRep () const { return "C2'"; }
+
+  /**
    * Tells if the atom is a C2p.
    * @return true.
    */
@@ -2337,6 +2427,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "C3'".
+   */
+  virtual const char* AmberRep () const { return "C3'"; }
 
   /**
    * Tells if the atom is a C3p.
@@ -2420,6 +2516,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "C4'".
+   */
+  virtual const char* AmberRep () const { return "C4'"; }
+
+  /**
    * Tells if the atom is a C4p.
    * @return true.
    */
@@ -2499,6 +2601,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "C5'".
+   */
+  virtual const char* AmberRep () const { return "C5'"; }
 
   /**
    * Tells if the atom is a C5p.
@@ -2582,6 +2690,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H1'".
+   */
+  virtual const char* AmberRep () const { return "H1'"; }
+
+  /**
    * Tells if the atom is a H1p.
    * @return true.
    */
@@ -2661,6 +2775,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H2'".
+   */
+  virtual const char* AmberRep () const { return "H2'"; }
 
   /**
    * Tells if the atom is a H2p.
@@ -2744,6 +2864,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H3'".
+   */
+  virtual const char* AmberRep () const { return "H3'"; }
+
+  /**
    * Tells if the atom is a H3p.
    * @return true.
    */
@@ -2823,6 +2949,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H4'".
+   */
+  virtual const char* AmberRep () const { return "H4'"; }
 
   /**
    * Tells if the atom is a H4p.
@@ -2906,6 +3038,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H5'".
+   */
+  virtual const char* AmberRep () const { return "H5'"; }
+
+  /**
    * Tells if the atom is a H5p.
    * @return true.
    */
@@ -2985,6 +3123,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "O1P".
+   */
+  virtual const char* AmberRep () const { return "O1P"; }
 
   /**
    * Tells if the atom is a O1P.
@@ -3068,6 +3212,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "O2'".
+   */
+  virtual const char* AmberRep () const { return "O2'"; }
+
+  /**
    * Tells if the atom is a O2p.
    * @return true.
    */
@@ -3147,6 +3297,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "O2P".
+   */
+  virtual const char* AmberRep () const { return "O2P"; }
 
   /**
    * Tells if the atom is a O2P.
@@ -3230,6 +3386,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "O3'".
+   */
+  virtual const char* AmberRep () const { return "O3'"; }
+
+  /**
    * Tells if the atom is a O3p.
    * @return true.
    */
@@ -3309,6 +3471,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "O3P".
+   */
+  virtual const char* AmberRep () const { return "O3P"; }
 
   /**
    * Tells if the atom is a O3P.
@@ -3392,6 +3560,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "O4'".
+   */
+  virtual const char* AmberRep () const { return "O4'"; }
+
+  /**
    * Tells if the atom is a O4p.
    * @return true.
    */
@@ -3471,6 +3645,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "O5'".
+   */
+  virtual const char* AmberRep () const { return "O5'"; }
 
   /**
    * Tells if the atom is a O5p.
@@ -3554,6 +3734,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "P".
+   */
+  virtual const char* AmberRep () const { return "P"; }
+
+  /**
    * Tells if the atom is a P.
    * @return true.
    */
@@ -3633,6 +3819,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H2'1".
+   */
+  virtual const char* AmberRep () const { return "H2'1"; }
 
   /**
    * Tells if the atom is a 1H2p.
@@ -3716,6 +3908,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H5'1".
+   */
+  virtual const char* AmberRep () const { return "H5'1"; }
+
+  /**
    * Tells if the atom is a 1H5p.
    * @return true.
    */
@@ -3795,6 +3993,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H2'2".
+   */
+  virtual const char* AmberRep () const { return "H2'2"; }
 
   /**
    * Tells if the atom is a 2H2p.
@@ -3878,6 +4082,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H5'2".
+   */
+  virtual const char* AmberRep () const { return "H5'2"; }
+
+  /**
    * Tells if the atom is a 2H5p.
    * @return true.
    */
@@ -3957,6 +4167,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HO'2".
+   */
+  virtual const char* AmberRep () const { return "HO'2"; }
 
   /**
    * Tells if the atom is a HO2p.
@@ -4040,6 +4256,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HO'3".
+   */
+  virtual const char* AmberRep () const { return "HO'3"; }
+
+  /**
    * Tells if the atom is a HO3p.
    * @return true.
    */
@@ -4119,6 +4341,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "C2".
+   */
+  virtual const char* AmberRep () const { return "C2"; }
 
   /**
    * Tells if the atom is a C2.
@@ -4215,6 +4443,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "C4".
+   */
+  virtual const char* AmberRep () const { return "C4"; }
+
+  /**
    * Tells if the atom is a C4.
    * @return true.
    */
@@ -4307,6 +4541,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "C5".
+   */
+  virtual const char* AmberRep () const { return "C5"; }
 
   /**
    * Tells if the atom is a C5.
@@ -4403,6 +4643,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "C7".
+   */
+  virtual const char* AmberRep () const { return "C7"; }
+
+  /**
    * Tells if the atom is a C5M.
    * @return true.
    */
@@ -4482,6 +4728,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "C6".
+   */
+  virtual const char* AmberRep () const { return "C6"; }
 
   /**
    * Tells if the atom is a C6.
@@ -4578,6 +4830,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "C8".
+   */
+  virtual const char* AmberRep () const { return "C8"; }
+
+  /**
    * Tells if the atom is a C8.
    * @return true.
    */
@@ -4670,6 +4928,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H1".
+   */
+  virtual const char* AmberRep () const { return "H1"; }
 
   /**
    * Tells if the atom is a H1.
@@ -4766,6 +5030,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H2".
+   */
+  virtual const char* AmberRep () const { return "H2"; }
+
+  /**
    * Tells if the atom is a H2.
    * @return true.
    */
@@ -4858,6 +5128,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H3".
+   */
+  virtual const char* AmberRep () const { return "H3"; }
 
   /**
    * Tells if the atom is a H3.
@@ -4954,6 +5230,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H5".
+   */
+  virtual const char* AmberRep () const { return "H5"; }
+
+  /**
    * Tells if the atom is a H5.
    * @return true.
    */
@@ -5046,6 +5328,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H6".
+   */
+  virtual const char* AmberRep () const { return "H6"; }
 
   /**
    * Tells if the atom is a H6.
@@ -5142,6 +5430,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H7".
+   */
+  virtual const char* AmberRep () const { return "H7"; }
+
+  /**
    * Tells if the atom is a H7.
    * @return true.
    */
@@ -5221,6 +5515,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H8".
+   */
+  virtual const char* AmberRep () const { return "H8"; }
 
   /**
    * Tells if the atom is a H8.
@@ -5317,6 +5617,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "N1".
+   */
+  virtual const char* AmberRep () const { return "N1"; }
+
+  /**
    * Tells if the atom is a N1.
    * @return true.
    */
@@ -5409,6 +5715,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "N2".
+   */
+  virtual const char* AmberRep () const { return "N2"; }
 
   /**
    * Tells if the atom is a N2.
@@ -5505,6 +5817,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "N3".
+   */
+  virtual const char* AmberRep () const { return "N3"; }
+
+  /**
    * Tells if the atom is a N3.
    * @return true.
    */
@@ -5597,6 +5915,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "N4".
+   */
+  virtual const char* AmberRep () const { return "N4"; }
 
   /**
    * Tells if the atom is a N4.
@@ -5693,6 +6017,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "N6".
+   */
+  virtual const char* AmberRep () const { return "N6"; }
+
+  /**
    * Tells if the atom is a N6.
    * @return true.
    */
@@ -5785,6 +6115,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "N7".
+   */
+  virtual const char* AmberRep () const { return "N7"; }
 
   /**
    * Tells if the atom is a N7.
@@ -5881,6 +6217,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "N9".
+   */
+  virtual const char* AmberRep () const { return "N9"; }
+
+  /**
    * Tells if the atom is a N9.
    * @return true.
    */
@@ -5971,6 +6313,12 @@ public:
   virtual operator const char* () const { return "O2"; }
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "O2".
+   */
+  virtual const char* AmberRep () const { return "O2"; }
 
   /**
    * Tells if the atom is a O2.
@@ -6067,6 +6415,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "O4".
+   */
+  virtual const char* AmberRep () const { return "O4"; }
+
+  /**
    * Tells if the atom is a O4.
    * @return true.
    */
@@ -6159,6 +6513,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "O6".
+   */
+  virtual const char* AmberRep () const { return "O6"; }
 
   /**
    * Tells if the atom is a O6.
@@ -6255,6 +6615,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H21".
+   */
+  virtual const char* AmberRep () const { return "H21"; }
+
+  /**
    * Tells if the atom is a 1H2.
    * @return true.
    */
@@ -6347,6 +6713,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H41".
+   */
+  virtual const char* AmberRep () const { return "H41"; }
 
   /**
    * Tells if the atom is a 1H4.
@@ -6443,6 +6815,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H71".
+   */
+  virtual const char* AmberRep () const { return "H71"; }
+
+  /**
    * Tells if the atom is a 1H5M.
    * @return true.
    */
@@ -6522,6 +6900,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H61".
+   */
+  virtual const char* AmberRep () const { return "H61"; }
 
   /**
    * Tells if the atom is a 1H6.
@@ -6618,6 +7002,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H22".
+   */
+  virtual const char* AmberRep () const { return "H22"; }
+
+  /**
    * Tells if the atom is a 2H2.
    * @return true.
    */
@@ -6710,6 +7100,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H42".
+   */
+  virtual const char* AmberRep () const { return "H42"; }
 
   /**
    * Tells if the atom is a 2H4.
@@ -6806,6 +7202,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H72".
+   */
+  virtual const char* AmberRep () const { return "H72"; }
+
+  /**
    * Tells if the atom is a 2H5M.
    * @return true.
    */
@@ -6885,6 +7287,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H62".
+   */
+  virtual const char* AmberRep () const { return "H62"; }
 
   /**
    * Tells if the atom is a 2H6.
@@ -6981,6 +7389,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H73".
+   */
+  virtual const char* AmberRep () const { return "H73"; }
+
+  /**
    * Tells if the atom is a 3H5M.
    * @return true.
    */
@@ -7062,6 +7476,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "PSY".
+   */
+  virtual const char* AmberRep () const { return "PSY"; }
+
+  /**
    * Tells if the atom is a PSY.
    * @return true.
    */
@@ -7137,6 +7557,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "PSZ".
+   */
+  virtual const char* AmberRep () const { return "PSZ"; }
+
+  /**
    * Tells if the atom is a PSZ.
    * @return true.
    */
@@ -7210,6 +7636,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "LP1".
+   */
+  virtual const char* AmberRep () const { return "LP1"; }
 
   /**
    * Tells if the atom is a LP1.
@@ -7293,6 +7725,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "LP3".
+   */
+  virtual const char* AmberRep () const { return "LP3"; }
+
+  /**
    * Tells if the atom is a LP3.
    * @return true.
    */
@@ -7372,6 +7810,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "LP7".
+   */
+  virtual const char* AmberRep () const { return "LP7"; }
 
   /**
    * Tells if the atom is a LP7.
@@ -7455,6 +7899,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "1LP2".
+   */
+  virtual const char* AmberRep () const { return "1LP2"; }
+
+  /**
    * Tells if the atom is a 1LP2.
    * @return true.
    */
@@ -7534,6 +7984,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "1LP4".
+   */
+  virtual const char* AmberRep () const { return "1LP4"; }
 
   /**
    * Tells if the atom is a 1LP4.
@@ -7617,6 +8073,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "1LP6".
+   */
+  virtual const char* AmberRep () const { return "1LP6"; }
+
+  /**
    * Tells if the atom is a 1LP6.
    * @return true.
    */
@@ -7696,6 +8158,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "2LP2".
+   */
+  virtual const char* AmberRep () const { return "2LP2"; }
 
   /**
    * Tells if the atom is a 2LP2.
@@ -7779,6 +8247,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "2LP4".
+   */
+  virtual const char* AmberRep () const { return "2LP4"; }
+
+  /**
    * Tells if the atom is a 2LP4.
    * @return true.
    */
@@ -7858,6 +8332,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "2LP6".
+   */
+  virtual const char* AmberRep () const { return "2LP6"; }
 
   /**
    * Tells if the atom is a 2LP6.
@@ -7941,10 +8421,97 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H3T".
+   */
+  virtual const char* AmberRep () const { return "H3T"; }
+
+  /**
    * Tells if the atom is a H3T.
    * @return true.
    */
   virtual bool is_H3T () const { return true; }
+
+  /**
+   * Tells if the atom is connected to type in res.
+   * @param type the second atom in the connection.
+   * @param res the residue.
+   * @return true if the 2 atoms are connected.
+   */
+  virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
+
+  // I/O  -----------------------------------------------------------------
+
+  /**
+   * Outputs the type value in the binary stream.
+   * @param obs the binary output stream.
+   */
+  virtual void Binoutput (oBinstream &obs) const;
+};
+
+
+
+/**
+ * @short The H5T atom type.
+ *
+ * @author Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
+ */
+class at_H5T : public virtual at_NucleicAcid,
+	       public virtual at_Hydrogen, 
+	       public virtual at_Backbone
+{
+
+public:
+
+  // LIFECYCLE ------------------------------------------------------------
+
+  /**
+   * Initializes the objet.
+   */
+  at_H5T () : at_NucleicAcid (), at_Hydrogen (), at_Backbone () { }
+
+  /**
+   * Initializes the objet with the right's content.
+   * @param right the object to copy.
+   */
+  at_H5T (const at_H5T &right)
+    : at_NucleicAcid (right), at_Hydrogen (right), at_Backbone (right) { }
+  
+  /**
+   * Destructs the object.  Nothing to do.
+   */
+  ~at_H5T () { }
+
+  // OPERATORS ------------------------------------------------------------
+
+  /**
+   * Assigns the right's content to the object.
+   * @param right the object to copy.
+   * @return itself.
+   */
+  virtual const at_H5T& operator= (const at_H5T &right);
+
+  /**
+   * Converts the atom type to a string.
+   * @return "H5T".
+   */
+  virtual operator const char* () const { return "H5T"; }
+
+  // ACCESS ---------------------------------------------------------------
+
+  // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H5T".
+   */
+  virtual const char* AmberRep () const { return "H5T"; }
+
+  /**
+   * Tells if the atom is a H5T.
+   * @return true.
+   */
+  virtual bool is_H5T () const { return true; }
 
   /**
    * Tells if the atom is connected to type in res.
@@ -8014,6 +8581,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "C".
+   */
+  virtual const char* AmberRep () const { return "C"; }
 
   /**
    * Tells if the atom is a C.
@@ -8097,6 +8670,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "CA".
+   */
+  virtual const char* AmberRep () const { return "CA"; }
+
+  /**
    * Tells if the atom is a CA.
    * @return true.
    */
@@ -8176,6 +8755,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "CB".
+   */
+  virtual const char* AmberRep () const { return "CB"; }
 
   /**
    * Tells if the atom is a CB.
@@ -8259,6 +8844,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "CD".
+   */
+  virtual const char* AmberRep () const { return "CD"; }
+
+  /**
    * Tells if the atom is a CD.
    * @return true.
    */
@@ -8338,6 +8929,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "CD1".
+   */
+  virtual const char* AmberRep () const { return "CD1"; }
 
   /**
    * Tells if the atom is a CD1.
@@ -8421,6 +9018,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "CD2".
+   */
+  virtual const char* AmberRep () const { return "CD2"; }
+
+  /**
    * Tells if the atom is a CD2.
    * @return true.
    */
@@ -8500,6 +9103,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "CE".
+   */
+  virtual const char* AmberRep () const { return "CD"; }
 
   /**
    * Tells if the atom is a CE.
@@ -8583,6 +9192,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "CE1".
+   */
+  virtual const char* AmberRep () const { return "CE1"; }
+
+  /**
    * Tells if the atom is a CE1.
    * @return true.
    */
@@ -8662,6 +9277,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "CE2".
+   */
+  virtual const char* AmberRep () const { return "CE2"; }
 
   /**
    * Tells if the atom is a CE2.
@@ -8745,6 +9366,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "CE3".
+   */
+  virtual const char* AmberRep () const { return "CE3"; }
+
+  /**
    * Tells if the atom is a CE3.
    * @return true.
    */
@@ -8824,6 +9451,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "CG".
+   */
+  virtual const char* AmberRep () const { return "CG"; }
 
   /**
    * Tells if the atom is a CG.
@@ -8907,6 +9540,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "CG1".
+   */
+  virtual const char* AmberRep () const { return "CG1"; }
+
+  /**
    * Tells if the atom is a CG1.
    * @return true.
    */
@@ -8986,6 +9625,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "CG2".
+   */
+  virtual const char* AmberRep () const { return "CG2"; }
 
   /**
    * Tells if the atom is a CG2.
@@ -9069,6 +9714,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "CH2".
+   */
+  virtual const char* AmberRep () const { return "CH2"; }
+
+  /**
    * Tells if the atom is a CH2.
    * @return true.
    */
@@ -9148,6 +9799,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "CZ".
+   */
+  virtual const char* AmberRep () const { return "CZ"; }
 
   /**
    * Tells if the atom is a CZ.
@@ -9231,6 +9888,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "CZ2".
+   */
+  virtual const char* AmberRep () const { return "CZ2"; }
+
+  /**
    * Tells if the atom is a CZ2.
    * @return true.
    */
@@ -9310,6 +9973,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "CZ3".
+   */
+  virtual const char* AmberRep () const { return "CZ3"; }
 
   /**
    * Tells if the atom is a CZ3.
@@ -9393,6 +10062,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "H".
+   */
+  virtual const char* AmberRep () const { return "H"; }
+
+  /**
    * Tells if the atom is a H.
    * @return true.
    */
@@ -9472,6 +10147,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "1H".
+   */
+  virtual const char* AmberRep () const { return "1H"; }
 
   /**
    * Tells if the atom is a 1H.
@@ -9555,6 +10236,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "2H".
+   */
+  virtual const char* AmberRep () const { return "2H"; }
+
+  /**
    * Tells if the atom is a 2H.
    * @return true.
    */
@@ -9634,6 +10321,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "3H".
+   */
+  virtual const char* AmberRep () const { return "3H"; }
 
   /**
    * Tells if the atom is a 3H.
@@ -9717,6 +10410,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HA".
+   */
+  virtual const char* AmberRep () const { return "HA"; }
+
+  /**
    * Tells if the atom is a HA.
    * @return true.
    */
@@ -9796,6 +10495,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HA".
+   */
+  virtual const char* AmberRep () const { return "HA"; }
 
   /**
    * Tells if the atom is a HA1.
@@ -9879,6 +10584,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HA2".
+   */
+  virtual const char* AmberRep () const { return "HA2"; }
+
+  /**
    * Tells if the atom is a HA2.
    * @return true.
    */
@@ -9958,6 +10669,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HB".
+   */
+  virtual const char* AmberRep () const { return "HB"; }
 
   /**
    * Tells if the atom is a HB.
@@ -10041,6 +10758,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HB1".
+   */
+  virtual const char* AmberRep () const { return "HB1"; }
+
+  /**
    * Tells if the atom is a HB1.
    * @return true.
    */
@@ -10120,6 +10843,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HB2".
+   */
+  virtual const char* AmberRep () const { return "HB2"; }
 
   /**
    * Tells if the atom is a HB2.
@@ -10203,6 +10932,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HB3".
+   */
+  virtual const char* AmberRep () const { return "HB3"; }
+
+  /**
    * Tells if the atom is a HB3.
    * @return true.
    */
@@ -10282,6 +11017,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HD1".
+   */
+  virtual const char* AmberRep () const { return "HD1"; }
 
   /**
    * Tells if the atom is a HD1.
@@ -10365,6 +11106,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HD2".
+   */
+  virtual const char* AmberRep () const { return "HD2"; }
+
+  /**
    * Tells if the atom is a HD2.
    * @return true.
    */
@@ -10444,6 +11191,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HE".
+   */
+  virtual const char* AmberRep () const { return "HE"; }
 
   /**
    * Tells if the atom is a HE.
@@ -10527,6 +11280,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HE1".
+   */
+  virtual const char* AmberRep () const { return "HE1"; }
+
+  /**
    * Tells if the atom is a HE1.
    * @return true.
    */
@@ -10606,6 +11365,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HE2".
+   */
+  virtual const char* AmberRep () const { return "HE2"; }
 
   /**
    * Tells if the atom is a HE2.
@@ -10689,6 +11454,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HE3".
+   */
+  virtual const char* AmberRep () const { return "HE3"; }
+
+  /**
    * Tells if the atom is a HE3.
    * @return true.
    */
@@ -10768,6 +11539,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HG".
+   */
+  virtual const char* AmberRep () const { return "HG"; }
 
   /**
    * Tells if the atom is a HG.
@@ -10851,6 +11628,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HG1".
+   */
+  virtual const char* AmberRep () const { return "HG1"; }
+
+  /**
    * Tells if the atom is a HG1.
    * @return true.
    */
@@ -10930,6 +11713,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HG2".
+   */
+  virtual const char* AmberRep () const { return "HG2"; }
 
   /**
    * Tells if the atom is a HG2.
@@ -11013,6 +11802,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HH".
+   */
+  virtual const char* AmberRep () const { return "HH"; }
+
+  /**
    * Tells if the atom is a HH.
    * @return true.
    */
@@ -11094,6 +11889,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HH2".
+   */
+  virtual const char* AmberRep () const { return "HH2"; }
+
+  /**
    * Tells if the atom is a HH2.
    * @return true.
    */
@@ -11112,249 +11913,6 @@ public:
    * @return 1.46.
    */
   virtual float GetVDWR () const { return 1.46; }
-
-  // I/O  -----------------------------------------------------------------
-
-  /**
-   * Outputs the type value in the binary stream.
-   * @param obs the binary output stream.
-   */
-  virtual void Binoutput (oBinstream &obs) const;
-};
-
-
-
-/**
- * @short The HN1 atom type.
- *
- * @author Martin Larose <larosem@iro.umontreal.ca>
- */
-class at_HN1 : public virtual at_AminoAcid,
-	       public virtual at_Hydrogen,
-	       public virtual at_Backbone
-{
-
-public:
-
-  // LIFECYCLE ------------------------------------------------------------
-
-  /**
-   * Initializes the objet.
-   */
-  at_HN1 () : at_AminoAcid (), at_Hydrogen (), at_Backbone () { }
-
-  /**
-   * Initializes the objet with the right's content.
-   * @param right the object to copy.
-   */
-  at_HN1 (const at_HN1 &right)
-    : at_AminoAcid (right), at_Hydrogen (right), at_Backbone (right) { }
-
-  /**
-   * Destructs the object.  Nothing to do.
-   */
-  ~at_HN1 () { }
-
-  // OPERATORS ------------------------------------------------------------
-
-  /**
-   * Assigns the right's content to the object.
-   * @param right the object to copy.
-   * @return itself.
-   */
-  virtual const at_HN1& operator= (const at_HN1 &right);
-
-  /**
-   * Converts the atom type to a string.
-   * @return "HN1".
-   */
-  virtual operator const char* () const { return "HN1"; }
-
-  // ACCESS ---------------------------------------------------------------
-
-  // METHODS --------------------------------------------------------------
-
-  /**
-   * Tells if the atom is a HN1.
-   * @return true.
-   */
-  virtual bool is_HN1 () const { return true; }
-
-  /**
-   * Tells if the atom is connected to type in res.
-   * @param type the second atom in the connection.
-   * @param res the residue.
-   * @return true if the 2 atoms are connected.
-   */
-  virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
-
-  /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.0.
-   */
-  virtual float GetVDWR () const { return 0.0; }
-
-  // I/O  -----------------------------------------------------------------
-
-  /**
-   * Outputs the type value in the binary stream.
-   * @param obs the binary output stream.
-   */
-  virtual void Binoutput (oBinstream &obs) const;
-};
-
-
-
-/**
- * @short The HN2 atom type.
- *
- * @author Martin Larose <larosem@iro.umontreal.ca>
- */
-class at_HN2 : public virtual at_AminoAcid,
-	       public virtual at_Hydrogen,
-	       public virtual at_Backbone
-{
-
-public:
-
-  // LIFECYCLE ------------------------------------------------------------
-
-  /**
-   * Initializes the objet.
-   */
-  at_HN2 () : at_AminoAcid (), at_Hydrogen (), at_Backbone () { }
-
-  /**
-   * Initializes the objet with the right's content.
-   * @param right the object to copy.
-   */
-  at_HN2 (const at_HN2 &right)
-    : at_AminoAcid (right), at_Hydrogen (right), at_Backbone (right) { }
-
-  /**
-   * Destructs the object.  Nothing to do.
-   */
-  ~at_HN2 () { }
-
-  // OPERATORS ------------------------------------------------------------
-
-  /**
-   * Assigns the right's content to the object.
-   * @param right the object to copy.
-   * @return itself.
-   */
-  virtual const at_HN2& operator= (const at_HN2 &right);
-
-  /**
-   * Converts the atom type to a string.
-   * @return "HN2".
-   */
-  virtual operator const char* () const { return "HN2"; }
-
-  // ACCESS ---------------------------------------------------------------
-
-  // METHODS --------------------------------------------------------------
-
-  /**
-   * Tells if the atom is a HN2.
-   * @return true.
-   */
-  virtual bool is_HN2 () const { return true; }
-
-  /**
-   * Tells if the atom is connected to type in res.
-   * @param type the second atom in the connection.
-   * @param res the residue.
-   * @return true if the 2 atoms are connected.
-   */
-  virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
-
-  /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.0.
-   */
-  virtual float GetVDWR () const { return 0.0; }
-
-  // I/O  -----------------------------------------------------------------
-
-  /**
-   * Outputs the type value in the binary stream.
-   * @param obs the binary output stream.
-   */
-  virtual void Binoutput (oBinstream &obs) const;
-};
-
-
-
-/**
- * @short The HN3 atom type.
- *
- * @author Martin Larose <larosem@iro.umontreal.ca>
- */
-class at_HN3 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_Backbone
-{
-
-public:
-
-  // LIFECYCLE ------------------------------------------------------------
-
-  /**
-   * Initializes the objet.
-   */
-  at_HN3 () : at_AminoAcid (), at_Hydrogen (), at_Backbone () { }
-
-  /**
-   * Initializes the objet with the right's content.
-   * @param right the object to copy.
-   */
-  at_HN3 (const at_HN3 &right)
-    : at_AminoAcid (right), at_Hydrogen (right), at_Backbone (right) { }
-
-  /**
-   * Destructs the object.  Nothing to do.
-   */
-  ~at_HN3 () { }
-
-  // OPERATORS ------------------------------------------------------------
-
-  /**
-   * Assigns the right's content to the object.
-   * @param right the object to copy.
-   * @return itself.
-   */
-  virtual const at_HN3& operator= (const at_HN3 &right);
-
-  /**
-   * Converts the atom type to a string.
-   * @return "HN3".
-   */
-  virtual operator const char* () const { return "HN3"; }
-
-  // ACCESS ---------------------------------------------------------------
-
-  // METHODS --------------------------------------------------------------
-
-  /**
-   * Tells if the atom is a HN3.
-   * @return true.
-   */
-  virtual bool is_HN3 () const { return true; }
-
-  /**
-   * Tells if the atom is connected to type in res.
-   * @param type the second atom in the connection.
-   * @param res the residue.
-   * @return true if the 2 atoms are connected.
-   */
-  virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
-
-  /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.0.
-   */
-  virtual float GetVDWR () const { return 0.0; }
 
   // I/O  -----------------------------------------------------------------
 
@@ -11416,6 +11974,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HXT".
+   */
+  virtual const char* AmberRep () const { return "HXT"; }
 
   /**
    * Tells if the atom is a HXT.
@@ -11499,6 +12063,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HZ".
+   */
+  virtual const char* AmberRep () const { return "HZ"; }
+
+  /**
    * Tells if the atom is a HZ.
    * @return true.
    */
@@ -11578,6 +12148,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HZ1".
+   */
+  virtual const char* AmberRep () const { return "HZ1"; }
 
   /**
    * Tells if the atom is a HZ1.
@@ -11661,6 +12237,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HZ2".
+   */
+  virtual const char* AmberRep () const { return "HZ2"; }
+
+  /**
    * Tells if the atom is a HZ2.
    * @return true.
    */
@@ -11740,6 +12322,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HZ3".
+   */
+  virtual const char* AmberRep () const { return "HZ3"; }
 
   /**
    * Tells if the atom is a HZ3.
@@ -11823,6 +12411,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "N".
+   */
+  virtual const char* AmberRep () const { return "N"; }
+
+  /**
    * Tells if the atom is a N.
    * @return true.
    */
@@ -11902,6 +12496,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "ND1".
+   */
+  virtual const char* AmberRep () const { return "ND1"; }
 
   /**
    * Tells if the atom is a ND1.
@@ -11985,6 +12585,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "ND2".
+   */
+  virtual const char* AmberRep () const { return "ND2"; }
+
+  /**
    * Tells if the atom is a ND2.
    * @return true.
    */
@@ -12064,6 +12670,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "NE".
+   */
+  virtual const char* AmberRep () const { return "NE"; }
 
   /**
    * Tells if the atom is a NE.
@@ -12147,6 +12759,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "NE1".
+   */
+  virtual const char* AmberRep () const { return "NE1"; }
+
+  /**
    * Tells if the atom is a NE1.
    * @return true.
    */
@@ -12226,6 +12844,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "NE2".
+   */
+  virtual const char* AmberRep () const { return "NE2"; }
 
   /**
    * Tells if the atom is a NE2.
@@ -12309,6 +12933,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "NH1".
+   */
+  virtual const char* AmberRep () const { return "NH1"; }
+
+  /**
    * Tells if the atom is a NH1.
    * @return true.
    */
@@ -12388,6 +13018,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "NH2".
+   */
+  virtual const char* AmberRep () const { return "NH2"; }
 
   /**
    * Tells if the atom is a NH2.
@@ -12471,6 +13107,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "NZ".
+   */
+  virtual const char* AmberRep () const { return "NZ"; }
+
+  /**
    * Tells if the atom is a NZ.
    * @return true.
    */
@@ -12550,6 +13192,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "O".
+   */
+  virtual const char* AmberRep () const { return "O"; }
 
   /**
    * Tells if the atom is a O.
@@ -12633,6 +13281,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "OD1".
+   */
+  virtual const char* AmberRep () const { return "OD1"; }
+
+  /**
    * Tells if the atom is a OD1.
    * @return true.
    */
@@ -12712,6 +13366,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "OD2".
+   */
+  virtual const char* AmberRep () const { return "OD2"; }
 
   /**
    * Tells if the atom is a OD2.
@@ -12795,6 +13455,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "OE1".
+   */
+  virtual const char* AmberRep () const { return "OE1"; }
+
+  /**
    * Tells if the atom is a OE1.
    * @return true.
    */
@@ -12874,6 +13540,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "OE2".
+   */
+  virtual const char* AmberRep () const { return "OE2"; }
 
   /**
    * Tells if the atom is a OE2.
@@ -12957,6 +13629,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "OG".
+   */
+  virtual const char* AmberRep () const { return "OG"; }
+
+  /**
    * Tells if the atom is a OG.
    * @return true.
    */
@@ -13036,6 +13714,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "OG1".
+   */
+  virtual const char* AmberRep () const { return "OG1"; }
 
   /**
    * Tells if the atom is a OG1.
@@ -13119,6 +13803,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "OH".
+   */
+  virtual const char* AmberRep () const { return "OH"; }
+
+  /**
    * Tells if the atom is a OH.
    * @return true.
    */
@@ -13198,6 +13888,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "OXT".
+   */
+  virtual const char* AmberRep () const { return "OXT"; }
 
   /**
    * Tells if the atom is a OXT.
@@ -13281,6 +13977,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "SD".
+   */
+  virtual const char* AmberRep () const { return "SD"; }
+
+  /**
    * Tells if the atom is a SD.
    * @return true.
    */
@@ -13360,6 +14062,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "SG".
+   */
+  virtual const char* AmberRep () const { return "SG"; }
 
   /**
    * Tells if the atom is a SG.
@@ -13443,6 +14151,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HD11".
+   */
+  virtual const char* AmberRep () const { return "HD11"; }
+
+  /**
    * Tells if the atom is a 1HD1.
    * @return true.
    */
@@ -13522,6 +14236,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HD21".
+   */
+  virtual const char* AmberRep () const { return "HD21"; }
 
   /**
    * Tells if the atom is a 1HD2.
@@ -13605,6 +14325,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HE21".
+   */
+  virtual const char* AmberRep () const { return "HE21"; }
+
+  /**
    * Tells if the atom is a 1HE2.
    * @return true.
    */
@@ -13684,6 +14410,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HG11".
+   */
+  virtual const char* AmberRep () const { return "HG11"; }
 
   /**
    * Tells if the atom is a 1HG1.
@@ -13767,6 +14499,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HG21".
+   */
+  virtual const char* AmberRep () const { return "HG21"; }
+
+  /**
    * Tells if the atom is a 1HG2.
    * @return true.
    */
@@ -13846,6 +14584,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HH11".
+   */
+  virtual const char* AmberRep () const { return "HH11"; }
 
   /**
    * Tells if the atom is a 1HH1.
@@ -13929,6 +14673,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HH21".
+   */
+  virtual const char* AmberRep () const { return "HH21"; }
+
+  /**
    * Tells if the atom is a 1HH2.
    * @return true.
    */
@@ -14008,6 +14758,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HD12".
+   */
+  virtual const char* AmberRep () const { return "HD12"; }
 
   /**
    * Tells if the atom is a 2HD1.
@@ -14091,6 +14847,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HD22".
+   */
+  virtual const char* AmberRep () const { return "HD22"; }
+
+  /**
    * Tells if the atom is a 2HD2.
    * @return true.
    */
@@ -14170,6 +14932,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HE22".
+   */
+  virtual const char* AmberRep () const { return "HE22"; }
 
   /**
    * Tells if the atom is a 2HE2.
@@ -14253,6 +15021,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HG12".
+   */
+  virtual const char* AmberRep () const { return "HG12"; }
+
+  /**
    * Tells if the atom is a 2HG1.
    * @return true.
    */
@@ -14332,6 +15106,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HG22".
+   */
+  virtual const char* AmberRep () const { return "HG22"; }
 
   /**
    * Tells if the atom is a 2HG2.
@@ -14415,6 +15195,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HH12".
+   */
+  virtual const char* AmberRep () const { return "HH12"; }
+
+  /**
    * Tells if the atom is a 2HH1.
    * @return true.
    */
@@ -14494,6 +15280,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HH22".
+   */
+  virtual const char* AmberRep () const { return "HH22"; }
 
   /**
    * Tells if the atom is a 2HH2.
@@ -14577,6 +15369,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HD13".
+   */
+  virtual const char* AmberRep () const { return "HD13"; }
+
+  /**
    * Tells if the atom is a 3HD1.
    * @return true.
    */
@@ -14656,6 +15454,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HD23".
+   */
+  virtual const char* AmberRep () const { return "HD23"; }
 
   /**
    * Tells if the atom is a 3HD2.
@@ -14739,6 +15543,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HG13".
+   */
+  virtual const char* AmberRep () const { return "HG13"; }
+
+  /**
    * Tells if the atom is a 3HG1.
    * @return true.
    */
@@ -14820,6 +15630,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an Amber string representation.
+   * @return "HG23".
+   */
+  virtual const char* AmberRep () const { return "HG23"; }
+
+  /**
    * Tells if the atom is a 3HG2.
    * @return true.
    */
@@ -14897,6 +15713,12 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "MG".
+   */
+  virtual const char* AmberRep () const { return "MG"; }
 
   /**
    * Tells if the atom is a MG.
