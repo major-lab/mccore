@@ -3,7 +3,7 @@
 // Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.17 $
+// $Revision: 1.18 $
 //  This file is part of mccore.
 //  
 //  mccore is free software; you can redistribute it and/or
@@ -74,7 +74,7 @@ namespace mccore {
    * </pre>
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Pdbstream.h,v 1.17 2003-06-09 20:38:33 gendrop Exp $
+   * @version $Id: Pdbstream.h,v 1.18 2003-07-11 20:28:20 gendrop Exp $
    */
   class iPdbstream : public istream
   {
@@ -104,6 +104,11 @@ namespace mccore {
      * Current model nb.
      */
     int modelNb;
+
+    /**
+     * Flag for end of model status.
+     */
+    bool eomFlag;
 
   public:
 
@@ -162,6 +167,15 @@ namespace mccore {
     virtual void close ();
     
     /**
+     * Indicates if the parser has reached an ENDMDL tag (end of model)
+     */
+    bool eom () { return (eomFlag || eof ()); }
+
+    // PRIVATE METHODS ---------------------------------------------------------
+
+  private:
+
+    /**
      * Reads an atom from the stream and cache it.
      * @return the Atom or null if EOF was reached.
      */
@@ -175,6 +189,8 @@ namespace mccore {
     char* trim (char* cp);
 
     // I/O ---------------------------------------------------------------------
+
+  public:
 
     /**
      * Reads an atom from the stream.

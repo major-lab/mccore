@@ -4,9 +4,9 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Tue Jul  8 16:58:01 2003
-// Update Count     : 242
+// Last Modified By : Patrick Gendron
+// Last Modified On : Fri Jul 11 16:27:47 2003
+// Update Count     : 268
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -55,7 +55,8 @@ namespace mccore {
       rtype (0),
       rid (0),
       ratom (0),
-      modelNb (1)
+      modelNb (1),
+      eomFlag (false)
   {
   }
   
@@ -65,7 +66,8 @@ namespace mccore {
       rtype (0),
       rid (0),
       ratom (0),
-      modelNb (1)
+      modelNb (1),
+      eomFlag (false)
   {
   }
   
@@ -115,6 +117,7 @@ namespace mccore {
     if (ratom) delete ratom;
     ratom = 0;
     modelNb = 1;
+    eomFlag = false;
   }
 
 
@@ -127,6 +130,7 @@ namespace mccore {
     if (ratom) delete ratom;
     ratom = 0;
     modelNb = 1;
+    eomFlag = true;
   }
 
 
@@ -188,23 +192,24 @@ namespace mccore {
       }
 
       if (strcmp (tag, "MODEL ") == 0) {
+	// The eomFlag is reset to false o
       }
 
       if (strcmp (tag, "ENDMDL") == 0) {
 	modelNb++;
-	return 0;
+	eomFlag = true;
       }
 
       if (strcmp (tag, "TER   ") == 0) {
-	return 0;
       }
 
       if (strcmp (tag, "END   ") == 0) {
+	eomFlag = true;
       }
 
       if (strcmp (tag, "ATOM  ") == 0 || strcmp (tag, "HETATM") == 0) {
 	float x, y, z;
-	AtomType *at;
+	const AtomType *at;
 
 	fieldp = trim (strncpy ((char*)memset (field, 0, LINELENGTH), line+30, 8));
 	x = atof (field);
@@ -251,12 +256,19 @@ namespace mccore {
   iPdbstream& 
   iPdbstream::operator>> (Atom &at)
   {
+    // Cache an atom if needed.
     if (!ratom) cacheAtom (); 
-    if (ratom) {
-      at = *ratom;
-      delete ratom;
-      ratom = 0;
-    }
+    // No atom was found, return.
+    if (!ratom) return *this;
+
+    eomFlag = false;
+
+    // Copy the return value.
+    at = *ratom;
+    
+    // Cache another atom in order to detect endfiles.
+    cacheAtom ();
+    
     return *this;
   }
   
@@ -269,15 +281,23 @@ namespace mccore {
     // No atom was found, return.
     if (!ratom) return *this;
     
+    eomFlag = false;
+    
     ResId previd = *rid;
+
     r.clear ();
     r.setType (rtype);
     r.setResId (*rid);
+    r.insert (*ratom);
 
-    r.insert (*ratom);    
-    while ((ratom = cacheAtom ()) != 0 && (rid == 0 || *rid == previd)) {
+    cacheAtom ();
+    while (!eom () && (rid == 0 || *rid == previd)) {
+      // Insert the atom.
       previd = *rid;
-      r.insert (*ratom);
+      r.insert (*ratom);      
+      
+      // Cache another atom in order to detect endfiles.
+      cacheAtom ();
     }
 
     // Post reading processing
