@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // MaximumFlowGraph.h
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Mon Apr  7 18:28:55 2003
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 // 
 // This file is part of mccore.
 // 
@@ -33,9 +33,11 @@
 #include <limits>
 #include <list>
 
-#include "Messagestream.h"
 #include "OrientedGraph.h"
 #include "stlio.h"
+#include "Messagestream.h"
+
+using namespace std;
 
 
 
@@ -49,24 +51,28 @@ namespace mccore
    * </pre>
    * for flow calculation.
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: MaximumFlowGraph.h,v 1.11 2005-01-03 22:55:57 larosem Exp $
+   * @version $Id: MaximumFlowGraph.h,v 1.12 2005-04-04 23:07:56 larosem Exp $
    */
   template< class V,
 	    class E,
 	    class VW = float,
 	    class Vertex_Comparator = less< V > >	    
   class MaximumFlowGraph : public OrientedGraph< V, E, VW, float, Vertex_Comparator >
-  {  
+  {
+
+  protected:
+
+    typedef OrientedGraph< V, E, VW, float, Vertex_Comparator > super;
     
   public:
     
-    typedef typename OrientedGraph< V, E, VW, float, Vertex_Comparator >::size_type size_type;
-    typedef typename OrientedGraph< V, E, VW, float, Vertex_Comparator >::label label;
-    typedef typename OrientedGraph< V, E, VW, float, Vertex_Comparator >::iterator iterator;
-    typedef typename OrientedGraph< V, E, VW, float, Vertex_Comparator >::const_iterator const_iterator;
-    typedef typename OrientedGraph< V, E, VW, float, Vertex_Comparator >::V2VLabel V2VLabel;
-    typedef typename OrientedGraph< V, E, VW, float, Vertex_Comparator >::EV2ELabel EV2ELabel;
-    typedef typename OrientedGraph< V, E, VW, float, Vertex_Comparator >::EndVertices EndVertices;
+    typedef typename super::size_type size_type;
+    typedef typename super::label label;
+    typedef typename super::iterator iterator;
+    typedef typename super::const_iterator const_iterator;
+    typedef typename super::V2VLabel V2VLabel;
+    typedef typename super::EV2ELabel EV2ELabel;
+    typedef typename super::EndVertices EndVertices;
 
     // LIFECYCLE ---------------------------------------------------------------
     
@@ -74,7 +80,7 @@ namespace mccore
      * Initializes the object.
      */
     MaximumFlowGraph ()
-      : OrientedGraph< V, E, VW, float, Vertex_Comparator > ()
+      : super ()
     { }
     
     /**
@@ -82,7 +88,7 @@ namespace mccore
      * @param right the object to copy.
      */
     MaximumFlowGraph (const MaximumFlowGraph &right)
-      : OrientedGraph< V, E, VW, float, Vertex_Comparator > (right)
+      : super (right)
     { }
   
     /**
@@ -110,7 +116,7 @@ namespace mccore
     {
       if (this != &right)
 	{
-	  OrientedGraph< V, E, VW, float, Vertex_Comparator >::operator= (right);
+	  super::operator= (right);
 	}
       return *this;
     }
@@ -143,7 +149,7 @@ namespace mccore
      */
     virtual bool connect (const V &h, const V &t, const E &e, const float w)
     {
-      return OrientedGraph< V, E, VW, float, Vertex_Comparator >::connect (h, t, e, w);
+      return super::connect (h, t, e, w);
     }
 
   private:
@@ -173,7 +179,7 @@ namespace mccore
      */
     virtual bool internalConnect (label h, label t, const E &e, const float w)
     {
-      return OrientedGraph< V, E, VW, float, Vertex_Comparator >::internalConnect (h, t, e, w);
+      return super::internalConnect (h, t, e, w);
     }
 
     /**
@@ -203,8 +209,8 @@ namespace mccore
 	  sinkid = getVertexLabel (sink);
       
 	  // Compute the initial distance labels
-	  labels.insert (labels.end (), size (), numeric_limits< int >::max ());
-	  excess.insert (excess.end (), size (), 0);
+	  labels.insert (labels.end (), this->size (), numeric_limits< int >::max ());
+	  excess.insert (excess.end (), this->size (), 0);
 	  
 	  distance = 0;
 	  q.push_back (sourceid);
@@ -374,7 +380,7 @@ namespace mccore
 	  int max_dist;
 
 	  gOut (5) << "Residual" << endl;
-	  max_dist = -2 * size ();
+	  max_dist = -2 * this->size ();
 	  neighborhood = internalOutNeighborhood (front);
 	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
 	    {
@@ -449,6 +455,26 @@ namespace mccore
     
   };
 
+}
+
+
+
+namespace std
+{
+
+  /**
+   * Writes the maximum flow graph into the output stream.  It calls the
+   * graph virtual method write.
+   * @param os the output stream.
+   * @param obj the graph.
+   * @return the output stream.
+   */
+  template < class V, class E, class VW, class VC >
+  ostream& operator<< (ostream &os, const mccore::MaximumFlowGraph< V, E, VW, VC > &obj)
+  {
+    return obj.write (os);
+  }
+  
 }
 
 #endif

@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Dec 10 19:09:13 2004
-// $Revision: 1.15 $
+// $Revision: 1.16 $
 // 
 // This file is part of mccore.
 // 
@@ -37,6 +37,7 @@
 #include "Graph.h"
 #include "OrientedGraph.h"
 #include "Path.h"
+#include "Messagestream.h"
 
 using namespace std;
 
@@ -48,7 +49,7 @@ namespace mccore
    * Undirected graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: UndirectedGraph.h,v 1.15 2005-02-01 22:13:33 larosem Exp $
+   * @version $Id: UndirectedGraph.h,v 1.16 2005-04-04 23:08:36 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -57,22 +58,24 @@ namespace mccore
 	    class Vertex_Comparator = less< V > >	    
   class UndirectedGraph : public Graph< V, E, VW, EW, Vertex_Comparator>
   {
-    static const int MAXVALUE = numeric_limits< int >::max ();
-    static const unsigned int MAXUIVALUE = numeric_limits< unsigned int >::max ();
 
+  protected:
+
+    typedef Graph< V, E, VW, EW, Vertex_Comparator > super;
+    
   public:
 
-    typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::size_type size_type;
-    typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::edge_size_type edge_size_type;
-    typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::label label;
-    typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::iterator iterator;
-    typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::const_iterator const_iterator;
+    typedef typename super::size_type size_type;
+    typedef typename super::edge_size_type edge_size_type;
+    typedef typename super::label label;
+    typedef typename super::iterator iterator;
+    typedef typename super::const_iterator const_iterator;
 
   protected:
     
-    typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::V2VLabel V2VLabel;
-    typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::EV2ELabel EV2ELabel;
-    typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::EndVertices EndVertices;
+    typedef typename super::V2VLabel V2VLabel;
+    typedef typename super::EV2ELabel EV2ELabel;
+    typedef typename super::EndVertices EndVertices;
 
   public:
 
@@ -81,20 +84,20 @@ namespace mccore
     /**
      * Initializes the object.
      */
-    UndirectedGraph () : Graph< V, E, VW, EW, Vertex_Comparator > () { }
+    UndirectedGraph () : super () { }
 
     /**
      * Initializes the object with the right's content.
      * @param right the object to copy.
      */
     UndirectedGraph (const UndirectedGraph &right)
-      : Graph< V, E, VW, EW, Vertex_Comparator > (right) { }
+      : super (right) { }
 
     /**
      * Clones the object.
      * @return a copy of the object.
      */
-    virtual Graph< V, E, VW, EW, Vertex_Comparator >* cloneGraph () const
+    virtual super* cloneGraph () const
     {
       return new UndirectedGraph< V, E, VW, EW, Vertex_Comparator> (*this);
     }
@@ -155,17 +158,17 @@ namespace mccore
       list< V > res;
       typename V2VLabel::const_iterator it;
 
-      if (v2vlabel.end () != (it = v2vlabel.find (&v)))
+      if (this->v2vlabel.end () != (it = this->v2vlabel.find (&v)))
 	{
 	  typename EV2ELabel::const_iterator evit;
 	  label l;
 
 	  l = it->second;
-	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit && evit->first.getHeadLabel () <= l; ++evit)
+	  for (evit = this->ev2elabel.begin (); this->ev2elabel.end () != evit && evit->first.getHeadLabel () <= l; ++evit)
 	    {
 	      if (evit->first.getHeadLabel () == l)
 		{
-		  res.push_back (vertices[evit->first.getTailLabel ()]);
+		  res.push_back (this->vertices[evit->first.getTailLabel ()]);
 		}
 	    }
 	}
@@ -183,11 +186,11 @@ namespace mccore
     {
       list< label > res;
 
-      if (vertices.size () > l)
+      if (this->vertices.size () > l)
 	{
 	  typename EV2ELabel::const_iterator evit;
 
-	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit && evit->first.getHeadLabel () <= l; ++evit)
+	  for (evit = this->ev2elabel.begin (); this->ev2elabel.end () != evit && evit->first.getHeadLabel () <= l; ++evit)
 	    {
 	      if (evit->first.getHeadLabel () == l)
 		{
@@ -220,10 +223,10 @@ namespace mccore
 	{
 	  uncheckedInternalDisconnect (l, *lit);
 	}
-      res = vertices.erase (vertices.begin () + l);
-      vertexWeights.erase (vertexWeights.begin () + l);
-      rebuildV2VLabel ();
-      for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
+      res = this->vertices.erase (this->vertices.begin () + l);
+      this->vertexWeights.erase (this->vertexWeights.begin () + l);
+      this->rebuildV2VLabel ();
+      for (evit = this->ev2elabel.begin (); this->ev2elabel.end () != evit; ++evit)
 	{
 	  label h;
 	  label t;
@@ -242,7 +245,7 @@ namespace mccore
 	  EndVertices ev (h, t);
 	  newEV2.insert (make_pair (ev, evit->second));
 	}
-      ev2elabel = newEV2;
+      this->ev2elabel = newEV2;
       return res;
     }
     
@@ -260,17 +263,17 @@ namespace mccore
       EndVertices ev (h, t);
       typename EV2ELabel::const_iterator evit;
       
-      if (ev2elabel.end () == (evit = ev2elabel.find (ev)))
+      if (this->ev2elabel.end () == (evit = this->ev2elabel.find (ev)))
 	{
-	  ev2elabel.insert (make_pair (ev, edges.size ()));
+	  this->ev2elabel.insert (make_pair (ev, this->edges.size ()));
 	  if (h != t)
 	    {
 	      EndVertices ev2 (t, h);
 	      
-	      ev2elabel.insert (make_pair (ev2, edges.size ()));
+	      this->ev2elabel.insert (make_pair (ev2, this->edges.size ()));
 	    }
-	  edges.push_back (e);
-	  edgeWeights.resize (edgeWeights.size () + 1);
+	  this->edges.push_back (e);
+	  this->edgeWeights.resize (this->edgeWeights.size () + 1);
 	  return true;
 	}
       return false;
@@ -291,17 +294,17 @@ namespace mccore
       EndVertices ev (h, t);
       typename EV2ELabel::const_iterator evit;
       
-      if (ev2elabel.end () == (evit = ev2elabel.find (ev)))
+      if (this->ev2elabel.end () == (evit = this->ev2elabel.find (ev)))
 	{
-	  ev2elabel.insert (make_pair (ev, edges.size ()));
+	  this->ev2elabel.insert (make_pair (ev, this->edges.size ()));
 	  if (h != t)
 	    {
 	      EndVertices ev2 (t, h);
 	      
-	      ev2elabel.insert (make_pair (ev2, edges.size ()));
+	      this->ev2elabel.insert (make_pair (ev2, this->edges.size ()));
 	    }
-	  edges.push_back (e);
-	  edgeWeights.push_back (w);
+	  this->edges.push_back (e);
+	  this->edgeWeights.push_back (w);
 	  return true;
 	}
       return false;
@@ -319,20 +322,20 @@ namespace mccore
       EndVertices ev (h, t);
       typename EV2ELabel::iterator evit;
       
-      if (ev2elabel.end () != (evit = ev2elabel.find (ev)))
+      if (this->ev2elabel.end () != (evit = this->ev2elabel.find (ev)))
 	{
 	  EndVertices ev2 (t, h);
 	  label l;
 	  
 	  l = evit->second;
-	  edges.erase (edges.begin () + l);
-	  edgeWeights.erase (edgeWeights.begin () + l);
-	  ev2elabel.erase (evit);
-	  if (ev2elabel.end () != (evit = ev2elabel.find (ev2)))
+	  this->edges.erase (this->edges.begin () + l);
+	  this->edgeWeights.erase (this->edgeWeights.begin () + l);
+	  this->ev2elabel.erase (evit);
+	  if (this->ev2elabel.end () != (evit = this->ev2elabel.find (ev2)))
 	    {
-	      ev2elabel.erase (evit);
+	      this->ev2elabel.erase (evit);
 	    }
-	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
+	  for (evit = this->ev2elabel.begin (); this->ev2elabel.end () != evit; ++evit)
 	    {
 	      if (evit->second > l)
 		{
@@ -448,8 +451,9 @@ namespace mccore
       label w;
       size_type graphsize;
       vector< label > C;
+      const unsigned int MAXUIVALUE = numeric_limits< unsigned int >::max ();
       
-      graphsize = size ();
+      graphsize = this->size ();
       paths.clear ();
       paths.resize (graphsize);
       
@@ -641,7 +645,7 @@ namespace mccore
 		  row2[internalGetEdgeLabel (marked[i]->back (), *s)] = true;
 		  for (r = s++; marked[i]->end () != s; ++r, ++s)
 		    {
-		      row2[graph.internalGetEdge (*r, *s)] = true;
+		      row2[internalGetEdge (*r, *s)] = true;
 		    }		  
 		  inserted = false;	
 		  for (n = matrix.begin (), q = newbag.begin (); q != newbag.end (); ++n, ++q)
@@ -722,14 +726,15 @@ namespace mccore
       vector< mccore::Path< label, int > > bag;
       typename vector< Path< label, int > >::iterator p;
       label i;
+      const int MAXVALUE = numeric_limits< int >::max ();
       
-      for (i = 0; i < size (); ++i)
+      for (i = 0; i < this->size (); ++i)
 	{
 	  vector< Path< label, int > > tmp;
 	  typename EV2ELabel::const_iterator ecIt;
 
 	  sptDijkstraTiernan (i, tmp, less< label > ());
-	  for (ecIt = ev2elabel.begin (); ev2elabel.end () != ecIt; ++ecIt)
+	  for (ecIt = this->ev2elabel.begin (); this->ev2elabel.end () != ecIt; ++ecIt)
 	    {
 	      label j;
 	      label k;
@@ -786,9 +791,9 @@ namespace mccore
       typename Path< label, EW >::reverse_iterator fit;
       typename Path< label, EW >::reverse_iterator lit;
       
-      fit = p.rbegin ();
+      fit = sp.rbegin ();
       Dr.insert (*fit);
-      for (lit = fit++; p.rend () != fit; ++fit, ++lit)
+      for (lit = fit++; sp.rend () != fit; ++fit, ++lit)
 	{
 	  Dr.insert (*fit);
 	  if (! Dr.areConnected (*lit, *fit))
@@ -898,16 +903,17 @@ namespace mccore
       typename vector< Path< label, unsigned int > >::iterator protIt;
       vector< Path< label, unsigned int > > CR;
       typename vector< Path< label, unsigned int > >::iterator it;
-      vector< OrientedGraph< label, bool, bool, unsigned int > > D (size ());
+      vector< OrientedGraph< label, bool, bool, unsigned int > > D (this->size ());
+      const int MAXVALUE = numeric_limits< int >::max ();
 
-      for (r = 0; size () > r; ++r)
+      for (r = 0; this->size () > r; ++r)
 	{
 	  vector< Path< label, unsigned int > > spt;
 	  label y;
 	  OrientedGraph< label, bool, bool, unsigned int > &Dr = D[r];
 	  
 	  sptDijkstraTiernan (r, spt, greater< unsigned int > ());
-	  for (y = 0; size () > y && y < r; ++y)
+	  for (y = 0; this->size () > y && y < r; ++y)
 	    {
 	      Path< label, int > &py = spt[y];
 	      vector< label > S;
@@ -1070,7 +1076,7 @@ namespace mccore
       UndirectedGraph::minimumSpanningTree (*this, aedges);
       for (i = aedges.begin (); aedges.end () != i; ++i)
 	{
-	  realedges.push_back (make_pair (vertices[i->first], vertices[i->second]));
+	  realedges.push_back (make_pair (this->vertices[i->first], this->vertices[i->second]));
 	}
       return realedges;
     }
@@ -1087,7 +1093,7 @@ namespace mccore
     virtual ostream& write (ostream& os) const
     {
       os << "[UndirectedGraph]" << endl;
-      return Graph< V, E, VW, EW, Vertex_Comparator >::write (os);
+      return super::write (os);
     }
     
   };

@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 24 21:31:52 2003
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 // 
 // This file is part of mccore.
 // 
@@ -40,7 +40,7 @@ namespace mccore
    * A path in a graph.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Path.h,v 1.8 2005-02-01 16:36:11 larosem Exp $
+   * @version $Id: Path.h,v 1.9 2005-04-04 23:08:11 larosem Exp $
    */
   template< class node_type, class valuetype >
   class Path : public vector< node_type >
@@ -50,10 +50,9 @@ namespace mccore
 
   public:
    
-    
+    typedef typename vector< node_type >::size_type size_type;
     typedef typename vector< node_type >::const_iterator const_iterator;
     typedef typename vector< node_type >::iterator iterator;
-
  
     // LIFECYCLE ------------------------------------------------------------
     
@@ -177,13 +176,25 @@ namespace mccore
     // METHODS --------------------------------------------------------------
 
     /**
+     * Tells if the Path is empty.
+     * @return true if there is no element in this.
+     */
+    bool empty () const { return vector< node_type >::empty (); }
+    
+    /**
      * Rotates the path.  It pushes the front element to the back of the Path.
      */
     void rotate ()
     {
-      push_back (front ());
-      pop_front ();
+      push_back (vector< node_type >::front ());
+      vector< node_type >::pop_front ();
     }
+
+    /**
+     * Gets the size of the Path.
+     * @return the size of the Path.
+     */
+    size_type size () const { return vector< node_type >::size (); }
     
     // I/O  -----------------------------------------------------------------
 
@@ -197,7 +208,7 @@ namespace mccore
       const_iterator i;
 
       os << "[ ";
-      for (i = begin (); end () != i; ++i)
+      for (i = vector< node_type >::begin (); vector< node_type >::end () != i; ++i)
 	{
 	  os << *i << " ";
 	}

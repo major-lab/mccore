@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // Messagestream.h
-// Copyright © 2001-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2001-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Sep  5 17:06:24 2001
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 //
 // This file is part of mccore.
 // 
@@ -50,7 +50,7 @@ namespace mccore
    * 5 : debug
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Messagestream.h,v 1.9 2005-01-03 22:56:26 larosem Exp $
+   * @version $Id: Messagestream.h,v 1.10 2005-04-04 23:08:00 larosem Exp $
    */
   class Messagestream : public ostream
   {
@@ -305,7 +305,7 @@ namespace mccore
    * @short Text implementation of Messages.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Messagestream.h,v 1.9 2005-01-03 22:56:26 larosem Exp $
+   * @version $Id: Messagestream.h,v 1.10 2005-04-04 23:08:00 larosem Exp $
    */
   class oMessagestream : public Messagestream
   {

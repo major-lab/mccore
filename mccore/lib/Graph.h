@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // Graph.h
-// Copyright © 2004 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal
+// Copyright © 2004-05 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 00:05:15 2004
-// $Revision: 1.25 $
+// $Revision: 1.26 $
 // 
 // This file is part of mccore.
 // 
@@ -48,7 +48,7 @@ namespace mccore
    * costly.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Graph.h,v 1.25 2005-02-01 22:13:08 larosem Exp $
+   * @version $Id: Graph.h,v 1.26 2005-04-04 23:07:49 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -254,8 +254,8 @@ namespace mccore
 
   protected:
 
-    typedef map< EndVertices, Graph::label > EV2ELabel;
-    typedef map< const V*, Graph::label, less_deref< V, Vertex_Comparator > > V2VLabel;
+    typedef map< EndVertices, label > EV2ELabel;
+    typedef map< const V*, label, less_deref< V, Vertex_Comparator > > V2VLabel;
     
     /**
      * The vertex collection.
@@ -318,7 +318,7 @@ namespace mccore
     {
       if (this != &right)
 	{
-	  Graph::label l;
+	  label l;
 
 	  vertices = right.vertices;
 	  vertexWeights = right.vertexWeights;
@@ -557,7 +557,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * vertex.
      */
-    Graph::label getVertexLabel (const V &v) const throw (NoSuchElementException)
+    label getVertexLabel (const V &v) const throw (NoSuchElementException)
     {
       typename V2VLabel::const_iterator it;
 
@@ -615,7 +615,7 @@ namespace mccore
      * @param l the vertex label.
      * @return the list of neighbors.
      */
-    virtual list< Graph::label > internalNeighborhood (Graph::label l) const = 0;
+    virtual list< label > internalNeighborhood (label l) const = 0;
     
     /**
      * Gets a vertex given its label.
@@ -759,7 +759,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * labels or the vertices are not connected.
      */
-    Graph::edge_label internalGetEdgeLabel (Graph::label h, Graph::label t) const throw (NoSuchElementException)
+    edge_label internalGetEdgeLabel (label h, label t) const throw (NoSuchElementException)
     {
       typename EV2ELabel::const_iterator evit;
       EndVertices ev (h, t);
@@ -903,49 +903,49 @@ namespace mccore
      * Gets the iterator pointing to the beginning of the graph vertices.
      * @return the iterator.
      */
-    Graph::iterator begin () { return vertices.begin (); }
+    iterator begin () { return vertices.begin (); }
 
     /**
      * Gets the iterator pointing to the end of the graph vertices.
      * @return the iterator.
      */
-    Graph::iterator end () { return vertices.end (); }
+    iterator end () { return vertices.end (); }
 
     /**
      * Gets the const_iterator pointing to the beginning of the graph vertices.
      * @return the iterator.
      */
-    Graph::const_iterator begin () const { return vertices.begin (); }
+    const_iterator begin () const { return vertices.begin (); }
 
     /**
      * Gets the const_iterator pointing to the end of the graph vertices.
      * @return the iterator.
      */
-    Graph::const_iterator end () const { return vertices.end (); }
+    const_iterator end () const { return vertices.end (); }
 
     /**
      * Gets the iterator pointing to the beginning of the graph edges.
      * @return the iterator.
      */
-    Graph::edge_iterator edge_begin () { return edges.begin (); }
+    edge_iterator edge_begin () { return edges.begin (); }
 
     /**
      * Gets the iterator pointing to the end of the graph edges.
      * @return the iterator.
      */
-    Graph::edge_iterator edge_end () { return edges.end (); }
+    edge_iterator edge_end () { return edges.end (); }
 
     /**
      * Gets the const_iterator pointing to the beginning of the graph edges.
      * @return the iterator.
      */
-    Graph::edge_const_iterator edge_begin () const { return edges.begin (); }
+    edge_const_iterator edge_begin () const { return edges.begin (); }
 
     /**
      * Gets the const_iterator pointing to the end of the graph edges.
      * @return the iterator.
      */
-    Graph::edge_const_iterator edge_end () const { return edges.end (); }
+    edge_const_iterator edge_end () const { return edges.end (); }
 
     // METHODS --------------------------------------------------------------
 
@@ -1028,7 +1028,7 @@ namespace mccore
      * @param l the vertex label to remove.
      * @return an iterator over the next vertex element.
      */
-    virtual Graph::iterator uncheckedInternalErase (Graph::label l) = 0;
+    virtual iterator uncheckedInternalErase (label l) = 0;
 
   public:
     
@@ -1038,7 +1038,7 @@ namespace mccore
      * @param v the vertex to remove.
      * @return an iterator over the next vertex element.
      */
-    Graph::iterator erase (const V &v)
+    iterator erase (const V &v)
     {
       typename V2VLabel::iterator it;
       
@@ -1053,7 +1053,7 @@ namespace mccore
      * @param l the vertex label to remove.
      * @return an iterator over the next vertex element.
      */
-    Graph::iterator internalErase (Graph::label l)
+    iterator internalErase (label l)
     {
       return (vertices.size () > l
 	      ? uncheckedInternalErase (l)
@@ -1065,7 +1065,7 @@ namespace mccore
      * @param v the vertex to find.
      * @return an iterator on the found vertex or on end () if not found.
      */
-    Graph::iterator find (const V &v)
+    iterator find (const V &v)
     {
       typename V2VLabel::const_iterator it;
 
@@ -1079,7 +1079,7 @@ namespace mccore
      * @param v the vertex to find.
      * @return an iterator on the found vertex or on end () if not found.
      */
-    Graph::const_iterator find (const V &v) const
+    const_iterator find (const V &v) const
     {
       typename V2VLabel::const_iterator it;
 
@@ -1092,13 +1092,13 @@ namespace mccore
      * Gets the number of vertices in this graph.
      * @return the number of vertices in the graph.
      */
-    Graph::size_type size () const { return vertices.size (); }
+    size_type size () const { return vertices.size (); }
     
     /**
      * Gets the number of edges in this graph.
      * @return the number of edges in the graph.
      */
-    Graph::edge_size_type edgeSize () const { return edges.size (); }
+    edge_size_type edgeSize () const { return edges.size (); }
     
     /**
      * Determines if the graph is empty.
@@ -1267,8 +1267,8 @@ namespace mccore
       typename vector< E >::const_iterator eit;
       typename vector< EW >::const_iterator ewit;
       typename EV2ELabel::const_iterator evit;
-      Graph::label counter;
-      Graph::label linecounter;
+      label counter;
+      label linecounter;
 
       os << "[Vertices]" << endl;
       for (vit = vertices.begin (), vwit = vertexWeights.begin (), counter = 0; vertices.end () != vit; ++vit, ++vwit, ++counter)
@@ -1293,8 +1293,8 @@ namespace mccore
 	}
       for (counter = 0, evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit, ++counter)
 	{
-	  Graph::label evline;
-	  Graph::label evcolumn;
+	  label evline;
+	  label evcolumn;
 
 	  evline = evit->first.getHeadLabel ();
 	  evcolumn = evit->first.getTailLabel ();

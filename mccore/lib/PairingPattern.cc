@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // PairingPattern.cc
-// Copyright © 2001-04 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-05 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Thu May 31 08:17:56 2001
-// $Revision: 1.12 $
-// $Id: PairingPattern.cc,v 1.12 2005-01-03 22:57:48 larosem Exp $
+// $Revision: 1.13 $
+// $Id: PairingPattern.cc,v 1.13 2005-04-04 23:08:07 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -30,9 +30,10 @@
 
 #include <algorithm>
 
+#include "PairingPattern.h"
+
 #include "AtomType.h"
 #include "Messagestream.h"
-#include "PairingPattern.h"
 #include "PropertyType.h"
 #include "Residue.h"
 #include "ResidueType.h"

@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.52 $
-// $Id: Pdbstream.cc,v 1.52 2005-02-18 20:29:44 thibaup Exp $
+// $Revision: 1.53 $
+// $Id: Pdbstream.cc,v 1.53 2005-04-04 23:08:14 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -38,12 +38,12 @@
 #include "Atom.h"
 #include "AtomType.h"
 #include "Model.h"
-#include "Pdbstream.h"
-#include "Messagestream.h"
 #include "Exception.h"
+#include "Pdbstream.h"
 #include "ResId.h"
 #include "Residue.h"
 #include "ResidueType.h"
+#include "Messagestream.h"
 
 
 

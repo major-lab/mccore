@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu May 10 14:49:18 2001
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 // 
 // This file is part of mccore.
 // 
@@ -44,7 +44,7 @@ namespace mccore
    * Directed graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: OrientedGraph.h,v 1.4 2005-03-09 22:42:30 larosem Exp $
+   * @version $Id: OrientedGraph.h,v 1.5 2005-04-04 23:08:04 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -152,17 +152,17 @@ namespace mccore
       list< V > res;
       typename V2VLabel::const_iterator it;
 
-      if (v2vlabel.end () != (it = v2vlabel.find (&v)))
+      if (this->v2vlabel.end () != (it = this->v2vlabel.find (&v)))
 	{
 	  typename EV2ELabel::const_iterator evit;
 	  label l;
 
 	  l = it->second;
-	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
+	  for (evit = this->ev2elabel.begin (); this->ev2elabel.end () != evit; ++evit)
 	    {
 	      if (evit->first.getTailLabel () == l)
 		{
-		  res.push_back (vertices[evit->first.getHeadLabel ()]);
+		  res.push_back (this->vertices[evit->first.getHeadLabel ()]);
 		}
 	    }
 	}
@@ -181,17 +181,17 @@ namespace mccore
       list< V > res;
       typename V2VLabel::const_iterator it;
 
-      if (v2vlabel.end () != (it = v2vlabel.find (&v)))
+      if (this->v2vlabel.end () != (it = this->v2vlabel.find (&v)))
 	{
 	  typename EV2ELabel::const_iterator evit;
 	  label l;
 
 	  l = it->second;
-	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit && evit->first.getHeadLabel () <= l; ++evit)
+	  for (evit = this->ev2elabel.begin (); this->ev2elabel.end () != evit && evit->first.getHeadLabel () <= l; ++evit)
 	    {
 	      if (evit->first.getHeadLabel () == l)
 		{
-		  res.push_back (vertices[evit->first.getTailLabel ()]);
+		  res.push_back (this->vertices[evit->first.getTailLabel ()]);
 		}
 	    }
 	}
@@ -209,11 +209,11 @@ namespace mccore
     {
       list< label > res;
 
-      if (vertices.size () > l)
+      if (this->vertices.size () > l)
 	{
 	  typename EV2ELabel::const_iterator evit;
 
-	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
+	  for (evit = this->ev2elabel.begin (); this->ev2elabel.end () != evit; ++evit)
 	    {
 	      if (evit->first.getTailLabel () == l)
 		{
@@ -235,11 +235,11 @@ namespace mccore
     {
       list< label > res;
 
-      if (vertices.size () > l)
+      if (this->vertices.size () > l)
 	{
 	  typename EV2ELabel::const_iterator evit;
 
-	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit && evit->first.getHeadLabel () <= l; ++evit)
+	  for (evit = this->ev2elabel.begin (); this->ev2elabel.end () != evit && evit->first.getHeadLabel () <= l; ++evit)
 	    {
 	      if (evit->first.getHeadLabel () == l)
 		{
@@ -302,11 +302,11 @@ namespace mccore
 	{
 	  uncheckedInternalDisconnect (*lit, l);
 	}
-      res = vertices.erase (vertices.begin () + l);
-      vertexWeights.erase (vertexWeights.begin () + l);
-      rebuildV2VLabel ();
+      res = this->vertices.erase (this->vertices.begin () + l);
+      this->vertexWeights.erase (this->vertexWeights.begin () + l);
+      this->rebuildV2VLabel ();
 	  
-      for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
+      for (evit = this->ev2elabel.begin (); this->ev2elabel.end () != evit; ++evit)
 	{
 	  label h;
 	  label t;
@@ -325,7 +325,7 @@ namespace mccore
 	  EndVertices ev (h, t);
 	  newEV2.insert (make_pair (ev, evit->second));
 	}
-      ev2elabel = newEV2;
+      this->ev2elabel = newEV2;
       return res;
     }
 
@@ -342,11 +342,11 @@ namespace mccore
       EndVertices ev (h, t);
       typename EV2ELabel::const_iterator evit;
       
-      if (ev2elabel.end () == (evit = ev2elabel.find (ev)))
+      if (this->ev2elabel.end () == (evit = this->ev2elabel.find (ev)))
 	{
-	  ev2elabel.insert (make_pair (ev, edges.size ()));
-	  edges.push_back (e);
-	  edgeWeights.resize (edgeWeights.size () + 1);
+	  this->ev2elabel.insert (make_pair (ev, this->edges.size ()));
+	  this->edges.push_back (e);
+	  this->edgeWeights.resize (this->edgeWeights.size () + 1);
 	  return true;
 	}
       return false;
@@ -366,11 +366,11 @@ namespace mccore
       EndVertices ev (h, t);
       typename EV2ELabel::const_iterator evit;
       
-      if (ev2elabel.end () == (evit = ev2elabel.find (ev)))
+      if (this->ev2elabel.end () == (evit = this->ev2elabel.find (ev)))
 	{
-	  ev2elabel.insert (make_pair (ev, edges.size ()));
-	  edges.push_back (e);
-	  edgeWeights.push_back (w);
+	  this->ev2elabel.insert (make_pair (ev, this->edges.size ()));
+	  this->edges.push_back (e);
+	  this->edgeWeights.push_back (w);
 	  return true;
 	}
       return false;
@@ -388,15 +388,15 @@ namespace mccore
       EndVertices ev (h, t);
       typename EV2ELabel::iterator evit;
       
-      if (ev2elabel.end () != (evit = ev2elabel.find (ev)))
+      if (this->ev2elabel.end () != (evit = this->ev2elabel.find (ev)))
 	{
 	  label l;
 	  
 	  l = evit->second;
-	  edges.erase (edges.begin () + l);
-	  edgeWeights.erase (edgeWeights.begin () + l);
-	  ev2elabel.erase (evit);
-	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
+	  this->edges.erase (this->edges.begin () + l);
+	  this->edgeWeights.erase (this->edgeWeights.begin () + l);
+	  this->ev2elabel.erase (evit);
+	  for (evit = this->ev2elabel.begin (); this->ev2elabel.end () != evit; ++evit)
 	    {
 	      if (evit->second > l)
 		{

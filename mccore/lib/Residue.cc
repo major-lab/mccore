@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.68 $
-// $Id: Residue.cc,v 1.68 2005-02-25 19:11:39 thibaup Exp $
+// $Revision: 1.69 $
+// $Id: Residue.cc,v 1.69 2005-04-04 23:08:30 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -33,7 +33,6 @@
 #include <set>
 
 #include "Binstream.h"
-#include "Messagestream.h"
 #include "Pdbstream.h"
 #include "PropertyType.h"
 #include "ResId.h"
@@ -41,6 +40,7 @@
 #include "ResidueTopology.h"
 #include "ResidueFactoryMethod.h"
 #include "Rmsd.h"
+#include "Messagestream.h"
 
 #define RAD_36  0.6283185
 #define RAD_72  1.2566371
@@ -285,8 +285,8 @@ namespace mccore
       return end ();
     else
     {
-      iterator it (this, it);
-      return it;
+      iterator nit (this, it);
+      return nit;
     }
   }
 

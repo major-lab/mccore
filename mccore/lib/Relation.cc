@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.38 $
-// $Id: Relation.cc,v 1.38 2005-03-14 21:19:18 thibaup Exp $
+// $Revision: 1.39 $
+// $Id: Relation.cc,v 1.39 2005-04-04 23:08:26 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -34,17 +34,18 @@
 #include <string>
 #include <utility>
 
+#include "Relation.h"
+
 #include "Atom.h"
 #include "AtomSet.h"
 #include "AtomType.h"
 #include "Exception.h"
 #include "ExtendedResidue.h"
 #include "MaximumFlowGraph.h"
-#include "Messagestream.h"
 #include "PairingPattern.h"
 #include "PropertyType.h"
-#include "Relation.h"
 #include "ResidueType.h"
+#include "Messagestream.h"
 
 
 
