@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
-# $Revision: 1.26 $
-# $Id: configure.in,v 1.26 2004-09-01 19:53:15 larosem Exp $
+# $Revision: 1.27 $
+# $Id: configure.in,v 1.27 2004-09-01 20:47:28 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -85,7 +85,8 @@ if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
 	AC_CHECK_LIB(z,gzopen)
 	AC_ARG_WITH(rnaml,
 	    [  --with-rnaml            include rnaml reader and writer classes],
-	    AC_CHECK_LIB(rnamlc++,xmlcpginit),
+	    AC_CHECK_LIB(rnamlc++,xmlcpginit)
+	    HAVE_LIBRNAML=1,
 	)
 	LIBALLFLAGSTART="-all"
 	LIBALLFLAGSTOP="-notall"
@@ -111,7 +112,8 @@ if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
 	AC_CHECK_LIB(z,gzopen)
 	AC_ARG_WITH(rnaml,
 	    [  --with-rnaml            include rnaml reader and writer classes],
-	    AC_CHECK_LIB(rnamlc++,xmlcpginit),
+	    AC_CHECK_LIB(rnamlc++,xmlcpginit)
+	    HAVE_LIBRNAML=1,
 	)
 	LIBALLFLAGSTART="-z allextract"
 	LIBALLFLAGSTOP="-z defaultextract"
