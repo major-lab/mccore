@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Aug 29 11:50:12 2001
-// Update Count     : 22
+// Last Modified On : Wed Aug 29 12:02:15 2001
+// Update Count     : 23
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -1474,102 +1474,102 @@ CResidue::RemoveOptionals () const
 	}
       else if (mType->is_AminoAcid ())
 	{
-	  if (res.mType->is_ALA ())
+	  if (mType->is_ALA ())
 	    {
 	      setbegin = gALAOptAtomSet.begin ();
 	      setend = gALAOptAtomSet.end ();
 	    }
-	  else if (res.mType->is_ARG ())
+	  else if (mType->is_ARG ())
 	    {
 	      setbegin = gARGOptAtomSet.begin ();
 	      setend = gARGOptAtomSet.end ();
 	    }
-	  else if (res.mType->is_ASN ())
+	  else if (mType->is_ASN ())
 	    {
 	      setbegin = gASNOptAtomSet.begin ();
 	      setend = gASNOptAtomSet.end ();
 	    }
-	  else if (res.mType->is_ASP ())
+	  else if (mType->is_ASP ())
 	    {
 	      setbegin = gASPOptAtomSet.begin ();
 	      setend = gASPOptAtomSet.end ();
 	    }
-	  else if (res.mType->is_CYS ())
+	  else if (mType->is_CYS ())
 	    {
 	      setbegin = gCYSOptAtomSet.begin ();
 	      setend = gCYSOptAtomSet.end ();
 	    }
-	  else if (res.mType->is_GLN ())
+	  else if (mType->is_GLN ())
 	    {
 	      setbegin = gGLNOptAtomSet.begin ();
 	      setend = gGLNOptAtomSet.end ();
 	    }
-	  else if (res.mType->is_GLU ())
+	  else if (mType->is_GLU ())
 	    {
 	      setbegin = gGLUOptAtomSet.begin ();
 	      setend = gGLUOptAtomSet.end ();
 	    }
-	  else if (res.mType->is_GLY ())
+	  else if (mType->is_GLY ())
 	    {
 	      setbegin = gGLYOptAtomSet.begin ();
 	      setend = gGLYOptAtomSet.end ();
 	    }
-	  else if (res.mType->is_HIS ())
+	  else if (mType->is_HIS ())
 	    {
 	      setbegin = gHISOptAtomSet.begin ();
 	      setend = gHISOptAtomSet.end ();
 	    }
-	  else if (res.mType->is_ILE ())
+	  else if (mType->is_ILE ())
 	    {
 	      setbegin = gILEOptAtomSet.begin ();
 	      setend = gILEOptAtomSet.end ();
 	    }
-	  else if (res.mType->is_LEU ())
+	  else if (mType->is_LEU ())
 	    {
 	      setbegin = gLEUOptAtomSet.begin ();
 	      setend = gLEUOptAtomSet.end ();
 	    }
-	  else if (res.mType->is_LYS ())
+	  else if (mType->is_LYS ())
 	    {
 	      setbegin = gLYSOptAtomSet.begin ();
 	      setend = gLYSOptAtomSet.end ();
 	    }
-	  else if (res.mType->is_MET ())
+	  else if (mType->is_MET ())
 	    {
 	      setbegin = gMETOptAtomSet.begin ();
 	      setend = gMETOptAtomSet.end ();
 	    }
-	  else if (res.mType->is_PHE ())
+	  else if (mType->is_PHE ())
 	    {
 	      setbegin = gPHEOptAtomSet.begin ();
 	      setend = gPHEOptAtomSet.end ();
 	    }
-	  else if (res.mType->is_PRO ())
+	  else if (mType->is_PRO ())
 	    {
 	      setbegin = gPROOptAtomSet.begin ();
 	      setend = gPROOptAtomSet.end ();
 	    }
-	  else if (res.mType->is_SER ())
+	  else if (mType->is_SER ())
 	    {
 	      setbegin = gSEROptAtomSet.begin ();
 	      setend = gSEROptAtomSet.end ();
 	    }
-	  else if (res.mType->is_THR ())
+	  else if (mType->is_THR ())
 	    {
 	      setbegin = gTHROptAtomSet.begin ();
 	      setend = gTHROptAtomSet.end ();
 	    }
-	  else if (res.mType->is_TRP ())
+	  else if (mType->is_TRP ())
 	    {
 	      setbegin = gTRPOptAtomSet.begin ();
 	      setend = gTRPOptAtomSet.end ();
 	    }
-	  else if (res.mType->is_TYR ())
+	  else if (mType->is_TYR ())
 	    {
 	      setbegin = gTYROptAtomSet.begin ();
 	      setend = gTYROptAtomSet.end ();
 	    }
-	  else if (res.mType->is_VAL ())
+	  else if (mType->is_VAL ())
 	    {
 	      setbegin = gVALOptAtomSet.begin ();
 	      setend = gVALOptAtomSet.end ();

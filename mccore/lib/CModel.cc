@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct  6 08:21:55 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Aug 29 11:51:23 2001
-// Update Count     : 12
+// Last Modified On : Wed Aug 29 12:02:11 2001
+// Update Count     : 13
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -125,7 +125,7 @@ CModel::removeAminoAcid () const
   CModel model;
 
   for (modelIt = begin (); modelIt != end (); ++modelIt)
-    if (! *modelIt->GetType ()->is_AminoAcid ())
+    if (! modelIt->GetType ()->is_AminoAcid ())
       model.push_back (*modelIt);
   return model;
 }
@@ -139,7 +139,7 @@ CModel::removeNucleicAcid () const
   CModel model;
 
   for (modelIt = begin (); modelIt != end (); ++modelIt)
-    if (! *modelIt->GetType ()->is_NucleicAcid ())
+    if (! modelIt->GetType ()->is_NucleicAcid ())
       model.push_back (*modelIt);
   return model;
 }
