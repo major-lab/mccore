@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Fri Sep 14 16:35:32 2001
-// Update Count     : 27
+// Last Modified On : Thu Sep 20 17:31:46 2001
+// Update Count     : 28
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -564,8 +564,8 @@ CResidue::SetResName (const char* nName)
 
 
 
-CAtom&
-CResidue::placeIt (CResidue::size_type pos) const
+void
+CResidue::placeIt () const
 {
   vector< CAtom >::const_iterator refit;
   vector< CAtom >::iterator resit;
@@ -578,7 +578,6 @@ CResidue::placeIt (CResidue::size_type pos) const
       resit->Transform (mTfo);
     }
   isPlaced = true;
-  return mAtomRes[pos];
 }
 
 

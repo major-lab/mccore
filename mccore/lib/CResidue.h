@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Thu Sep 28 16:59:32 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Aug 29 11:50:16 2001
-// Update Count     : 19
+// Last Modified On : Thu Sep 20 17:31:53 2001
+// Update Count     : 20
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -648,14 +648,16 @@ private:
    * @return the atom in local referential.
    */
   CAtom& place (size_type pos) const
-  { return isPlaced ? mAtomRes[pos] : placeIt (pos); }
+  {
+    if (! isPlaced)
+      placeIt ();
+    return mAtomRes[pos];
+  }
 
   /**
    * Transforms and returns the atom in local referential.
-   * @param pos the index of the atom.
-   * @return the atom in local referential.
    */
-  CAtom& placeIt (size_type pos) const;
+  void placeIt () const;
 
   /**
    * Gets the atom of type t in global referential.
