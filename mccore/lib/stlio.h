@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // stlio.h
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Wed Apr  9 13:38:51 2003
-// $Revision: 1.6 $
-// $Id: stlio.h,v 1.6 2003-08-28 14:49:59 gendrop Exp $
+// $Revision: 1.7 $
+// $Id: stlio.h,v 1.7 2004-09-15 22:38:59 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -27,6 +27,7 @@
 #ifndef _stlio_h_
 #define _stlio_h_
 
+#include <functional>
 #include <iostream>
 #include <set>
 #include <vector>
@@ -162,6 +163,21 @@ namespace std
       os << "(" << *(i->first) << "=" << *(i->second) << ") ";
     return os;
   }
+
+  template< typename T >
+  class Print : public unary_function< T, void >
+  {
+    ostream &os;
+
+  public:
+
+    Print (ostream &os) : os (os) { }
+
+    void operator() (T &obj)
+    {
+      os << obj << endl;
+    }
+  };
 }
 
 #endif
