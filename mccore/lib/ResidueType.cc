@@ -12,9 +12,11 @@
 #include "ResidueType.h"
 #include "ResidueTypeStore.h"
 #include "Binstream.h"
+#include "CException.h"
 
 
-namespace mccore {
+namespace mccore
+{
 
   // STATIC MEMBERS ------------------------------------------------------------
 
@@ -231,6 +233,20 @@ namespace mccore {
   }
 
 
+  CException&
+  operator<< (CException& ex, const ResidueType &t)
+  {
+    return ex << (const char*)t;
+  }
+
+  
+  CException&
+  operator<< (CException& ex, const ResidueType *t)
+  {
+    return t == 0 ? (ex << "null") : (ex << (const char*)*t);
+  }
+
+  
   oBinstream&
   operator<< (oBinstream &obs, const ResidueType *t)
   {

@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:45:21 2003
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 // 
 //  This file is part of mccore.
 //  
@@ -33,8 +33,10 @@ using namespace std;
 
 
 
-namespace mccore {
+namespace mccore
+{
 
+  class CException;
   class iBinstream;
   class oBinstream;
 
@@ -226,7 +228,14 @@ namespace mccore {
    * @return the used output stream.
    */
   ostream& operator<< (ostream &os, const ResId &obj);
-  
+
+  /**
+   * Outputs the residue id to the exception stream.
+   * @param os the exception stream.
+   * @param obj the residue id.
+   * @return the used exception stream.
+   */
+  CException& operator<< (CException& ex, const ResId &resid);
   
   
   /**

@@ -11,6 +11,7 @@
 
 #include "AtomType.h"
 #include "AtomTypeStore.h"
+#include "CException.h"
 #include "Binstream.h"
 
 namespace mccore {
@@ -268,6 +269,20 @@ namespace mccore {
     if (!a) out << "null";
     else a->output (out);
     return out;
+  }
+
+  
+  CException&
+  operator<< (CException& ex, const AtomType &t)
+  {
+    return ex << (const char*)t;
+  }
+
+  
+  CException&
+  operator<< (CException& ex, const AtomType *t)
+  {
+    return t == 0 ? (ex << "null") : (ex << (const char*)*t);
   }
 
   

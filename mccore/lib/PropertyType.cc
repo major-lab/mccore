@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.6 $
-// $Id: PropertyType.cc,v 1.6 2004-01-29 17:27:49 larosem Exp $
+// $Revision: 1.7 $
+// $Id: PropertyType.cc,v 1.7 2004-06-25 14:40:20 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -29,6 +29,7 @@
 
 #include "PropertyType.h"
 #include "PropertyTypeStore.h"
+#include "CException.h"
 #include "Binstream.h"
 
 
@@ -292,6 +293,20 @@ namespace mccore {
     if (!t) out << "null";
     else t->output (out);
     return out;
+  }
+
+  
+  CException&
+  operator<< (CException& ex, const PropertyType &t)
+  {
+    return ex << (const char*)t;
+  }
+
+  
+  CException&
+  operator<< (CException& ex, const PropertyType *t)
+  {
+    return t == 0 ? (ex << "null") : (ex << (const char*)*t);
   }
 
   

@@ -134,7 +134,18 @@ namespace mccore {
   }
   
   
-  
+  CException&
+  operator<< (CException &ex, const ResId& obj)
+  {
+    if (obj.getChainId () == ' ') ex << obj.getResNo ();
+    else if (! isalpha (obj.getChainId ())) 
+      ex << '\'' << obj.getChainId () << '\'' << obj.getResNo ();
+    else ex << obj.getChainId () << obj.getResNo ();
+    
+    if (obj.getInsertionCode () != ' ') ex << '.' << obj.getInsertionCode ();
+    
+    return ex;
+  }
   
   
   iBinstream&

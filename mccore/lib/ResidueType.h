@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.20 $
-// $Id: ResidueType.h,v 1.20 2004-06-15 18:39:06 thibaup Exp $
+// $Revision: 1.21 $
+// $Id: ResidueType.h,v 1.21 2004-06-25 14:40:20 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -39,6 +39,7 @@ using namespace std;
 namespace mccore { 
 
   class ResidueTypeStore;
+  class CException;
   class iBinstream;
   class oBinstream;
   
@@ -54,7 +55,7 @@ namespace mccore {
    *   - The nature of a type (nucleic acid (pur/pyr) or amino acid)<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueType.h,v 1.20 2004-06-15 18:39:06 thibaup Exp $
+   * @version $Id: ResidueType.h,v 1.21 2004-06-25 14:40:20 thibaup Exp $
    */
   class ResidueType
   {    
@@ -444,6 +445,20 @@ namespace mccore {
    */
   ostream &operator<< (ostream &out, const ResidueType *t);
 
+  /**
+   * Outputs to an exception stream.
+   * @param out the exception stream.
+   * @return the exception stream used.
+   */
+  CException& operator<< (CException& ex, const ResidueType &t);
+
+  /**
+   * Outputs to an exception  stream.
+   * @param out the exception stream.
+   * @return the exception stream used.
+   */
+  CException& operator<< (CException& ex, const ResidueType *t);
+  
   /**
    * Inputs the residue type.  The integer type is read and the type object is
    * assigned to the pointer.

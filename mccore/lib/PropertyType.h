@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 // 
 // This file is part of mccore.
 // 
@@ -32,9 +32,11 @@ using namespace std;
 
 
 
-namespace mccore {
+namespace mccore
+{
 
   class PropertyTypeStore;
+  class CException;
   class iBinstream;
   class oBinstream;
   
@@ -44,7 +46,7 @@ namespace mccore {
    * General property types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: PropertyType.h,v 1.6 2004-01-29 17:26:50 larosem Exp $
+   * @version $Id: PropertyType.h,v 1.7 2004-06-25 14:40:20 thibaup Exp $
    */
   class PropertyType
   {
@@ -1142,6 +1144,20 @@ namespace mccore {
    * @return the output stream used.
    */
   ostream &operator<< (ostream &out, const PropertyType *t);
+  
+  /**
+   * Outputs to an exception stream.
+   * @param out the exception stream.
+   * @return the exception stream used.
+   */
+  CException& operator<< (CException& ex, const PropertyType &t);
+
+  /**
+   * Outputs to an exception  stream.
+   * @param out the exception stream.
+   * @return the exception stream used.
+   */
+  CException& operator<< (CException& ex, const PropertyType *t);
   
   /**
    * Inputs the atom type.  The integer type is read and the type object is
