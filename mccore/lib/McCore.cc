@@ -4,9 +4,9 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Patrick Gendron
-// Last Modified On : Thu Jul 11 14:42:15 2002
-// Update Count     : 22
+// Last Modified By : Philippe Thibault
+// Last Modified On : Wed Mar 19 08:34:50 2003
+// Update Count     : 23
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -223,6 +223,7 @@ t_Atom *a_PSAZ = 0;
 t_Residue *r_NucleicAcid = 0;
 t_Residue *r_AminoAcid = 0;
 t_Residue *r_Phosphate = 0;
+t_Residue *r_Ribose = 0;
 t_Residue *r_Purine = 0;
 t_Residue *r_Pyrimidine = 0;
 t_Residue *r_DNA = 0;
@@ -705,6 +706,19 @@ rmsd (const vector< AbstractResidue::iterator > &mgr1,
 }
 
 
+float 
+rmsd (const vector< AbstractResidue::const_iterator > &mgr1,
+      const vector< AbstractResidue::const_iterator > &mgr2)
+{
+  float rmsd = 0;
+  vector< AbstractResidue::const_iterator >::const_iterator i, j;
+  
+  for (i = mgr1.begin (), j = mgr2.begin (); i != mgr1.end (); i++, j++)
+    rmsd += **i || **j;
+  return sqrt (rmsd / (float)mgr1.size ());
+}
+
+
 
 float 
 rmsd (const AbstractResidue::iterator &begin_a,
@@ -1179,6 +1193,7 @@ McCoreInit ()
   r_NucleicAcid = new rt_NucleicAcid;
   r_AminoAcid = new rt_AminoAcid;
   r_Phosphate = new rt_Phosphate;
+  r_Ribose = new rt_Ribose;
   r_Purine = new rt_Purine;
   r_Pyrimidine = new rt_Pyrimidine;
   r_DNA = new rt_DNA;

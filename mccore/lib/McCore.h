@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Philippe Thibault
-// Last Modified On : Tue Jun 25 10:01:19 2002
-// Update Count     : 16
+// Last Modified On : Wed Mar 19 08:34:55 2003
+// Update Count     : 17
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -1291,6 +1291,13 @@ extern t_Residue *r_Phosphate;
 
 
 /**
+ * Global ribose residue type.
+ */
+extern t_Residue *r_Ribose;
+
+
+
+/**
  * Global purine residue type.
  */
 extern t_Residue *r_Purine;
@@ -2014,7 +2021,16 @@ float RadToDegree (float r);
 float rmsd (const vector< AbstractResidue::iterator > &mgr1,
 	    const vector< AbstractResidue::iterator > &mgr2);
 
-
+/**
+ * Calculates the rmsd between the vectors of atoms without performing an
+ * alignment.
+ * @param mgr1 the first vector of atoms.
+ * @param mgr2 the second vector of atoms.
+ * @return the rmsd value.
+ */
+float 
+rmsd (const vector< AbstractResidue::const_iterator > &mgr1,
+      const vector< AbstractResidue::const_iterator > &mgr2);
 
 /**
  * Calculates the rmsd between the atoms in the iterator range 
