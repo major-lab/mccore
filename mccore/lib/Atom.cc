@@ -24,9 +24,9 @@ namespace mccore {
   
   
   Atom::Atom ()
-    : Vector3D ()
+    : Vector3D (),
+      type (AtomType::aNull)
   {
-    type = AtomType::parseType ("Unknown");
   }
   
   
