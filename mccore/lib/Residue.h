@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.9 $
+// $Revision: 1.9.2.1 $
 //
 //  This file is part of mccore.
 //  
@@ -36,16 +36,18 @@
 #include "ResidueType.h"
 #include "HomogeneousTransfo.h"
 
-
 using namespace std;
 
 class iBinstream;
 class oBinstream;
 
+
+
 namespace mccore {
-
   class PropertyType;
-
+  
+  
+  
   /**
    * @short A basic residue.
    *
@@ -56,7 +58,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Patrick Gendron <gendrop@iro.umontreal.ca>
-   * @version $Id: Residue.h,v 1.9 2003-06-09 20:38:34 gendrop Exp $
+   * @version $Id: Residue.h,v 1.9.2.1 2003-07-15 13:54:06 larosem Exp $
    */
   class Residue
   {

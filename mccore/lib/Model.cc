@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.17 $
+// $Revision: 1.17.2.1 $
 // 
 //  This file is part of mccore.
 //  
@@ -34,6 +34,7 @@
 #include "Residue.h"
 #include "ResidueFactoryMethod.h"
 #include "Pdbstream.h"
+
 
 
 namespace mccore {
@@ -506,7 +507,6 @@ namespace mccore {
       }
     return ibs;
   }
-  
 
   // ITERATORS -------------------------------------------------------------------
 

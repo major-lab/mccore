@@ -27,6 +27,7 @@
 #endif
 
 #include <algorithm>
+#include <string>
 
 #include "Residue.h"
 #include "ResidueTopology.h"
@@ -34,11 +35,11 @@
 #include "Binstream.h"
 #include "PropertyType.h"
 
+
+
 namespace mccore {
 
-
   // LIFECYCLE -----------------------------------------------------------------
-
 
   Residue::Residue ()
     : type (0)

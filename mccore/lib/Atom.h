@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:00:09 2003
-// $Revision: 1.2 $
+// $Revision: 1.2.2.1 $
 // 
 //  This file is part of mccore.
 //  
@@ -35,16 +35,17 @@ class iBinstream;
 class oBinstream;
 
 namespace mccore {
-
   class AtomType;
 
+
+  
   /**
    * @short Derived from Vector3D, this class adds the type of the atom.
    *
    * Derived from Vector3D, this class adds the type of the atom.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Atom.h,v 1.2 2003-04-11 01:33:06 gendrop Exp $
+   * @version $Id: Atom.h,v 1.2.2.1 2003-07-15 13:53:55 larosem Exp $
    */
   class Atom : public Vector3D
   {
@@ -167,7 +168,6 @@ namespace mccore {
      * @return the atom color.
      */
     Vector3D color () const;    
-    
 
     // I/O  -----------------------------------------------------------------
 

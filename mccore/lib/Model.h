@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.12 $
+// $Revision: 1.12.2.1 $
 // 
 //  This file is part of mccore.
 //  
@@ -35,7 +35,6 @@ class iBinstream;
 class oBinstream;
 
 namespace mccore {
-
   class ResidueFactoryMethod;
   class iPdbstream;
   class oPdbstream;
@@ -57,7 +56,7 @@ namespace mccore {
    * details).
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Model.h,v 1.12 2003-06-18 22:25:22 gendrop Exp $
+   * @version $Id: Model.h,v 1.12.2.1 2003-07-15 13:54:00 larosem Exp $
    */
   class Model
   {

@@ -14,6 +14,8 @@
 #include "Binstream.h"
 #include "AtomType.h"
 
+
+
 namespace mccore {
 
 
@@ -99,7 +101,7 @@ namespace mccore {
     else 
       return Vector3D (0.10f, 0.10f, 0.10f);
   }
-  
+
   // I/O -----------------------------------------------------------------------
 
   ostream&
@@ -128,7 +130,6 @@ operator>> (iBinstream &ibs, Atom &atom)
 oBinstream&
 operator<< (oBinstream &obs, const Atom &atom)
 {
-  
   return obs << (const Vector3D&) atom << atom.getType ();
 }
 
