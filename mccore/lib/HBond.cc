@@ -169,13 +169,13 @@ const Atom&
 HBond::getDonor () const
 {
   if (resD == 0) cerr << "Residue not set in HBond" << endl;
-  return *resD->find (donor);
+  return *resD->safeFind (donor);
 }
 
 const Atom& 
 HBond::getDonor (const Residue& r) const
 {
-  return *r.find (donor);
+  return *r.safeFind (donor);
 }
 
 
@@ -183,39 +183,39 @@ const Atom&
 HBond::getHydrogen () const
 {
   if (resD == 0) cerr << "Residue not set in HBond" << endl;
-  return *resD->find (hydrogen);
+  return *resD->safeFind (hydrogen);
 }
 
 const Atom& 
 HBond::getHydrogen (const Residue& r) const
 {
-  return *r.find (hydrogen);
+  return *r.safeFind (hydrogen);
 }
 
 const Atom&
 HBond::getAcceptor () const
 {
   if (resA == 0) cerr << "Residue not set in HBond" << endl;
-  return *resA->find (acceptor);
+  return *resA->safeFind (acceptor);
 }
 
 const Atom&
 HBond::getAcceptor (const Residue& r) const
 {
-  return *r.find (acceptor);
+  return *r.safeFind (acceptor);
 }
 
 const Atom&
 HBond::getLonePair () const
 {
   if (resA == 0) cerr << "Residue not set in HBond" << endl;
-  return *resA->find (lonepair);
+  return *resA->safeFind (lonepair);
 }
 
 const Atom&
 HBond::getLonePair (const Residue& r) const
 {
-  return *r.find (lonepair);
+  return *r.safeFind (lonepair);
 }
 
 // METHODS ---------------------------------------------------------------------
@@ -251,8 +251,8 @@ HBond::evalStatistically (const Residue &ra, const Residue &rb)
     float tan70 = 2.7474774;
     float C_H_dist = 1.08;
     
-    px = (getLonePair () - *resD->find (AtomType::aC5)).normalize ();
-    py = (getDonor () - *resD->find (AtomType::aC5)).normalize ();
+    px = (getLonePair () - *resD->safeFind (AtomType::aC5)).normalize ();
+    py = (getDonor () - *resD->safeFind (AtomType::aC5)).normalize ();
     up = px.cross (py).normalize ();
     pz = py.cross (up);
     pv = getDonor () + (py + pz * tan70).normalize () * C_H_dist;

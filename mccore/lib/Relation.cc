@@ -9,6 +9,8 @@
 #include <config.h>
 #endif
 
+#include <typeinfo>
+
 #include <iterator>
 #include <stdio.h>
 #include <string>
@@ -26,7 +28,8 @@
 
 
 
-namespace mccore {
+namespace mccore
+{
 
 
   // STATIC MEMBERS -------------------------------------------------------
@@ -133,21 +136,33 @@ namespace mccore {
 	    r3 = ref;
 	  }
 	else
-	  throw IntLibException ("adjacent relation should be either in direction 5' or 3'.");
+	{
+	  IntLibException ex ("adjacent relation should be either in direction 5' or 3'.");
+	  throw ex;
+	}
 
-	pVec.push_back (*r5->find (AtomType::aO3p));
-	pVec.push_back (*r3->find (AtomType::aP));
-	pVec.push_back (*r3->find (AtomType::aO1P));
-	pVec.push_back (*r3->find (AtomType::aO2P));
-	pVec.push_back (*r3->find (AtomType::aO5p));
+	try
+	{
+	  pVec.push_back (*r5->safeFind (AtomType::aO3p));
+	  pVec.push_back (*r3->safeFind (AtomType::aP));
+	  pVec.push_back (*r3->safeFind (AtomType::aO1P));
+	  pVec.push_back (*r3->safeFind (AtomType::aO2P));
+	  pVec.push_back (*r3->safeFind (AtomType::aO5p));
 
-	Residue pRes (ResidueType::rPhosphate, r5->getResId (), pVec);
-	pRes.finalize ();
+	  Residue pRes (ResidueType::rPhosphate, r5->getResId (), pVec);
+	  pRes.finalize ();
 	
-	po4_tfo = r5->getReferential ().invert () * pRes.getReferential ();
-
-	if (r5 == res)
-	  po4_tfo = tfo * po4_tfo;
+	  po4_tfo = r5->getReferential ().invert () * pRes.getReferential ();
+	  
+	  if (r5 == res)
+	    po4_tfo = tfo * po4_tfo;
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (4) << "unable to compute phosphate transfo: " << ex << endl;
+	  po4_tfo.setIdentity ();
+	}
+	
       }
     else 
       {
@@ -167,31 +182,32 @@ namespace mccore {
     if (ref->end () != (down = ref->find (AtomType::aO3p))
 	&& res->end () != (up = res->find (AtomType::aP))
 	&& down->squareDistance (*up) <= ADJACENCY_SQUARED_DISTANCE)
-      {
-	labels.insert (PropertyType::pAdjacent);
-	labels.insert (PropertyType::pDIR_5p);
-      }
+    {
+      labels.insert (PropertyType::pAdjacent);
+      labels.insert (PropertyType::pDIR_5p);
+    }
     else if (res->end () != (down = res->find (AtomType::aO3p))
 	     && ref->end () != (up = ref->find (AtomType::aP))
 	     && down->squareDistance (*up) <= ADJACENCY_SQUARED_DISTANCE)
-      {
-	labels.insert (PropertyType::pAdjacent);
-	labels.insert (PropertyType::pDIR_3p);
-      }
+    {
+      labels.insert (PropertyType::pAdjacent);
+      labels.insert (PropertyType::pDIR_3p);
+    }
     else if (ref->end () != (down = ref->find (AtomType::aC))
 	     && res->end () != (up = res->find (AtomType::aN))
 	     && down->squareDistance (*up) <= ADJACENCY_SQUARED_DISTANCE)
-      {
-	labels.insert (PropertyType::pAdjacent);
-	labels.insert (PropertyType::pDIR_5p);
-      }
+    {
+      labels.insert (PropertyType::pAdjacent);
+      labels.insert (PropertyType::pDIR_5p);
+    }
     else if (res->end () != (down = res->find (AtomType::aC))
 	     && ref->end () != (up = ref->find (AtomType::aN))
 	     && down->squareDistance (*up) <= ADJACENCY_SQUARED_DISTANCE)
-      {
-	labels.insert (PropertyType::pAdjacent);
-	labels.insert (PropertyType::pDIR_3p);
-      }
+    {
+      labels.insert (PropertyType::pAdjacent);
+      labels.insert (PropertyType::pDIR_3p);
+    }
+    
   }
 
 
@@ -383,270 +399,275 @@ namespace mccore {
     static const float TWO_BONDS_CUTOFF = 1.5f;
     static const float THREE_BONDS_CUTOFF = 2.1f;
 
-    if (ref->getType ()->isNucleicAcid ()  && res->getType ()->isNucleicAcid ())
-      {
-	Residue::const_iterator i, j, k, l;
-	map< Residue::const_iterator, int > atomToInt; 
-	int node = 0;
-	MaximumFlowGraph< int, HBond > graph;
+    //if (ref->getType ()->isNucleicAcid () && res->getType ()->isNucleicAcid ())
+    try
+    {
+      Residue::const_iterator i, j, k, l;
+      map< Residue::const_iterator, int > atomToInt; 
+      int node = 0;
+      MaximumFlowGraph< int, HBond > graph;
 	
-	graph.insert (node++); // Source
-	graph.insert (node++); // Sink
+      graph.insert (node++); // Source
+      graph.insert (node++); // Sink
 	
-	vector< Residue::const_iterator > ref_at;
-	vector< Residue::const_iterator > refn_at;
-	vector< Residue::const_iterator > res_at;
-	vector< Residue::const_iterator > resn_at;
-	int x, y;
+      vector< Residue::const_iterator > ref_at;
+      vector< Residue::const_iterator > refn_at;
+      vector< Residue::const_iterator > res_at;
+      vector< Residue::const_iterator > resn_at;
+      int x, y;
 	
-//     AtomSet* hl = new AtomSetOr (new AtomSetHydrogen (), new AtomSetLP ());
-//     hl = new AtomSetAnd (hl, new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M), 
-// 							    new AtomSetAtom (AtomType::a3H5M))));
-//     AtomSet* da = new AtomSetNot (hl->clone ());
+      //     AtomSet* hl = new AtomSetOr (new AtomSetHydrogen (), new AtomSetLP ());
+      //     hl = new AtomSetAnd (hl, new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M), 
+      // 							    new AtomSetAtom (AtomType::a3H5M))));
+      //     AtomSet* da = new AtomSetNot (hl->clone ());
 
-//     for (i=ref->begin (hl->clone ()); i!=ref->end (); ++i) {
-//       for (j=ref->begin (da->clone ()); j!=ref->end (); ++j) {
-// 	if (i->distance (*j) < 1.7) {
-// 	  ref_at.push_back (i);
-// 	  refn_at.push_back (j);	  
-// 	}
-//       }
-//     }
-//     for (i=res->begin (hl->clone ()); i!=res->end (); ++i) {
-//       for (j=res->begin (da->clone ()); j!=res->end (); ++j) {
-// 	if (i->distance (*j) < 1.7) {
-// 	  res_at.push_back (i);
-// 	  resn_at.push_back (j);	  
-// 	}
-//       }
-//     }    
-//     delete da;
-//     delete hl;
+      //     for (i=ref->begin (hl->clone ()); i!=ref->end (); ++i) {
+      //       for (j=ref->begin (da->clone ()); j!=ref->end (); ++j) {
+      // 	if (i->distance (*j) < 1.7) {
+      // 	  ref_at.push_back (i);
+      // 	  refn_at.push_back (j);	  
+      // 	}
+      //       }
+      //     }
+      //     for (i=res->begin (hl->clone ()); i!=res->end (); ++i) {
+      //       for (j=res->begin (da->clone ()); j!=res->end (); ++j) {
+      // 	if (i->distance (*j) < 1.7) {
+      // 	  res_at.push_back (i);
+      // 	  resn_at.push_back (j);	  
+      // 	}
+      //       }
+      //     }    
+      //     delete da;
+      //     delete hl;
     
-	AtomSet* da = new AtomSetAnd (new AtomSetSideChain (), 
-				      new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M), 
-								     new AtomSetAtom (AtomType::a3H5M))));
-	for (i=ref->begin (da->clone ()); i!=ref->end (); ++i)
+      AtomSet* da = new AtomSetAnd (new AtomSetSideChain (), 
+				    new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M), 
+								   new AtomSetAtom (AtomType::a3H5M))));
+      for (i=ref->begin (da->clone ()); i!=ref->end (); ++i)
+      {
+	if ((i->getType ()->isCarbon ()
+	     || i->getType ()->isNitrogen ()
+	     || i->getType ()->isOxygen ()))
+	{
+	  for (j=ref->begin (da->clone ()); j!=ref->end (); ++j)
 	  {
-	    if ((i->getType ()->isCarbon ()
-		 || i->getType ()->isNitrogen ()
-		 || i->getType ()->isOxygen ()))
-	      {
-		for (j=ref->begin (da->clone ()); j!=ref->end (); ++j)
-		  {
-		    if ((j->getType ()->isHydrogen ()
-			 || j->getType ()->isLonePair ())
-			&& i->distance (*j) < 1.7)
-		      {
-			ref_at.push_back (j);
-			refn_at.push_back (i);	  
-		      }
-		  }
-	      }
+	    if ((j->getType ()->isHydrogen ()
+		 || j->getType ()->isLonePair ())
+		&& i->distance (*j) < 1.7)
+	    {
+	      ref_at.push_back (j);
+	      refn_at.push_back (i);	  
+	    }
 	  }
-        
-	for (i=res->begin (da->clone ()); i!=res->end (); ++i)
-	  {
-	    if ((i->getType ()->isCarbon ()
-		 || i->getType ()->isNitrogen ()
-		 || i->getType ()->isOxygen ()))
-	      {
-		for (j=res->begin (da->clone ()); j!=res->end (); ++j)
-		  {
-		    if ((j->getType ()->isHydrogen ()
-			 || j->getType ()->isLonePair ())
-			&& i->distance (*j) < 1.7)
-		      {
-			res_at.push_back (j);
-			resn_at.push_back (i);	  
-		      }
-		  }
-	      }
-	  }
-	delete da;
-	
-	for (x = 0; x < (int) ref_at.size (); ++x)
-	  {
-	    i = ref_at[x];
-	    j = refn_at[x];
-	    for (y=0; y<(int)res_at.size (); ++y)
-	      {
-		k = res_at[y];
-		l = resn_at[y];
-		
-		if (i->getType ()->isHydrogen ()
-		    && k->getType ()->isLonePair ())
-		  {
-		    HBond h (j->getType (), i->getType (), l->getType (), k->getType ());
-		    
-		    h.evalStatistically (*ref, *res);
-		    //h.eval (*ref, *res);
-		    
-		    if (h.getValue () > 0.01)
-		      {
-			if (atomToInt.find (i) == atomToInt.end ())
-			  {
-			    graph.insert (node);
-			    graph.connect (0, node);
-			    atomToInt[i] = node++;
-			  }
-			if (atomToInt.find (k) == atomToInt.end ())
-			  {
-			    graph.insert (node);
-			    graph.connect (node, 1);
-			    atomToInt[k] = node++;
-			  }
-			graph.connect (atomToInt[i], atomToInt[k], h, h.getValue ());
-		      }
-		  }
-		else if (k->getType ()->isHydrogen ()
-			 && i->getType ()->isLonePair ())
-		  {
-		    HBond h (l->getType (), k->getType (), j->getType (), i->getType ());
-		    
-		    h.evalStatistically (*res, *ref);
-		    //h.eval (*res, *ref);
-		    
-		    if (h.getValue () > 0.01)
-		      {
-			if (atomToInt.find (k) == atomToInt.end ())
-			  {
-			    graph.insert (node);
-			    graph.connect (0, node);
-			    atomToInt[k] = node++;
-			  }
-			if (atomToInt.find (i) == atomToInt.end ())
-			  {
-			    graph.insert (node);
-			    graph.connect (node, 1);
-			    atomToInt[i] = node++;
-			  }
-			graph.connect (atomToInt[k], atomToInt[i], h, h.getValue ());
-		      }
-		  }
-	      }
-	  }
-	
-	if (graph.size () >= 3)
-	  {
-//     graph.output (cout);
-	    
-	    graph.preFlowPush (0, 1);
-	    
-//     graph.output (cout);
-	    
-	    map< Residue::const_iterator, int >::iterator m, n;
-	    for (m = atomToInt.begin (); m != atomToInt.end (); ++m)
-	      {
-		for (n = atomToInt.begin (); n != atomToInt.end (); ++n)
-		  {
-		    if (graph.areConnected (m->second, n->second))
-		      {
-			float flow;
-
-			flow = graph.getFlow (m->second, n->second);
-			sum_flow += flow;
-			hbonds.push_back (HBondFlow (graph.getEdge (m->second, n->second), flow));
-		      }
-		  }
-	      }
-	
-//     cout << "Sum flow = " << sum_flow << endl;
-	    
-	    if (sum_flow >= PAIRING_CUTOFF)
-	      {
-		labels.insert (PropertyType::pPairing);
-		
-		if (sum_flow < TWO_BONDS_CUTOFF)
-		  labels.insert (PropertyType::pOneHbond);
-		
-		
-		// Compute contact points and visual contact points
-		Vector3D pa;
-		Vector3D pb;
-		Vector3D pva;
-		Vector3D pvb;
-		
-		list< HBondFlow > hbf;
-		for (m=atomToInt.begin (); m!=atomToInt.end (); ++m)
-		  {
-		    for (n=atomToInt.begin (); n!=atomToInt.end (); ++n)
-		      {
-			if (graph.areConnected (m->second, n->second))
-			  {
-			    HBondFlow fl;
-			    
-			    fl.hbond = graph.getEdge (m->second, n->second);
-			    fl.flow = graph.getFlow (m->second, n->second);
-			    hbf.push_back (fl);
-			    
-			    if (fl.hbond.getDonorResidue () == ref)
-			      {
-				pa = pa + (fl.hbond.getHydrogen () * fl.flow);
-				pb = pb + (fl.hbond.getLonePair () * fl.flow);
-				pva = pva + (fl.hbond.getHydrogen () * fl.flow);
-				pvb = pvb + (fl.hbond.getAcceptor () * fl.flow);
-			      }
-			    else
-			      {
-				pa = pa + (fl.hbond.getLonePair () * fl.flow);
-				pb = pb + (fl.hbond.getHydrogen () * fl.flow);
-				pva = pva + (fl.hbond.getAcceptor () * fl.flow);
-				pvb = pvb + (fl.hbond.getHydrogen () * fl.flow);
-			      }
-			  }
-		      }
-		  }
-		
-		pa = pa / sum_flow;
-		pb = pb / sum_flow;
-		pva = pva / sum_flow;
-		pvb = pvb / sum_flow;
-		
-		Vector3D pc, pd;
-		pc = *ref->find (AtomType::aC1p); 
-		pc = pc - *ref->find (AtomType::aPSY);
-		pc = pc + pa;
-		pd = *res->find (AtomType::aC1p); 
-		pd = pd - *res->find (AtomType::aPSY);
-		pd = pd + pb;
-		
-		float rad = fabs (pa.torsionAngle (pc, pb, pd));
-		const PropertyType *iso = (rad < M_PI / 2
-					   ? PropertyType::pCis
-					   : PropertyType::pTrans);
-		
-		labels.insert (iso);
-		
-		refFace = getFace (ref, pa);
-		resFace= getFace (res, pb);
-		
-		int size_hint;
-		if (sum_flow >= PAIRING_CUTOFF && sum_flow < TWO_BONDS_CUTOFF)
-		  {
-		    size_hint = 1;
-		  }
-		else if (sum_flow < THREE_BONDS_CUTOFF)
-		  {
-		    size_hint = 2;
-		  }
-		else
-		  {
-		    size_hint = 3;
-		  }
-		
-		hbf.sort ();
-		
-		while ((int)hbf.size () != size_hint) hbf.pop_front ();
-		
-		const PropertyType *pp = translatePairing (ref, res, hbf, sum_flow, size_hint);
-		if (pp)
-		  labels.insert (pp);
-	      }
-	  }
-	else
-	  hbonds.clear ();
+	}
       }
+        
+      for (i=res->begin (da->clone ()); i!=res->end (); ++i)
+      {
+	if ((i->getType ()->isCarbon ()
+	     || i->getType ()->isNitrogen ()
+	     || i->getType ()->isOxygen ()))
+	{
+	  for (j=res->begin (da->clone ()); j!=res->end (); ++j)
+	  {
+	    if ((j->getType ()->isHydrogen ()
+		 || j->getType ()->isLonePair ())
+		&& i->distance (*j) < 1.7)
+	    {
+	      res_at.push_back (j);
+	      resn_at.push_back (i);	  
+	    }
+	  }
+	}
+      }
+      delete da;
+	
+      for (x = 0; x < (int) ref_at.size (); ++x)
+      {
+	i = ref_at[x];
+	j = refn_at[x];
+	for (y=0; y<(int)res_at.size (); ++y)
+	{
+	  k = res_at[y];
+	  l = resn_at[y];
+		
+	  if (i->getType ()->isHydrogen ()
+	      && k->getType ()->isLonePair ())
+	  {
+	    HBond h (j->getType (), i->getType (), l->getType (), k->getType ());
+		    
+	    h.evalStatistically (*ref, *res);
+	    //h.eval (*ref, *res);
+		    
+	    if (h.getValue () > 0.01)
+	    {
+	      if (atomToInt.find (i) == atomToInt.end ())
+	      {
+		graph.insert (node);
+		graph.connect (0, node);
+		atomToInt[i] = node++;
+	      }
+	      if (atomToInt.find (k) == atomToInt.end ())
+	      {
+		graph.insert (node);
+		graph.connect (node, 1);
+		atomToInt[k] = node++;
+	      }
+	      graph.connect (atomToInt[i], atomToInt[k], h, h.getValue ());
+	    }
+	  }
+	  else if (k->getType ()->isHydrogen ()
+		   && i->getType ()->isLonePair ())
+	  {
+	    HBond h (l->getType (), k->getType (), j->getType (), i->getType ());
+		    
+	    h.evalStatistically (*res, *ref);
+	    //h.eval (*res, *ref);
+		    
+	    if (h.getValue () > 0.01)
+	    {
+	      if (atomToInt.find (k) == atomToInt.end ())
+	      {
+		graph.insert (node);
+		graph.connect (0, node);
+		atomToInt[k] = node++;
+	      }
+	      if (atomToInt.find (i) == atomToInt.end ())
+	      {
+		graph.insert (node);
+		graph.connect (node, 1);
+		atomToInt[i] = node++;
+	      }
+	      graph.connect (atomToInt[k], atomToInt[i], h, h.getValue ());
+	    }
+	  }
+	}
+      }
+	
+      if (graph.size () >= 3)
+      {
+	//     graph.output (cout);
+	    
+	graph.preFlowPush (0, 1);
+	    
+	//     graph.output (cout);
+	    
+	map< Residue::const_iterator, int >::iterator m, n;
+	for (m = atomToInt.begin (); m != atomToInt.end (); ++m)
+	{
+	  for (n = atomToInt.begin (); n != atomToInt.end (); ++n)
+	  {
+	    if (graph.areConnected (m->second, n->second))
+	    {
+	      float flow;
+
+	      flow = graph.getFlow (m->second, n->second);
+	      sum_flow += flow;
+	      hbonds.push_back (HBondFlow (graph.getEdge (m->second, n->second), flow));
+	    }
+	  }
+	}
+	
+	//     cout << "Sum flow = " << sum_flow << endl;
+	    
+	if (sum_flow >= PAIRING_CUTOFF)
+	{
+	  labels.insert (PropertyType::pPairing);
+		
+	  if (sum_flow < TWO_BONDS_CUTOFF)
+	    labels.insert (PropertyType::pOneHbond);
+		
+		
+	  // Compute contact points and visual contact points
+	  Vector3D pa;
+	  Vector3D pb;
+	  Vector3D pva;
+	  Vector3D pvb;
+		
+	  list< HBondFlow > hbf;
+	  for (m=atomToInt.begin (); m!=atomToInt.end (); ++m)
+	  {
+	    for (n=atomToInt.begin (); n!=atomToInt.end (); ++n)
+	    {
+	      if (graph.areConnected (m->second, n->second))
+	      {
+		HBondFlow fl;
+			    
+		fl.hbond = graph.getEdge (m->second, n->second);
+		fl.flow = graph.getFlow (m->second, n->second);
+		hbf.push_back (fl);
+			    
+		if (fl.hbond.getDonorResidue () == ref)
+		{
+		  pa = pa + (fl.hbond.getHydrogen () * fl.flow);
+		  pb = pb + (fl.hbond.getLonePair () * fl.flow);
+		  pva = pva + (fl.hbond.getHydrogen () * fl.flow);
+		  pvb = pvb + (fl.hbond.getAcceptor () * fl.flow);
+		}
+		else
+		{
+		  pa = pa + (fl.hbond.getLonePair () * fl.flow);
+		  pb = pb + (fl.hbond.getHydrogen () * fl.flow);
+		  pva = pva + (fl.hbond.getAcceptor () * fl.flow);
+		  pvb = pvb + (fl.hbond.getHydrogen () * fl.flow);
+		}
+	      }
+	    }
+	  }
+		
+	  pa = pa / sum_flow;
+	  pb = pb / sum_flow;
+	  pva = pva / sum_flow;
+	  pvb = pvb / sum_flow;
+		
+	  Vector3D pc, pd;
+	  pc = *ref->safeFind (AtomType::aC1p); 
+	  pc = pc - *ref->safeFind (AtomType::aPSY);
+	  pc = pc + pa;
+	  pd = *res->safeFind (AtomType::aC1p); 
+	  pd = pd - *res->safeFind (AtomType::aPSY);
+	  pd = pd + pb;
+		
+	  float rad = fabs (pa.torsionAngle (pc, pb, pd));
+	  const PropertyType *iso = (rad < M_PI / 2
+				     ? PropertyType::pCis
+				     : PropertyType::pTrans);
+		
+	  labels.insert (iso);
+		
+	  refFace = getFace (ref, pa);
+	  resFace= getFace (res, pb);
+		
+	  int size_hint;
+	  if (sum_flow >= PAIRING_CUTOFF && sum_flow < TWO_BONDS_CUTOFF)
+	  {
+	    size_hint = 1;
+	  }
+	  else if (sum_flow < THREE_BONDS_CUTOFF)
+	  {
+	    size_hint = 2;
+	  }
+	  else
+	  {
+	    size_hint = 3;
+	  }
+		
+	  hbf.sort ();
+		
+	  while ((int)hbf.size () != size_hint) hbf.pop_front ();
+		
+	  const PropertyType *pp = translatePairing (ref, res, hbf, sum_flow, size_hint);
+	  if (pp)
+	    labels.insert (pp);
+	}
+      }
+      else
+	hbonds.clear ();
+    }
+    catch (NoSuchAtomException& ex)
+    {
+      gOut (4) << "An error occured during pairing annotation: " << ex << endl;
+    }
   }
     
   
@@ -656,171 +677,178 @@ namespace mccore {
     static const float STACK_DISTANCE_CUTOFF = 4.50f;
     static const float STACK_NORMAL_CUTOFF   = 0.61f; // 35 deg
     static const float STACK_OVERLAP_CUTOFF  = 0.61f; // 35 deg       
+ 
+    
+    //    if (ref->getType ()->isNucleicAcid () || res->getType ()->isNucleicAcid ())
+    try
+    {
+      Vector3D pyrCenterA;
+      Vector3D pyrCenterB;
+      Vector3D imidCenterA;
+      Vector3D imidCenterB;
+      Vector3D normalA, normalB;
+      Vector3D centerV;
+      float distance, theta1, theta2, tau1, tau2, tau3, tau4;
+      float normal, overlap;
 
-    if (ref->getType ()->isNucleicAcid () || res->getType ()->isNucleicAcid ())
+      // Stacking Pyr-Pyr 
+      pyrCenterA = ((*(ref->safeFind (AtomType::aN1))
+		     + *(ref->safeFind (AtomType::aC2))
+		     + *(ref->safeFind (AtomType::aN3))
+		     + *(ref->safeFind (AtomType::aC4))
+		     + *(ref->safeFind (AtomType::aC5))
+		     + *(ref->safeFind (AtomType::aC6))) / 6);
+      pyrCenterB = ((*(res->safeFind (AtomType::aN1))
+		     + *(res->safeFind (AtomType::aC2))
+		     + *(res->safeFind (AtomType::aN3))
+		     + *(res->safeFind (AtomType::aC4))
+		     + *(res->safeFind (AtomType::aC5))
+		     + *(res->safeFind (AtomType::aC6))) / 6);
+	
+      distance = pyrCenterA.distance (pyrCenterB);
+      centerV = pyrCenterB - pyrCenterA;
+      centerV = centerV.normalize ();
+      normalA = pyrimidineNormal (ref);
+      normalB = pyrimidineNormal (res);
+      theta1 = (float) acos (normalA.dot (normalB));   // this is symmetric
+      theta2 = (float) acos (-normalA.dot (normalB));
+      tau1 = (float) acos (normalA.dot (centerV));  // this ain't
+      tau2 = (float) acos (-normalA.dot (centerV));
+      tau3 = (float) acos (normalB.dot (centerV));
+      tau4 = (float) acos (-normalB.dot (centerV));
+	
+      normal = min (theta1, theta2);
+      overlap = min (min (tau1, tau2), min (tau3, tau4));
+	
+      // Check if the stack is reverse here since we need only pyr-pyr rings...
+      float rev_angle = Vector3D (0, 0, 0).angle (normalA, normalB);
+      bool reverse = false;
+	
+      if (ref->getType ()->isPurine () && res->getType ()->isPurine ()
+	  || ref->getType ()->isPyrimidine () && res->getType ()->isPyrimidine ())
       {
-	Vector3D pyrCenterA;
-	Vector3D pyrCenterB;
-	Vector3D imidCenterA;
-	Vector3D imidCenterB;
-	Vector3D normalA, normalB;
-	Vector3D centerV;
-	float distance, theta1, theta2, tau1, tau2, tau3, tau4;
-	float normal, overlap;
+	if (rev_angle > M_PI / 2)
+	  reverse = true;
+      }
+      else if (rev_angle < M_PI / 2) 
+      {
+	reverse = true;
+      }
 	
-	// Stacking Pyr-Pyr 
-	pyrCenterA = ((*(ref->find (AtomType::aN1))
-		       + *(ref->find (AtomType::aC2))
-		       + *(ref->find (AtomType::aN3))
-		       + *(ref->find (AtomType::aC4))
-		       + *(ref->find (AtomType::aC5))
-		       + *(ref->find (AtomType::aC6))) / 6);
-	pyrCenterB = ((*(res->find (AtomType::aN1))
-		       + *(res->find (AtomType::aC2))
-		       + *(res->find (AtomType::aN3))
-		       + *(res->find (AtomType::aC4))
-		       + *(res->find (AtomType::aC5))
-		       + *(res->find (AtomType::aC6))) / 6);
+      if (distance <= STACK_DISTANCE_CUTOFF
+	  && normal <= STACK_NORMAL_CUTOFF
+	  && overlap <=  STACK_OVERLAP_CUTOFF)
+      {
+	labels.insert (PropertyType::pStack);
+	if (reverse)
+	  labels.insert (PropertyType::pReverse);
+	return;
+      }
 	
-	distance = pyrCenterA.distance (pyrCenterB);
-	centerV = pyrCenterB - pyrCenterA;
+      // Stacking imid-Pyr
+      if (ref->getType ()->isPurine ())
+      {
+	imidCenterA = ((*(ref->safeFind (AtomType::aC4))
+			+ *(ref->safeFind (AtomType::aC5))
+			+ *(ref->safeFind (AtomType::aN7))
+			+ *(ref->safeFind (AtomType::aC8))
+			+ *(ref->safeFind (AtomType::aN9))) / 5);
+	    
+	distance = imidCenterA.distance (pyrCenterB);
+	centerV = pyrCenterB - imidCenterA;
 	centerV = centerV.normalize ();
-	normalA = pyrimidineNormal (ref);
+	normalA = imidazolNormal (ref);
 	normalB = pyrimidineNormal (res);
-	theta1 = (float) acos (normalA.dot (normalB));   // this is symmetric
+	theta1 = (float) acos (normalA.dot (normalB)); // this is symmetric
 	theta2 = (float) acos (-normalA.dot (normalB));
 	tau1 = (float) acos (normalA.dot (centerV));  // this ain't
 	tau2 = (float) acos (-normalA.dot (centerV));
 	tau3 = (float) acos (normalB.dot (centerV));
 	tau4 = (float) acos (-normalB.dot (centerV));
-	
+	    
 	normal = min (theta1, theta2);
 	overlap = min (min (tau1, tau2), min (tau3, tau4));
-	
-	// Check if the stack is reverse here since we need only pyr-pyr rings...
-	float rev_angle = Vector3D (0, 0, 0).angle (normalA, normalB);
-	bool reverse = false;
-	
-	if (ref->getType ()->isPurine () && res->getType ()->isPurine ()
-	    || ref->getType ()->isPyrimidine () && res->getType ()->isPyrimidine ())
-	  {
-	    if (rev_angle > M_PI / 2)
-	      reverse = true;
-	  }
-	else if (rev_angle < M_PI / 2) 
-	  {
-	    reverse = true;
-	  }
-	
+	    
 	if (distance <= STACK_DISTANCE_CUTOFF
 	    && normal <= STACK_NORMAL_CUTOFF
 	    && overlap <=  STACK_OVERLAP_CUTOFF)
-	  {
-	    labels.insert (PropertyType::pStack);
-	    if (reverse)
-	      labels.insert (PropertyType::pReverse);
-	    return;
-	  }
-	
-	// Stacking imid-Pyr
-	if (ref->getType ()->isPurine ())
-	  {
-	    imidCenterA = ((*(ref->find (AtomType::aC4))
-			    + *(ref->find (AtomType::aC5))
-			    + *(ref->find (AtomType::aN7))
-			    + *(ref->find (AtomType::aC8))
-			    + *(ref->find (AtomType::aN9))) / 5);
-	    
-	    distance = imidCenterA.distance (pyrCenterB);
-	    centerV = pyrCenterB - imidCenterA;
-	    centerV = centerV.normalize ();
-	    normalA = imidazolNormal (ref);
-	    normalB = pyrimidineNormal (res);
-	    theta1 = (float) acos (normalA.dot (normalB)); // this is symmetric
-	    theta2 = (float) acos (-normalA.dot (normalB));
-	    tau1 = (float) acos (normalA.dot (centerV));  // this ain't
-	    tau2 = (float) acos (-normalA.dot (centerV));
-	    tau3 = (float) acos (normalB.dot (centerV));
-	    tau4 = (float) acos (-normalB.dot (centerV));
-	    
-	    normal = min (theta1, theta2);
-	    overlap = min (min (tau1, tau2), min (tau3, tau4));
-	    
-	    if (distance <= STACK_DISTANCE_CUTOFF
-		&& normal <= STACK_NORMAL_CUTOFF
-		&& overlap <=  STACK_OVERLAP_CUTOFF)
-	      {
-		labels.insert (PropertyType::pStack);
-		if (reverse)
-		  labels.insert (PropertyType::pReverse);
-		return;
-	      }
-	  }
-	
-	// Stacking Pyr-Imid
-	if (res->getType ()->isPurine ())
-	  {
-	    imidCenterB = ((*(res->find (AtomType::aC4))
-			    + *(res->find (AtomType::aC5))
-			    + *(res->find (AtomType::aN7))
-			    + *(res->find (AtomType::aC8))
-			    + *(res->find (AtomType::aN9))) / 5);
-	    
-	    distance = pyrCenterA.distance (imidCenterB);
-	    centerV = imidCenterB - pyrCenterA;
-	    centerV = centerV.normalize ();
-	    normalA = pyrimidineNormal (ref);
-	    normalB = imidazolNormal (res);
-	    theta1 = (float) acos (normalA.dot (normalB));  // this is symmetric
-	    theta2 = (float) acos (-normalA.dot (normalB));
-	    tau1 = (float) acos (normalA.dot (centerV));  // this ain't
-	    tau2 = (float) acos (-normalA.dot (centerV));
-	    tau3 = (float) acos (normalB.dot (centerV));
-	    tau4 = (float) acos (-normalB.dot (centerV));
-	    
-	    normal = min (theta1, theta2);
-	    overlap = min (min (tau1, tau2), min (tau3, tau4));
-	    
-	    if (distance <= STACK_DISTANCE_CUTOFF
-		&& normal <= STACK_NORMAL_CUTOFF
-		&& overlap <=  STACK_OVERLAP_CUTOFF)
-	      {
-		labels.insert (PropertyType::pStack);
-		if (reverse)
-		  labels.insert (PropertyType::pReverse);
-		return;
-	      }
-	  }
-	
-	// Stacking Imid-Imid
-	if (ref->getType ()->isPurine () && res->getType ()->isPurine ())
-	  {
-	    distance = imidCenterA.distance (imidCenterB);
-	    centerV = imidCenterB - imidCenterA;
-	    centerV = centerV.normalize ();
-	    normalA = imidazolNormal (ref);
-	    normalB = imidazolNormal (res);
-	    theta1 = (float) acos (normalA.dot (normalB)); // this is symmetric
-	    theta2 = (float) acos (-normalA.dot (normalB));
-	    tau1 = (float) acos (normalA.dot (centerV));  // this ain't
-	    tau2 = (float) acos (-normalA.dot (centerV));
-	    tau3 = (float) acos (normalB.dot (centerV));
-	    tau4 = (float) acos (-normalB.dot (centerV));
-	    
-	    normal = min (theta1, theta2);
-	    overlap = min (min (tau1, tau2), min (tau3, tau4));
-	    
-	    if (distance <= STACK_DISTANCE_CUTOFF
-		&& normal <= STACK_NORMAL_CUTOFF
-		&& overlap <=  STACK_OVERLAP_CUTOFF)
-	      {
-		labels.insert (PropertyType::pStack);
-		if (reverse)
-		  labels.insert (PropertyType::pReverse);
-		return;
-	      }
-	  }
+	{
+	  labels.insert (PropertyType::pStack);
+	  if (reverse)
+	    labels.insert (PropertyType::pReverse);
+	  return;
+	}
       }
+	
+      // Stacking Pyr-Imid
+      if (res->getType ()->isPurine ())
+      {
+	imidCenterB = ((*(res->safeFind (AtomType::aC4))
+			+ *(res->safeFind (AtomType::aC5))
+			+ *(res->safeFind (AtomType::aN7))
+			+ *(res->safeFind (AtomType::aC8))
+			+ *(res->safeFind (AtomType::aN9))) / 5);
+	    
+	distance = pyrCenterA.distance (imidCenterB);
+	centerV = imidCenterB - pyrCenterA;
+	centerV = centerV.normalize ();
+	normalA = pyrimidineNormal (ref);
+	normalB = imidazolNormal (res);
+	theta1 = (float) acos (normalA.dot (normalB));  // this is symmetric
+	theta2 = (float) acos (-normalA.dot (normalB));
+	tau1 = (float) acos (normalA.dot (centerV));  // this ain't
+	tau2 = (float) acos (-normalA.dot (centerV));
+	tau3 = (float) acos (normalB.dot (centerV));
+	tau4 = (float) acos (-normalB.dot (centerV));
+	    
+	normal = min (theta1, theta2);
+	overlap = min (min (tau1, tau2), min (tau3, tau4));
+	    
+	if (distance <= STACK_DISTANCE_CUTOFF
+	    && normal <= STACK_NORMAL_CUTOFF
+	    && overlap <=  STACK_OVERLAP_CUTOFF)
+	{
+	  labels.insert (PropertyType::pStack);
+	  if (reverse)
+	    labels.insert (PropertyType::pReverse);
+	  return;
+	}
+      }
+	
+      // Stacking Imid-Imid
+      if (ref->getType ()->isPurine () && res->getType ()->isPurine ())
+      {
+	distance = imidCenterA.distance (imidCenterB);
+	centerV = imidCenterB - imidCenterA;
+	centerV = centerV.normalize ();
+	normalA = imidazolNormal (ref);
+	normalB = imidazolNormal (res);
+	theta1 = (float) acos (normalA.dot (normalB)); // this is symmetric
+	theta2 = (float) acos (-normalA.dot (normalB));
+	tau1 = (float) acos (normalA.dot (centerV));  // this ain't
+	tau2 = (float) acos (-normalA.dot (centerV));
+	tau3 = (float) acos (normalB.dot (centerV));
+	tau4 = (float) acos (-normalB.dot (centerV));
+	    
+	normal = min (theta1, theta2);
+	overlap = min (min (tau1, tau2), min (tau3, tau4));
+	    
+	if (distance <= STACK_DISTANCE_CUTOFF
+	    && normal <= STACK_NORMAL_CUTOFF
+	    && overlap <=  STACK_OVERLAP_CUTOFF)
+	{
+	  labels.insert (PropertyType::pStack);
+	  if (reverse)
+	    labels.insert (PropertyType::pReverse);
+	  return;
+	}
+      }
+    }
+    catch (NoSuchAtomException& ex)
+    {
+      gOut (4) << "An error occured during stacking annotation: " << ex << endl;
+    }
+    
   }
 
 
@@ -914,23 +942,23 @@ namespace mccore {
     Vector3D radius1, radius2, center;
     Vector3D normal;
     
-    center = ((*(res->find (AtomType::aN1))
-	       + *(res->find (AtomType::aC2))
-	       + *(res->find (AtomType::aN3))
-	       + *(res->find (AtomType::aC4))
-	       + *(res->find (AtomType::aC5))
-	       + *(res->find (AtomType::aC6)))
+    center = ((*(res->safeFind (AtomType::aN1))
+	       + *(res->safeFind (AtomType::aC2))
+	       + *(res->safeFind (AtomType::aN3))
+	       + *(res->safeFind (AtomType::aC4))
+	       + *(res->safeFind (AtomType::aC5))
+	       + *(res->safeFind (AtomType::aC6)))
 	      / 6);
-    radius1 = (((*(res->find (AtomType::aN1)) - center) * 1)
-	       + ((*(res->find (AtomType::aC2)) - center) * 0.5)
-	       + ((*(res->find (AtomType::aN3)) - center) * -0.5)
-	       + ((*(res->find (AtomType::aC4)) - center) * -1)
-	       + ((*(res->find (AtomType::aC5)) - center) * -0.5)
-	       + ((*(res->find (AtomType::aC6)) - center) * 0.5));
-    radius2 = (((*(res->find (AtomType::aC2)) - center) * 0.8660254)
-	       + ((*(res->find (AtomType::aN3)) - center) * 0.8660254)
-	       + ((*(res->find (AtomType::aC5)) - center) * -0.8660254)
-	       + ((*(res->find (AtomType::aC6)) - center) * -0.8660254));
+    radius1 = (((*(res->safeFind (AtomType::aN1)) - center) * 1)
+	       + ((*(res->safeFind (AtomType::aC2)) - center) * 0.5)
+	       + ((*(res->safeFind (AtomType::aN3)) - center) * -0.5)
+	       + ((*(res->safeFind (AtomType::aC4)) - center) * -1)
+	       + ((*(res->safeFind (AtomType::aC5)) - center) * -0.5)
+	       + ((*(res->safeFind (AtomType::aC6)) - center) * 0.5));
+    radius2 = (((*(res->safeFind (AtomType::aC2)) - center) * 0.8660254)
+	       + ((*(res->safeFind (AtomType::aN3)) - center) * 0.8660254)
+	       + ((*(res->safeFind (AtomType::aC5)) - center) * -0.8660254)
+	       + ((*(res->safeFind (AtomType::aC6)) - center) * -0.8660254));
     
     normal = radius1.cross (radius2);
     return normal.normalize ();
@@ -944,23 +972,23 @@ namespace mccore {
     Vector3D radius1, radius2, center;
     Vector3D normal;
     
-    center = ((*(res->find (AtomType::aC4))
-	       + *(res->find (AtomType::aC5))
-	       + *(res->find (AtomType::aN7))
-	       + *(res->find (AtomType::aC8))
-	       + *(res->find (AtomType::aN9)))
+    center = ((*(res->safeFind (AtomType::aC4))
+	       + *(res->safeFind (AtomType::aC5))
+	       + *(res->safeFind (AtomType::aN7))
+	       + *(res->safeFind (AtomType::aC8))
+	       + *(res->safeFind (AtomType::aN9)))
 	      / 5);
     
-    radius1 = (((*(res->find (AtomType::aC4)) - center) * 1)
-	       + ((*(res->find (AtomType::aC5)) - center) * 0.30901699)
-	       + ((*(res->find (AtomType::aN7)) - center) * -0.80901699)
-	       + ((*(res->find (AtomType::aC8)) - center) * -0.80901699)
-	       + ((*(res->find (AtomType::aN9)) - center) * 0.30901699));
+    radius1 = (((*(res->safeFind (AtomType::aC4)) - center) * 1)
+	       + ((*(res->safeFind (AtomType::aC5)) - center) * 0.30901699)
+	       + ((*(res->safeFind (AtomType::aN7)) - center) * -0.80901699)
+	       + ((*(res->safeFind (AtomType::aC8)) - center) * -0.80901699)
+	       + ((*(res->safeFind (AtomType::aN9)) - center) * 0.30901699));
     
-    radius2 = (((*(res->find (AtomType::aC5)) - center) * 0.95105652)
-	       + ((*(res->find (AtomType::aN7)) - center) * 0.58778525)
-	       + ((*(res->find (AtomType::aC8)) - center) * -0.58778525)
-	       + ((*(res->find (AtomType::aN9)) - center) * -0.95105652));
+    radius2 = (((*(res->safeFind (AtomType::aC5)) - center) * 0.95105652)
+	       + ((*(res->safeFind (AtomType::aN7)) - center) * 0.58778525)
+	       + ((*(res->safeFind (AtomType::aC8)) - center) * -0.58778525)
+	       + ((*(res->safeFind (AtomType::aN9)) - center) * -0.95105652));
     
     normal = radius1.cross (radius2);
     return normal.normalize ();
@@ -1002,139 +1030,150 @@ namespace mccore {
   void 
   Relation::init () 
   {
-    Vector3D ta, tb;
+    try
+    {
+      
+      Vector3D ta, tb;
 
-    ExtendedResidue A (ResidueType::rRA, ResId ('A', 1));
-    A.setTheoretical ();
+      ExtendedResidue A (ResidueType::rRA, ResId ('A', 1));
+      A.setTheoretical ();
 
-    ta = *A.find (AtomType::aH8);	
-    faces_A.push_back (make_pair (ta, PropertyType::parseType ("C8")));
-    ta = (*A.find (AtomType::aH8) + *A.find (AtomType::aLP7)) / 2;	
-    faces_A.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
-    ta = (*A.find (AtomType::a2H6) + *A.find (AtomType::aLP7)) / 2;
-    faces_A.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
-    ta = *A.find (AtomType::a2H6);
-    faces_A.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
-    ta = (*A.find (AtomType::a1H6) + *A.find (AtomType::a2H6)) / 2;
-    faces_A.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
-    ta = *A.find (AtomType::a1H6);
-    faces_A.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
-    ta = (*A.find (AtomType::aLP1) + *A.find (AtomType::a1H6)) / 2;
-    faces_A.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
-    ta = (*A.find (AtomType::aLP1) + *A.find (AtomType::aH2)) / 2;
-    faces_A.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
-    ta = *A.find (AtomType::aH2);
-    faces_A.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
-    ta = (*A.find (AtomType::aH2) + *A.find (AtomType::aLP3)) / 2;
-    faces_A.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
-    ta = *A.find (AtomType::aLP3);
-    faces_A.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
+      ta = *A.safeFind (AtomType::aH8);	
+      faces_A.push_back (make_pair (ta, PropertyType::parseType ("C8")));
+      ta = (*A.safeFind (AtomType::aH8) + *A.safeFind (AtomType::aLP7)) / 2;	
+      faces_A.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+      ta = (*A.safeFind (AtomType::a2H6) + *A.safeFind (AtomType::aLP7)) / 2;
+      faces_A.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+      ta = *A.safeFind (AtomType::a2H6);
+      faces_A.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
+      ta = (*A.safeFind (AtomType::a1H6) + *A.safeFind (AtomType::a2H6)) / 2;
+      faces_A.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
+      ta = *A.safeFind (AtomType::a1H6);
+      faces_A.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
+      ta = (*A.safeFind (AtomType::aLP1) + *A.safeFind (AtomType::a1H6)) / 2;
+      faces_A.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+      ta = (*A.safeFind (AtomType::aLP1) + *A.safeFind (AtomType::aH2)) / 2;
+      faces_A.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+      ta = *A.safeFind (AtomType::aH2);
+      faces_A.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
+      ta = (*A.safeFind (AtomType::aH2) + *A.safeFind (AtomType::aLP3)) / 2;
+      faces_A.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
+      ta = *A.safeFind (AtomType::aLP3);
+      faces_A.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
 
-    ExtendedResidue C (ResidueType::rRC, ResId ('C', 1));
-    C.setTheoretical ();
+      ExtendedResidue C (ResidueType::rRC, ResId ('C', 1));
+      C.setTheoretical ();
 
-    ta = *C.find (AtomType::aH6);
-    faces_C.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
-    ta = (*C.find (AtomType::a1H4) + *C.find (AtomType::aH5)) / 2;
-    faces_C.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
-    ta = *C.find (AtomType::a1H4);
-    faces_C.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
-    ta = (*C.find (AtomType::a1H4) + *C.find (AtomType::a2H4)) / 2;
-    faces_C.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
-    ta = *C.find (AtomType::a2H4);
-    faces_C.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
-    ta = (*C.find (AtomType::a2H4) + *C.find (AtomType::aLP3)) / 2;
-    faces_C.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
-    ta = (*C.find (AtomType::aLP3) + *C.find (AtomType::a2LP2)) / 2;
-    faces_C.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
-    ta = *C.find (AtomType::a2LP2);
-    faces_C.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
-    ta = (*C.find (AtomType::a2LP2) + *C.find (AtomType::a1LP2)) / 2;
-    faces_C.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
-    ta = *C.find (AtomType::a1LP2);
-    faces_C.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
+      ta = *C.safeFind (AtomType::aH6);
+      faces_C.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+      ta = (*C.safeFind (AtomType::a1H4) + *C.safeFind (AtomType::aH5)) / 2;
+      faces_C.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+      ta = *C.safeFind (AtomType::a1H4);
+      faces_C.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
+      ta = (*C.safeFind (AtomType::a1H4) + *C.safeFind (AtomType::a2H4)) / 2;
+      faces_C.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
+      ta = *C.safeFind (AtomType::a2H4);
+      faces_C.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
+      ta = (*C.safeFind (AtomType::a2H4) + *C.safeFind (AtomType::aLP3)) / 2;
+      faces_C.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+      ta = (*C.safeFind (AtomType::aLP3) + *C.safeFind (AtomType::a2LP2)) / 2;
+      faces_C.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+      ta = *C.safeFind (AtomType::a2LP2);
+      faces_C.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
+      ta = (*C.safeFind (AtomType::a2LP2) + *C.safeFind (AtomType::a1LP2)) / 2;
+      faces_C.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
+      ta = *C.safeFind (AtomType::a1LP2);
+      faces_C.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
 
-    ExtendedResidue G (ResidueType::rRG, ResId ('G', 1));
-    G.setTheoretical ();
+      ExtendedResidue G (ResidueType::rRG, ResId ('G', 1));
+      G.setTheoretical ();
 
-    ta = *G.find (AtomType::aH8);
-    faces_G.push_back (make_pair (ta, PropertyType::parseType ("C8")));
-    ta = (*G.find (AtomType::aH8) + *G.find (AtomType::aLP7)) / 2;
-    faces_G.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
-    ta = (*G.find (AtomType::a1LP6) + *G.find (AtomType::aLP7)) / 2;
-    faces_G.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
-    ta = *G.find (AtomType::a1LP6);
-    faces_G.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
-    ta = (*G.find (AtomType::a1LP6) + *G.find (AtomType::a2LP6)) / 2;
-    faces_G.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
-    ta = *G.find (AtomType::a2LP6);
-    faces_G.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
-    ta = (*G.find (AtomType::a2LP6) + *G.find (AtomType::aH1)) / 2;
-    faces_G.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
-    ta = (*G.find (AtomType::aH1) + *G.find (AtomType::a2H2)) / 2;
-    faces_G.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
-    ta = *G.find (AtomType::a2H2);
-    faces_G.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
-    ta = (*G.find (AtomType::a2H2) + *G.find (AtomType::a1H2)) / 2;
-    faces_G.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
-    ta = *G.find (AtomType::a1H2);
-    faces_G.push_back (make_pair (ta, PropertyType::parseType ("Sw")));
-    ta = (*G.find (AtomType::a1H2) + *G.find (AtomType::aLP3)) / 2;
-    faces_G.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
+      ta = *G.safeFind (AtomType::aH8);
+      faces_G.push_back (make_pair (ta, PropertyType::parseType ("C8")));
+      ta = (*G.safeFind (AtomType::aH8) + *G.safeFind (AtomType::aLP7)) / 2;
+      faces_G.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+      ta = (*G.safeFind (AtomType::a1LP6) + *G.safeFind (AtomType::aLP7)) / 2;
+      faces_G.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+      ta = *G.safeFind (AtomType::a1LP6);
+      faces_G.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
+      ta = (*G.safeFind (AtomType::a1LP6) + *G.safeFind (AtomType::a2LP6)) / 2;
+      faces_G.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
+      ta = *G.safeFind (AtomType::a2LP6);
+      faces_G.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
+      ta = (*G.safeFind (AtomType::a2LP6) + *G.safeFind (AtomType::aH1)) / 2;
+      faces_G.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+      ta = (*G.safeFind (AtomType::aH1) + *G.safeFind (AtomType::a2H2)) / 2;
+      faces_G.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+      ta = *G.safeFind (AtomType::a2H2);
+      faces_G.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
+      ta = (*G.safeFind (AtomType::a2H2) + *G.safeFind (AtomType::a1H2)) / 2;
+      faces_G.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
+      ta = *G.safeFind (AtomType::a1H2);
+      faces_G.push_back (make_pair (ta, PropertyType::parseType ("Sw")));
+      ta = (*G.safeFind (AtomType::a1H2) + *G.safeFind (AtomType::aLP3)) / 2;
+      faces_G.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
     
-    ExtendedResidue U (ResidueType::rRU, ResId ('U', 1));
-    U.setTheoretical ();
+      ExtendedResidue U (ResidueType::rRU, ResId ('U', 1));
+      U.setTheoretical ();
 	
-    ta = *U.find (AtomType::aH6);
-    faces_U.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
-    ta = (*U.find (AtomType::a1LP4) + *U.find (AtomType::aH5)) / 2;
-    faces_U.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
-    ta = *U.find (AtomType::a1LP4);
-    faces_U.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
-    ta = (*U.find (AtomType::a1LP4) + *U.find (AtomType::a2LP4)) / 2;
-    faces_U.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
-    ta = *U.find (AtomType::a2LP4);
-    faces_U.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
-    ta = (*U.find (AtomType::a2LP4) + *U.find (AtomType::aH3)) / 2;
-    faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
-    ta = *U.find (AtomType::aH3);
-    faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
-    ta = (*U.find (AtomType::a2LP2) + *U.find (AtomType::aH3)) / 2;
-    faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
-    ta = *U.find (AtomType::a2LP2);
-    faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
-    ta = (*U.find (AtomType::a2LP2) + *U.find (AtomType::a1LP2)) / 2;
-    faces_U.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
-    ta = *U.find (AtomType::a1LP2);
-    faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
+      ta = *U.safeFind (AtomType::aH6);
+      faces_U.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+      ta = (*U.safeFind (AtomType::a1LP4) + *U.safeFind (AtomType::aH5)) / 2;
+      faces_U.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+      ta = *U.safeFind (AtomType::a1LP4);
+      faces_U.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
+      ta = (*U.safeFind (AtomType::a1LP4) + *U.safeFind (AtomType::a2LP4)) / 2;
+      faces_U.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
+      ta = *U.safeFind (AtomType::a2LP4);
+      faces_U.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
+      ta = (*U.safeFind (AtomType::a2LP4) + *U.safeFind (AtomType::aH3)) / 2;
+      faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+      ta = *U.safeFind (AtomType::aH3);
+      faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+      ta = (*U.safeFind (AtomType::a2LP2) + *U.safeFind (AtomType::aH3)) / 2;
+      faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
+      ta = *U.safeFind (AtomType::a2LP2);
+      faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
+      ta = (*U.safeFind (AtomType::a2LP2) + *U.safeFind (AtomType::a1LP2)) / 2;
+      faces_U.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
+      ta = *U.safeFind (AtomType::a1LP2);
+      faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
     
-    ExtendedResidue T (ResidueType::rDT, ResId ('T', 1));
-    T.setTheoretical ();
+      ExtendedResidue T (ResidueType::rDT, ResId ('T', 1));
+      T.setTheoretical ();
     
-    ta = *T.find (AtomType::aH6);
-    faces_T.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
-    ta = (*T.find (AtomType::a1LP4) + *T.find (AtomType::aC5M)) / 2;
-    faces_T.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
-    ta = *T.find (AtomType::a1LP4);
-    faces_T.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
-    ta = (*T.find (AtomType::a1LP4) + *T.find (AtomType::a2LP4)) / 2;
-    faces_T.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
-    ta = *T.find (AtomType::a2LP4);
-    faces_T.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
-    ta = (*T.find (AtomType::a2LP4) + *T.find (AtomType::aH3)) / 2;
-    faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
-    ta = *T.find (AtomType::aH3);
-    faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
-    ta = (*T.find (AtomType::a2LP2) + *T.find (AtomType::aH3)) / 2;
-    faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
-    ta = *T.find (AtomType::a2LP2);
-    faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
-    ta = (*T.find (AtomType::a2LP2) + *T.find (AtomType::a1LP2)) / 2;
-    faces_T.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
-    ta = *T.find (AtomType::a1LP2);
-    faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
+      ta = *T.safeFind (AtomType::aH6);
+      faces_T.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+      ta = (*T.safeFind (AtomType::a1LP4) + *T.safeFind (AtomType::aC5M)) / 2;
+      faces_T.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+      ta = *T.safeFind (AtomType::a1LP4);
+      faces_T.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
+      ta = (*T.safeFind (AtomType::a1LP4) + *T.safeFind (AtomType::a2LP4)) / 2;
+      faces_T.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
+      ta = *T.safeFind (AtomType::a2LP4);
+      faces_T.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
+      ta = (*T.safeFind (AtomType::a2LP4) + *T.safeFind (AtomType::aH3)) / 2;
+      faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+      ta = *T.safeFind (AtomType::aH3);
+      faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+      ta = (*T.safeFind (AtomType::a2LP2) + *T.safeFind (AtomType::aH3)) / 2;
+      faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
+      ta = *T.safeFind (AtomType::a2LP2);
+      faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
+      ta = (*T.safeFind (AtomType::a2LP2) + *T.safeFind (AtomType::a1LP2)) / 2;
+      faces_T.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
+      ta = *T.safeFind (AtomType::a1LP2);
+      faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
  
-    isInit = true;
+      isInit = true;
+    }
+    catch (NoSuchAtomException& ex)
+    {
+      FatalIntLibException fex ("", __FILE__, __LINE__);
+      fex << "failed to initialize relation: " << ex.what ();
+      throw fex;
+    }
+    
   }
 
 
