@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Dec 22 16:39:23 2004
-// $Revision: 1.1.2.2 $
-// $Id: UndirectedGraph.cc,v 1.1.2.2 2004-12-23 22:43:27 larosem Exp $
+// $Revision: 1.1.2.3 $
+// $Id: UndirectedGraph.cc,v 1.1.2.3 2004-12-27 01:55:38 larosem Exp $
 // 
 
 
@@ -17,9 +17,9 @@
 #include <list>
 #include <vector>
 
-#include "mccore/Messagestream.h"
-#include "mccore/UndirectedGraph.h"
-#include "mccore/stlio.h"
+#include "Messagestream.h"
+#include "UndirectedGraph.h"
+#include "stlio.h"
 
 using namespace mccore;
 using namespace std;

@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Dec 17 15:20:36 2004
-// $Revision: 1.1.2.3 $
-// $Id: OrientedGraph.cc,v 1.1.2.3 2004-12-22 21:36:16 larosem Exp $
+// $Revision: 1.1.2.4 $
+// $Id: OrientedGraph.cc,v 1.1.2.4 2004-12-27 01:55:33 larosem Exp $
 // 
 
 
@@ -17,9 +17,9 @@
 #include <list>
 #include <vector>
 
-#include "mccore/Messagestream.h"
-#include "mccore/OrientedGraph.h"
-#include "mccore/stlio.h"
+#include "Messagestream.h"
+#include "OrientedGraph.h"
+#include "stlio.h"
 
 using namespace mccore;
 using namespace std;
