@@ -27,22 +27,29 @@
 #include <iostream>
 #include <list>
 
+using namespace std;
+
 namespace mccore {
 
   /**
    * @short A path in a graph.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Path.h,v 1.2 2003-04-11 01:34:28 gendrop Exp $
+   * @version $Id: Path.h,v 1.3 2003-05-13 18:19:51 gendrop Exp $
    */
   template< class node_type, class valuetype >
   class Path : public list< node_type >
-  {
+  {    
 
     valuetype value;
 
   public:
+   
     
+    typedef typename list< node_type >::const_iterator const_iterator;
+    typedef typename list< node_type >::iterator iterator;
+
+ 
     // LIFECYCLE ------------------------------------------------------------
     
     /**
@@ -85,20 +92,56 @@ namespace mccore {
     bool operator< (const Path &other) const {
       return  (size () < other.size ());
     }
-    
+
+    /**
+     * Compares two paths to determine if they are equal.  They are
+     * compared in both directions and are rotated, i.e. it is to be
+     * used with cycles.
+     */
+    bool operator== (const Path &other) const {
+      Path a = *this;
+      Path b = other;
+      int i;
+      
+      if (a.size () != b.size ()) return false;
+ 
+      for (i=0;i<(int)a.size (); ++i) {
+	if ((list< node_type > &)a == (list< node_type >&)b) return true;
+	b.rotate ();
+      }
+
+      b.reverse ();
+
+      for (i=0;i<(int)a.size (); ++i) {
+	if ((list< node_type > &)a == (list< node_type >&)b) return true;
+	b.rotate ();
+      }
+
+      return false;
+    }
+     
     // ACCESS ---------------------------------------------------------------
 
-    void setValue (valuetype &v) { value = v; }
+    void setValue (const valuetype &v) { value = v; }
 
     valuetype getValue (void) const { return value; }
 
     // METHODS --------------------------------------------------------------
 
+    void rotate ()
+    {
+      this->push_back (this->front ());
+      this->pop_front ();
+    }
+    
     // I/O  -----------------------------------------------------------------
 
     ostream &output (ostream &out) const {
       out << "[ " << flush;
-      copy (begin (), end (), ostream_iterator< node_type > (out, " "));
+      const_iterator i;
+      for (i=begin (); i!=end (); ++i) {
+	out << *i << " ";
+      }
       out << "] " << value << flush;
       return out;
     }
@@ -109,6 +152,11 @@ namespace mccore {
     }
   };
 
+  template < class node_type, class valuetype >
+  ostream &operator<< (ostream &out, const Path< node_type, valuetype > &path)
+  {
+    return path.output (out);
+  }
 }
   
 

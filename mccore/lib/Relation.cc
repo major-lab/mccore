@@ -9,6 +9,8 @@
 #include <config.h>
 #endif
 
+#include <iterator>
+
 #include "Relation.h"
 #include "BasicResidue.h"
 #include "PropertyType.h"
@@ -17,8 +19,6 @@
 #include "ResidueTopology.h"
 #include "HBond.h"
 #include "Residue.h"
-
-#include "stlio.h"
 
 namespace mccore {
 
@@ -89,10 +89,24 @@ namespace mccore {
   // METHODS --------------------------------------------------------------
 
 
-  void 
+  bool
   Relation::annotate () 
   {
+    const PropertyType *pta = 0;
+    const PropertyType *ptb = 0;
+    
+    set< const PropertyType* > s;
+    
+    s = areAdjacent (ref, res);
+    labels.insert (s.begin (), s.end ());
+    s = areStacked (ref, res);
+    labels.insert (s.begin (), s.end ());
+    s = arePaired (ref, res, pta, ptb);
+    labels.insert (s.begin (), s.end ());
+    refFace = pta;
+    resFace = ptb;
 
+    return !empty ();
   }
 
   
@@ -113,15 +127,28 @@ namespace mccore {
     return inv;
   }
 
+
+  // I/O -----------------------------------------------------------------------
   
+
   ostream&
   Relation::output (ostream &os) const
   {
+    if (ref!=0 && res!=0) {
+      os << "{" 
+	 << ref->getResId () << ref->getType () << " -> " 
+	 << res->getResId () << res->getType () << ": ";
+      copy (labels.begin (), labels.end (), ostream_iterator< const PropertyType* > (os, " "));
+      if (is (PropertyType::pPairing))
+	os << " " << resFace << "/" << refFace;
+      os << "}";
+    }	
     return os;
   }
 
 
   // STATIC METHODS ------------------------------------------------------------
+
 
   set< const PropertyType* > 
   Relation::areAdjacent (const BasicResidue* ra, const BasicResidue *rb)
@@ -356,17 +383,36 @@ namespace mccore {
     const UndirectedGraph< const AtomType* > *gb = ResidueTopology::get (rb->getType ());
     if (ga == 0 || gb == 0) return ts;
     
+    vector< BasicResidue::const_iterator > ra_at;
+    vector< BasicResidue::const_iterator > ran_at;
+    vector< BasicResidue::const_iterator > rb_at;
+    vector< BasicResidue::const_iterator > rbn_at;
+    int x, y;
+
     AtomSet* as = new AtomSetOr (new AtomSetHydrogen (), new AtomSetLP ());
     as = new AtomSetAnd (new AtomSetSideChain (), as);
 
     for (i=ra->begin (as->clone ()); i!=ra->end (); ++i) {
-      j = ra->find (ga->getNeighbors (i->getType ()).front ());
-      for (k=rb->begin (as->clone ()); k!=rb->end (); ++k) {
-	l = rb->find (gb->getNeighbors (k->getType ()).front ());
+      ra_at.push_back (i);
+      ran_at.push_back (ra->find (ga->getNeighbors (i->getType ()).front ()));
+    }
+
+    for (k=rb->begin (as); k!=rb->end (); ++k) {
+      rb_at.push_back (k);
+      rbn_at.push_back (rb->find (gb->getNeighbors (k->getType ()).front ()));
+    }
+    
+    for (x=0; x<(int)ra_at.size (); ++x) {
+      i = ra_at[x];
+      j = ran_at[x];
+      for (y=0; y<(int)rb_at.size (); ++y) {
+	k = rb_at[y];
+	l = rbn_at[y];
 	
 	if (i->getType ()->isHydrogen () && k->getType ()->isLonePair ()) {
 	  HBond h (j->getType (), i->getType (), l->getType (), k->getType ());
 	  h.evalStatistically (*ra, *rb);
+	  //h.eval (*ra, *rb);
 	  if (h.getValue () > 0.01) {
 	    if (atomToInt.find (i) == atomToInt.end ()) {
 	      graph.insert (node);
@@ -382,7 +428,8 @@ namespace mccore {
 	  }
 	} else if (k->getType ()->isHydrogen () && i->getType ()->isLonePair ()) {
 	  HBond h (l->getType (), k->getType (), j->getType (), i->getType ());
-	  h.evalStatistically (*rb, *ra);	  
+	  h.evalStatistically (*rb, *ra);
+	  //h.eval (*rb, *ra);
 	  if (h.getValue () > 0.01) {
 	    if (atomToInt.find (k) == atomToInt.end ()) {
 	      graph.insert (node);
@@ -400,7 +447,6 @@ namespace mccore {
       }
     }
 
-    delete as;
 
 //     {
 //       map< BasicResidue::const_iterator, int >::iterator m, n;
@@ -411,7 +457,7 @@ namespace mccore {
 //     graph.output (cout);
     
     graph.preFlowPush (0, 1);
-
+    
 //     graph.output (cout);
 
     float sum_flow = 0;
@@ -726,5 +772,13 @@ namespace mccore {
     faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
  
     isInit = true;
+  }
+
+
+  // NON-MEMBER FUNCTIONS ------------------------------------------------------
+
+  ostream& operator<< (ostream &os, const Relation &r)
+  {
+    return r.output (os);
   }
 }

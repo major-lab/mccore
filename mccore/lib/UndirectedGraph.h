@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 24 21:30:26 2003
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 // 
 //  This file is part of mccore.
 //  
@@ -28,8 +28,10 @@
 
 #include <iostream>
 #include <map>
+#include <algorithm>
 
 #include "Graph.h"
+#include "Path.h"
 
 namespace mccore {
 
@@ -39,7 +41,7 @@ namespace mccore {
  * a node ordering determined by the node_comparator function object.
  *
  * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
- * @version $Id: UndirectedGraph.h,v 1.2 2003-04-11 01:37:04 gendrop Exp $
+ * @version $Id: UndirectedGraph.h,v 1.3 2003-05-13 18:19:51 gendrop Exp $
  */
 template< class node_type, 
 	  class edge_type = bool, 
@@ -60,7 +62,8 @@ public:
    * Initializes the object with the other's content.
    * @param other the object to copy.
    */
-  UndirectedGraph (const UndirectedGraph &other) : Graph< node_type, edge_type, node_comparator > (other) {}
+  UndirectedGraph (const UndirectedGraph &other) 
+    : Graph< node_type, edge_type, node_comparator > (other) {}
 
   /**
    * Destroys the object.
@@ -92,16 +95,25 @@ public:
    * @param p the destination node.
    * @return the weight.
    */
-  float getWeight (const node_type& o, const node_type& p) const {
+  virtual float getWeight (const node_type& o, const node_type& p) const {
     assert (areConnected (o, p));
     if (node_comparator () (o, p)) {
-      return edgeWeights.find(o)->second.find (p)->second;
+      return edgeWeights.find(nodeToPtr (o))->second.find (nodeToPtr (p))->second;
     } else {
-      return edgeWeights.find(p)->second.find (o)->second;
+      return edgeWeights.find(nodeToPtr (p))->second.find (nodeToPtr (o))->second;
     }
   }
   
-  
+  virtual const edge_type& getEdge (const node_type& o, const node_type& p) const {
+    assert (areConnected (o, p));
+    if (node_comparator () (o, p)) {
+      return *graph.find(nodeToPtr (o))->second.find (nodeToPtr (p))->second;
+    } else {
+      return *graph.find(nodeToPtr (p))->second.find (nodeToPtr (o))->second;
+    }
+  }
+
+
   // METHODS --------------------------------------------------------------
 
   // GRAPH RELATED METHODS ------------------------------------------------
@@ -118,14 +130,17 @@ public:
   {
     if (!contains (o) || !contains (p)) return false;
     
+    edges.push_back (e);
+    const edge_type* ep = &edges.back ();
+    
     if (node_comparator () (o, p)) {
-      graph[o][p] = e;
-      edgeWeights[o][p] = w;
+      graph[nodeToPtr (o)][nodeToPtr (p)] = ep;
+      edgeWeights[nodeToPtr (o)][nodeToPtr (p)] = w;
     } else {
-      graph[p][o] = e;
-      edgeWeights[p][o] = w;
+      graph[nodeToPtr (p)][nodeToPtr (o)] = ep;
+      edgeWeights[nodeToPtr (p)][nodeToPtr (o)] = w;
     }
-
+  
     return true;
   }
   
@@ -138,14 +153,23 @@ public:
   virtual bool disconnect (const node_type &o, const node_type &p) 
   {
     if (!contains (o) || !contains (p)) return false;
-    
+
+    const edge_type* ep = &getEdge (o, p);
+
     if (node_comparator () (o, p)) {
-      graph.find (o)->second.erase (p);
-      edgeWeights.find (o)->second.erase (p);
+      graph.find (nodeToPtr (o))->second.erase (nodeToPtr (p));
+      edgeWeights.find (nodeToPtr (o))->second.erase (nodeToPtr (p));
     } else {
-      graph.find (p)->second.erase (o);
-      edgeWeights.find (p)->second.erase (o);
+      graph.find (nodeToPtr (p))->second.erase (nodeToPtr (o));
+      edgeWeights.find (nodeToPtr (p))->second.erase (nodeToPtr (o));
     }
+
+    typename list< edge_type >::iterator i;
+    for (i=edges.begin (); i!=edges.end (); ++i) {
+      if (&*i == ep) break;
+    }
+    if (i!=edges.end ())
+      edges.erase (i);
 
     return true;
   }
@@ -161,8 +185,8 @@ public:
   {
     if (!contains (o) || !contains (p)) return false;
     
-    return (graph.find (o)->second.find (p) != graph.find (o)->second.end () ||
-	    graph.find (p)->second.find (o) != graph.find (p)->second.end ());
+    return (graph.find (nodeToPtr (o))->second.find (nodeToPtr (p)) != graph.find (nodeToPtr (o))->second.end () ||
+	    graph.find (nodeToPtr (p))->second.find (nodeToPtr (o)) != graph.find (nodeToPtr (p))->second.end ());
   }
   
   
@@ -171,12 +195,15 @@ public:
    * @param o a node in the graph.
    * @return the list of neighbors.
    */
-  list< node_type > getNeighbors (const node_type& o) const
+  virtual list< node_type > getNeighbors (const node_type& o) const
   {
     list< node_type > n;
+
+    typename UndirectedGraph::const_iterator i;
+
     if (!contains (o)) return n;
     
-    for (const_iterator i=begin (); i!=end (); ++i) {
+    for (i=begin (); i!=end (); ++i) {
       if (areConnected (o, *i))
 	n.push_back (*i);
     }
@@ -187,15 +214,15 @@ public:
    * Prim's algorithm for the minimum spanning tree.
    * @return a vector of edges representing a spanning tree of this graph.
    */
-  vector< node_pair > minimumSpanningTree () {
+  vector< pair< node_type, node_type > > minimumSpanningTree () {
     typedef float value_type;
     value_type MAXVALUE = MAXFLOAT;
 
     map< const node_type*, const node_type* > nearest;
     map< const node_type*, value_type > mindist;
-    map< const node_type*, value_type >::iterator k;
-    vector< node_pair > edges;
-    const_iterator i;
+    typename map< const node_type*, value_type >::iterator k;
+    vector< pair< node_type, node_type > > edgeNodes;
+    typename UndirectedGraph::const_iterator i;
     int j;
 
     // Initialize
@@ -213,8 +240,8 @@ public:
     for (j=0; j<size ()-1; ++j) {
       value_type min = MAXVALUE;
       const node_type* minNode = 0;
-      for (map< const node_type*, float >::iterator x=mindist.begin ();
-	   x!= mindist.end (); ++x) {
+      typename map< const node_type*, float >::iterator x;
+      for (x=mindist.begin (); x!= mindist.end (); ++x) {
 	if (x->second >= 0 && x->second < min) {
 	  min = x->second;
 	  minNode = x->first;
@@ -223,7 +250,7 @@ public:
 
       // This is a test to see if we stay in the same connected component
       if (minNode != 0) {
-	edges.push_back (make_pair(*nearest[minNode], *minNode));
+	edgeNodes.push_back (make_pair(*nearest[minNode], *minNode));
 
 	mindist[&*minNode] = -1;
 
@@ -238,19 +265,261 @@ public:
       }      
     }
 
-    return edges;
+    return edgeNodes;
   }
+
+  /**
+   * Horton's algorithm for the minimum cycle basis.
+   */
+  vector< Path< node_type, float > > cycleBase () { return cycleBaseHorton (); }
+  vector< Path< node_type, float > > cycleBaseUnion () { return cycleBaseHorton (true); }
+  
+private:
+  
+  vector< Path< node_type, float > > cycleBaseHorton (bool minimum_basis_union = false)
+  {
+    vector< Path< node_type, float > > realbag;
+
+    vector< Path< const node_type*, float > > bag;
+    typename vector< Path< const node_type*, float > >::iterator p;
+
+    typename graph_type::iterator i, j;
+    typename adjacency_type::iterator k;
+
+    map< const node_type*, map< const node_type*, Path< const node_type*, float > > > paths;
+    typename map< const node_type*, Path< const node_type*, float > >::iterator ii;
+
+    for (i=graph.begin (); i!=graph.end (); ++i) {
+      paths[i->first] = shortestPath (*i->first);
+      for (ii=paths[i->first].begin (); ii!=paths[i->first].end (); ++ii) {
+// 	cout << *i->first << " " << *ii->first << " " << ii->second << endl; 
+      }
+    }
+
+    for (i=graph.begin (); i!=graph.end (); ++i) {
+      for (j=graph.begin (); j!=graph.end (); ++j) {
+	for (k=j->second.begin (); k!=j->second.end (); ++k) {
+
+	  //	  cout << "Step: " << i->first << " " << j->first << " " << k->first << endl;
+	 
+	  Path< const node_type*, float > Pvx = paths[i->first][j->first];	  
+	  Path< const node_type*, float > Pvy = paths[i->first][k->first];
+
+	  // if P(v,x) ^ P(v,y) = {v}
+	  
+	  Path< const node_type*, float > Pvxp = Pvx; 
+	  Pvxp.sort ();
+	  Path< const node_type*, float > Pvyp = Pvy; 
+	  Pvyp.sort ();
+	  
+	  Path< const node_type*, float > inter;
+	  set_intersection (Pvxp.begin (), Pvxp.end (),
+			    Pvyp.begin (), Pvyp.end (),
+			    inserter (inter, inter.begin ()));
+
+	  //cout << "Inter = " << inter << endl;
+
+	  if (inter.size () == 1 && inter.front () == i->first) {
+	    Path< const node_type*, float > C = Pvx;
+	    C.insert (C.end (), Pvy.rbegin (), Pvy.rend ());
+	    C.pop_back ();
+	    C.setValue (Pvx.getValue () + Pvy.getValue () + 1);
+	    
+	    for (p=bag.begin (); p!=bag.end (); ++p) {
+	      if (*p == C) {
+		break;
+	      }
+	    }
+	    if (p==bag.end ()) {
+	      bag.push_back (C);
+// 	      cout << "Inserting " << C << endl;
+	    }
+	  }
+	}	  
+      }
+    }
+    
+    sort (bag.begin (), bag.end ());
+
+    bag = gaussianElimination (bag, minimum_basis_union);
+
+    typename Path< const node_type*, float >::iterator pi;
+
+    for (p=bag.begin (); p!=bag.end (); ++p) {
+      Path< node_type, float > aPath;
+      for (pi=p->begin (); pi!=p->end (); ++pi) {
+	aPath.push_back (**pi);
+      }
+      aPath.setValue (p->getValue ());
+      realbag.push_back (aPath);      
+    }
+
+    return realbag;
+  }
+
+
+  
+  vector< Path< const node_type*, float > > 
+  gaussianElimination (vector< Path< const node_type*, float > >& bag, bool minBasisUnion)
+  {
+    typedef typename vector< Path< const node_type*, float > >::iterator vpiterator;
+
+    if (bag.size () == 0) return bag;
+    
+    vector< bool* > matrix;
+    vector< bool* >::iterator n;
+
+    int i, j;
+    vector< Path< const node_type*, float > > newbag;
+    vpiterator p, q;
+
+    vector< vpiterator > marked;
+    marked.clear ();
+
+
+//     // Should be done otherwise...  We need an efficient way to get
+//     // the index of an edge in the graph...
+
+    int edgesize = 0;
+    map< const edge_type*, int > edgeid; 
+    typename list< edge_type >::const_iterator l;
+    for (l=edges.begin (); l!=edges.end (); ++l) {
+      edgeid[&*l] = edgesize++;
+    }    
+    
+    for (p=bag.begin (); p!=bag.end (); ++p) {
+      bool* row = new bool[edgesize];
+      memset (row, false, edgesize * sizeof (bool));
+      
+//       cout << "Treating " << *p << endl;
+      
+      typename Path< const node_type*, float >::iterator r, s;
+      for (r=p->begin (), s=r, ++s; r!=p->end (); ++r, ++s) {
+	if (s==p->end ()) row[edgeid[&getEdge(**r, **p->begin ())]] = true;
+	else row[edgeid[&getEdge(**r, **s)]] = true;
+      }
+                 
+      bool inserted = false;
+
+      for (n=matrix.begin (), q=newbag.begin (); q!=newbag.end (); ++n, ++q) {
+// 	for (j=0; j<edgesize; ++j) { cout << row[j] << " "; } 
+// 	cout << "  ->  " << flush; 
+// 	for (j=0; j<edgesize; ++j) { cout << (*n)[j] << " "; } cout << endl;
+	
+	j=0;
+	while (j<edgesize && row[j] == false && (*n)[j] == false) ++j;
+	if (j == edgesize) continue;
+	
+	if (row[j] == true && (*n)[j] == false) {
+// 	  cout << "Marking " << *p << endl;
+	  marked.push_back (p);
+	  inserted = true;
+	  break;
+	}
+	
+	if (row[j] == true && (*n)[j] == true) {
+	  //Reduce the current
+	  for (i=0; i<edgesize; ++i) {
+	    row[i] = (row[i] + (*n)[i])%2;
+	  }
+	  continue;
+	}
+      }
+      
+      if (!inserted) {
+	for (j=0; j<edgesize; ++j) {
+	  if (row[j] == true) break;
+	}
+	if (j!=edgesize) {
+// 	  cout << "Marking " << *p << endl;
+	  marked.push_back (p);
+	} else {
+// 	  cout << "Rejecting " << *p << endl;
+	}
+      }
+      
+      delete[] row;
+
+      //Let's see if we should try to insert the marked...
+      if (p+1==bag.end () || (p+1)->size () > p->size ()) {
+// 	cout << "Inserting marked cycles" << endl;
+
+	for (i=0; i<(int)marked.size (); ++i) {
+	  bool* row = new bool[edgesize];
+	  memset (row, false, edgesize * sizeof (bool));
+	  
+	  typename Path< const node_type*, float >::iterator r, s;
+	  for (r=marked[i]->begin (), s=r, ++s; r!=marked[i]->end (); ++r, ++s) {
+	    if (s==marked[i]->end ()) row[edgeid[&getEdge(**r, **marked[i]->begin ())]] = true;
+	    else row[edgeid[&getEdge(**r, **s)]] = true;
+	  }
+
+// 	  cout << "Treating " << *marked[i] << endl;	
+	  
+	  inserted = false;
+	
+	  for (n=matrix.begin (), q=newbag.begin (); q!=newbag.end (); ++n, ++q) {
+	    j=0;    
+	    while (j<edgesize && row[j] == false && (*n)[j] == false) ++j;
+	    if (j == edgesize) continue;
+	    
+	    if (row[j] == true && (*n)[j] == false) {
+// 	      cout << "Inserting " << *marked[i] << endl;
+	      matrix.insert (n, row);
+	      newbag.insert (q, *marked[i]);
+	      inserted = true;
+	      break;
+	    }
+	    
+	    if (row[j] == true && (*n)[j] == true) {
+	      //Reduce the current
+	      for (int k=0; k<edgesize; ++k) {
+		row[k] = (row[k] + (*n)[k])%2;
+	      }
+	      continue;
+	    }
+	  }
+	  
+	  if (!inserted) {
+	    if (minBasisUnion) {
+// 	      cout << "Accepting " << *marked[i] << endl;
+	      matrix.push_back (row);
+	      newbag.push_back (*marked[i]);
+	    } else {	    
+	      for (j=0; j<edgesize; ++j) {
+		if (row[j] == true) break;
+	      }
+	      if (j!=edgesize) {
+// 		cout << "Accepting " << *marked[i] << endl;
+		matrix.push_back (row);
+		newbag.push_back (*marked[i]);
+	      } else {
+// 		cout << "Rejecting " << *marked[i] << endl;
+	      }
+	    }	
+	  }
+	}
+	marked.clear ();
+      }      
+    }
+    
+    return newbag;
+  }
+  
 
   // I/O  -----------------------------------------------------------------
 
+public:
+
   virtual ostream& output (ostream& os) const
   {
-    const_iterator ki, kj;
+    typename UndirectedGraph::const_iterator ki, kj;
     
     for (ki=begin (); ki!=end (); ++ki) {      
       os << *ki << " : ";      
       for (kj=begin (); kj!=end (); ++kj) {
-    	if (areConnected (*ki, *kj)) os << *kj << " ";
+    	if (areConnected (*ki, *kj)) os << *kj << "("
+					<< getEdge (*ki, *kj) << ") ";
       }
       os << endl;
     }

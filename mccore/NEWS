@@ -1,14 +1,35 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -*- Mode: Outline -*- ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; NEWS
-;; Copyright © 2000-02 Laboratoire de Biologie Informatique et Théorique.
+;; Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
 ;;                  Université de Montréal.
 ;; Author           : Martin Larose
 ;; Created On       : Tue Sep 19 18:15:25 2000
 ;; Last Modified By : Patrick Gendron
-;; Last Modified On : Mon Feb 25 11:35:37 2002
-;; Update Count     : 4
+;; Last Modified On : Thu Apr 10 21:27:16 2003
+;; Update Count     : 5
 ;; Status           : Ok.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+* Version 1.4
+
+Redesign of almost all the classes.
+- Using new standard C++ headers.
+- Vector3D and HomogeneousTransfo are not compliant with standard
+mathematical convention (i.e. concerning the order of application of operations).
+- Using Basic residue that is as small in memory as possible.
+- Elimination of the McCore file and all global variables as well as
+the need to initialize the library in every program.
+- Parsing some of the PDB headers.
+- Atom, residue types have been recoded and the hierarchy adapted to
+the need to have residue type wildcards.
+- Rmsd algo now has its own class.
+- HBonds are simplified.
+- Graphs (directed or undirected) are now templated and thus can be
+used to store any types of nodes and edges (special care was taken not
+to copy nodes and edges when not need in algorithms). They are also
+part of a hierarchy.
+- All annotation code is now part of mccore.
+- All motif related code is now part of mccore.
 
 
 * Version 1.3

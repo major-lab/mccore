@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Apr  7 18:28:55 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 // 
 //  This file is part of mccore.
 //  
@@ -31,9 +31,9 @@
 #include <algorithm>
 #include <values.h>
 
-#include "stlio.h"
-
 #include "Graph.h"
+
+#include "stlio.h"
 
 namespace mccore {
 
@@ -42,14 +42,56 @@ namespace mccore {
    * Maximum flow in a bi-directed graph... The preFlowPush algo has
    * only been tested when nodes are int.
    *
-   * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: MaximumFlowGraph.h,v 1.1 2003-04-11 01:37:03 gendrop Exp $
+   * @author Patrick Gendron (gendrop@iro.umontreal.ca)
+   * @version $Id: MaximumFlowGraph.h,v 1.2 2003-05-13 18:19:51 gendrop Exp $
    */
   template < class node_type,
 	     class edge_type = bool, 
 	     class node_comparator = less< node_type > >
   class MaximumFlowGraph : public Graph< node_type, edge_type, node_comparator >
-  {
+  {  
+
+
+    // TYPEDEFS ----------------------------------------------------------------
+    
+    /**
+     * The size type of the abstract residue container.
+     */
+    typedef unsigned int size_type;
+
+    /**
+     * The type of a mapping node/edge.
+     */
+    typedef typename Graph< node_type, edge_type, node_comparator >::adjacency_type adjacency_type;
+    
+    /**
+     * The type of a mapping node/node/edge.
+     */
+    typedef typename Graph< node_type, edge_type, node_comparator >::graph_type graph_type;
+
+    /**
+     * A node to value associative container.
+     */
+    typedef typename Graph< node_type, edge_type, node_comparator >::node_adapter node_adapter;
+
+    /**
+     * A node to node to value associative container.
+     */
+    typedef typename Graph< node_type, edge_type, node_comparator >::edge_adapter edge_adapter;
+    
+    /**
+     * iterator
+     */
+    typedef typename Graph< node_type, edge_type, node_comparator >::iterator iterator;
+
+    /**
+     * const iterator
+     */ 
+    typedef typename Graph< node_type, edge_type, node_comparator >::const_iterator const_iterator;
+
+    // MEMBERS -----------------------------------------------------------------
+
+
     /**
      * The graph of reverse edges implemented as a Map of Map, that is
      * an adjacency matrix but where empty cells do not take space in
@@ -83,9 +125,9 @@ namespace mccore {
     MaximumFlowGraph (const MaximumFlowGraph &other) 
       : Graph< node_type, edge_type, node_comparator > (other)
     {
-      reverseGraph = other.reverseGraph;
-      edgeFlows = other.edgeFlows;
-      verbose = false;
+//       reverseGraph = other.reverseGraph;
+//       edgeFlows = other.edgeFlows;
+//       verbose = false;
     }
   
     /**
@@ -95,7 +137,7 @@ namespace mccore {
       clear ();
     }
   
-    // OPERATORS ------------------------------------------------------------
+    // OPERATORS ---------------------------------------------------------------
 
     /**
      * Assigns the object with the other's content.
@@ -105,8 +147,8 @@ namespace mccore {
     virtual MaximumFlowGraph& operator= (const MaximumFlowGraph &other) {
       if (this != &other) {
 	Graph< node_type, edge_type, node_comparator >::operator= (other);
-	reverseGraph = other.reverseGraph;
-	edgeFlows = other.edgeFlows;
+// 	reverseGraph = other.reverseGraph;
+// 	edgeFlows = other.edgeFlows;
       }
       return *this;
     }
@@ -122,7 +164,7 @@ namespace mccore {
     float getWeight (const node_type& o, const node_type& p) const
     {
       assert (areConnected (o, p));
-      return edgeWeights.find(o)->second.find (p)->second;
+      return edgeWeights.find(nodeToPtr (o))->second.find (nodeToPtr (p))->second;
     }
   
     /**
@@ -134,7 +176,7 @@ namespace mccore {
     void setFlow (const node_type& o, const node_type& p, float val) 
     {
       if (!contains (o) || !contains (p)) return;    
-      edgeFlows[o][p] = val;
+      edgeFlows[nodeToPtr (o)][nodeToPtr (p)] = val;
     }
   
     /**
@@ -147,7 +189,7 @@ namespace mccore {
     {
       assert (areConnected (o, p));
       if (!contains (o) || !contains (p)) return 0; 
-      else return edgeFlows.find(o)->second.find (p)->second;
+      else return edgeFlows.find(nodeToPtr (o))->second.find (nodeToPtr (p))->second;
     }
   
   
@@ -161,12 +203,14 @@ namespace mccore {
      */
     virtual iterator insert (const node_type &n, float weight = 1) 
     {
-      if (contains (n)) return graph.find (n);
+      if (contains (n)) return find (n);
 
-      graph[n] = adjacency_type ();
-      reverseGraph[n] = adjacency_type ();
-      nodeWeights[n] = weight;
-      iterator p = graph.find (n);
+      const node_type* np = &*nodes.insert (n).first;
+
+      graph[np] = adjacency_type ();
+      reverseGraph[np] = adjacency_type ();
+      nodeWeights[np] = weight;
+      iterator p = find (n);
       return p;
     }
   
@@ -179,17 +223,22 @@ namespace mccore {
     {
       if (!contains (n)) return 0;
     
-      graph.erase (n);
-      reverseGraph.erase (n);
-      nodeWeights.erase (n);
+      const node_type* np = &*nodes.insert (n).first;
+
+      graph.erase (np);
+      reverseGraph.erase (np);
+      nodeWeights.erase (np);
     
-      graph_type::iterator i;    
+      typename graph_type::iterator i;    
       for (i=graph.begin (); i!=graph.end (); ++i) {
-	i->second.erase (n);
+	i->second.erase (np);
       }
       for (i=reverseGraph.begin (); i!=reverseGraph.end (); ++i) {
-	i->second.erase (n);
+	i->second.erase (np);
       }
+
+      nodes.erase (*np);
+
       return 1;
     }
   
@@ -208,14 +257,39 @@ namespace mccore {
     {
       if (!contains (o) || !contains (p)) return false;
     
-      graph[o][p] = e;
-      reverseGraph[p][o] = e;
-      edgeWeights[o][p] = w;
+      edges.push_back (e);
+      const edge_type* ep = &edges.back ();
+
+      graph[nodeToPtr (o)][nodeToPtr (p)] = ep;
+      reverseGraph[nodeToPtr (p)][nodeToPtr (o)] = ep;
+      edgeWeights[nodeToPtr (o)][nodeToPtr (p)] = w;
       setFlow (o, p, 0);
 
       return true;
     }
   
+    /**
+     * Disconnect two nodes of the graph.
+     * @param o a node.
+     * @param p another node.
+     * @return true if the nodes were disconnected.
+     */
+    virtual bool disconnect (const node_type &o, const node_type &p) 
+    {
+      if (!contains (o) || !contains (p)) return false;
+
+      const edge_type* ep = graph[nodeToPtr (o)][nodeToPtr (p)];
+
+      graph.find (nodeToPtr (o))->second.erase (nodeToPtr (p));
+      edgeWeights.find (nodeToPtr (o))->second.erase (nodeToPtr (p));
+      edgeFlows.find (nodeToPtr (o))->second.erase (nodeToPtr (p));
+
+      edges.erase (::find (edges.begin (), edges.end (), *ep));
+
+      return true;
+    }
+
+
     /**
      * Returns true if there exists an edge between o to p or p and o.
      * @param o an extremity of the edge.
@@ -224,7 +298,8 @@ namespace mccore {
      */
     bool areConnected (const node_type& o, const node_type& p) const {
       if (!contains (o) || !contains (p)) return false;
-      return (graph.find (o)->second.find (p) != graph.find (o)->second.end ());
+      return (graph.find (nodeToPtr (o))->second.find (nodeToPtr (p)) 
+	      != graph.find (nodeToPtr (o))->second.end ());
     }
   
     /**
@@ -236,9 +311,12 @@ namespace mccore {
       list< node_type > n;
       if (!contains (o)) return n;
     
-      const adjacency_type &at = reverseGraph.find (o)->second;
-      for (adjacency_type::const_iterator i=at.begin (); i!=at.end (); ++i) {
-	n.push_back (i->first);
+      const adjacency_type &at = reverseGraph.find (nodeToPtr (o))->second;
+
+      typename adjacency_type::const_iterator i;
+
+      for (i=at.begin (); i!=at.end (); ++i) {
+	n.push_back (*i->first);
       }
       return n;
     }
@@ -255,23 +333,25 @@ namespace mccore {
     void preFlowPush (const node_type& source, const node_type& sink)
     {
       if (!contains (source) || !contains (sink)) return;
-           
+     
+      const node_type* sourcep = nodeToPtr (source);
+ 
       iterator i;
-      adjacency_type::iterator j;
-
+      typename adjacency_type::iterator j;
+      
       // Compute the initial distance labels
-      map< const node_type, int > label;
-      map< const node_type, float > excess;
+      map< const node_type*, int > label;
+      map< const node_type*, float > excess;
       
       for (i=begin (); i!=end (); ++i) {
-	label[*i] = MAXINT;
-	excess[*i] = 0;
+	label[&*i] = MAXINT;
+	excess[&*i] = 0;
       }
 
-      list< node_type > q;
-      q.push_back (source);
+      list< const node_type* > q;
+      q.push_back (sourcep);
       int distance = 0;
-      label[source] = distance;
+      label[sourcep] = distance;
 
       if (verbose) cout << label << endl;
 
@@ -296,11 +376,11 @@ namespace mccore {
       if (verbose) cout << label << endl;
 
       // Flood from the source      
-      list< node_type > active;
-      for (j=graph[source].begin (); j!=graph[source].end (); ++j) {
-	setFlow (source, j->first, getWeight (source, j->first));
-	excess[j->first] = getFlow (source, j->first);
-	excess[source] = excess[source] - getFlow (source, j->first);
+      list< const node_type* > active;
+      for (j=graph[sourcep].begin (); j!=graph[sourcep].end (); ++j) {
+	setFlow (source, *j->first, getWeight (source, *j->first));
+	excess[j->first] = getFlow (source, *j->first);
+	excess[sourcep] = excess[sourcep] - getFlow (source, *j->first);
 	active.push_back (j->first);
       }
 
@@ -317,37 +397,39 @@ namespace mccore {
 
   private:
 
-    void pushRelabel (const node_type& node, 
-		      list< node_type >& active, 
-		      map< const node_type, float >& excess, 
-		      map< const node_type, int >& label, 
+    void pushRelabel (const node_type* node, 
+		      list< const node_type* >& active, 
+		      map< const node_type*, float >& excess, 
+		      map< const node_type*, int >& label, 
 		      const node_type& source, const node_type& sink)
     {
-      adjacency_type::iterator i;
+      typename adjacency_type::iterator i;
 
+      const node_type* sourcep = nodeToPtr (source);
+      
       if (verbose) cout << "Relabeling [" << node << "]" << endl;
-
+      
       if (excess[node] > 0) {
 	vector< float > cap;
 	for (i=graph[node].begin (); i!=graph[node].end (); ++i) {
 	  if (label[i->first] > label[node] &&
-	      getFlow (node,i->first) < getWeight (node, i->first))
-	    cap.push_back (getWeight (node, i->first)-getFlow (node, i->first));
+	      getFlow (*node, *i->first) < getWeight (*node, *i->first))
+	    cap.push_back (getWeight (*node, *i->first)-getFlow (*node, *i->first));
 	}
 	float eq = equilibrateFlow (cap, excess[node]);
 
 	for (i=graph[node].begin (); i!=graph[node].end (); ++i) {
 	  if (label[i->first] > label[node] &&
-	      getFlow (node, i->first) < getWeight (node, i->first)) {
-	    float push_delta = min(eq, getWeight (node, i->first)-getFlow (node, i->first));
+	      getFlow (*node, *i->first) < getWeight (*node, *i->first)) {
+	    float push_delta = min(eq, getWeight (*node, *i->first)-getFlow (*node, *i->first));
 
 	    if (verbose) cout << "Pushing " << push_delta << " from " << node << " to " << i->first << endl;
 
-	    setFlow (node, i->first, getFlow (node, i->first) + push_delta);
+	    setFlow (*node, *i->first, getFlow (*node, *i->first) + push_delta);
 	    excess[node] = excess[node] - push_delta;
 	    if (fabs (excess[node]) < 1e-5) excess[node] = 0;
-	    if (!equals (i->first, source) &&
-		!equals (i->first, sink)) {
+	    if (!equals (*i->first, source) &&
+		!equals (*i->first, sink)) {
 	      if (verbose) cout << "         AddingA " << i->first << endl;
 	      active.push_back (i->first);
 	    }
@@ -360,23 +442,23 @@ namespace mccore {
 	vector< float > cap;
 	for (i=reverseGraph[node].begin (); i!=reverseGraph[node].end (); ++i) {
 	  if (label[i->first] > label[node] &&
-	      getFlow (i->first, node) > 0)
-	    cap.push_back (getFlow (i->first, node));	 
+	      getFlow (*i->first, *node) > 0)
+	    cap.push_back (getFlow (*i->first, *node));	 
 	}
 	float eq = equilibrateFlow (cap, excess[node]);
 	
 	for (i=reverseGraph[node].begin (); i!=reverseGraph[node].end (); ++i) {
 	  if (label[i->first] > label[node] &&
-	      getFlow (i->first, node) > 0) {
-	    float push_delta = min(eq, getFlow (i->first, node));
+	      getFlow (*i->first, *node) > 0) {
+	    float push_delta = min(eq, getFlow (*i->first, *node));
 
 	    if (verbose) cout << "Pushing back " << push_delta << " from " << node << " to " << i->first << endl;
 	  
-	    setFlow (i->first, node, getFlow (i->first, node) - push_delta);
+	    setFlow (*i->first, *node, getFlow (*i->first, *node) - push_delta);
 	    excess[node] = excess[node] - push_delta;
 	    if (fabs (excess[node]) < 1e-5) excess[node] = 0;
-	    if (!equals (i->first, source) &&
-		!equals (i->first, sink)) {
+	    if (!equals (*i->first, source) &&
+		!equals (*i->first, sink)) {
 	      if (verbose) cout << "         AddingB " << i->first << endl;
 	      active.push_back (i->first);
 	    }
@@ -391,22 +473,22 @@ namespace mccore {
 	int max_dist = -2 * size ();
 
 	for (i=graph[node].begin (); i!=graph[node].end (); ++i) {
-	  if (getWeight (node, i->first) - getFlow (node, i->first) > 0) {
+	  if (getWeight (*node, *i->first) - getFlow (*node, *i->first) > 0) {
 	    if (label[i->first] > max_dist) {
 	      max_dist = label[i->first];
 	      if (verbose) cout << "  max_dist forward residual = " 
-		   << getWeight (node, i->first) - getFlow (node, i->first)
+		   << getWeight (*node, *i->first) - getFlow (*node, *i->first)
 		   << endl;
 	    }
 	  }
 	}
 	
 	for (i=reverseGraph[node].begin (); i!=reverseGraph[node].end (); ++i) {
-	  if (getFlow (i->first, node) > 0) {
+	  if (getFlow (*i->first, *node) > 0) {
 	    if (label[i->first] > max_dist) {
 	      max_dist = label[i->first];
 	      if (verbose) cout << "  max_dist back residual = " 
-		   << getFlow (i->first, node)
+		   << getFlow (*i->first, *node)
 		   << endl;
 	    }
 	  }
@@ -415,12 +497,12 @@ namespace mccore {
 	if (verbose) cout << "Relabel[" << node << "] from " 
 	     << label[node] << " to " << (max_dist - 1)
 	     << " (excess = " << excess[node] << ")" << endl;
-      
+	
 	label[node] = max_dist - 1;
       }
     }
-
-
+    
+    
     float equilibrateFlow (vector< float > capacities, float excess) 
     {
       unsigned int i;
@@ -435,31 +517,31 @@ namespace mccore {
       return (excess / (capacities.size () - i));
     }
     
-   
+    
     // I/O ---------------------------------------------------------------------
 
   public:
 
     virtual ostream& output (ostream& os) const
     {
-      graph_type::const_iterator i;
-      adjacency_type::const_iterator j;
+      typename graph_type::const_iterator i;
+      typename adjacency_type::const_iterator j;
 
       os << "Forward Graph" << endl;
       for (i=graph.begin (); i!=graph.end (); ++i) {
-	cout << "node      " << i->first << " : ";
+	cout << "node      " << *i->first << " : ";
 	for (j=i->second.begin (); j!=i->second.end (); ++j) {
-	  cout << j->first << "(" << j->second << ") ";
+	  cout << *j->first << "(" << *j->second << ") ";
 	}
 	cout << endl;
-	cout << "capacity  " << i->first << " : ";
+	cout << "capacity  " << *i->first << " : ";
 	for (j=i->second.begin (); j!=i->second.end (); ++j) {
-	  cout << j->first << "=" << getWeight (i->first, j->first) << " ";
+	  cout << *j->first << "=" << getWeight (*i->first, *j->first) << " ";
 	}
 	cout << endl;
-	cout << "flow      " << i->first << " : ";
+	cout << "flow      " << *i->first << " : ";
 	for (j=i->second.begin (); j!=i->second.end (); ++j) {
-	  cout << j->first << "=" << getFlow (i->first, j->first) << " ";
+	  cout << *j->first << "=" << getFlow (*i->first, *j->first) << " ";
 	}
 	cout << endl;
       }

@@ -336,12 +336,15 @@ namespace mccore {
       pivot[1] = (Atom*) atomGlobal[1];
       pivot[2] = (Atom*) atomGlobal[2];
     } else {
-      //System.err.println("Residue " + getType() + "-" + getResId ()
-      //	       + " cannot be moved since it has less then 3 atoms.");
+      pivot[0] = 0;
+      pivot[1] = 0;
+      pivot[2] = 0;
+      cerr << "Warning, residue has less than 3 atoms: " << getType () << endl;
     }
 
-    *t = HomogeneousTransfo::align (*pivot[0], *pivot[1], *pivot[2]);
-
+    if (pivot[0] != 0 && pivot[1] != 0 && pivot[2] != 0) {
+      *t = HomogeneousTransfo::align (*pivot[0], *pivot[1], *pivot[2]);
+    }
     return *t; 
   }
 
@@ -367,8 +370,10 @@ namespace mccore {
       pivot[1] = (Atom*) atomGlobal[1];
       pivot[2] = (Atom*) atomGlobal[2];
     } else {
-      //System.err.println("Residue " + getType() + "-" + getResId ()
-      //	       + " cannot be moved since it has less then 3 atoms.");
+      pivot[0] = 0;
+      pivot[1] = 0;
+      pivot[2] = 0;
+      cerr << "Warning, residue has less than 3 atoms: " << getType () << endl;
     }
     curr = HomogeneousTransfo::align (*pivot[0], *pivot[1], *pivot[2]);
 

@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 // 
 //  This file is part of mccore.
 //  
@@ -42,7 +42,7 @@ namespace mccore {
 
 
   /**
-   * @short Container for residues.
+   * @short Container for residues using a simple list.
    *
    * This object is the container for residues.  It is an unsorted list
    * of residues.  Random access is simulated with sequential access.
@@ -57,16 +57,23 @@ namespace mccore {
    * details).
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Model.h,v 1.9 2003-04-03 21:43:34 gendrop Exp $
+   * @version $Id: Model.h,v 1.10 2003-05-13 18:19:51 gendrop Exp $
    */
-  class Model : public list< BasicResidue* >
+  class Model
   {
+    typedef unsigned int size_type;
+
     /**
      * Factory method for creating new residues.
      */
     ResidueFactoryMethod *residueFM;
 
-  
+
+    /**
+     * Container for Residues.
+     */
+    list< BasicResidue* > residues;
+
   public:
 
     class model_iterator;
@@ -92,12 +99,12 @@ namespace mccore {
      * Clones the model.
      * @return a copy of the model.
      */
-    Model* clone () const { return new Model (*this); }
+    virtual Model* clone () const { return new Model (*this); }
 
     /**
      * Destroys the object.
      */
-    ~Model ();
+    virtual ~Model ();
 
     // OPERATORS ------------------------------------------------------------
 
@@ -140,40 +147,40 @@ namespace mccore {
      * Gets the iterator pointing to the beginning of the model.
      * @return the iterator.
      */
-    iterator begin () { return iterator (list< BasicResidue* >::begin ()); }
+    iterator begin () { return iterator (residues.begin ()); }
 
     /**
      * Gets the iterator pointing to the end of the model.
      * @return the iterator.
      */
-    iterator end () { return iterator (list< BasicResidue* >::end ()); }
+    iterator end () { return iterator (residues.end ()); }
 
     /**
      * Gets the const iterator pointing to the beginning of the model.
      * @return the iterator.
      */
     const_iterator begin () const
-    { return const_iterator (list< BasicResidue* >::begin ()); }
+    { return const_iterator (residues.begin ()); }
 
     /**
      * Gets the const iterator pointing to the end of the model.
      * @return the iterator.
      */
     const_iterator end () const
-    { return const_iterator (list< BasicResidue* >::end()); }
+    { return const_iterator (residues.end()); }
 
 
     // METHODS -------------------------------------------------------------
 
     /**
-     * Inserts a residue before pos.  It calls the list<> method.
+     * Inserts a residue.  It calls the list<> method.
      * @param pos the iterator where the residue will be placed.
      * @param res the residue to insert.
      * @return the position where the residue was inserted.
      */
-    iterator insert (iterator pos, const BasicResidue &res)
+    iterator insert (const BasicResidue &res)
     { 
-      return list< BasicResidue* >::insert (pos, res.clone ()); 
+      return residues.insert (residues.end (), res.clone ()); 
     }
 
     /**
@@ -184,25 +191,25 @@ namespace mccore {
      * @return the position where the residue was inserted.
      */
     template <class InputIterator>
-    void insert(iterator pos, InputIterator f, InputIterator l)
+    void insert(InputIterator f, InputIterator l)
     {
       while (f != l)
 	{
-	  insert (pos, *f);
+	  insert (*f);
 	  ++f;
 	}
     }
 
     /**
-     * Inserts a new element at the end.  
-     * @param res the residue to
-     * push back.
-     */
-    void push_back (const BasicResidue &res)
-    { 
-      list< BasicResidue* >::push_back (res.clone ()); 
+     * Erase a residue from the model.
+     * @param 
+     * @return an iterator on the next residue.
+     */ 
+    iterator erase (iterator &i) 
+    {
+      return residues.erase (i);
     }
-
+    
     //   /**
     //    * Finds an atom given it's text representation of the form residue:atom.
     //    * Returns a empty iterator if it is not found.
@@ -241,6 +248,12 @@ namespace mccore {
      * Sorts the model according to the BasicResidue::operator<
      */ 
     void sort ();
+
+    /**
+     * Returns the number of residues present in the model.
+     * @return a number of residues.
+     */
+    size_type size () const;
 
     /**
      * Tells if there is no residue in the model.

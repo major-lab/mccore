@@ -5,8 +5,8 @@
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:57:11 2000
 ## Last Modified By : Patrick Gendron
-## Last Modified On : Thu Apr 10 21:34:08 2003
-## Update Count     : 68
+## Last Modified On : Mon Apr 28 14:59:54 2003
+## Update Count     : 76
 ## Status           : Ok.
 ###############################################################################
 #
@@ -101,7 +101,11 @@ SOURCES = Vector3D.cc \
 	  PropertyType.cc \
 	  PropertyTypeStore.cc \
 	  Relation.cc \
-	  PairingPattern.cc
+	  PairingPattern.cc \
+\
+	  Sequence.cc \
+	  Fastastream.cc \
+	  Genbankstream.cc
 
 
 HEADERS = $(SOURCES:.cc=.h) Algo.h Path.h Graph.h UndirectedGraph.h \

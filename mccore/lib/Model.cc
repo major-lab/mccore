@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.12 $
+// $Revision: 1.13 $
 // 
 //  This file is part of mccore.
 //  
@@ -61,7 +61,7 @@ namespace mccore {
     
     residueFM = right.residueFM->clone ();
     for (cit = right.begin (); cit != right.end (); ++cit)
-      push_back (*cit);
+      insert (*cit);
   }
 
 
@@ -91,7 +91,7 @@ namespace mccore {
 	clear ();
 
 	for (cit = right.begin (); cit != right.end (); ++cit)
-	  push_back (*cit);
+	  insert (*cit);
       }
     return *this;
   }
@@ -226,14 +226,21 @@ namespace mccore {
   void
   Model::sort ()
   {
-    list< BasicResidue* >::sort (less_deref);
+    residues.sort (less_deref);
   }
 
   
+  Model::size_type
+  Model::size () const
+  {
+    return residues.size ();
+  }
+
+
   bool
   Model::empty () const
   {
-    return list< BasicResidue* >::empty ();
+    return residues.empty ();
   }
 
 
@@ -244,7 +251,7 @@ namespace mccore {
 
     for (it = begin (); it != end (); ++it)
       delete &*it;
-    list< BasicResidue* >::clear ();    
+    residues.clear ();    
   }
 
 
@@ -449,7 +456,7 @@ namespace mccore {
 	
  	if (res->size () != 0) {
 	  // Optimized insertion that bypasses the copy: 
- 	  list< BasicResidue* >::push_back (res); 
+ 	  residues.push_back (res); 
 	} else
 	  delete res;
       }    
@@ -483,7 +490,7 @@ namespace mccore {
 	
 	ibs >> *res;
 	// Optimized insertion that bypasses the copy: 
-	list< BasicResidue* >::push_back (res); 
+	residues.push_back (res); 
       }
     return ibs;
   }

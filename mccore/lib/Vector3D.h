@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar  5 15:05:43 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 // 
 //  This file is part of mccore.
 //  
@@ -43,7 +43,7 @@ namespace mccore
  * The 3D vector class represents simultaneously a location in space (a point) as well as a displacement.
  *
  * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
- * @version $Id: Vector3D.h,v 1.1 2003-04-03 21:55:55 gendrop Exp $
+ * @version $Id: Vector3D.h,v 1.2 2003-05-13 18:19:51 gendrop Exp $
  */
 class Vector3D
 {
@@ -98,15 +98,27 @@ public:
    * @param other the object to copy.
    * @return itself.
    */
-  virtual Vector3D& operator= (const Vector3D &other);
-  
+  virtual Vector3D& operator= (const Vector3D &other)
+  {
+    if (this != &other)
+      {
+	x = other.x;
+	y = other.y;
+	z = other.z;
+      }
+    return *this;
+  }
+
   /**
    * Indicates whether some other object is "equal to" this one.
    * @param other the reference object with which to compare.
    * @return true if this object is the same as the obj argument;
    * false otherwise.
    */
-  bool operator== (const Vector3D &other) const;
+  bool operator== (const Vector3D &other) const
+  {
+    return (x == other.x && y == other.y && z == other.z);
+  }
 
   // ACCESS ---------------------------------------------------------------
   
@@ -164,82 +176,135 @@ public:
    * Normalizes the vector.
    * @return a new normalized vector.
    */
-  Vector3D normalize() const;
+  Vector3D normalize() const 
+  {
+    float l = length();
+    return Vector3D (x / l, y / l, z / l);
+  }
   
   /**
    * Calculates the distance between the vector and the origin.
    * @return the length of the vector.
    */
-  float length() const;
+  float length() const 
+  {
+    return (float) sqrt (squareLength());
+  }
  
   /**
    * Calculates the square distance between the vector and the origin.
    * @return the square length of the vector.
    */
-  float squareLength () const;
+  float squareLength () const 
+  {
+    return (x*x + y*y + z*z);
+  }
   
   /**
    * Negates the coordinates.
    * @param v the vector.
    * @return a new vector.
    */
-  Vector3D operator- () const;
+  Vector3D operator- () const
+  {
+    return Vector3D(-x, -y, -z);
+  }
 
   /**
    * Substracts and assigns the coordinates.
    * @param v the vector.
    * @return itself.
    */
-  const Vector3D& operator-= (const Vector3D &v);
+  const Vector3D& operator-= (const Vector3D &v)
+  {
+    x -= v.x; 
+    y -= v.y;
+    z -= v.z;
+    return *this;
+  }
 
   /**
    * Adds and assigns the coordinates.
    * @param v the vector.
    * @return itself.
    */
-  const Vector3D& operator+= (const Vector3D &v);
+  const Vector3D& operator+= (const Vector3D &v)
+  {
+    x += v.x; 
+    y += v.y;
+    z += v.z;
+    return *this;
+  }
 
   /**
    * Calculates the cross product between two vectors.
    * @param aVector the aVector vectors.
    * @return a new vector.
    */
-  Vector3D cross (const Vector3D &v) const;
+  Vector3D cross (const Vector3D &v) const 
+  {
+    return Vector3D(y * v.z - z * v.y,
+		    z * v.x - x * v.z,
+		    x * v.y - y * v.x);
+  }
 
   /**
    * Calculates the dot-product over the vectors.
    * @param v the vector.
    * @return the dot product.
    */
-  float dot (const Vector3D &v) const;
+  float dot (const Vector3D &v) const 
+  {
+    return x * v.x + y * v.y + z * v.z;
+  }
   
   /**
    * Calculates and assigns the scalar multiplication.
    * @param value the scalar.
    * @return a new vector.
    */
-  const Vector3D& operator*= (float value);
+  const Vector3D& operator*= (float value) 
+  {
+    x *= value; 
+    y *= value;
+    z *= value;
+    return *this;
+  }
   
   /**
    * Calculates and assigns the scalar quotient.
    * @param value the scalar.
    * @return a new vector.
    */
-  const Vector3D& operator/= (float value);
+  const Vector3D& operator/= (float value) 
+  {
+    x /= value; 
+    y /= value;
+    z /= value;
+    return *this;
+  }
 
   /**
    * Calculates the distance between two points.
    * @param aVector the point.
    * @return the distance.
    */
-  float distance (const Vector3D &aVector) const;
+  float distance (const Vector3D &aVector) const 
+  {
+    return (float)sqrt(squareDistance(aVector));
+  }
   
   /**
    * Calculates the squared distance between two points.
    * @param aVector the point.
    * @return the squared distance.
    */
-  float squareDistance (const Vector3D &aVector) const;
+  float squareDistance (const Vector3D &aVector) const 
+  {
+    return (float) ((x - aVector.x) * (x - aVector.x)
+		    + (y - aVector.y) * (y - aVector.y)
+		    + (z - aVector.z) * (z - aVector.z));
+  }
   
   /**
      * Calculates the angle between vectors a, the object and c.  The returned

@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 //
 //  This file is part of mccore.
 //  
@@ -45,7 +45,7 @@ namespace mccore {
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.1 2003-04-11 01:37:03 gendrop Exp $
+   * @version $Id: Relation.h,v 1.2 2003-05-13 18:19:51 gendrop Exp $
    */
   class Relation
   {
@@ -142,20 +142,24 @@ namespace mccore {
     bool is (const PropertyType* t) const {
       return (labels.find (t) != labels.end ());
     }
-
     
     /** 
      * Describes the interaction.
+     * @return true if there is indeed a relation between the bases.
      */
-    void annotate ();
-    
-    
+    bool annotate ();
+        
     /**
      * Inverts the relation.
      */
     Relation invert () const;
-
     
+    /**
+     * Determines if there are properties in the relation.
+     * @return true if there is no property in the relation.
+     */
+    bool empty () { return labels.empty (); }
+
     // STATIC METHODS -------------------------------------------------------
     
     /**
@@ -244,6 +248,8 @@ namespace mccore {
 //     oBinstream& output (oBinstream &obs) const;
     
   };
+
+  // NON_MEMBER FUNCTIONS ------------------------------------------------------
 
   /**
    * Ouputs the relation to the stream.

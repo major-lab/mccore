@@ -128,7 +128,7 @@ HBond::HBond (const HBond &other)
     hydrogen (other.hydrogen), 
     acceptor (other.acceptor), 
     lonepair (other.lonepair),
-    value (0.0),
+    value (other.value),
     resD (other.resD),
     resA (other.resA)
 {}
@@ -227,8 +227,8 @@ HBond::eval (const BasicResidue &ra, const BasicResidue &rb)
   resA = &rb;
   
   float hlp = getHydrogen ().distance (getLonePair ());
-  if (hlp >= 0.1 && hlp < 1.65) return 1.0f;
-  else return 0.0f;
+  if (hlp >= 0.1 && hlp < 1.65) return (value = 1.0);
+  else return (value = 0.0);
 }
 
 

@@ -1,12 +1,12 @@
 #                              -*- Mode: Sh -*- 
 # configure.in
-# Copyright © 2000-02 Laboratoire de Biologie Informatique et Théorique.
+# Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
-# Last Modified By : Martin Larose
-# Last Modified On : Tue Oct 22 11:06:57 2002
-# Update Count     : 11
+# Last Modified By : Patrick Gendron
+# Last Modified On : Fri May  9 15:27:56 2003
+# Update Count     : 17
 # Status           : Ok.
 # 
 #  This file is part of mccore.
@@ -33,7 +33,7 @@ AC_INIT(lib/McCore.h)
 AC_CONFIG_HEADER(config.h)
 
 PACKAGE=mccore
-VERSION=1.3
+VERSION=1.4
 AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE")
 AC_DEFINE_UNQUOTED(VERSION, "$VERSION")
 
@@ -90,9 +90,9 @@ if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
         LINKOPTIONS= ;;
     esac;
 elif eval "test \"`echo $GXX`\" = yes"; then     # gnu compiler
-	CXXSHFLAGS="$CXXFLAGS -Wall";
-	CXXFLAGS="$CXXFLAGS -Wall";
-	DEPFLAGS="-MM"
+	CXXSHFLAGS="-g ";
+	CXXFLAGS="-g";
+	DEPFLAGS="-MM -Wno-deprecated"
 	LDFLAGS="-static $LDFLAGS"
 	LINKOPTIONS=;
 fi
@@ -103,8 +103,14 @@ AC_ARG_WITH(malloc,
 AC_DEFINE(__USE_MALLOC),
 )
 
+AC_ARG_WITH(optimization,
+[  --with-optimization     Use optimization],
+CXXFLAGS="-O2 $CXXFLAGS";
+)
+
 AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)
+AC_SUBST(CXXFLAGS)
 AC_SUBST(CXXSHFLAGS)
 AC_SUBST(DEPFLAGS)
 AC_SUBST(LDFLAGS)

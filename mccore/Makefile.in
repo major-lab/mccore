@@ -1,12 +1,12 @@
 ############################ -*- Mode: Makefile -*- ###########################
 ## Makefile.in
-## Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+## Copyright © 2000-01, 03 Laboratoire de Biologie Informatique et Théorique.
 ##                     Université de Montréal.
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:10:38 2000
-## Last Modified By : Martin Larose
-## Last Modified On : Wed Sep 26 10:20:29 2001
-## Update Count     : 10
+## Last Modified By : Patrick Gendron
+## Last Modified On : Mon May 12 19:36:16 2003
+## Update Count     : 37
 ## Status           : Ok.
 ###############################################################################
 #
@@ -58,11 +58,26 @@ stamp-h.in
 
 
 
-all static doc:
+all static:
 	@ for subdir in $(SUBDIRS); do \
 	   echo "Building $@ in $$subdir"; \
 	   (cd $$subdir && $(MAKE) $@) || exit 1; \
 	  done
+
+doc:
+	@ for subdir in $(SUBDIRS); do \
+	   echo "Building $@ in $$subdir"; \
+	   (cd $$subdir && $(MAKE) $@) || exit 1; \
+	  done
+
+#all static doc:
+#	@ for subdir in $(SUBDIRS); do \
+#	   echo "Building $@ in $$subdir"; \
+#	   (cd $$subdir && $(MAKE) $@) || exit 1; \
+#	  done
+
+test: static basic.cc
+	$(CXX) -O2 -DHAVE_CONFIG_H -I$(srcdir)/lib -I$(srcdir) -I. -o basic $(srcdir)/basic.cc lib/libmccore.a -lz
 
 install install-static:
 	@ for subdir in $(SUBDIRS); do \

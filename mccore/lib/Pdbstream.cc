@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Patrick Gendron
-// Last Modified On : Thu Mar 27 11:39:35 2003
-// Update Count     : 225
+// Last Modified On : Wed Apr 16 16:35:09 2003
+// Update Count     : 234
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -225,6 +225,7 @@ namespace mccore {
 	rid = new ResId (line[21], atoi (fieldp), line[26]);
 
 	ratom = new Atom (x, y, z, at);
+
 	return ratom;
       }
     }
@@ -295,6 +296,7 @@ namespace mccore {
 	  else if (r.getType () == ResidueType::rRU) r.setType (ResidueType::rDT);
 	}
       }
+
       // Finalize
       r.finalize ();
     }

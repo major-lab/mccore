@@ -1,12 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // config.h.in
-// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Aug 23 11:34:50 2001
 // Last Modified By : Patrick Gendron
-// Last Modified On : Mon Feb 25 11:35:47 2002
-// Update Count     : 4
+// Last Modified On : Mon Mar 24 10:24:45 2003
+// Update Count     : 7
 // Status           : Unknown.
 // 
 

@@ -157,28 +157,6 @@ namespace mccore {
   const HomogeneousTransfo&
   Residue::getReferential (HomogeneousTransfo *t) const
   {
-    Vector3D *pivot[3];
-
-    /* Set the pivots */
-    if ((get (AtomType::aN9) != 0 || get (AtomType::aN1) != 0) 
-	&& get (AtomType::aPSY) != 0
-	&& get (AtomType::aPSZ) != 0) {
-      pivot[0] = get (AtomType::aN9) != 0 ? get (AtomType::aN9) : get (AtomType::aN1);
-      pivot[1] = get (AtomType::aPSY);
-      pivot[2] = get (AtomType::aPSZ);	   
-    } else if (type->isAminoAcid ()) {
-      pivot[0] = get (AtomType::aCA);
-      pivot[1] = get (AtomType::aN);
-      pivot[2] = get (AtomType::aPSAZ);	   
-    } else if (size() >= 3) {
-      pivot[0] = (Atom*) atomGlobal[0];
-      pivot[1] = (Atom*) atomGlobal[1];
-      pivot[2] = (Atom*) atomGlobal[2];
-    } else {
-      //System.err.println("Residue " + getType() + "-" + getResId ()
-      //	       + " cannot be moved since it has less then 3 atoms.");
-    }
-
     return tfo; 
   }
 
@@ -382,8 +360,10 @@ namespace mccore {
       pivot[1] = (Atom*) atomGlobal[1];
       pivot[2] = (Atom*) atomGlobal[2];
     } else {
-      //System.err.println("Residue " + getType() + "-" + getResId ()
-      //	       + " cannot be moved since it has less then 3 atoms.");
+      pivot[0] = 0;
+      pivot[1] = 0;
+      pivot[2] = 0;
+      //cerr << "Warning, residue has less than 3 atoms: " << getType () << endl;
     }
     
     /* Align the residue to the origin. */
@@ -419,9 +399,6 @@ namespace mccore {
     place ();
     os << resId << type;
 //     os << endl << tfo;
-
-//     cout << endl << atomIndex.size () << " " << atomLocal.size () << " " << atomGlobal.size () << endl;
-
 //     AtomMap::const_iterator cit;
 //     os << "\n\tLocal coordinates\t\tGlobal coordinates";
 //     for (cit=atomIndex.begin (); cit!=atomIndex.end (); ++cit) {

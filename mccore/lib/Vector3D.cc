@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar  5 15:05:43 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 // 
 //  This file is part of mccore.
 //  
@@ -62,131 +62,7 @@ namespace mccore {
   }
 
   
-  // OPERATORS -----------------------------------------------------------------
-  
-
-  Vector3D& 
-  Vector3D::operator= (const Vector3D &other)
-  {
-    if (this != &other)
-      {
-	x = other.x;
-	y = other.y;
-	z = other.z;
-      }
-    return *this;
-  }
-  
-  
-  bool 
-  Vector3D::operator== (const Vector3D &other) const
-  {
-    return (x == other.x && y == other.y && z == other.z);
-  }
-
-
-  
   // METHODS -------------------------------------------------------------------
-
-
-  Vector3D 
-  Vector3D::normalize() const 
-  {
-    float l = length();
-    return Vector3D (x / l, y / l, z / l);
-  }
-  
-
-  float
-  Vector3D::length() const 
-  {
-    return (float) sqrt (squareLength());
-  }
-
-
-  float 
-  Vector3D::squareLength () const 
-  {
-    return (x*x + y*y + z*z);
-  }
-
-  Vector3D 
-  Vector3D::operator- () const
-  {
-    return Vector3D(-x, -y, -z);
-  }
-  
-  
-  const Vector3D& 
-  Vector3D::operator-= (const Vector3D &v)
-  {
-    x -= v.x; 
-    y -= v.y;
-    z -= v.z;
-    return *this;
-  }
-  
-
-  const Vector3D& 
-  Vector3D::operator+= (const Vector3D &v)
-  {
-    x += v.x; 
-    y += v.y;
-    z += v.z;
-    return *this;
-  }
-
-
-  Vector3D 
-  Vector3D::cross (const Vector3D &v) const 
-  {
-    return Vector3D(y * v.z - z * v.y,
-		    z * v.x - x * v.z,
-		    x * v.y - y * v.x);
-  }
-
-
-  float 
-  Vector3D::dot (const Vector3D &v) const 
-  {
-    return x * v.x + y * v.y + z * v.z;
-  }
-
-
-  const Vector3D& 
-  Vector3D::operator*= (float value) 
-  {
-    x *= value; 
-    y *= value;
-    z *= value;
-    return *this;
-  }
-
-
-  const Vector3D& 
-  Vector3D::operator/= (float value) 
-  {
-    x /= value; 
-    y /= value;
-    z /= value;
-    return *this;
-  }
-
-
-  float 
-  Vector3D::distance (const Vector3D &aVector) const 
-  {
-    return (float)sqrt(squareDistance(aVector));
-  }
-
-
-  float 
-  Vector3D::squareDistance (const Vector3D &aVector) const 
-  {
-    return (float) ((x - aVector.x) * (x - aVector.x)
-		    + (y - aVector.y) * (y - aVector.y)
-		    + (z - aVector.z) * (z - aVector.z));
-  }
 
 
   float 
@@ -245,15 +121,15 @@ namespace mccore {
 		    : -acosf(cosTheta));
   }
   
-  
+
   Vector3D& 
   Vector3D::transform (const HomogeneousTransfo &tfo)
   {
     *this = tfo * *this;
     return *this;
   }
-  
-  
+
+
   // I/O  -----------------------------------------------------------------
   
   
@@ -295,7 +171,10 @@ namespace mccore {
   {
     return obs << p.getX () << p.getY () << p.getZ ();
   }
-  
+
+
+  // NON-MEMBER FUNCTIONS ------------------------------------------------------
+
 
   const Vector3D
   operator- (const Vector3D &v, const Vector3D &w) 
