@@ -1,253 +1,193 @@
 //                              -*- Mode: C++ -*- 
 // MaximumFlowGraph.h
-// Copyright © 2003, 2004 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Apr  7 18:28:55 2003
-// $Revision: 1.10 $
+// $Revision: 1.10.4.1 $
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _MaximumFlowGraph_h_
-#define _MaximumFlowGraph_h_
+#ifndef _mccore_MaximumFlowGraph_h_
+#define _mccore_MaximumFlowGraph_h_
 
 #include <algorithm>
+#include <functional>
 #include <iostream>
 #include <limits>
 #include <list>
-#include <map>
 
-#include "Graph.h"
-
-namespace mccore {
+#include "OrientedGraph.h"
 
 
+
+namespace mccore
+{
+  
   /**
-   * Maximum flow in a bi-directed graph... The preFlowPush algo has
-   * only been tested when nodes are int.
+   * Maximum flow in a directed graph but edges are made in both directions.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: MaximumFlowGraph.h,v 1.10 2004-11-25 16:34:29 larosem Exp $
+   * @version $Id: MaximumFlowGraph.h,v 1.10.4.1 2004-12-14 02:51:42 larosem Exp $
    */
-  template < class node_type,
-	     class edge_type = bool, 
-	     class node_comparator = less< node_type > >
-  class MaximumFlowGraph : public Graph< node_type, edge_type, node_comparator >
+  template< class V,
+	    class E,
+	    class VW = float,
+	    class Vertex_Comparator = less< V > >	    
+  class MaximumFlowGraph : public OrientedGraph< V, E, VW, float, Vertex_Comparator >
   {  
+    
+  public:
+    
+    typedef typename Graph< V, E, VW, float, Vertex_Comparator >::size_type size_type;
+    typedef typename Graph< V, E, VW, float, Vertex_Comparator >::label label;
+    typedef typename Graph< V, E, VW, float, Vertex_Comparator >::iterator iterator;
+    typedef typename Graph< V, E, VW, float, Vertex_Comparator >::const_iterator const_iterator;
+    typedef typename Graph< V, E, VW, float, Vertex_Comparator >::V2VLabel V2VLabel;
+    typedef typename Graph< V, E, VW, float, Vertex_Comparator >::EV2ELabel EV2ELabel;
+    typedef typename Graph< V, E, VW, float, Vertex_Comparator >::EndVertices EndVertices;
 
-    // MEMBERS -----------------------------------------------------------------
+    // LIFECYCLE ---------------------------------------------------------------
+    
+    /**
+     * Initializes the object.
+     */
+    MaximumFlowGraph ()
+      : OrientedGraph< V, E, VW, float, Vertex_Comparator > ()
+    { }
+    
+    /**
+     * Initializes the object with the right's content.
+     * @param right the object to copy.
+     */
+    MaximumFlowGraph (const MaximumFlowGraph &right)
+      : OrientedGraph< V, E, VW, float, Vertex_Comparator > (right)
+    { }
+  
+    /**
+     * Clones the object.
+     * @return a copy of the object.
+     */
+    virtual Graph< V, E, VW, float, Vertex_Comparator >* cloneGraph () const
+    {
+      return new MaximumFlowGraph< V, VW, E, float, Vertex_Comparator> (*this);
+    }
+
+    /**
+     * Destroys the object.
+     */
+    virtual ~MaximumFlowGraph () { }
+  
+    // OPERATORS ---------------------------------------------------------------
+
+    /**
+     * Assigns the object with the right's content.
+     * @param right the object to copy.
+     * @return itself.
+     */
+    MaximumFlowGraph& operator= (const MaximumFlowGraph &right)
+    {
+      if (this != &right)
+	{
+	  OrientedGraph< V, E, VW, float, Vertex_Comparator >::operator= (right);
+	}
+      return *this;
+    }
+    
+  public:
+    
+    // ACCESS ------------------------------------------------------------------
+  
+    // METHODS -----------------------------------------------------------------
+
+  private:
+    
+    /**
+     * Inserts a vertex in the graph.  Private method to ensure that a vertex
+     * weigth is entered.
+     * @param v the vertex to insert.
+     * @return true if the element was inserted, false if already present.
+     */
+    virtual bool insert (V &v) { return false; }
+
+    /**
+     * Connects two vertices labels of the graph with an edge.  Two
+     * endvertices are added, pointing to the same edge.  No check are
+     * made on vertex labels validity.  Private method to ensure that an edge
+     * weigth is entered.  Private method to ensure that a in-edge is given.
+     * @param h the head vertex label of the edge.
+     * @param t the tail vertex label of the edge.
+     * @param e the edge.
+     * @return true if the connect operation succeeded.
+     */
+    virtual bool uncheckedInternalConnect (label h, label t, E &e)
+    {
+      return false;
+    }
 
   protected:
 
     /**
-     * The graph of reverse edges implemented as a Map of Map, that is
-     * an adjacency matrix but where empty cells do not take space in
-     * memory.
-     */
-    map< int, map< int, int > > reverseGraph;
-
-
-    /**
-     * The flow on edges.  The capacity will be given by the
-     * edgeWeights Map inherited from Graph< int >.
-     */
-    vector< float > edgeFlows;
-
-    bool verbose;
-
-
-    // LIFECYCLE ---------------------------------------------------------------
-
-  public:
-  
-    /**
-     * Initializes the object.
-     */
-    MaximumFlowGraph () 
-      : Graph< node_type, edge_type, node_comparator > () 
-    {
-      verbose = false;
-    }
-    
-    /**
-     * Initializes the object with the other's content.
-     * @param other the object to copy.
-     */
-    MaximumFlowGraph (const AbstractGraph< node_type, edge_type, node_comparator > &other) 
-      : Graph< node_type, edge_type, node_comparator > (other)
-    {
-      verbose = false;
-    }
-  
-    /**
-     * Destroys the object.
-     */
-    virtual ~MaximumFlowGraph () {
-      clear ();
-    }
-  
-    // OPERATORS ---------------------------------------------------------------
-
-  public:
-
-    /**
-     * Assigns the object with the other's content.
-     * @param other the object to copy.
-     * @return itself.
-     */
-    MaximumFlowGraph& operator= (const MaximumFlowGraph &other) {
-      if (this != &other) {
-	Graph< node_type, edge_type, node_comparator >::operator= (other);
- 	edgeFlows = other.edgeFlows;
-      }
-      return *this;
-    }
-
-    // ACCESS ------------------------------------------------------------------
-  
-  public:
-
-    /**
-     * Sets the flow of an edge.
-     * @param o an extremity of the edge.
-     * @param p an extremity of the edge.
-     * @param val the value.
-     */
-    void setFlow (const node_type& o, const node_type& p, float val) 
-    {
-      edgeFlows[graph.find (mapping.find (o)->second)->second.find (mapping.find (p)->second)->second] = val;
-    }
-    
-    /**
-     * Returns the flow of the desired edge
-     * @param o an extremity of the edge.
-     * @param p an extremity of the edge.
-     * @return the weight or 0 if the edge is not in the graph.
-     */
-    float getFlow (const node_type& o, const node_type& p) const 
-    {
-      return edgeFlows[graph.find (mapping.find (o)->second)->second.find (mapping.find (p)->second)->second];
-    }
-  
-  
-    // METHODS -----------------------------------------------------------------
-
-  public:
-
-    /**
-     * Inserts a node in the graph.
-     * @param n the node to insert.
-     * @param w the weight of this node (default=1)
-     * @return true if the element was inserted, false if already present.
-     */
-    virtual bool insert (const node_type &n, float weight = 1) 
-    {
-      if (contains (n)) return false;
-
-      mapping[n] = nodes.size ();
-      nodes.push_back (n);
-      nodeWeights.push_back (weight);
-      
-      graph[mapping[n]] = map< int, int > ();
-      reverseGraph[mapping[n]] = map< int, int > ();
-
-      return true;
-    }
-  
-  
-    /**
-     * Connect two nodes of the graph by a directed edge.
-     * @param o a node.
-     * @param p another node.
-     * @param w the weight of this edge (default=1).
+     * Connects two vertices labels of the graph with an edge.  Two
+     * endvertices are added, pointing to the same edge.  No check are
+     * made on vertex labels validity.  Private method to ensure that an edge
+     * weigth is entered.
+     * @param h the head vertex label of the edge.
+     * @param t the tail vertex label of the edge.
+     * @param oe the out-edge.
+     * @param ie the in-edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool connect (const node_type &o, const node_type &p, 
-			  const edge_type &e = edge_type(), float w = 1) 
+    virtual bool uncheckedInternalConnect (label h, label t, E &oe, E &ie)
     {
-      if (!contains (o) || !contains (p)) return false;
+      return uncheckedInternalConnect (h, t, e, 0);
+    }
+
+    /**
+     * Connects two vertices of the graph with an edge and weight.  Two
+     * endvertices are added, pointing to the same edge.  No check are
+     * made on vertex labels validity.
+     * @param h the head vertex of the edge.
+     * @param t the tail vertex of the edge.
+     * @param e the edge.
+     * @param w the weight of this edge.
+     * @return true if the connect operation succeeded.
+     */
+    virtual bool uncheckedInternalConnect (label h, label t, E &e, float w)
+    {
+      return (OrientedGraph::uncheckedInternalConnect (h, t, e, w)
+	      && OrientedGraph::uncheckedInternalConnect (t, h, 0, 0));
+    }
     
-      edges.push_back (e);
-      edgeWeights.push_back (w);
-      edgeFlows.push_back (0);
-
-      graph[mapping[o]][mapping[p]] = edges.size ()-1;
-      reverseGraph[mapping[p]][mapping[o]] = edges.size ()-1;
-
-      return true;
-    }
-  
     /**
-     * Disconnect two nodes of the graph.
-     * @param o a node.
-     * @param p another node.
-     * @return true if the nodes were disconnected.
+     * Disconnects two endvertices labels of the graph.  No check are
+     * made on vertex labels validity.
+     * @param h the head vertex of the edge.
+     * @param t the tail vertex of the edge.
+     * @return true if the vertices were disconnected.
      */
-    virtual bool disconnect (const node_type &o, const node_type &p) 
+    virtual bool uncheckedInternalDisconnect (label h, label t)
     {
-      if (!contains (o) || !contains (p)) return false;
-      if (!areConnected (o, p)) return false;
- 
-      int e = graph[mapping[o]][mapping[p]];
-      graph.find (mapping[o])->second.erase (mapping[p]);
-      reverseGraph.find (mapping[p])->second.erase (mapping[o]);
-      
-      edges.erase (edges.begin () + e);
-      edgeWeights.erase (edgeWeights.begin () + e);
-      edgeFlows.erase (edgeWeights.begin () + e);
-      
-      map< int, map< int, int > >::iterator i;
-      map< int, int >::iterator j;
-      
-      for (i=graph.begin (); i!=graph.end (); ++i) {
-	for (j=i->second.begin (); j!=i->second.end (); ++j) {
-	  if (j->second > e) j->second--;
-	}
-      }
-      
-      for (i=reverseGraph.begin (); i!=reverseGraph.end (); ++i) {
-	for (j=i->second.begin (); j!=i->second.end (); ++j) {
-	  if (j->second > e) j->second--;
-	}
-      }     
-      return true;
-    }
+      return (OrientedGraph::uncheckedInternalDisconnect (h, t)
+	      && OrientedGraph::uncheckedInternalDisconnect (t, h));
+    }      
 
-
-    /**
-     * Returns the reverse neighbors of the given node.
-     * @param o a node in the graph.
-     * @return the list of neighbors.
-     */
-    list< node_type > getReverseNeighbors (const node_type& o) const 
-    {
-      list< node_type > n;
-      map< int, int >::const_iterator col;
-      
-      int i = mapping.find (o)->second;
-      
-      for (col=reverseGraph.find (i)->second.begin (); 
-	   col!=reverseGraph.find (i)->second.end (); ++col) {
-	l.push_back (nodes[col->first]);
-      }
-      
-      return n;
-    }
-
+  public:
+    
     /**
      * Pre Flow Push algorithm for solving the Maximum Flow problem.
      * Adapted by Sebastien to minimize each individual flow and avoid
@@ -257,7 +197,7 @@ namespace mccore {
      * @param source the source of the graph.
      * @param sink the sink of the graph.
      */
-    void preFlowPush (const node_type& source, const node_type& sink)
+    void preFlowPush (const label& source, const label& sink)
     {
       if (!contains (source) || !contains (sink)) return;
      
@@ -463,32 +403,11 @@ namespace mccore {
      * @param p an extremity of the edge.
      * @return the weight or 0 if the edge is not in the graph.
      */
-    float internalGetFlow (const node_type& o, const node_type& p) const 
+    float internalGetFlow (const label& o, const label& p) const 
     {
       return edgeFlows[graph.find (o)->second.find (p)->second];
     }
   
-    /**
-     * Returns the reverse neighbors of the given node.
-     * @param o a node in the graph.
-     * @return the list of neighbors.
-     */
-    virtual list< int > internalGetReverseNeighbors (int o) const
-    {
-      list< int > l;
-      //if (reverseGraph.find (o) == reverseGraph.end ()) return l;
-
-      map< int, int >::const_iterator col;
-
-      for (col=reverseGraph.find (o)->second.begin (); 
-	   col!=reverseGraph.find (o)->second.end (); ++col) {
-	l.push_back (col->first);
-      }
-
-      return l;
-    }
-
-
     // CUSTOM INTERFACE --------------------------------------------------------
 
   protected:
@@ -508,9 +427,7 @@ namespace mccore {
       } 
       return empty;
     }
-    
-
-    
+        
     // I/O ---------------------------------------------------------------------
 
   public:
@@ -518,7 +435,7 @@ namespace mccore {
     virtual ostream& output (ostream& os) const
     {
       typename MaximumFlowGraph::const_iterator ki, kj;
-      typename vector< node_type >::const_iterator i;
+      typename vector< label >::const_iterator i;
       typename vector< edge_type >::const_iterator j;
  
       os << "Nodes:" << endl;

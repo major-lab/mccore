@@ -4,7 +4,7 @@
 //                  Université de Montréal
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 00:05:15 2004
-// $Revision: 1.23.4.6 $
+// $Revision: 1.23.4.7 $
 // 
 // This file is part of mccore.
 // 
@@ -31,6 +31,7 @@
 #include <iomanip>
 #include <iostream>
 #include <list>
+#include <map>
 #include <utility>
 #include <vector>
 
@@ -52,16 +53,34 @@ namespace mccore
   public:
 
     NoSuchElementException () { }
-    ~NoSuchElementException () { }
+    virtual ~NoSuchElementException () throw () { }
   };
 
+
+  /**
+   * Comparator used in the vertex to vertex label mapping.
+   *
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   */
+  template < class V , class VC = less< V > >
+  class less_deref : public binary_function< V*, V*, bool >
+  {
+    
+  public:
+    
+    less_deref () { }
+    bool operator() (const V *left, const V *right)
+    {
+      return VC ().operator() (*left, *right);
+    }
+  };
 
   /**
    * Abstract class for the graph classes.  Removing vertices or edges are
    * costly.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Graph.h,v 1.23.4.6 2004-12-13 07:44:43 larosem Exp $
+   * @version $Id: Graph.h,v 1.23.4.7 2004-12-14 02:51:26 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -75,34 +94,9 @@ namespace mccore
 
     typedef typename vector< V >::iterator iterator;
     typedef typename vector< V >::const_iterator const_iterator;
-    typedef typename vector::size_type size_type;
-    typedef typename size_type label;
-    typedef typename map< EndVertices, Graph::label > EV2ELabel;
+    typedef typename vector< V >::size_type size_type;
+    typedef size_type label;
     
-  private:
-
-    typedef typename map< const V*, Graph::label, deref< Vertex_Comparator > > V2VLabel;
-    
-  protected:
-    
-    /**
-     * Comparator used in the vertex to vertex label mapping.
-     *
-     * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-     */
-    template< class Vertex_Comparator >
-    class less_deref : public binary_function< V*, V*, bool >
-    {
-      
-    public:
-      
-      less_deref () { }
-      bool operator() (const V *left, const V *right)
-      {
-	return Vertex_Comparator ().operator() (*left, *right);
-      }
-    };
-
   public:
     
     /**
@@ -115,12 +109,12 @@ namespace mccore
       /**
        * The head vertex label.
        */
-      Graph::label head;
+      label head;
 
       /**
        * The tail vertex label.
        */
-      Graph::label tail;
+      label tail;
 
       // LIFECYCLE ------------------------------------------------------------
       
@@ -136,9 +130,11 @@ namespace mccore
        * @param head the head label.
        * @param tail the tail label.
        */
-      EndVertices (Graph::label head, Graph::label tail)
+      EndVertices (label head, label tail)
 	: head (head), tail (tail)
       { }
+
+    public:
 
       /**
        * Initializes the object with right's content.
@@ -147,8 +143,6 @@ namespace mccore
       EndVertices (const EndVertices &right)
 	: head (right.head), tail (right.tail)
       { }
-
-    public:
 
       /**
        * Destroys the object.
@@ -274,13 +268,13 @@ namespace mccore
        * Gets the head label.
        * @return the head label.
        */
-      Graph::label getHeadLabel () const { return head; }
+      label getHeadLabel () const { return head; }
 
       /**
        * Gets the tail label.
        * @return the tail label.
        */
-      Graph::label getTailLabel () const { return tail; }
+      label getTailLabel () const { return tail; }
 
       // METHODS --------------------------------------------------------------
       
@@ -290,6 +284,9 @@ namespace mccore
 
   protected:
 
+    typedef map< EndVertices, Graph::label > EV2ELabel;
+    typedef map< const V*, Graph::label, less_deref< V, Vertex_Comparator > > V2VLabel;
+    
     /**
      * The vertex collection.
      */
@@ -333,7 +330,7 @@ namespace mccore
      * Clones the object.
      * @return a copy of the object.
      */
-    virtual Graph* clone () const = 0;
+    virtual Graph< V, E, VW, EW, Vertex_Comparator >* cloneGraph () const = 0;
 
     /**
      * Destroys the object.
@@ -378,7 +375,7 @@ namespace mccore
      */
     VW& getVertexWeight (const V &v) throw (NoSuchElementException)
     {
-      V2VLabel::const_iterator it;
+      typename V2VLabel::const_iterator it;
 
       if (v2vlabel.end () == (it = v2vlabel.find (&v)))
 	{
@@ -396,7 +393,7 @@ namespace mccore
      */
     const VW& getVertexWeight (const V &v) const throw (NoSuchElementException)
     {
-      V2VLabel::const_iterator it;
+      typename V2VLabel::const_iterator it;
 
       if (v2vlabel.end () == (it = v2vlabel.find (&v)))
 	{
@@ -414,7 +411,7 @@ namespace mccore
      */
     void setVertexWeight (const V &v, VW &w) throw (NoSuchElementException)
     {
-      V2VLabel::const_iterator it;
+      typename V2VLabel::const_iterator it;
       
       if (v2vlabel.end () == (it = v2vlabel.find (&v)))
 	{
@@ -433,9 +430,9 @@ namespace mccore
      */
     E& getEdge (const V &h, const V &t) throw (NoSuchElementException)
     {
-      V2VLabel::const_iterator ith;
-      V2VLabel::const_iterator itt;
-      EV2ELabel::const_iterator ite;
+      typename V2VLabel::const_iterator ith;
+      typename V2VLabel::const_iterator itt;
+      typename EV2ELabel::const_iterator ite;
 
       if (v2vlabel.end () == (ith = v2vlabel.find (&h))
 	  || v2vlabel.end () == (itt = v2vlabel.find (&t)))
@@ -460,9 +457,9 @@ namespace mccore
      */
     const E& getEdge (const V &h, const V &t) const throw (NoSuchElementException)
     {
-      V2VLabel::const_iterator ith;
-      V2VLabel::const_iterator itt;
-      EV2ELabel::const_iterator ite;
+      typename V2VLabel::const_iterator ith;
+      typename V2VLabel::const_iterator itt;
+      typename EV2ELabel::const_iterator ite;
 
       if (v2vlabel.end () == (ith = v2vlabel.find (&h))
 	  || v2vlabel.end () == (itt = v2vlabel.find (&t)))
@@ -487,9 +484,9 @@ namespace mccore
      */
     EW& getEdgeWeight (const V &h, const V &t) throw (NoSuchElementException)
     {
-      V2VLabel::const_iterator ith;
-      V2VLabel::const_iterator itt;
-      EV2ELabel::const_iterator ite;
+      typename V2VLabel::const_iterator ith;
+      typename V2VLabel::const_iterator itt;
+      typename EV2ELabel::const_iterator ite;
 
       if (v2vlabel.end () == (ith = v2vlabel.find (&h))
 	  || v2vlabel.end () == (itt = v2vlabel.find (&t)))
@@ -514,9 +511,9 @@ namespace mccore
      */
     const EW& getEdgeWeight (const V &h, const V &t) const throw (NoSuchElementException)
     {
-      V2VLabel::const_iterator ith;
-      V2VLabel::const_iterator itt;
-      EV2ELabel::const_iterator ite;
+      typename V2VLabel::const_iterator ith;
+      typename V2VLabel::const_iterator itt;
+      typename EV2ELabel::const_iterator ite;
 
       if (v2vlabel.end () == (ith = v2vlabel.find (&h))
 	  || v2vlabel.end () == (itt = v2vlabel.find (&t)))
@@ -541,9 +538,9 @@ namespace mccore
      */
     void setEdgeWeight (const V &h, const V &t, EW &w) throw (NoSuchElementException)
     {
-      V2VLabel::const_iterator ith;
-      V2VLabel::const_iterator itt;
-      EV2ELabel::const_iterator ite;
+      typename V2VLabel::const_iterator ith;
+      typename V2VLabel::const_iterator itt;
+      typename EV2ELabel::const_iterator ite;
 
       if (v2vlabel.end () == (ith = v2vlabel.find (&h))
 	  || v2vlabel.end () == (itt = v2vlabel.find (&t)))
@@ -567,7 +564,7 @@ namespace mccore
      */
     Graph::label getVertexLabel (const V &v) const throw (NoSuchElementException)
     {
-      V2VLabel::const_iterator it;
+      typename V2VLabel::const_iterator it;
 
       if (v2vlabel.end () == (it = v2vlabel.find (&v)))
 	{
@@ -594,8 +591,8 @@ namespace mccore
      */
     bool areConnected (const V &h, const V &t) const
     {
-      V2VLabel::const_iterator ith;
-      V2VLabel::const_iterator itt;
+      typename V2VLabel::const_iterator ith;
+      typename V2VLabel::const_iterator itt;
 
       if (v2vlabel.end () != (ith = v2vlabel.find (&h))
 	  && v2vlabel.end () != (itt = v2vlabel.find (&t)))
@@ -614,7 +611,16 @@ namespace mccore
      * @param v a vertex in the graph.
      * @return the list of neighbors.
      */
-    virtual list< V > getNeighbors (const V &v) = 0;
+    virtual list< V > neighborhood (const V &v) = 0;
+    
+    /**
+     * Returns a increasing label list of the neighbors of the given vertex
+     * label.  An empty list is returned if the label has no neighbor or if
+     * it is not contained in the graph.
+     * @param l the vertex label.
+     * @return the list of neighbors.
+     */
+    virtual list< Graph::label > internalNeighborhood (Graph::label l) const = 0;
     
     /**
      * Gets a vertex given its label.
@@ -738,7 +744,7 @@ namespace mccore
      */
     Graph::label internalGetEdgeLabel (Graph::label h, Graph::label t) const throw (NoSuchElementException)
     {
-      EV2ELabel::iterator evit;
+      typename EV2ELabel::iterator evit;
       EndVertices ev (h, t);
       
       if (vertices.size () <= h
@@ -760,7 +766,7 @@ namespace mccore
      */
     EW& internalGetEdgeWeight (Graph::label h, Graph::label t) throw (NoSuchElementException)
     {
-      EV2ELabel::iterator evit;
+      typename EV2ELabel::iterator evit;
       EndVertices ev (h, t);
       
       if (vertices.size () <= h
@@ -782,7 +788,7 @@ namespace mccore
      */
     const EW& internalGetEdgeWeight (Graph::label h, Graph::label t) const throw (NoSuchElementException)
     {
-      EV2ELabel::iterator evit;
+      typename EV2ELabel::iterator evit;
       EndVertices ev (h, t);
       
       if (vertices.size () <= h
@@ -855,15 +861,6 @@ namespace mccore
     }
     
     /**
-     * Returns a increasing label list of the neighbors of the given vertex
-     * label.  An empty list is returned if the label has no neighbor or if
-     * it is not contained in the graph.
-     * @param l the vertex label.
-     * @return the list of neighbors.
-     */
-    virtual list< Graph::label > internalGetNeighbors (Graph::label l) const = 0;
-    
-    /**
      * Gets the iterator pointing to the beginning of the graph vertices.
      * @return the iterator.
      */
@@ -889,12 +886,42 @@ namespace mccore
 
     // METHODS --------------------------------------------------------------
 
+  protected:
+
+    /**
+     * Rebuilds the vertex to vertex lable map.
+     */
+    void rebuildV2VLabel ()
+    {
+      typename vector< V >::iterator it;
+      
+      v2vlabel.clear ();
+      for (it = vertices.begin (); vertices.end () != it; ++it)
+	{
+	  v2vlabel.insert (make_pair (&*it, it - vertices.begin ()));
+	}
+    }
+
+  public:
+    
     /**
      * Inserts a vertex in the graph.
      * @param v the vertex to insert.
      * @return true if the element was inserted, false if already present.
      */
-    virtual bool insert (V &v) = 0;
+    virtual bool insert (V &v)
+    {
+      typename V2VLabel::iterator it;
+
+      if (v2vlabel.end () == (it = v2vlabel.find (&v)))
+	{
+	  vertices.push_back (v);
+	  vertexWeights.resize (vertexWeights.size () + 1);
+	  rebuildV2VLabel ();
+	  return true;
+	}
+      return false;
+    }
     
     /**
      * Inserts a vertex in the graph.
@@ -902,7 +929,19 @@ namespace mccore
      * @param w the vertex weight.
      * @return true if the element was inserted, false if already present.
      */
-    virtual bool insert (V &v, VW &w) = 0;
+    virtual bool insert (V &v, VW &w)
+    {
+      typename V2VLabel::iterator it;
+
+      if (v2vlabel.end () == (it = v2vlabel.find (&v)))
+	{
+	  vertices.push_back (v);
+	  vertexWeights.push_back (w);
+	  rebuildV2VLabel ();
+	  return true;
+	}
+      return false;
+    }
     
     /**
      * Inserts a vertex range.
@@ -912,12 +951,22 @@ namespace mccore
     template <class InputIterator>
     void insert (InputIterator f, InputIterator l)
     {
-      while (f != l)
-	{
-	  insert (*f);
-	  ++f;
-	}
+      vertices.insert (vertices.end (), f, l);
+      vertexWeights.resize (vertices.size ());
+      rebuildV2VLabel ();
     }
+
+  protected:
+
+    /**
+     * Erase a vertex label from the graph.  If an edge is connected to this
+     * vertex label it is also removed.  No check is made on label validity.
+     * @param l the vertex label to remove.
+     * @return an iterator over the next vertex element.
+     */
+    virtual Graph::iterator uncheckedInternalErase (Graph::label l) = 0;
+
+  public:
     
     /**
      * Erase a vertex from the graph.  If an edge is connected to this
@@ -925,16 +974,28 @@ namespace mccore
      * @param v the vertex to remove.
      * @return an iterator over the next vertex element.
      */
-    virtual Graph::iterator erase (const V &v) = 0;
-
+    Graph::iterator erase (const V &v)
+    {
+      typename V2VLabel::iterator it;
+      
+      return (v2vlabel.end () != (it = v2vlabel.find (&v))
+	      ? uncheckedInternalErase (it->second)
+	      : vertices.end ());
+    }
+    
     /**
      * Erase a vertex label from the graph.  If an edge is connected to this
      * vertex label it is also removed.
      * @param l the vertex label to remove.
      * @return an iterator over the next vertex element.
      */
-    virtual Graph::iterator internalErase (Graph::label l) = 0;
-
+    Graph::iterator internalErase (Graph::label l)
+    {
+      return (vertices.size () > l
+	      ? uncheckedInternalErase (l)
+	      : vertices.end ());
+    }
+    
     /**
      * Finds a vertex in the graph.
      * @param v the vertex to find.
@@ -942,7 +1003,7 @@ namespace mccore
      */
     Graph::iterator find (const V &v)
     {
-      V2VLabel::const_iterator it;
+      typename V2VLabel::const_iterator it;
 
       return (v2vlabel.end () == (it = v2vlabel.find (&v))
 	      ? vertices.end ()
@@ -956,7 +1017,7 @@ namespace mccore
      */
     Graph::const_iterator find (const V &v) const
     {
-      V2VLabel::const_iterator it;
+      typename V2VLabel::const_iterator it;
 
       return (v2vlabel.end () == (it = v2vlabel.find (&v))
 	      ? vertices.end ()
@@ -979,7 +1040,7 @@ namespace mccore
      * Determines if the graph is empty.
      * @return true if the graph contains no vertex.
      */
-    bool empty () const { return vertices.empty () }
+    bool empty () const { return vertices.empty (); }
     
     /**
      * Removes all graph elements.
@@ -993,6 +1054,31 @@ namespace mccore
       v2vlabel.clear ();
       ev2elabel.clear ();
     }
+
+  protected:
+
+    /**
+     * Connects two vertices labels of the graph with an edge.  No check are
+     * made on vertex labels validity.
+     * @param h the head vertex label of the edge.
+     * @param t the tail vertex label of the edge.
+     * @param e the edge.
+     * @return true if the connect operation succeeded.
+     */
+    virtual bool uncheckedInternalConnect (Graph::label h, Graph::label t, E &e) = 0;
+    
+    /**
+     * Connects two vertices of the graph with an edge and weight.  No check
+     * are made on vertex labels validity.
+     * @param h the head vertex of the edge.
+     * @param t the tail vertex of the edge.
+     * @param e the edge.
+     * @param w the weight of this edge.
+     * @return true if the connect operation succeeded.
+     */
+    virtual bool uncheckedInternalConnect (Graph::label h, Graph::label t, E &e, EW &w) = 0;
+    
+  public:
     
     /**
      * Connects two vertices of the graph with an edge.
@@ -1001,7 +1087,16 @@ namespace mccore
      * @param e the edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool connect (const V &h, const V &t, E &e) = 0;
+    bool connect (const V &h, const V &t, E &e)
+    {
+      typename V2VLabel::const_iterator ith;
+      typename V2VLabel::const_iterator itt;
+
+      return (v2vlabel.end () != (ith = v2vlabel.find (&h))
+	      && v2vlabel.end () != (itt = v2vlabel.find (&t))
+	      ? uncheckedInternalConnect (ith->second, itt->second, e)
+	      : false);
+    }      
     
     /**
      * Connects two vertices of the graph with an edge and weight.
@@ -1011,7 +1106,16 @@ namespace mccore
      * @param w the weight of this edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool connect (const V &h, const V &t, E &e, W &w) = 0;
+    bool connect (const V &h, const V &t, E &e, EW &w)
+    {
+      typename V2VLabel::const_iterator ith;
+      typename V2VLabel::const_iterator itt;
+      
+      return (v2vlabel.end () != (ith = v2vlabel.find (&h))
+	      && v2vlabel.end () != (itt = v2vlabel.find (&t))
+	      ? uncheckedInternalConnect (ith->second, itt->second, e, w)
+	      : false);
+    }
     
     /**
      * Connects two vertices labels of the graph with an edge.
@@ -1020,7 +1124,12 @@ namespace mccore
      * @param e the edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool internalConnect (Graph::label h, Graph::label t, E &e) = 0;
+    bool internalConnect (Graph::label h, Graph::label t, E &e)
+    {
+      return (vertices.size () > h && vertices.size () > t
+	      ? uncheckedInternalConnect (h, t, e)
+	      : false);
+    }
     
     /**
      * Connects two vertices labels of the graph with an edge and weight.
@@ -1030,7 +1139,25 @@ namespace mccore
      * @param w the weight of this edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool internalConnect (Graph::label h, Graph::label t, E &e, W &w) = 0;
+    bool internalConnect (Graph::label h, Graph::label t, E &e, EW &w)
+    {
+      return (vertices.size () > h && vertices.size () > t
+	      ? uncheckedInternalConnect (h, t, e, w)
+	      : false);
+    }
+
+  protected:
+
+    /**
+     * Disconnects two endvertices labels of the graph.  No check are
+     * made on vertex labels validity.
+     * @param h the head vertex of the edge.
+     * @param t the tail vertex of the edge.
+     * @return true if the vertices were disconnected.
+     */
+    virtual bool uncheckedInternalDisconnect (Graph::label h, Graph::label t) = 0;
+    
+  public:
     
     /**
      * Disconnects two endvertices of the graph.
@@ -1038,7 +1165,16 @@ namespace mccore
      * @param t the tail vertex of the edge.
      * @return true if the vertices were disconnected.
      */
-    virtual bool disconnect (const V &t, const V &h) = 0;
+    bool disconnect (const V &t, const V &h)
+    {
+      typename V2VLabel::const_iterator ith;
+      typename V2VLabel::const_iterator itt;
+
+      return (v2vlabel.end () != (ith = v2vlabel.find (&h))
+	      && v2vlabel.end () != (itt = v2vlabel.find (&t))
+	      ? uncheckedInternalDisconnect (h, t)
+	      : false);
+    }
     
     /**
      * Disconnects two endvertices labels of the graph.
@@ -1046,7 +1182,12 @@ namespace mccore
      * @param t the tail vertex of the edge.
      * @return true if the vertices were disconnected.
      */
-    virtual bool internalDisconnect (Graph::label h, Graph::label t) = 0;
+    bool internalDisconnect (Graph::label h, Graph::label t)
+    {
+      return (vertices.size () > h && vertices.size () > t
+	      ? uncheckedInternalDisconnect (h, t)
+	      : false);
+    }
     
     // I/O  -----------------------------------------------------------------
 
@@ -1057,11 +1198,11 @@ namespace mccore
      */
     virtual ostream& write (ostream& os) const
     {
-      vector< V >::const_iterator vit;
-      vector< VW >::const_iterator vwit;
-      vector< E >::const_iterator eit;
-      vector< EW >::const_iterator ewit;
-      EV2ELabel::const_iterator evit;
+      typename vector< V >::const_iterator vit;
+      typename vector< VW >::const_iterator vwit;
+      typename vector< E >::const_iterator eit;
+      typename vector< EW >::const_iterator ewit;
+      typename EV2ELabel::const_iterator evit;
       Graph::label counter;
       Graph::label linecounter;
 
@@ -1131,7 +1272,8 @@ namespace mccore
 
 namespace std
 {
-  ostream& operator<< (ostream &os, const mccore::Graph& obj)
+  template < class V, class E, class VW, class EW, class VC >
+  ostream& operator<< (ostream &os, const mccore::Graph< V, E, VW, EW, VC > &obj)
   {
     return obj.write (os);
   }

@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Dec 10 19:09:13 2004
-// $Revision: 1.12.2.4 $
+// $Revision: 1.12.2.5 $
 // 
 // This file is part of mccore.
 // 
@@ -28,6 +28,7 @@
 
 #include <functional>
 #include <list>
+#include <set>
 #include <utility>
 #include <vector>
 
@@ -43,7 +44,7 @@ namespace mccore
    * Undirected graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: UndirectedGraph.h,v 1.12.2.4 2004-12-13 07:44:47 larosem Exp $
+   * @version $Id: UndirectedGraph.h,v 1.12.2.5 2004-12-14 02:51:50 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -55,26 +56,35 @@ namespace mccore
 
   public:
 
+    typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::size_type size_type;
+    typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::label label;
+    typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::iterator iterator;
+    typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::const_iterator const_iterator;
+    typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::V2VLabel V2VLabel;
+    typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::EV2ELabel EV2ELabel;
+    typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::EndVertices EndVertices;
+
     // LIFECYCLE ------------------------------------------------------------
 
     /**
      * Initializes the object.
      */
-    UndirectedGraph () : Graph () { }
+    UndirectedGraph () : Graph< V, E, VW, EW, Vertex_Comparator > () { }
 
     /**
      * Initializes the object with the right's content.
      * @param right the object to copy.
      */
-    UndirectedGraph (const UndirectedGraph &right) : Graph (right) { }
+    UndirectedGraph (const UndirectedGraph &right)
+      : Graph< V, E, VW, EW, Vertex_Comparator > (right) { }
 
     /**
      * Clones the object.
      * @return a copy of the object.
      */
-    virtual Graph* clone () const
+    virtual Graph< V, E, VW, EW, Vertex_Comparator >* cloneGraph () const
     {
-      return new UndirectedGraph< V, VW, E, EW, Vertex_Comparator> (*this);
+      return new UndirectedGraph< V, E, VW, EW, Vertex_Comparator> (*this);
     }
 
     /**
@@ -93,7 +103,7 @@ namespace mccore
     {
       if (this != &right)
 	{
-	  Graph::operator= (right);
+	  Graph< V, E, VW, EW, Vertex_Comparator>::operator= (right);
 	}
       return *this;
     }	  
@@ -107,17 +117,17 @@ namespace mccore
      * @param v a vertex in the graph.
      * @return the list of neighbors.
      */
-    virtual list< V > getNeighbors (const V &v)
+    virtual list< V > neighborhood (const V &v)
     {
       list< V > res;
-      V2VLabel::const_iterator it;
+      typename V2VLabel::const_iterator it;
 
       if (v2vlabel.end () != (it = v2vlabel.find (&v)))
 	{
-	  set< Graph::label > nLabels;
-	  set< Graph::label >::iterator sit;
-	  EV2ELabel::const_iterator evit;
-	  Graph::label l;
+	  set< label > nLabels;
+	  typename set< label >::iterator sit;
+	  typename EV2ELabel::const_iterator evit;
+	  label l;
 
 	  l = it->second;
 	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
@@ -140,21 +150,20 @@ namespace mccore
     }	  
 
     /**
-     * Returns a increasing label list of the neighbors of the given vertex
+     * Returns a increasing label list of the out-neighbors of the given vertex
      * label.  An empty list is returned if the label has no neighbor or if
      * it is not contained in the graph.
      * @param l the vertex label.
-     * @return the list of neighbors.
+     * @return the list of out-neighbors.
      */
-    virtual list< Graph::label > internalGetNeighbors (Graph::label l) const
+    virtual list< label > internalNeighborhood (label l) const
     {
-      list< Graph::label > res;
-      V2VLabel::const_iterator it;
+      list< label > res;
 
       if (vertices.size () > v)
 	{
-	  set< Graph::label > nLabels;
-	  EV2ELabel::const_iterator evit;
+	  set< label > nLabels;
+	  typename EV2ELabel::const_iterator evit;
 
 	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
 	    {
@@ -174,46 +183,7 @@ namespace mccore
 
     // METHODS --------------------------------------------------------------
 
-    /**
-     * Inserts a vertex in the graph.
-     * @param v the vertex to insert.
-     * @return true if the element was inserted, false if already present.
-     */
-    virtual bool insert (V &v)
-    {
-      V2VLabel::iterator it;
-
-      if (v2vlabel.end () == (it = v2vlabel.find (&v)))
-	{
-	  vertices.push_back (v);
-	  v2vlabel.insert (make_pair (&vertices.back (), vertices.size () - 1));
-	  vertexWeights.resize (vertexWeights.size () + 1);
-	  return true;
-	}
-      return false;
-    }
-    
-    /**
-     * Inserts a vertex in the graph.
-     * @param v the vertex to insert.
-     * @param w the vertex weight.
-     * @return true if the element was inserted, false if already present.
-     */
-    virtual bool insert (V &v, VW &w)
-    {
-      V2VLabel::iterator it;
-
-      if (v2vlabel.end () == (it = v2vlabel.find (&v)))
-	{
-	  vertices.push_back (v);
-	  vertexWeights.push_back (w);
-	  v2vlabel.insert (make_pair (&vertices.back (), vertices.size () - 1));
-	  return true;
-	}
-      return false;
-    }
-
-  private:
+  protected:
 
     /**
      * Erase a vertex label from the graph.  If an edge is connected to this
@@ -221,32 +191,27 @@ namespace mccore
      * @param l the vertex label to remove.
      * @return an iterator over the next vertex element.
      */
-    Graph::iterator internalEraseNoCheck (Graph::label l)
+    virtual iterator uncheckedInternalErase (label l)
     {
-      list< Graph::label > neighbors = internalGetNeighbors (l);
+      list< label > neighbors = internalOutNeighborhood (l);
 
       if (! neighbors.empty ())
 	{
-	  list< Graph::label > lit;
-	  vector< V >::iterator vit;
-	  EV2ELabel::iterator evit;
+	  list< label > lit;
+	  typename EV2ELabel::iterator evit;
 	  EV2ELabel newEV2;
 
-	  for (lit = neighbors.begin (), neighbors.end () != lit; ++lit)
+	  for (lit = neighbors.begin (); neighbors.end () != lit; ++lit)
 	    {
-	      internalDisconnectNoCheck (l, *lit);
+	      uncheckedInternalDisconnect (l, *lit);
 	    }
 	  vertices.erase (vertices.begin () + l);
 	  vertexWeights.erase (vertexWeights.begin () + l);
-	  v2vlabel.clear ();
-	  for (vit = vertices.begin (); vertices.end () != vit; ++vit)
-	    {
-	      v2vlabel.insert (make_pair (&*vit, vit - vertices.begin ()));
-	    }
+	  rebuildV2VLabel ();
 	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
 	    {
-	      Graph::label h;
-	      Graph::label t;
+	      label h;
+	      label t;
 	      
 	      h = evit->first.getHeadLabel ();
 	      t = evit->first.getTailLabel ();
@@ -267,38 +232,6 @@ namespace mccore
 	}
       return false;
     }
-
-  public:
-    
-    /**
-     * Erase a vertex from the graph.  If an edge is connected to this
-     * vertex it is also removed.
-     * @param v the vertex to remove.
-     * @return an iterator over the next vertex element.
-     */
-    virtual Graph::iterator erase (const V &v)
-    {
-      V2VLabel::iterator it;
-      
-      return (v2vlabel.end () != (it = v2vlabel.find (&v))
-	      ? internalEraseNoCheck (it->second)
-	      : false);
-    }
-
-    /**
-     * Erase a vertex label from the graph.  If an edge is connected to this
-     * vertex label it is also removed.
-     * @param l the vertex label to remove.
-     * @return an iterator over the next vertex element.
-     */
-    virtual Graph::iterator internalErase (Graph::label l)
-    {
-      return (vertices.size () > l
-	      ? internalEraseNoCheck (l)
-	      : false);
-    }
-    
-  private:
     
     /**
      * Connects two vertices labels of the graph with an edge.  Two
@@ -309,10 +242,10 @@ namespace mccore
      * @param e the edge.
      * @return true if the connect operation succeeded.
      */
-    bool internalConnectNoCheck (Graph::label h, Graph::label t, E &e)
+    virtual bool uncheckedInternalConnect (label h, label t, E &e)
     {
       EndVertices ev (h, t);
-      EV2ELabel::const_iterator evit;
+      typename EV2ELabel::const_iterator evit;
       
       if (ev2elabel.end () == (evit = ev2elabel.find (ev)))
 	{
@@ -337,10 +270,10 @@ namespace mccore
      * @param w the weight of this edge.
      * @return true if the connect operation succeeded.
      */
-    bool internalConnectNoCheck (Graph::label h, Graph::label t, E &e, EW &w)
+    virtual bool uncheckedInternalConnect (label h, label t, E &e, EW &w)
     {
       EndVertices ev (h, t);
-      EV2ELabel::const_iterator evit;
+      typename EV2ELabel::const_iterator evit;
       
       if (ev2elabel.end () == (evit = ev2elabel.find (ev)))
 	{
@@ -355,78 +288,6 @@ namespace mccore
       return false;
     }
     
-  public:
-    
-    /**
-     * Connects two vertices of the graph with an edge.  Two endvertices are
-     * added, pointing to the same edge.
-     * @param h the head vertex of the edge.
-     * @param t the tail vertex of the edge.
-     * @param e the edge.
-     * @return true if the connect operation succeeded.
-     */
-    virtual bool connect (const V &h, const V &t, E &e)
-    {
-      V2VLabel::const_iterator ith;
-      V2VLabel::const_iterator itt;
-
-      return (v2vlabel.end () != (ith = v2vlabel.find (&h))
-	      && v2vlabel.end () != (itt = v2vlabel.find (&t))
-	      ? internalConnectNoCheck (ith->second, itt->second, e)
-	      : false);
-    }
-    
-    /**
-     * Connects two vertices of the graph with an edge and weight.  Two
-     * endvertices are added, pointing to the same edge.
-     * @param h the head vertex of the edge.
-     * @param t the tail vertex of the edge.
-     * @param e the edge.
-     * @param w the weight of this edge.
-     * @return true if the connect operation succeeded.
-     */
-    virtual bool connect (const V &o, const V &p, E &e, W &w)
-    {
-      V2VLabel::const_iterator ith;
-      V2VLabel::const_iterator itt;
-
-      return (v2vlabel.end () != (ith = v2vlabel.find (&h))
-	      && v2vlabel.end () != (itt = v2vlabel.find (&t))
-	      ? internalConnectNoCheck (ith->second, itt->second, e, w)
-	      : false);
-    }
-
-    /**
-     * Connects two vertices labels of the graph with an edge.
-     * @param h the head vertex label of the edge.
-     * @param t the tail vertex label of the edge.
-     * @param e the edge.
-     * @return true if the connect operation succeeded.
-     */
-    virtual bool internalConnect (Graph::label h, Graph::label t, E &e)
-    {
-      return (vertices.size () > h && vertices.size () > t
-	      ? internalConnectNoCheck (h, t, e)
-	      : false);
-    }
-    
-    /**
-     * Connects two vertices labels of the graph with an edge and weight.
-     * @param h the head vertex label of the edge.
-     * @param t the tail vertex label of the edge.
-     * @param e the edge.
-     * @param w the weight of this edge.
-     * @return true if the connect operation succeeded.
-     */
-    virtual bool internalConnect (Graph::label h, Graph::label t, E &e, W &w)
-    {
-      return (vertices.size () > h && vertices.size () > t
-	      ? internalConnectNoCheck (h, t, e, w)
-	      : false);
-    }
-
-  private:
-    
     /**
      * Disconnects two endvertices labels of the graph.  No check are
      * made on vertex labels validity.
@@ -434,15 +295,15 @@ namespace mccore
      * @param t the tail vertex of the edge.
      * @return true if the vertices were disconnected.
      */
-    bool internalDisconnectNoCheck (Graph::label h, Graph::label t)
+    virtual bool uncheckedInternalDisconnect (label h, label t)
     {
       EndVertices ev (h, t);
-      EV2ELabel::iterator evit;
+      typename EV2ELabel::iterator evit;
       
       if (ev2elabel.end () != (evit = ev2elabel.find (ev)))
 	{
 	  EndVertices ev2 (t, h);
-	  Graph::label l;
+	  label l;
 	  
 	  l = evit->second;
 	  edges.erase (edges.begin () + l);
@@ -461,40 +322,10 @@ namespace mccore
       return false;
     }      
 
-  public:
-    
-    /**
-     * Disconnects the edge between two endvertices.
-     * @param h the head vertex of the edge.
-     * @param t the tail vertex of the edge.
-     * @return true if the vertices were disconnected.
-     */
-    virtual bool disconnect (const V &h, const V &t)
-    {
-      V2VLabel::const_iterator ith;
-      V2VLabel::const_iterator itt;
-
-      return (v2vlabel.end () != (ith = v2vlabel.find (&h))
-	      && v2vlabel.end () != (itt = v2vlabel.find (&t))
-	      ? internalDisconnectNoCheck (h, t)
-	      : false);
-    }
-
-    /**
-     * Disconnects two endvertices labels of the graph.
-     * @param h the head vertex of the edge.
-     * @param t the tail vertex of the edge.
-     * @return true if the vertices were disconnected.
-     */
-    virtual bool internalDisconnect (Graph::label h, Graph::label t)
-    {
-      return (vertices.size () > h && vertices.size () > t
-	      ? internalDisconnectNoCheck (h, t)
-	      : false);
-    }
-    
     // I/O  -----------------------------------------------------------------
 
+  public:
+    
     /**
      * Writes the object to a stream.
      * @param os the stream.
@@ -503,7 +334,7 @@ namespace mccore
     virtual ostream& write (ostream& os) const
     {
       os << "[UndirectedGraph]" << endl;
-      return Graph::write (os);
+      return Graph< V, E, VW, EW, Vertex_Comparator >::write (os);
     }
     
   };

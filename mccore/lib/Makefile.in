@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.56.2.2 $
-# $Id: Makefile.in,v 1.56.2.2 2004-12-13 07:13:31 larosem Exp $
+# $Revision: 1.56.2.3 $
+# $Id: Makefile.in,v 1.56.2.3 2004-12-14 02:51:38 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -134,8 +134,8 @@ SOURCES = $(RNAML_SOURCES) \
 	  zstream.cc
 
 
-HEADERS = $(SOURCES:.cc=.h) AdjacencyMatrix.h Algo.h DirectedGraph.h Graph.h \
-GraphAlgo.h MaximumFlowGraph.h Path.h SocketCommand.h SymmetricalMatrix.h \
+HEADERS = $(SOURCES:.cc=.h) AdjacencyMatrix.h Algo.h Graph.h GraphAlgo.h \
+MaximumFlowGraph.h OrientedGraph.h Path.h SocketCommand.h SymmetricalMatrix.h \
 SymmetricalMatrix.cc UndirectedGraph.h stlio.h
 
 

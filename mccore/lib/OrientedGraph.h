@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu May 10 14:49:18 2001
-// $Revision: 1.1.2.1 $
+// $Revision: 1.1.2.2 $
 // 
 // This file is part of mccore.
 // 
@@ -43,7 +43,7 @@ namespace mccore
    * Directed graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: OrientedGraph.h,v 1.1.2.1 2004-12-14 01:14:01 larosem Exp $
+   * @version $Id: OrientedGraph.h,v 1.1.2.2 2004-12-14 02:51:46 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -110,13 +110,48 @@ namespace mccore
     // ACCESS ---------------------------------------------------------------
 
     /**
-     * Returns the neighbors of the given vertex sorted over their label. An
+     * Returns the in-neighbors of the given vertex sorted over their label. An
      * empty list is returned if the vertex has no neighbors or if the graph
      * does not contain the vertex.
      * @param v a vertex in the graph.
-     * @return the list of neighbors.
+     * @return the list of in-neighbors.
      */
-    virtual list< V > getNeighbors (const V &v)
+    virtual list< V > inNeighborhood (const V &v)
+    {
+      list< V > res;
+      typename V2VLabel::const_iterator it;
+
+      if (v2vlabel.end () != (it = v2vlabel.find (&v)))
+	{
+	  set< label > nLabels;
+	  typename set< label >::iterator sit;
+	  typename EV2ELabel::const_iterator evit;
+	  label l;
+
+	  l = it->second;
+	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
+	    {
+	      if (evit->first.getTailLabel () == l)
+		{
+		  nLabels.insert (evit->first.getHeadLabel ());
+		}
+	    }
+	  for (sit = nLabels.begin (); nLabels.end () != sit; ++sit)
+	    {
+	      res.push_back (vertices[*sit]);
+	    }
+	}
+      return res;
+    }	  
+
+    /**
+     * Returns the out-neighbors of the given vertex sorted over their label. An
+     * empty list is returned if the vertex has no neighbors or if the graph
+     * does not contain the vertex.
+     * @param v a vertex in the graph.
+     * @return the list of out-neighbors.
+     */
+    virtual list< V > outNeighborhood (const V &v)
     {
       list< V > res;
       typename V2VLabel::const_iterator it;
@@ -145,16 +180,43 @@ namespace mccore
     }	  
 
     /**
+     * Returns a increasing label list of the in-neighbors of the given
+     * vertex label.  An empty list is returned if the label has no
+     * in-neighbor or if it is not contained in the graph.
+     * @param l the vertex label.
+     * @return the list of in-neighbors.
+     */
+    virtual list< label > internalInNeighborhood (label l) const 
+    {
+      list< label > res;
+
+      if (vertices.size () > v)
+	{
+	  set< label > nLabels;
+	  typename EV2ELabel::const_iterator evit;
+
+	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
+	    {
+	      if (evit->first.getTailLabel () == l)
+		{
+		  nLabels.insert (evit->first.getHeadLabel ());
+		}
+	    }
+	  res.insert (res.end (), nLabels.begin (), nLabels.end ());
+	}
+      return res;
+    }	  
+    
+    /**
      * Returns a increasing label list of the neighbors of the given vertex
      * label.  An empty list is returned if the label has no neighbor or if
      * it is not contained in the graph.
      * @param l the vertex label.
-     * @return the list of neighbors.
+     * @return the list of out-neighbors.
      */
-    virtual list< label > internalGetNeighbors (label l) const
+    virtual list< label > internalOutNeighborhood (label l) const
     {
       list< label > res;
-      typename V2VLabel::const_iterator it;
 
       if (vertices.size () > v)
 	{
@@ -173,6 +235,31 @@ namespace mccore
       return res;
     }	  
 
+    /**
+     * Returns the neighbors of the given vertex sorted over their label. An
+     * empty list is returned if the vertex has no neighbors or if the graph
+     * does not contain the vertex.  It is a alias for outNeighborhood.
+     * @param v a vertex in the graph.
+     * @return the list of neighbors.
+     */
+    virtual list< V > neighborhood (const V &v)
+    {
+      return outNeighborhood (v);
+    }
+    
+    /**
+     * Returns a increasing label list of the out-neighbors of the given vertex
+     * label.  An empty list is returned if the label has no neighbor or if
+     * it is not contained in the graph.  It is an alias for
+     * internalOutNeighborhood.
+     * @param l the vertex label.
+     * @return the list of out-neighbors.
+     */
+    virtual list< label > internalNeighborhood (label l) const
+    {
+      return internalOutNeighborhood (l);
+    }
+    
     // METHODS --------------------------------------------------------------
 
   protected:
@@ -185,7 +272,7 @@ namespace mccore
      */
     virtual iterator uncheckedInternalErase (label l)
     {
-      list< label > neighbors = internalGetNeighbors (l);
+      list< label > neighbors = internalOutNeighborhood (l);
 
       if (! neighbors.empty ())
 	{

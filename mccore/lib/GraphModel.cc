@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.1.2.1 $
-// $Id: GraphModel.cc,v 1.1.2.1 2004-12-10 03:43:53 larosem Exp $
+// $Revision: 1.1.2.2 $
+// $Id: GraphModel.cc,v 1.1.2.2 2004-12-14 02:51:30 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -36,10 +36,13 @@
 
 namespace mccore
 {
-  iterator
+  GraphModel::iterator
   GraphModel::insert (const Residue &res)
   {
-    UndirectedGraph< Residue*, Relation* >::insert (res.clone ());
-    return end ();
+    Residue *clone;
+
+    clone = res.clone ();
+    UndirectedGraph< Residue*, Relation*, float, float, less_deref< Residue > >::insert (clone);
+    return UndirectedGraph< Residue*, Relation*, float, float, less_deref< Residue > >::find (clone);
   }
 }

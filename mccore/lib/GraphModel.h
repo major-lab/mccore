@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:31:01 2004
-// $Revision: 1.1.2.1 $
+// $Revision: 1.1.2.2 $
 // 
 // This file is part of mccore.
 // 
@@ -27,6 +27,7 @@
 #define _GraphModel_h_
 
 #include "AbstractModel.h"
+#include "Residue.h"
 #include "UndirectedGraph.h"
 
 
@@ -34,22 +35,21 @@
 namespace mccore
 {
   class Relation;
-  class Residue;
   class ResidueFactoryMethod;
 
 
   
   /**
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.h,v 1.1.2.1 2004-12-10 03:43:53 larosem Exp $
+   * @version $Id: GraphModel.h,v 1.1.2.2 2004-12-14 02:51:34 larosem Exp $
    */
-  class GraphModel : public AbstractModel, public UndirectedGraph < Residue*, Relation* >
+  class GraphModel : public AbstractModel, public UndirectedGraph < Residue*, Relation*, float, float, less_deref< Residue > >
   {
   public:
 
     typedef AbstractModel::iterator iterator;
     typedef AbstractModel::const_iterator const_iterator;
-    typedef UndirectedGraph< Residue*, Relation* >::size_type size_type;
+    typedef UndirectedGraph< Residue*, Relation*, float, float, less_deref< Residue > >::size_type size_type;
     
     /**
      * Initializes the object.
@@ -91,7 +91,7 @@ namespace mccore
      */
     virtual Residue& operator[] (size_type nth)
     {
-      return *internalGetNode (nth);
+      return *internalGetVertex (nth);
     }
 
     /**
@@ -101,7 +101,7 @@ namespace mccore
      */
     virtual const Residue& operator[] (size_type nth) const
     {
-      return *internalGetNode (nth);
+      return *internalGetVertex (nth);
     }
 
     // ACCESS ---------------------------------------------------------------
@@ -110,27 +110,27 @@ namespace mccore
      * Gets the iterator pointing to the beginning of the model.
      * @return the iterator.
      */
-    virtual iterator begin () { return iterator (nodes.begin ()); }
+    virtual iterator begin () { return iterator (vertices.begin ()); }
 
     /**
      * Gets the iterator pointing to the end of the model.
      * @return the iterator.
      */
-    virtual iterator end () { return iterator (nodes.end ()); }
+    virtual iterator end () { return iterator (vertices.end ()); }
 
     /**
      * Gets the const iterator pointing to the beginning of the model.
      * @return the iterator.
      */
     virtual const_iterator begin () const
-    { return const_iterator (nodes.begin ()); }
+    { return const_iterator (vertices.begin ()); }
 
     /**
      * Gets the const iterator pointing to the end of the model.
      * @return the iterator.
      */
     virtual const_iterator end () const
-    { return const_iterator (nodes.end()); }
+    { return const_iterator (vertices.end()); }
 
 
     // METHODS -------------------------------------------------------------
@@ -143,13 +143,25 @@ namespace mccore
     virtual iterator insert (const Residue &res);
 
     /**
+     * Inserts the residue range before pos.
+     * @param pos the iterator where the residue will be placed.
+     * @param f the first iterator in the range.
+     * @param l the last iterator in the range.
+     */
+    template <class InputIterator>
+    void insert(InputIterator f, InputIterator l)
+    {
+      UndirectedGraph< Residue*, Relation*, float, float, less_deref< Residue > >::insert (f, l);
+    }
+
+    /**
      * Erases a residue from the model.
      * @param pos the position to erase.
      * @return an iterator on the next residue.
      */ 
     virtual iterator erase (iterator pos) 
     {
-      return UndirectedGraph< Residue*, Relation* >::erase (pos);
+      return iterator (UndirectedGraph< Residue*, Relation*, float, float, less_deref< Residue > >::erase (&*pos));
     }
     
     /**
@@ -163,7 +175,7 @@ namespace mccore
      */
     virtual size_type size () const
     {
-      return UndirectedGraph< Residue*, Relation* >::size ();
+      return UndirectedGraph< Residue*, Relation*, float, float, less_deref < Residue > >::size ();
     }
 
     /**
@@ -172,7 +184,7 @@ namespace mccore
      */
     virtual bool empty () const
     {
-      return UndirectedGraph< Residue*, Relation* >::empty ();
+      return UndirectedGraph< Residue*, Relation*, float, float, less_deref < Residue > >::empty ();
     }
 
     /**
@@ -180,7 +192,7 @@ namespace mccore
      */
     virtual void clear ()
     {
-      UndirectedGraph< Residue*, Relation* >::clear ();
+      UndirectedGraph< Residue*, Relation*, float, float, less_deref < Residue > >::clear ();
     }
 
     // I/O  -----------------------------------------------------------------
