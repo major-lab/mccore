@@ -1,12 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // CResidue.cc
-// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-02 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Fri Nov 16 13:30:56 2001
-// Update Count     : 31
+// Last Modified On : Wed Jan  9 10:49:55 2002
+// Update Count     : 32
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -440,8 +440,8 @@ CResidue::AtomCopy (const AbstractResidue &right)
       
       if (mType != res.mType)
 	{
-	  CIntLibException exc ("Invalid residue type ", __FILE__,
-				__LINE__);
+	  CLibException exc ("Invalid residue type ");
+	  
 	  exc << (const char*)*res.mType << ".";
 	  throw exc;
 	}
