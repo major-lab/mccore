@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:31:01 2004
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 // 
 // This file is part of mccore.
 // 
@@ -46,7 +46,7 @@ namespace mccore
    * iterators.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.h,v 1.7 2005-01-27 19:12:29 larosem Exp $
+   * @version $Id: GraphModel.h,v 1.8 2005-03-17 22:15:21 larosem Exp $
    */
   class GraphModel : public AbstractModel, public OrientedGraph< Residue*, Relation*, int, int, less_deref< Residue > >
   {
@@ -207,6 +207,12 @@ namespace mccore
      * @return the annotated flag.
      */
     bool isAnnotated () const { return annotated; }
+
+    /**
+     * Sets the annotated flag, use with care.
+     * @param val the new annotated flag value.
+     */
+    void setAnnotated (bool val) { annotated = val; }
 
     // METHODS -------------------------------------------------------------
 
