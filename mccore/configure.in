@@ -106,8 +106,6 @@ if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
         LINKOPTIONS= ;;
     esac;
 elif eval "test \"`echo $GXX`\" = yes"; then     # gnu compiler
-	CXXSHFLAGS=" -fmessage-length=0";
-	CXXFLAGS=" -fmessage-length=0";
 	DEPFLAGS="-MM -Wno-deprecated"
 	LDFLAGS="-static $LDFLAGS"
 	LINKOPTIONS=;
