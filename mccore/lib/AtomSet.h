@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu Mar 13 13:03:07 2003
-// $Revision: 1.7.4.1 $
+// $Revision: 1.7.4.2 $
 // 
 // This file is part of mccore.
 // 
@@ -47,7 +47,7 @@ namespace mccore {
    * residues iterators.
    *
    * @author Martin Larose (<a href="larosem@IRO.UMontreal.CA">larosem@iro.umontreal.ca</a>)
-   * @version $Id: AtomSet.h,v 1.7.4.1 2004-12-25 02:39:24 larosem Exp $
+   * @version $Id: AtomSet.h,v 1.7.4.2 2004-12-29 21:07:27 larosem Exp $
    */
   class AtomSet
   {
@@ -152,23 +152,6 @@ namespace mccore {
      */
     virtual oBinstream& output (oBinstream &obs) const = 0;
   };
-
-  /**
-   * Ouputs the set to the stream.
-   * @param os the output stream.
-   * @param as the atomset.
-   * @return the used output stream.
-   */
-  ostream& operator<< (ostream &os, const AtomSet &as);
-
-  /**
-   * Outputs the atom to the binary stream.
-   * @param obs the output binary stream.
-   * @param atom the atom.
-   * @return the output binary stream used.
-   */
-  oBinstream& operator<< (oBinstream &obs, const Atom &atom);
- 
 
 
 
@@ -1215,6 +1198,21 @@ namespace mccore {
      */
     virtual oBinstream& output (oBinstream &obs) const;
   };
+
+}
+
+
+
+namespace std
+{
+
+  /**
+   * Ouputs the set to the stream.
+   * @param os the output stream.
+   * @param as the atomset.
+   * @return the used output stream.
+   */
+  ostream& operator<< (ostream &os, const mccore::AtomSet &as);
 
 }
 

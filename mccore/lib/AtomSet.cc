@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu Mar 13 13:03:07 2003
-// $Revision: 1.5.4.1 $
-// $Id: AtomSet.cc,v 1.5.4.1 2004-12-25 02:39:19 larosem Exp $
+// $Revision: 1.5.4.2 $
+// $Id: AtomSet.cc,v 1.5.4.2 2004-12-29 21:07:24 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -61,13 +61,6 @@ namespace mccore {
   const char* AtomSetPSE::representation       = "pse";
   const char* AtomSetSideChain::representation = "sidechain";
   
-  ostream&
-  operator<< (ostream &os, const AtomSet &as)
-  {
-    return as.output (os);
-  }
-
-
   iBinstream& operator>> (iBinstream &ibs, AtomSet *&as)
   {
     int nb;
@@ -464,3 +457,15 @@ namespace mccore {
 
 }
 
+
+
+namespace std
+{
+  
+  ostream&
+  operator<< (ostream &os, const mccore::AtomSet &as)
+  {
+    return as.output (os);
+  }
+
+}  
