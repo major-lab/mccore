@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct  6 08:21:55 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:09:41 2001
-// Update Count     : 11
+// Last Modified On : Wed Aug 29 11:51:23 2001
+// Update Count     : 12
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -96,7 +96,8 @@ CModel::Validate () const
     {
       CResidue res = it->Validate ();
       
-      if (res.GetType ()->is_NucleicAcid ())
+      if (res.GetType ()->is_NucleicAcid ()
+	  || res.GetType ()->is_AminoAcid ())
 	model.push_back (res);
     }
   return model;
@@ -112,6 +113,34 @@ CModel::RemoveOptionals () const
 
   for (it = begin (); it != end (); ++it)
     model.push_back (it->RemoveOptionals ());
+  return model;
+}
+
+
+
+CModel
+CModel::removeAminoAcid () const
+{
+  const_iterator modelIt;
+  CModel model;
+
+  for (modelIt = begin (); modelIt != end (); ++modelIt)
+    if (! *modelIt->GetType ()->is_AminoAcid ())
+      model.push_back (*modelIt);
+  return model;
+}
+
+
+
+CModel
+CModel::removeNucleicAcid () const
+{
+  const_iterator modelIt;
+  CModel model;
+
+  for (modelIt = begin (); modelIt != end (); ++modelIt)
+    if (! *modelIt->GetType ()->is_NucleicAcid ())
+      model.push_back (*modelIt);
   return model;
 }
 

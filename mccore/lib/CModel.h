@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct  6 08:21:55 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:34:07 2001
-// Update Count     : 7
+// Last Modified On : Wed Aug 29 11:51:27 2001
+// Update Count     : 8
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -113,6 +113,18 @@ public:
    * @return the new model.
    */
   CModel RemoveOptionals () const;
+
+  /**
+   * Creates a new model with the amino acids removed.
+   * @return the new model.
+   */
+  CModel removeAminoAcid () const;
+
+  /**
+   * Creates a new model with the nucleic acids removed.
+   * @return the new model.
+   */
+  CModel removeNucleicAcid () const;
 
   /**
    * Finds an atom given it's text representation of the form residue:atom.
