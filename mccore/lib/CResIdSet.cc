@@ -1,11 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // CResIdSet.cc
 // Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Oct 26 10:24:02 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Fri May 11 18:03:25 2001
-// Update Count     : 6
+// Last Modified On : Tue Aug 14 12:34:17 2001
+// Update Count     : 7
 // Status           : Unknown.
 // 
 //  This file is part of mccore.

@@ -1,11 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // Algo.h
 // Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+//                  Université de Montréal.
 // Author           : Sebastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Wed Feb 14 15:33:58 2001
-// Last Modified By : Sebastien Lemieux
-// Last Modified On : Wed Feb 14 17:15:15 2001
-// Update Count     : 42
+// Last Modified By : Martin Larose
+// Last Modified On : Tue Aug 14 12:33:17 2001
+// Update Count     : 43
 // Status           : Unknown.
 // 
 //  This file is part of mccore.

@@ -1,11 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // CResidue.h
 // Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Thu Sep 28 16:59:32 2000
-// Last Modified By : Patrick Gendron
-// Last Modified On : Mon May 28 16:29:23 2001
-// Update Count     : 16
+// Last Modified By : Martin Larose
+// Last Modified On : Tue Aug 14 12:34:25 2001
+// Update Count     : 17
 // Status           : Ok.
 // 
 //  This file is part of mccore.

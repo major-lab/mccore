@@ -1,11 +1,12 @@
 //                              -*- mode: C++ -*- 
 // Binstream.cc
 // Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+//                           Université de Montréal.
 // Author           : Martin Larose <larosem@orage.IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:18:52 EDT
 // Last Modified By : Martin Larose
-// Last Modified On : Fri May 11 18:02:20 2001
-// Update Count     : 8
+// Last Modified On : Tue Aug 14 12:33:43 2001
+// Update Count     : 9
 // Status           : Ok.
 // 
 //  This file is part of mccore.

@@ -1,11 +1,12 @@
 //                        -*- Mode: C++ -*-
 // CHBond.cc
-// Copyright © 1999, 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+//                           Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:14:39 2000
-// Update Count     : 36
+// Last Modified On : Tue Aug 14 12:33:57 2001
+// Update Count     : 37
 // Status           : 
 
 

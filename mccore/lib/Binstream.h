@@ -1,10 +1,11 @@
 //                         -*- Mode: C++ -*-
 // Binstream.h
 // Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+//                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:11:41 EDT
 // Last Modified By : Martin Larose
-// Last Modified On : Fri May 11 18:02:22 2001
+// Last Modified On : Tue Aug 14 12:33:45 2001
 // Update count     : 0
 // Status           : Ok.
 //

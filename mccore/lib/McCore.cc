@@ -1,11 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // McCore.cc
 // Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Patrick Gendron
-// Last Modified On : Mon May 28 16:29:26 2001
-// Update Count     : 11
+// Last Modified By : Martin Larose
+// Last Modified On : Tue Aug 14 12:34:37 2001
+// Update Count     : 12
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -966,7 +967,8 @@ McCoreInit ()
 void
 McCore_version ()
 {
-  cout << PACKAGE << " " << VERSION << endl;
+  cout << PACKAGE << " " << VERSION << endl
+       << "Copyright © 2001 Université de Montréal" << endl;
 }
 
 

@@ -1,11 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // AtomTypeImp.h
 // Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+//                  Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Fri May 11 18:02:16 2001
-// Update Count     : 2
+// Last Modified On : Tue Aug 14 12:33:41 2001
+// Update Count     : 3
 // Status           : Ok.
 // 
 //  This file is part of mccore.

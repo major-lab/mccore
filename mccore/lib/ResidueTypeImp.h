@@ -1,11 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // ResidueTypeImp.h
 // Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Mar  6 12:24:34 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Fri May 11 18:04:16 2001
-// Update Count     : 2
+// Last Modified On : Tue Aug 14 12:34:56 2001
+// Update Count     : 3
 // Status           : Ok.
 // 
 //  This file is part of mccore.

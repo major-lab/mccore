@@ -1,11 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // ServerSocket.cc
 // Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+//                  Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:56 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Fri May 11 18:04:20 2001
-// Update Count     : 1
+// Last Modified On : Tue Aug 14 12:34:59 2001
+// Update Count     : 2
 // Status           : Unknown.
 // 
 //  This file is part of mccore.

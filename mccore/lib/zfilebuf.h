@@ -1,11 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // zfilebuf.h
 // Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Mar 10 15:24:55 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Fri May 11 18:04:55 2001
-// Update Count     : 4
+// Last Modified On : Tue Aug 14 12:35:20 2001
+// Update Count     : 5
 // Status           : Ok.
 // 
 //  This file is part of mccore.

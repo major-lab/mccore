@@ -1,11 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // CAtom.cc
 // Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+//                           Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Philippe Thibault
-// Last Modified On : Wed Aug  8 13:49:55 2001
-// Update Count     : 45
+// Last Modified By : Martin Larose
+// Last Modified On : Tue Aug 14 12:33:47 2001
+// Update Count     : 46
 // Status           : Ok.
 // 
 //  This file is part of mccore.

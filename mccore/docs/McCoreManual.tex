@@ -1,27 +1,25 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -*- Mode: Latex -*- %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% McCoreManual.tex
 %% Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+%%                  Université de Montréal.
 %% Author           : Martin Larose <larosem@iro.umontreal.ca>
 %% Created On       : Mon Feb  5 18:54:17 2001
 %% Last Modified By : Martin Larose
-%% Last Modified On : Fri Feb  9 11:14:17 2001
-%% Update Count     : 2
+%% Last Modified On : Tue Aug 14 12:33:14 2001
+%% Update Count     : 3
 %% Status           : In development.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 \documentclass[11pt]{article}
-\usepackage{makeidx}
-\usepackage{times}
-\usepackage{isolatin1}
-\usepackage{epsfig}
+\usepackage{times,isolatin1,epsfig}
 \usepackage[ps2pdf,backref,hyperindex,colorlinks,bookmarks]{hyperref}
-\title{{\sc mcccore} manual}
+\title{{\sc McCore} manual}
 \author{Laboratoire de Biologie Informatique et Théorique}
 \date{\today}
 
 \pagestyle{myheadings}
-\markboth{MCCORE Manual}{MCCORE Manual}
+\markboth{McCore Manual}{McCore Manual}
 
 
 \begin{document}
@@ -30,10 +28,66 @@
 {\parindent 0pt \rule{\textwidth}{.5mm}}
 
 \vspace{20pt}
-
+\tableofcontents
+\newpage
 
 This manual is intended for internal use.  It describes the basic classes
-needed for the general mc packages.  The library is named throughout this
-manual as {\sc mccore}.
+and concepts needed for comprehending the general {\sc mcsym} packages.  The
+library is named throughout this manual as {\sc mccore}.
+
+
+\section{Atom types}
+
+The abstract concept of atoms is represented as a hierarchy of classes.  The
+base atom type {\tt t\_Atom} is an abstract class that declares methods for
+identifying and saving the atom.  {\tt t\_Atom} is the type used within the
+library whenever you want to declare an atom type.  
+
+fichier de declaration
+fichier de definition
+
+residue types
+fichier de declaration
+fichier de definition
+
+streams
+
+Binstream
+
+Pdbstream
+
+compressed streams
+
+CMessageQueue
+
+exceptions
+
+Points
+
+Description d'un atome
+
+filtres d'atomes
+
+Residue id
+
+Residue id set
+
+Transfo
+
+Description d'un résidu
+composition
+iterateurs
+application d'un filtre
+optention d'un residu par un iterateur
+
+Model
+
+Algo
+
+Graph
+
+HBond
+
+McCore
 
 \end{document}

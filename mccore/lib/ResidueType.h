@@ -1,11 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // ResidueType.h
 // Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Fri May 11 18:04:06 2001
-// Update Count     : 4
+// Last Modified On : Tue Aug 14 12:34:49 2001
+// Update Count     : 5
 // Status           : Ok.
 // 
 //  This file is part of mccore.

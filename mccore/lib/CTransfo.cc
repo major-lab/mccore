@@ -1,11 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // CTransfo.cc
 // Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+//                           Université de Montréal.
 // Author           : Patrick Gendron <gendrop@IRO.UMontreal.CA>
 // Created On       : Fri Oct  1 18:22:41 1999
 // Last Modified By : Martin Larose
-// Last Modified On : Fri May 11 18:03:40 2001
-// Update Count     : 7
+// Last Modified On : Tue Aug 14 12:34:27 2001
+// Update Count     : 8
 // Status           : Ok.
 // 
 //  This file is part of mccore.

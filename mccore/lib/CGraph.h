@@ -1,11 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // CGraph.h
 // Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+//                           Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Fri May 11 18:02:45 2001
-// Update Count     : 3
+// Last Modified On : Tue Aug 14 12:33:55 2001
+// Update Count     : 4
 // Status           : Ok.
 // 
 //  This file is part of mccore.

@@ -1,11 +1,12 @@
 //                              -*- Mode: C++ -*-
 // zfPdbstream.h
 // Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+//                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : ven 23 jui 1999 13:54:45 EDT
 // Last Modified By : Martin Larose
-// Last Modified On : Fri May 11 18:04:50 2001
-// Update Count     : 4
+// Last Modified On : Tue Aug 14 12:35:16 2001
+// Update Count     : 5
 // Status           : Ok.
 //
 //  This file is part of mccore.

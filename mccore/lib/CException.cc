@@ -1,11 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // CException.cc
 // Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+//                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Fri May 11 18:02:38 2001
-// Update Count     : 9
+// Last Modified On : Tue Aug 14 12:33:51 2001
+// Update Count     : 10
 // Status           : Ok.
 // 
 //  This file is part of mccore.

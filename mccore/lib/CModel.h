@@ -1,11 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // CModel.h
 // Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct  6 08:21:55 2000
-// Last Modified By : Patrick Gendron
-// Last Modified On : Mon May 28 16:29:14 2001
-// Update Count     : 6
+// Last Modified By : Martin Larose
+// Last Modified On : Tue Aug 14 12:34:07 2001
+// Update Count     : 7
 // Status           : Unknown.
 // 
 //  This file is part of mccore.

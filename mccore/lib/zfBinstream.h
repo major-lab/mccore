@@ -1,11 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // zfBinstream.h
 // Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+//                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created on       : jeu 22 jui 1999 18:24:14 EDT
 // Last Modified By : Martin Larose
-// Last Modified On : Fri May 11 18:04:46 2001
-// Update Count     : 3
+// Last Modified On : Tue Aug 14 12:35:14 2001
+// Update Count     : 4
 // Status           : Ok.
 // 
 //  This file is part of mccore.

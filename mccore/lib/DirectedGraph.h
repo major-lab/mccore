@@ -1,11 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // DirectedGraph.h
 // Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+//                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu May 10 14:49:18 2001
-// Last Modified By : 
-// Last Modified On : 
-// Update Count     : 0
+// Last Modified By : Martin Larose
+// Last Modified On : Tue Aug 14 12:34:33 2001
+// Update Count     : 1
 // Status           : Unknown.
 // 
 

@@ -1,11 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // AtomType.h
 // Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Fri May 11 18:01:37 2001
-// Update Count     : 6
+// Last Modified On : Tue Aug 14 12:33:23 2001
+// Update Count     : 7
 // Status           : Ok.
 // 
 //  This file is part of mccore.

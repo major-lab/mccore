@@ -1,11 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // CResId.cc
 // Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Thu Sep 28 15:55:29 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Fri May 11 18:03:15 2001
-// Update Count     : 6
+// Last Modified On : Tue Aug 14 12:34:13 2001
+// Update Count     : 7
 // Status           : Ok.
 // 
 //  This file is part of mccore.

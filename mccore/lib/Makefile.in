@@ -1,11 +1,12 @@
 ############################ -*- Mode: Makefile -*- ###########################
 ## Makefile.in
 ## Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+##                     Université de Montréal.
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:57:11 2000
 ## Last Modified By : Martin Larose
-## Last Modified On : Fri May 11 18:03:46 2001
-## Update Count     : 11
+## Last Modified On : Tue Aug 14 12:34:35 2001
+## Update Count     : 12
 ## Status           : Ok.
 ###############################################################################
 

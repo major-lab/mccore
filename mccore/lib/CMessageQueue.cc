@@ -1,11 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // CMessageQueue.cc
 // Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Fri May 11 18:02:52 2001
-// Update Count     : 3
+// Last Modified On : Tue Aug 14 12:34:01 2001
+// Update Count     : 4
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
