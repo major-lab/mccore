@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:36 2003
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 // 
 // This file is part of mccore.
 // 
@@ -51,7 +51,7 @@ namespace mccore
    * This is a collection of mccore Models in a simple STL list.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Molecule.h,v 1.9 2005-01-27 19:13:12 larosem Exp $
+   * @version $Id: Molecule.h,v 1.10 2005-03-10 19:03:39 thibaup Exp $
    */
   class Molecule
   {
@@ -429,6 +429,22 @@ namespace mccore
    * @return the output pdb stream.
    */
   oPdbstream& operator<< (oPdbstream &ops, const Molecule &obj);
+
+  /**
+   * Inputs the molecule from a binary stream.
+   * @param ips the input binary stream.
+   * @param obj the molecule where to put the molecules.
+   * @return the input binary stream.
+   */
+  iBinstream& operator>> (iBinstream &ibs, Molecule &obj);
+  
+  /**
+   * Outputs the molecule to a binary stream.
+   * @param ops the output binary stream.
+   * @param obj the molecule to output.
+   * @return the output binary stream.
+   */
+  oBinstream& operator<< (oBinstream &obs, const Molecule &obj);
 
 }
 
