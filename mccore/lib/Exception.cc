@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.2 $
-// $Id: Exception.cc,v 1.2 2004-07-09 21:23:49 larosem Exp $
+// $Revision: 1.3 $
+// $Id: Exception.cc,v 1.3 2004-07-12 19:24:03 thibaup Exp $
 //
 // This file is part of mccore.
 //
@@ -197,7 +197,7 @@ namespace mccore
   ostream& 
   Exception::output (ostream &os) const
   {
-    return os << GetMessage ();
+    return os << this->what ();
   }
 
   
@@ -285,20 +285,56 @@ namespace mccore
   ostream& 
   IntLibException::output (ostream &os) const
   {
-    os << GetFileName () << ":" << GetLine () << ": ";
+    os << getFileName () << ":" << getLine () << ": ";
     Exception::output (os);
-    os << endl << endl
-       << "Please send a bug report to 'bug-mcsym@iro.umontreal.ca'.";
+    os << endl;
     return os;
   }
 
+  
+  NoSuchAtomException::NoSuchAtomException ()
+    : IntLibException ()
+  {
+
+  }
 
 
+  NoSuchAtomException::NoSuchAtomException (const char *theMessage,
+					    const char *file, int line)
+    : IntLibException (theMessage, file, line)
+  {
+
+  }
+
+
+  NoSuchAtomException::NoSuchAtomException (const NoSuchAtomException &right)
+    : IntLibException (right)
+  {
+
+  }
+
+  
+  NoSuchAtomException&
+  NoSuchAtomException::operator= (const NoSuchAtomException &right)
+  {
+    if (this != &right)
+      this->IntLibException::operator= (right);
+    return *this;
+  }
+
+
+  ostream& 
+  NoSuchAtomException::output (ostream &os) const
+  {
+    return this->IntLibException::output (os);
+  }
+
+  
   FatalIntLibException&
   FatalIntLibException::operator= (const FatalIntLibException &right)
   {
     if (this != &right)
-      IntLibException::operator= (right);
+      this->IntLibException::operator= (right);
     return *this;
   }
 
@@ -368,7 +404,7 @@ namespace mccore
   ostream& 
   FatalSocketException::output (ostream &os) const
   {
-    os << GetFileName () << ":" << GetLine () << ": ";
+    os << getFileName () << ":" << getLine () << ": ";
     Exception::output (os);
     return os;
   }

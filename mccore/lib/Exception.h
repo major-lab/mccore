@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 16:27:35 1999
-// $Revision: 1.3 $
-// $Id: Exception.h,v 1.3 2004-07-09 21:23:58 larosem Exp $
+// $Revision: 1.4 $
+// $Id: Exception.h,v 1.4 2004-07-12 19:24:07 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -330,7 +330,7 @@ namespace mccore
 
 
   /**
-   * @short Exceptions fo internal errors.
+   * @short Exceptions for internal errors.
    *
    * This exception class is specific for library exceptions.  This class is
    * reserved for internal errors.  It is not needed to terminate the
@@ -340,6 +340,9 @@ namespace mccore
    */
   class IntLibException : public Exception
   {
+    
+  protected:
+    
     /**
      * The file name.
      */
@@ -395,13 +398,13 @@ namespace mccore
      * Gets the file name where the exception occured.
      * @return the file name.
      */
-    const char* GetFileName () const { return mFile; }
+    const char* getFileName () const { return mFile; }
 
     /**
      * Gets the line number where the exception occured.
      * @return the line number.
      */
-    int GetLine () const { return mLine; }
+    int getLine () const { return mLine; }
 
     // METHODS --------------------------------------------------------------
 
@@ -418,6 +421,71 @@ namespace mccore
   };
 
 
+  /**
+   * @short Specialized internal exceptions 
+   *
+   * Thrown when a requested atom is not found within a residue.
+   * It is not needed to terminate the execution for this kind of exception.
+   *
+   * @author Philippe Thibault <thibaup@iro.umontreal.ca>
+   */
+  class NoSuchAtomException : public IntLibException
+  {
+
+  public:
+
+    // LIFECYCLE ------------------------------------------------------------
+
+    /**
+     * Initializes the exception.
+     */
+    NoSuchAtomException ();
+
+    /**
+     * Initializes the exception with a message and where it was produced.
+     * @param theMessage the information string.
+     * @param file the file where the exception occured (default = 0).
+     * @param line the line number where the exception occured (default = -1).
+     */
+    NoSuchAtomException (const char *theMessage,
+			 const char *file = 0,
+			 int line = -1);
+
+    /**
+     * Initializes the exception with the right's content.
+     * @param right the exception to copy.
+     */
+    NoSuchAtomException (const NoSuchAtomException &right);
+
+    /**
+     * Destructs the exception.
+     */
+    virtual ~NoSuchAtomException () throw () {  }
+
+    // OPERATORS ------------------------------------------------------------
+
+    /**
+     * Assigns the exception with the right's content.
+     * @param right the exception to copy.
+     * @return itself.
+     */
+    NoSuchAtomException& operator= (const NoSuchAtomException &right);
+
+    // ACCESS ---------------------------------------------------------------
+
+    // METHODS --------------------------------------------------------------
+
+    // I/O ------------------------------------------------------------------
+
+    /**
+     * Outputs the NoSuchAtomException exception
+     * messages.  Prints the filename, the line number, the message and a bug
+     * notice.
+     * @param os the output stream.
+     * @return the used output stream.
+     */
+    virtual ostream& output (ostream &os) const;
+  };
 
 
   /**
@@ -448,8 +516,8 @@ namespace mccore
      * @param line the line number where the exception occured (default = -1.
      */
     FatalIntLibException (const char *theMessage,
-			   const char *file = 0,
-			   int line = -1)
+			  const char *file = 0,
+			  int line = -1)
       : IntLibException (theMessage, file, line) { }
 
     /**
@@ -595,13 +663,13 @@ namespace mccore
      * Gets the file name where the exception occured.
      * @return the file name.
      */
-    const char* GetFileName () const { return mFile; }
+    const char* getFileName () const { return mFile; }
 
     /**
      * Gets the line number where the exception occured.
      * @return the line number.
      */
-    int GetLine () const { return mLine; }
+    int getLine () const { return mLine; }
 
     // METHODS --------------------------------------------------------------
 
@@ -680,7 +748,7 @@ namespace mccore
 
     // I/O ------------------------------------------------------------------
   };
-
+  
 }
 
 namespace std
