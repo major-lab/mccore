@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Fri Mar 23 15:16:38 2001
-// Update Count     : 8
+// Last Modified On : Fri Mar 23 15:46:52 2001
+// Update Count     : 9
 // Status           : Ok.
 // 
 
@@ -200,19 +200,6 @@ public:
    * @return itself.
    */
   const CPoint3D& SetXYZ (float nX, float nY, float nZ);
-
-  /**
-   * Gets the x coordinate.
-   * @return the x coordinate.
-   */
-  float &Get (int index) { 
-    switch (index) {
-    case 0: return mX;
-    case 1: return mY;
-    case 2: return mZ;
-    }
-    return mX;
-  }
 
   /**
    * Gets the x coordinate.
