@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // ResId.cc
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:45:21 2003
-// $Revision: 1.7 $
-// $Id: ResId.cc,v 1.7 2005-01-03 23:00:23 larosem Exp $
+// $Revision: 1.8 $
+// $Id: ResId.cc,v 1.8 2005-03-10 22:58:46 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -134,6 +134,31 @@ namespace mccore
     return *this;
   }
   
+  
+  ostream&
+  ResId::write (ostream &os) const
+  {
+    if (chain == ' ')
+      {
+	os << no;
+      }
+    else if (! isalpha (chain))
+      {
+	os << '\'' << chain << '\'' << no;
+      }
+    else
+      {
+	os << chain << no;
+      }
+    
+    if (iCode != ' ')
+      {
+	os << '.' << iCode;
+      }
+    
+    return os;
+  }
+
     
   Exception&
   operator<< (Exception &ex, const ResId& obj)
@@ -169,6 +194,7 @@ namespace mccore
     return obs << obj.getResNo () << obj.getChainId ()
 	       << obj.getInsertionCode ();
   }
+
 }
 
 
@@ -179,25 +205,14 @@ namespace std
   ostream&
   operator<< (ostream &os, const mccore::ResId &obj)
   {
-    if (obj.getChainId () == ' ')
-      {
-	os << obj.getResNo ();
-      }
-    else if (! isalpha (obj.getChainId ()))
-      {
-	os << '\'' << obj.getChainId () << '\'' << obj.getResNo ();
-      }
-    else
-      {
-	os << obj.getChainId () << obj.getResNo ();
-      }
-    
-    if (obj.getInsertionCode () != ' ')
-      {
-	os << '.' << obj.getInsertionCode ();
-      }
-    
-    return os;
+    return obj.write (os);
+  }
+  
+
+  ostream&
+  operator<< (ostream &os, const mccore::ResId *obj)
+  {
+    return obj->write (os);
   }
   
 }  

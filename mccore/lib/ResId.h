@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // ResId.h
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:45:21 2003
-// $Revision: 1.13 $
+// $Revision: 1.14 $
 // 
 // This file is part of mccore.
 // 
@@ -49,7 +49,7 @@ namespace mccore
    * "(?:'(.)'|([^0-9]))?([0-9]+)"
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResId.h,v 1.13 2005-01-03 23:00:33 larosem Exp $
+   * @version $Id: ResId.h,v 1.14 2005-03-10 22:58:57 larosem Exp $
    */
   class ResId
   {
@@ -219,6 +219,13 @@ namespace mccore
 
     // I/O  -----------------------------------------------------------------
 
+    /**
+     * Writes the ResId to the output stream.
+     * @param os the output stream.
+     * @return the output stream.
+     */
+    virtual ostream& write (ostream &os) const;
+    
   };
 
   /**
@@ -258,6 +265,14 @@ namespace std
    * @return the used output stream.
    */
   ostream& operator<< (ostream &os, const mccore::ResId &obj);
+  
+  /**
+   * Outputs the residue id to the stream.
+   * @param os the output stream.
+   * @param obj the residue id.
+   * @return the used output stream.
+   */
+  ostream& operator<< (ostream &os, const mccore::ResId *obj);
   
 }  
 
