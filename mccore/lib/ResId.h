@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // ResId.h
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:45:21 2003
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 // 
 //  This file is part of mccore.
 //  
@@ -27,6 +27,7 @@
 #define _ResId_h_
 
 #include <iostream>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -204,7 +205,15 @@ namespace mccore {
 
     // METHODS --------------------------------------------------------------
 
-  
+    /**
+     * Test whether the given ResId is adjacent to this.
+     * @param id the ResId.
+     * @return true if the given ResId is adjacent to this.
+     */
+    bool areContiguous (const ResId &id) const
+    {
+      return (chain == id.chain && 1 == abs (no - id.no));
+    }
 
     // I/O  -----------------------------------------------------------------
 
