@@ -4,8 +4,8 @@
 //                  UniversitÅÈ de MontrÅÈal.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
-// $Revision: 1.1.2.4 $
-// $Id: RnamlReader.cc,v 1.1.2.4 2003-11-21 15:55:40 larosem Exp $
+// $Revision: 1.1.2.5 $
+// $Id: RnamlReader.cc,v 1.1.2.5 2003-12-09 21:54:34 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -121,31 +121,34 @@ RnamlReader::toMccore (const rnaml::Atom &atom)
 AbstractResidue*
 RnamlReader::toMccore (const rnaml::Base &base)
 {
-  AbstractResidue *r;
+  t_Residue *t;
+  CResId id;
+  vector< CAtom > atomVector;
   const char *str;
   char *type;
   int c;
   const vector< rnaml::Atom* > &atoms = ((rnaml::Base&) base).getAtoms ();
   vector< rnaml::Atom* >::const_iterator cit;
+  AbstractResidue *r;
 
-  r = residueFM->createResidue ();
   str = base.getStrand ();
   if (0 != str)
-    ((CResId&) *r).SetChainId (str[0]);
-  ((CResId&) *r).SetResNo (base.getPosition ());
+    id.SetChainId (str[0]);
+  id.SetResNo (base.getPosition ());
   type = strdup (base.getBaseType ());
-  r->setType (iPdbstream::GetResidueType (type));
+  t = iPdbstream::GetResidueType (type);
   c = base.getInsertion ();
   if (EOF != c)
-    ((CResId&) *r).setInsertionCode (c);
+    id.setInsertionCode (c);
   for (cit = atoms.begin (); atoms.end () != cit; ++cit)
     {
       CAtom *a;
 
       a = toMccore (**cit);
-      r->insert (*a);
+      atomVector.push_back (*a);
       delete a;
     }
+  r = residueFM->createResidue (t, atomVector, id);
   return r;
 }
 

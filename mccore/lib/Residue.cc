@@ -49,13 +49,13 @@
 
 
 Residue::Residue (t_Residue *type,
-		  vector< CAtom > &vec,
+		  const vector< CAtom > &vec,
 		  const CResId &nId)
   : AbstractResidue (nId, type),
     isPlaced (false),
     isIdentity (true)
 {
-  vector< CAtom >::iterator it;
+  vector< CAtom >::const_iterator it;
 
   for (it = vec.begin (); it != vec.end (); ++it)
     mAtomRef.push_back (it->clone ());

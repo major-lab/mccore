@@ -3260,7 +3260,7 @@ echo "${ECHO_T}$ac_cv_have_fstreambase" >&6
 if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
     case "$host" in
     *-sgi-*)
-	CXXFLAGS="$CXXFLAGS -O2 -woff 1681 -woff 3303 -ptused -LANG:std"
+	CXXFLAGS="$CXXFLAGS -O2 -LANG:std"
   	DEPFLAGS="-M"
 	echo "appending values of CPLUS_INCLUDE_PATH to include path..."
 	for t in `echo $CPLUS_INCLUDE_PATH | sed "s/\.*:/ /g"`; do
@@ -3268,7 +3268,7 @@ if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
  	  DEPFLAGS="$DEPFLAGS -I$t"
 	  echo "        " $t;
 	done
-  	LINKOPTIONS="-shared -woff 15,47"
+  	LINKOPTIONS="-shared"
 	LDNAMEPARAM="-Wl,-soname,"
 	echo "appending values of LIBRARY_PATH to lib path..."
 	for t in `echo $LIBRARY_PATH | sed "s/\.*:/ /g"`; do
@@ -3405,8 +3405,8 @@ fi
 
 	LIBALLFLAGSTART="-all"
 	LIBALLFLAGSTOP="-notall"
-	ARXX="$AR"
-	AROPTIONS="crs"
+	ARXX="$CXX"
+	AROPTIONS="-ar -o"
 	;;
     *-sun-*)
 	CXXFLAGS="$CXXFLAGS -xO2"

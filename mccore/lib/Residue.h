@@ -104,7 +104,7 @@ public:
    * @param vec the atom container.
    * @param nId the residue id.
    */
-  Residue (t_Residue *type, vector< CAtom > &vec, const CResId &nId);
+  Residue (t_Residue *type, const vector< CAtom > &vec, const CResId &nId);
 
   /**
    * Initializes the object with the right's content.

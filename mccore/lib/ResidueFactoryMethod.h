@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct 12 14:31:19 2001
-// $Revision: 1.1.12.1 $
-// $Id: ResidueFactoryMethod.h,v 1.1.12.1 2003-11-26 17:00:15 larosem Exp $
+// $Revision: 1.1.12.2 $
+// $Id: ResidueFactoryMethod.h,v 1.1.12.2 2003-12-09 21:54:30 larosem Exp $
 // 
 //  This file is part of mccore.
 //  
@@ -27,7 +27,15 @@
 #ifndef _ResidueFactoryMethod_h_
 #define _ResidueFactoryMethod_h_
 
+#include <vector>
+
+#include "CAtom.h"
+
 class AbstractResidue;
+class CResId;
+class t_Residue;
+
+using namespace std;
 
 
 
@@ -75,6 +83,14 @@ public:
    */
   virtual AbstractResidue* createResidue () const = 0;
 
+  /**
+   * Creates the residue.
+   * @param type the residue type.
+   * @param vec the atom container.
+   * @param nId the residue id.
+   * @return the newly created residue.
+   */
+  virtual AbstractResidue* createResidue (t_Residue *type, const vector< CAtom > &vec, const CResId &nId) const = 0;
 };
 
 #endif
