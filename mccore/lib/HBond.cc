@@ -26,6 +26,10 @@
 #include <config.h>
 #endif
 
+#ifdef __APPLE_CC__
+#define _GLIBCPP_USE_C99 1
+#endif
+
 #include <cmath>
 #include <iomanip>
 
