@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 12:30:39 2003
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 // 
 //  This file is part of mccore.
 //  
@@ -44,7 +44,7 @@ namespace mccore
    * @short Repository of atomtypes.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: AtomTypeStore.h,v 1.14 2005-03-30 18:57:13 larosem Exp $
+   * @version $Id: AtomTypeStore.h,v 1.15 2005-04-06 16:21:23 thibaup Exp $
    */
   class AtomTypeStore
   {
@@ -2582,6 +2582,48 @@ namespace mccore
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const APSZ* > (t);
+      }
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the Pseudo atom value.
+       */
+      virtual float getVDWR (const ResidueType *r) const
+      { return Pseudo::getVDWR (r); }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the Pseudo atom value.
+       */
+      virtual float getAmberEpsilon (const ResidueType *r) const
+      { return Pseudo::getAmberEpsilon (r); }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Pseudo atom Amber charge.
+       */
+      virtual float getAmberCharge (const ResidueType *r) const
+      { return Pseudo::getAmberCharge (r); }
+
+
+      
+    };
+
+
+    /**
+     * Global PSO atom type class.
+     */
+    class APSO : public virtual NucleicAcid, public virtual Pseudo, public virtual SideChain
+    { 
+    public:
+      APSO () {}
+      APSO (const string& ks) : AtomType (ks) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const APSO* > (t);
       }
 
       /**

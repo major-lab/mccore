@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Tue Mar 11 13:56:50 2003
-// $Revision: 1.14 $
-// $Id: AtomTypeStore.cc,v 1.14 2005-03-30 18:56:50 larosem Exp $
+// $Revision: 1.15 $
+// $Id: AtomTypeStore.cc,v 1.15 2005-04-06 16:21:24 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -101,6 +101,7 @@ namespace mccore
     AtomType::aPSX = *repository.insert (new APSX (string ("PSX"))).first;
     AtomType::aPSY = *repository.insert (new APSY (string ("PSY"))).first;
     AtomType::aPSZ = *repository.insert (new APSZ (string ("PSZ"))).first;
+    AtomType::aPSO = *repository.insert (new APSO (string ("PSO"))).first;
     AtomType::aLP1 = *repository.insert (new ALP1 (string ("LP1"))).first;
     AtomType::aLP3 = *repository.insert (new ALP3 (string ("LP3"))).first;
     AtomType::aLP7 = *repository.insert (new ALP7 (string ("LP7"))).first;

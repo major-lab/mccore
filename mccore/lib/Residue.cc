@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.69 $
-// $Id: Residue.cc,v 1.69 2005-04-04 23:08:30 larosem Exp $
+// $Revision: 1.70 $
+// $Id: Residue.cc,v 1.70 2005-04-06 16:21:22 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -1611,6 +1611,7 @@ namespace mccore
 	this->insert (atom.set (*p1 + i, AtomType::aPSX));
 	this->insert (atom.set (*p1 + j, AtomType::aPSY));
 	this->insert (atom.set (*p1 + k, AtomType::aPSZ));
+	this->insert (atom.set (*p1, AtomType::aPSO));
       }
       else if (this->type->isPhosphate ())
       {
@@ -2296,17 +2297,14 @@ namespace mccore
     {
       // first try to handle a nucleic acid which already has its pseudo atoms
       // to form an orthonormal base.
-      try
+      if (this->type->isNucleicAcid ())
       {
-	origin = this->_safe_get (Residue::nitrogenType19 (this->type));
+	origin = this->_safe_get (AtomType::aPSO);
 	return HomogeneousTransfo::frame (*this->_safe_get (AtomType::aPSX) - *origin,
 					  *this->_safe_get (AtomType::aPSY) - *origin,
 					  *this->_safe_get (AtomType::aPSZ) - *origin,
 					  *origin);
-      }
-      catch (TypeException& ex)
-      {
-      }
+      } 
 
       // fetch pivot types for other types with no pseudo atoms
       if (this->type->isPhosphate ())

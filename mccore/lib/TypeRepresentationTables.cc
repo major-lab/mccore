@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct  1 14:45:13 2004
-// $Revision: 1.4 $
-// $Id: TypeRepresentationTables.cc,v 1.4 2004-12-09 19:53:34 thibaup Exp $
+// $Revision: 1.5 $
+// $Id: TypeRepresentationTables.cc,v 1.5 2005-04-06 16:21:22 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -104,6 +104,7 @@ namespace mccore
     typeTable["PSX"] = AtomType::aPSX;
     typeTable["PSY"] = AtomType::aPSY;
     typeTable["PSZ"] = AtomType::aPSZ;
+    typeTable["PSO"] = AtomType::aPSO;
     typeTable["LP1"] = AtomType::aLP1;
     typeTable["LP3"] = AtomType::aLP3;
     typeTable["LP7"] = AtomType::aLP7;
@@ -260,6 +261,7 @@ namespace mccore
     representationTable[AtomType::aPSX] = "PSX";
     representationTable[AtomType::aPSY] = "PSY";
     representationTable[AtomType::aPSZ] = "PSZ";
+    representationTable[AtomType::aPSO] = "PSO";
     representationTable[AtomType::aLP1] = "LP1";
     representationTable[AtomType::aLP3] = "LP3";
     representationTable[AtomType::aLP7] = "LP7";
@@ -438,6 +440,7 @@ namespace mccore
     typeTable["PSX"] = AtomType::aPSX;
     typeTable["PSY"] = AtomType::aPSY;
     typeTable["PSZ"] = AtomType::aPSZ;
+    typeTable["PSO"] = AtomType::aPSO;
     typeTable["H3T"] = AtomType::aH3T;
     typeTable["H5T"] = AtomType::aH5T;
     typeTable["C"] = AtomType::aC;
@@ -597,6 +600,7 @@ namespace mccore
     representationTable[AtomType::aPSX] = "PSX";
     representationTable[AtomType::aPSY] = "PSY";
     representationTable[AtomType::aPSZ] = "PSZ";
+    representationTable[AtomType::aPSO] = "PSO";
     representationTable[AtomType::aH3T] = "H3T";
     representationTable[AtomType::aH5T] = "H5T";
     representationTable[AtomType::aC] = "C";
