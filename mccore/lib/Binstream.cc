@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@orage.IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:18:52 EDT
-// $Revision: 1.23 $
-// $Id: Binstream.cc,v 1.23 2005-01-25 20:25:52 thibaup Exp $
+// $Revision: 1.24 $
+// $Id: Binstream.cc,v 1.24 2005-01-25 20:28:24 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -80,7 +80,7 @@ namespace mccore
   iBinstream&
   iBinstream::operator>> (string &str)
   {
-    unsigned int length;
+    string::size_type length;
     char *buffer;
     
     *this >> length;
@@ -179,7 +179,7 @@ namespace mccore
   oBinstream&
   oBinstream::operator<< (const string &str)
   {
-    unsigned int length = str.size ();
+    string::size_type length = str.size ();
 
     *this << length;
     oBinstream::write (str.data (), sizeof (char) * length);
