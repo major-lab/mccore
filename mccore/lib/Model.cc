@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.16 $
+// $Revision: 1.17 $
 // 
 //  This file is part of mccore.
 //  
@@ -436,17 +436,20 @@ namespace mccore {
     char chainId;
 
     cit = begin ();
-    chainId = cit->getResId ().getChainId ();
-    for (; cit != end (); ++cit)
+    if (end () != cit)
       {
-	if (cit->getResId ().getChainId () != chainId)
+	chainId = cit->getResId ().getChainId ();
+	for (; end () != cit; ++cit)
 	  {
-	    ops.ter ();
-	    chainId = cit->getResId ().getChainId ();
+	    if (cit->getResId ().getChainId () != chainId)
+	      {
+		ops.ter ();
+		chainId = cit->getResId ().getChainId ();
+	      }
+	    ops << *cit;
 	  }
-	ops << *cit;
+	ops.ter ();
       }
-    ops.ter ();
     return ops;
   }
   
