@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Sep  5 17:06:24 2001
 // Last Modified By : Patrick Gendron
-// Last Modified On : Thu Oct 16 17:55:20 2003
-// Update Count     : 19
+// Last Modified On : Mon Oct 20 15:04:10 2003
+// Update Count     : 20
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -38,6 +38,7 @@ class Messagestream;
 
 
 extern Messagestream &gOut;
+extern Messagestream &gErr;
 
 
 /**
