@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Jan  5 17:12:54 2005
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 //
 // This file is part of mccore.
 // 
@@ -43,7 +43,7 @@ namespace mccore
    * methods.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ModelFactoryMethod.h,v 1.5 2005-01-27 19:12:50 larosem Exp $
+   * @version $Id: ModelFactoryMethod.h,v 1.6 2005-02-25 16:48:14 thibaup Exp $
    */
   class ModelFactoryMethod
   {
@@ -106,6 +106,13 @@ namespace mccore
      */
     Residue* createResidue () const;
 
+    /**
+     * Creates a residue copy using the factory method.
+     * @param res the residue to copy from.
+     * @return the newly created residue copy.
+     */
+    Residue* createResidue (const Residue& res) const;
+
     // I/O  -----------------------------------------------------------------
 
     /**
@@ -142,7 +149,7 @@ namespace mccore
    * This is the model factory method implementation for the Model class.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ModelFactoryMethod.h,v 1.5 2005-01-27 19:12:50 larosem Exp $
+   * @version $Id: ModelFactoryMethod.h,v 1.6 2005-02-25 16:48:14 thibaup Exp $
    */
   class ModelFM : public ModelFactoryMethod
   {
@@ -212,7 +219,7 @@ namespace mccore
    * This is the model factory method implementation for the GraphModel class.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ModelFactoryMethod.h,v 1.5 2005-01-27 19:12:50 larosem Exp $
+   * @version $Id: ModelFactoryMethod.h,v 1.6 2005-02-25 16:48:14 thibaup Exp $
    */
   class GraphModelFM : public ModelFactoryMethod
   {

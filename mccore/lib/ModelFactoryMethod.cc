@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Wed Jan  5 17:20:53 2005
-// $Revision: 1.4 $
-// $Id: ModelFactoryMethod.cc,v 1.4 2005-01-27 19:12:39 larosem Exp $
+// $Revision: 1.5 $
+// $Id: ModelFactoryMethod.cc,v 1.5 2005-02-25 16:48:14 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -66,6 +66,13 @@ namespace mccore
   ModelFactoryMethod::createResidue () const
   {
     return this->rFM->createResidue ();
+  }
+
+
+  Residue* 
+  ModelFactoryMethod::createResidue (const Residue& res) const
+  {
+    return this->rFM->createResidue (res);
   }
 
 

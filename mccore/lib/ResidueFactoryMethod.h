@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct 12 14:31:19 2001
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 //
 // This file is part of mccore.
 // 
@@ -41,7 +41,7 @@ namespace mccore
    * methods.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ResidueFactoryMethod.h,v 1.6 2005-01-26 19:57:58 thibaup Exp $
+   * @version $Id: ResidueFactoryMethod.h,v 1.7 2005-02-25 16:48:14 thibaup Exp $
    */
   class ResidueFactoryMethod
   {
@@ -77,6 +77,13 @@ namespace mccore
      */
     virtual Residue* createResidue () const = 0;
 
+    /**
+     * Creates a residue copy.
+     * @param res the residue to copy from.
+     * @return the newly created residue copy.
+     */
+    virtual Residue* createResidue (const Residue& res) const = 0;
+
     // I/O  -----------------------------------------------------------------
 
     /**
@@ -105,7 +112,7 @@ namespace mccore
    * class.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ResidueFactoryMethod.h,v 1.6 2005-01-26 19:57:58 thibaup Exp $
+   * @version $Id: ResidueFactoryMethod.h,v 1.7 2005-02-25 16:48:14 thibaup Exp $
    */
   class ResidueFM : public ResidueFactoryMethod
   {
@@ -142,6 +149,13 @@ namespace mccore
      */
     virtual Residue* createResidue () const;
 
+   /**
+     * Creates a residue copy.
+     * @param res the residue to copy from.
+     * @return the newly created residue copy.
+     */
+    virtual Residue* createResidue (const Residue& res) const;
+
     // I/O  -----------------------------------------------------------------
 
     /**
@@ -161,7 +175,7 @@ namespace mccore
    * This is the residue factory method implementation for the Residue class.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ResidueFactoryMethod.h,v 1.6 2005-01-26 19:57:58 thibaup Exp $
+   * @version $Id: ResidueFactoryMethod.h,v 1.7 2005-02-25 16:48:14 thibaup Exp $
    */
   class ExtendedResidueFM : public ResidueFactoryMethod
   {
@@ -197,6 +211,13 @@ namespace mccore
      * @return the newly created empty residue.
      */
     virtual Residue* createResidue () const;
+
+   /**
+     * Creates a residue copy.
+     * @param res the residue to copy from.
+     * @return the newly created residue copy.
+     */
+    virtual Residue* createResidue (const Residue& res) const;
 
     // I/O  -----------------------------------------------------------------
 

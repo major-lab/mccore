@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:35 2003
-// $Revision: 1.13 $
-// $Id: Molecule.cc,v 1.13 2005-01-27 19:37:59 thibaup Exp $
+// $Revision: 1.14 $
+// $Id: Molecule.cc,v 1.14 2005-02-25 16:48:14 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -154,6 +154,7 @@ namespace mccore
     AbstractModel *cloned;
 
     cloned = modelFM->createModel (model);
+
     return (iterator)models.insert (models.end (), cloned);
   }
   

@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Mar 20 16:21:52 2003
-// $Revision: 1.4 $
-// $Id: ResidueFactoryMethod.cc,v 1.4 2005-01-26 19:57:58 thibaup Exp $
+// $Revision: 1.5 $
+// $Id: ResidueFactoryMethod.cc,v 1.5 2005-02-25 16:48:14 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -70,6 +70,13 @@ namespace mccore
   }
 
 
+  Residue* 
+  ResidueFM::createResidue (const Residue& res) const
+  {
+    return new Residue (res);
+  }
+
+
   oBinstream&
   ResidueFM::write (oBinstream& obs) const
   {
@@ -81,6 +88,13 @@ namespace mccore
   ExtendedResidueFM::createResidue () const
   {
     return new ExtendedResidue ();
+  }
+
+
+  Residue* 
+  ExtendedResidueFM::createResidue (const Residue& res) const
+  {
+    return new ExtendedResidue (res);
   }
 
 

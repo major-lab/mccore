@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.30 $
-// $Id: Model.cc,v 1.30 2005-01-27 19:12:34 larosem Exp $
+// $Revision: 1.31 $
+// $Id: Model.cc,v 1.31 2005-02-25 16:48:14 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -123,17 +123,13 @@ namespace mccore
     iterator found;
 
     if (end () == (found = find (res.getResId ())))
-      {
-	Residue *newRes;
-	
-	newRes = residueFM->createResidue ();
-	*newRes = res;
-	found = end () - 1;
-      }
+      found = this->residues.insert (this->residues.end (), this->residueFM->createResidue (res));
     else
-      {
-	*found = res;
-      }
+    {
+      gErr << "Warning: model's residue " << *found << " was overwritten by " << res << endl;
+      *found = res;
+    }
+
     return found;
   }
   

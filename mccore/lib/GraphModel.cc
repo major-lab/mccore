@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.6 $
-// $Id: GraphModel.cc,v 1.6 2005-01-27 19:12:24 larosem Exp $
+// $Revision: 1.7 $
+// $Id: GraphModel.cc,v 1.7 2005-02-25 16:48:14 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -161,8 +161,8 @@ namespace mccore
       {
 	Residue *r;
 	
-	r = residueFM->createResidue ();
-	*r = res;
+	r = residueFM->createResidue (res);
+
 	graphsuper::insert (r, w);
 	found = graphsuper::find (r);
       }
