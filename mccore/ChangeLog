@@ -5,14 +5,6 @@
 
 2001-09-13  Martin Larose  <larosem@iro.umontreal.ca>
 
-	* lib/CResidue.cc:
-	Bug corrected.  The index counter must be increased only when an atom is
-	pushed in the residue.
-
-	* lib/CResidue.cc: Html format removed from output.
-
-2001-09-13  Martin Larose  <larosem@iro.umontreal.ca>
-
 	* CResidue.cc: Bug corrected.  The index counter must be increased
 	only when an atom is pushed in the residue.
 
