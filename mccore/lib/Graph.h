@@ -4,7 +4,7 @@
 //                  Université de Montréal
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 00:05:15 2004
-// $Revision: 1.23.4.13 $
+// $Revision: 1.23.4.14 $
 // 
 // This file is part of mccore.
 // 
@@ -26,7 +26,6 @@
 #ifndef _mccore_Graph_h_
 #define _mccore_Graph_h_
 
-#include <functional>
 #include <iomanip>
 #include <iostream>
 #include <list>
@@ -34,6 +33,7 @@
 #include <utility>
 #include <vector>
 
+#include "Algo.h"
 #include "Exception.h"
 
 using namespace std;
@@ -42,53 +42,12 @@ using namespace std;
 
 namespace mccore
 {
-  
-  /**
-   * Exception for Graph access.
-   *
-   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Graph.h,v 1.23.4.13 2004-12-25 02:41:08 larosem Exp $
-   */
-  class NoSuchElementException : public Exception
-  {
-    
-  public:
-
-    NoSuchElementException () { }
-    virtual ~NoSuchElementException () throw () { }
-    virtual ostream& output (ostream &os) const
-    {
-      os << "NoSuchElementException: ";
-      Exception::output (os);
-      return os;
-    }
-  };
-
-
-  /**
-   * Comparator used in the vertex to vertex label mapping.
-   *
-   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   */
-  template < class V , class VC = less< V > >
-  class less_deref : public binary_function< V, V, bool >
-  {
-    
-  public:
-    
-    less_deref () { }
-    bool operator() (const V *left, const V *right) const
-    {
-      return VC ().operator() (*left, *right);
-    }
-  };
-
   /**
    * Abstract class for the graph classes.  Removing vertices or edges are
    * costly.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Graph.h,v 1.23.4.13 2004-12-25 02:41:08 larosem Exp $
+   * @version $Id: Graph.h,v 1.23.4.14 2004-12-27 01:36:42 larosem Exp $
    */
   template< class V,
 	    class E,
