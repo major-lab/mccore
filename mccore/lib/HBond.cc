@@ -26,6 +26,7 @@
 #include <config.h>
 #endif
 
+#include <cmath>
 #include <iomanip>
 
 #include "HBond.h"
@@ -35,7 +36,10 @@
 #include "Atom.h"
 #include "Pdbstream.h"
 
-namespace mccore {
+
+
+namespace mccore
+{
 
 
 // STATIC MEMBERS --------------------------------------------------------------
