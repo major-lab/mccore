@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // zfBinstream.h
-// Copyright © 1999, 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created on       : jeu 22 jui 1999 18:24:14 EDT
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:15:35 2000
-// Update Count     : 1
+// Last Modified On : Mon Jan 22 15:20:19 2001
+// Update Count     : 2
 // Status           : Ok.
 // 
 
@@ -84,7 +84,7 @@ public:
   /**
    * Closes the stream.
    */
-  void close () { izfBinstream::close (); zfstreambase::close (); }
+  void close () { iBinstream::close (); zfstreambase::close (); }
   
   // I/O ------------------------------------------------------------------
 };
