@@ -4,9 +4,9 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Mar  6 12:24:34 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Wed Sep  5 16:32:10 2001
-// Update Count     : 4
+// Last Modified By : Philippe Thibault
+// Last Modified On : Wed Mar 19 08:33:10 2003
+// Update Count     : 5
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -374,6 +374,88 @@ public:
    */
   virtual bool describe (const t_Residue *t) const
   { return dynamic_cast< const rt_Phosphate* >(t); }
+
+  // I/O  -----------------------------------------------------------------
+
+  /**
+   * Outputs the type value in the binary stream.
+   * @param obs the binary output stream.
+   */
+  virtual void Binoutput (oBinstream &obs) const;
+};
+
+/**
+ * @short The ribose residue type.
+ *
+ * @author Philippe Thibault <thibaup@iro.umontreal.ca>
+ */
+class rt_Ribose : public virtual rt_NucleicAcid
+{
+
+public:
+  
+  // LIFECYCLE ------------------------------------------------------------
+
+  /**
+   * Initializes the objet.
+   */
+  rt_Ribose () : rt_NucleicAcid () { }
+
+  /**
+   * Initializes the objet with the right's content.
+   * @param right the objet to copy.
+   */
+  rt_Ribose (const rt_Ribose &right) : rt_NucleicAcid (right) { }
+
+  /**
+   * Destructs the object.
+   */
+  virtual ~rt_Ribose () { }
+  
+  // OPERATORS ------------------------------------------------------------
+
+  /**
+   * Assigns the right's content to the object.
+   * @param right the object to copy.
+   * @return itself.
+   */
+  virtual const rt_Ribose& operator= (const rt_Ribose &right);
+
+  /**
+   * Converts the residue type to a string.
+   * @return "Ribose"
+   */
+  virtual operator const char* () const { return "Ribose"; }
+  
+  // ACCESS ---------------------------------------------------------------
+
+  // METHODS --------------------------------------------------------------
+
+  /**
+   * Gets the residue type representation in PDB format.
+   * @return "Ribose".
+   */
+  virtual const char* getPDBRep () const { return "PO4"; }
+  
+  /**
+   * Gets the one letter representation of the type.
+   * @return the character representing the residue type.
+   */
+  virtual const char getOneLetterRep () const { return '?'; }
+  
+  /**
+   * Tells if the residue is a Ribose type.
+   * @return true.
+   */
+  virtual bool is_Ribose () const { return true; }
+
+  /**
+   * Tests whether the type t is a rt_Ribose or derived class.
+   * @param the type to test.
+   * @return the truth value of the test.
+   */
+  virtual bool describe (const t_Residue *t) const
+  { return dynamic_cast< const rt_Ribose* >(t); }
 
   // I/O  -----------------------------------------------------------------
 

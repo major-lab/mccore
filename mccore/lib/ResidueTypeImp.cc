@@ -4,9 +4,9 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Mar  6 12:27:03 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:10:16 2001
-// Update Count     : 8
+// Last Modified By : Philippe Thibault
+// Last Modified On : Wed Mar 19 08:33:02 2003
+// Update Count     : 9
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -82,7 +82,7 @@
 #define RT_TYR_BIN            41
 #define RT_VAL_BIN            42
 
-
+#define RT_RIBOSE_BIN      43
 
 void
 t_Residue::Binoutput (oBinstream &obs) const
@@ -336,6 +336,24 @@ rt_Phosphate::Binoutput (oBinstream &obs) const
 {
   obs << int (RT_PHOSPHATE_BIN);
 }
+
+
+const rt_Ribose&
+rt_Ribose::operator= (const rt_Ribose &right)
+{
+  if (this != &right)
+    rt_NucleicAcid::operator= (right);
+  return *this;
+}
+
+
+
+void
+rt_Ribose::Binoutput (oBinstream &obs) const
+{
+  obs << int (RT_RIBOSE_BIN);
+}
+
 
 
 
