@@ -4,9 +4,9 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Wed Sep  5 16:31:57 2001
-// Update Count     : 10
+// Last Modified By : Patrick Gendron
+// Last Modified On : Wed Sep 12 11:55:26 2001
+// Update Count     : 11
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -48,6 +48,7 @@ class oBinstream;
  */
 class t_Atom
 {
+
 public:
   // LIFECYCLE ------------------------------------------------------------
 
