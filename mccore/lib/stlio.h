@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Wed Apr  9 13:38:51 2003
-// $Revision: 1.7 $
-// $Id: stlio.h,v 1.7 2004-09-15 22:38:59 larosem Exp $
+// $Revision: 1.8 $
+// $Id: stlio.h,v 1.8 2004-09-19 03:38:36 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -172,6 +172,21 @@ namespace std
   public:
 
     Print (ostream &os) : os (os) { }
+
+    void operator() (T &obj)
+    {
+      os << obj;
+    }
+  };
+
+  template< typename T >
+  class PrintLn : public unary_function< T, void >
+  {
+    ostream &os;
+
+  public:
+
+    PrintLn (ostream &os) : os (os) { }
 
     void operator() (T &obj)
     {
