@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.32 $
-// $Id: Residue.cc,v 1.32 2004-05-27 15:35:40 thibaup Exp $
+// $Revision: 1.33 $
+// $Id: Residue.cc,v 1.33 2004-06-01 20:14:24 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -243,7 +243,7 @@ namespace mccore {
     }
 
     finalize ();
-
+        
     if (backbone)
       {
 	// create a C3' endo anti ribose
@@ -255,6 +255,9 @@ namespace mccore {
 	insert (*po4->find (AtomType::aO2P));
 	delete po4;
       }
+
+    addHydrogens ();
+    addLonePairs ();
   }
 
 
