@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
-# $Revision: 1.31 $
-# $Id: configure.in,v 1.31 2004-11-22 20:28:29 larosem Exp $
+# $Revision: 1.32 $
+# $Id: configure.in,v 1.32 2004-11-22 20:58:32 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -148,7 +148,7 @@ elif eval "test \"`echo $GXX`\" = yes"; then     # gnu compiler
 	CXXFLAGS="$CXXFLAGS -Wall -Wno-deprecated"
 	DEPFLAGS="-MM"
 	case "$host" in
-	    *-Darwin-*)
+	    *-darwin*)
 		LINKOPTIONS="-dynamiclib"
 		LDNAMEPARAM="-install_name,"
 		LIBEXT="dylib"

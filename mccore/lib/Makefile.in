@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.53 $
-# $Id: Makefile.in,v 1.53 2004-11-22 20:28:13 larosem Exp $
+# $Revision: 1.54 $
+# $Id: Makefile.in,v 1.54 2004-11-22 20:58:33 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -152,7 +152,7 @@ LIBRARY = lib$(PACKAGE)
 DISTFILES = Makefile.in $(SOURCES) $(HEADERS)
 
 
-all: $(LIBRARY).so.$(VERSION) TAGS
+all: $(LIBRARY).$(LIBEXT).$(VERSION) TAGS
 
 static: $(LIBRARY).a TAGS
 
