@@ -1,8 +1,25 @@
 //                              -*- Mode: C++ -*- 
 // ResidueType.cc
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:32:49 2003
+//
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifdef HAVE_CONFIG_H
@@ -18,16 +35,14 @@
 namespace mccore
 {
 
-  // STATIC MEMBERS ------------------------------------------------------------
-
-  ResidueTypeStore ResidueType::rtstore;
+  ResidueTypeStore* ResidueType::rtstore = new ResidueTypeStore ();
 
   ResidueType* ResidueType::rNull = 0;
   ResidueType* ResidueType::rUnknown = 0;
   
   ResidueType* ResidueType::rNucleicAcid = 0;
   ResidueType* ResidueType::rAminoAcid = 0;
-
+  
   ResidueType* ResidueType::rRNA = 0;
   ResidueType* ResidueType::rDNA = 0;
   
@@ -48,7 +63,7 @@ namespace mccore
   ResidueType* ResidueType::rRPyrimidine = 0;
   ResidueType* ResidueType::rDPurine = 0;
   ResidueType* ResidueType::rDPyrimidine = 0;
-
+  
   ResidueType* ResidueType::rW = 0;
   ResidueType* ResidueType::rS = 0;
   ResidueType* ResidueType::rM = 0;
@@ -57,7 +72,7 @@ namespace mccore
   ResidueType* ResidueType::rD = 0;
   ResidueType* ResidueType::rH = 0;
   ResidueType* ResidueType::rV = 0;
-
+  
   ResidueType* ResidueType::rRW = 0;
   ResidueType* ResidueType::rRS = 0;
   ResidueType* ResidueType::rRM = 0;
@@ -66,7 +81,7 @@ namespace mccore
   ResidueType* ResidueType::rRD = 0;
   ResidueType* ResidueType::rRH = 0;
   ResidueType* ResidueType::rRV = 0;
-
+  
   ResidueType* ResidueType::rDW = 0;
   ResidueType* ResidueType::rDS = 0;
   ResidueType* ResidueType::rDM = 0;
@@ -75,7 +90,7 @@ namespace mccore
   ResidueType* ResidueType::rDD = 0;
   ResidueType* ResidueType::rDH = 0;
   ResidueType* ResidueType::rDV = 0;
-
+  
   ResidueType* ResidueType::rA = 0;
   ResidueType* ResidueType::rC = 0;
   ResidueType* ResidueType::rG = 0;
@@ -89,7 +104,7 @@ namespace mccore
   ResidueType* ResidueType::rDC = 0;
   ResidueType* ResidueType::rDG = 0;
   ResidueType* ResidueType::rDT = 0;
-
+  
   ResidueType* ResidueType::rALA = 0;
   ResidueType* ResidueType::rARG = 0;
   ResidueType* ResidueType::rASN = 0;
@@ -113,24 +128,7 @@ namespace mccore
   ResidueType* ResidueType::rASX = 0;
   ResidueType* ResidueType::rGLX = 0;
 
-  
-  // LIFECYCLE -----------------------------------------------------------------
 
-
-  ResidueType::ResidueType () 
-  {
-    
-  }
-
-
-  ResidueType::ResidueType (const string& ks, const string& ls)
-    : key (ks),
-      definition (ls)
-  {
-
-  }
-
-  
   ResidueType::ResidueType (const ResidueType &t) 
   {
     FatalIntLibException ex ("", __FILE__, __LINE__);
@@ -138,35 +136,25 @@ namespace mccore
     throw ex;
   }
 
-  
-  ResidueType::~ResidueType () 
-  {
- 
-  }
- 
-
-  // METHODS -------------------------------------------------------------------
-
 
   const ResidueType* 
   ResidueType::parseType (const char* str) 
   {
-    string ks (str);
-    return ResidueType::rtstore.get (ks);
+    return ResidueType::rtstore->get (string (str));
   }
 
 
   const ResidueType* 
   ResidueType::parseType (const string& str) 
   {
-    return ResidueType::rtstore.get (str);
+    return ResidueType::rtstore->get (str);
   }
   
 
   const ResidueType* 
   ResidueType::invalidate () const
   {
-    return ResidueType::rtstore.getInvalid (this);
+    return ResidueType::rtstore->getInvalid (this);
   }
   
 

@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.28 $
-// $Id: ResidueType.h,v 1.28 2004-10-15 20:35:07 thibaup Exp $
+// $Revision: 1.29 $
+// $Id: ResidueType.h,v 1.29 2004-12-02 20:15:28 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -30,15 +30,14 @@
 #include <iostream>
 #include <string>
 
-
 using namespace std;
+
 
 
 namespace mccore
 { 
-
-  class ResidueTypeStore;
   class Exception;
+  class ResidueTypeStore;
   class iBinstream;
   class oBinstream;
   
@@ -54,14 +53,14 @@ namespace mccore
    *   - The nature of a type (nucleic acid (pur/pyr) or amino acid)<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueType.h,v 1.28 2004-10-15 20:35:07 thibaup Exp $
+   * @version $Id: ResidueType.h,v 1.29 2004-12-02 20:15:28 larosem Exp $
    */
   class ResidueType
   {    
     /**
      * Container for string to type associations.
      */
-    static ResidueTypeStore rtstore;
+    static ResidueTypeStore *rtstore;
 
     /**
      * The type key string.
@@ -80,17 +79,19 @@ namespace mccore
     /**
      * Initializes the object.
      */
-    ResidueType ();
+    ResidueType () { }
 
     /**
      * Initializes the object.
      * @param ks the string representation of the type key.
      * @param ds the long string representation of the type definition.
      */
-    ResidueType (const string& ks, const string& ls);
+    ResidueType (const string& ks, const string& ls)
+      : key (ks), definition (ls) { }
 
     /**
-     * (Disallow copy constructor) Initializes the object with another residue type.
+     * (Disallow copy constructor) Initializes the object with another
+     * residue type.
      * @param other another type.
      */
     ResidueType (const ResidueType &t);
@@ -98,17 +99,15 @@ namespace mccore
     /**
      * Destroys the object.
      */
-    virtual ~ResidueType ();
+    virtual ~ResidueType () { }
     
     /**
-     * AtomTypeStore is a friend since the destructor is private.
+     * ResidueTypeStore is a friend since the destructor is private.
      */
     friend class ResidueTypeStore;
 
   public:
     
-    // FUNCTION OBJECTS --------------------------------------------------------
-
     /**
      * @short less comparator on derefenced type pointers
      */
