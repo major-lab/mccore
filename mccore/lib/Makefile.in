@@ -98,6 +98,7 @@ SOURCES = Binstream.cc \
 	  Pdbstream.cc \
 	  HBond.cc \
 	  Model.cc \
+	  Molecule.cc \
 \
 	  Rmsd.cc \
 	  Relation.cc \
