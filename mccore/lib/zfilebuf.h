@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Mar 10 15:24:55 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:35:20 2001
-// Update Count     : 5
+// Last Modified On : Thu Aug 23 15:10:49 2001
+// Update Count     : 6
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -80,22 +80,14 @@ public:
   /**
    * Initializes the object.
    */
-  zfilebuf () : filebuf (), zf (0) { }
+  zfilebuf () : zf (0) { }
 
   /**
    * Initializes the objet with a file descriptor.
    * @param fd the file descriptor.
    */
-  zfilebuf (int fd) : filebuf (fd), zf (0) { }
+  zfilebuf (int fd);
 
-  /**
-   * Initializes the objet with a file descriptor using a predefined
-   * buffer. 
-   * @param fd the file descriptor.
-   * @param p the buffer used.
-   * @param len the length of the buffer.
-   */
-  zfilebuf (int fd, char *p, int len) : filebuf (fd, p, len), zf (0) { }
   virtual ~zfilebuf ();
 
   // OPERATORS ------------------------------------------------------------
@@ -233,7 +225,7 @@ public:
   /**
    * Initializes the stream.
    */
-  zfstreambase ();
+  zfstreambase () { init (rdbuf ()); }
 
   /**
    * Initializes the stream with filename.
@@ -243,13 +235,18 @@ public:
    * @param prot the protection mode (default 0644).
    */
   zfstreambase (const char *name, int mode, int level = Z_BEST_SPEED,
-		int prot = 0644);
+		int prot = 0644)
+  {
+    init (rdbuf ());
+    if (!rdbuf ()->open (name, mode, level, prot))
+      set (ios::badbit);
+  }
 
   /**
    * Initializes the stream with the file descriptor.
    * @param fd the file descriptor.
    */
-  zfstreambase (int fd);
+  zfstreambase (int fd) { init (rdbuf ()); attach (fd); }
 
   // OPERATORS ------------------------------------------------------------
 
@@ -265,24 +262,38 @@ public:
    * @param prot the protection mode (default 0644).
    */
   void open (const char *name, int mode, int level = Z_BEST_SPEED,
-	     int prot = 0644);
+	     int prot = 0644)
+  {
+    clear ();
+    if (!rdbuf ()->open (name, mode, level, prot))
+      set (ios::badbit);
+  }
 
   /**
    * Attaches the stream with a file descriptor.
    * @param fd the file descriptor.
    */
-  void attach (int fd);
+  void attach (int fd)
+  {
+    if (!rdbuf ()->attach (fd))
+      set (ios::failbit);
+  }
 
   /**
    * Closes the stream.
    */
-  void close ();
+  void close () { if (!rdbuf ()->close ()) set (ios::failbit); }
+
+  /**
+   * Tests if the stream is open.
+   */
+  int is_open () const { return rdbuf ()->is_open (); }
 
   /**
    * Gets the buffer.
    * @return the compressed file buffer object.
    */
-  zfilebuf* rdbuf () { return &buf; }
+  zfilebuf* rdbuf () const { return &buf; }
 
   // I/O ------------------------------------------------------------------
 };

@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : ven 23 jui 1999 13:54:45 EDT
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:35:16 2001
-// Update Count     : 5
+// Last Modified On : Thu Aug 23 15:10:42 2001
+// Update Count     : 6
 // Status           : Ok.
 //
 //  This file is part of mccore.
@@ -43,12 +43,8 @@
  *
  * @author Martin Larose <larosem@iro.umontreal.ca>.
  */
-class izfPdbstream : public iPdbstream
+class izfPdbstream : public zfstreambase, public iPdbstream
 {
-  /**
-   * The compressed stream buffer.
-   */
-  mutable zfilebuf buf;
 
 public:
 
@@ -57,16 +53,13 @@ public:
   /**
    * Initializes the objet.
    */
-  izfPdbstream () : iPdbstream () { init (rdbuf ()); }
+  izfPdbstream () : zfstreambase (), iPdbstream () { }
 
   /**
    * Initializes the objet with a file descriptor.
    * @param fd the file descriptor.
    */
-  izfPdbstream (int fd) : iPdbstream () { 
-    init (rdbuf ());
-    rdbuf ()->attach (fd);
-  }
+  izfPdbstream (int fd) : zfstreambase (fd), iPdbstream () { }
 
   /**
    * Initializes the objet with a file name and optional mode and
@@ -77,11 +70,7 @@ public:
    * @param prot the protection flag (default = 0664).
    */
   izfPdbstream (const char *name, int mode = ios::in, int prot = 0664)
-    : iPdbstream () { 
-    init (rdbuf ());
-    if (!rdbuf()->open (name, mode, Z_BEST_SPEED, prot))
-      setstate(ios::badbit);
-  }
+    : zfstreambase (name, mode, Z_BEST_SPEED, prot), iPdbstream () { }
 
   // OPERATORS -----------------------------------------------------
 
@@ -99,36 +88,14 @@ public:
    */
   void open (const char *name, int mode = ios::in, int prot = 0664)
   {
-    clear ();
-    if (!rdbuf ()->open (name, mode, Z_BEST_SPEED, prot))
-      setstate(ios::badbit);
+    zfstreambase::open (name, mode, Z_BEST_SPEED, prot);
     iPdbstream::open ();
   }
 
   /**
    * Closes the stream.
    */
-  virtual void close () { 
-    iPdbstream::close (); 
-    if (!rdbuf ()->close ())
-      setstate(ios::failbit);
-  }
-
-  /**
-   * Gets the buffer.
-   * @return the compressed file buffer object.
-   */
-  zfilebuf* rdbuf () { return &buf; }
-
-  /**
-   * Attaches the stream with a file descriptor.
-   * @param fd the file descriptor.
-   */
-  void attach (int fd) {
-    if (!rdbuf ()->attach (fd))
-      setstate(ios::failbit);
-  }
-
+  virtual void close () { iPdbstream::close (); zfstreambase::close (); }
 
   // I/O -----------------------------------------------------------
 };
@@ -146,12 +113,8 @@ public:
  *
  * @author Martin Larose <larosem@iro.umontreal.ca>.
  */
-class ozfPdbstream : public oPdbstream
+class ozfPdbstream : public zfstreambase, public oPdbstream
 {
-  /**
-   * The compressed stream buffer.
-   */
-  mutable zfilebuf buf;
 
 public:
 
@@ -160,16 +123,13 @@ public:
   /**
    * Initializes the pdb file stream.
    */
-  ozfPdbstream () : oPdbstream () { init (rdbuf ()); }
+  ozfPdbstream () : zfstreambase (), oPdbstream () { }
 
   /**
    * Initializes the pdb file stream with a file descriptor.
    * @param fd the file descriptor.
    */
-  ozfPdbstream (int fd) : oPdbstream () { 
-    init (rdbuf ());
-    rdbuf ()->attach (fd);
-  }
+  ozfPdbstream (int fd) : zfstreambase (fd), oPdbstream () { }
 
   /**
    * Initializes the pdb file stream with a file name and optional mode,
@@ -181,11 +141,7 @@ public:
    */
   ozfPdbstream (const char *name, int mode = ios::out,
 		int level = Z_BEST_SPEED, int prot = 0664)
-    : oPdbstream () { 
-    init (rdbuf ());
-    if (!rdbuf()->open (name, mode, level, prot))
-      setstate(ios::badbit);
-  }
+    : zfstreambase (name, mode, level, prot), oPdbstream () { }
 
   // OPERATORS -----------------------------------------------------
 
@@ -204,36 +160,14 @@ public:
   void open (const char *name, int mode = ios::out,
 	     int level = Z_BEST_SPEED, int prot = 0664)
   {
-    clear ();
-    if (!rdbuf ()->open (name, mode, level, prot))
-      setstate(ios::badbit);
+    zfstreambase::open (name, mode, level, prot);
     oPdbstream::open ();
   }
 
   /**
    * Closes the compressed pdb file stream.
    */
-  virtual void close () { 
-    oPdbstream::close (); 
-    if (!rdbuf ()->close ())
-      setstate(ios::failbit);
-  }
-
-  /**
-   * Gets the buffer.
-   * @return the compressed file buffer object.
-   */
-  zfilebuf* rdbuf () { return &buf; }
-
-  /**
-   * Attaches the stream with a file descriptor.
-   * @param fd the file descriptor.
-   */
-  void attach (int fd) {
-    if (!rdbuf ()->attach (fd))
-      setstate(ios::failbit);
-  }
-
+  virtual void close () { oPdbstream::close (); zfstreambase::close (); }
 
   // I/O -----------------------------------------------------------
 };

@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Thu Sep 28 16:59:32 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:34:25 2001
-// Update Count     : 17
+// Last Modified On : Thu Aug 23 15:09:54 2001
+// Update Count     : 18
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -372,14 +372,14 @@ public:
      * @return the atom pointer over the atom global container or over the
      * atom local referential container.
      */
-    pointer operator-> () const { return &(mRes->ref (mPos->second)); }
+    pointer operator-> () const { return &(mRes->res (mPos->second)); }
     
     /**
      * Dereferences the iterator.  Places the atom if needed.
      * @return the atom reference over the atom global container or over the
      * atom local referential container.
      */
-    reference operator* () const { return mRes->ref (mPos->second); }
+    reference operator* () const { return mRes->res (mPos->second); }
     
     /**
      * Pre-advances the iterator to the next atom filtered by the unary
@@ -663,11 +663,26 @@ private:
   const CAtom* ref (t_Atom *t) const;
 
   /**
+   * Gets the atom reference in global referential.
+   * @param pos the index of the atom to get.
+   * @return the atom reference at position pos.
+   */
+  const CAtom& ref (size_type pos) const { return mAtomRef[pos]; }
+
+  /**
+   * Gets the atom of type t in global referential if the tranfo is the
+   * identity, the placed atom otherwise.
+   * @param t the atom type.
+   * @return the atom or 0 if it is not found.
+   */
+  const CAtom* res (t_Atom *t) const;
+
+  /**
    * Gets the atom reference in the sorted position pos.
    * @param pos the index of the atom to get.
    * @return the atom reference at position pos.
    */
-  const CAtom& ref (size_type pos) const
+  const CAtom& res (size_type pos) const
   { return isIdentity ? mAtomRef[pos] : place (pos); }
 
   /**

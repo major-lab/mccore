@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@orage.IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:18:52 EDT
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:33:43 2001
-// Update Count     : 9
+// Last Modified On : Thu Aug 23 15:09:26 2001
+// Update Count     : 10
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -26,6 +26,10 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include <string.h>
 #include <netinet/in.h>

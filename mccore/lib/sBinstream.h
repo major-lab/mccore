@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:41 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:35:08 2001
-// Update Count     : 2
+// Last Modified On : Thu Aug 23 15:10:31 2001
+// Update Count     : 3
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -42,16 +42,15 @@
  *
  * @author Patrick Gendron <gendrop@iro.umontreal.ca> 
 */
-class isBinstream : public iBinstream
+class isBinstream : public socketstreambase, public iBinstream
 {
-  mutable sockbuf buf;
 
 public:
 
   /**
    * Initializes the stream.
    */
-  isBinstream () : iBinstream () { init (rdbuf ()); }
+  isBinstream () : socketstreambase (), iBinstream () { }
   
   /**
    * Initializes the stream with a host name and port.
@@ -59,19 +58,13 @@ public:
    * @param port the port on which to call the host
    */
   isBinstream (const char* host, int port)
-    : iBinstream () { 
-    init (rdbuf ());
-    rdbuf()->open (host, port);
-  }
+    : socketstreambase (host, port), iBinstream () { }
 
   /**
    * Creates a socket stream from an existing socket id
    * @param s a socket created by accept(2) or socket(2)
    */
-  isBinstream (int s) : iBinstream (), buf (s) { 
-    init (rdbuf ());
-//      rdbuf ()->attach (s);
-  }
+  isBinstream (int s) : socketstreambase (s), iBinstream () { }
 
   /**
    * Destructor.
@@ -83,27 +76,21 @@ public:
    * @param host the server's host name
    * @param port the port on which to call the host
    */
-  void open (const char* host, int port) {
-    clear ();
-    rdbuf ()->open (host, port);
+  void open (const char* host, int port)
+  {
+    socketstreambase::open (host, port);
     iBinstream::open ();
   }
 
   /**
    * Closes the stream.
    */
-  void  close () {
+  void  close ()
+  {
     iBinstream::close ();
-    rdbuf ()->close ();
+    socketstreambase::close ();
   }
-
-  /**
-   * Gets the buffer.
-   * @return the socket buffer object.
-   */
-  sockbuf* rdbuf () { return &buf; }
 };
-
 
 
 
@@ -115,16 +102,15 @@ public:
  *
  * @author Patrick Gendron <gendrop@iro.umontreal.ca>
  */
-class osBinstream : public oBinstream
+class osBinstream : public socketstreambase, public oBinstream
 {
-  mutable sockbuf buf;
 
 public:
 
   /**
    * Initializes the stream.
    */
-  osBinstream () : oBinstream () { init (rdbuf ()); }
+  osBinstream () : socketstreambase (), oBinstream () { }
   
   /**
    * Initializes the stream with a host name and port.
@@ -132,19 +118,13 @@ public:
    * @param port the port on which to call the host
    */
   osBinstream (const char* host, int port)
-    :  oBinstream () { 
-    init (rdbuf ());
-    rdbuf()->open (host, port);
-  }
+    :  socketstreambase (host, port), oBinstream () { }
 
   /**
    * Creates a socket stream from an existing socket id
    * @param s a socket created by accept(2) or socket(2)
    */
-  osBinstream (int s) : oBinstream (), buf (s) { 
-    init (rdbuf ());
-//      rdbuf ()->attach (s);
-  }
+  osBinstream (int s) : socketstreambase (s), oBinstream () { }
 
   /**
    * Destructor.
@@ -156,25 +136,20 @@ public:
    * @param host the server's host name
    * @param port the port on which to call the host
    */
-  void open (const char* host, int port) {
-    clear ();
-    rdbuf ()->open (host, port);
+  void open (const char* host, int port)
+  {
+    socketstreambase::open (host, port);
     oBinstream::open ();
   }
 
   /**
    * Closes the stream.
    */
-  void  close () {
+  void  close ()
+  {
     oBinstream::close ();
-    rdbuf ()->close ();
+    socketstreambase::close ();
   }
-
-  /**
-   * Gets the buffer.
-   * @return the socket buffer object.
-   */
-  sockbuf* rdbuf () { return &buf; }
 };
 
 
@@ -187,16 +162,15 @@ public:
  *
  * @author Patrick Gendron <gendrop@iro.umontreal.ca> 
 */
-class sBinstream : public Binstream
+class sBinstream : public socketstreambase, public Binstream
 {
-  mutable sockbuf buf;  
 
 public:
 
   /**
    * Initializes the stream.
    */
-  sBinstream () : Binstream () { init (rdbuf ()); }
+  sBinstream () : socketstreambase (), Binstream () { }
   
   /**
    * Initializes the stream with a host name and port.
@@ -204,18 +178,13 @@ public:
    * @param port the port on which to call the host
    */
   sBinstream (const char* host, int port)
-    : Binstream () { 
-    init (rdbuf ());
-    rdbuf()->open (host, port);
-  }
+    : socketstreambase (host, port), Binstream () { }
 
   /**
    * Creates a socket stream from an existing socket id
    * @param s a socket created by accept(2) or socket(2)
    */
-  sBinstream (int s) : Binstream (), buf (s) { 
-    init (rdbuf ());
-  }
+  sBinstream (int s) : socketstreambase (s), Binstream () { }
 
   /**
    * Destructor.
@@ -227,25 +196,20 @@ public:
    * @param host the server's host name
    * @param port the port on which to call the host
    */
-  void open (const char* host, int port) {
-    clear ();
-    rdbuf ()->open (host, port);
+  void open (const char* host, int port)
+  {
+    socketstreambase::open (host, port);
     Binstream::open ();
   }
 
   /**
    * Closes the stream.
    */
-  void  close () {
+  void  close ()
+  {
     Binstream::close ();
-    rdbuf ()->close ();
+    socketstreambase::close ();
   }
-
-  /**
-   * Gets the buffer.
-   * @return the socket buffer object.
-   */
-  sockbuf* rdbuf () { return &buf; }
 };
 
 #endif

@@ -1,14 +1,15 @@
 //                              -*- Mode: C++ -*- 
-// Algo.cc
+// config.h.in
 // Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
-// Author           : Sebastien Lemieux <lemieuxs@iro.umontreal.ca>
-// Created On       : Wed Feb 14 15:45:51 2001
+// Author           : Martin Larose <larosem@iro.umontreal.ca>
+// Created On       : Thu Aug 23 11:34:50 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:09:13 2001
-// Update Count     : 8
+// Last Modified On : Thu Aug 23 15:09:05 2001
+// Update Count     : 2
 // Status           : Unknown.
-//
+// 
+
 //  This file is part of mccore.
 //  
 //  mccore is free software; you can redistribute it and/or
@@ -26,16 +27,16 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
+#ifndef _config_h_
+#define _config_h_
+
+
+#undef PACKAGE
+
+#undef VERSION
+
+#undef HAVE_STRSEP
+
+#undef __USE_MALLOC
+
 #endif
-
-#include <iostream.h>
-#include "Algo.h"
-
-void Algo_Inst () {
-  vector< CResidue > vec;
-  vector< pair< vector< CResidue >::iterator, vector< CResidue >::iterator > >
-    res = Algo::ExtractContact_AABB (vec.begin (), vec.end (), 5.0);
-  cout << res.size () << endl;
-}

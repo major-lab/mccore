@@ -4,8 +4,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Aug 16 16:21:12 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 16 19:15:33 2001
-// Update Count     : 2
+// Last Modified On : Thu Aug 23 15:10:21 2001
+// Update Count     : 3
 // Status           : Unknown.
 // 
 
@@ -24,6 +24,7 @@ class SocketCommand
 {
 public:
 
+  static const int NONE         = 0;
   static const int SEND_CHAR    = 1;
   static const int SEND_INT     = 2;
   static const int SEND_FLOAT   = 3;

@@ -5,7 +5,7 @@
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:11:41 EDT
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:33:45 2001
+// Last Modified On : Thu Aug 23 15:09:28 2001
 // Update count     : 0
 // Status           : Ok.
 //
@@ -177,7 +177,7 @@ public:
   /**
    * Closes the stream.
    */
-  void close () { }
+  virtual void close () { }
   
   // I/O ------------------------------------------------------------------
 };
@@ -306,7 +306,7 @@ public:
   /**
    * Closes the stream.
    */
-  void close () { }
+  virtual void close () { }
   
   // I/O ------------------------------------------------------------------
 };
@@ -356,7 +356,7 @@ public:
   /**
    * Closes the stream.
    */
-  void close () { }
+  virtual void close () { }
   
   // I/O ------------------------------------------------------------------
 };

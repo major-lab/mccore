@@ -5,8 +5,8 @@
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
 # Last Modified By : Martin Larose
-# Last Modified On : Tue Aug 14 12:33:10 2001
-# Update Count     : 5
+# Last Modified On : Thu Aug 23 15:09:10 2001
+# Update Count     : 6
 # Status           : Ok.
 # 
 #  This file is part of mccore.
@@ -30,6 +30,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 
 AC_INIT(lib/McCore.h)
+AC_CONFIG_HEADER(config.h)
 
 PACKAGE=mccore
 VERSION=1.1

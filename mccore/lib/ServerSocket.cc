@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:56 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:34:59 2001
-// Update Count     : 2
+// Last Modified On : Thu Aug 23 15:10:19 2001
+// Update Count     : 3
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -24,6 +24,10 @@
 //  You should have received a copy of the GNU Lesser General Public
 //  License along with mccore; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include "ServerSocket.h"
 

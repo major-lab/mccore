@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Oct 26 10:24:02 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:34:17 2001
-// Update Count     : 7
+// Last Modified On : Thu Aug 23 15:09:50 2001
+// Update Count     : 8
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -25,6 +25,10 @@
 //  License along with mccore; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include <iostream.h>
 #include <stdlib.h>

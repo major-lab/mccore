@@ -5,11 +5,15 @@
 // Author           : Patrick Gendron
 // Created On       : Thu May 10 14:49:18 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:34:31 2001
-// Update Count     : 1
+// Last Modified On : Thu Aug 23 15:09:59 2001
+// Update Count     : 2
 // Status           : Unknown.
 // 
 
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include "DirectedGraph.h"
 

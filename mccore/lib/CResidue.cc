@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:34:22 2001
-// Update Count     : 20
+// Last Modified On : Thu Aug 23 15:09:51 2001
+// Update Count     : 21
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -25,6 +25,10 @@
 //  License along with mccore; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include <iostream.h>
 #include <set.h>
@@ -552,6 +556,21 @@ CResidue::ref (t_Atom *t) const
   ResMap::const_iterator i = mAtomIndex.find (t);
 
   return i == mAtomIndex.end () ? 0 : &(mAtomRef[i->second]);
+}
+
+
+
+const CAtom*
+CResidue::res (t_Atom *t) const
+{
+  ResMap::const_iterator i = mAtomIndex.find (t);
+
+  if (i == mAtomIndex.end ())
+    return 0;
+  else if (isIdentity)
+    return &(mAtomRef[i->second]);
+  else
+    return &place (i->second);
 }
 
 

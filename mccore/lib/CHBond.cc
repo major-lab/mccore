@@ -5,10 +5,14 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:33:57 2001
-// Update Count     : 37
+// Last Modified On : Thu Aug 23 15:09:36 2001
+// Update Count     : 38
 // Status           : 
 
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include <iostream.h>
 #include <math.h>

@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:34 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:35:10 2001
-// Update Count     : 2
+// Last Modified On : Thu Aug 23 15:10:34 2001
+// Update Count     : 3
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -26,7 +26,9 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#include "sockbuf.h"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include <iostream.h>
 #include <string.h>
@@ -36,9 +38,14 @@
 
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <sys/stat.h>
 #include <netinet/in.h>
 #include <netdb.h>
 #include <fcntl.h>
+
+#include "sockbuf.h"
+
+
 
 sockbuf::sockbuf ()
   : streambuf ()
@@ -61,32 +68,35 @@ sockbuf::open (const char* host, int port)
 
   // Getting host info ---
   hp = gethostbyname (host);
-  if (hp == NULL){
-    cerr << "unknown host: host" << endl;
-    return NULL;
-  }
-  
+  if (hp == NULL)
+    return 0;
+
   // Setting server parameters ---
   bzero ((char*)&sin, sizeof (sin));
   bcopy (hp->h_addr, (char*)&sin.sin_addr, hp->h_length);
   sin.sin_family = hp->h_addrtype;
   sin.sin_port = htons (port);
   
-  if ((n = ::connect (socket_id, 
-		      (sockaddr*)&sin, sizeof (sin))) < 0) {
-    cerr << "connect failed" << endl;
-    return NULL;
-  }
-
+  if ((n = ::connect (socket_id, (sockaddr*)&sin, sizeof (sin))) < 0)
+    return 0;
   return this;
 }
 
 
-void
+sockbuf*
 sockbuf::close ()
 {
-  sys_close ();
+  return sys_close () ? this : 0;
 }
+
+
+
+bool
+sockbuf::is_open () const
+{
+  return isfdtype (socket_id, S_IFSOCK) > 0;
+}
+
 
 
 streamsize
@@ -143,9 +153,8 @@ sockbuf::sys_close ()
   overflow (EOF);
   ::shutdown (socket_id, SHUT_RDWR);
   
-  if (::close (socket_id) == -1) {
-    cout << "Error on close" << endl;
-  }
+  if (::close (socket_id) == -1)
+    return false;
   return true;
 }
 
@@ -182,9 +191,9 @@ streamsize sockbuf::xsgetn (char* s, streamsize n)
 
   streamsize r = sys_read (s, n);
   
-  if (r!=n) {
-    cerr << "Warning: incomplete read (" << r << "/" << n << " bytes)" << endl;
-  }
+//    if (r!=n)
+//      cerr << "Warning: incomplete read (" << r << "/" << n
+//  	 << " bytes)" << endl;
 
   return r;
 }
@@ -195,10 +204,8 @@ streamsize sockbuf::xsputn (const char* s, streamsize n)
 
   streamsize w = sys_write (s, n);
 
-  if (w!=n) {
-    cerr << "Warning: incomplete write (" << w << "/" << n << " bytes)" << endl;
-  }
-
+//    if (w!=n)
+//      cerr << "Warning: incomplete write (" << w << "/" << n
+//  	 << " bytes)" << endl;
   return w;
 }
-

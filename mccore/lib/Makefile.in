@@ -5,8 +5,8 @@
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:57:11 2000
 ## Last Modified By : Martin Larose
-## Last Modified On : Thu Aug 16 19:15:32 2001
-## Update Count     : 13
+## Last Modified On : Thu Aug 23 15:10:01 2001
+## Update Count     : 14
 ## Status           : Ok.
 ###############################################################################
 
@@ -42,15 +42,15 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 .SUFFIXES: .cc .o .lo .d
 
 .cc.d:
-	@ $(SHELL) -ec '$(CXX) $(DEPFLAGS) $(DEFS) -I$(srcdir) $< \
+	@ $(SHELL) -ec '$(CXX) $(DEPFLAGS) $(DEFS) -I.. -I$(srcdir) $< \
 	    | sed '\''s/\($*\)\.o[ :]*/\1.o \1.lo $@ : /g'\'' > $@; \
 	      [ -s $@ ] || rm -f $@'
 
 .cc.o:
-	$(CXX) $(CXXFLAGS) $(DEFS) -c $<
+	$(CXX) $(CXXFLAGS) $(DEFS) -I.. -I$(srcdir) -c $<
 
 .cc.lo:
-	$(CXX) $(CXXSHFLAGS) $(DEFS) -c $< -o $@
+	$(CXX) $(CXXSHFLAGS) $(DEFS) -I.. -I$(srcdir) -c $< -o $@
 
 
 SOURCES = Algo.cc \
@@ -179,6 +179,9 @@ dist:
 
 Makefile: $(srcdir)/Makefile.in ../config.status
 	@ cd .. && CONFIG_FILES=lib/$@ CONFIG_HEADERS= ./config.status
+
+config.h: $(srcdir)/../config.h.in
+	@ cd .. && CONFIG_FILES= CONFIG_HEADERS=$@ ./config.status
 
 # Tell versions [3.59,3.63) of GNU make not to export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

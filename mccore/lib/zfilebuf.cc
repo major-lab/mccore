@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Mar 10 15:36:48 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:35:18 2001
-// Update Count     : 5
+// Last Modified On : Thu Aug 23 15:10:45 2001
+// Update Count     : 6
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -25,6 +25,10 @@
 //  License along with mccore; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include <stdio.h>
 #include <unistd.h>
@@ -76,6 +80,14 @@ zfilebuf::_do_write (const char *data, size_t to_do)
   return count != to_do ? EOF : 0;
 }
 #endif
+
+
+
+zfilebuf::zfilebuf (int fd)
+{
+  attach (fd);
+  zf = gzdopen (dup (fd), "rwb1");
+}
 
 
 

@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct  6 08:21:55 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:34:05 2001
-// Update Count     : 10
+// Last Modified On : Thu Aug 23 15:09:41 2001
+// Update Count     : 11
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -25,6 +25,10 @@
 //  License along with mccore; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include <string.h>
 
@@ -277,4 +281,16 @@ operator<< (oBinstream &obs, const CModel &obj)
   for (cit = obj.begin (); cit != obj.end (); ++cit)
     obs << *cit;
   return obs;
+}
+
+
+
+ostream&
+operator<< (ostream &os, const CModel &model)
+{
+  CModel::const_iterator cit;
+
+  for (cit = model.begin (); cit != model.end (); ++cit)
+    os << *cit;
+  return os;
 }

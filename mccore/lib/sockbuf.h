@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:26 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:35:12 2001
-// Update Count     : 2
+// Last Modified On : Thu Aug 23 15:10:36 2001
+// Update Count     : 3
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -78,8 +78,13 @@ public:
   /**
    * Closes the stream.
    */
-  virtual void close ();
+  virtual sockbuf* close ();
   
+  /**
+   * Tests if the stream is open.
+   */
+  bool is_open () const;
+
   /**
    * Socket read method.
    * @param buf the bytes to read
@@ -124,6 +129,88 @@ protected:
    */
   virtual streamsize xsputn (const char* s, streamsize n);
 
+};
+
+
+
+/**
+ * @short Wrapper for the socket trivial buffer.
+ *
+ * @author Martin Larose <larosem@iro.umontreal.ca>
+ */
+class socketstreambase : virtual public ios
+{
+  /**
+   * The socket buffer.
+   */
+  mutable sockbuf buf;
+
+public:
+
+  // LIFECYCLE ------------------------------------------------------------
+
+  /**
+   * Initializes the stream.
+   */
+  socketstreambase () { init (rdbuf ()); }
+
+  /**
+   * Initializes the stream with a host name and port.
+   * @param host the server's host name
+   * @param port the port on which to call the host
+   */
+  socketstreambase (const char *host, int port)
+  {
+    init (rdbuf ());
+    if (!rdbuf ()->open (host, port))
+      set (ios::badbit);
+  }
+
+  /**
+   * Creates a socket stream from an existing socket id
+   * @param s a socket created by accept(2) or socket(2)
+   */
+  socketstreambase (int s) : buf (s) { init (rdbuf ()); }
+
+  // OPERATORS ------------------------------------------------------------
+
+  // ACCESS ---------------------------------------------------------------
+
+  // METHODS --------------------------------------------------------------
+
+  /**
+   * Open the stream with a connection to the given host.
+   * @param host the server's host name
+   * @param port the port on which to call the host
+   */
+  void open (const char* host, int port)
+  {
+    clear ();
+    if (!rdbuf ()->open (host, port))
+      set (ios::badbit);
+  }
+
+  /**
+   * Closes the stream.
+   */
+  void  close ()
+  {
+    if (!rdbuf ()->close ())
+      set (ios::failbit);
+  }
+
+  /**
+   * Tests if the stream is open.
+   */
+  int is_open () const { return rdbuf ()->is_open (); }
+
+  /**
+   * Gets the buffer.
+   * @return the socket buffer object.
+   */
+  sockbuf* rdbuf () const { return &buf; }
+
+  // I/O ------------------------------------------------------------------
 };
 
 #endif
