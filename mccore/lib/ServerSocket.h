@@ -4,9 +4,9 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:51 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:35:01 2001
-// Update Count     : 2
+// Last Modified By : Philippe Thibault
+// Last Modified On : Fri Aug 24 10:01:21 2001
+// Update Count     : 3
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -46,6 +46,7 @@
 class ServerSocket
 {
   int socket_id;
+  int port;
 
   ServerSocket () {}
 
@@ -55,13 +56,15 @@ public:
    * Creates a server socket on the specified port.
    */
 
-  ServerSocket (int port);
+  ServerSocket (int thePort);
 
   /**
    * Destructor.
    */
   ~ServerSocket ();
 
+  int GetSocketId () { return socket_id; }
+  int GetPort () { return port; }
 
   /**
    * Listens for a connection to be made and accepts it.  This is a

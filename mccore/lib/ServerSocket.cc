@@ -4,9 +4,9 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:56 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:10:19 2001
-// Update Count     : 3
+// Last Modified By : Philippe Thibault
+// Last Modified On : Fri Aug 24 10:01:18 2001
+// Update Count     : 4
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -31,9 +31,11 @@
 
 #include "ServerSocket.h"
 
+#include <errno.h>
 #include <iostream.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 #include <sys/types.h>
@@ -42,15 +44,18 @@
 #include <netdb.h>
 #include <fcntl.h>
 
-ServerSocket::ServerSocket (int port)
+#include "CException.h"
+
+ServerSocket::ServerSocket (int thePort)
+  : port (thePort)
 {
   sockaddr_in sin;
 
   // Creating socket ---
   if ((socket_id = ::socket (AF_INET, SOCK_STREAM, 0)) < 0) {
-    // put exceptions!!!
-    cerr << "could not create socket" << endl;
-    exit (EXIT_FAILURE);
+    CFatalSocketException exc ("socket creation failed", __FILE__, __LINE__);
+    exc << ": " << sys_errlist[errno];
+    throw exc;
   }
 
   // Binding a name to the socket ---
@@ -60,9 +65,17 @@ ServerSocket::ServerSocket (int port)
   sin.sin_port = htons (port);
 
   if (::bind (socket_id, (sockaddr*)&sin, sizeof (sin)) < 0) {
-    cerr << "bind failed" << endl;
-    exit (EXIT_FAILURE);
+    CFatalSocketException exc ("socket binding failed", __FILE__, __LINE__);
+    exc << ": " << sys_errlist[errno];
+    throw exc;
   }
+
+  if (listen (socket_id, MAX_QUEUE_LEN) < 0) {
+    CFatalSocketException exc ("socket listening failed", __FILE__, __LINE__);
+    exc << ": " << sys_errlist[errno];
+    throw exc;
+  }
+
 }
 
 ServerSocket::~ServerSocket ()
@@ -78,17 +91,14 @@ ServerSocket::accept ()
   int cid;
   sBinstream* stream;
 
-  if (listen (socket_id, MAX_QUEUE_LEN) < 0) {
-    cerr <<  "listen failed" << endl;
-    return NULL;
-  }
-
   if ((cid = ::accept (socket_id, (sockaddr*)&client, 
 		       (socklen_t*)&clientlen)) < 0) {
-    cerr << "Accept failed" << endl;
-    return NULL;
+    CFatalSocketException exc ("socket connection accepting failed",
+			       __FILE__, __LINE__);
+    exc << ": " << sys_errlist[errno];
+    throw exc;
   }
-       
+
   stream = new sBinstream (cid);
 
   return stream;
@@ -97,8 +107,20 @@ ServerSocket::accept ()
 void
 ServerSocket::close ()
 {
-  ::shutdown (socket_id, SHUT_RDWR);
+
+  /*
+  if (::shutdown (socket_id, SHUT_RDWR) == -1 && errno != ENOTCONN) {
+    CFatalSocketException exc ("socket shutdown failed",
+			       __FILE__, __LINE__);
+    exc << ": " << sys_errlist[errno];
+    throw exc;
+  }
+  */
+
   if (::close (socket_id) == -1) {
-    cout << "Error on close" << endl;
+    CFatalSocketException exc ("socket closing failed",
+			       __FILE__, __LINE__);
+    exc << ": " << sys_errlist[errno];
+    throw exc;
   }
 }
