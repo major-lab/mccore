@@ -4,9 +4,9 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Fri Dec  5 16:47:26 2003
-// Last Modified By : Patrick Gendron
-// Last Modified On : Fri Jan  9 15:08:31 2004
-// Update Count     : 50
+// Last Modified By : Martin Larose
+// Last Modified On : Mon Mar  8 17:37:08 2004
+// Update Count     : 51
 // Status           : Unknown.
 // 
 
@@ -42,7 +42,7 @@ namespace mccore {
    * actual nodes.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: GraphAlgo.h,v 1.1 2004-01-09 20:09:44 gendrop Exp $
+   * @version $Id: GraphAlgo.h,v 1.2 2004-03-08 22:29:25 larosem Exp $
    */
   class GraphAlgo 
   {
@@ -216,81 +216,77 @@ namespace mccore {
      * @param searchType (0 = minimum cycle basis, 1 = union of minimum cycle basis, 2 = minimum cycles)
      * @return cycles.
      */
-    template< class node_type, 
-	      class edge_type,
-	      class node_comparator >
+    template< class node_type, class edge_type, class node_comparator >
     static vector< Path< int, float > > 
-    cycleBaseHorton (UndirectedAbstractGraph< node_type, edge_type, node_comparator > &graph,
-		     int searchType = 0)
+    cycleBaseHorton (UndirectedAbstractGraph< node_type, edge_type, node_comparator > &graph, int searchType = 0)
     {
       vector< Path< int, float > > bag;
       vector< Path< int, float > >::iterator p;
       int i, j;
-      
-      vector< vector< Path< int, float > > > paths;
       vector< vector< Path< int, float > > >::iterator ii;
       
       for (i=0; i<graph.size (); ++i) {
 	vector< Path< int, float > > tmp;
+	
 	shortestPath (graph, i, tmp);
-	paths.push_back (tmp);
-      }
-        
-      for (i=0; i<graph.size (); ++i) {
-	//       cout << "Step: " << i << endl;
-      
-	for (j=0; j!=graph.size (); ++j) {
-	  list< int > ln = graph.internalGetNeighbors (j);
-	  list< int >::iterator k;
-	  for (k=ln.begin (); k!=ln.end (); ++k) {
-	  
-	    // 	  cout << "Step: " << i << " (" << j << " " << *k << ")" << endl;
-	  
-	    Path< int, float > Pvx = paths[i][j];	  
-	    Path< int, float > Pvy = paths[i][*k];
-
-	    // if P(v,x) ^ P(v,y) = {v}
-	  
-	    Path< int, float > Pvxp = Pvx; 
-	    Pvxp.sort ();
-	    Path< int, float > Pvyp = Pvy; 
-	    Pvyp.sort ();
-	  
-	    Path< int, float > inter;
-	    set_intersection (Pvxp.begin (), Pvxp.end (),
-			      Pvyp.begin (), Pvyp.end (),
-			      inserter (inter, inter.begin ()));
-
-	    // 	  cout << "Inter = " << inter << endl;
-
-	    if (inter.size () == 1 && inter.front () == i) {
-	      Path< int, float > C = Pvx;
-	      C.insert (C.end (), Pvy.rbegin (), Pvy.rend ());
-	      C.pop_back ();
-	      C.setValue (Pvx.getValue () + Pvy.getValue () + 1);
+	for (j=0; j!=graph.size (); ++j)
+	  {
+	    list< int > ln = graph.internalGetNeighbors (j);
+	    list< int >::iterator k;
 	    
-	      for (p=bag.begin (); p!=bag.end (); ++p) {
-		if (*p == C) {  // Redundancy test
-		  break;
-		}
-	      }
-	      if (p==bag.end ()) {
-		bag.push_back (C);
-		// 	      cout << "Inserting " << C << endl;
-	      }
-	    }
-	  }	  
-	}
+	    for (k=ln.begin (); k!=ln.end (); ++k)
+	      {
+		// if P(v,x) ^ P(v,y) = {v}
+		Path< int, float > Pvx = tmp[j];
+		Path< int, float > Pvy = tmp[*k];
+		Path< int, float > Pvxp = Pvx; 
+		Path< int, float > Pvyp = Pvy; 
+		Path< int, float > inter;
+		
+		Pvxp.sort ();
+		Pvyp.sort ();
+		set_intersection (Pvxp.begin (), Pvxp.end (),
+				  Pvyp.begin (), Pvyp.end (),
+				  inserter (inter, inter.begin ()));
+		
+		// 	  cout << "Inter = " << inter << endl;
+		
+		if (inter.size () == 1 && inter.front () == i)
+		  {
+		    Path< int, float > C = Pvx;
+		    
+		    C.insert (C.end (), Pvy.rbegin (), Pvy.rend ());
+		    C.pop_back ();
+		    C.setValue (Pvx.getValue () + Pvy.getValue () + 1);
+		    
+		    for (p=bag.begin (); p!=bag.end (); ++p)
+		      {
+			if (*p == C)
+			  {  // Redundancy test
+			    break;
+			  }
+		      }
+		    if (p==bag.end ())
+		      {
+			bag.push_back (C);
+			// 	      cout << "Inserting " << C << endl;
+		      }
+		  }
+	      }	  
+	  }
       }
     
       sort (bag.begin (), bag.end ());
-
-      cout << "Found " << bag.size () << " potential cycles before the Gaussian elimination" << endl;
-
+      
+      cout << "Found " << bag.size () << " potential cycles before elimination" << endl;
+      
       if (searchType == 2)
-	bag = nonSimpleCycleElimination (graph, bag);
+	// 	bag = nonSimpleCycleElimination (graph, bag);
+	nonSimpleCycleElimination (graph, bag);
       else
 	bag = gaussianElimination (graph, bag, searchType);    
+      
+      cout << "Found " << bag.size () << " cycles." << endl;
       
       return bag;
     }
@@ -305,32 +301,47 @@ namespace mccore {
     template< class node_type, 
 	      class edge_type,
 	      class node_comparator >
-    static vector< Path< int, float > >
-    nonSimpleCycleElimination (UndirectedAbstractGraph< node_type, edge_type, node_comparator > &graph,
-			       vector< Path< int, float > >& bag)
+//     static vector< Path< int, float > >
+    static void
+    nonSimpleCycleElimination (UndirectedAbstractGraph< node_type, edge_type, node_comparator > &graph, vector< Path< int, float > > &bag)
     {
-      vector< Path< int, float > > newbag;
+//       vector< Path< int, float > > newbag;
       vector< Path< int, float > >::iterator p;
-      Path< int, float >::iterator i, j, k, l, m;
-
+      Path< int, float >::iterator i;
+      Path< int, float >::iterator j;
+      Path< int, float >::iterator k;
+      Path< int, float >::iterator l;
+      Path< int, float >::iterator m;
     
-      for (p=bag.begin (); p!=bag.end (); ++p) {
-	for (i=p->begin (); i!=p->end (); ++i) {
-	  for (j=p->begin (); j!=p->end (); ++j) {
-	    k = l = j;
-	    m = i;
-	    if (j!=i && (++k)!=i && (--l)!=i && 
-		!(i==p->begin () && k==p->end ()) &&
-		!(j==p->begin () && (++m)==p->end ()) &&
-		graph.internalAreConnected (*i, *j))
-	      break;
-	  }
-	  if (j!=p->end ()) break;
+      for (p = bag.begin (); bag.end () != p;)
+	{
+	  for (i = p->begin (); i != p->end (); ++i)
+	    {
+	      for (j = p->begin (); j != p->end (); ++j)
+		{
+		  k = l = j;
+		  m = i;
+		  if (j != i
+		      && (++k) != i
+		      && (--l) != i
+		      && ! (i == p->begin () && k == p->end ())
+		      && ! (j == p->begin () && (++m) == p->end ())
+		      && graph.internalAreConnected (*i, *j))
+		    break;
+		}
+	      if (j != p->end ())
+		break;
+	    }
+// 	  if (i == p->end ())
+// 	    newbag.push_back (*p);
+
+	  // too slow, should consider using a list
+	  if (p->end () == i)
+	    ++p;
+	  else
+	    p = bag.erase (p);
 	}
-	if (i==p->end ())
-	  newbag.push_back (*p);
-      }
-      return newbag;
+//       return newbag;
     }
 
   
