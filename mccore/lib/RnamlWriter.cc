@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.3 $
-// $Id: RnamlWriter.cc,v 1.3 2004-01-06 18:52:46 larosem Exp $
+// $Revision: 1.4 $
+// $Id: RnamlWriter.cc,v 1.4 2004-10-15 20:38:55 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -129,7 +129,7 @@ namespace mccore {
 	base->setStrand (chainId.c_str ());
       }
     base->setPosition (id.getResNo ());
-    type = residue.getType ()->toString ();
+    type = (const char*)*residue.getType ();
     base->setBaseType (type);
     if (' ' != id.getInsertionCode ())
       {

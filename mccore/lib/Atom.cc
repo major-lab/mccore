@@ -95,7 +95,7 @@ namespace mccore {
   Vector3D 
   Atom::getColor () const 
   {
-    return AtomType::getColor (getType ());
+    return this->type->getColor ();
   }
   
   // I/O -----------------------------------------------------------------------

@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct  1 14:45:13 2004
-// $Revision: 1.1 $
-// $Id: TypeRepresentationTables.cc,v 1.1 2004-10-04 22:13:13 larosem Exp $
+// $Revision: 1.2 $
+// $Id: TypeRepresentationTables.cc,v 1.2 2004-10-15 20:39:00 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -852,9 +852,12 @@ namespace mccore
     typeTable["VAL"] = ResidueType::rVAL;
     typeTable["PV"] = ResidueType::rVAL;
 
-    representationTable[ResidueType::rA] = "A";
+    representationTable[ResidueType::rRA] = "A";
+    representationTable[ResidueType::rDA] = "A";
     representationTable[ResidueType::rRC] = "C";
+    representationTable[ResidueType::rDC] = "C";
     representationTable[ResidueType::rRG] = "G";
+    representationTable[ResidueType::rDG] = "G";
     representationTable[ResidueType::rRU] = "U";
     representationTable[ResidueType::rDT] = "T";
     representationTable[ResidueType::rALA] = "ALA";
