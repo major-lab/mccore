@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 // 
 //  This file is part of mccore.
 //  
@@ -41,7 +41,7 @@ namespace mccore {
    * Repository of residue types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueTypeStore.h,v 1.5 2003-10-09 17:57:38 gendrop Exp $
+   * @version $Id: ResidueTypeStore.h,v 1.6 2004-06-15 18:39:06 thibaup Exp $
    */
   class ResidueTypeStore
   {
@@ -135,9 +135,135 @@ namespace mccore {
     };
     
     /**
+     *  Public abstract class for ribonucleic acid residues.
+     */
+    class RNA : public virtual ResidueType
+    {
+    public:
+      RNA () { }
+      RNA (const char* t, const char* lt) : ResidueType (t, lt) { }
+
+      virtual bool isRNA () const { return true; }
+      virtual bool describe (const ResidueType* t) const
+      { return dynamic_cast< const RNA* > (t); }
+    };
+
+    /**
+     * Public abstract class for deoxyribonucleic acid residues.
+     */
+    class DNA : public virtual ResidueType
+    {
+    public:      
+      DNA () {}
+      DNA (const char* t, const char* lt) : ResidueType (t, lt) {}
+      
+      virtual bool isDNA () const { return true; }
+      virtual bool describe (const ResidueType* t) const
+      { return dynamic_cast< const DNA* > (t); }
+    };
+
+    /**
+     *  Public abstract class for phosphate residue.
+     */
+    class Phosphate : public virtual ResidueType
+    {
+    public:
+      Phosphate () { }
+      Phosphate (const char* t, const char* lt) : ResidueType (t, lt) { }
+
+      virtual bool isPhosphate () const { return true; }
+      virtual bool describe (const ResidueType* t) const
+      { return dynamic_cast< const Phosphate* > (t); }
+    };    
+
+    /**
+     *  Public abstract class for ribose residue.
+     */
+    class Ribose : public virtual ResidueType
+    {
+    public:
+      Ribose () { }
+      Ribose (const char* t, const char* lt) : ResidueType (t, lt) { }
+
+      virtual bool isRibose () const { return true; }
+      virtual bool describe (const ResidueType* t) const
+      { return dynamic_cast< const Ribose* > (t); }
+    };
+
+    /**
+     *  Public abstract class for DNA phosphate residue.
+     */
+    class DPhosphate : public virtual Phosphate, public virtual DNA
+    {
+    public:
+      DPhosphate () { }
+      DPhosphate (const char* t, const char* lt) : ResidueType (t, lt) { }
+
+      virtual bool isDPhosphate () const { return true; }
+      virtual bool describe (const ResidueType* t) const
+      { return dynamic_cast< const DPhosphate* > (t); }
+    };
+
+    /**
+     *  Public abstract class for RNA phosphate residue.
+     */
+    class RPhosphate : public virtual Phosphate, public virtual RNA
+    {
+    public:
+      RPhosphate () { }
+      RPhosphate (const char* t, const char* lt) : ResidueType (t, lt) { }
+
+      virtual bool isRPhosphate () const { return true; }
+      virtual bool describe (const ResidueType* t) const
+      { return dynamic_cast< const RPhosphate* > (t); }
+    };
+
+    /**
+     *  Public abstract class for DNA ribose residue.
+     */
+    class DRibose : public virtual Ribose, public virtual DNA
+    {
+    public:
+      DRibose () { }
+      DRibose (const char* t, const char* lt) : ResidueType (t, lt) { }
+
+      virtual bool isDRibose () const { return true; }
+      virtual bool describe (const ResidueType* t) const
+      { return dynamic_cast< const DRibose* > (t); }
+    };
+
+    /**
+     *  Public abstract class for RNA ribose residue.
+     */
+    class RRibose : public virtual Ribose, public virtual RNA
+    {
+    public:
+      RRibose () { }
+      RRibose (const char* t, const char* lt) : ResidueType (t, lt) { }
+
+      virtual bool isRRibose () const { return true; }
+      virtual bool describe (const ResidueType* t) const
+      { return dynamic_cast< const RRibose* > (t); }
+    };
+
+    /**
+     *  Public abstract class for N residue (any).
+     */
+    class N : public virtual NucleicAcid
+    {
+    public:
+      N () { }
+      N (const char* t, const char* lt) : ResidueType (t, lt) { }
+
+      virtual bool isN () const { return true; }
+      virtual bool describe (const ResidueType* t) const
+      { return dynamic_cast< const N* > (t); }
+    };
+    
+    /**
      * Public abstract class for B residues (C || G || U || S || Y || K)
      */
-    class B : public virtual NucleicAcid {
+    class B : public virtual N {
     public:      
       B () {}
       B (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -150,7 +276,7 @@ namespace mccore {
     /**
      * Public abstract class for D residues (A || G || U || R || W || K)
      */
-    class D : public virtual NucleicAcid {
+    class D : public virtual N {
     public:      
       D () {}
       D (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -163,7 +289,7 @@ namespace mccore {
     /**
      * Public abstract class for H residues (A || C || U || M || W || Y)
      */
-    class H : public virtual NucleicAcid {
+    class H : public virtual N {
     public:      
       H () {}
       H (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -176,7 +302,7 @@ namespace mccore {
     /**
      * Public abstract class for V residues (A || C || G || M || R || S)
      */
-    class V : public virtual NucleicAcid {
+    class V : public virtual N {
     public:      
       V () {}
       V (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -336,69 +462,83 @@ namespace mccore {
       }
     };
     
-    /**
-     * Public abstract class for RNA residues.
-     */
-    class RNA : public virtual NucleicAcid {
-    public:      
-      RNA () {}
-      RNA (const char* t, const char* lt) : ResidueType (t, lt) {}
+//     /**
+//      * Public abstract class for RNA residues.
+//      */
+//     class RNA : public virtual NucleicAcid {
+//     public:      
+//       RNA () {}
+//       RNA (const char* t, const char* lt) : ResidueType (t, lt) {}
 
-      virtual bool isRNA () const { return true; }
-      virtual bool describe (const ResidueType* t) const {
-	return dynamic_cast< const RNA* > (t);
-      }
-    };
+//       virtual bool isRNA () const { return true; }
+//       virtual bool describe (const ResidueType* t) const {
+// 	return dynamic_cast< const RNA* > (t);
+//       }
+//     };
     
-    /**
-     * Public abstract class for DNA residues.
-     */
-    class DNA : public virtual NucleicAcid {
-    public:      
-      DNA () {}
-      DNA (const char* t, const char* lt) : ResidueType (t, lt) {}
+//     /**
+//      * Public abstract class for DNA residues.
+//      */
+//     class DNA : public virtual NucleicAcid {
+//     public:      
+//       DNA () {}
+//       DNA (const char* t, const char* lt) : ResidueType (t, lt) {}
 
-      virtual bool isDNA () const { return true; }
-      virtual bool describe (const ResidueType* t) const {
-	return dynamic_cast< const DNA* > (t);
-      }
-    };
+//       virtual bool isDNA () const { return true; }
+//       virtual bool describe (const ResidueType* t) const {
+// 	return dynamic_cast< const DNA* > (t);
+//       }
+//     };
 
-    /**
-     * Public Phosphate residue type class.
-     */
-    class Phosphate : public virtual ResidueType {
-    public:      
-      Phosphate () {}
-      Phosphate (const char* t, const char* lt) : ResidueType (t, lt) {}
+//     /**
+//      * Public Phosphate residue type class.
+//      */
+//     class Phosphate : public virtual ResidueType {
+//     public:      
+//       Phosphate () {}
+//       Phosphate (const char* t, const char* lt) : ResidueType (t, lt) {}
 
-      virtual bool isPhosphate () const { return true; }
-      virtual bool describe (const ResidueType* t) const {
-	return dynamic_cast< const Phosphate* > (t);
-      }
-    };
+//       virtual bool isPhosphate () const { return true; }
+//       virtual bool describe (const ResidueType* t) const {
+// 	return dynamic_cast< const Phosphate* > (t);
+//       }
+//     };
 
-    /**
-     * Public Ribose residue type class.
-     */
-    class Ribose : public virtual ResidueType {
-    public:      
-      Ribose () {}
-      Ribose (const char* t, const char* lt) : ResidueType (t, lt) {}
+//     /**
+//      * Public Ribose residue type class.
+//      */
+//     class Ribose : public virtual ResidueType {
+//     public:      
+//       Ribose () {}
+//       Ribose (const char* t, const char* lt) : ResidueType (t, lt) {}
 
-      virtual bool isRibose () const { return true; }
-      virtual bool describe (const ResidueType* t) const {
-	return dynamic_cast< const Ribose* > (t);
-      }
-    };
+//       virtual bool isRibose () const { return true; }
+//       virtual bool describe (const ResidueType* t) const {
+// 	return dynamic_cast< const Ribose* > (t);
+//       }
+//     };
     
     
     // -------------------------------------------------------------------------
 
     /**
+     *  Public abstract class for RN residue (any RNA).
+     */
+    class RN : public virtual N, public virtual RNA
+    {
+    public:
+      RN () { }
+      RN (const char* t, const char* lt) : ResidueType (t, lt) { }
+
+      virtual bool isRN () const { return true; }
+      virtual bool describe (const ResidueType* t) const
+      { return dynamic_cast< const RN* > (t); }
+    };
+    
+    /**
      * Public RB residue type class.
      */
-    class RB : public virtual B, public virtual RNA {
+    class RB : public virtual B, public virtual RN {
     public:
       RB () {}
       RB (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -411,7 +551,7 @@ namespace mccore {
     /**
      * Public RD residue type class.
      */
-    class RD : public virtual D, public virtual RNA {
+    class RD : public virtual D, public virtual RN {
     public:
       RD () {}
       RD (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -424,7 +564,7 @@ namespace mccore {
     /**
      * Public RH residue type class.
      */
-    class RH : public virtual H, public virtual RNA {
+    class RH : public virtual H, public virtual RN {
     public:
       RH () {}
       RH (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -437,7 +577,7 @@ namespace mccore {
     /**
      * Public RV residue type class.
      */
-    class RV : public virtual V, public virtual RNA {
+    class RV : public virtual V, public virtual RN {
     public:
       RV () {}
       RV (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -450,7 +590,7 @@ namespace mccore {
     /**
      * Public RNA Purine residue type class.
      */
-    class RPurine : public virtual Purine, public virtual RNA, public virtual RD, public virtual RV {
+    class RPurine : public virtual Purine, public virtual RD, public virtual RV {
     public:
       RPurine () {}
       RPurine (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -463,7 +603,7 @@ namespace mccore {
     /**
      * Public RPyrimidine residue type class.
      */
-    class RPyrimidine : public virtual Pyrimidine, public virtual RNA, public virtual RB, public virtual RH {
+    class RPyrimidine : public virtual Pyrimidine, public virtual RB, public virtual RH {
     public:
       RPyrimidine () {}
       RPyrimidine (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -476,7 +616,7 @@ namespace mccore {
     /**
      * Public RW residue type class.
      */
-    class RW : public virtual W, public virtual RNA, public virtual RD, public virtual RH {
+    class RW : public virtual W, public virtual RD, public virtual RH {
     public:
       RW () {}
       RW (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -489,7 +629,7 @@ namespace mccore {
     /**
      * Public RS residue type class.
      */
-    class RS : public virtual S, public virtual RNA, public virtual RB, public virtual RV {
+    class RS : public virtual S, public virtual RB, public virtual RV {
     public:
       RS () {}
       RS (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -502,7 +642,7 @@ namespace mccore {
     /**
      * Public RM residue type class.
      */
-    class RM : public virtual M, public virtual RNA, public virtual RH, public virtual RV {
+    class RM : public virtual M, public virtual RH, public virtual RV {
     public:
       RM () {}
       RM (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -515,7 +655,7 @@ namespace mccore {
     /**
      * Public RK residue type class.
      */
-    class RK : public virtual K, public virtual RNA, public virtual RB, public virtual RD {
+    class RK : public virtual K, public virtual RB, public virtual RD {
     public:
       RK () {}
       RK (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -528,7 +668,7 @@ namespace mccore {
     /**
      * Public A RNA residue type class.
      */
-    class RA : public virtual A, public virtual RNA, public virtual RW, public virtual RM, public virtual RPurine {
+    class RA : public virtual A, public virtual RW, public virtual RM, public virtual RPurine {
     public:
       RA () {}
       RA (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -541,7 +681,7 @@ namespace mccore {
     /**
      * Public C RNA residue type class.
      */
-    class RC : public virtual C, public virtual RNA, public virtual RS, public virtual RM, public virtual RPyrimidine {
+    class RC : public virtual C, public virtual RS, public virtual RM, public virtual RPyrimidine {
     public:
       RC () {}
       RC (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -554,7 +694,7 @@ namespace mccore {
     /**
      * Public G RNA residue type class.
      */
-    class RG : public virtual G, public virtual RNA, public virtual RS, public virtual RK, public virtual RPurine {
+    class RG : public virtual G, public virtual RS, public virtual RK, public virtual RPurine {
     public:
       RG () {}
       RG (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -567,7 +707,7 @@ namespace mccore {
     /**
      * Public U RNA residue type class.
      */
-    class RU : public virtual U, public virtual RNA, public virtual RW, public virtual RK, public virtual RPyrimidine  {
+    class RU : public virtual U, public virtual RW, public virtual RK, public virtual RPyrimidine  {
     public:
       RU () {}
       RU (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -577,10 +717,26 @@ namespace mccore {
       }
     };
 
+
+    
+    /**
+     *  Public abstract class for DN residue (any DNA).
+     */
+    class DN : public virtual N, public virtual DNA
+    {
+    public:
+      DN () { }
+      DN (const char* t, const char* lt) : ResidueType (t, lt) { }
+
+      virtual bool isDN () const { return true; }
+      virtual bool describe (const ResidueType* t) const
+      { return dynamic_cast< const DN* > (t); }
+    };
+    
     /**
      * Public DB residue type class.
      */
-    class DB : public virtual B, public virtual DNA {
+    class DB : public virtual B, public virtual DN {
     public:
       DB () {}
       DB (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -593,7 +749,7 @@ namespace mccore {
     /**
      * Public DD residue type class.
      */
-    class DD : public virtual D, public virtual DNA {
+    class DD : public virtual D, public virtual DN {
     public:
       DD () {}
       DD (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -606,7 +762,7 @@ namespace mccore {
     /**
      * Public DH residue type class.
      */
-    class DH : public virtual H, public virtual DNA {
+    class DH : public virtual H, public virtual DN {
     public:
       DH () {}
       DH (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -619,7 +775,7 @@ namespace mccore {
     /**
      * Public DV residue type class.
      */
-    class DV : public virtual V, public virtual DNA {
+    class DV : public virtual V, public virtual DN {
     public:
       DV () {}
       DV (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -633,7 +789,7 @@ namespace mccore {
     /**
      * Public DNA Purine residue type class.
      */
-    class DPurine : public virtual Purine, public virtual DNA, public virtual DD, public virtual DV {
+    class DPurine : public virtual Purine, public virtual DD, public virtual DV {
     public:
       DPurine () {}
       DPurine (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -646,7 +802,7 @@ namespace mccore {
     /**
      * Public DNA Pyrimidine residue type class.
      */
-    class DPyrimidine : public virtual Pyrimidine, public virtual DNA, public virtual DB, public virtual DH {
+    class DPyrimidine : public virtual Pyrimidine, public virtual DB, public virtual DH {
     public:
       DPyrimidine () {}
       DPyrimidine (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -659,7 +815,7 @@ namespace mccore {
     /**
      * Public DW residue type class.
      */
-    class DW : public virtual W, public virtual DNA, public virtual DD, public virtual DH {
+    class DW : public virtual W, public virtual DD, public virtual DH {
     public:
       DW () {}
       DW (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -672,7 +828,7 @@ namespace mccore {
     /**
      * Public DS residue type class.
      */
-    class DS : public virtual S, public virtual DNA, public virtual DB, public virtual DV {
+    class DS : public virtual S, public virtual DB, public virtual DV {
     public:
       DS () {}
       DS (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -685,7 +841,7 @@ namespace mccore {
     /**
      * Public DM residue type class.
      */
-    class DM : public virtual M, public virtual DNA, public virtual DH, public virtual DV {
+    class DM : public virtual M, public virtual DH, public virtual DV {
     public:
       DM () {}
       DM (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -698,7 +854,7 @@ namespace mccore {
     /**
      * Public DK residue type class.
      */
-    class DK : public virtual K, public virtual DNA, public virtual DB, public virtual DD {
+    class DK : public virtual K, public virtual DB, public virtual DD {
     public:
       DK () {}
       DK (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -711,7 +867,7 @@ namespace mccore {
     /**
      * Public A DNA residue type class.
      */
-    class DA : public virtual A, public virtual DNA, public virtual DW, public virtual DM, public virtual DPurine {
+    class DA : public virtual A, public virtual DW, public virtual DM, public virtual DPurine {
     public:
       DA () {}
       DA (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -724,7 +880,7 @@ namespace mccore {
     /**
      * Public C DNA residue type class.
      */
-    class DC : public virtual C, public virtual DNA, public virtual DS, public virtual DM, public virtual DPyrimidine {
+    class DC : public virtual C, public virtual DS, public virtual DM, public virtual DPyrimidine {
     public:
       DC () {}
       DC (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -737,7 +893,7 @@ namespace mccore {
     /**
      * Public G DNA residue type class.
      */
-    class DG : public virtual G, public virtual DNA, public virtual DS, public virtual DK, public virtual DPurine {
+    class DG : public virtual G, public virtual DS, public virtual DK, public virtual DPurine {
     public:
       DG () {}
       DG (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -750,7 +906,7 @@ namespace mccore {
     /**
      * Public T DNA residue type class.
      */
-    class DT : public virtual T, public virtual DNA, public virtual DW, public virtual DK, public virtual DPyrimidine {
+    class DT : public virtual T, public virtual DW, public virtual DK, public virtual DPyrimidine {
     public:
       DT () {}
       DT (const char* t, const char* lt) : ResidueType (t, lt) {}

@@ -3,8 +3,8 @@
 // Copyright © 2003, 2004 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Apr 30 16:04:32 2003
-// $Revision: 1.21 $
-// $Id: Graph.h,v 1.21 2004-04-06 21:08:26 larosem Exp $
+// $Revision: 1.22 $
+// $Id: Graph.h,v 1.22 2004-06-15 18:39:06 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -31,6 +31,7 @@
 #include <map>
 #include <utility>
 #include <vector>
+#include <set>
 #include <assert.h>
 
 #include "GraphAlgo.h"
@@ -61,7 +62,7 @@ namespace mccore {
    * correct node comparator if needed.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: Graph.h,v 1.21 2004-04-06 21:08:26 larosem Exp $
+   * @version $Id: Graph.h,v 1.22 2004-06-15 18:39:06 thibaup Exp $
    */
   template< class node_type, 
 	    class edge_type = bool,

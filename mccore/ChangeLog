@@ -1,3 +1,159 @@
+2004-06-01  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* lib/AtomTypeStore.h, lib/AtomType.h, lib/AtomType.cc:
+	- Phosphate atom group type is now known as Phosphorous, for P atom.
+	- New Phosphate atom group: { P, O1P, O2P, O3P, O3', O5' } (stays also in Backbone atom group)
+
+2004-05-27  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* lib/RiboseBuilder.cc, lib/Relation.cc:
+	- updated to residue class modifications
+
+	* lib/Model.h: *** empty log message ***
+
+	* lib/Model.cc:
+	- new method to add hydrogens and lone pairs to each residue.
+
+	* lib/Residue.h, lib/Residue.cc, lib/ExtendedResidue.h, lib/ExtendedResidue.cc:
+	- Residue::iterator::setLocal(): new iterator method to adjust pointed atom's local coordinates.
+	- Residue::finalize():           doesn't adds hydrogens and lone pairs anymore.
+	- Residue::addHydrogens():       doesn't adds HO3' anymore -> in a separate method ( addHO3p() ).
+	- Residue::setIdeal():           renamed to setTheoretical(), now has an optional backbone addition.
+	- Residue::get{Pucker,Glycosyl}Type(): now returns an unknown property type in the case of a failure (not nucleic acid ...)
+
+2004-05-27  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* Relation.cc: - updated to residue class modifications
+
+	* Model.h: *** empty log message ***
+
+	* Model.cc:
+	- new method to add hydrogens and lone pairs to each residue.
+
+	* Residue.h, Residue.cc, ExtendedResidue.h, ExtendedResidue.cc:
+	- Residue::iterator::setLocal(): new iterator method to adjust pointed atom's local coordinates.
+	- Residue::finalize():           doesn't adds hydrogens and lone pairs anymore.
+	- Residue::addHydrogens():       doesn't adds HO3' anymore -> in a separate method ( addHO3p() ).
+	- Residue::setIdeal():           renamed to setTheoretical(), now has an optional backbone addition.
+	- Residue::get{Pucker,Glycosyl}Type(): now returns an unknown property type in the case of a failure (not nucleic acid ...)
+
+2004-05-17  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* Residue.cc, HomogeneousTransfo.cc: - corrected ribose building method
+	- building transfo pre-multiplication
+
+2004-05-14  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* RiboseOptimizer5D.h, RiboseOptimizer2D.h, RiboseOptimizer2D.cc, RiboseEstimator.h, RiboseEstimator.cc, RiboseBuilder.h:
+	deprecated classes
+
+	* Residue.h, Residue.cc, ExtendedResidue.h, ExtendedResidue.cc:
+	- enabled ribose parametrized building and optimizing.
+	- optimized get() and insert().
+	- residue type set to UNKNOWN in default constructor (not null).
+	- method atomCopy() is now deprecated.
+
+	* HomogeneousTransfo.h, HomogeneousTransfo.cc:
+	Static rotation method with principal axes
+
+	* Atom.cc:
+	Residue type set to "UNKNOWN" in default constructor (not null!)
+
+2004-05-14  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* lib/RiboseOptimizer5D.h, lib/RiboseOptimizer2D.h, lib/RiboseOptimizer2D.cc, lib/RiboseEstimator.h, lib/RiboseEstimator.cc, lib/RiboseBuilder.h:
+	deprecated classes
+
+	* lib/Residue.h, lib/Residue.cc, lib/ExtendedResidue.h, lib/ExtendedResidue.cc:
+	- enabled ribose parametrized building and optimizing.
+	- optimized get() and insert().
+	- residue type set to UNKNOWN in default constructor (not null).
+	- method atomCopy() is now deprecated.
+
+	* lib/HomogeneousTransfo.h, lib/HomogeneousTransfo.cc:
+	Static rotation method with principal axes
+
+	* lib/Atom.cc:
+	Residue type set to "UNKNOWN" in default constructor (not null!)
+
+2004-05-13  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/sockstream.h, lib/sockstream.cc:
+	sockstreambase removed, the sockstreambuf is directly in the classes a per C++ standards.
+
+	* lib/Pdbstream.h, lib/Pdbstream.cc: sPdbstreams added.
+
+	* lib/PdbFileHeader.h: String references passed.
+
+	* lib/Rmsd.h:
+	Rmsd method uses squareDistance instead of distance (back to old version).
+
+	* lib/HomogeneousTransfo.h, lib/HomogeneousTransfo.cc:
+	New method squareDistance.
+
+2004-05-12  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/Rmsd.h: Rmsd method uses distance instead of squareDistance.
+
+2004-04-30  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/sockstream.h, lib/sockstream.cc, lib/ServerSocket.h, lib/ServerSocket.cc, lib/Makefile.in, lib/Binstream.h:
+	sBinstreams contents transferred in Binstream.
+
+	* lib/sBinstream.h: Content transferred in Binstream.
+
+2004-04-06  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/UndirectedGraph.h, lib/UndirectedArrayGraph.h, lib/Path.h, lib/Makefile.in, lib/GraphAlgo.h, lib/Graph.h, lib/ArrayGraph.h, lib/AbstractGraph.h:
+	Several changes in the Graph definitions, Path, shortestPath cycleBaseHorton and nonSimpleCycleElimination optimisations.
+
+2004-04-02  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/Path.h: Bug corrected on empty Path comparison.
+
+	* lib/GraphAlgo.h: Slight modifications on SPT algo.
+
+	* lib/Path.cc: Unneeded file.
+
+2004-03-31  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/sockstream.cc: Patch added from mcsym-3-3-2-freeze.
+
+	* lib/sockstream.cc: The way to close a socket is by shutdown.
+
+2004-03-25  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/sockstream.h, lib/sockstream.cc, lib/sBinstream.h, lib/ServerSocket.cc:
+	Compatibility changes for IRIX CC.
+
+2004-03-22  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/Relation.cc: Unclassified hbonds are now annotated automatically.
+
+2004-03-17  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/HBond.h: *** empty log message ***
+
+	* lib/Relation.h, lib/Relation.cc:
+	HBondFlow and flow sum can be retrieve from pairing relations.  Pairing, stacking, adjacency evaluations are now member methods called from annotate.
+
+	* lib/ResidueTopology.cc: DNA added in topology.
+
+2004-03-12  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* lib/ExtendedResidue.cc, lib/ExtendedResidue.h, lib/Residue.cc, lib/Residue.h, ChangeLog:
+	conditional hydrogen and lone pair addition in finalize()
+
+	* lib/ExtendedResidue.cc:
+	conditional hydrogen and lone pairs addition in finalize()
+
+2004-03-08  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/PdbFileHeader.h: pdbId is an empty string by default.
+
+	* lib/GraphAlgo.h:
+	cycleBaseHorton and nonSimpleCycleElimination take much less memory footprints.
+
 2004-03-08  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
 
 	* lib/PdbFileHeader.h: pdbId is an empty string by default.
