@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // Model.h
-// Copyright © 2001-04 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-05 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.22 $
+// $Revision: 1.23 $
 //
 // This file is part of mccore.
 // 
@@ -59,7 +59,7 @@ namespace mccore
    *   iterators yields object.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Model.h,v 1.22 2005-01-03 22:56:58 larosem Exp $
+   * @version $Id: Model.h,v 1.23 2005-01-05 01:45:24 larosem Exp $
    */
   class Model : public AbstractModel
   {
@@ -88,7 +88,10 @@ namespace mccore
      * Clones the model.
      * @return a copy of the model.
      */
-    virtual AbstractModel* clone () const { return new Model (*this); }
+    virtual AbstractModel* clone () const
+    {
+      return new Model ((const AbstractModel&) *this);
+    }
 
     /**
      * Destroys the object.

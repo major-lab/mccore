@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // GraphModel.h
-// Copyright © 2004 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
+// Copyright © 2004-05 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:31:01 2004
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 // 
 // This file is part of mccore.
 // 
@@ -46,7 +46,7 @@ namespace mccore
    * iterators.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.h,v 1.2 2005-01-03 22:46:03 larosem Exp $
+   * @version $Id: GraphModel.h,v 1.3 2005-01-05 01:45:04 larosem Exp $
    */
   class GraphModel : public AbstractModel, public OrientedGraph< Residue*, Relation*, int, int, less_deref< Residue > >
   {
@@ -92,7 +92,10 @@ namespace mccore
      * Clones the model.
      * @return a copy of the model.
      */
-    virtual AbstractModel* clone () const { return new GraphModel (*this); }
+    virtual AbstractModel* clone () const
+    {
+      return new GraphModel ((const AbstractModel&) *this);
+    }
 
     /**
      * Destroys the object.
