@@ -5,8 +5,8 @@
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
 # Last Modified By : Patrick Gendron
-# Last Modified On : Thu Aug 21 13:30:08 2003
-# Update Count     : 42
+# Last Modified On : Tue Sep 30 11:09:57 2003
+# Update Count     : 48
 # Status           : Ok.
 # 
 #  This file is part of mccore.
@@ -106,6 +106,8 @@ if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
         LINKOPTIONS= ;;
     esac;
 elif eval "test \"`echo $GXX`\" = yes"; then     # gnu compiler
+	CXXSHFLAGS="$CXXFLAGS -Wall -fmessage-length=0";
+	CXXFLAGS="$CXXFLAGS -Wall -fmessage-length=0";
 	DEPFLAGS="-MM -Wno-deprecated"
 	LDFLAGS="-static $LDFLAGS"
 	LINKOPTIONS=;
@@ -115,12 +117,6 @@ fi
 AC_ARG_WITH(malloc,
 [  --with-malloc           replace STL allocator with malloc],
 AC_DEFINE(__USE_MALLOC),
-)
-
-AC_ARG_WITH(optimization,
-[  --with-optimization     Use optimization],
-CXXFLAGS="-O2 $CXXFLAGS -pg";
-CXXSHFLAGS="-O2 $CXXSHFLAGS -pg";
 )
 
 AC_SUBST(PACKAGE)
