@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Dec 10 19:09:13 2004
-// $Revision: 1.12.2.8 $
+// $Revision: 1.12.2.9 $
 // 
 // This file is part of mccore.
 // 
@@ -44,7 +44,7 @@ namespace mccore
    * Undirected graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: UndirectedGraph.h,v 1.12.2.8 2004-12-21 07:10:57 larosem Exp $
+   * @version $Id: UndirectedGraph.h,v 1.12.2.9 2004-12-23 22:43:20 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -199,44 +199,39 @@ namespace mccore
     virtual iterator uncheckedInternalErase (label l)
     {
       list< label > neighbors = internalNeighborhood (l);
-
-      if (! neighbors.empty ())
+      typename list< label >::iterator lit;
+      typename EV2ELabel::iterator evit;
+      EV2ELabel newEV2;
+      typename vector< V >::iterator res;
+      
+      for (lit = neighbors.begin (); neighbors.end () != lit; ++lit)
 	{
-	  typename list< label >::iterator lit;
-	  typename EV2ELabel::iterator evit;
-	  EV2ELabel newEV2;
-	  typename vector< V >::iterator res;
-
-	  for (lit = neighbors.begin (); neighbors.end () != lit; ++lit)
-	    {
-	      uncheckedInternalDisconnect (l, *lit);
-	    }
-	  res = vertices.erase (vertices.begin () + l);
-	  vertexWeights.erase (vertexWeights.begin () + l);
-	  rebuildV2VLabel ();
-	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
-	    {
-	      label h;
-	      label t;
-	      
-	      h = evit->first.getHeadLabel ();
-	      t = evit->first.getTailLabel ();
-	      if (h > l)
-		{
-		  --h;
-		}
-	      if (t > l)
-		{
-		  --t;
-		}
-
-	      EndVertices ev (h, t);
-	      newEV2.insert (make_pair (ev, evit->second));
-	    }
-	  ev2elabel = newEV2;
-	  return res;
+	  uncheckedInternalDisconnect (l, *lit);
 	}
-      return vertices.end ();
+      res = vertices.erase (vertices.begin () + l);
+      vertexWeights.erase (vertexWeights.begin () + l);
+      rebuildV2VLabel ();
+      for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
+	{
+	  label h;
+	  label t;
+	  
+	  h = evit->first.getHeadLabel ();
+	  t = evit->first.getTailLabel ();
+	  if (h > l)
+	    {
+	      --h;
+	    }
+	  if (t > l)
+	    {
+	      --t;
+	    }
+	  
+	  EndVertices ev (h, t);
+	  newEV2.insert (make_pair (ev, evit->second));
+	}
+      ev2elabel = newEV2;
+      return res;
     }
     
     /**
@@ -255,10 +250,13 @@ namespace mccore
       
       if (ev2elabel.end () == (evit = ev2elabel.find (ev)))
 	{
-	  EndVertices ev2 (t, h);
-	  
 	  ev2elabel.insert (make_pair (ev, edges.size ()));
-	  ev2elabel.insert (make_pair (ev2, edges.size ()));
+	  if (h != t)
+	    {
+	      EndVertices ev2 (t, h);
+	      
+	      ev2elabel.insert (make_pair (ev2, edges.size ()));
+	    }
 	  edges.push_back (e);
 	  edgeWeights.resize (edgeWeights.size () + 1);
 	  return true;
@@ -283,10 +281,13 @@ namespace mccore
       
       if (ev2elabel.end () == (evit = ev2elabel.find (ev)))
 	{
-	  EndVertices ev2 (t, h);
-	  
 	  ev2elabel.insert (make_pair (ev, edges.size ()));
-	  ev2elabel.insert (make_pair (ev2, edges.size ()));
+	  if (h != t)
+	    {
+	      EndVertices ev2 (t, h);
+	      
+	      ev2elabel.insert (make_pair (ev2, edges.size ()));
+	    }
 	  edges.push_back (e);
 	  edgeWeights.push_back (w);
 	  return true;
@@ -315,7 +316,10 @@ namespace mccore
 	  edges.erase (edges.begin () + l);
 	  edgeWeights.erase (edgeWeights.begin () + l);
 	  ev2elabel.erase (evit);
-	  ev2elabel.erase (ev2elabel.find (ev2));
+	  if (ev2elabel.end () != (evit = ev2elabel.find (ev2)))
+	    {
+	      ev2elabel.erase (evit);
+	    }
 	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
 	    {
 	      if (evit->second > l)
@@ -328,8 +332,6 @@ namespace mccore
       return false;
     }      
 
-  protected:
-    
     /**
      * Prim's algorithm for the minimum spanning tree.
      * @param graph an undirected graph

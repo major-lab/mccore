@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Dec 22 16:39:23 2004
-// $Revision: 1.1.2.1 $
-// $Id: UndirectedGraph.cc,v 1.1.2.1 2004-12-22 21:41:18 larosem Exp $
+// $Revision: 1.1.2.2 $
+// $Id: UndirectedGraph.cc,v 1.1.2.2 2004-12-23 22:43:27 larosem Exp $
 // 
 
 
@@ -764,158 +764,6 @@ main (int argc, char *argv[])
       gOut (0) << e << endl;
     }
   
-  // Testing inNeighborhood
-  try
-    {
-      v1 = 12432;
-      gOut (0) << "inNeighborhood (" << v1 << ") with return value "
-	       << flush;
-      gOut (0) << graph.inNeighborhood (v1)
-	       << endl << graph << endl;
-    }
-  catch (NoSuchElementException &e)
-    {
-      gOut (0) << e << endl;
-    }
-  try
-    {
-      v1 = 5;
-      gOut (0) << "inNeighborhood (" << v1 << ") with return value "
-	       << flush;
-      gOut (0) << graph.inNeighborhood (v1)
-	       << endl << graph << endl;
-    }
-  catch (NoSuchElementException &e)
-    {
-      gOut (0) << e << endl;
-    }
-  try
-    {
-      v1 = 4;
-      gOut (0) << "inNeighborhood (" << v1 << ") with return value "
-	       << flush;
-      gOut (0) << graph.inNeighborhood (v1)
-	       << endl << graph << endl;
-    }
-  catch (NoSuchElementException &e)
-    {
-      gOut (0) << e << endl;
-    }
-
-  // Testing outNeighborhood
-  try
-    {
-      v1 = 12432;
-      gOut (0) << "outNeighborhood (" << v1 << ") with return value "
-	       << flush;
-      gOut (0) << graph.outNeighborhood (v1)
-	       << endl << graph << endl;
-    }
-  catch (NoSuchElementException &e)
-    {
-      gOut (0) << e << endl;
-    }
-  try
-    {
-      v1 = 5;
-      gOut (0) << "outNeighborhood (" << v1 << ") with return value "
-	       << flush;
-      gOut (0) << graph.outNeighborhood (v1)
-	       << endl << graph << endl;
-    }
-  catch (NoSuchElementException &e)
-    {
-      gOut (0) << e << endl;
-    }
-  try
-    {
-      v1 = 4;
-      gOut (0) << "outNeighborhood (" << v1 << ") with return value "
-	       << flush;
-      gOut (0) << graph.outNeighborhood (v1)
-	       << endl << graph << endl;
-    }
-  catch (NoSuchElementException &e)
-    {
-      gOut (0) << e << endl;
-    }  
-
-  // Testing internalInNeighborhood
-  try
-    {
-      v1 = 12432;
-      gOut (0) << "internalInNeighborhood (" << v1 << ") with return value "
-	       << flush;
-      gOut (0) << graph.internalInNeighborhood (v1)
-	       << endl << graph << endl;
-    }
-  catch (NoSuchElementException &e)
-    {
-      gOut (0) << e << endl;
-    }
-  try
-    {
-      v1 = 5;
-      gOut (0) << "internalInNeighborhood (" << v1 << ") with return value "
-	       << flush;
-      gOut (0) << graph.internalInNeighborhood (v1)
-	       << endl << graph << endl;
-    }
-  catch (NoSuchElementException &e)
-    {
-      gOut (0) << e << endl;
-    }
-  try
-    {
-      v1 = 4;
-      gOut (0) << "internalInNeighborhood (" << v1 << ") with return value "
-	       << flush;
-      gOut (0) << graph.internalInNeighborhood (v1)
-	       << endl << graph << endl;
-    }
-  catch (NoSuchElementException &e)
-    {
-      gOut (0) << e << endl;
-    }
-
-  // Testing internalOutNeighborhood
-  try
-    {
-      v1 = 12432;
-      gOut (0) << "internalOutNeighborhood (" << v1 << ") with return value "
-	       << flush;
-      gOut (0) << graph.internalOutNeighborhood (v1)
-	       << endl << graph << endl;
-    }
-  catch (NoSuchElementException &e)
-    {
-      gOut (0) << e << endl;
-    }
-  try
-    {
-      v1 = 5;
-      gOut (0) << "internalOutNeighborhood (" << v1 << ") with return value "
-	       << flush;
-      gOut (0) << graph.internalOutNeighborhood (v1)
-	       << endl << graph << endl;
-    }
-  catch (NoSuchElementException &e)
-    {
-      gOut (0) << e << endl;
-    }
-  try
-    {
-      v1 = 4;
-      gOut (0) << "internalOutNeighborhood (" << v1 << ") with return value "
-	       << flush;
-      gOut (0) << graph.internalOutNeighborhood (v1)
-	       << endl << graph << endl;
-    }
-  catch (NoSuchElementException &e)
-    {
-      gOut (0) << e << endl;
-    }  
-
   // Testing internalGetVertex
   try
     {
@@ -1071,7 +919,7 @@ main (int argc, char *argv[])
     {
       i1 = 6;
       v1 = 1007;
-      gOut (0) << "internalSetVertexWeight (" << i1 << ", " << v1 << ")"
+      gOut (0) << "internalSetVertexWeight (" << i1 << ", " << v1 << ") "
 	       << flush;
       graph.internalSetVertexWeight (i1, v1);
       gOut (0) << endl << graph << endl;
@@ -1084,7 +932,7 @@ main (int argc, char *argv[])
     {
       i1 = graph.size ();
       v1 = 1008;
-      gOut (0) << "internalSetVertexWeight (" << i1 << ", " << v1 << ")"
+      gOut (0) << "internalSetVertexWeight (" << i1 << ", " << v1 << ") "
 	       << flush;
       graph.internalSetVertexWeight (i1, v1);
       gOut (0) << endl << graph << endl;
@@ -1097,7 +945,7 @@ main (int argc, char *argv[])
     {
       i1 = 0;
       v1 = 1009;
-      gOut (0) << "internalSetVertexWeight (" << i1 << ", " << v1 << ")"
+      gOut (0) << "internalSetVertexWeight (" << i1 << ", " << v1 << ") "
 	       << flush;
       graph.internalSetVertexWeight (i1, v1);
       gOut (0) << endl << graph << endl;
@@ -1230,7 +1078,7 @@ main (int argc, char *argv[])
   try
     {
       i1 = 2;
-      i2 = 8; 
+      i2 = 0; 
       gOut (0) << "internalGetEdgeLabel (" << i1 << ", " << i2 << ") with return value "
 	       << flush;
       gOut (0) << graph.internalGetEdgeLabel (i1, i2)
@@ -1242,8 +1090,8 @@ main (int argc, char *argv[])
     }
   try
     {
-      i1 = 2;
-      i2 = 4;
+      i1 = 0;
+      i2 = 2;
       gOut (0) << "internalGetEdgeLabel (" << i1 << ", " << i2 << ") with return value "
 	       << flush;
       gOut (0) << graph.internalGetEdgeLabel (i1, i2)
@@ -1296,8 +1144,8 @@ main (int argc, char *argv[])
     }
   try
     {
-      i1 = 2;
-      i2 = 4;
+      i1 = 4;
+      i2 = 6;
       gOut (0) << "internalGetEdgeWeight (" << i1 << ", " << i2 << ") with return value "
 	       << flush;
       gOut (0) << graph.internalGetEdgeWeight (i1, i2)
@@ -1309,8 +1157,8 @@ main (int argc, char *argv[])
     }
   try
     {
-      i1 = 7;
-      i2 = 7;
+      i1 = 4;
+      i2 = 4;
       gOut (0) << "internalGetEdgeWeight (" << i1 << ", " << i2 << ") with return value "
 	       << flush;
       gOut (0) << graph.internalGetEdgeWeight (i1, i2)
@@ -1464,8 +1312,8 @@ main (int argc, char *argv[])
     }
   try
     {
-      i1 = 8;
-      i2 = graph.size ();
+      i1 = 4;
+      i2 = 3;
       v4 = 5.7;
       gOut (0) << "internalSetEdgeWeight (" << i1 << ", " << i2 << ", " << v4 << ") "
 	       << flush;
@@ -1964,7 +1812,7 @@ main (int argc, char *argv[])
   try
     {
       i1 = 7;
-      i2 = 7;
+      i2 = 6;
       v1 = 2007;
       gOut (0) << "internalConnect (" << i1 << ", " << i2 << ", " << v1 << ") with return value "
 	       << flush;

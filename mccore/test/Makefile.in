@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.1.2.3 $
-# $Id: Makefile.in,v 1.1.2.3 2004-12-22 21:35:48 larosem Exp $
+# $Revision: 1.1.2.4 $
+# $Id: Makefile.in,v 1.1.2.4 2004-12-23 22:43:24 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -77,7 +77,7 @@ HAVE_LIBMYSQL = @HAVE_LIBMYSQL@
 
 
 
-SOURCES = OrientedGraph.cc
+SOURCES = OrientedGraph.cc UndirectedGraph.cc
 
 HEADERS = 
 

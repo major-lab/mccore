@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.32.2.3 $
+// $Revision: 1.32.2.4 $
 // 
 // This file is part of mccore.
 // 
@@ -38,6 +38,7 @@
 #include "Exception.h"
 #include "ExtendedResidue.h"
 #include "MaximumFlowGraph.h"
+#include "Messagestream.h"
 #include "PairingPattern.h"
 #include "PropertyType.h"
 #include "Relation.h"
@@ -418,44 +419,20 @@ namespace mccore
 	map< Residue::const_iterator, int > atomToInt; 
 	int node;
 	HBondFlowGraph graph;
-
-	node = 0;
-	graph.insert (node++, 1); // Source
-	graph.insert (node++, 1); // Sink
-
 	vector< Residue::const_iterator > ref_at;
 	vector< Residue::const_iterator > refn_at;
 	vector< Residue::const_iterator > res_at;
 	vector< Residue::const_iterator > resn_at;
-	int x, y;
-	
-	//     AtomSet* hl = new AtomSetOr (new AtomSetHydrogen (), new AtomSetLP ());
-	//     hl = new AtomSetAnd (hl, new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M), 
-	// 							    new AtomSetAtom (AtomType::a3H5M))));
-	//     AtomSet* da = new AtomSetNot (hl->clone ());
-
-	//     for (i=ref->begin (hl->clone ()); i!=ref->end (); ++i) {
-	//       for (j=ref->begin (da->clone ()); j!=ref->end (); ++j) {
-	// 	if (i->distance (*j) < 1.7) {
-	// 	  ref_at.push_back (i);
-	// 	  refn_at.push_back (j);	  
-	// 	}
-	//       }
-	//     }
-	//     for (i=res->begin (hl->clone ()); i!=res->end (); ++i) {
-	//       for (j=res->begin (da->clone ()); j!=res->end (); ++j) {
-	// 	if (i->distance (*j) < 1.7) {
-	// 	  res_at.push_back (i);
-	// 	  resn_at.push_back (j);	  
-	// 	}
-	//       }
-	//     }    
-	//     delete da;
-	//     delete hl;
-    
+	int x;
+	int y;
 	AtomSetAnd da (new AtomSetSideChain (), 
 		       new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M), 
 						      new AtomSetAtom (AtomType::a3H5M))));
+	
+	node = 0;
+	graph.insert (node++, 1); // Source
+	graph.insert (node++, 1); // Sink
+
 	for (i = ref->begin (da); i != ref->end (); ++i)
 	  {
 	    if ((i->getType ()->isCarbon ()
@@ -475,13 +452,13 @@ namespace mccore
 	      }
 	  }
       
-	for (i=res->begin (da); i!=res->end (); ++i)
+	for (i = res->begin (da); i != res->end (); ++i)
 	  {
 	    if ((i->getType ()->isCarbon ()
 		 || i->getType ()->isNitrogen ()
 		 || i->getType ()->isOxygen ()))
 	      {
-		for (j=res->begin (da); j!=res->end (); ++j)
+		for (j = res->begin (da); j != res->end (); ++j)
 		  {
 		    if ((j->getType ()->isHydrogen ()
 			 || j->getType ()->isLonePair ())
@@ -503,14 +480,11 @@ namespace mccore
 		k = res_at[y];
 		l = resn_at[y];
 	      
-		if (i->getType ()->isHydrogen ()
-		    && k->getType ()->isLonePair ())
+		if (i->getType ()->isHydrogen () && k->getType ()->isLonePair ())
 		  {
 		    HBond h (j->getType (), i->getType (), l->getType (), k->getType ());
 		  
 		    h.evalStatistically (*ref, *res);
-		    //h.eval (*ref, *res);
-		  
 		    if (h.getValue () > 0.01)
 		      {
 			HBond hb;
@@ -530,14 +504,11 @@ namespace mccore
 			graph.connect (atomToInt[i], atomToInt[k], h, 0);
 		      }
 		  }
-		else if (k->getType ()->isHydrogen ()
-			 && i->getType ()->isLonePair ())
+		else if (k->getType ()->isHydrogen () && i->getType ()->isLonePair ())
 		  {
 		    HBond h (l->getType (), k->getType (), j->getType (), i->getType ());
 		  
 		    h.evalStatistically (*res, *ref);
-		    //h.eval (*res, *ref);
-		  
 		    if (h.getValue () > 0.01)
 		      {
 			HBond hb;
@@ -559,23 +530,17 @@ namespace mccore
 		  }
 	      }
 	  }
-      
+
+	gOut (5) << graph << endl;
+	
 	if (graph.size () >= 3)
 	  {
 	    map< Residue::const_iterator, int >::iterator m;
 	    map< Residue::const_iterator, int >::iterator n;
 
-	    if (5 <= gOut.getVerboseLevel ())
-	      {
-		gOut (5) << graph;
-	      }
-	    
 	    graph.preFlowPush (0, 1);
 	    
-	    if (5 <= gOut.getVerboseLevel ())
-	      {
-		gOut (5) << graph;
-	      }
+	    gOut (5) << graph << endl;
 	    
 	    for (m = atomToInt.begin (); m != atomToInt.end (); ++m)
 	      {

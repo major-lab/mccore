@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Apr  7 18:28:55 2003
-// $Revision: 1.10.4.4 $
+// $Revision: 1.10.4.5 $
 // 
 // This file is part of mccore.
 // 
@@ -40,15 +40,15 @@
 
 namespace mccore
 {
-  
   /**
-   * Maximum flow in a directed graph.  The edges must implements the method:
+   * Maximum flow is an oriented graph.  The edges must implements the
+   * method:
    * <pre>
    *      float getValue ()
    * </pre>
    * for flow calculation.
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: MaximumFlowGraph.h,v 1.10.4.4 2004-12-16 22:29:37 larosem Exp $
+   * @version $Id: MaximumFlowGraph.h,v 1.10.4.5 2004-12-23 22:43:13 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -113,8 +113,6 @@ namespace mccore
 	}
       return *this;
     }
-    
-  public:
     
     // ACCESS ------------------------------------------------------------------
   
@@ -430,8 +428,9 @@ namespace mccore
     
     virtual ostream& write (ostream& os) const
     {
-      return os << "[MaximumFlowGraph]" << endl
-		<< Graph< V, E, VW, float, Vertex_Comparator >::write (os);
+      os << "[MaximumFlowGraph]" << endl;
+      Graph< V, E, VW, float, Vertex_Comparator >::write (os);
+      return os;
     }
     
   };
