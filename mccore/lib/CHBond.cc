@@ -1,12 +1,12 @@
 //                        -*- Mode: C++ -*-
 // CHBond.cc
-// Copyright © 1999, 2000-01 , 2002, 2002Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Patrick Gendron
-// Last Modified On : Tue Nov 19 16:27:26 2002
-// Update Count     : 43
+// Last Modified On : Tue Nov 19 16:29:09 2002
+// Update Count     : 44
 // Status           : 
 // 
 //  This file is part of mccore.

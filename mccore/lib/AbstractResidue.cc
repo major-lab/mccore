@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // AbstractResidue.cc
-// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-02 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : Fri Oct 12 18:21:12 2001
 // Last Modified By : Patrick Gendron
-// Last Modified On : Tue Nov 19 16:27:17 2002
-// Update Count     : 6
+// Last Modified On : Tue Nov 19 16:29:01 2002
+// Update Count     : 7
 // Status           : Unknown.
 // 
 
