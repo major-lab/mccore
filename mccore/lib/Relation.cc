@@ -57,14 +57,15 @@ namespace mccore {
   {
     tfo = ref->getReferential ();
     tfo = tfo.invert ();
-    tfo *= res->getReferential ();
+    tfo *= res->getReferential ();    
   }
 
   
   Relation::Relation (const Relation &other)
     : ref (other.ref), res (other.res),
-      tfo (other.tfo), refFace (other.refFace),
-      resFace (other.resFace), labels (other.labels)
+      tfo (other.tfo), po4_tfo (other.po4_tfo),
+      refFace (other.refFace), resFace (other.resFace), 
+      labels (other.labels)
   {    
   }
     
@@ -84,6 +85,7 @@ namespace mccore {
       ref = other.ref;
       res = other.res;
       tfo = other.tfo;
+      po4_tfo = other.po4_tfo;
       refFace = other.refFace;
       resFace = other.resFace;
       labels = other.labels;
@@ -148,6 +150,8 @@ namespace mccore {
 	pRes.finalize ();
 	
 	po4_tfo = r5->getReferential ().invert () * pRes.getReferential ();
+
+	if (r5 == res) po4_tfo = tfo * po4_tfo;
       }
     else 
       {
@@ -165,6 +169,7 @@ namespace mccore {
     inv.ref = res;
     inv.res = ref;
     inv.tfo = tfo.invert ();
+    inv.po4_tfo = inv.tfo * po4_tfo;
     inv.refFace = resFace;
     inv.resFace = refFace;
     for (set< const PropertyType* >::const_iterator i=labels.begin (); i!=labels.end (); ++i) {
