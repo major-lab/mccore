@@ -163,7 +163,7 @@ namespace mccore
 	  if (r5 == res)
 	    po4_tfo = tfo * po4_tfo;
 	}
-	catch (NoSuchAtomException& ex)
+	catch (IntLibException& ex)
 	{
 	  gOut (3) << "unable to compute phosphate transfo: " << ex << endl;
 	  po4_tfo.setIdentity ();
@@ -670,7 +670,7 @@ namespace mccore
       else
 	hbonds.clear ();
     }
-    catch (NoSuchAtomException& ex)
+    catch (IntLibException& ex)
     {
       gOut (3) << "An error occured during pairing annotation: " << ex << endl;
     }
@@ -850,7 +850,7 @@ namespace mccore
 	}
       }
     }
-    catch (NoSuchAtomException& ex)
+    catch (IntLibException& ex)
     {
       gOut (3) << "An error occured during stacking annotation: " << ex << endl;
     }
@@ -1173,7 +1173,7 @@ namespace mccore
  
       isInit = true;
     }
-    catch (NoSuchAtomException& ex)
+    catch (IntLibException& ex)
     {
       FatalIntLibException fex ("", __FILE__, __LINE__);
       fex << "failed to initialize relation: " << ex.what ();
