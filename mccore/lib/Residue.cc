@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.66 $
-// $Id: Residue.cc,v 1.66 2005-02-02 18:14:22 thibaup Exp $
+// $Revision: 1.67 $
+// $Id: Residue.cc,v 1.67 2005-02-10 18:49:44 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -1630,12 +1630,12 @@ namespace mccore
       }
       else
       {
-	gOut (3) << "Unknown pseudo-atoms for residue type " << *this << endl;
+	gOut (4) << "Unknown pseudo-atoms for residue type " << *this << endl;
       }
     }
     catch (IntLibException& ex)
     {
-      gOut (3) << "Unknown pseudo-atoms for residue "<< *this << ": " << ex << endl;
+      gOut (4) << "Unknown pseudo-atoms for residue "<< *this << ": " << ex << endl;
     }
     
   }
@@ -2327,17 +2327,17 @@ namespace mccore
 	pivot[0] = (Atom*)this->atomGlobal[0];
 	pivot[1] = (Atom*)this->atomGlobal[1];
 	pivot[2] = (Atom*)this->atomGlobal[2];
-	gOut (3) << "default referential with first three atoms for residue type " << *this << endl;	
+	gOut (4) << "default referential with first three atoms for residue type " << *this << endl;	
       }
       else
       {
-	gOut (3) << "no referential for residue type " << *this << endl;
+	gOut (4) << "no referential for residue type " << *this << endl;
 	return HomogeneousTransfo::identity;
       }
     }
     catch (NoSuchAtomException& ex)
     {
-      gOut (3) << "no referential for residue " << *this << ": " << ex << endl;
+      gOut (4) << "no referential for residue " << *this << ": " << ex << endl;
       return HomogeneousTransfo::identity;
     }
 

@@ -4,7 +4,7 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.35 $
+// $Revision: 1.36 $
 // 
 // This file is part of mccore.
 // 
@@ -38,8 +38,8 @@
 #include "sockstream.h"
 #include "zstream.h"
 
-using namespace std;
 
+using namespace std;
 
 
 namespace mccore
@@ -58,11 +58,14 @@ namespace mccore
    * Bank (PDB) format.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Pdbstream.h,v 1.35 2005-01-03 22:58:47 larosem Exp $
+   * @version $Id: Pdbstream.h,v 1.36 2005-02-10 18:49:45 thibaup Exp $
    */
   class Pdbstream
   {
   public:
+
+    static const unsigned int LINELENGTH = 80;
+
     static const unsigned int PDB = 0;
     static const unsigned int AMBER = 1;
 
@@ -119,6 +122,12 @@ namespace mccore
      */
     static const char* stringifyAtomType (const AtomType* rtype, unsigned int type = 0);
     
+    /**
+     * Trims any leading or trailing whitespaces on a string. 
+     * @param str the string to trim.
+     * @return the trimmed string;
+     */
+    static string trim (const string &str);
   };
 
   
@@ -153,17 +162,31 @@ namespace mccore
    * </pre>
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Pdbstream.h,v 1.35 2005-01-03 22:58:47 larosem Exp $
+   * @version $Id: Pdbstream.h,v 1.36 2005-02-10 18:49:45 thibaup Exp $
    */
   class iPdbstream : public istream
   {
-    static const unsigned int LINELENGTH;
 
     /**
      * The PDB header (only the part that we read!).
      */
     PdbFileHeader header;
   
+    /**
+     * Whether or not the header has been input yet.
+     */
+    bool header_read;
+
+    /**
+     * Last read line.
+     */
+    string cached_line;
+
+    /**
+     * Flag raised to use last read line instead of reading a new one.
+     */
+    bool use_cached_line;
+
     /** 
      * The cached residue type.
      */
@@ -172,7 +195,7 @@ namespace mccore
     /**
      * The cached res id.
      */
-    ResId *rid;
+    ResId rid;
 
     /**
      * The cached atom
@@ -238,7 +261,19 @@ namespace mccore
      * Gets the header information.
      * @return the PDBFileHeader
      */
-    const PdbFileHeader& getHeader ();
+    const PdbFileHeader& getHeader () const
+    {
+      return this->header;
+    }
+
+    /**
+     * Sets the header information.
+     * @param h the new header.
+     */
+    void setHeader (const PdbFileHeader& h)
+    {
+      this->header = h;
+    }
 
     /**
      * Gets the number of the model currently being read.
@@ -264,6 +299,25 @@ namespace mccore
     virtual void close ();
     
     /**
+     * Clears the stream's state.
+     */
+    void clear ();
+
+    /**
+     * Reads the next line from the stream.
+     * @param line the string that will contains the read line.
+     * @return itself.
+     */
+    iPdbstream& readLine (string& line);
+
+    /**
+     * Makes next call to readLine() returns the line read from the last call to readLine()
+     * instead of reading a new line from the stream. 
+     * It doesn't go beyond the last call to readLine().
+     */
+    void unreadLine ();
+
+    /**
      * Indicates if the parser has reached an ENDMDL tag (end of model)
      */
     bool eom () { return (eomFlag || eof ()); }
@@ -273,17 +327,17 @@ namespace mccore
   private:
 
     /**
+     * @internal
      * Reads an atom from the stream and cache it.
      * @return the Atom or null if EOF was reached.
      */
     Atom* cacheAtom ();
 
     /**
-     * Trims the whitespaces around the string.
-     * @param str the string to trim.
-     * @return the stripped string;
+     * @internal
+     * Reads the file header from the stream.
      */
-    string& iPdbstream::trim (string &str);
+    void _read_header ();
 
     // I/O -----------------------------------------------------------------
 
@@ -310,11 +364,10 @@ namespace mccore
    * This stream is used to output residues to pdb files.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Pdbstream.h,v 1.35 2005-01-03 22:58:47 larosem Exp $
+   * @version $Id: Pdbstream.h,v 1.36 2005-02-10 18:49:45 thibaup Exp $
    */
   class oPdbstream : public ostream
   {
-    static const int LINELENGTH;
 
     /**
      * The PDB header (only the part that we read!).
@@ -322,9 +375,9 @@ namespace mccore
     PdbFileHeader header;
     
     /**
-     * Wether or not the header has been output yet.
+     * Whether or not the header has been output yet.
      */
-    bool headerdone;
+    bool header_written;
 
     /**
      * Atom set filter function.
@@ -339,7 +392,7 @@ namespace mccore
     /**
      * The current residue id.
      */
-    ResId *rid;
+    ResId rid;
 
     /**
      * The current model number.
@@ -402,6 +455,24 @@ namespace mccore
     // ACCESS --------------------------------------------------------------
 
     /**
+     * Gets the header information.
+     * @return the PDBFileHeader
+     */
+    const PdbFileHeader& getHeader () const
+    {
+      return this->header;
+    }
+
+    /**
+     * Sets the header information.
+     * @param h the new header.
+     */
+    void setHeader (const PdbFileHeader& h)
+    {
+      this->header = h;
+    }
+
+    /**
      * Sets the atomset filter used for dumping residues.
      * @param as the atom set filter.
      */
@@ -417,17 +488,10 @@ namespace mccore
      * Sets the residue id of all successive calls to write (atom).
      * @param r the ResId.
      */
-    void setResId (const ResId &r) { 
-      if (!rid)
-	rid = new ResId (r); 
-      else
-	*rid = r;
-    }    
-
-    /**
-     * Sets the header for the file.
-     */
-    void setHeader (const PdbFileHeader &h) { header = h; }
+    void setResId (const ResId &r)
+    {
+      this->rid = r;
+    }
 
     /**
      * Sets the PDB type.
@@ -447,21 +511,26 @@ namespace mccore
      */
     virtual void close ();
 
-  protected :
+    /**
+     * Clears the stream's state.
+     */
+    void clear ();
 
     /**
-     * Writes the current header to the stream.
+     * Writes a standard multilined record, each text line
+     * starting after the record type at column 11. Continuation number is added 
+     * at columns 9 to 10.
+     * @param name the record type
+     * @param text the record text that will be wrapped in multiple lines
      */
-    void writeHeader ();
-
-  public:
+    void writeRecord (const string& name, const string& text);
 
     /**
-     * Writes a remark.
-     * @param k the type of remark.
-     * @param rem the remark.
+     * Writes a standard multilined remark.
+     * @param remark the remark text that will be wrapped in multiple lines.
+     * @param k the remark's ID number for further classification.
      */
-    void writeRemark (int k, const char* rem);
+    void writeRemark (const string& remark, int k);
 
     /**
      * Writes a MODEL record to the pdb stream.
@@ -478,13 +547,13 @@ namespace mccore
      */
     void ter ();
 
-    /**
-     * Writes the connection among adjacent residues. 
-     * (TODO: BUGGY since adjacent residues are not necessarily i and i+1.
-     */
-    void putconect (const Model &model);
-
   protected:
+
+    /**
+     * @internal
+     * Writes the header to the stream.
+     */
+    void _write_header ();
 
     /**
      * Writes a END record to the pdb stream.
@@ -635,7 +704,7 @@ namespace mccore
    * @short Input pdb file stream.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Pdbstream.h,v 1.35 2005-01-03 22:58:47 larosem Exp $
+   * @version $Id: Pdbstream.h,v 1.36 2005-02-10 18:49:45 thibaup Exp $
    */
   class ifPdbstream : public iPdbstream
   {
@@ -724,7 +793,7 @@ namespace mccore
    * is formatted for pdb files.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Pdbstream.h,v 1.35 2005-01-03 22:58:47 larosem Exp $
+   * @version $Id: Pdbstream.h,v 1.36 2005-02-10 18:49:45 thibaup Exp $
    */
   class ofPdbstream : public oPdbstream
   {
@@ -810,7 +879,7 @@ namespace mccore
    * @short Input pdb socket stream.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Pdbstream.h,v 1.35 2005-01-03 22:58:47 larosem Exp $
+   * @version $Id: Pdbstream.h,v 1.36 2005-02-10 18:49:45 thibaup Exp $
    */
   class isPdbstream : public iPdbstream
   {
@@ -906,7 +975,7 @@ namespace mccore
    * @short Output pdb socket stream.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Pdbstream.h,v 1.35 2005-01-03 22:58:47 larosem Exp $
+   * @version $Id: Pdbstream.h,v 1.36 2005-02-10 18:49:45 thibaup Exp $
    */
   class osPdbstream : public oPdbstream
   {
@@ -1002,7 +1071,7 @@ namespace mccore
    * @short Pdb socket stream.
    *
    * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Pdbstream.h,v 1.35 2005-01-03 22:58:47 larosem Exp $
+   * @version $Id: Pdbstream.h,v 1.36 2005-02-10 18:49:45 thibaup Exp $
    */
   class sPdbstream : public iPdbstream, public oPdbstream
   {
@@ -1107,7 +1176,7 @@ namespace mccore
    * can read compressed files.
    *
    * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Pdbstream.h,v 1.35 2005-01-03 22:58:47 larosem Exp $
+   * @version $Id: Pdbstream.h,v 1.36 2005-02-10 18:49:45 thibaup Exp $
    */
   class izfPdbstream : public iPdbstream
   {
@@ -1202,7 +1271,7 @@ namespace mccore
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>.
    * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Pdbstream.h,v 1.35 2005-01-03 22:58:47 larosem Exp $
+   * @version $Id: Pdbstream.h,v 1.36 2005-02-10 18:49:45 thibaup Exp $
    */
   class ozfPdbstream : public oPdbstream
   {

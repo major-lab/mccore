@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:00:09 2003
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 // 
 // This file is part of mccore.
 // 
@@ -49,7 +49,7 @@ namespace mccore
    * Warning: nothing is done to prevents slicing when assigning from a Vector*.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Atom.h,v 1.9 2005-02-02 18:11:20 thibaup Exp $
+   * @version $Id: Atom.h,v 1.10 2005-02-10 18:49:46 thibaup Exp $
    */
   class Atom : public Vector3D
   {
@@ -58,11 +58,6 @@ namespace mccore
      */
     const AtomType *type;
     
-    /**
-     * The serial number for use in PDB output.
-     */
-    mutable int serialNo;
-
     // LIFECYCLE ------------------------------------------------------------
 
   public:
@@ -204,16 +199,6 @@ namespace mccore
       this->z = v.z;
       return *this;
     }
-
-    /**
-     * Sets the serial number of atoms in PDB files.
-     */
-    void setSerialNo (int serial) const { serialNo = serial; }
-
-    /**
-     * Sets the serial number of the atom when dumped in a PDB file.
-     */
-    int getSerialNo () const { return serialNo; }
 
     // METHODS --------------------------------------------------------------
 

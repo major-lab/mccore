@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.50 $
-// $Id: Pdbstream.cc,v 1.50 2005-01-05 01:49:18 larosem Exp $
+// $Revision: 1.51 $
+// $Id: Pdbstream.cc,v 1.51 2005-02-10 18:49:46 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -31,6 +31,7 @@
 #include <ctype.h>
 #include <iostream>
 #include <iomanip>
+#include <sstream>
 #include <stdio.h>
 #include <unistd.h>
 
@@ -54,9 +55,6 @@ namespace mccore
   const PdbResidueTypeRepresentationTable *Pdbstream::pdbResidueTypeParseTable = 0;
   const AmberResidueTypeRepresentationTable *Pdbstream::amberResidueTypeParseTable = 0;
   
-  const unsigned int iPdbstream::LINELENGTH = 80;
-  const int oPdbstream::LINELENGTH = 80;
-
 
   void
   Pdbstream::init ()
@@ -146,10 +144,27 @@ namespace mccore
   }
   
 
+  string
+  Pdbstream::trim (const string& str)
+  {
+    string::size_type b = str.find_first_not_of (" \t\n\r\f");
+    string::size_type e = str.find_last_not_of (" \t\n\r\f");
+
+    if (string::npos == b && string::npos == e)
+    {
+      string es;
+      return es;
+    }
+    
+    return str.substr (string::npos == b ? 0 : b, 
+		       string::npos == e ? e : e - b + 1);
+  }
+
   iPdbstream::iPdbstream ()
     : istream (cin.rdbuf ()),
-      rtype (0),
-      rid (0),
+      header_read (false),
+      use_cached_line (false),
+      rtype (ResidueType::rNull),
       ratom (0),
       modelNb (1),
       eomFlag (false),
@@ -164,8 +179,9 @@ namespace mccore
   
   iPdbstream::iPdbstream (streambuf* sb)
     : istream (sb),
-      rtype (0),
-      rid (0),
+      header_read (false),
+      use_cached_line (false),
+      rtype (ResidueType::rNull),
       ratom (0),
       modelNb (1),
       eomFlag (false),
@@ -179,17 +195,7 @@ namespace mccore
   
   iPdbstream::~iPdbstream ()
   {
-    if (rid) delete rid;
     if (ratom) delete ratom;
-  }
-
-
-  const PdbFileHeader&
-  iPdbstream::getHeader () 
-  { 
-    if (!ratom)
-      cacheAtom ();
-    return header; 
   }
 
   
@@ -213,158 +219,154 @@ namespace mccore
   void
   iPdbstream::open () 
   { 
-    header = PdbFileHeader ();
-    rtype = 0;
-    if (rid)
-      delete rid;
-    rid = 0;
-    if (ratom)
-      delete ratom;
-    ratom = 0;
-    modelNb = 1;
-    eomFlag = false;
-    altloc = ' ';
+    this->clear ();
   }
 
 
   void
   iPdbstream::close () 
   { 
-    header = PdbFileHeader ();
-    rtype = 0;
-    if (rid)
-      delete rid;
-    rid = 0;
-    if (ratom)
-      delete ratom;
-    ratom = 0;
-    modelNb = 1;
-    eomFlag = true;
+    this->header.clear ();
+    this->use_cached_line = false;
+    this->eomFlag = true;
+  }
+
+
+  void
+  iPdbstream::clear ()
+  {
+    this->istream::clear ();
+    this->header_read = false;
+    this->use_cached_line = false;
+    this->rtype = ResidueType::rNull;
+    ResId id;
+    this->rid = id;
+    if (this->ratom) delete this->ratom;
+    this->ratom = 0;
+    this->modelNb = 1;
+    this->eomFlag = false;
+    this->altloc = ' ';
+  }
+
+
+  iPdbstream&
+  iPdbstream::readLine (string& line)
+  {
+    if (this->use_cached_line)
+      this->use_cached_line = false;
+    else
+      std::getline (*this, this->cached_line);
+
+    line = this->cached_line;
+    return *this;
+  }
+
+
+  void
+  iPdbstream::unreadLine ()
+  {
+    this->use_cached_line = true;
   }
 
 
   Atom*
   iPdbstream::cacheAtom ()
   {    
-    string line;
+    string rectype, line;
 
     // Cleanup any previous read:
-    rtype = 0;
-    if (rid)
-      delete rid;
-    rid = 0;
-    if (ratom)
-      delete ratom;
+    rtype = ResidueType::rNull;
+    ResId id;
+    this->rid = id;
+    if (ratom) delete ratom;
     ratom = 0;
     
-    while (! eof ())
+    //while (!std::getline (*this, line).eof ())
+    while (!this->readLine (line).eof ())
     {
-      string tag;
-      string field;
-      string copy;
-	
-      while ((std::getline (*this, line), line.length ()) == 0 && ! eof ());
-      if (0 == line.length () && eof ())
-	break;
+      if (this->fail ())
+      {
+	IntLibException ex ("read failed", __FILE__, __LINE__);
+	throw ex;
+      }
 
-      if (LINELENGTH > line.length ())
-	line.resize (LINELENGTH, ' ');
-	
-      tag = line.substr (0, 6);
-      if ("HEADER" == tag)
-      {
-	header.setClassification (trim (copy = line.substr (10, 40)));
-	header.setDate (trim (copy = line.substr (50, 9)));
-	header.setPdbId (trim (copy = line.substr (62, 4)));
+      line.resize (Pdbstream::LINELENGTH, ' ');
+      rectype = Pdbstream::trim (line.substr (0, 6));
+
+      if ("MODEL" == rectype)
+      {	// The eomFlag is reset to false 
       }
-      else if ("TITLE" == tag)
-      {
-	header.setTitle (header.getTitle () + " " + trim (copy = line.substr (10, 60)));
-      }
-      else if ("COMPND" == tag)
-      {
-      }
-      else if ("EXPDTA" == tag)
-      {
-	header.setMethod (header.getMethod () + " " + trim (copy = line.substr (10, 60)));
-      }
-      else if ("REMARK" == tag
-	       && '2' == line[9]
-	       && 0 == line.compare (11, 11, "RESOLUTION.")
-	       && 0 != line.compare (11, 27, "RESOLUTION. NOT APPLICABLE."))
-      {
-	header.setResolution (atof (trim (copy = line.substr (22, 5)).c_str ()));
-      }
-      else if ("MODEL" == tag)
-      {
-	// The eomFlag is reset to false o
-      }
-      else if ("ENDMDL" == tag)
+      else if ("ENDMDL" == rectype)
       {
 	modelNb++;
 	eomFlag = true;
       }
-      else if ("TER   " == tag)
+      else if ("TER" == rectype)
       {
-	    
       }
-      else if ("END   " == tag)
+      else if ("END" == rectype)
       {
 	eomFlag = true;
       }
-      else if ("ATOM  " == tag || "HETATM" == tag)
+      else if ("ATOM" == rectype || "HETATM" == rectype)
       {
+	// ignore this atom if we are in a second alternate location.
 	if (' ' == this->altloc || ' ' == line[16] || line[16] == this->altloc)
 	{
-	  float x, y, z;
+	  int resno = 0;
+	  float x = 0.0, y = 0.0, z = 0.0;
 	  const AtomType *at;
 
 	  this->altloc = line[16];
-	      
-	  x = atof (trim (copy = line.substr (30, 8)).c_str ());
-	  y = atof (trim (copy = line.substr (38, 8)).c_str ());	    
-	  z = atof (trim (copy = line.substr (46, 8)).c_str ());
 
-	  // 	    at = atomTypeParseTable->parseType (trim (copy = line.substr (12, 4)));
-	  copy = line.substr (12, 4);
-	  trim (copy);
-	  at = atomTypeParseTable->parseType (copy);
-	      
-	  rtype = residueTypeParseTable->parseType (trim (copy = line.substr (17, 3)));
-	      
-	  rid = new ResId (line[21],
-			   atoi (trim (copy = line.substr (22, 4)).c_str ()),
-			   line[26]);
-	      
-	  ratom = new Atom (x, y, z, at);
-	    
-	  break;
+	  // -- coordinates
+	  istringstream 
+	    x_iss (line.substr (30, 8)), 
+	    y_iss (line.substr (38, 8)), 
+	    z_iss (line.substr (46, 8));
+	  
+
+	  if (!((x_iss >> x).fail () || 
+		(y_iss >> y).fail () || 
+		(z_iss >> z).fail ()))
+	  {
+	    // -- types
+	    at = atomTypeParseTable->parseType (Pdbstream::trim (line.substr (12, 4)));
+	    rtype = residueTypeParseTable->parseType (Pdbstream::trim (line.substr (17, 3)));
+
+	    // -- ResID
+	    istringstream resno_iss (line.substr (22, 4));
+
+	    if (!(resno_iss >> resno).fail ())
+	    {
+	      // -- create the atom and break the reading loop.
+	      ResId id (line[21], resno, line[26]);
+	      this->rid = id;
+	      ratom = new Atom (x, y, z, at);	    
+	      break;
+	    }
+	  }
+
+	  gErr (1) << "Warning: ignored corrupted ATOM record {" << line << "}." << endl;
 	}
 	else
-	  gOut (3) << "Warning: ignoring atom with alternate location \'"
-		   << line[16] << "\' at line:" << endl
-		   << '[' << line << ']' << endl;
+	  gErr (3) << "Warning: ignored ATOM record with second alternate location {" 
+		   << line << "}." << endl;
       }
     }
       
-    
     return ratom;
   }
 
 
-  string&
-  iPdbstream::trim (string &str)
+  void
+  iPdbstream::_read_header ()
   {
-    string::size_type pos;
-
-    pos = str.find_first_not_of (" ");
-    if (0 != pos)
-      str.erase (0, pos);
-    
-    pos = str.find_last_not_of (" ");
-    if (string::npos != pos)
-      str.erase (pos + 1, str.length () - pos);
-    return str;
+    if (false == this->header_read)
+    {
+      this->header_read = true;
+      *this >> this->header;
+    }
   }
 
 
@@ -373,6 +375,8 @@ namespace mccore
   void
   iPdbstream::read (Atom &at)
   {
+    this->_read_header ();
+
     // Cache an atom if needed.
     if (!ratom)
       cacheAtom (); 
@@ -394,20 +398,22 @@ namespace mccore
   void
   iPdbstream::read (Residue &r)
   {
+    this->_read_header ();
+
     // Cache an atom if needed.
     if (!ratom)
       cacheAtom (); 
     // No atom was found, return.
     if (ratom)
       {
-	ResId previd = *rid;
+	ResId previd = this->rid;
 	const ResidueType* prevtype = rtype;
 
 	eomFlag = false;
 	
 	r.clear ();
 	r.setType (rtype);
-	r.setResId (*rid);
+	r.setResId (rid);
 	r.insert (*ratom);
 	
 	cacheAtom ();
@@ -419,7 +425,7 @@ namespace mccore
 	    2) ResID for current cached atom is different from last read atom.
 	    3) Residue type for current cached atom is different from last read atom.
 	*/
-	while (!eom () && *rid == previd && rtype == prevtype)
+	while (!eom () && this->rid == previd && rtype == prevtype)
 	  {
 	    // Insert the atom.
 	    r.insert (*ratom);      
@@ -459,18 +465,14 @@ namespace mccore
 
   oPdbstream::oPdbstream ()
     : ostream (cout.rdbuf ()),
-      header (),
-      headerdone (false),
-      atomset (0),
-      rtype (0),
-      rid (new ResId ()),
+      header_written (false),
+      atomset (new AtomSetNot (new AtomSetOr (new AtomSetLP (), new AtomSetPSE ()))),
+      rtype (ResidueType::rNull),
       modelnb (1),
       atomCounter (1),
       pdbType (Pdbstream::PDB)
   {
     Pdbstream::init ();
-    atomset = new AtomSetNot (new AtomSetOr (new AtomSetLP (), new AtomSetPSE ()));
-    rtype = ResidueType::parseType ("UNK");
     atomTypeParseTable = Pdbstream::pdbAtomTypeParseTable;
     residueTypeParseTable = Pdbstream::pdbResidueTypeParseTable;
   }
@@ -479,11 +481,9 @@ namespace mccore
 
   oPdbstream::oPdbstream (streambuf* sb)
     : ostream (sb),
-      header (),
-      headerdone (false),
-      atomset (0),
-      rtype (0),
-      rid (new ResId ()),
+      header_written (false),
+      atomset (new AtomSetNot (new AtomSetOr (new AtomSetLP (), new AtomSetPSE ()))),
+      rtype (ResidueType::rNull),
       modelnb (1),
       atomCounter (1),
       pdbType (Pdbstream::PDB)
@@ -491,18 +491,14 @@ namespace mccore
     Pdbstream::init ();
     atomTypeParseTable = Pdbstream::pdbAtomTypeParseTable;
     residueTypeParseTable = Pdbstream::pdbResidueTypeParseTable;
-    atomset = new AtomSetNot (new AtomSetOr (new AtomSetLP (), new AtomSetPSE ()));
-    rtype = ResidueType::parseType ("UNK");
   }
 
 
   oPdbstream::oPdbstream (ostream &os)
     : ostream (os.rdbuf ()),
-      header (),
-      headerdone (false),
-      atomset (0),
-      rtype (0),
-      rid (new ResId ()),
+      header_written (false),
+      atomset (new AtomSetNot (new AtomSetOr (new AtomSetLP (), new AtomSetPSE ()))),
+      rtype (ResidueType::rNull),
       modelnb (1),
       atomCounter (1),
       pdbType (Pdbstream::PDB)
@@ -510,8 +506,6 @@ namespace mccore
     Pdbstream::init ();
     atomTypeParseTable = Pdbstream::pdbAtomTypeParseTable;
     residueTypeParseTable = Pdbstream::pdbResidueTypeParseTable;
-    atomset = new AtomSetNot (new AtomSetOr (new AtomSetLP (), new AtomSetPSE ()));
-    rtype = ResidueType::parseType ("UNK");
   }
 
 
@@ -519,8 +513,6 @@ namespace mccore
   { 
     if (atomCounter != 1)
       close ();
-    if (rid)
-      delete rid;
     delete atomset; 
   }
   
@@ -529,7 +521,7 @@ namespace mccore
   oPdbstream::setAtomSet (const AtomSet& as)
   {
     delete this->atomset;
-    atomset = as.clone ();
+    this->atomset = as.clone ();
   }
 
   
@@ -539,13 +531,11 @@ namespace mccore
     pdbType = type;
     if (Pdbstream::AMBER == type)
       {
-	headerdone = true;
 	atomTypeParseTable = Pdbstream::amberAtomTypeParseTable;
 	residueTypeParseTable = Pdbstream::amberResidueTypeParseTable;
       }
     else
       {
-	headerdone = false;
 	atomTypeParseTable = Pdbstream::pdbAtomTypeParseTable;
 	residueTypeParseTable = Pdbstream::pdbResidueTypeParseTable;
       }	
@@ -555,98 +545,159 @@ namespace mccore
   void
   oPdbstream::open () 
   { 
-    header = PdbFileHeader ();
-    headerdone = false;
-    rtype = 0;
-    if (rid) delete rid;
-    rid = new ResId ();
-    modelnb = 1;
-    atomCounter = 1;
+    this->clear ();
   }
   
 
   void
   oPdbstream::close () 
   {
-    end ();
-
-    header = PdbFileHeader ();
-    headerdone = false;
-    rtype = 0;
-    if (rid) delete rid;
-    rid = new ResId ();
-    modelnb = 1;
-    atomCounter = 1;
+    this->end ();
+    this->header.clear ();
   }
 
 
   void
-  oPdbstream::writeHeader ()
+  oPdbstream::clear () 
   {
-    headerdone = true;
+    this->ostream::clear ();
+    this->header_written = false;
+    this->rtype = ResidueType::rNull;
+    ResId id;
+    this->rid = id;
+    this->modelnb = 1;
+    this->atomCounter = 1;
+  }
 
-    char line[81];
 
-    setf (ios::left, ios::adjustfield);
-    *this << setw (6) << "HEADER";
-    *this << "    ";
-    
-    setf (ios::left, ios::adjustfield);
-    *this << setw (40) << header.getClassification ().c_str();
-
-    *this << setw (9) << header.getDate ().c_str();
-    *this << "   ";
-    *this << setw (4) << header.getPdbId ().c_str();
-    pad (14);
-    *this << endl;
-
-    setf (ios::left, ios::adjustfield);
-    *this << setw (6) << "EXPDTA";
-    setf (ios::right, ios::adjustfield);
-    *this << "    " << "THEORETICAL MODEL";
-    pad (53);
-    *this << endl;
-    
-    setf (ios::left, ios::adjustfield);
-    *this << setw (6) << "AUTHOR";
-    setf (ios::right, ios::adjustfield);
-    gethostname (line, 80);
-    *this << "    " << getenv ("LOGNAME") << '@' << line << endl;
-   
-    if (header.getTitle () != "") {
-      *this << setw (6) << "TITLE";
-      *this << "    ";
-      *this << setw (60) << header.getTitle ().c_str();
-      pad (10);
-      *this << endl;
+  void
+  oPdbstream::_write_header ()
+  {
+    if (false == this->header_written)
+    {
+      this->header_written = true;
+      *this << this->header;
     }
-
-    sprintf (line, "FILE GENERATED WITH %s %s", PACKAGE, VERSION);
-    writeRemark (10, line);
   }
 
 
   void
-  oPdbstream::writeRemark (int k, const char* rem)
+  oPdbstream::writeRecord (const string& name, const string& text)
   {
-    if (!headerdone) writeHeader ();
+    this->_write_header ();
 
-    setf (ios::left, ios::adjustfield);
-    *this << setw (6) << "REMARK";
-    *this << " ";
-    setf (ios::right, ios::adjustfield);
-    *this << setw (3) << k;
-    *this << " ";
-    setf (ios::left, ios::adjustfield);
-    *this << setw (69) << rem;
-    *this << endl;
+    string line;
+    string::size_type recbeg, reclen, linelen, linebeg, lineend, textlen;
+    int continuation = 0;
+
+    // -- preformat record
+
+    string rectype = Pdbstream::trim (name);
+    rectype.resize (8, ' ');
+
+
+    // -- write multiline record keeping original line wrapping when possible
+
+    linebeg = recbeg = 0;
+    textlen = text.size ();
+    reclen = Pdbstream::LINELENGTH - 10;
+
+    do // wrap using given newlines
+    {
+      lineend = text.find_first_of ("\n\r\f", linebeg);
+      line = text.substr (linebeg, lineend - linebeg);
+      recbeg = 0;
+      linelen = line.size ();
+      
+      do // wrap into LINELENGTH columns
+      {
+	*this << rectype;
+
+	if (++continuation > 1)
+	{
+	  // continuation for line 2 and onward: 
+	  // space is added at column 11 before line text
+	  this->setf (ios::right, ios::adjustfield);
+	  this->width (2);
+	  *this << continuation;
+	  if (line[recbeg] != ' ') 
+	    *this << ' ';
+	  reclen = Pdbstream::LINELENGTH - 11;
+	}
+	else
+	  *this << "  ";
+
+	this->setf (ios::left, ios::adjustfield);
+	this->width (reclen);
+	*this << line.substr (recbeg, reclen) << endl;
+	recbeg += reclen;
+      }
+      while (recbeg < linelen);
+
+      linebeg = lineend + 1;
+    }
+    while (string::npos != lineend && linebeg < textlen);
+
   }
+
+
+  void
+  oPdbstream::writeRemark (const string& text, int k)
+  {
+    this->_write_header ();
+
+    string line;
+    string::size_type recbeg, reclen, linelen, linebeg, lineend, textlen;
+    ostringstream rectype_oss;
+
+    rectype_oss << "REMARK ";
+    rectype_oss.setf (ios::right, ios::adjustfield);
+    rectype_oss.width (3);
+    rectype_oss << (k > 999 ? 999 : k) << ' ';
+
+    reclen = Pdbstream::LINELENGTH - rectype_oss.str ().size ();
+    
+    // -- first remark line is blank
+
+    *this << rectype_oss.str ();
+    this->width (reclen);
+    *this << ' ' << endl;
+
+
+    // -- write multiline remark keeping original line wrapping when possible
+    
+    linebeg = recbeg = 0;
+    textlen = text.size ();
+
+    do // wrap using given newlines
+    {
+      lineend = text.find_first_of ("\n\r\f", linebeg);
+      line = text.substr (linebeg, lineend - linebeg);
+      recbeg = 0;
+      linelen = line.size ();
+      
+      do // wrap into LINELENGTH columns
+      {
+	*this << rectype_oss.str ();
+	this->setf (ios::left, ios::adjustfield);
+	this->width (reclen);
+	*this << line.substr (recbeg, reclen) << endl;
+	recbeg += reclen;
+      }
+      while (recbeg < linelen);
+
+      linebeg = lineend + 1;
+    }
+    while (string::npos != lineend && linebeg < textlen);
+  }
+
+
 
 
   void
   oPdbstream::startModel () 
   {
-    if (!headerdone) writeHeader ();
+    this->_write_header ();
 
     setf (ios::left, ios::adjustfield);
     *this << setw (6) << "MODEL";
@@ -661,7 +712,7 @@ namespace mccore
   void
   oPdbstream::endModel () 
   {
-    if (!headerdone) writeHeader ();
+    this->_write_header ();
 
     setf (ios::left, ios::adjustfield);
     *this << setw (6) << "ENDMDL";
@@ -673,6 +724,8 @@ namespace mccore
   void
   oPdbstream::ter () 
   {
+    this->_write_header ();
+
     if (Pdbstream::PDB == pdbType)
       {
 	setf (ios::left, ios::adjustfield);
@@ -683,10 +736,10 @@ namespace mccore
 	setf (ios::right, ios::adjustfield);
 	*this << setw (3) << residueTypeParseTable->toString (rtype);
 	*this << ' ';
-	*this << rid->getChainId ();
+	*this << this->rid.getChainId ();
 	setf (ios::right, ios::adjustfield);
-	*this << setw (4) << rid->getResNo ();
-	*this << rid->getInsertionCode ();
+	*this << setw (4) << this->rid.getResNo ();
+	*this << this->rid.getInsertionCode ();
 	pad (53);
 	*this << endl;
       }
@@ -694,35 +747,10 @@ namespace mccore
 
 
   void
-  oPdbstream::putconect (const Model &model)
-  {
-    Model::const_iterator cit1, cit2;
-    
-    for (cit2 = model.begin (), cit1 = cit2++;
-	 cit2 != model.end ();
-	 ++cit1, ++cit2)
-      if ((cit1->getResId ().getChainId () == cit2->getResId ().getChainId ())
-	  && (cit1->getResId ().getResNo () + 1 == cit2->getResId ().getResNo ()))
-	{
-	  Residue::const_iterator a, b;
-	  
-	  a = cit1->find (AtomType::aO3p);
-	  b = cit2->find (AtomType::aP);
-	  if (a != (*cit1).end () && b != (*cit2).end ())
-	    {
-	      setf (ios::left, ios::adjustfield);
-	      *this << setw (6) << "CONECT";
-	      setf (ios::right, ios::adjustfield);
-	      *this << setw (5) << (*a).getSerialNo ()
-		    << setw (5) << (*b).getSerialNo () << endl;
-	    }
-	}
-  }
-
-
-  void
   oPdbstream::end () 
   {
+    this->_write_header ();
+
     setf (ios::left, ios::adjustfield);
     *this << setw (6) << "END";
     pad (74);
@@ -733,19 +761,18 @@ namespace mccore
   void
   oPdbstream::pad (int i) 
   {
-    while (i-->0) {
-      *this << ' ';
-    }
+    this->fill (' ');
+    this->width (i);
+    *this << ' ';
   }
 
 
   void
   oPdbstream::write (const Atom& at)
   {
+    this->_write_header ();
+
     string type;
-    
-    if (! headerdone)
-      writeHeader ();
 
     setf (ios::left, ios::adjustfield);
     if (rtype->isUnknown ())
@@ -771,12 +798,12 @@ namespace mccore
 
     *this << ' ';
 
-    *this << rid->getChainId ();
+    *this << this->rid.getChainId ();
 
     setf (ios::right, ios::adjustfield);
-    *this << setw (4) << rid->getResNo ();
+    *this << setw (4) << this->rid.getResNo ();
     
-    *this << rid->getInsertionCode ();
+    *this << this->rid.getInsertionCode ();
 
     *this << "   ";  // EMPTY SPACE!
 
@@ -795,8 +822,6 @@ namespace mccore
     else
       pad (26);
 
-    at.setSerialNo (atomCounter);
-
     if (atomCounter > 99999)
       atomCounter = 1;
   }
@@ -805,10 +830,9 @@ namespace mccore
   void
   oPdbstream::write (const Residue& r)
   {
+    this->_write_header ();
+
     Residue::const_iterator it;
-    
-    if (!headerdone)
-      writeHeader ();
 
     setResidueType (r.getType ());
     setResId (r.getResId ());
