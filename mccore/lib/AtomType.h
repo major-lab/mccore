@@ -3,7 +3,7 @@
 // Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
-// $Revision: 1.28 $
+// $Revision: 1.29 $
 // 
 //  This file is part of mccore.
 //  
@@ -25,14 +25,13 @@
 #ifndef _AtomType_h_
 #define _AtomType_h_
 
+
 #include <iostream>
-#include <typeinfo>
-#include <set>
+#include <string>
 
 #include "Vector3D.h"
 
 using namespace std;
-
 
 
 namespace mccore
@@ -57,7 +56,7 @@ namespace mccore
    *   - The charge and van der Waals radius<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: AtomType.h,v 1.28 2004-10-07 20:40:46 thibaup Exp $ 
+   * @version $Id: AtomType.h,v 1.29 2004-10-15 20:34:27 thibaup Exp $ 
    */
   class AtomType 
   {
@@ -66,12 +65,10 @@ namespace mccore
      */
     static AtomTypeStore atstore;
 
-  protected:
-    
     /**
-     * The type.
+     * The type key string.
      */
-    char* type;
+    string key;
 
   protected: 
 
@@ -84,10 +81,9 @@ namespace mccore
 
     /**
      * Initializes the object.
-     * @param t the string representation of the type.
-     * @param p the set of properties for this type.
+     * @param ks the string representation of the type key.
      */
-    AtomType (const char* t);
+    AtomType (const string& ks);
     
     /**
      * (Disallow copy constructor) Initializes the object with another atom type.
@@ -110,9 +106,9 @@ namespace mccore
     // FUNCTION OBJECTS --------------------------------------------------------
 
     /**
-     * @short less comparator for Atomtypes.
+     * @short less comparator on derefenced type pointers
      */
-    struct less
+    struct less_deref
     {
       /**
        * Tests whether the first atomtype is less than the second. 
@@ -137,7 +133,9 @@ namespace mccore
      * false otherwise.
      */
     bool operator== (const AtomType &other) const
-    { return strcmp (type, other.type) == 0; }
+    {
+      return this->key == other.key;
+    }
 
     /**
      * Indicates whether some other atom is "not equal to" this one.
@@ -146,7 +144,9 @@ namespace mccore
      * false otherwise.
      */
     bool operator!= (const AtomType &other) const 
-    { return ! operator== (other); }
+    {
+      return ! operator== (other);
+    }
 
     /**
      * Imposes a total ordering on the AtomType objects.
@@ -154,22 +154,58 @@ namespace mccore
      * @return true if this atom type is less than the other.
      */
     bool operator< (const AtomType &other) const
-    { return strcmp (type, other.type) < 0; }
+    {
+      return this->key < other.key;
+    }
+
+    bool operator<= (const AtomType &other) const
+    {
+      return this->key < other.key || this->key == other.key;
+    }
+
+    bool operator> (const AtomType &other) const
+    {
+      return !this->operator<= (other);
+    }
+
+    bool operator>= (const AtomType &other) const
+    {
+      return !this->operator< (other);
+    }
 
     /**
      * Converts the atomtype into a string.
      * @return the string.
      */
-    virtual operator const char* () const { return type; }
+    virtual operator const char* () const
+    {
+      return this->key.c_str ();
+    }
         
     // METHODS -----------------------------------------------------------------
 
     /**
+     * Converts the residuetype into a stl string.
+     * @return the string.
+     */
+    virtual const string& toString () const
+    {
+      return this->key;
+    }
+    
+    /**
      * Identifies the type of atom stored in a string.
-     * @param t the string.
+     * @param str the c string.
      * @return an atom type for the string.
      */
-    static const AtomType* parseType (const char* t);
+    static const AtomType* parseType (const char* str);
+
+    /**
+     * Identifies the type of atom stored in a string.
+     * @param str the stl string.
+     * @return an atom type for the string.
+     */
+    static const AtomType* parseType (const string& str);
 
     /**
      * General is method for use when both objects to compare are of
@@ -185,9 +221,23 @@ namespace mccore
      * @return the truth value of the test.
      */
     virtual bool describe (const AtomType *t) const {
-      return t == this;
+      return dynamic_cast< const AtomType* > (t);
     }
     
+    /**
+     * is Null?
+     */
+    virtual bool isNull() const {
+      return false;
+    }
+    
+    /**
+     * is Unknown?
+     */
+    virtual bool isUnknown() const {
+      return false;
+    }
+       
     /** 
      * is NucleicAcid?
      */
@@ -200,69 +250,6 @@ namespace mccore
      */
     virtual bool isAminoAcid () const {
       return false;
-    }
-    
-    /** 
-     * is Hydrogen?
-     */
-    virtual bool isHydrogen () const {
-      return (getFirstLetter () == 'H');
-    }
-
-    /** 
-     * is Carbon?
-     */
-    virtual bool isCarbon () const {
-      return (getFirstLetter () == 'C');
-    }
-    
-    /** 
-     * is Nitrogen?
-     */
-    virtual bool isNitrogen () const {
-      return (getFirstLetter () == 'N');
-    }
-    
-    /** 
-     * is Phosphorus?
-     */
-    virtual bool isPhosphorus () const {
-      return (getFirstLetter () == 'P');
-    }
-    
-    /** 
-     * is Oxygen?
-     */
-    virtual bool isOxygen () const {
-      return (getFirstLetter () == 'O');
-    }
-
-    /** 
-     * is Sulfur?
-     */
-    virtual bool isSulfur () const {
-      return (getFirstLetter () == 'S');
-    }
-    
-    /** 
-     * is Lone pair?
-     */
-    virtual bool isLonePair () const {
-      return (getFirstLetter () == 'L');
-    }
-    
-    /** 
-     * is Magnesium?
-     */
-    virtual bool isMagnesium () const {
-      return (getFirstLetter () == 'M');
-    }
-    
-    /** 
-     * is Pseudo?
-     */
-    virtual bool isPseudo () const {
-      return (strlen (type) > 1 && type[0] == 'P' && type[1] == 'S');
     }
     
     /**
@@ -286,14 +273,70 @@ namespace mccore
     virtual bool isSideChain () const {
       return false;
     }
-
-    /**
-     * is Unknown?  
+    
+    /** 
+     * is Hydrogen?
      */
-    virtual bool isUnknown () const {
-      return (typeid (*this) == typeid (AtomType));
+    virtual bool isHydrogen () const {
+      return false;
     }
-        
+
+    /** 
+     * is Carbon?
+     */
+    virtual bool isCarbon () const {
+      return false;
+    }
+    
+    /** 
+     * is Nitrogen?
+     */
+    virtual bool isNitrogen () const {
+      return false;
+    }
+    
+    /** 
+     * is Phosphorus?
+     */
+    virtual bool isPhosphorus () const {
+      return false;
+    }
+    
+    /** 
+     * is Oxygen?
+     */
+    virtual bool isOxygen () const {
+      return false;
+    }
+
+    /** 
+     * is Sulfur?
+     */
+    virtual bool isSulfur () const {
+      return false;
+    }
+    
+    /** 
+     * is Lone pair?
+     */
+    virtual bool isLonePair () const {
+      return false;
+    }
+
+    /** 
+     * is Pseudo?
+     */
+    virtual bool isPseudo () const {
+      return false;
+    }
+    
+    /** 
+     * is Magnesium?
+     */
+    virtual bool isMagnesium () const {
+      return false;
+    }
+            
     /**
      * Gets the Van Der Waals radius value for the atom.
      * @param res the residue that contains the atom.
@@ -320,20 +363,10 @@ namespace mccore
      * @param type the atom type.
      * @return the Vector3D color in RGB format.
      */
-    static Vector3D getColor (const AtomType *type);
+    virtual Vector3D getColor () const {
+      return Vector3D (0.10, 0.10, 0.10);
+    }
     
-  private:
-
-    // PRIVATE METHODS ---------------------------------------------------------
-    
-    /**
-     * Identifies the first letter in the type.
-     * @return the letter.
-     */
-    char getFirstLetter () const;
- 
-  public:
-
     // I/O ---------------------------------------------------------------------
 
     /**
@@ -355,6 +388,7 @@ namespace mccore
     // TYPE POINTERS -----------------------------------------------------------
 
     static AtomType* aNull;
+    static AtomType* aUnknown;
     static AtomType* aC1p;
     static AtomType* aC2p;
     static AtomType* aC3p;

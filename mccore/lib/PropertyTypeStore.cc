@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:42:25 2003
-// $Revision: 1.9 $
-// $Id: PropertyTypeStore.cc,v 1.9 2004-09-19 03:36:46 larosem Exp $
+// $Revision: 1.10 $
+// $Id: PropertyTypeStore.cc,v 1.10 2004-10-15 20:34:54 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -27,248 +27,227 @@
 #include <config.h>
 #endif
 
-#include <set>
-#include <string>
 
 #include "PropertyTypeStore.h"
-#include "PropertyType.h"
 
-namespace mccore {
+
+namespace mccore
+{
 
 
   // LIFECYCLE -----------------------------------------------------------------
 
   PropertyTypeStore::PropertyTypeStore () 
   {
-    stringType[""] = PropertyType::pNull = new PropertyType ("");
-    stringType["theo"] = PropertyType::pTheo = new Theo ("theo");
-    stringType["pairing"] = PropertyType::pPairing = new Pairing ("pairing");
-    stringType["cis"] = PropertyType::pCis = new Cis ("cis");
-    stringType["trans"] = PropertyType::pTrans = new Trans ("trans");
-    stringType["stack"] = PropertyType::pStack = new Stack ("stack");
-    stringType["reverse"] = PropertyType::pReverse = new Reverse ("reverse");
-    stringType["adjacent"] = PropertyType::pAdjacent = new Adjacent ("adjacent");
-    stringType["type_A"] = PropertyType::pType_A = new Type_A ("type_A");
-    stringType["type_B"] = PropertyType::pType_B = new Type_B ("type_B");
-    stringType["helix"] = PropertyType::pHelix = new Helix ("helix");
-    stringType["C1p_endo"] = PropertyType::pC1p_endo = new C1p_endo ("C1p_endo");
-    stringType["C1'_endo"] = PropertyType::pC1p_endo;
-    stringType["C1p_exo"] = PropertyType::pC1p_exo = new C1p_exo ("C1p_exo");
-    stringType["C1'_exo"] = PropertyType::pC1p_exo;
-    stringType["C2p_endo"] = PropertyType::pC2p_endo = new C2p_endo ("C2p_endo");
-    stringType["C2'_endo"] = PropertyType::pC2p_endo;
-    stringType["C2p_exo"] = PropertyType::pC2p_exo = new C2p_exo ("C2p_exo");
-    stringType["C2'_exo"] = PropertyType::pC2p_exo;
-    stringType["C3p_endo"] = PropertyType::pC3p_endo = new C3p_endo ("C3p_endo");
-    stringType["C3'_endo"] = PropertyType::pC3p_endo;
-    stringType["C3p_exo"] = PropertyType::pC3p_exo = new C3p_exo ("C3p_exo");
-    stringType["C3'_exo"] = PropertyType::pC3p_exo;
-    stringType["C4p_endo"] = PropertyType::pC4p_endo = new C4p_endo ("C4p_endo");
-    stringType["C4'_endo"] = PropertyType::pC4p_endo;
-    stringType["C4p_exo"] = PropertyType::pC4p_exo = new C4p_exo ("C4p_exo");
-    stringType["C4'_exo"] = PropertyType::pC4p_exo;
-    stringType["O4p_endo"] = PropertyType::pO4p_endo = new O4p_endo ("O4p_endo");
-    stringType["O4'_endo"] = PropertyType::pO4p_endo;
-    stringType["O4p_exo"] = PropertyType::pO4p_exo = new O4p_exo ("O4p_exo");
-    stringType["O4'_exo"] = PropertyType::pO4p_exo;
-    stringType["anti"] = PropertyType::pAnti = new Anti ("anti");
-    stringType["syn"] = PropertyType::pSyn = new Syn ("syn");
-    stringType["DIR_5p"] = PropertyType::pDIR_5p = new DIR_5p ("DIR_5p");
-    stringType["DIR_3p"] = PropertyType::pDIR_3p = new DIR_3p ("DIR_3p");
-    stringType["DIR_ANY"] = PropertyType::pDIR_ANY = new DIR_ANY ("DIR_ANY");
-    // 	stringType.put ("dir_sh", pDIR_SH = new PropertyType.DIR_SH ("DIR_SH"));
-    // 	stringType.put ("dir_hs", pDIR_HS = new PropertyType.DIR_HS ("DIR_HS"));
-    stringType["saenger"] = PropertyType::pSaenger = new Saenger ("saenger");
-    stringType["wc"] = PropertyType::pWC = new WC ("wc");
-    stringType["wobble"] = PropertyType::pWobble = new Wobble ("wobble");
-    stringType["I"] = PropertyType::pI = new PI ("I");
-    stringType["II"] = PropertyType::pII = new PII ("II");
-    stringType["III"] = PropertyType::pIII = new PIII ("III");
-    stringType["IV"] = PropertyType::pIV = new PIV ("IV");
-    stringType["V"] = PropertyType::pV = new PV ("V");
-    stringType["VI"] = PropertyType::pVI = new PVI ("VI");
-    stringType["VII"] = PropertyType::pVII = new PVII ("VII");
-    stringType["VIII"] = PropertyType::pVIII = new PVIII ("VIII");
-    stringType["IX"] = PropertyType::pIX = new PIX ("IX");
-    stringType["X"] = PropertyType::pX = new PX ("X");
-    stringType["XI"] = PropertyType::pXI = new PXI ("XI");
-    stringType["XII"] = PropertyType::pXII = new PXII ("XII");
-    stringType["XIII"] = PropertyType::pXIII = new PXIII ("XIII");
-    stringType["XIV"] = PropertyType::pXIV = new PXIV ("XIV");
-    stringType["XV"] = PropertyType::pXV = new PXV ("XV");
-    stringType["XVI"] = PropertyType::pXVI = new PXVI ("XVI");
-    stringType["XVII"] = PropertyType::pXVII = new PXVII ("XVII");
-    stringType["XVIII"] = PropertyType::pXVIII = new PXVIII ("XVIII");
-    stringType["XIX"] = PropertyType::pXIX = new PXIX ("XIX");
-    stringType["XX"] = PropertyType::pXX = new PXX ("XX");
-    stringType["XXI"] = PropertyType::pXXI = new PXXI ("XXI");
-    stringType["XXII"] = PropertyType::pXXII = new PXXII ("XXII");
-    stringType["XXIII"] = PropertyType::pXXIII = new PXXIII ("XXIII");
-    stringType["XXIV"] = PropertyType::pXXIV = new PXXIV ("XXIV");
-    stringType["XXV"] = PropertyType::pXXV = new PXXV ("XXV");
-    stringType["XXVI"] = PropertyType::pXXVI = new PXXVI ("XXVI");
-    stringType["XXVII"] = PropertyType::pXXVII = new PXXVII ("XXVII");
-    stringType["XXVIII"] = PropertyType::pXXVIII = new PXXVIII ("XXVIII");
-    stringType["one_hbond"] = PropertyType::pOneHbond = new OneHbond ("one_hbond");
-    stringType["29"] = PropertyType::p29 = new P29 ("29");
-    stringType["30"] = PropertyType::p30 = new P30 ("30");
-    stringType["31"] = PropertyType::p31 = new P31 ("31");
-    stringType["32"] = PropertyType::p32 = new P32 ("32");
-    stringType["33"] = PropertyType::p33 = new P33 ("33");
-    stringType["34"] = PropertyType::p34 = new P34 ("34");
-    stringType["35"] = PropertyType::p35 = new P35 ("35");
-    stringType["36"] = PropertyType::p36 = new P36 ("36");
-    stringType["37"] = PropertyType::p37 = new P37 ("37");
-    stringType["38"] = PropertyType::p38 = new P38 ("38");
-    stringType["39"] = PropertyType::p39 = new P39 ("39");
-    stringType["40"] = PropertyType::p40 = new P40 ("40");
-    stringType["41"] = PropertyType::p41 = new P41 ("41");
-    stringType["42"] = PropertyType::p42 = new P42 ("42");
-    stringType["43"] = PropertyType::p43 = new P43 ("43");
-    stringType["44"] = PropertyType::p44 = new P44 ("44");
-    stringType["45"] = PropertyType::p45 = new P45 ("45");
-    stringType["46"] = PropertyType::p46 = new P46 ("46");
-    stringType["47"] = PropertyType::p47 = new P47 ("47");
-    stringType["48"] = PropertyType::p48 = new P48 ("48");
-    stringType["49"] = PropertyType::p49 = new P49 ("49");
-    stringType["50"] = PropertyType::p50 = new P50 ("50");
-    stringType["51"] = PropertyType::p51 = new P51 ("51");
-    stringType["52"] = PropertyType::p52 = new P52 ("52");
-    stringType["53"] = PropertyType::p53 = new P53 ("53");
-    stringType["54"] = PropertyType::p54 = new P54 ("54");
-    stringType["55"] = PropertyType::p55 = new P55 ("55");
-    stringType["56"] = PropertyType::p56 = new P56 ("56");
-    stringType["57"] = PropertyType::p57 = new P57 ("57");
-    stringType["58"] = PropertyType::p58 = new P58 ("58");
-    stringType["59"] = PropertyType::p59 = new P59 ("59");
-    stringType["60"] = PropertyType::p60 = new P60 ("60");
-    stringType["61"] = PropertyType::p61 = new P61 ("61");
-    stringType["62"] = PropertyType::p62 = new P62 ("62");
-    stringType["63"] = PropertyType::p63 = new P63 ("63");
-    stringType["64"] = PropertyType::p64 = new P64 ("64");
-    stringType["65"] = PropertyType::p65 = new P65 ("65");
-    stringType["66"] = PropertyType::p66 = new P66 ("66");
-    stringType["67"] = PropertyType::p67 = new P67 ("67");
-    stringType["68"] = PropertyType::p68 = new P68 ("68");
-    stringType["69"] = PropertyType::p69 = new P69 ("69");
-    stringType["70"] = PropertyType::p70 = new P70 ("70");
-    stringType["71"] = PropertyType::p71 = new P71 ("71");
-    stringType["72"] = PropertyType::p72 = new P72 ("72");
-    stringType["73"] = PropertyType::p73 = new P73 ("73");
-    stringType["74"] = PropertyType::p74 = new P74 ("74");
-    stringType["75"] = PropertyType::p75 = new P75 ("75");
-    stringType["76"] = PropertyType::p76 = new P76 ("76");
-    stringType["77"] = PropertyType::p77 = new P77 ("77");
-    stringType["78"] = PropertyType::p78 = new P78 ("78");
-    stringType["79"] = PropertyType::p79 = new P79 ("79");
-    stringType["80"] = PropertyType::p80 = new P80 ("80");
-    stringType["81"] = PropertyType::p81 = new P81 ("81");
-    stringType["82"] = PropertyType::p82 = new P82 ("82");
-    stringType["83"] = PropertyType::p83 = new P83 ("83");
-    stringType["84"] = PropertyType::p84 = new P84 ("84");
-    stringType["85"] = PropertyType::p85 = new P85 ("85");
-    stringType["86"] = PropertyType::p86 = new P86 ("86");
-    stringType["87"] = PropertyType::p87 = new P87 ("87");
-    stringType["88"] = PropertyType::p88 = new P88 ("88");
-    stringType["89"] = PropertyType::p89 = new P89 ("89");
-    stringType["90"] = PropertyType::p90 = new P90 ("90");
-    stringType["91"] = PropertyType::p91 = new P91 ("91");
-    stringType["92"] = PropertyType::p92 = new P92 ("92");
-    stringType["93"] = PropertyType::p93 = new P93 ("93");
-    stringType["94"] = PropertyType::p94 = new P94 ("94");
-    stringType["95"] = PropertyType::p95 = new P95 ("95");
-    stringType["96"] = PropertyType::p96 = new P96 ("96");
-    stringType["97"] = PropertyType::p97 = new P97 ("97");
-    stringType["98"] = PropertyType::p98 = new P98 ("98");
-    stringType["99"] = PropertyType::p99 = new P99 ("99");
-    stringType["100"] = PropertyType::p100 = new P100 ("100");
-    stringType["101"] = PropertyType::p101 = new P101 ("101");
-    stringType["102"] = PropertyType::p102 = new P102 ("102");
-    stringType["103"] = PropertyType::p103 = new P103 ("103");
-    stringType["104"] = PropertyType::p104 = new P104 ("104");
-    stringType["105"] = PropertyType::p105 = new P105 ("105");
-    stringType["106"] = PropertyType::p106 = new P106 ("106");
-    stringType["108"] = PropertyType::p108 = new P108 ("108");
-    stringType["109"] = PropertyType::p109 = new P109 ("109");
-    stringType["110"] = PropertyType::p110 = new P110 ("110");
-    stringType["111"] = PropertyType::p111 = new P111 ("111");
-    stringType["112"] = PropertyType::p112 = new P112 ("112");
-    stringType["113"] = PropertyType::p113 = new P113 ("113");
-    stringType["114"] = PropertyType::p114 = new P114 ("114");
-    stringType["115"] = PropertyType::p115 = new P115 ("115");
-    stringType["116"] = PropertyType::p116 = new P116 ("116");
-    stringType["117"] = PropertyType::p117 = new P117 ("117");
-    stringType["118"] = PropertyType::p118 = new P118 ("118");
-    stringType["119"] = PropertyType::p119 = new P119 ("119");
-    stringType["120"] = PropertyType::p120 = new P120 ("120");
-    stringType["121"] = PropertyType::p121 = new P121 ("121");
-    stringType["122"] = PropertyType::p122 = new P122 ("122");
-    stringType["123"] = PropertyType::p123 = new P123 ("123");
-    stringType["124"] = PropertyType::p124 = new P124 ("124");
-    stringType["125"] = PropertyType::p125 = new P125 ("125");
-    stringType["126"] = PropertyType::p126 = new P126 ("126");
-    stringType["127"] = PropertyType::p127 = new P127 ("127");
-    stringType["128"] = PropertyType::p128 = new P128 ("128");
-    stringType["129"] = PropertyType::p129 = new P129 ("129");
-    stringType["130"] = PropertyType::p130 = new P130 ("130");
-    stringType["131"] = PropertyType::p131 = new P131 ("131");
-    stringType["132"] = PropertyType::p132 = new P132 ("132");
-    stringType["133"] = PropertyType::p133 = new P133 ("133");
-    stringType["134"] = PropertyType::p134 = new P134 ("134");
-    stringType["135"] = PropertyType::p135 = new P135 ("135");
-    stringType["136"] = PropertyType::p136 = new P136 ("136");
-    stringType["137"] = PropertyType::p137 = new P137 ("137");
-    // 	stringType.put ("wct", pwct = new PropertyType.wct ("wct"));
-    //     public static PropertyType pconnect;
-    //     public static PropertyType pwobblet;
-    //     public static PropertyType pnon_adjacent;
-    //     public static PropertyType pstrong;
-    //     public static PropertyType pweak;
-    //     public static PropertyType pnostack;
-    stringType["W"] = PropertyType::pW = new PW ("W");
-    stringType["S"] = PropertyType::pS = new PS ("S");
-    stringType["H"] = PropertyType::pH = new PH ("H");
-    stringType["Ws"] = PropertyType::pWs = new PWs ("Ws");
-    stringType["Ww"] = PropertyType::pWw = new PWw ("Ww");
-    stringType["Wh"] = PropertyType::pWh = new PWh ("Wh");
-    stringType["Sw"] = PropertyType::pSw = new PSw ("Sw");
-    stringType["Ss"] = PropertyType::pSs = new PSs ("Ss");
-    stringType["Hw"] = PropertyType::pHw = new PHw ("Hw");
-    stringType["Hh"] = PropertyType::pHh = new PHh ("Hh");
-    stringType["C8"] = PropertyType::pC8 = new PC8 ("C8");
-    stringType["Bs"] = PropertyType::pBs = new PBs ("Bs");
-    stringType["Bh"] = PropertyType::pBh = new PBh ("Bh");    
+    PropertyType::pNull = *this->repository.insert (new Null (string (""))).first;
+    PropertyType::pUnknown = *this->repository.insert (new Unknown (string ("unknown"))).first;
+    PropertyType::pTheo = *this->repository.insert (new Theo (string ("theo"))).first;
+    PropertyType::pPairing = *this->repository.insert (new Pairing (string ("pairing"))).first;
+    PropertyType::pCis = *this->repository.insert (new Cis (string ("cis"))).first;
+    PropertyType::pTrans = *this->repository.insert (new Trans (string ("trans"))).first;
+    PropertyType::pStack = *this->repository.insert (new Stack (string ("stack"))).first;
+    PropertyType::pReverse = *this->repository.insert (new Reverse (string ("reverse"))).first;
+    PropertyType::pAdjacent = *this->repository.insert (new Adjacent (string ("adjacent"))).first;
+    PropertyType::pType_A = *this->repository.insert (new Type_A (string ("type_A"))).first;
+    PropertyType::pType_B = *this->repository.insert (new Type_B (string ("type_B"))).first;
+    PropertyType::pHelix = *this->repository.insert (new Helix (string ("helix"))).first;
+    PropertyType::pC1p_endo = *this->repository.insert (new C1p_endo (string ("C1p_endo"))).first;
+    PropertyType::pC1p_exo = *this->repository.insert (new C1p_exo (string ("C1p_exo"))).first;
+    PropertyType::pC2p_endo = *this->repository.insert (new C2p_endo (string ("C2p_endo"))).first;
+    PropertyType::pC2p_exo = *this->repository.insert (new C2p_exo (string ("C2p_exo"))).first;
+    PropertyType::pC3p_endo = *this->repository.insert (new C3p_endo (string ("C3p_endo"))).first;
+    PropertyType::pC3p_exo = *this->repository.insert (new C3p_exo (string ("C3p_exo"))).first;
+    PropertyType::pC4p_endo = *this->repository.insert (new C4p_endo (string ("C4p_endo"))).first;
+    PropertyType::pC4p_exo = *this->repository.insert (new C4p_exo (string ("C4p_exo"))).first;
+    PropertyType::pO4p_endo = *this->repository.insert (new O4p_endo (string ("O4p_endo"))).first;
+    PropertyType::pO4p_exo = *this->repository.insert (new O4p_exo (string ("O4p_exo"))).first;
+    PropertyType::pAnti = *this->repository.insert (new Anti (string ("anti"))).first;
+    PropertyType::pSyn = *this->repository.insert (new Syn (string ("syn"))).first;
+    PropertyType::pDIR_5p = *this->repository.insert (new DIR_5p (string ("DIR_5p"))).first;
+    PropertyType::pDIR_3p = *this->repository.insert (new DIR_3p (string ("DIR_3p"))).first;
+    PropertyType::pDIR_ANY = *this->repository.insert (new DIR_ANY (string ("DIR_ANY"))).first;
+    PropertyType::pSaenger = *this->repository.insert (new Saenger (string ("saenger"))).first;
+    PropertyType::pWC = *this->repository.insert (new WC (string ("wc"))).first;
+    PropertyType::pWobble = *this->repository.insert (new Wobble (string ("wobble"))).first;
+    PropertyType::pI = *this->repository.insert (new PI (string ("I"))).first;
+    PropertyType::pII = *this->repository.insert (new PII (string ("II"))).first;
+    PropertyType::pIII = *this->repository.insert (new PIII (string ("III"))).first;
+    PropertyType::pIV = *this->repository.insert (new PIV (string ("IV"))).first;
+    PropertyType::pV = *this->repository.insert (new PV (string ("V"))).first;
+    PropertyType::pVI = *this->repository.insert (new PVI (string ("VI"))).first;
+    PropertyType::pVII = *this->repository.insert (new PVII (string ("VII"))).first;
+    PropertyType::pVIII = *this->repository.insert (new PVIII (string ("VIII"))).first;
+    PropertyType::pIX = *this->repository.insert (new PIX (string ("IX"))).first;
+    PropertyType::pX = *this->repository.insert (new PX (string ("X"))).first;
+    PropertyType::pXI = *this->repository.insert (new PXI (string ("XI"))).first;
+    PropertyType::pXII = *this->repository.insert (new PXII (string ("XII"))).first;
+    PropertyType::pXIII = *this->repository.insert (new PXIII (string ("XIII"))).first;
+    PropertyType::pXIV = *this->repository.insert (new PXIV (string ("XIV"))).first;
+    PropertyType::pXV = *this->repository.insert (new PXV (string ("XV"))).first;
+    PropertyType::pXVI = *this->repository.insert (new PXVI (string ("XVI"))).first;
+    PropertyType::pXVII = *this->repository.insert (new PXVII (string ("XVII"))).first;
+    PropertyType::pXVIII = *this->repository.insert (new PXVIII (string ("XVIII"))).first;
+    PropertyType::pXIX = *this->repository.insert (new PXIX (string ("XIX"))).first;
+    PropertyType::pXX = *this->repository.insert (new PXX (string ("XX"))).first;
+    PropertyType::pXXI = *this->repository.insert (new PXXI (string ("XXI"))).first;
+    PropertyType::pXXII = *this->repository.insert (new PXXII (string ("XXII"))).first;
+    PropertyType::pXXIII = *this->repository.insert (new PXXIII (string ("XXIII"))).first;
+    PropertyType::pXXIV = *this->repository.insert (new PXXIV (string ("XXIV"))).first;
+    PropertyType::pXXV = *this->repository.insert (new PXXV (string ("XXV"))).first;
+    PropertyType::pXXVI = *this->repository.insert (new PXXVI (string ("XXVI"))).first;
+    PropertyType::pXXVII = *this->repository.insert (new PXXVII (string ("XXVII"))).first;
+    PropertyType::pXXVIII = *this->repository.insert (new PXXVIII (string ("XXVIII"))).first;
+    PropertyType::pOneHbond = *this->repository.insert (new OneHbond (string ("one_hbond"))).first;
+    PropertyType::p29 = *this->repository.insert (new P29 (string ("29"))).first;
+    PropertyType::p30 = *this->repository.insert (new P30 (string ("30"))).first;
+    PropertyType::p31 = *this->repository.insert (new P31 (string ("31"))).first;
+    PropertyType::p32 = *this->repository.insert (new P32 (string ("32"))).first;
+    PropertyType::p33 = *this->repository.insert (new P33 (string ("33"))).first;
+    PropertyType::p34 = *this->repository.insert (new P34 (string ("34"))).first;
+    PropertyType::p35 = *this->repository.insert (new P35 (string ("35"))).first;
+    PropertyType::p36 = *this->repository.insert (new P36 (string ("36"))).first;
+    PropertyType::p37 = *this->repository.insert (new P37 (string ("37"))).first;
+    PropertyType::p38 = *this->repository.insert (new P38 (string ("38"))).first;
+    PropertyType::p39 = *this->repository.insert (new P39 (string ("39"))).first;
+    PropertyType::p40 = *this->repository.insert (new P40 (string ("40"))).first;
+    PropertyType::p41 = *this->repository.insert (new P41 (string ("41"))).first;
+    PropertyType::p42 = *this->repository.insert (new P42 (string ("42"))).first;
+    PropertyType::p43 = *this->repository.insert (new P43 (string ("43"))).first;
+    PropertyType::p44 = *this->repository.insert (new P44 (string ("44"))).first;
+    PropertyType::p45 = *this->repository.insert (new P45 (string ("45"))).first;
+    PropertyType::p46 = *this->repository.insert (new P46 (string ("46"))).first;
+    PropertyType::p47 = *this->repository.insert (new P47 (string ("47"))).first;
+    PropertyType::p48 = *this->repository.insert (new P48 (string ("48"))).first;
+    PropertyType::p49 = *this->repository.insert (new P49 (string ("49"))).first;
+    PropertyType::p50 = *this->repository.insert (new P50 (string ("50"))).first;
+    PropertyType::p51 = *this->repository.insert (new P51 (string ("51"))).first;
+    PropertyType::p52 = *this->repository.insert (new P52 (string ("52"))).first;
+    PropertyType::p53 = *this->repository.insert (new P53 (string ("53"))).first;
+    PropertyType::p54 = *this->repository.insert (new P54 (string ("54"))).first;
+    PropertyType::p55 = *this->repository.insert (new P55 (string ("55"))).first;
+    PropertyType::p56 = *this->repository.insert (new P56 (string ("56"))).first;
+    PropertyType::p57 = *this->repository.insert (new P57 (string ("57"))).first;
+    PropertyType::p58 = *this->repository.insert (new P58 (string ("58"))).first;
+    PropertyType::p59 = *this->repository.insert (new P59 (string ("59"))).first;
+    PropertyType::p60 = *this->repository.insert (new P60 (string ("60"))).first;
+    PropertyType::p61 = *this->repository.insert (new P61 (string ("61"))).first;
+    PropertyType::p62 = *this->repository.insert (new P62 (string ("62"))).first;
+    PropertyType::p63 = *this->repository.insert (new P63 (string ("63"))).first;
+    PropertyType::p64 = *this->repository.insert (new P64 (string ("64"))).first;
+    PropertyType::p65 = *this->repository.insert (new P65 (string ("65"))).first;
+    PropertyType::p66 = *this->repository.insert (new P66 (string ("66"))).first;
+    PropertyType::p67 = *this->repository.insert (new P67 (string ("67"))).first;
+    PropertyType::p68 = *this->repository.insert (new P68 (string ("68"))).first;
+    PropertyType::p69 = *this->repository.insert (new P69 (string ("69"))).first;
+    PropertyType::p70 = *this->repository.insert (new P70 (string ("70"))).first;
+    PropertyType::p71 = *this->repository.insert (new P71 (string ("71"))).first;
+    PropertyType::p72 = *this->repository.insert (new P72 (string ("72"))).first;
+    PropertyType::p73 = *this->repository.insert (new P73 (string ("73"))).first;
+    PropertyType::p74 = *this->repository.insert (new P74 (string ("74"))).first;
+    PropertyType::p75 = *this->repository.insert (new P75 (string ("75"))).first;
+    PropertyType::p76 = *this->repository.insert (new P76 (string ("76"))).first;
+    PropertyType::p77 = *this->repository.insert (new P77 (string ("77"))).first;
+    PropertyType::p78 = *this->repository.insert (new P78 (string ("78"))).first;
+    PropertyType::p79 = *this->repository.insert (new P79 (string ("79"))).first;
+    PropertyType::p80 = *this->repository.insert (new P80 (string ("80"))).first;
+    PropertyType::p81 = *this->repository.insert (new P81 (string ("81"))).first;
+    PropertyType::p82 = *this->repository.insert (new P82 (string ("82"))).first;
+    PropertyType::p83 = *this->repository.insert (new P83 (string ("83"))).first;
+    PropertyType::p84 = *this->repository.insert (new P84 (string ("84"))).first;
+    PropertyType::p85 = *this->repository.insert (new P85 (string ("85"))).first;
+    PropertyType::p86 = *this->repository.insert (new P86 (string ("86"))).first;
+    PropertyType::p87 = *this->repository.insert (new P87 (string ("87"))).first;
+    PropertyType::p88 = *this->repository.insert (new P88 (string ("88"))).first;
+    PropertyType::p89 = *this->repository.insert (new P89 (string ("89"))).first;
+    PropertyType::p90 = *this->repository.insert (new P90 (string ("90"))).first;
+    PropertyType::p91 = *this->repository.insert (new P91 (string ("91"))).first;
+    PropertyType::p92 = *this->repository.insert (new P92 (string ("92"))).first;
+    PropertyType::p93 = *this->repository.insert (new P93 (string ("93"))).first;
+    PropertyType::p94 = *this->repository.insert (new P94 (string ("94"))).first;
+    PropertyType::p95 = *this->repository.insert (new P95 (string ("95"))).first;
+    PropertyType::p96 = *this->repository.insert (new P96 (string ("96"))).first;
+    PropertyType::p97 = *this->repository.insert (new P97 (string ("97"))).first;
+    PropertyType::p98 = *this->repository.insert (new P98 (string ("98"))).first;
+    PropertyType::p99 = *this->repository.insert (new P99 (string ("99"))).first;
+    PropertyType::p100 = *this->repository.insert (new P100 (string ("100"))).first;
+    PropertyType::p101 = *this->repository.insert (new P101 (string ("101"))).first;
+    PropertyType::p102 = *this->repository.insert (new P102 (string ("102"))).first;
+    PropertyType::p103 = *this->repository.insert (new P103 (string ("103"))).first;
+    PropertyType::p104 = *this->repository.insert (new P104 (string ("104"))).first;
+    PropertyType::p105 = *this->repository.insert (new P105 (string ("105"))).first;
+    PropertyType::p106 = *this->repository.insert (new P106 (string ("106"))).first;
+    PropertyType::p108 = *this->repository.insert (new P108 (string ("108"))).first;
+    PropertyType::p109 = *this->repository.insert (new P109 (string ("109"))).first;
+    PropertyType::p110 = *this->repository.insert (new P110 (string ("110"))).first;
+    PropertyType::p111 = *this->repository.insert (new P111 (string ("111"))).first;
+    PropertyType::p112 = *this->repository.insert (new P112 (string ("112"))).first;
+    PropertyType::p113 = *this->repository.insert (new P113 (string ("113"))).first;
+    PropertyType::p114 = *this->repository.insert (new P114 (string ("114"))).first;
+    PropertyType::p115 = *this->repository.insert (new P115 (string ("115"))).first;
+    PropertyType::p116 = *this->repository.insert (new P116 (string ("116"))).first;
+    PropertyType::p117 = *this->repository.insert (new P117 (string ("117"))).first;
+    PropertyType::p118 = *this->repository.insert (new P118 (string ("118"))).first;
+    PropertyType::p119 = *this->repository.insert (new P119 (string ("119"))).first;
+    PropertyType::p120 = *this->repository.insert (new P120 (string ("120"))).first;
+    PropertyType::p121 = *this->repository.insert (new P121 (string ("121"))).first;
+    PropertyType::p122 = *this->repository.insert (new P122 (string ("122"))).first;
+    PropertyType::p123 = *this->repository.insert (new P123 (string ("123"))).first;
+    PropertyType::p124 = *this->repository.insert (new P124 (string ("124"))).first;
+    PropertyType::p125 = *this->repository.insert (new P125 (string ("125"))).first;
+    PropertyType::p126 = *this->repository.insert (new P126 (string ("126"))).first;
+    PropertyType::p127 = *this->repository.insert (new P127 (string ("127"))).first;
+    PropertyType::p128 = *this->repository.insert (new P128 (string ("128"))).first;
+    PropertyType::p129 = *this->repository.insert (new P129 (string ("129"))).first;
+    PropertyType::p130 = *this->repository.insert (new P130 (string ("130"))).first;
+    PropertyType::p131 = *this->repository.insert (new P131 (string ("131"))).first;
+    PropertyType::p132 = *this->repository.insert (new P132 (string ("132"))).first;
+    PropertyType::p133 = *this->repository.insert (new P133 (string ("133"))).first;
+    PropertyType::p134 = *this->repository.insert (new P134 (string ("134"))).first;
+    PropertyType::p135 = *this->repository.insert (new P135 (string ("135"))).first;
+    PropertyType::p136 = *this->repository.insert (new P136 (string ("136"))).first;
+    PropertyType::p137 = *this->repository.insert (new P137 (string ("137"))).first;
+    PropertyType::pW = *this->repository.insert (new PW (string ("W"))).first;
+    PropertyType::pS = *this->repository.insert (new PS (string ("S"))).first;
+    PropertyType::pH = *this->repository.insert (new PH (string ("H"))).first;
+    PropertyType::pWs = *this->repository.insert (new PWs (string ("Ws"))).first;
+    PropertyType::pWw = *this->repository.insert (new PWw (string ("Ww"))).first;
+    PropertyType::pWh = *this->repository.insert (new PWh (string ("Wh"))).first;
+    PropertyType::pSw = *this->repository.insert (new PSw (string ("Sw"))).first;
+    PropertyType::pSs = *this->repository.insert (new PSs (string ("Ss"))).first;
+    PropertyType::pHw = *this->repository.insert (new PHw (string ("Hw"))).first;
+    PropertyType::pHh = *this->repository.insert (new PHh (string ("Hh"))).first;
+    PropertyType::pC8 = *this->repository.insert (new PC8 (string ("C8"))).first;
+    PropertyType::pBs = *this->repository.insert (new PBs (string ("Bs"))).first;
+    PropertyType::pBh = *this->repository.insert (new PBh (string ("Bh"))).first;
   }
 
   PropertyTypeStore::~PropertyTypeStore () 
   {
-    set< PropertyType* > bag;
-    map< const char*, PropertyType*, less_string >::iterator i;
-    for (i=stringType.begin (); i!=stringType.end (); ++i) {
-      bag.insert (i->second);
-    }
-    set< PropertyType* >::iterator j;
-    for (j=bag.begin (); j!=bag.end (); ++j) {
-      delete *j;
-    }
+    set< PropertyType*, PropertyType::less_deref >::iterator it;
+    for (it = this->repository.begin (); it != this->repository.end (); ++it)
+      delete *it;
   }  
 
 
   // METHODS -------------------------------------------------------------------
 
   const PropertyType* 
-  PropertyTypeStore::get (const char* key) 
+  PropertyTypeStore::get (const string& key) 
   {
-    char* key_copy = strdup (key);
-    pair< map< const char*, PropertyType*, less_string >::iterator, bool > inserted =
-      stringType.insert (make_pair (key_copy, PropertyType::pNull));
+    string key2 = key;
+    string::iterator sit;
 
-    if (inserted.second) // unique insertion => new property type
-      inserted.first->second = new PropertyType (inserted.first->first);
-    else                 // key exists => delete key copy
-      free (key_copy);
+    PropertyType* ptype = new Unknown (key2);    
+    pair< set< PropertyType*, PropertyType::less_deref >::iterator, bool > inserted =
+      this->repository.insert (ptype);
 
-    return inserted.first->second;
+    if (!inserted.second) // no unique insertion => key exists
+    {
+      delete ptype;
+      ptype = *inserted.first;
+    }
+
+    return ptype;
   }
     
 

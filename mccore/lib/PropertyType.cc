@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.11 $
-// $Id: PropertyType.cc,v 1.11 2004-09-10 14:32:27 thibaup Exp $
+// $Revision: 1.12 $
+// $Id: PropertyType.cc,v 1.12 2004-10-15 20:34:47 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -34,12 +34,14 @@
 
 
 
-namespace mccore {
+namespace mccore
+{
 
   // STATIC MEMBERS ------------------------------------------------------------
 
   PropertyTypeStore PropertyType::ptstore;
   PropertyType* PropertyType::pNull = 0;
+  PropertyType* PropertyType::pUnknown = 0;
   PropertyType* PropertyType::pTheo = 0;
   PropertyType* PropertyType::pPairing = 0;
   PropertyType* PropertyType::pStack = 0;
@@ -65,8 +67,6 @@ namespace mccore {
   PropertyType* PropertyType::pDIR_5p = 0;
   PropertyType* PropertyType::pDIR_3p = 0;
   PropertyType* PropertyType::pDIR_ANY = 0;
-  //     static PropertyType* pDIR_SH = 0;
-  //     static PropertyType* pDIR_HS = 0;
   PropertyType* PropertyType::pSaenger = 0;
   PropertyType* PropertyType::pWC = 0;
   PropertyType* PropertyType::pWobble = 0;
@@ -207,13 +207,6 @@ namespace mccore {
   PropertyType* PropertyType::p135 = 0;
   PropertyType* PropertyType::p136 = 0;
   PropertyType* PropertyType::p137 = 0;
-  //     static PropertyType* pwct = 0;
-  //     static PropertyType* pconnect = 0;
-  //     static PropertyType* pwobblet = 0;
-  //     static PropertyType* pnon_adjacent = 0;
-  //     static PropertyType* pstrong = 0;
-  //     static PropertyType* pweak = 0;
-  //     static PropertyType* pnostack = 0;
   PropertyType* PropertyType::pW = 0;
   PropertyType* PropertyType::pS = 0;
   PropertyType* PropertyType::pH = 0;
@@ -231,26 +224,29 @@ namespace mccore {
   // LIFECYCLE -----------------------------------------------------------------
 
   PropertyType::PropertyType () 
-    : type (0) 
   {
+    
   }
 
 
-  PropertyType::PropertyType (const char* t) 
+  PropertyType::PropertyType (const string& ks)
+    : key (ks)
   {
-    type = new char[strlen (t) + 1];
-    strcpy (type, t);
+    
   }
   
 
   PropertyType::PropertyType (const PropertyType &other)
   {
+    FatalIntLibException ex ("", __FILE__, __LINE__);
+    ex << "Use of copy constructor for class PropertyType is prohibited.";
+    throw ex;
   }
 
 
   PropertyType::~PropertyType () 
   {
-    if (type) delete[] type;
+    
   }
  
  
@@ -258,9 +254,17 @@ namespace mccore {
 
 
   const PropertyType* 
-  PropertyType::parseType (const char* s) 
+  PropertyType::parseType (const char* str) 
   {
-    return ptstore.get (s);
+    string ks (str);
+    return ptstore.get (ks);
+  }
+
+  
+  const PropertyType* 
+  PropertyType::parseType (const string& str) 
+  {
+    return ptstore.get (str);
   }
 
   
@@ -270,14 +274,14 @@ namespace mccore {
   ostream &
   PropertyType::output (ostream &out) const
   {
-    return out << type;
+    return out << key.c_str ();
   }
   
 
   oBinstream &
   PropertyType::output (oBinstream &out) const
   {
-    return out << type;
+    return out << key.c_str ();
   }
 
 

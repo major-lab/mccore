@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.17 $
+// $Revision: 1.18 $
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -19,221 +19,168 @@ namespace mccore {
 
   ResidueTypeStore::ResidueTypeStore () 
   {
-    ResidueType *t;
+    
+    /**
+     * utilitaries
+     */
 
-    stringType[""] = ResidueType::rNull = new ResidueType ("", "");
+    ResidueType::rNull = *this->repository.insert (new Null (string (""), string ("null"))).first;
+    ResidueType::rUnknown = *this->repository.insert (new Unknown (string ("UNKNOWN"), string ("Unknown"))).first;
     
-    /** nucleic acids **/
-    
-    /*
-      N:? generic nucleic acid type variety for ?
-      R:? RNA type variety for ?
-      D:? DNA type variety for ?
-    */
-    
-    stringType["Adenine"] = t = ResidueType::rA = new A ("A", "ADE");
-    stringType["N:A"] = t;
-    stringType["A"] = t = ResidueType::rRA = new RA ("A", "R:A"); 
-    stringType["ADE"] = t; 
-    stringType["R:A"] = t;
-    stringType["D:A"] = t = ResidueType::rDA = new DA ("A", "D:A");
-    stringType["RA5"] = new RRA5 ("RA5", "R:RA5");
-    stringType["RA3"] = new RRA3 ("RA3", "R:RA3");
-    stringType["DA5"] = new DDA5 ("DA5", "D:DA5");
-    stringType["DA3"] = new DDA3 ("DA3", "D:DA3");
-    
-    stringType["Cytosine"] = t = ResidueType::rC = new C ("C", "CYT");
-    stringType["N:C"] = t;
-    stringType["C"] = t = ResidueType::rRC = new RC ("C", "R:C");
-    stringType["CYT"] = t; 
-    stringType["R:C"] = t; 
-    stringType["D:C"] = t = ResidueType::rDC = new DC ("C", "D:C");
-    stringType["RC5"] = new RRC5 ("RC5", "R:RC5");
-    stringType["RC3"] = new RRC3 ("RC3", "R:RC3");
-    stringType["DC5"] = new DDC5 ("DC5", "D:DC5");
-    stringType["DC3"] = new DDC3 ("DC3", "D:DC3");
-    
-    stringType["Guanine"] = t = ResidueType::rG = new G ("G", "GUA");
-    stringType["N:G"] = t;
-    stringType["G"] = t = ResidueType::rRG = new RG ("G", "R:G"); 
-    stringType["GUA"] = t;
-    stringType["R:G"] = t; 
-    stringType["D:G"] = t = ResidueType::rDG = new DG ("G", "D:G");
-    stringType["RG5"] = new RRG5 ("RG5", "R:RG5");
-    stringType["RG3"] = new RRG3 ("RG3", "R:RG3");
-    stringType["DG5"] = new DDG5 ("DG5", "D:DG5");
-    stringType["DG3"] = new DDG3 ("DG3", "D:DG3");
-    
-    stringType["Uracyle"] = t = ResidueType::rU = new U ("U", "URA");
-    stringType["N:U"] = t;
-    stringType["U"] = t = ResidueType::rRU = new RU ("U", "R:U"); 
-    stringType["R:U"] = t;
-    stringType["URI"] = t; 
-    stringType["URA"] = t; 
-    stringType["RU5"] = new RRU5 ("RU5", "R:RU5");
-    stringType["RU3"] = new RRU3 ("RU3", "R:RU3");
-    
-    stringType["Thymine"] = t = ResidueType::rT = new T ("T", "TYM");
-    stringType["N:T"] = t;
-    stringType["T"] = t = ResidueType::rDT = new DT ("T", "D:T"); 
-    stringType["D:T"] = t;
-    stringType["TYM"] = t; 
-    stringType["DT5"] = new DDT5 ("DT5", "D:DT5");
-    stringType["DT3"] = new DDT3 ("DT3", "D:DT3");
-    
-    stringType["(N:N)"] = ResidueType::rNucleicAcid = new N ("(N:N)", "(N:N)");
-    stringType["(R:N)"] = ResidueType::rRNA = new RN ("(R:N)", "(R:N)");
-    stringType["(D:N)"] = ResidueType::rDNA = new DN ("(D:N)", "(D:N)");
+    /**
+     * nucleic acids
+     *
+     * N:? generic nucleic acid type variety for ?
+     * R:? RNA type variety for ?
+     * D:? DNA type variety for ?
+     * ? follows IUPAC
+     */
 
-    stringType["(N:B)"] = ResidueType::rB = new B ("(B)", "(B)");
-    stringType["(R:B)"] = ResidueType::rRB = new RB ("(R:B)", "(R:B)");
-    stringType["(D:B)"] = ResidueType::rDB = new DB ("(D:B)", "(D:B)");
-    stringType["(N:D)"] = ResidueType::rD = new D ("(D)", "(D)");
-    stringType["(R:D)"] = ResidueType::rRD = new RD ("(R:D)", "(R:D)");
-    stringType["(D:D)"] = ResidueType::rDD = new DD ("(D:D)", "(D:D)");
-    stringType["(N:H)"] = ResidueType::rH = new H ("(H)", "(H)");
-    stringType["(R:H)"] = ResidueType::rRH = new RH ("(R:H)", "(R:H)");
-    stringType["(D:H)"] = ResidueType::rDH = new DH ("(D:H)", "(D:H)");
-    stringType["(N:V)"] = ResidueType::rV = new V ("(V)", "(V)");
-    stringType["(R:V)"] = ResidueType::rRV = new RV ("(R:V)", "(R:V)");
-    stringType["(D:V)"] = ResidueType::rDV = new DV ("(D:V)", "(D:V)");
+    ResidueType::rA  = *this->repository.insert (new A  (string ("N:A"), string("Adenine"))).first;
+    ResidueType::rRA = *this->repository.insert (new RA (string ("R:A"), string("RNA_Adenine"))).first;
+    ResidueType::rDA = *this->repository.insert (new DA (string ("D:A"), string("DNA_Adenine"))).first;
+    ResidueType::rC  = *this->repository.insert (new C  (string ("N:C"), string("Cytosine"))).first;
+    ResidueType::rRC = *this->repository.insert (new RC (string ("R:C"), string("RNA_Cytosine"))).first;
+    ResidueType::rDC = *this->repository.insert (new DC (string ("D:C"), string("DNA_Cytosine"))).first;
+    ResidueType::rG  = *this->repository.insert (new G  (string ("N:G"), string("Guanine"))).first;
+    ResidueType::rRG = *this->repository.insert (new RG (string ("R:G"), string("RNA_Guanine"))).first;
+    ResidueType::rDG = *this->repository.insert (new DG (string ("D:G"), string("DNA_Guanine"))).first;
+    ResidueType::rT  = *this->repository.insert (new T  (string ("N:T"), string("Thymine"))).first;
+    ResidueType::rDT = *this->repository.insert (new DT (string ("D:T"), string("DNA_Thymine"))).first;
+    ResidueType::rU  = *this->repository.insert (new U  (string ("N:U"), string("Uracil"))).first;
+    ResidueType::rRU = *this->repository.insert (new RU (string ("R:U"), string("RNA_Uracil"))).first;
 
-    stringType["(N:R)"] = ResidueType::rPurine = new Purine ("(R)", "(R)");
-    stringType["(R:R)"] = ResidueType::rRPurine = new RPurine ("(R:R)", "(R:R)");
-    stringType["(D:R)"] = ResidueType::rDPurine = new DPurine ("(D:R)", "(D:R)");
-    stringType["(N:Y)"] = ResidueType::rPyrimidine = new Pyrimidine ("(Y)", "(Y)");
-    stringType["(R:Y)"] = ResidueType::rRPyrimidine = new RPyrimidine ("(R:Y)", "(R:Y)");
-    stringType["(D:Y)"] = ResidueType::rDPyrimidine = new DPyrimidine ("(D:Y)", "(D:Y)");
-    stringType["(N:W)"] = ResidueType::rW = new W ("(W)", "(W)");
-    stringType["(R:W)"] = ResidueType::rRW = new RW ("(R:W)", "(R:W)");
-    stringType["(D:W)"] = ResidueType::rDW = new DW ("(D:W)", "(D:W)");
-    stringType["(N:S)"] = ResidueType::rS = new S ("(S)", "(S)");
-    stringType["(R:S)"] = ResidueType::rRS = new RS ("(R:S)", "(R:S)");
-    stringType["(D:S)"] = ResidueType::rDS = new DS ("(D:S)", "(D:S)");
-    stringType["(N:M)"] = ResidueType::rM = new M ("(M)", "(M)");
-    stringType["(R:M)"] = ResidueType::rRM = new RM ("(R:M)", "(R:M)");
-    stringType["(D:M)"] = ResidueType::rDM = new DM ("(D:M)", "(D:M)");
-    stringType["(N:K)"] = ResidueType::rK = new K ("(K)", "(K)");
-    stringType["(R:K)"] = ResidueType::rRK = new RK ("(R:K)", "(R:K)");
-    stringType["(D:K)"] = ResidueType::rDK = new DK ("(D:K)", "(D:K)");
+    ResidueType::rK  = *this->repository.insert (new K  (string ("N:K"), string("K"))).first;
+    ResidueType::rRK = *this->repository.insert (new RK (string ("R:K"), string("RNA_K"))).first;
+    ResidueType::rDK = *this->repository.insert (new DK (string ("D:K"), string("DNA_K"))).first;
+    ResidueType::rM  = *this->repository.insert (new M  (string ("N:M"), string("M"))).first;
+    ResidueType::rRM = *this->repository.insert (new RM (string ("R:M"), string("RNA_M"))).first;
+    ResidueType::rDM = *this->repository.insert (new DM (string ("D:M"), string("DNA_M"))).first;
+    ResidueType::rS  = *this->repository.insert (new S  (string ("N:S"), string("S"))).first;
+    ResidueType::rRS = *this->repository.insert (new RS (string ("R:S"), string("RNA_S"))).first;
+    ResidueType::rDS = *this->repository.insert (new DS (string ("D:S"), string("DNA_S"))).first;
+    ResidueType::rW  = *this->repository.insert (new W  (string ("N:W"), string("W"))).first;
+    ResidueType::rRW = *this->repository.insert (new RW (string ("R:W"), string("RNA_W"))).first;
+    ResidueType::rDW = *this->repository.insert (new DW (string ("D:W"), string("DNA_W"))).first;
+    ResidueType::rPyrimidine  = *this->repository.insert (new Pyrimidine  (string ("N:Y"), string("Pyrimidine"))).first;
+    ResidueType::rRPyrimidine = *this->repository.insert (new RPyrimidine (string ("R:Y"), string("RNA_Pyrimidine"))).first;
+    ResidueType::rDPyrimidine = *this->repository.insert (new DPyrimidine (string ("D:Y"), string("DNA_Pyrimidine"))).first;
+    ResidueType::rPurine  = *this->repository.insert (new Purine  (string ("N:R"), string("Purine"))).first;
+    ResidueType::rRPurine = *this->repository.insert (new RPurine (string ("R:R"), string("RNA_Purine"))).first;
+    ResidueType::rDPurine = *this->repository.insert (new DPurine (string ("D:R"), string("DNA_Purine"))).first;
+ 
+    ResidueType::rB  = *this->repository.insert (new B  (string ("N:B"), string("B"))).first;
+    ResidueType::rRB = *this->repository.insert (new RB (string ("R:B"), string("RNA_B"))).first;
+    ResidueType::rDB = *this->repository.insert (new DB (string ("D:B"), string("DNA_B"))).first;
+    ResidueType::rD  = *this->repository.insert (new D  (string ("N:D"), string("D"))).first;
+    ResidueType::rRD = *this->repository.insert (new RD (string ("R:D"), string("RNA_D"))).first;
+    ResidueType::rDD = *this->repository.insert (new DD (string ("D:D"), string("DNA_D"))).first;
+    ResidueType::rH  = *this->repository.insert (new H  (string ("N:H"), string("H"))).first;
+    ResidueType::rRH = *this->repository.insert (new RH (string ("R:H"), string("RNA_H"))).first;
+    ResidueType::rDH = *this->repository.insert (new DH (string ("D:H"), string("DNA_H"))).first;
+    ResidueType::rV  = *this->repository.insert (new V  (string ("N:V"), string("V"))).first;
+    ResidueType::rRV = *this->repository.insert (new RV (string ("R:V"), string("RNA_V"))).first;
+    ResidueType::rDV = *this->repository.insert (new DV (string ("D:V"), string("DNA_V"))).first;
 
-    /** specialized residue types **/
+    ResidueType::rNucleicAcid = *this->repository.insert (new NucleicAcid (string ("N:N"), string("N"))).first;
+    ResidueType::rRNA = *this->repository.insert (new RV (string ("R:N"), string("RNA_N"))).first;
+    ResidueType::rDNA = *this->repository.insert (new DV (string ("D:N"), string("DNA_N"))).first;
     
-    stringType["(PO4)"]     = ResidueType::rPhosphate = new Phosphate ("(PO4)", "(PO4)");
-    stringType["(R:RIB)"]   = ResidueType::rRRibose   = new RRibose   ("(R:RIB)", "(R:RIB)");
-    stringType["(R:RIB5)"]  = ResidueType::rRRibose5  = new RRibose5  ("(R:RIB5)", "(R:RIB5)");
-    stringType["(R:RIB3)"]  = ResidueType::rRRibose3  = new RRibose3  ("(R:RIB3)", "(R:RIB3)");
-    stringType["(R:RIB53)"] = ResidueType::rRRibose53 = new RRibose53 ("(R:RIB53)", "(R:RIB53)");
-    stringType["(D:RIB)"]   = ResidueType::rDRibose   = new DRibose   ("(D:RIB)", "(D:RIB)");
-    stringType["(D:RIB5)"]  = ResidueType::rDRibose5  = new DRibose5  ("(D:RIB5)", "(D:RIB5)");
-    stringType["(D:RIB3)"]  = ResidueType::rDRibose3  = new DRibose3  ("(D:RIB3)", "(D:RIB3)");
-    stringType["(D:RIB53)"] = ResidueType::rDRibose53 = new DRibose53 ("(D:RIB53)", "(D:RIB53)");
+    /**
+     * specialized residue types
+     */
     
-    /** amino acid **/
+    ResidueType::rPhosphate = *this->repository.insert (new Phosphate (string ("PO4"), string ("Phosphate"))).first;
+    ResidueType::rRRibose   = *this->repository.insert (new RRibose   (string ("R:RIB"), string ("RNA_Ribose"))).first;
+    ResidueType::rRRibose5  = *this->repository.insert (new RRibose5  (string ("R:RIB5"), string ("RNA_Ribose5"))).first;
+    ResidueType::rRRibose3  = *this->repository.insert (new RRibose3  (string ("R:RIB3"), string ("RNA_Ribose3"))).first;
+    ResidueType::rRRibose53 = *this->repository.insert (new RRibose53 (string ("R:RIB53"), string ("RNA_Ribose53"))).first;
+    ResidueType::rDRibose   = *this->repository.insert (new DRibose   (string ("D:RIB"), string ("DNA_Ribose"))).first;
+    ResidueType::rDRibose5  = *this->repository.insert (new DRibose5  (string ("D:RIB5"), string ("DNA_Ribose5"))).first;
+    ResidueType::rDRibose3  = *this->repository.insert (new DRibose3  (string ("D:RIB3"), string ("DNA_Ribose3"))).first;
+    ResidueType::rDRibose53 = *this->repository.insert (new DRibose53 (string ("D:RIB53"), string ("DNA_Ribose53"))).first;
     
-    stringType["AminoAcid"] = ResidueType::rAminoAcid = new AminoAcid ("(AA)", "(AA)");
-    stringType["ALA"] = ResidueType::rALA = new ALA ("A", "ALA");
-    stringType["PA"] = ResidueType::rALA;
-    stringType["ARG"] = ResidueType::rARG = new ARG ("R", "ARG");
-    stringType["PR"] = ResidueType::rARG;
-    stringType["ASN"] = ResidueType::rASN = new ASN ("N", "ASN");
-    stringType["PN"] = ResidueType::rASN;
-    stringType["ASP"] = ResidueType::rASP = new ASP ("D", "ASP");
-    stringType["PD"] = ResidueType::rASP;
-    stringType["CYS"] = ResidueType::rCYS = new CYS ("C", "CYS");
-    stringType["PC"] = ResidueType::rCYS;
-    stringType["GLN"] = ResidueType::rGLN = new GLN ("Q", "GLN");
-    stringType["PQ"] = ResidueType::rGLN;
-    stringType["GLU"] = ResidueType::rGLU = new GLU ("E", "GLU");
-    stringType["PE"] = ResidueType::rGLU;
-    stringType["GLY"] = ResidueType::rGLY = new GLY ("G", "GLY");
-    stringType["PG"] = ResidueType::rGLY;
-    stringType["HIS"] = ResidueType::rHIS = new HIS ("H", "HIS");
-    stringType["PH"] = ResidueType::rHIS;
-    stringType["ILE"] = ResidueType::rILE = new ILE ("I", "ILE");
-    stringType["PI"] = ResidueType::rILE;
-    stringType["LEU"] = ResidueType::rLEU = new LEU ("L", "LEU");
-    stringType["PL"] = ResidueType::rLEU;
-    stringType["LYS"] = ResidueType::rLYS = new LYS ("K", "LYS");
-    stringType["PK"] = ResidueType::rLYS;
-    stringType["MET"] = ResidueType::rMET = new MET ("M", "MET");
-    stringType["PM"] = ResidueType::rMET;
-    stringType["PHE"] = ResidueType::rPHE = new PHE ("F", "PHE");
-    stringType["PF"] = ResidueType::rPHE;
-    stringType["PRO"] = ResidueType::rPRO = new PRO ("P", "PRO");
-    stringType["PP"] = ResidueType::rPRO;
-    stringType["SER"] = ResidueType::rSER = new SER ("S", "SER");
-    stringType["PS"] = ResidueType::rSER;
-    stringType["THR"] = ResidueType::rTHR = new THR ("T", "THR");
-    stringType["PT"] = ResidueType::rTHR;
-    stringType["TRP"] = ResidueType::rTRP = new TRP ("W", "TRP");
-    stringType["PW"] = ResidueType::rTRP;
-    stringType["TYR"] = ResidueType::rTYR = new TYR ("Y", "TYR");
-    stringType["PY"] = ResidueType::rTYR;
-    stringType["VAL"] = ResidueType::rVAL = new VAL ("V", "VAL");	
-    stringType["PV"] = ResidueType::rVAL;
+    /**
+     * amino acid (IUPAC 3-letter)
+     */
+    
+    ResidueType::rALA = *this->repository.insert (new ALA (string ("ALA"), string ("Alanine"))).first;
+    ResidueType::rARG = *this->repository.insert (new ARG (string ("ARG"), string ("Arginine"))).first;
+    ResidueType::rASN = *this->repository.insert (new ASN (string ("ASN"), string ("Asparagine"))).first;
+    ResidueType::rASP = *this->repository.insert (new ASP (string ("ASP"), string ("Aspartic_acid"))).first;
+    ResidueType::rCYS = *this->repository.insert (new CYS (string ("CYS"), string ("Cysteine"))).first;
+    ResidueType::rGLN = *this->repository.insert (new GLN (string ("GLN"), string ("Glutamine"))).first;
+    ResidueType::rGLU = *this->repository.insert (new GLU (string ("GLU"), string ("Glutamic_acid"))).first;
+    ResidueType::rGLY = *this->repository.insert (new GLY (string ("GLY"), string ("Glycine"))).first;
+    ResidueType::rHIS = *this->repository.insert (new HIS (string ("HIS"), string ("Histidine"))).first;
+    ResidueType::rILE = *this->repository.insert (new ILE (string ("ILE"), string ("Isoleucine"))).first;
+    ResidueType::rLEU = *this->repository.insert (new LEU (string ("LEU"), string ("Leucine"))).first;
+    ResidueType::rLYS = *this->repository.insert (new LYS (string ("LYS"), string ("Lysine"))).first;
+    ResidueType::rMET = *this->repository.insert (new MET (string ("MET"), string ("Methionine"))).first;
+    ResidueType::rPHE = *this->repository.insert (new PHE (string ("PHE"), string ("Phenylalanine"))).first;
+    ResidueType::rPRO = *this->repository.insert (new PRO (string ("PRO"), string ("Proline"))).first;
+    ResidueType::rSER = *this->repository.insert (new SER (string ("SER"), string ("Serine"))).first;
+    ResidueType::rTHR = *this->repository.insert (new THR (string ("THR"), string ("Threonine"))).first;
+    ResidueType::rTRP = *this->repository.insert (new TRP (string ("TRP"), string ("Tryptophane"))).first;
+    ResidueType::rTYR = *this->repository.insert (new TYR (string ("TYR"), string ("Tyrosine"))).first;
+    ResidueType::rVAL = *this->repository.insert (new VAL (string ("VAL"), string ("Valine"))).first;
+    
+    ResidueType::rASX = *this->repository.insert (new ASX (string ("ASX"), string ("ASX"))).first;
+    ResidueType::rGLX = *this->repository.insert (new GLX (string ("GLX"), string ("GLX"))).first;
+    ResidueType::rAminoAcid = *this->repository.insert (new AminoAcid (string ("XAA"), string ("XAA"))).first;
+
+  
   }
 
 
   ResidueTypeStore::~ResidueTypeStore () 
   {
-    set< ResidueType* > bag;
-    map< const char*, ResidueType*, less_string >::iterator i;
-    set< ResidueType* >::iterator j;
-
-    for (i=stringType.begin (); i!=stringType.end (); ++i) {
-      bag.insert (i->second);
-    }
-    for (i=invalidType.begin (); i!=invalidType.end (); ++i) {
-      bag.insert (i->second);
-    }
-    for (j=bag.begin (); j!=bag.end (); ++j) {
-      delete *j;
-    }
-    bag.clear ();
+    set< ResidueType*, ResidueType::less_deref >::iterator it;
+    for (it = this->repository.begin (); it != this->repository.end (); ++it)
+      delete *it;
+    for (it = this->invalid_repository.begin (); it != this->invalid_repository.end (); ++it)
+      delete *it;
   }
     
     // METHODS -----------------------------------------------------------------
     
   const ResidueType* 
-  ResidueTypeStore::get (const char* key) 
+  ResidueTypeStore::get (const string& key) 
   {
-    char* key_copy = strdup (key);
-    char* kp;
+    string key2 = key;
+    string::iterator sit;
 
-    for (kp = key_copy; 0 != *kp; ++kp)
-      *kp = toupper (*kp);
+    for (sit = key2.begin (); sit != key2.end (); ++sit)
+      *sit = toupper (*sit);
 
-    pair< map< const char*, ResidueType*, less_string >::iterator, bool > inserted =
-      stringType.insert (make_pair (key_copy, ResidueType::rNull));
+    ResidueType* rtype = new Unknown (key2, key);    
+    pair< set< ResidueType*, ResidueType::less_deref >::iterator, bool > inserted =
+      this->repository.insert (rtype);
 
-    if (inserted.second) // unique insertion => new atom type
-      inserted.first->second = new ResidueType (inserted.first->first, inserted.first->first);
-    else                 // key exists => delete key copy
-      free (key_copy);
+    if (!inserted.second) // no unique insertion => key exists
+    {
+      delete rtype;
+      rtype = *inserted.first;
+    }
 
-    return inserted.first->second;
+    return rtype;
   } 
 
 
   const ResidueType* 
-  ResidueTypeStore::getInvalid (const char* key) 
+  ResidueTypeStore::getInvalid (const ResidueType* irtype) 
   {
-    char* key_copy = strdup (key);
-    char* kp;
+    ResidueType* rtype = new Unknown (irtype->key, irtype->definition);    
+    pair< set< ResidueType*, ResidueType::less_deref >::iterator, bool > inserted =
+      this->invalid_repository.insert (rtype);
 
-    for (kp = key_copy; 0 != *kp; ++kp)
-      *kp = toupper (*kp);
+    if (!inserted.second) // no unique insertion => key exists
+    {
+      delete rtype;
+      rtype = *inserted.first;
+    }
 
-    pair< map< const char*, ResidueType*, less_string >::iterator, bool > inserted =
-      invalidType.insert (make_pair (key_copy, ResidueType::rNull));
-
-    if (inserted.second) // unique insertion => new atom type
-      inserted.first->second = new ResidueType (inserted.first->first, inserted.first->first);
-    else                 // key exists => delete key copy
-      delete[] key_copy;
-
-    return inserted.first->second;
+    return rtype;
   } 
 
 

@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.27 $
-// $Id: ResidueType.h,v 1.27 2004-10-04 22:15:06 larosem Exp $
+// $Revision: 1.28 $
+// $Id: ResidueType.h,v 1.28 2004-10-15 20:35:07 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -28,13 +28,14 @@
 #define _ResidueType_h_
 
 #include <iostream>
-#include <typeinfo>
+#include <string>
+
 
 using namespace std;
 
 
-
-namespace mccore { 
+namespace mccore
+{ 
 
   class ResidueTypeStore;
   class Exception;
@@ -53,7 +54,7 @@ namespace mccore {
    *   - The nature of a type (nucleic acid (pur/pyr) or amino acid)<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueType.h,v 1.27 2004-10-04 22:15:06 larosem Exp $
+   * @version $Id: ResidueType.h,v 1.28 2004-10-15 20:35:07 thibaup Exp $
    */
   class ResidueType
   {    
@@ -63,14 +64,14 @@ namespace mccore {
     static ResidueTypeStore rtstore;
 
     /**
-     * The type.
+     * The type key string.
      */
-    char* type;
+    string key;
 
     /**
-     * The long type.
+     * The type long definition.
      */
-    char* longtype;
+    string definition;
 
   protected: 
 
@@ -83,10 +84,10 @@ namespace mccore {
 
     /**
      * Initializes the object.
-     * @param t the string representation of the type.
-     * @param lt the long string representation of the type.
+     * @param ks the string representation of the type key.
+     * @param ds the long string representation of the type definition.
      */
-    ResidueType (const char* t, const char* lt);
+    ResidueType (const string& ks, const string& ls);
 
     /**
      * (Disallow copy constructor) Initializes the object with another residue type.
@@ -105,22 +106,26 @@ namespace mccore {
     friend class ResidueTypeStore;
 
   public:
-
+    
     // FUNCTION OBJECTS --------------------------------------------------------
 
     /**
-     * @short less comparator for Residuetypes.
+     * @short less comparator on derefenced type pointers
      */
-    struct less
+    struct less_deref
     {
       /**
-       * Tests whether the first atomtype is less than the second. 
-       * @param s1 the first string.
-       * @param s2 the second string.
+       * Tests whether the first type is less than the second. 
+       * @param s1 the first type.
+       * @param s2 the second type.
        * @return the result of the test.
        */
       bool operator() (const ResidueType* t1, const ResidueType* t2) const
-      { return *t1 < *t2; }
+      {
+	return
+	  *(0 == t1 ? ResidueType::rNull : t1) <
+	  *(0 == t2 ? ResidueType::rNull : t2);
+      }
     };
     
     // OPERATORS ---------------------------------------------------------------
@@ -132,7 +137,7 @@ namespace mccore {
      * false otherwise.
      */
     bool operator== (const ResidueType &other) const
-    { return strcmp (type, other.type) == 0; }
+    { return this->key == other.key; }
 
     /**
      * Indicates whether some other residue is "not equal to" this one.
@@ -141,7 +146,9 @@ namespace mccore {
      * false otherwise.
      */
     bool operator!= (const ResidueType &other) const 
-    { return ! operator== (other); }
+    {
+      return ! operator== (other);
+    }
 
     /**
      * Imposes a total ordering on the ResidueType objects.
@@ -149,43 +156,67 @@ namespace mccore {
      * @return true if this residue type is less than the other.
      */
     bool operator< (const ResidueType &other) const
-    { return strcmp (type, other.type) < 0; }
+    {
+      return this->key < other.key;
+    }
+
+    bool operator<= (const ResidueType &other) const
+    {
+      return this->key < other.key || this->key == other.key;
+    }
+
+    bool operator> (const ResidueType &other) const
+    {
+      return !this->operator<= (other);
+    }
+
+    bool operator>= (const ResidueType &other) const
+    {
+      return !this->operator< (other);
+    }
 
     /**
      * Converts the residuetype into a string.
      * @return the string.
      */
-    virtual operator const char* () const { return type; }
+    virtual operator const char* () const
+    {
+      return this->key.c_str ();
+    }
  
     // METHODS -----------------------------------------------------------------
     
     /**
-     * Converts the residuetype into a string.
+     * Converts the residuetype into a stl string.
      * @return the string.
      */
-    virtual const char* toString () const { return type; }
+    virtual const string& toString () const
+    {
+      return this->key;
+    }
 
     /**
-     * Converts the residuetype into a long string.
+     * Converts the residuetype into a long stl  string.
      * @return the string.
      */
-    virtual const char* toLongString () const { return longtype; }
-
-    /**
-     * Converts the residuetype into a PDB compliant string.
-     * @return the string.
-     */
-    virtual const char* toPdbString () const
-    {       
-      return isAminoAcid () ? longtype : type;
+    virtual const string& toLongString () const
+    {
+      return this->definition;
     }
 
     /**
      * Identifies the type of residue stored in a string.
-     * @param s the string.
+     * @param str the c string.
      * @return a residue type for the string.
      */
-    static const ResidueType* parseType (const char* t);
+    static const ResidueType* parseType (const char* str);
+
+    /**
+     * Identifies the type of residue stored in a string.
+     * @param str the stl string.
+     * @return a residue type for the string.
+     */
+    static const ResidueType* parseType (const string& str);
 
     /**
      * Invalidates the residue type.  
@@ -197,7 +228,8 @@ namespace mccore {
      * General is method for use when both objects to compare are of
      * unknown type.
      */
-    virtual bool is (const ResidueType *t) const {
+    virtual bool is (const ResidueType *t) const
+    {
       return t->describe (this);
     }
 
@@ -206,8 +238,23 @@ namespace mccore {
      * @param the type to test.
      * @return the truth value of the test.
      */
-    virtual bool describe (const ResidueType *t) const {
+    virtual bool describe (const ResidueType *t) const
+    {
       return dynamic_cast< const ResidueType* >(t);
+    }
+
+    /**
+     * is Null?
+     */
+    virtual bool isNull() const {
+      return false;
+    }
+    
+    /**
+     * is Unknown?
+     */
+    virtual bool isUnknown() const {
+      return false;
     }
     
     /**
@@ -335,14 +382,6 @@ namespace mccore {
     }
 
     /**
-     * Tests wheter the residue type is unknown (a miscelaneous residue)
-     * @return true if the object is exactly a ResidueType
-     */
-    virtual bool isUnknown() const {
-      return (typeid (*this) == typeid (ResidueType));
-    }
-
-    /**
      * Finds the least general type for the given residue types.
      * @param aResType1 a residue type.
      * @param aResType2 a residue type.
@@ -380,8 +419,8 @@ namespace mccore {
     // TYPE POINTERS -----------------------------------------------------------
 
     static ResidueType* rNull;
-    
     static ResidueType* rUnknown;
+
     static ResidueType* rNucleicAcid;
     static ResidueType* rAminoAcid;
 
@@ -467,6 +506,8 @@ namespace mccore {
     static ResidueType* rTRP;
     static ResidueType* rTYR;
     static ResidueType* rVAL;
+    static ResidueType* rASX; // (ASN | ASP)
+    static ResidueType* rGLX; // (GLN | GLU)
   };
 
   /**

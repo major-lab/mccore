@@ -3,220 +3,217 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Tue Mar 11 13:56:50 2003
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
-#include <string>
 
 #include "AtomTypeStore.h"
 #include "Residue.h"
 
-namespace mccore {
+
+namespace mccore
+{
 
   // LIFECYCLE -----------------------------------------------------------------
 
   AtomTypeStore::AtomTypeStore () 
   {
-    AtomType *t;
-
-    stringType[""] = AtomType::aNull = new AtomType ("");
-    stringType["C1*"] = AtomType::aC1p = new AC1p ("C1*");   
-    stringType["C2*"] = AtomType::aC2p = new AC2p ("C2*");
-    stringType["C3*"] = AtomType::aC3p = new AC3p ("C3*");
-    stringType["C4*"] = AtomType::aC4p = new AC4p ("C4*");
-    stringType["C5*"] = AtomType::aC5p = new AC5p ("C5*");
-    stringType["H1*"] = AtomType::aH1p = new AH1p ("H1*");
-    stringType["H2*"] = AtomType::aH2p = new AH2p ("H2*");
-    stringType["H3*"] = AtomType::aH3p = new AH3p ("H3*");
-    stringType["H4*"] = AtomType::aH4p = new AH4p ("H4*");
-    stringType["H5*"] = AtomType::aH5p = new AH5p ("H5*");
-    stringType["1H2*"] = t = AtomType::a1H2p = new A1H2p ("1H2*"); stringType["H2*1"] = t; 
-    stringType["1H5*"] = t = AtomType::a1H5p = new A1H5p ("1H5*"); stringType["H5*1"] = t; 
-    stringType["2H2*"] = AtomType::a2H2p = new A2H2p ("2H2*");
-    stringType["2H5*"] = t = AtomType::a2H5p = new A2H5p ("2H5*"); stringType["H5**"] = t;  stringType["H5*2"] = t;  
-    stringType["HO2*"] = t = AtomType::aHO2p = new AHO2p ("HO2*"); stringType["H2**"] = t;  stringType["HO*2"] = t;  stringType["2HO*"] = t;
-    stringType["HO3*"] = t = AtomType::aHO3p = new AHO3p ("HO3*"); stringType["HO*3"] = t; 
-    stringType["O1P"] = AtomType::aO1P = new AO1P ("O1P");
-    stringType["O2*"] = AtomType::aO2p = new AO2p ("O2*");
-    stringType["O2P"] = AtomType::aO2P = new AO2P ("O2P");
-    stringType["O3*"] = t = AtomType::aO3p = new AO3p ("O3*"); stringType["O3T"] = t; 
-    stringType["O3P"] = AtomType::aO3P = new AO3P ("O3P");
-    stringType["O4*"] = AtomType::aO4p = new AO4p ("O4*");
-    stringType["O5*"] = t = AtomType::aO5p = new AO5p ("O5*"); stringType["O5T"] = t; 
-    stringType["P"] = AtomType::aP = new AP ("P");
-    stringType["C2"] = AtomType::aC2 = new AC2 ("C2");
-    stringType["C4"] = AtomType::aC4 = new AC4 ("C4");
-    stringType["C5"] = AtomType::aC5 = new AC5 ("C5");
-    stringType["C5M"] = t = AtomType::aC5M = new AC5M ("C5M"); stringType["C7"] = t; stringType["C5A"] = t; 
-    stringType["C6"] = AtomType::aC6 = new AC6 ("C6");
-    stringType["C8"] = AtomType::aC8 = new AC8 ("C8");
-    stringType["H1"] = AtomType::aH1 = new AH1 ("H1");
-    stringType["H2"] = AtomType::aH2 = new AH2 ("H2");
-    stringType["H3"] = AtomType::aH3 = new AH3 ("H3");
-    stringType["H5"] = AtomType::aH5 = new AH5 ("H5");
-    stringType["H6"] = AtomType::aH6 = new AH6 ("H6");
-    stringType["H7"] = AtomType::aH7 = new AH7 ("H7");
-    stringType["H8"] = AtomType::aH8 = new AH8 ("H8");
-    stringType["1H2"] = t = AtomType::a1H2 = new A1H2 ("1H2"); stringType["H21"] = t; 
-    stringType["1H4"] = t = AtomType::a1H4 = new A1H4 ("1H4"); stringType["H41"] = t; 
-    stringType["1H5M"] = t = AtomType::a1H5M = new A1H5M ("1H5M"); stringType["H71"] = t; stringType["1H5A"] = t; 
-    stringType["1H6"] = t = AtomType::a1H6 = new A1H6 ("1H6"); stringType["H61"] = t; 
-    stringType["2H2"] = t = AtomType::a2H2 = new A2H2 ("2H2"); stringType["H22"] = t; 
-    stringType["2H4"] = t = AtomType::a2H4 = new A2H4 ("2H4"); stringType["H42"] = t; 
-    stringType["2H5M"] = t = AtomType::a2H5M = new A2H5M ("2H5M"); stringType["H72"] = t; stringType["2H5A"] = t; 
-    stringType["2H6"] = t = AtomType::a2H6 = new A2H6 ("2H6"); stringType["H62"] = t; 
-    stringType["3H5M"] = t = AtomType::a3H5M = new A3H5M ("3H5M"); stringType["H73"] = t; stringType["3H5A"] = t; 
-    stringType["N1"] = AtomType::aN1 = new AN1 ("N1");
-    stringType["N2"] = AtomType::aN2 = new AN2 ("N2");
-    stringType["N3"] = AtomType::aN3 = new AN3 ("N3");
-    stringType["N4"] = AtomType::aN4 = new AN4 ("N4");
-    stringType["N6"] = AtomType::aN6 = new AN6 ("N6");
-    stringType["N7"] = AtomType::aN7 = new AN7 ("N7");
-    stringType["N9"] = AtomType::aN9 = new AN9 ("N9");
-    stringType["O2"] = AtomType::aO2 = new AO2 ("O2");
-    stringType["O4"] = AtomType::aO4 = new AO4 ("O4");
-    stringType["O6"] = AtomType::aO6 = new AO6 ("O6");
-    stringType["2LP6"] = AtomType::a2LP6 = new A2LP6 ("2LP6");
-    stringType["1LP6"] = AtomType::a1LP6 = new A1LP6 ("1LP6");
-    stringType["LP7"] = AtomType::aLP7 = new ALP7 ("LP7");
-    stringType["LP3"] = AtomType::aLP3 = new ALP3 ("LP3");
-    stringType["LP1"] = AtomType::aLP1 = new ALP1 ("LP1");
-    stringType["2LP2"] = AtomType::a2LP2 = new A2LP2 ("2LP2");
-    stringType["1LP2"] = AtomType::a1LP2 = new A1LP2 ("1LP2");
-    stringType["2LP4"] = AtomType::a2LP4 = new A2LP4 ("2LP4");
-    stringType["1LP4"] = AtomType::a1LP4 = new A1LP4 ("1LP4");
-    stringType["PSY"] = AtomType::aPSY = new APSY ("PSY");
-    stringType["PSZ"] = AtomType::aPSZ = new APSZ ("PSZ");
-    stringType["H3T"] = AtomType::aH3T = new AH3T ("H3T");
-    stringType["H5T"] = AtomType::aH5T = new AH5T ("H5T");
-    stringType["C"] = AtomType::aC = new AC ("C");
-    stringType["CA"] = AtomType::aCA = new ACA ("CA");
-    stringType["CB"] = AtomType::aCB = new ACB ("CB");
-    stringType["CD"] = AtomType::aCD = new ACD ("CD");
-    stringType["CD1"] = AtomType::aCD1 = new ACD1 ("CD1");
-    stringType["CD2"] = AtomType::aCD2 = new ACD2 ("CD2");
-    stringType["CE"] = AtomType::aCE = new ACE ("CE");
-    stringType["CE1"] = AtomType::aCE1 = new ACE1 ("CE1");
-    stringType["CE2"] = AtomType::aCE2 = new ACE2 ("CE2");
-    stringType["CE3"] = AtomType::aCE3 = new ACE3 ("CE3");
-    stringType["CG"] = AtomType::aCG = new ACG ("CG");
-    stringType["CG1"] = AtomType::aCG1 = new ACG1 ("CG1");
-    stringType["CG2"] = AtomType::aCG2 = new ACG2 ("CG2");
-    stringType["CH2"] = AtomType::aCH2 = new ACH2 ("CH2");
-    stringType["CZ"] = AtomType::aCZ = new ACZ ("CZ");
-    stringType["CZ2"] = AtomType::aCZ2 = new ACZ2 ("CZ2");
-    stringType["CZ3"] = AtomType::aCZ3 = new ACZ3 ("CZ3");
-    stringType["H"] = AtomType::aH = new AH ("H");
-    stringType["1H"] = t = AtomType::a1H = new A1H ("1H"); stringType["HN1"] = t; 
-    stringType["2H"] = t = AtomType::a2H = new A2H ("2H"); stringType["HN2"] = t; 
-    stringType["3H"] = t = AtomType::a3H = new A3H ("3H"); stringType["HN3"] = t; 
-    stringType["HA"] = AtomType::aHA = new AHA ("HA");
-    stringType["1HA"] = AtomType::aHA1 = new AHA1 ("1HA");
-    stringType["2HA"] = AtomType::aHA2 = new AHA2 ("2HA");
-    stringType["HB"] = AtomType::aHB = new AHB ("HB");
-    stringType["1HB"] = AtomType::aHB1 = new AHB1 ("1HB");
-    stringType["2HB"] = AtomType::aHB2 = new AHB2 ("2HB");
-    stringType["3HB"] = AtomType::aHB3 = new AHB3 ("3HB");
-    stringType["1HD"] = t = AtomType::aHD1 = new AHD1 ("HD1"); stringType["HD1"] = t; 
-    stringType["2HD"] = t = AtomType::aHD2 = new AHD2 ("HD2"); stringType["HD2"] = t; 
-    stringType["HE"] = AtomType::aHE = new AHE ("HE");
-    stringType["1HE"] = t = AtomType::aHE1 = new AHE1 ("HE1"); stringType["HE1"] = t; 
-    stringType["2HE"] = t = AtomType::aHE2 = new AHE2 ("HE2"); stringType["HE2"] = t;
-    stringType["3HE"] = t = AtomType::aHE3 = new AHE3 ("HE3"); stringType["HE3"] = t;
-    stringType["HG"] = AtomType::aHG = new AHG ("HG");
-    stringType["1HG"] = t = AtomType::aHG1 = new AHG1 ("HG1"); stringType["HG1"] = t; 
-    stringType["2HG"] = t = AtomType::aHG2 = new AHG2 ("HG2"); stringType["HG2"] = t; 
-    stringType["HH"] = AtomType::aHH = new AHH ("HH");
-    stringType["HH2"] = AtomType::aHH2 = new AHH2 ("HH2");
-    stringType["HXT"] = AtomType::aHXT = new AHXT ("HXT");
-    stringType["HZ"] = AtomType::aHZ = new AHZ ("HZ");
-    stringType["1HZ"] = t = AtomType::aHZ1 = new AHZ1 ("HZ1"); stringType["HZ1"] = t; 
-    stringType["2HZ"] = t = AtomType::aHZ2 = new AHZ2 ("HZ2"); stringType["HZ2"] = t; 
-    stringType["3HZ"] = t = AtomType::aHZ3 = new AHZ3 ("HZ3"); stringType["HZ3"] = t; 
-    stringType["N"] = AtomType::aN = new AN ("N");
-    stringType["ND1"] = AtomType::aND1 = new AND1 ("ND1");
-    stringType["ND2"] = AtomType::aND2 = new AND2 ("ND2");
-    stringType["NE"] = AtomType::aNE = new ANE ("NE");
-    stringType["NE1"] = AtomType::aNE1 = new ANE1 ("NE1");
-    stringType["NE2"] = AtomType::aNE2 = new ANE2 ("NE2");
-    stringType["NH1"] = AtomType::aNH1 = new ANH1 ("NH1");
-    stringType["NH2"] = AtomType::aNH2 = new ANH2 ("NH2");
-    stringType["NZ"] = AtomType::aNZ = new ANZ ("NZ");
-    stringType["O"] = AtomType::aO = new AO ("O");
-    stringType["OD1"] = AtomType::aOD1 = new AOD1 ("OD1");
-    stringType["OD2"] = AtomType::aOD2 = new AOD2 ("OD2");
-    stringType["OE1"] = AtomType::aOE1 = new AOE1 ("OE1");
-    stringType["OE2"] = AtomType::aOE2 = new AOE2 ("OE2");
-    stringType["OG"] = AtomType::aOG = new AOG ("OG");
-    stringType["OG1"] = AtomType::aOG1 = new AOG1 ("OG1");
-    stringType["OH"] = AtomType::aOH = new AOH ("OH");
-    stringType["OXT"] = AtomType::aOXT = new AOXT ("OXT");
-    stringType["SD"] = AtomType::aSD = new ASD ("SD");
-    stringType["SG"] = AtomType::aSG = new ASG ("SG");
-    stringType["1HD1"] = AtomType::a1HD1 = new A1HD1 ("1HD1");
-    stringType["1HD2"] = AtomType::a1HD2 = new A1HD2 ("1HD2");
-    stringType["1HE2"] = AtomType::a1HE2 = new A1HE2 ("1HE2");
-    stringType["1HG1"] = AtomType::a1HG1 = new A1HG1 ("1HG1");
-    stringType["1HG2"] = AtomType::a1HG2 = new A1HG2 ("1HG2");
-    stringType["1HH1"] = AtomType::a1HH1 = new A1HH1 ("1HH1");
-    stringType["1HH2"] = AtomType::a1HH2 = new A1HH2 ("1HH2");
-    stringType["2HD1"] = AtomType::a2HD1 = new A2HD1 ("2HD1");
-    stringType["2HD2"] = AtomType::a2HD2 = new A2HD2 ("2HD2");
-    stringType["2HE2"] = AtomType::a2HE2 = new A2HE2 ("2HE2");
-    stringType["2HG1"] = AtomType::a2HG1 = new A2HG1 ("2HG1");
-    stringType["2HG2"] = AtomType::a2HG2 = new A2HG2 ("2HG2");
-    stringType["2HH1"] = AtomType::a2HH1 = new A2HH1 ("2HH1");
-    stringType["2HH2"] = AtomType::a2HH2 = new A2HH2 ("2HH2");
-    stringType["3HD1"] = AtomType::a3HD1 = new A3HD1 ("3HD1");
-    stringType["3HD2"] = AtomType::a3HD2 = new A3HD2 ("3HD2");
-    stringType["3HG1"] = AtomType::a3HG1 = new A3HG1 ("3HG1");
-    stringType["3HG2"] = AtomType::a3HG2 = new A3HG2 ("3HG2");
-    stringType["MG"] = AtomType::aMG = new AMG ("MG");
-    stringType["PSAZ"] = AtomType::aPSAZ = new APSAZ ("PSAZ");
+    AtomType::aNull = *this->repository.insert (new Null (string (""))).first;
+    AtomType::aUnknown = *this->repository.insert (new Unknown (string ("UNK"))).first;
+    AtomType::aC1p = *this->repository.insert (new AC1p (string ("C1*"))).first;
+    AtomType::aC2p = *this->repository.insert (new AC2p (string ("C2*"))).first;
+    AtomType::aC3p = *this->repository.insert (new AC3p (string ("C3*"))).first;
+    AtomType::aC4p = *this->repository.insert (new AC4p (string ("C4*"))).first;
+    AtomType::aC5p = *this->repository.insert (new AC5p (string ("C5*"))).first;
+    AtomType::aH1p = *this->repository.insert (new AH1p (string ("H1*"))).first;
+    AtomType::aH2p = *this->repository.insert (new AH2p (string ("H2*"))).first;
+    AtomType::aH3p = *this->repository.insert (new AH3p (string ("H3*"))).first;
+    AtomType::aH4p = *this->repository.insert (new AH4p (string ("H4*"))).first;
+    AtomType::aH5p = *this->repository.insert (new AH5p (string ("H5*"))).first;
+    AtomType::aO1P = *this->repository.insert (new AO1P (string ("O1P"))).first;
+    AtomType::aO2p = *this->repository.insert (new AO2p (string ("O2*"))).first;
+    AtomType::aO2P = *this->repository.insert (new AO2P (string ("O2P"))).first;
+    AtomType::aO3p = *this->repository.insert (new AO3p (string ("O3*"))).first;
+    AtomType::aO3P = *this->repository.insert (new AO3P (string ("O3P"))).first;
+    AtomType::aO4p = *this->repository.insert (new AO4p (string ("O4*"))).first;
+    AtomType::aO5p = *this->repository.insert (new AO5p (string ("O5*"))).first;
+    AtomType::aP = *this->repository.insert (new AP (string ("P"))).first;
+    AtomType::a1H2p = *this->repository.insert (new A1H2p (string ("1H2*"))).first;
+    AtomType::a1H5p = *this->repository.insert (new A1H5p (string ("1H5*"))).first;
+    AtomType::a2H2p = *this->repository.insert (new A2H2p (string ("2H2*"))).first;
+    AtomType::a2H5p = *this->repository.insert (new A2H5p (string ("2H5*"))).first;
+    AtomType::aHO2p = *this->repository.insert (new AHO2p (string ("HO2*"))).first;
+    AtomType::aHO3p = *this->repository.insert (new AHO3p (string ("HO3*"))).first;
+    AtomType::aC2 = *this->repository.insert (new AC2 (string ("C2"))).first;
+    AtomType::aC4 = *this->repository.insert (new AC4 (string ("C4"))).first;
+    AtomType::aC5 = *this->repository.insert (new AC5 (string ("C5"))).first;
+    AtomType::aC5M = *this->repository.insert (new AC5M (string ("C5M"))).first;
+    AtomType::aC6 = *this->repository.insert (new AC6 (string ("C6"))).first;
+    AtomType::aC8 = *this->repository.insert (new AC8 (string ("C8"))).first;
+    AtomType::aH1 = *this->repository.insert (new AH1 (string ("H1"))).first;
+    AtomType::aH2 = *this->repository.insert (new AH2 (string ("H2"))).first;
+    AtomType::aH3 = *this->repository.insert (new AH3 (string ("H3"))).first;
+    AtomType::aH5 = *this->repository.insert (new AH5 (string ("H5"))).first;
+    AtomType::aH6 = *this->repository.insert (new AH6 (string ("H6"))).first;
+    AtomType::aH7 = *this->repository.insert (new AH7 (string ("H7"))).first;
+    AtomType::aH8 = *this->repository.insert (new AH8 (string ("H8"))).first;
+    AtomType::aN1 = *this->repository.insert (new AN1 (string ("N1"))).first;
+    AtomType::aN2 = *this->repository.insert (new AN2 (string ("N2"))).first;
+    AtomType::aN3 = *this->repository.insert (new AN3 (string ("N3"))).first;
+    AtomType::aN4 = *this->repository.insert (new AN4 (string ("N4"))).first;
+    AtomType::aN6 = *this->repository.insert (new AN6 (string ("N6"))).first;
+    AtomType::aN7 = *this->repository.insert (new AN7 (string ("N7"))).first;
+    AtomType::aN9 = *this->repository.insert (new AN9 (string ("N9"))).first;
+    AtomType::aO2 = *this->repository.insert (new AO2 (string ("O2"))).first;
+    AtomType::aO4 = *this->repository.insert (new AO4 (string ("O4"))).first;
+    AtomType::aO6 = *this->repository.insert (new AO6 (string ("O6"))).first;
+    AtomType::a1H2 = *this->repository.insert (new A1H2 (string ("1H2"))).first;
+    AtomType::a1H4 = *this->repository.insert (new A1H4 (string ("1H4"))).first;
+    AtomType::a1H5M = *this->repository.insert (new A1H5M (string ("1H5M"))).first;
+    AtomType::a1H6 = *this->repository.insert (new A1H6 (string ("1H6"))).first;
+    AtomType::a2H2 = *this->repository.insert (new A2H2 (string ("2H2"))).first;
+    AtomType::a2H4 = *this->repository.insert (new A2H4 (string ("2H4"))).first;
+    AtomType::a2H5M = *this->repository.insert (new A2H5M (string ("2H5M"))).first;
+    AtomType::a2H6 = *this->repository.insert (new A2H6 (string ("2H6"))).first;
+    AtomType::a3H5M = *this->repository.insert (new A3H5M (string ("3H5M"))).first;
+    AtomType::aPSY = *this->repository.insert (new APSY (string ("PSY"))).first;
+    AtomType::aPSZ = *this->repository.insert (new APSZ (string ("PSZ"))).first;
+    AtomType::aLP1 = *this->repository.insert (new ALP1 (string ("LP1"))).first;
+    AtomType::aLP3 = *this->repository.insert (new ALP3 (string ("LP3"))).first;
+    AtomType::aLP7 = *this->repository.insert (new ALP7 (string ("LP7"))).first;
+    AtomType::a1LP2 = *this->repository.insert (new A1LP2 (string ("1LP2"))).first;
+    AtomType::a1LP4 = *this->repository.insert (new A1LP4 (string ("1LP4"))).first;
+    AtomType::a1LP6 = *this->repository.insert (new A1LP6 (string ("1LP6"))).first;
+    AtomType::a2LP2 = *this->repository.insert (new A2LP2 (string ("2LP2"))).first;
+    AtomType::a2LP4 = *this->repository.insert (new A2LP4 (string ("2LP4"))).first;
+    AtomType::a2LP6 = *this->repository.insert (new A2LP6 (string ("2LP6"))).first;
+    AtomType::aH3T = *this->repository.insert (new AH3T (string ("H3T"))).first;
+    AtomType::aH5T = *this->repository.insert (new AH5T (string ("H5T"))).first;
+    AtomType::aC = *this->repository.insert (new AC (string ("C"))).first;
+    AtomType::aCA = *this->repository.insert (new ACA (string ("CA"))).first;
+    AtomType::aCB = *this->repository.insert (new ACB (string ("CB"))).first;
+    AtomType::aCD = *this->repository.insert (new ACD (string ("CD"))).first;
+    AtomType::aCD1 = *this->repository.insert (new ACD1 (string ("CD1"))).first;
+    AtomType::aCD2 = *this->repository.insert (new ACD2 (string ("CD2"))).first;
+    AtomType::aCE = *this->repository.insert (new ACE (string ("CE"))).first;
+    AtomType::aCE1 = *this->repository.insert (new ACE1 (string ("CE1"))).first;
+    AtomType::aCE2 = *this->repository.insert (new ACE2 (string ("CE2"))).first;
+    AtomType::aCE3 = *this->repository.insert (new ACE3 (string ("CE3"))).first;
+    AtomType::aCG = *this->repository.insert (new ACG (string ("CG"))).first;
+    AtomType::aCG1 = *this->repository.insert (new ACG1 (string ("CG1"))).first;
+    AtomType::aCG2 = *this->repository.insert (new ACG2 (string ("CG2"))).first;
+    AtomType::aCH2 = *this->repository.insert (new ACH2 (string ("CH2"))).first;
+    AtomType::aCZ = *this->repository.insert (new ACZ (string ("CZ"))).first;
+    AtomType::aCZ2 = *this->repository.insert (new ACZ2 (string ("CZ2"))).first;
+    AtomType::aCZ3 = *this->repository.insert (new ACZ3 (string ("CZ3"))).first;
+    AtomType::aH = *this->repository.insert (new AH (string ("H"))).first;
+    AtomType::a1H = *this->repository.insert (new A1H (string ("1H"))).first;
+    AtomType::a2H = *this->repository.insert (new A2H (string ("2H"))).first;
+    AtomType::a3H = *this->repository.insert (new A3H (string ("3H"))).first;
+    AtomType::aHA = *this->repository.insert (new AHA (string ("HA"))).first;
+    AtomType::aHA1 = *this->repository.insert (new AHA1 (string ("HA1"))).first;
+    AtomType::aHA2 = *this->repository.insert (new AHA2 (string ("HA2"))).first;
+    AtomType::aHB = *this->repository.insert (new AHB (string ("HB"))).first;
+    AtomType::aHB1 = *this->repository.insert (new AHB1 (string ("HB1"))).first;
+    AtomType::aHB2 = *this->repository.insert (new AHB2 (string ("HB2"))).first;
+    AtomType::aHB3 = *this->repository.insert (new AHB3 (string ("HB3"))).first;
+    AtomType::aHD1 = *this->repository.insert (new AHD1 (string ("HD1"))).first;
+    AtomType::aHD2 = *this->repository.insert (new AHD2 (string ("HD2"))).first;
+    AtomType::aHE = *this->repository.insert (new AHE (string ("HE"))).first;
+    AtomType::aHE1 = *this->repository.insert (new AHE1 (string ("HE1"))).first;
+    AtomType::aHE2 = *this->repository.insert (new AHE2 (string ("HE2"))).first;
+    AtomType::aHE3 = *this->repository.insert (new AHE3 (string ("HE3"))).first;
+    AtomType::aHG = *this->repository.insert (new AHG (string ("HG"))).first;
+    AtomType::aHG1 = *this->repository.insert (new AHG1 (string ("HG1"))).first;
+    AtomType::aHG2 = *this->repository.insert (new AHG2 (string ("HG2"))).first;
+    AtomType::aHH = *this->repository.insert (new AHH (string ("HH"))).first;
+    AtomType::aHH2 = *this->repository.insert (new AHH2 (string ("HH2"))).first;
+    AtomType::aHXT = *this->repository.insert (new AHXT (string ("HXT"))).first;
+    AtomType::aHZ = *this->repository.insert (new AHZ (string ("HZ"))).first;
+    AtomType::aHZ1 = *this->repository.insert (new AHZ1 (string ("HZ1"))).first;
+    AtomType::aHZ2 = *this->repository.insert (new AHZ2 (string ("HZ2"))).first;
+    AtomType::aHZ3 = *this->repository.insert (new AHZ3 (string ("HZ3"))).first;
+    AtomType::aN = *this->repository.insert (new AN (string ("N"))).first;
+    AtomType::aND1 = *this->repository.insert (new AND1 (string ("ND1"))).first;
+    AtomType::aND2 = *this->repository.insert (new AND2 (string ("ND2"))).first;
+    AtomType::aNE = *this->repository.insert (new ANE (string ("NE"))).first;
+    AtomType::aNE1 = *this->repository.insert (new ANE1 (string ("NE1"))).first;
+    AtomType::aNE2 = *this->repository.insert (new ANE2 (string ("NE2"))).first;
+    AtomType::aNH1 = *this->repository.insert (new ANH1 (string ("NH1"))).first;
+    AtomType::aNH2 = *this->repository.insert (new ANH2 (string ("NH2"))).first;
+    AtomType::aNZ = *this->repository.insert (new ANZ (string ("NZ"))).first;
+    AtomType::aO = *this->repository.insert (new AO (string ("O"))).first;
+    AtomType::aOD1 = *this->repository.insert (new AOD1 (string ("OD1"))).first;
+    AtomType::aOD2 = *this->repository.insert (new AOD2 (string ("OD2"))).first;
+    AtomType::aOE1 = *this->repository.insert (new AOE1 (string ("OE1"))).first;
+    AtomType::aOE2 = *this->repository.insert (new AOE2 (string ("OE2"))).first;
+    AtomType::aOG = *this->repository.insert (new AOG (string ("OG"))).first;
+    AtomType::aOG1 = *this->repository.insert (new AOG1 (string ("OG1"))).first;
+    AtomType::aOH = *this->repository.insert (new AOH (string ("OH"))).first;
+    AtomType::aOXT = *this->repository.insert (new AOXT (string ("OXT"))).first;
+    AtomType::aSD = *this->repository.insert (new ASD (string ("SD"))).first;
+    AtomType::aSG = *this->repository.insert (new ASG (string ("SG"))).first;
+    AtomType::a1HD1 = *this->repository.insert (new A1HD1 (string ("1HD1"))).first;
+    AtomType::a1HD2 = *this->repository.insert (new A1HD2 (string ("1HD2"))).first;
+    AtomType::a1HE2 = *this->repository.insert (new A1HE2 (string ("1HE2"))).first;
+    AtomType::a1HG1 = *this->repository.insert (new A1HG1 (string ("1HG1"))).first;
+    AtomType::a1HG2 = *this->repository.insert (new A1HG2 (string ("1HG2"))).first;
+    AtomType::a1HH1 = *this->repository.insert (new A1HH1 (string ("1HH1"))).first;
+    AtomType::a1HH2 = *this->repository.insert (new A1HH2 (string ("1HH2"))).first;
+    AtomType::a2HD1 = *this->repository.insert (new A2HD1 (string ("2HD1"))).first;
+    AtomType::a2HD2 = *this->repository.insert (new A2HD2 (string ("2HD2"))).first;
+    AtomType::a2HE2 = *this->repository.insert (new A2HE2 (string ("2HE2"))).first;
+    AtomType::a2HG1 = *this->repository.insert (new A2HG1 (string ("2HG1"))).first;
+    AtomType::a2HG2 = *this->repository.insert (new A2HG2 (string ("2HG2"))).first;
+    AtomType::a2HH1 = *this->repository.insert (new A2HH1 (string ("2HH1"))).first;
+    AtomType::a2HH2 = *this->repository.insert (new A2HH2 (string ("2HH2"))).first;
+    AtomType::a3HD1 = *this->repository.insert (new A3HD1 (string ("3HD1"))).first;
+    AtomType::a3HD2 = *this->repository.insert (new A3HD2 (string ("3HD2"))).first;
+    AtomType::a3HG1 = *this->repository.insert (new A3HG1 (string ("3HG1"))).first;
+    AtomType::a3HG2 = *this->repository.insert (new A3HG2 (string ("3HG2"))).first;
+    AtomType::aMG = *this->repository.insert (new AMG (string ("MG"))).first;
+    AtomType::aPSAZ = *this->repository.insert (new APSAZ (string ("PSAZ"))).first;
   }
 
   
   AtomTypeStore::~AtomTypeStore () 
   {
-    set< AtomType* > bag;
-    map< const char*, AtomType*, less_string >::iterator i;
-    for (i=stringType.begin (); i!=stringType.end (); ++i) {
-      bag.insert (i->second);
-    }
-    set< AtomType* >::iterator j;
-    for (j=bag.begin (); j!=bag.end (); ++j) {
-      delete *j;
-    }
+    set< AtomType*, AtomType::less_deref >::iterator it;
+    for (it = this->repository.begin (); it != this->repository.end (); ++it)
+      delete *it;
   }
 
   
   // METHODS -------------------------------------------------------------------
 
   const AtomType* 
-  AtomTypeStore::get (const char* key) 
+  AtomTypeStore::get (const string& key) 
   {
-    char* key_copy = strdup (key);
-    char* kp;
+    string key2 = key;
+    string::iterator sit;
 
-    for (kp = key_copy; 0 != *kp; ++kp)
+    for (sit = key2.begin (); sit != key2.end (); ++sit)
     {
-      *kp = toupper (*kp);
-      if ('\'' == *kp)
-	*kp = '*';
+      if ('\'' == *sit)
+	*sit = '*';
+      else
+	*sit = toupper (*sit);
     }
 
-    pair< map< const char*, AtomType*, less_string >::iterator, bool > inserted =
-      stringType.insert (make_pair (key_copy, AtomType::aNull));
+    AtomType* atype = new Unknown (key2);    
+    pair< set< AtomType*, AtomType::less_deref >::iterator, bool > inserted =
+      this->repository.insert (atype);
 
-    if (inserted.second) // unique insertion => new atom type
-      inserted.first->second = new AtomType (inserted.first->first);
-    else                 // key exists => delete key copy
-      free (key_copy);
+    if (!inserted.second) // no unique insertion => key exists
+    {
+      delete atype;
+      atype = *inserted.first;
+    }
 
-    return inserted.first->second;
+    return atype;
   }
 
 

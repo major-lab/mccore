@@ -23,6 +23,7 @@ namespace mccore
   ResidueTypeStore ResidueType::rtstore;
 
   ResidueType* ResidueType::rNull = 0;
+  ResidueType* ResidueType::rUnknown = 0;
   
   ResidueType* ResidueType::rNucleicAcid = 0;
   ResidueType* ResidueType::rAminoAcid = 0;
@@ -109,33 +110,38 @@ namespace mccore
   ResidueType* ResidueType::rTRP = 0;
   ResidueType* ResidueType::rTYR = 0;
   ResidueType* ResidueType::rVAL = 0;
+  ResidueType* ResidueType::rASX = 0;
+  ResidueType* ResidueType::rGLX = 0;
 
   
   // LIFECYCLE -----------------------------------------------------------------
 
 
   ResidueType::ResidueType () 
-    : type (0), longtype (0) 
   {
+    
   }
 
 
-  ResidueType::ResidueType (const char* t, const char* lt) 
+  ResidueType::ResidueType (const string& ks, const string& ls)
+    : key (ks),
+      definition (ls)
   {
-    type = new char[strlen (t) + 1];
-    strcpy (type, t);
-    longtype = new char[strlen (lt) + 1];
-    strcpy (longtype, lt);
+
   }
 
+  
   ResidueType::ResidueType (const ResidueType &t) 
   {
+    FatalIntLibException ex ("", __FILE__, __LINE__);
+    ex << "Use of copy constructor for class ResidueType is prohibited.";
+    throw ex;
   }
+
   
   ResidueType::~ResidueType () 
   {
-    if (type) delete[] type;
-    if (longtype) delete[] longtype;
+ 
   }
  
 
@@ -143,15 +149,24 @@ namespace mccore
 
 
   const ResidueType* 
-  ResidueType::parseType (const char* s) 
+  ResidueType::parseType (const char* str) 
   {
-    return rtstore.get (s);
+    string ks (str);
+    return ResidueType::rtstore.get (ks);
   }
+
+
+  const ResidueType* 
+  ResidueType::parseType (const string& str) 
+  {
+    return ResidueType::rtstore.get (str);
+  }
+  
 
   const ResidueType* 
   ResidueType::invalidate () const
   {
-    return ResidueType::rtstore.getInvalid (longtype);
+    return ResidueType::rtstore.getInvalid (this);
   }
   
 
@@ -218,14 +233,14 @@ namespace mccore
   ostream &
   ResidueType::output (ostream &out) const
   {
-    return out << longtype;
+    return out << this->key.c_str ();
   }
   
 
   oBinstream &
   ResidueType::output (oBinstream &out) const
   {
-    return out << longtype;
+    return out << this->key.c_str ();
   }
 
 
@@ -246,14 +261,14 @@ namespace mccore
   Exception&
   operator<< (Exception& ex, const ResidueType &t)
   {
-    return ex << t.toLongString ();
+    return ex << (const char*)t;
   }
 
   
   Exception&
   operator<< (Exception& ex, const ResidueType *t)
   {
-    return ex << (0 == t ? ResidueType::rNull : t)->toLongString ();
+    return ex << (const char*)*(0 == t ? ResidueType::rNull : t);
   }
 
   
@@ -263,7 +278,7 @@ namespace mccore
     if (0 == t)
     {
       FatalIntLibException ex ("", __FILE__, __LINE__);
-      ex << "Cannot write null-pointed residue type to binstream: use ResidueType::rNull";
+      ex << "Cannot write null-pointed residue type to binstream: use PropertyType::rNull";
       throw ex;
     }
     return t->output (obs);

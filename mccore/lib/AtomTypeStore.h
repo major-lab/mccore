@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 12:30:39 2003
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 // 
 //  This file is part of mccore.
 //  
@@ -25,21 +25,17 @@
 #ifndef _AtomTypeStore_h_
 #define _AtomTypeStore_h_
 
-#include <iostream>
-#include <map>
-#include <set>
-#include <vector>
 
-#include <string>
+#include <set>
 
 #include "AtomType.h"
-#include "Pdbstream.h"
+
 
 using namespace std;
 
 
-
-namespace mccore { 
+namespace mccore
+{ 
 
   class Residue;
 
@@ -47,31 +43,16 @@ namespace mccore {
    * @short Repository of atomtypes.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: AtomTypeStore.h,v 1.9 2004-09-30 19:15:43 larosem Exp $
+   * @version $Id: AtomTypeStore.h,v 1.10 2004-10-15 20:34:43 thibaup Exp $
    */
   class AtomTypeStore
   {
+  
     /**
-     * @short less comparator for strings.
+     * The type repository
      */
-    struct less_string
-    {
-      /**
-       * Tests whether the first string is lexicographically less than the
-       * second one.
-       * @param s1 the first string.
-       * @param s2 the second string.
-       * @return the result of the test.
-       */
-      bool operator() (const char* s1, const char* s2) const
-      { return strcmp (s1, s2) < 0; }
-    };
+    set< AtomType*, AtomType::less_deref > repository;
     
-    /**
-     * Container for string to type associations.
-     */
-    map< const char*, AtomType*, less_string > stringType;
-
   public:
 
     // LIFECYCLE ---------------------------------------------------------------
@@ -82,13 +63,7 @@ namespace mccore {
     AtomTypeStore ();
     
     /**
-     * Destroys the object.  No deletion is done on the char* since it
-     * is no known it is a string constant or an allocated string.
-     * This is not too bad since types should live for as long as the
-     * program runs.  (Note that we could use the C++ string class but
-     * this increases compilation time by a factor 3).  NEWS: The get
-     * function now uses the string found in the type as key to the
-     * map and there are thus no more memory leaks.
+     * Destroys the object. 
      */
     ~AtomTypeStore ();
 
@@ -99,30 +74,50 @@ namespace mccore {
      * @param key string key representing the atom type.
      * @return the matching atom type or a new one if none existed.
      */
-    const AtomType* get (const char* key);
+    const AtomType* get (const string& key);
 
   private:
     
     // TYPES -------------------------------------------------------------------
 
+    class Null : public virtual AtomType {
+    public:      
+      Null () {}
+      Null (const string& ks) : AtomType (ks) {}
+      
+      virtual bool isNull () const { return true; }
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const Null* > (t);
+      }
+    };
+    
+    /**
+     * Public abstract class for unknown residues.
+     */
+    class Unknown : public virtual AtomType {
+    public:      
+      Unknown () {}
+      Unknown (const string& ks) : AtomType (ks) {}
+      
+      virtual bool isUnknown () const { return true; }
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const Unknown* > (t);
+      }
+    };
+    
     /**
      * Private abstract class for amino acid atoms.
      */
     class AminoAcid : public virtual AtomType {
     public:      
       AminoAcid () {}
-      AminoAcid (const char* t) : AtomType (t) {}
+      AminoAcid (const string& ks) : AtomType (ks) {}
 
       virtual bool isAminoAcid () const { return true; }
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AminoAcid* > (t);
       }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "AminoAcid"; }
     };
     
     /**
@@ -131,18 +126,15 @@ namespace mccore {
     class NucleicAcid : public virtual AtomType {
     public:
       NucleicAcid () {}
-      NucleicAcid (const char* t) : AtomType (t) {}
+      NucleicAcid (const string& ks) : AtomType (ks) {}
 
       virtual bool isNucleicAcid () const { return true; }
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const NucleicAcid* > (t);
       }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "NucleicAcid"; }
+
+      
     };
 
     /**
@@ -151,18 +143,15 @@ namespace mccore {
     class Backbone : public virtual AtomType {
     public:
       Backbone () {}
-      Backbone (const char* t) : AtomType (t) {}
+      Backbone (const string& ks) : AtomType (ks) {}
 
       virtual bool isBackbone () const { return true; }
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const Backbone* > (t);
       }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "Backbone"; }
+
+      
     };
 
     /**
@@ -171,18 +160,15 @@ namespace mccore {
     class Phosphate : public virtual AtomType {
     public:
       Phosphate () {}
-      Phosphate (const char* t) : AtomType (t) {}
+      Phosphate (const string& ks) : AtomType (ks) {}
 
       virtual bool isPhosphate () const { return true; }
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const Phosphate* > (t);
       }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "Phosphate"; }
+
+      
     };
     
     /**
@@ -191,18 +177,15 @@ namespace mccore {
     class SideChain : public virtual AtomType {
     public:
       SideChain () {}
-      SideChain (const char* t) : AtomType (t) {}
+      SideChain (const string& ks) : AtomType (ks) {}
 
       virtual bool isSideChain () const { return true; }
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const SideChain* > (t);
       }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "SideChain"; }
+
+      
     };
 
     /**
@@ -211,18 +194,16 @@ namespace mccore {
     class Carbon : public virtual AtomType {
     public:
       Carbon () {}
-      Carbon (const char* t) : AtomType (t) {}
+      Carbon (const string& ks) : AtomType (ks) {}
 
       virtual bool isCarbon () const { return true; }
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const Carbon* > (t);
+       return dynamic_cast< const Carbon* > (t);
       }
-
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "C"; }
+      virtual Vector3D getColor () const {
+	return Vector3D (0.60, 0.60, 0.60);
+      }
+      
     };
 
     /**
@@ -231,18 +212,16 @@ namespace mccore {
     class Hydrogen : public virtual AtomType {
     public:
       Hydrogen () {}
-      Hydrogen (const char* t) : AtomType (t) {}
+      Hydrogen (const string& ks) : AtomType (ks) {}
 
       virtual bool isHydrogen () const { return true; }
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const Hydrogen* > (t);
       }
-
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H"; }
+      virtual Vector3D getColor () const {
+	return Vector3D (1.00, 1.00, 1.00);
+      }
+      
     };
 
     /**
@@ -251,18 +230,17 @@ namespace mccore {
     class LonePair : public virtual AtomType {
     public:
       LonePair () {}
-      LonePair (const char* t) : AtomType (t) {}
+      LonePair (const string& ks) : AtomType (ks) {}
 
       virtual bool isLonePair () const { return true; }
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const LonePair* > (t);
       }
+      virtual Vector3D getColor () const {
+	return Vector3D (0.00, 0.80, 0.00);
+      }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "N"; }
+      
     };
 
     /**
@@ -271,18 +249,16 @@ namespace mccore {
     class Magnesium : public virtual AtomType {
     public:
       Magnesium () {}
-      Magnesium (const char* t) : AtomType (t) {}
+      Magnesium (const string& ks) : AtomType (ks) {}
 
       virtual bool isMagnesium () const { return true; }
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const Magnesium* > (t);
       }
-
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "P"; }
+      virtual Vector3D getColor () const {
+	return Vector3D (0.13, 0.54, 0.13);
+      }
+      
     };
 
     /**
@@ -291,18 +267,16 @@ namespace mccore {
     class Nitrogen : public virtual AtomType {
     public:
       Nitrogen () {}
-      Nitrogen (const char* t) : AtomType (t) {}
+      Nitrogen (const string& ks) : AtomType (ks) {}
 
       virtual bool isNitrogen () const { return true; }
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const Nitrogen* > (t);
       }
-
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "O"; }
+      virtual Vector3D getColor () const {
+	return Vector3D (0.20, 0.15, 0.80);
+      }
+      
     };
 
     /**
@@ -311,18 +285,17 @@ namespace mccore {
     class Oxygen : public virtual AtomType {
     public:
       Oxygen () {}
-      Oxygen (const char* t) : AtomType (t) {}
+      Oxygen (const string& ks) : AtomType (ks) {}
 
       virtual bool isOxygen () const { return true; }
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const Oxygen* > (t);
       }
+      virtual Vector3D getColor () const {
+	return Vector3D (0.76, 0.00, 0.00);
+      }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "S"; }
+      
     };
 
     /**
@@ -331,18 +304,17 @@ namespace mccore {
     class Phosphorus : public virtual AtomType {
     public:
       Phosphorus () {}
-      Phosphorus (const char* t) : AtomType (t) {}
+      Phosphorus (const string& ks) : AtomType (ks) {}
 
       virtual bool isPhosphorus () const { return true; }
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const Phosphorus* > (t);
       }
+      virtual Vector3D getColor () const {
+	return Vector3D (0.82, 0.53, 0.00);
+      }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "MG"; }
+      
     };
 
     /**
@@ -351,18 +323,15 @@ namespace mccore {
     class Pseudo : public virtual AtomType {
     public:
       Pseudo () {}
-      Pseudo (const char* t) : AtomType (t) {}
+      Pseudo (const string& ks) : AtomType (ks) {}
 
       virtual bool isPseudo () const { return true; }
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const Pseudo* > (t);
       }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "LonePair"; }
+
+      
     };
 
     /**
@@ -371,18 +340,17 @@ namespace mccore {
     class Sulfur : public virtual AtomType {
     public:
       Sulfur () {}
-      Sulfur (const char* t) : AtomType (t) {}
+      Sulfur (const string& ks) : AtomType (ks) {}
 
       virtual bool isSulfur () const { return true; }
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const Sulfur* > (t);
       }
+      virtual Vector3D getColor () const {
+	return Vector3D (0.80, 0.80, 0.00);
+      }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "Pseudo"; }
+      
     };
 
     /**
@@ -392,7 +360,7 @@ namespace mccore {
     { 
     public:
       AC1p () {}
-      AC1p (const char* t) : AtomType (t) {}
+      AC1p (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AC1p* > (t);
@@ -419,11 +387,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "C1'"; }
+
+      
     };
 
     /**
@@ -433,7 +398,7 @@ namespace mccore {
     { 
     public:
       AC2p () {}
-      AC2p (const char*  t) : AtomType (t) {}
+      AC2p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AC2p* > (t);
@@ -461,11 +426,8 @@ namespace mccore {
       virtual float getAmberCharge (const Residue *res) const;
 
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "C2'"; }
+
+      
     };
 
     /**
@@ -475,7 +437,7 @@ namespace mccore {
     { 
     public:
       AC3p () {}
-      AC3p (const char*  t) : AtomType (t) {}
+      AC3p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AC3p* > (t);
@@ -502,11 +464,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "C3'"; }
+
+      
     };
 
     /**
@@ -516,7 +475,7 @@ namespace mccore {
     { 
     public:
       AC4p () {}
-      AC4p (const char*  t) : AtomType (t) {}
+      AC4p (const string& ks) : AtomType (ks) {}
  
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AC4p* > (t);
@@ -543,11 +502,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "C4'"; }
+
+      
     };
 
     /**
@@ -557,7 +513,7 @@ namespace mccore {
     { 
     public:
       AC5p () {}
-      AC5p (const char*  t) : AtomType (t) {}
+      AC5p (const string& ks) : AtomType (ks) {}
  
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AC5p* > (t);
@@ -584,11 +540,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "C5'"; }
+
+      
     };
 
     /**
@@ -598,7 +551,7 @@ namespace mccore {
     { 
     public:
       AH1p () {}
-      AH1p (const char*  t) : AtomType (t) {}
+      AH1p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AH1p* > (t);
@@ -625,11 +578,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H1'"; }
+
+      
     };
 
     /**
@@ -639,7 +589,7 @@ namespace mccore {
     { 
     public:
       AH2p () {}
-      AH2p (const char*  t) : AtomType (t) {}
+      AH2p (const string& ks) : AtomType (ks) {}
   
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AH2p* > (t);
@@ -666,11 +616,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H2'"; }
+
+      
     };
 
     /**
@@ -680,7 +627,7 @@ namespace mccore {
     { 
     public:
       AH3p () {}
-      AH3p (const char*  t) : AtomType (t) {}
+      AH3p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AH3p* > (t);
@@ -707,11 +654,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H3'"; }
+
+      
     };
 
     /**
@@ -721,7 +665,7 @@ namespace mccore {
     { 
     public:
       AH4p () {}
-      AH4p (const char*  t) : AtomType (t) {}
+      AH4p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AH4p* > (t);
@@ -748,11 +692,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H4'"; }
+
+      
     };
 
     /**
@@ -762,7 +703,7 @@ namespace mccore {
     { 
     public:
       AH5p () {}
-      AH5p (const char*  t) : AtomType (t) {}
+      AH5p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AH5p* > (t);
@@ -789,11 +730,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H5'"; }
+
+      
     };
 
     /**
@@ -803,7 +741,7 @@ namespace mccore {
     { 
     public:
       AO1P () {}
-      AO1P (const char*  t) : AtomType (t) {}
+      AO1P (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AO1P* > (t);
@@ -830,11 +768,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "O1P"; }
+
+      
     };
 
     /**
@@ -844,7 +779,7 @@ namespace mccore {
     { 
     public:
       AO2p () {}
-      AO2p (const char*  t) : AtomType (t) {}
+      AO2p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AO2p* > (t);
@@ -871,11 +806,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "O2'"; }
+
+      
     };
 
     /**
@@ -885,7 +817,7 @@ namespace mccore {
     { 
     public:
       AO2P () {}
-      AO2P (const char*  t) : AtomType (t) {}
+      AO2P (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AO2P* > (t);
@@ -912,11 +844,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "O2P"; }
+
+      
     };
 
     /**
@@ -926,7 +855,7 @@ namespace mccore {
     { 
     public:
       AO3p () {}
-      AO3p (const char*  t) : AtomType (t) {}
+      AO3p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AO3p* > (t);
@@ -953,11 +882,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "O3'"; }
+
+      
     };
 
     /**
@@ -967,7 +893,7 @@ namespace mccore {
     { 
     public:
       AO3P () {}
-      AO3P (const char*  t) : AtomType (t) {}
+      AO3P (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AO3P* > (t);
@@ -994,11 +920,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "O3P"; }
+
+      
     };
 
     /**
@@ -1008,7 +931,7 @@ namespace mccore {
     { 
     public:
       AO4p () {}
-      AO4p (const char*  t) : AtomType (t) {}
+      AO4p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AO4p* > (t);
@@ -1035,11 +958,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "O4'"; }
+
+      
     };
 
     /**
@@ -1049,7 +969,7 @@ namespace mccore {
     { 
     public:
       AO5p () {}
-      AO5p (const char*  t) : AtomType (t) {}
+      AO5p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AO5p* > (t);
@@ -1076,11 +996,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "O5'"; }
+
+      
     };
 
     /**
@@ -1090,7 +1007,7 @@ namespace mccore {
     { 
     public:
       AP () {}
-      AP (const char*  t) : AtomType (t) {}
+      AP (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AP* > (t);
@@ -1118,11 +1035,8 @@ namespace mccore {
       virtual float getAmberCharge (const Residue *res) const;
 
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "P"; }
+
+      
     };
 
     /**
@@ -1132,7 +1046,7 @@ namespace mccore {
     { 
     public:
       A1H2p () {}
-      A1H2p (const char*  t) : AtomType (t) {}
+      A1H2p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A1H2p* > (t);
@@ -1159,11 +1073,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H2'1"; }
+
+      
     };
 
     /**
@@ -1173,7 +1084,7 @@ namespace mccore {
     { 
     public:
       A1H5p () {}
-      A1H5p (const char*  t) : AtomType (t) {}
+      A1H5p (const string& ks) : AtomType (ks) {}
  
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A1H5p* > (t);
@@ -1200,11 +1111,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H5'1"; }
+
+      
     };
 
     /**
@@ -1214,7 +1122,7 @@ namespace mccore {
     { 
     public:
       A2H2p () {}
-      A2H2p (const char*  t) : AtomType (t) {}
+      A2H2p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A2H2p* > (t);
@@ -1241,11 +1149,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H2'2"; }
+
+      
     };
 
     /**
@@ -1255,7 +1160,7 @@ namespace mccore {
     { 
     public:
       A2H5p () {}
-      A2H5p (const char*  t) : AtomType (t) {}
+      A2H5p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A2H5p* > (t);
@@ -1282,11 +1187,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H5'2"; }
+
+      
     };
 
     /**
@@ -1296,7 +1198,7 @@ namespace mccore {
     { 
     public:
       AHO2p () {}
-      AHO2p (const char*  t) : AtomType (t) {}
+      AHO2p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHO2p* > (t);
@@ -1325,11 +1227,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HO'2"; }
+
+      
     };
 
     /**
@@ -1339,7 +1238,7 @@ namespace mccore {
     { 
     public:
       AHO3p () {}
-      AHO3p (const char*  t) : AtomType (t) {}
+      AHO3p (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHO3p* > (t);
@@ -1369,11 +1268,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const { return 0; }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HO'3"; }
+
+      
     };
 
     /**
@@ -1383,7 +1279,7 @@ namespace mccore {
     { 
     public:
       AC2 () {}
-      AC2 (const char*  t) : AtomType (t) {}
+      AC2 (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AC2* > (t);
@@ -1410,11 +1306,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "C2"; }
+
+      
     };
 
     /**
@@ -1424,7 +1317,7 @@ namespace mccore {
     { 
     public:
       AC4 () {}
-      AC4 (const char*  t) : AtomType (t) {}
+      AC4 (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AC4* > (t);
@@ -1451,11 +1344,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "C4"; }
+
+      
     };
 
     /**
@@ -1465,7 +1355,7 @@ namespace mccore {
     { 
     public:
       AC5 () {}
-      AC5 (const char*  t) : AtomType (t) {}
+      AC5 (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AC5* > (t);
@@ -1492,11 +1382,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "C5"; }
+
+      
     };
 
     /**
@@ -1506,7 +1393,7 @@ namespace mccore {
     { 
     public:
       AC5M () {}
-      AC5M (const char*  t) : AtomType (t) {}
+      AC5M (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AC5M* > (t);
@@ -1533,11 +1420,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const { return -0.2269; }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "C7"; }
+
+      
     };
 
     /**
@@ -1547,7 +1431,7 @@ namespace mccore {
     { 
     public:
       AC6 () {}
-      AC6 (const char*  t) : AtomType (t) {}
+      AC6 (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AC6* > (t);
@@ -1574,11 +1458,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "C6"; }
+
+      
     };
 
     /**
@@ -1588,7 +1469,7 @@ namespace mccore {
     { 
     public:
       AC8 () {}
-      AC8 (const char*  t) : AtomType (t) {}
+      AC8 (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AC8* > (t);
@@ -1615,11 +1496,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "C8"; }
+
+      
     };
 
     /**
@@ -1629,7 +1507,7 @@ namespace mccore {
     { 
     public:
       AH1 () {}
-      AH1 (const char*  t) : AtomType (t) {}
+      AH1 (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AH1* > (t);
@@ -1656,11 +1534,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H1"; }
+
+      
     };
 
     /**
@@ -1670,7 +1545,7 @@ namespace mccore {
     { 
     public:
       AH2 () {}
-      AH2 (const char*  t) : AtomType (t) {}
+      AH2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AH2* > (t);
@@ -1697,11 +1572,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H2"; }
+
+      
     };
 
     /**
@@ -1711,7 +1583,7 @@ namespace mccore {
     { 
     public:
       AH3 () {}
-      AH3 (const char*  t) : AtomType (t) {}
+      AH3 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AH3* > (t);
@@ -1738,11 +1610,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H3"; }
+
+      
     };
 
     /**
@@ -1752,7 +1621,7 @@ namespace mccore {
     { 
     public:
       AH5 () {}
-      AH5 (const char*  t) : AtomType (t) {}
+      AH5 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AH5* > (t);
@@ -1779,11 +1648,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H5"; }
+
+      
     };
 
     /**
@@ -1793,7 +1659,7 @@ namespace mccore {
     { 
     public:
       AH6 () {}
-      AH6 (const char*  t) : AtomType (t) {}
+      AH6 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AH6* > (t);
@@ -1820,11 +1686,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H6"; }
+
+      
     };
 
     /**
@@ -1834,7 +1697,7 @@ namespace mccore {
     { 
     public:
       AH7 () {}
-      AH7 (const char*  t) : AtomType (t) {}
+      AH7 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AH7* > (t);
@@ -1861,11 +1724,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const { return 0.0770; }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H7"; }
+
+      
     };
 
     /**
@@ -1875,7 +1735,7 @@ namespace mccore {
     { 
     public:
       AH8 () {}
-      AH8 (const char*  t) : AtomType (t) {}
+      AH8 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AH8* > (t);
@@ -1902,11 +1762,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H8"; }
+
+      
     };
 
     /**
@@ -1916,7 +1773,7 @@ namespace mccore {
     { 
     public:
       AN1 () {}
-      AN1 (const char*  t) : AtomType (t) {}
+      AN1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AN1* > (t);
@@ -1943,11 +1800,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "N1"; }
+
+      
     };
 
     /**
@@ -1957,7 +1811,7 @@ namespace mccore {
     { 
     public:
       AN2 () {}
-      AN2 (const char*  t) : AtomType (t) {}
+      AN2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AN2* > (t);
@@ -1984,11 +1838,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "N2"; }
+
+      
     };
 
     /**
@@ -1998,7 +1849,7 @@ namespace mccore {
     { 
     public:
       AN3 () {}
-      AN3 (const char*  t) : AtomType (t) {}
+      AN3 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AN3* > (t);
@@ -2025,11 +1876,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "N3"; }
+
+      
     };
 
     /**
@@ -2039,7 +1887,7 @@ namespace mccore {
     { 
     public:
       AN4 () {}
-      AN4 (const char*  t) : AtomType (t) {}
+      AN4 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AN4* > (t);
@@ -2066,11 +1914,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "N4"; }
+
+      
     };
 
     /**
@@ -2080,7 +1925,7 @@ namespace mccore {
     { 
     public:
       AN6 () {}
-      AN6 (const char*  t) : AtomType (t) {}
+      AN6 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AN6* > (t);
@@ -2107,11 +1952,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "N6"; }
+
+      
     };
 
     /**
@@ -2121,7 +1963,7 @@ namespace mccore {
     { 
     public:
       AN7 () {}
-      AN7 (const char*  t) : AtomType (t) {}
+      AN7 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AN7* > (t);
@@ -2148,11 +1990,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "N7"; }
+
+      
     };
 
     /**
@@ -2162,7 +2001,7 @@ namespace mccore {
     { 
     public:
       AN9 () {}
-      AN9 (const char*  t) : AtomType (t) {}
+      AN9 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AN9* > (t);
@@ -2189,11 +2028,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "N9"; }
+
+      
     };
 
     /**
@@ -2203,7 +2039,7 @@ namespace mccore {
     { 
     public:
       AO2 () {}
-      AO2 (const char*  t) : AtomType (t) {}
+      AO2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AO2* > (t);
@@ -2230,11 +2066,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "O2"; }
+
+      
     };
 
     /**
@@ -2244,7 +2077,7 @@ namespace mccore {
     { 
     public:
       AO4 () {}
-      AO4 (const char*  t) : AtomType (t) {}
+      AO4 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AO4* > (t);
@@ -2271,11 +2104,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "O4"; }
+
+      
     };
 
     /**
@@ -2285,7 +2115,7 @@ namespace mccore {
     { 
     public:
       AO6 () {}
-      AO6 (const char*  t) : AtomType (t) {}
+      AO6 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AO6* > (t);
@@ -2312,11 +2142,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "O6"; }
+
+      
     };
 
     /**
@@ -2326,7 +2153,7 @@ namespace mccore {
     { 
     public:
       A1H2 () {}
-      A1H2 (const char*  t) : AtomType (t) {}
+      A1H2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A1H2* > (t);
@@ -2353,11 +2180,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H21"; }
+
+      
     };
 
     /**
@@ -2367,7 +2191,7 @@ namespace mccore {
     { 
     public:
       A1H4 () {}
-      A1H4 (const char*  t) : AtomType (t) {}
+      A1H4 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A1H4* > (t);
@@ -2394,11 +2218,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H41"; }
+
+      
     };
 
     /**
@@ -2408,7 +2229,7 @@ namespace mccore {
     { 
     public:
       A1H5M () {}
-      A1H5M (const char*  t) : AtomType (t) {}
+      A1H5M (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A1H5M* > (t);
@@ -2435,11 +2256,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H71"; }
+
+      
     };
 
     /**
@@ -2449,7 +2267,7 @@ namespace mccore {
     { 
     public:
       A1H6 () {}
-      A1H6 (const char*  t) : AtomType (t) {}
+      A1H6 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A1H6* > (t);
@@ -2476,11 +2294,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H61"; }
+
+      
     };
 
     /**
@@ -2490,7 +2305,7 @@ namespace mccore {
     { 
     public:
       A2H2 () {}
-      A2H2 (const char*  t) : AtomType (t) {}
+      A2H2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A2H2* > (t);
@@ -2517,11 +2332,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H22"; }
+
+      
     };
 
     /**
@@ -2531,7 +2343,7 @@ namespace mccore {
     { 
     public:
       A2H4 () {}
-      A2H4 (const char*  t) : AtomType (t) {}
+      A2H4 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A2H4* > (t);
@@ -2558,11 +2370,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H42"; }
+
+      
     };
 
     /**
@@ -2572,7 +2381,7 @@ namespace mccore {
     { 
     public:
       A2H5M () {}
-      A2H5M (const char*  t) : AtomType (t) {}
+      A2H5M (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A2H5M* > (t);
@@ -2599,11 +2408,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H72"; }
+
+      
     };
 
     /**
@@ -2613,7 +2419,7 @@ namespace mccore {
     { 
     public:
       A2H6 () {}
-      A2H6 (const char*  t) : AtomType (t) {}
+      A2H6 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A2H6* > (t);
@@ -2640,11 +2446,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H62"; }
+
+      
     };
 
     /**
@@ -2654,7 +2457,7 @@ namespace mccore {
     { 
     public:
       A3H5M () {}
-      A3H5M (const char*  t) : AtomType (t) {}
+      A3H5M (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A3H5M* > (t);
@@ -2681,11 +2484,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H73"; }
+
+      
     };
 
     /**
@@ -2695,7 +2495,7 @@ namespace mccore {
     { 
     public:
       APSY () {}
-      APSY (const char*  t) : AtomType (t) {}
+      APSY (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const APSY* > (t);
@@ -2725,11 +2525,8 @@ namespace mccore {
       virtual float getAmberCharge (const Residue *res) const
       { return Pseudo::getAmberCharge (res); }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "PSY"; }
+
+      
     };
 
     /**
@@ -2739,7 +2536,7 @@ namespace mccore {
     { 
     public:
       APSZ () {}
-      APSZ (const char*  t) : AtomType (t) {}
+      APSZ (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const APSZ* > (t);
@@ -2769,11 +2566,8 @@ namespace mccore {
       virtual float getAmberCharge (const Residue *res) const
       { return Pseudo::getAmberCharge (res); }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "PSZ"; }
+
+      
     };
 
     /**
@@ -2783,7 +2577,7 @@ namespace mccore {
     { 
     public:
       ALP1 () {}
-      ALP1 (const char*  t) : AtomType (t) {}
+      ALP1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ALP1* > (t);
@@ -2813,11 +2607,8 @@ namespace mccore {
       virtual float getAmberCharge (const Residue *res) const
       { return LonePair::getAmberCharge (res); }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "LP1"; }
+
+      
     };
 
     /**
@@ -2827,7 +2618,7 @@ namespace mccore {
     { 
     public:
       ALP3 () {}
-      ALP3 (const char*  t) : AtomType (t) {}
+      ALP3 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ALP3* > (t);
@@ -2857,11 +2648,8 @@ namespace mccore {
       virtual float getAmberCharge (const Residue *res) const
       { return LonePair::getAmberCharge (res); }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "LP3"; }
+
+      
     };
 
     /**
@@ -2871,7 +2659,7 @@ namespace mccore {
     { 
     public:
       ALP7 () {}
-      ALP7 (const char*  t) : AtomType (t) {}
+      ALP7 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ALP7* > (t);
@@ -2901,11 +2689,8 @@ namespace mccore {
       virtual float getAmberCharge (const Residue *res) const
       { return LonePair::getAmberCharge (res); }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "LP7"; }
+
+      
     };
 
     /**
@@ -2915,7 +2700,7 @@ namespace mccore {
     { 
     public:
       A1LP2 () {}
-      A1LP2 (const char*  t) : AtomType (t) {}
+      A1LP2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A1LP2* > (t);
@@ -2945,11 +2730,8 @@ namespace mccore {
       virtual float getAmberCharge (const Residue *res) const
       { return LonePair::getAmberCharge (res); }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "1LP2"; }
+
+      
     };
 
     /**
@@ -2959,7 +2741,7 @@ namespace mccore {
     { 
     public:
       A1LP4 () {}
-      A1LP4 (const char*  t) : AtomType (t) {}
+      A1LP4 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A1LP4* > (t);
@@ -2989,11 +2771,8 @@ namespace mccore {
       virtual float getAmberCharge (const Residue *res) const
       { return LonePair::getAmberCharge (res); }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "1LP4"; }
+
+      
     };
 
     /**
@@ -3003,7 +2782,7 @@ namespace mccore {
     { 
     public:
       A1LP6 () {}
-      A1LP6 (const char*  t) : AtomType (t) {}
+      A1LP6 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A1LP6* > (t);
@@ -3033,11 +2812,8 @@ namespace mccore {
       virtual float getAmberCharge (const Residue *res) const
       { return LonePair::getAmberCharge (res); }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "1LP6"; }
+
+      
     };
 
     /**
@@ -3047,7 +2823,7 @@ namespace mccore {
     { 
     public:
       A2LP2 () {}
-      A2LP2 (const char*  t) : AtomType (t) {}
+      A2LP2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A2LP2* > (t);
@@ -3077,11 +2853,8 @@ namespace mccore {
       virtual float getAmberCharge (const Residue *res) const
       { return LonePair::getAmberCharge (res); }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "2LP2"; }
+
+      
     };
 
     /**
@@ -3091,7 +2864,7 @@ namespace mccore {
     { 
     public:
       A2LP4 () {}
-      A2LP4 (const char*  t) : AtomType (t) {}
+      A2LP4 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A2LP4* > (t);
@@ -3121,11 +2894,8 @@ namespace mccore {
       virtual float getAmberCharge (const Residue *res) const
       { return LonePair::getAmberCharge (res); }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "2LP4"; }
+
+      
     };
 
     /**
@@ -3135,7 +2905,7 @@ namespace mccore {
     { 
     public:
       A2LP6 () {}
-      A2LP6 (const char*  t) : AtomType (t) {}
+      A2LP6 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A2LP6* > (t);
@@ -3165,11 +2935,8 @@ namespace mccore {
       virtual float getAmberCharge (const Residue *res) const
       { return LonePair::getAmberCharge (res); }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "2LP6"; }
+
+      
     };
 
     /**
@@ -3179,7 +2946,7 @@ namespace mccore {
     { 
     public:
       AH3T () {}
-      AH3T (const char*  t) : AtomType (t) {}
+      AH3T (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AH3T* > (t);
@@ -3206,11 +2973,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H3T"; }
+
+      
     };
 
     /**
@@ -3220,7 +2984,7 @@ namespace mccore {
     { 
     public:
       AH5T () {}
-      AH5T (const char*  t) : AtomType (t) {}
+      AH5T (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AH5T* > (t);
@@ -3247,11 +3011,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H5T"; }
+
+      
     };
 
     /**
@@ -3261,7 +3022,7 @@ namespace mccore {
     { 
     public:
       AC () {}
-      AC (const char*  t) : AtomType (t) {}
+      AC (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AC* > (t);
@@ -3288,11 +3049,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "C"; }
+
+      
     };
 
     /**
@@ -3302,7 +3060,7 @@ namespace mccore {
     { 
     public:
       ACA () {}
-      ACA (const char*  t) : AtomType (t) {}
+      ACA (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ACA* > (t);
@@ -3329,11 +3087,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "CA"; }
+
+      
     };
 
     /**
@@ -3343,7 +3098,7 @@ namespace mccore {
     { 
     public:
       ACB () {}
-      ACB (const char*  t) : AtomType (t) {}
+      ACB (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ACB* > (t);
@@ -3370,11 +3125,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "CB"; }
+
+      
     };
 
     /**
@@ -3384,7 +3136,7 @@ namespace mccore {
     { 
     public:
       ACD () {}
-      ACD (const char*  t) : AtomType (t) {}
+      ACD (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ACD* > (t);
@@ -3411,11 +3163,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "CD"; }
+
+      
     };
 
     /**
@@ -3425,7 +3174,7 @@ namespace mccore {
     { 
     public:
       ACD1 () {}
-      ACD1 (const char*  t) : AtomType (t) {}
+      ACD1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ACD1* > (t);
@@ -3452,11 +3201,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "CD1"; }
+
+      
     };
 
     /**
@@ -3466,7 +3212,7 @@ namespace mccore {
     { 
     public:
       ACD2 () {}
-      ACD2 (const char*  t) : AtomType (t) {}
+      ACD2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ACD2* > (t);
@@ -3493,11 +3239,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "CD2"; }
+
+      
     };
 
     /**
@@ -3507,7 +3250,7 @@ namespace mccore {
     { 
     public:
       ACE () {}
-      ACE (const char*  t) : AtomType (t) {}
+      ACE (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ACE* > (t);
@@ -3534,11 +3277,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "CE"; }
+
+      
     };
 
     /**
@@ -3548,7 +3288,7 @@ namespace mccore {
     { 
     public:
       ACE1 () {}
-      ACE1 (const char*  t) : AtomType (t) {}
+      ACE1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ACE1* > (t);
@@ -3575,11 +3315,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "CE1"; }
+
+      
     };
 
     /**
@@ -3589,7 +3326,7 @@ namespace mccore {
     { 
     public:
       ACE2 () {}
-      ACE2 (const char*  t) : AtomType (t) {}
+      ACE2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ACE2* > (t);
@@ -3616,11 +3353,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "CE2"; }
+
+      
     };
 
     /**
@@ -3630,7 +3364,7 @@ namespace mccore {
     { 
     public:
       ACE3 () {}
-      ACE3 (const char*  t) : AtomType (t) {}
+      ACE3 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ACE3* > (t);
@@ -3657,11 +3391,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "CE3"; }
+
+      
     };
 
     /**
@@ -3671,7 +3402,7 @@ namespace mccore {
     { 
     public:
       ACG () {}
-      ACG (const char*  t) : AtomType (t) {}
+      ACG (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ACG* > (t);
@@ -3698,11 +3429,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "CG"; }
+
+      
     };
 
     /**
@@ -3712,7 +3440,7 @@ namespace mccore {
     { 
     public:
       ACG1 () {}
-      ACG1 (const char*  t) : AtomType (t) {}
+      ACG1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ACG1* > (t);
@@ -3739,11 +3467,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "CG1"; }
+
+      
     };
 
     /**
@@ -3753,7 +3478,7 @@ namespace mccore {
     { 
     public:
       ACG2 () {}
-      ACG2 (const char*  t) : AtomType (t) {}
+      ACG2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ACG2* > (t);
@@ -3780,11 +3505,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "CG2"; }
+
+      
     };
 
     /**
@@ -3794,7 +3516,7 @@ namespace mccore {
     { 
     public:
       ACH2 () {}
-      ACH2 (const char*  t) : AtomType (t) {}
+      ACH2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ACH2* > (t);
@@ -3821,11 +3543,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "CH2"; }
+
+      
     };
 
     /**
@@ -3835,7 +3554,7 @@ namespace mccore {
     { 
     public:
       ACZ () {}
-      ACZ (const char*  t) : AtomType (t) {}
+      ACZ (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ACZ* > (t);
@@ -3862,11 +3581,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "CZ"; }
+
+      
     };
 
     /**
@@ -3876,7 +3592,7 @@ namespace mccore {
     { 
     public:
       ACZ2 () {}
-      ACZ2 (const char*  t) : AtomType (t) {}
+      ACZ2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ACZ2* > (t);
@@ -3903,11 +3619,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "CZ2"; }
+
+      
     };
 
     /**
@@ -3917,7 +3630,7 @@ namespace mccore {
     { 
     public:
       ACZ3 () {}
-      ACZ3 (const char*  t) : AtomType (t) {}
+      ACZ3 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ACZ3* > (t);
@@ -3944,11 +3657,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "CZ3"; }
+
+      
     };
 
     /**
@@ -3958,7 +3668,7 @@ namespace mccore {
     { 
     public:
       AH () {}
-      AH (const char*  t) : AtomType (t) {}
+      AH (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AH* > (t);
@@ -3985,11 +3695,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "H"; }
+
+      
     };
 
     /**
@@ -3999,7 +3706,7 @@ namespace mccore {
     { 
     public:
       A1H () {}
-      A1H (const char*  t) : AtomType (t) {}
+      A1H (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A1H* > (t);
@@ -4026,11 +3733,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const { return 0.00000; }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "1H"; }
+
+      
     };
 
     /**
@@ -4040,7 +3744,7 @@ namespace mccore {
     { 
     public:
       A2H () {}
-      A2H (const char*  t) : AtomType (t) {}
+      A2H (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A2H* > (t);
@@ -4067,11 +3771,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const { return 0.00000; }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "2H"; }
+
+      
     };
 
     /**
@@ -4081,7 +3782,7 @@ namespace mccore {
     { 
     public:
       A3H () {}
-      A3H (const char*  t) : AtomType (t) {}
+      A3H (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A3H* > (t);
@@ -4108,11 +3809,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const { return 0.00000; }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "3H"; }
+
+      
     };
 
     /**
@@ -4122,7 +3820,7 @@ namespace mccore {
     { 
     public:
       AHA () {}
-      AHA (const char*  t) : AtomType (t) {}
+      AHA (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHA* > (t);
@@ -4149,11 +3847,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HA"; }
+
+      
     };
 
     /**
@@ -4163,7 +3858,7 @@ namespace mccore {
     { 
     public:
       AHA1 () {}
-      AHA1 (const char*  t) : AtomType (t) {}
+      AHA1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHA1* > (t);
@@ -4190,11 +3885,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HA2"; }
+
+      
     };
 
     /**
@@ -4204,7 +3896,7 @@ namespace mccore {
     { 
     public:
       AHA2 () {}
-      AHA2 (const char*  t) : AtomType (t) {}
+      AHA2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHA2* > (t);
@@ -4231,11 +3923,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HA3"; }
+
+      
     };
 
     /**
@@ -4245,7 +3934,7 @@ namespace mccore {
     { 
     public:
       AHB () {}
-      AHB (const char*  t) : AtomType (t) {}
+      AHB (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHB* > (t);
@@ -4272,11 +3961,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HB"; }
+
+      
     };
 
     /**
@@ -4286,7 +3972,7 @@ namespace mccore {
     { 
     public:
       AHB1 () {}
-      AHB1 (const char*  t) : AtomType (t) {}
+      AHB1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHB1* > (t);
@@ -4313,11 +3999,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HB1"; }
+
+      
     };
 
     /**
@@ -4327,7 +4010,7 @@ namespace mccore {
     { 
     public:
       AHB2 () {}
-      AHB2 (const char*  t) : AtomType (t) {}
+      AHB2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHB2* > (t);
@@ -4354,11 +4037,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HB2"; }
+
+      
     };
 
     /**
@@ -4368,7 +4048,7 @@ namespace mccore {
     { 
     public:
       AHB3 () {}
-      AHB3 (const char*  t) : AtomType (t) {}
+      AHB3 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHB3* > (t);
@@ -4395,11 +4075,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HB3"; }
+
+      
     };
 
     /**
@@ -4409,7 +4086,7 @@ namespace mccore {
     { 
     public:
       AHD1 () {}
-      AHD1 (const char*  t) : AtomType (t) {}
+      AHD1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHD1* > (t);
@@ -4436,11 +4113,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HD1"; }
+
+      
     };
 
     /**
@@ -4450,7 +4124,7 @@ namespace mccore {
     { 
     public:
       AHD2 () {}
-      AHD2 (const char*  t) : AtomType (t) {}
+      AHD2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHD2* > (t);
@@ -4477,11 +4151,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HD2"; }
+
+      
     };
 
     /**
@@ -4491,7 +4162,7 @@ namespace mccore {
     { 
     public:
       AHE () {}
-      AHE (const char*  t) : AtomType (t) {}
+      AHE (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHE* > (t);
@@ -4518,11 +4189,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HE"; }
+
+      
     };
 
     /**
@@ -4532,7 +4200,7 @@ namespace mccore {
     { 
     public:
       AHE1 () {}
-      AHE1 (const char*  t) : AtomType (t) {}
+      AHE1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHE1* > (t);
@@ -4559,11 +4227,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HE1"; }
+
+      
     };
 
     /**
@@ -4573,7 +4238,7 @@ namespace mccore {
     { 
     public:
       AHE2 () {}
-      AHE2 (const char*  t) : AtomType (t) {}
+      AHE2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHE2* > (t);
@@ -4600,11 +4265,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HE2"; }
+
+      
     };
 
     /**
@@ -4614,7 +4276,7 @@ namespace mccore {
     { 
     public:
       AHE3 () {}
-      AHE3 (const char*  t) : AtomType (t) {}
+      AHE3 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHE3* > (t);
@@ -4641,11 +4303,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HE3"; }
+
+      
     };
 
     /**
@@ -4655,7 +4314,7 @@ namespace mccore {
     { 
     public:
       AHG () {}
-      AHG (const char*  t) : AtomType (t) {}
+      AHG (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHG* > (t);
@@ -4682,11 +4341,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HG"; }
+
+      
     };
 
     /**
@@ -4696,7 +4352,7 @@ namespace mccore {
     { 
     public:
       AHG1 () {}
-      AHG1 (const char*  t) : AtomType (t) {}
+      AHG1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHG1* > (t);
@@ -4723,11 +4379,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HG1"; }
+
+      
     };
 
     /**
@@ -4737,7 +4390,7 @@ namespace mccore {
     { 
     public:
       AHG2 () {}
-      AHG2 (const char*  t) : AtomType (t) {}
+      AHG2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHG2* > (t);
@@ -4764,11 +4417,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HG2"; }
+
+      
     };
 
     /**
@@ -4778,7 +4428,7 @@ namespace mccore {
     { 
     public:
       AHH () {}
-      AHH (const char*  t) : AtomType (t) {}
+      AHH (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHH* > (t);
@@ -4805,11 +4455,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HH"; }
+
+      
     };
 
     /**
@@ -4819,7 +4466,7 @@ namespace mccore {
     { 
     public:
       AHH2 () {}
-      AHH2 (const char*  t) : AtomType (t) {}
+      AHH2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHH2* > (t);
@@ -4846,11 +4493,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HH2"; }
+
+      
     };
 
     /**
@@ -4860,7 +4504,7 @@ namespace mccore {
     { 
     public:
       AHXT () {}
-      AHXT (const char*  t) : AtomType (t) {}
+      AHXT (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHXT* > (t);
@@ -4887,11 +4531,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const { return 0.00000; }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HXT"; }
+
+      
     };
 
     /**
@@ -4901,7 +4542,7 @@ namespace mccore {
     { 
     public:
       AHZ () {}
-      AHZ (const char*  t) : AtomType (t) {}
+      AHZ (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHZ* > (t);
@@ -4928,11 +4569,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HZ"; }
+
+      
     };
 
     /**
@@ -4942,7 +4580,7 @@ namespace mccore {
     { 
     public:
       AHZ1 () {}
-      AHZ1 (const char*  t) : AtomType (t) {}
+      AHZ1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHZ1* > (t);
@@ -4969,11 +4607,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HZ1"; }
+
+      
     };
 
     /**
@@ -4983,7 +4618,7 @@ namespace mccore {
     { 
     public:
       AHZ2 () {}
-      AHZ2 (const char*  t) : AtomType (t) {}
+      AHZ2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHZ2* > (t);
@@ -5010,11 +4645,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HZ2"; }
+
+      
     };
 
     /**
@@ -5024,7 +4656,7 @@ namespace mccore {
     { 
     public:
       AHZ3 () {}
-      AHZ3 (const char*  t) : AtomType (t) {}
+      AHZ3 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AHZ3* > (t);
@@ -5051,11 +4683,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HZ3"; }
+
+      
     };
 
     /**
@@ -5065,7 +4694,7 @@ namespace mccore {
     { 
     public:
       AN () {}
-      AN (const char*  t) : AtomType (t) {}
+      AN (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AN* > (t);
@@ -5092,11 +4721,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "N"; }
+
+      
     };
 
     /**
@@ -5106,7 +4732,7 @@ namespace mccore {
     { 
     public:
       AND1 () {}
-      AND1 (const char*  t) : AtomType (t) {}
+      AND1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AND1* > (t);
@@ -5133,11 +4759,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "ND1"; }
+
+      
     };
 
     /**
@@ -5147,7 +4770,7 @@ namespace mccore {
     { 
     public:
       AND2 () {}
-      AND2 (const char*  t) : AtomType (t) {}
+      AND2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AND2* > (t);
@@ -5174,11 +4797,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "ND2"; }
+
+      
     };
 
     /**
@@ -5188,7 +4808,7 @@ namespace mccore {
     { 
     public:
       ANE () {}
-      ANE (const char*  t) : AtomType (t) {}
+      ANE (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ANE* > (t);
@@ -5215,11 +4835,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "NE"; }
+
+      
     };
 
     /**
@@ -5229,7 +4846,7 @@ namespace mccore {
     { 
     public:
       ANE1 () {}
-      ANE1 (const char*  t) : AtomType (t) {}
+      ANE1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ANE1* > (t);
@@ -5256,11 +4873,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "NE1"; }
+
+      
     };
 
     /**
@@ -5270,7 +4884,7 @@ namespace mccore {
     { 
     public:
       ANE2 () {}
-      ANE2 (const char*  t) : AtomType (t) {}
+      ANE2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ANE2* > (t);
@@ -5297,11 +4911,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "NE2"; }
+
+      
     };
 
     /**
@@ -5311,7 +4922,7 @@ namespace mccore {
     { 
     public:
       ANH1 () {}
-      ANH1 (const char*  t) : AtomType (t) {}
+      ANH1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ANH1* > (t);
@@ -5338,11 +4949,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "NH1"; }
+
+      
     };
 
     /**
@@ -5352,7 +4960,7 @@ namespace mccore {
     { 
     public:
       ANH2 () {}
-      ANH2 (const char*  t) : AtomType (t) {}
+      ANH2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ANH2* > (t);
@@ -5379,11 +4987,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "NH2"; }
+
+      
     };
 
     /**
@@ -5393,7 +4998,7 @@ namespace mccore {
     { 
     public:
       ANZ () {}
-      ANZ (const char*  t) : AtomType (t) {}
+      ANZ (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ANZ* > (t);
@@ -5420,11 +5025,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "NZ"; }
+
+      
     };
 
     /**
@@ -5434,7 +5036,7 @@ namespace mccore {
     { 
     public:
       AO () {}
-      AO (const char*  t) : AtomType (t) {}
+      AO (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AO* > (t);
@@ -5461,11 +5063,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "O"; }
+
+      
     };
 
     /**
@@ -5475,7 +5074,7 @@ namespace mccore {
     { 
     public:
       AOD1 () {}
-      AOD1 (const char*  t) : AtomType (t) {}
+      AOD1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AOD1* > (t);
@@ -5502,11 +5101,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "OD1"; }
+
+      
     };
 
     /**
@@ -5516,7 +5112,7 @@ namespace mccore {
     { 
     public:
       AOD2 () {}
-      AOD2 (const char*  t) : AtomType (t) {}
+      AOD2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AOD2* > (t);
@@ -5543,11 +5139,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "OD2"; }
+
+      
     };
 
     /**
@@ -5557,7 +5150,7 @@ namespace mccore {
     { 
     public:
       AOE1 () {}
-      AOE1 (const char*  t) : AtomType (t) {}
+      AOE1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AOE1* > (t);
@@ -5584,11 +5177,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "OE1"; }
+
+      
     };
 
     /**
@@ -5598,7 +5188,7 @@ namespace mccore {
     { 
     public:
       AOE2 () {}
-      AOE2 (const char*  t) : AtomType (t) {}
+      AOE2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AOE2* > (t);
@@ -5625,11 +5215,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "OE2"; }
+
+      
     };
 
     /**
@@ -5639,7 +5226,7 @@ namespace mccore {
     { 
     public:
       AOG () {}
-      AOG (const char*  t) : AtomType (t) {}
+      AOG (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AOG* > (t);
@@ -5666,11 +5253,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "OG"; }
+
+      
     };
 
     /**
@@ -5680,7 +5264,7 @@ namespace mccore {
     { 
     public:
       AOG1 () {}
-      AOG1 (const char*  t) : AtomType (t) {}
+      AOG1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AOG1* > (t);
@@ -5707,11 +5291,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "OG1"; }
+
+      
     };
 
     /**
@@ -5721,7 +5302,7 @@ namespace mccore {
     { 
     public:
       AOH () {}
-      AOH (const char*  t) : AtomType (t) {}
+      AOH (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AOH* > (t);
@@ -5748,11 +5329,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "OH"; }
+
+      
     };
 
     /**
@@ -5762,7 +5340,7 @@ namespace mccore {
     { 
     public:
       AOXT () {}
-      AOXT (const char*  t) : AtomType (t) {}
+      AOXT (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AOXT* > (t);
@@ -5789,11 +5367,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const { return 0.00000; }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "OXT"; }
+
+      
     };
 
     /**
@@ -5803,7 +5378,7 @@ namespace mccore {
     { 
     public:
       ASD () {}
-      ASD (const char*  t) : AtomType (t) {}
+      ASD (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ASD* > (t);
@@ -5830,11 +5405,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "SD"; }
+
+      
     };
 
     /**
@@ -5844,7 +5416,7 @@ namespace mccore {
     { 
     public:
       ASG () {}
-      ASG (const char*  t) : AtomType (t) {}
+      ASG (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const ASG* > (t);
@@ -5871,11 +5443,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "SG"; }
+
+      
     };
 
     /**
@@ -5885,7 +5454,7 @@ namespace mccore {
     { 
     public:
       A1HD1 () {}
-      A1HD1 (const char*  t) : AtomType (t) {}
+      A1HD1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A1HD1* > (t);
@@ -5912,11 +5481,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HD11"; }
+
+      
     };
 
     /**
@@ -5926,7 +5492,7 @@ namespace mccore {
     { 
     public:
       A1HD2 () {}
-      A1HD2 (const char*  t) : AtomType (t) {}
+      A1HD2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A1HD2* > (t);
@@ -5953,11 +5519,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HD21"; }
+
+      
     };
 
     /**
@@ -5967,7 +5530,7 @@ namespace mccore {
     { 
     public:
       A1HE2 () {}
-      A1HE2 (const char*  t) : AtomType (t) {}
+      A1HE2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A1HE2* > (t);
@@ -5994,11 +5557,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HE21"; }
+
+      
     };
 
     /**
@@ -6008,7 +5568,7 @@ namespace mccore {
     { 
     public:
       A1HG1 () {}
-      A1HG1 (const char*  t) : AtomType (t) {}
+      A1HG1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A1HG1* > (t);
@@ -6035,11 +5595,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HG11"; }
+
+      
     };
 
     /**
@@ -6049,7 +5606,7 @@ namespace mccore {
     { 
     public:
       A1HG2 () {}
-      A1HG2 (const char*  t) : AtomType (t) {}
+      A1HG2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A1HG2* > (t);
@@ -6076,11 +5633,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HG21"; }
+
+      
     };
 
     /**
@@ -6090,7 +5644,7 @@ namespace mccore {
     { 
     public:
       A1HH1 () {}
-      A1HH1 (const char*  t) : AtomType (t) {}
+      A1HH1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A1HH1* > (t);
@@ -6117,11 +5671,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HH11"; }
+
+      
     };
 
     /**
@@ -6131,7 +5682,7 @@ namespace mccore {
     { 
     public:
       A1HH2 () {}
-      A1HH2 (const char*  t) : AtomType (t) {}
+      A1HH2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A1HH2* > (t);
@@ -6158,11 +5709,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HH21"; }
+
+      
     };
 
     /**
@@ -6172,7 +5720,7 @@ namespace mccore {
     { 
     public:
       A2HD1 () {}
-      A2HD1 (const char*  t) : AtomType (t) {}
+      A2HD1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A2HD1* > (t);
@@ -6199,11 +5747,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HD12"; }
+
+      
     };
 
     /**
@@ -6213,7 +5758,7 @@ namespace mccore {
     { 
     public:
       A2HD2 () {}
-      A2HD2 (const char*  t) : AtomType (t) {}
+      A2HD2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A2HD2* > (t);
@@ -6240,11 +5785,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HD22"; }
+
+      
     };
 
     /**
@@ -6254,7 +5796,7 @@ namespace mccore {
     { 
     public:
       A2HE2 () {}
-      A2HE2 (const char*  t) : AtomType (t) {}
+      A2HE2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A2HE2* > (t);
@@ -6281,11 +5823,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HE22"; }
+
+      
     };
 
     /**
@@ -6295,7 +5834,7 @@ namespace mccore {
     { 
     public:
       A2HG1 () {}
-      A2HG1 (const char*  t) : AtomType (t) {}
+      A2HG1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A2HG1* > (t);
@@ -6322,11 +5861,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HG12"; }
+
+      
     };
 
     /**
@@ -6336,7 +5872,7 @@ namespace mccore {
     { 
     public:
       A2HG2 () {}
-      A2HG2 (const char*  t) : AtomType (t) {}
+      A2HG2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A2HG2* > (t);
@@ -6363,11 +5899,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HG22"; }
+
+      
     };
 
     /**
@@ -6377,7 +5910,7 @@ namespace mccore {
     { 
     public:
       A2HH1 () {}
-      A2HH1 (const char*  t) : AtomType (t) {}
+      A2HH1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A2HH1* > (t);
@@ -6404,11 +5937,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HH12"; }
+
+      
     };
 
     /**
@@ -6418,7 +5948,7 @@ namespace mccore {
     { 
     public:
       A2HH2 () {}
-      A2HH2 (const char*  t) : AtomType (t) {}
+      A2HH2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A2HH2* > (t);
@@ -6445,11 +5975,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HH22"; }
+
+      
     };
 
     /**
@@ -6459,7 +5986,7 @@ namespace mccore {
     { 
     public:
       A3HD1 () {}
-      A3HD1 (const char*  t) : AtomType (t) {}
+      A3HD1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A3HD1* > (t);
@@ -6486,11 +6013,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HD13"; }
+
+      
     };
 
     /**
@@ -6500,7 +6024,7 @@ namespace mccore {
     { 
     public:
       A3HD2 () {}
-      A3HD2 (const char*  t) : AtomType (t) {}
+      A3HD2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A3HD2* > (t);
@@ -6527,11 +6051,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HD23"; }
+
+      
     };
 
     /**
@@ -6541,7 +6062,7 @@ namespace mccore {
     { 
     public:
       A3HG1 () {}
-      A3HG1 (const char*  t) : AtomType (t) {}
+      A3HG1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A3HG1* > (t);
@@ -6568,11 +6089,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HG13"; }
+
+      
     };
 
     /**
@@ -6582,7 +6100,7 @@ namespace mccore {
     { 
     public:
       A3HG2 () {}
-      A3HG2 (const char*  t) : AtomType (t) {}
+      A3HG2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const A3HG2* > (t);
@@ -6609,11 +6127,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "HG23"; }
+
+      
     };
 
     /**
@@ -6623,7 +6138,7 @@ namespace mccore {
     { 
     public:
       AMG () {}
-      AMG (const char*  t) : AtomType (t) {}
+      AMG (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AMG* > (t);
@@ -6650,11 +6165,8 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const { return 0.00000; }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "MG"; }
+
+      
     };
 
     /**
@@ -6664,7 +6176,7 @@ namespace mccore {
     { 
     public:
       APSAZ () {}
-      APSAZ (const char*  t) : AtomType (t) {}
+      APSAZ (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const APSAZ* > (t);
@@ -6694,11 +6206,8 @@ namespace mccore {
       virtual float getAmberCharge (const Residue *res) const
       { return Pseudo::getAmberCharge (res); }
 
-      /**
-       * Converts the atom type to an Amber string representation.
-       * @return "NucleicAcid".
-       */
-      virtual const char* toAmberString () const { return "PSAZ"; }
+
+      
     };
 
   };  

@@ -14,12 +14,14 @@
 #include "Exception.h"
 #include "Binstream.h"
 
-namespace mccore {
+namespace mccore
+{
 
   // STATIC MEMBERS ------------------------------------------------------------
 
   AtomTypeStore AtomType::atstore;
   AtomType* AtomType::aNull = 0;
+  AtomType* AtomType::aUnknown = 0;
   AtomType* AtomType::aC1p = 0;
   AtomType* AtomType::aC2p = 0;
   AtomType* AtomType::aC3p = 0;
@@ -178,26 +180,29 @@ namespace mccore {
   // LIFECYCLE -----------------------------------------------------------------
 
   AtomType::AtomType () 
-    : type (0) 
   {
+
   }
 
 
-  AtomType::AtomType (const char* t) 
+  AtomType::AtomType (const string& ks)
+    : key (ks)
   {
-    type = new char[strlen (t) + 1];
-    strcpy (type, t);
+
   }
   
 
   AtomType::AtomType (const AtomType &other)
   {
+    FatalIntLibException ex ("", __FILE__, __LINE__);
+    ex << "Use of copy constructor for class AtomType is prohibited.";
+    throw ex;
   }
 
 
   AtomType::~AtomType () 
   {
-    if (type) delete[] type;
+
   }
   
 
@@ -205,55 +210,33 @@ namespace mccore {
 
 
   const AtomType* 
-  AtomType::parseType (const char* s) 
+  AtomType::parseType (const char* str) 
   {
-    return atstore.get (s);
+    string sk (str);
+    return atstore.get (sk);
   }
 
-  
-  Vector3D 
-  AtomType::getColor (const AtomType *type)
+
+  const AtomType* 
+  AtomType::parseType (const string& str)  
   {
-    if (type->isHydrogen ())       return Vector3D (1.00f, 1.00f, 1.00f);
-    else if (type->isOxygen ())    return Vector3D (0.76f, 0.00f, 0.00f);
-    else if (type->isNitrogen ())  return Vector3D (0.20f, 0.15f, 0.80f);
-    else if (type->isPhosphorus ()) return Vector3D (0.82f, 0.53f, 0.00f);
-    else if (type->isCarbon ())    return Vector3D (0.60f, 0.60f, 0.60f);
-    else if (type->isSulfur ())    return Vector3D (0.80f, 0.80f, 0.00f);
-    else if (type->isLonePair ())  return Vector3D (0.00f, 0.80f, 0.00f);
-    else if (type->isMagnesium ()) return Vector3D (0.13f, 0.54f, 0.13f);
-    else 
-      return Vector3D (0.10f, 0.10f, 0.10f);
+    return atstore.get (str);
   }
 
-  
-  char 
-  AtomType::getFirstLetter () const
-  {
-    const char *p = type;
-    
-    while (*p)
-      {
-	if (isalpha (*p))
-	  return *p;
-	++p;
-      }
-    return (char)0;
-  }
   
   // I/O -----------------------------------------------------------------------
 
   ostream &
   AtomType::output (ostream &out) const
   {
-    return out << type;
+    return out << key.c_str();
   }
   
 
   oBinstream &
   AtomType::output (oBinstream &out) const
   {
-    return out << type;
+    return out << key.c_str();
   }
 
 

@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 // 
 // This file is part of mccore.
 // 
@@ -26,7 +26,7 @@
 #define _PropertyType_h_
 
 #include <iostream>
-#include <string.h>
+#include <string>
 
 using namespace std;
 
@@ -46,7 +46,7 @@ namespace mccore
    * General property types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: PropertyType.h,v 1.10 2004-08-26 15:21:10 thibaup Exp $
+   * @version $Id: PropertyType.h,v 1.11 2004-10-15 20:34:50 thibaup Exp $
    */
   class PropertyType
   {
@@ -56,9 +56,9 @@ namespace mccore
     static PropertyTypeStore ptstore;
     
     /**
-     * The type.
+     * The type key string.
      */
-    char* type;
+    string key;
     
   protected:
     
@@ -71,10 +71,9 @@ namespace mccore
     
     /**
      * Initializes the object.
-     * @param t the string representation of the type.
-     * @param p the set of properties for this type.
+     * @param ks the string representation of the type key.
      */
-    PropertyType (const char* t);
+    PropertyType (const string& ks);
     
     /**
      * Initializes the object with the other's content.
@@ -97,20 +96,23 @@ namespace mccore
     // FUNCTION OBJECTS --------------------------------------------------------
     
     /**
-     * @short less comparator for Atomtypes.
+     * @short less comparator on derefenced type pointers
      */
-    struct less
+    struct less_deref
     {
       /**
-       * Tests whether the first  propertytype is less than the second. 
-       * @param s1 the first string.
-       * @param s2 the second string.
+       * Tests whether the first type is less than the second. 
+       * @param s1 the first type.
+       * @param s2 the second type.
        * @return the result of the test.
        */
       bool operator() (const PropertyType* t1, const PropertyType* t2) const
-      { return *t1 < *t2; }
+      {
+	return
+	  *(0 == t1 ? PropertyType::pNull : t1) <
+	  *(0 == t2 ? PropertyType::pNull : t2);
+      }
     };
-    
     
     // OPERATORS ------------------------------------------------------------
     
@@ -121,7 +123,10 @@ namespace mccore
      * false otherwise.
      */
     bool operator== (const PropertyType &other) const
-    { return strcmp (type, other.type) == 0; }
+    {
+      return this->key == other.key;
+    }
+      
     
     /**
      * Indicates whether some other property is "not equal to" this one.
@@ -129,8 +134,10 @@ namespace mccore
      * @param true if this object is the same as the obj argument;
      * false otherwise.
      */
-    bool operator!= (const PropertyType &other) const 
-    { return ! operator== (other); }
+    bool operator!= (const PropertyType &other) const
+    {
+      return ! operator== (other);
+    }
     
     /**
      * Imposes a total ordering on the PropertyType objects.
@@ -138,29 +145,62 @@ namespace mccore
      * @return true if this property type is less than the other.
      */
     bool operator< (const PropertyType &other) const
-    { return strcmp (type, other.type) < 0; }
-    
-    
-    // METHODS --------------------------------------------------------------
-    
+    {
+      return this->key < other.key;
+    }
+    bool operator<= (const PropertyType &other) const
+    {
+      return this->key < other.key || this->key == other.key;
+    }
+    bool operator> (const PropertyType &other) const
+    {
+      return !this->operator<= (other);
+    }
+    bool operator>= (const PropertyType &other) const
+    {
+      return !this->operator< (other);
+    }
+
     /**
      * Converts the property type into a string.
      * @return the string.
      */
-    virtual operator const char* () const { return type; }
+    virtual operator const char* () const
+    {
+      return this->key.c_str ();
+    }
+    
+    // METHODS --------------------------------------------------------------
+
+    /**
+     * Converts the residuetype into a stl string.
+     * @return the string.
+     */
+    virtual const string& toString () const
+    {
+      return this->key;
+    }
     
     /**
      * Identifies the type of property stored in a string.
-     * @param s the string.
+     * @param str the c string.
      * @return a property type for the string.
      */
-    static const PropertyType* parseType (const char* t);
+    static const PropertyType* parseType (const char* str);
+
+    /**
+     * Identifies the type of property stored in a string.
+     * @param str the stl string.
+     * @return a property type for the string.
+     */
+    static const PropertyType* parseType (const string& str);
     
     /**
      * General is method for use when both objects to compare are of
      * unknown type.
      */
-    virtual bool is (const PropertyType *t) const {
+    virtual bool is (const PropertyType *t) const
+    {
       return t->describe (this);
     }
     
@@ -169,9 +209,139 @@ namespace mccore
      * @param the type to test.
      * @return the truth value of the test.
      */
-    virtual bool describe (const PropertyType *t) const {
-      return t == this;
+    virtual bool describe (const PropertyType *t) const
+    {
+      return dynamic_cast< const PropertyType* > (t);
     }
+
+    /**
+     * isNull?
+     */
+    virtual bool isNull () const
+    {
+      return false;
+    }
+
+    /**
+     * isUnknown?
+     */
+    virtual bool isUnknown () const
+    {
+      return false;
+    }
+
+    /**
+     * isAdjacent?
+     */
+    virtual bool isAdjacent () const
+    {
+      return false;
+    }
+
+    /**
+     * isStack?
+     */
+    virtual bool isStack () const
+    {
+      return false;
+    }
+
+    /**
+     * isPairing?
+     */
+    virtual bool isPairing () const
+    {
+      return false;
+    }
+
+    /**
+     * isFace?
+     */
+    virtual bool isFace () const
+    {
+      return false;
+    }
+
+    /**
+     * isH?
+     */
+    virtual bool isH () const
+    {
+      return false;
+    }
+
+    /**
+     * isS?
+     */
+    virtual bool isS () const
+    {
+      return false;
+    }
+
+    /**
+     * isW?
+     */
+    virtual bool isW () const
+    {
+      return false;
+    }
+
+    /**
+     * isBaseOrientation?
+     */
+    virtual bool isBaseOrientation () const
+    {
+      return false;
+    }
+
+    /**
+     * isSaenger?
+     */
+    virtual bool isSaenger () const
+    {
+      return false;
+    }
+
+    /**
+     * isWC?
+     */
+    virtual bool isWC () const
+    {
+      return false;
+    }
+
+    /**
+     * isWobble?
+     */
+    virtual bool isWobble () const
+    {
+      return false;
+    }
+
+    /**
+     * isOneHbond?
+     */
+    virtual bool isOneHbond () const
+    {
+      return false;
+    }
+
+    /**
+     * isPuckeringMode?
+     */
+    virtual bool isPuckeringMode () const
+    {
+      return false;
+    }
+
+    /**
+     * isRiboseOrientation?
+     */
+    virtual bool isRiboseOrientation () const
+    {
+      return false;
+    }
+
     
     // I/O  -----------------------------------------------------------------
     
@@ -198,6 +368,11 @@ namespace mccore
      * Global null type.
      */
     static PropertyType* pNull;
+
+    /**
+     * Global unknown type.
+     */
+    static PropertyType* pUnknown;
     
     /**
      * Global theo type.
@@ -323,16 +498,6 @@ namespace mccore
      * Global DIR_ANY type.
      */
     static PropertyType* pDIR_ANY;
-    
-    //     /**
-    //      * Global DIR_SH type.
-    //      */
-    //     static PropertyType* pDIR_SH;
-    
-    //     /**
-    //      * Global DIR_HS type.
-    //      */
-    //     static PropertyType* pDIR_HS;
     
     /**
      * Global saenger type.
@@ -1033,41 +1198,6 @@ namespace mccore
      * Global 137 type.
      */
     static PropertyType* p137;
-    
-    //     /**
-    //      * Global wct type.
-    //      */
-    //     static PropertyType* pwct;
-    
-    //     /**
-    //      * Global connect type.
-    //      */
-    //     static PropertyType* pconnect;
-    
-    //     /**
-    //      * Global wobblet type.
-    //      */
-    //     static PropertyType* pwobblet;
-    
-    //     /**
-    //      * Global non_adjacent type.
-    //      */
-    //     static PropertyType* pnon_adjacent;
-    
-    //     /**
-    //      * Global strong type.
-    //      */
-    //     static PropertyType* pstrong;
-    
-    //     /**
-    //      * Global weak type.
-    //      */
-    //     static PropertyType* pweak;
-    
-    //     /**
-    //      * Global nostack type.
-    //      */
-    //     static PropertyType* pnostack;
     
     /**
      * Global W type.
