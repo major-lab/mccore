@@ -3,9 +3,9 @@
 ## Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 ## Author           : Martin Larose
 ## Created On       : Tue Sep 19 18:57:11 2000
-## Last Modified By : Sebastien Lemieux
-## Last Modified On : Wed Feb 14 16:16:36 2001
-## Update Count     : 7
+## Last Modified By : Martin Larose
+## Last Modified On : Wed Mar  7 13:47:31 2001
+## Update Count     : 8
 ## Status           : Ok.
 ###############################################################################
 
@@ -52,7 +52,8 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 	$(CXX) $(CXXSHFLAGS) $(DEFS) -c $< -o $@
 
 
-SOURCES = AtomType.cc \
+SOURCES = Algo.cc \
+	  AtomTypeImp.cc \
           Binstream.cc \
           CAtom.cc \
           CException.cc \
@@ -66,12 +67,11 @@ SOURCES = AtomType.cc \
           CTransfo.cc \
 	  McCore.cc \
 	  Pdbstream.cc \
-          ResidueType.cc \
-          Algo.cc \
+          ResidueTypeImp.cc \
           zfstreambase.cc
 
-HEADERS = $(SOURCES:.cc=.h) CGraph.h fBinstream.h fPdbstream.h \
-zfBinstream.h zfPdbstream.h zfstream.h
+HEADERS = $(SOURCES:.cc=.h) AtomType.h CGraph.h ResidueType.h fBinstream.h \
+fPdbstream.h zfBinstream.h zfPdbstream.h zfstream.h
 
 OBJECTS = $(SOURCES:.cc=.o)
 
@@ -169,8 +169,8 @@ release: static
 dist:
 	@ echo "Copying distribution files"
 	@ for file in $(DISTFILES); do \
-	   ln $(srcdir)/$$file ../$(PACKAGE)-$(VERSION)/src 2> /dev/null \
-	    || cp -p $(srcdir)/$$file ../$(PACKAGE)$(VERSION)/src; \
+	   ln $(srcdir)/$$file ../$(PACKAGE)-$(VERSION)/lib 2> /dev/null \
+	    || cp -p $(srcdir)/$$file ../$(PACKAGE)$(VERSION)/lib; \
 	  done
 
 Makefile: $(srcdir)/Makefile.in ../config.status

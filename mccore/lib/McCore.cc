@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Fri Feb  2 14:56:38 2001
-// Update Count     : 9
+// Last Modified On : Wed Mar  7 13:47:37 2001
+// Update Count     : 10
 // Status           : Ok.
 // 
 
@@ -17,12 +17,12 @@
 
 #include "McCore.h"
 
-#include "AtomType.h"
+#include "AtomTypeImp.h"
 #include "CAtom.h"
 #include "CMessageQueue.h"
 #include "CResidue.h"
 #include "CTransfo.h"
-#include "ResidueType.h"
+#include "ResidueTypeImp.h"
 
 
 

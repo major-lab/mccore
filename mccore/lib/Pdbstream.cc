@@ -4,8 +4,8 @@
 // Author           : Martin Larose
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Feb 28 17:30:50 2001
-// Update Count     : 9
+// Last Modified On : Wed Mar  7 13:47:42 2001
+// Update Count     : 10
 // Status           : Ok.
 // 
 
@@ -17,14 +17,13 @@
 #include <unistd.h>
 #include <algo.h>
 
-#include "Pdbstream.h"
-
-#include "McCore.h"
-#include "AtomType.h"
+#include "AtomTypeImp.h"
 #include "CAtom.h"
 #include "CModel.h"
 #include "CResidue.h"
-#include "ResidueType.h"
+#include "McCore.h"
+#include "Pdbstream.h"
+#include "ResidueTypeImp.h"
 
 
 

@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Fri Feb  2 14:56:20 2001
-// Update Count     : 13
+// Last Modified On : Wed Mar  7 13:47:26 2001
+// Update Count     : 14
 // Status           : Ok.
 // 
 
@@ -26,7 +26,7 @@
 #include "CMessageQueue.h"
 #include "CPoint3D.h"
 #include "Pdbstream.h"
-#include "ResidueType.h"
+#include "ResidueTypeImp.h"
 
 
 
