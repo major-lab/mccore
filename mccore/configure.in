@@ -1,11 +1,11 @@
 #                              -*- Mode: Sh -*- 
 # configure.in
-# Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique.
+# Copyright © 2000-05 Laboratoire de Biologie Informatique et Théorique.
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
-# $Revision: 1.35 $
-# $Id: configure.in,v 1.35 2005-01-03 22:48:16 larosem Exp $
+# $Revision: 1.36 $
+# $Id: configure.in,v 1.36 2005-03-31 22:32:26 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -130,16 +130,17 @@ elif eval "test \"`echo $GXX`\" = yes"; then     # gnu compiler
             AC_CHECK_LIB(mysqlpp,main)
 	    HAVE_LIBMYSQL=1,
 	)
-	CXXFLAGS="$CXXFLAGS -Wall"
 	DEPFLAGS="-MM"
 	case "$host" in
 	    *-darwin*)
+		CXXFLAGS="$CXXFLAGS -Wall"
 		LINKOPTIONS="-dynamiclib"
 		LDNAMEPARAM="-install_name,"
 		LIBEXT="dylib"
 		LIBALLFLAGSTART=""
 		LIBALLFLAGSTOP="";;
 	    *)
+		CXXFLAGS="$CXXFLAGS -Wall -fPIC"
 		LINKOPTIONS="-shared"
 		LDNAMEPARAM="-Wl,-soname,"
 		LIBEXT="so"
