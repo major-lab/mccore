@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Aug 29 11:49:27 2001
-// Update Count     : 11
+// Last Modified On : Wed Sep  5 13:53:38 2001
+// Update Count     : 12
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -37,6 +37,7 @@
 #include "AtomTypeImp.h"
 #include "Binstream.h"
 #include "CException.h"
+#include "CResidue.h"
 #include "McCore.h"
 #include "ResidueType.h"
 
@@ -209,17 +210,6 @@
 #define AT_3H_BIN          169
 #define AT_H5T_BIN         170
 #define AT_PSAZ_BIN        171
-
-
-
-float
-t_Atom::get_charge (const t_Residue *res) const
-{
-  CFatalLibException exc ("No charge for ");
-
-  exc << *this;
-  throw exc;
-}
 
 
 
@@ -1078,13 +1068,19 @@ at_C1p::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_C1p::get_charge (const t_Residue *r) const
+at_C1p::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_A ())      return 0.0394;
-  else if (r->is_C ()) return 0.0066;
-  else if (r->is_G ()) return 0.0191;
-  else if (r->is_U ()) return 0.0674;
-  return 0;
+  const t_Residue *r = res->GetType ();
+  
+  if (r->is_rA ())      return 0.0394;
+  else if (r->is_dA ()) return 0.0431;
+  else if (r->is_rC ()) return 0.0066;
+  else if (r->is_dC ()) return -0.0116;
+  else if (r->is_rG ()) return 0.0191;
+  else if (r->is_dG ()) return 0.0358;
+  else if (r->is_rU ()) return 0.0674;
+  else if (r->is_dT ()) return 0.0680;
+  else                  return 0;
 }
 
 
@@ -1120,6 +1116,19 @@ at_C2p::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_C2p::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_RNA ())
+    return 0.0670;
+  else if (res->GetType ()->is_DNA ())
+    return -0.0854;
+  else
+    return 0;
+}
+
+
+
 void
 at_C2p::Binoutput (oBinstream &obs) const
 {
@@ -1147,6 +1156,19 @@ at_C3p::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return (type->is_C2p () || type->is_O3p () || type->is_C4p ()
 	  || type->is_H3p ());
+}
+
+
+
+float
+at_C3p::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_RNA ())
+    return 0.2022;
+  else if (res->GetType ()->is_DNA ())
+    return 0.0713;
+  else
+    return 0;
 }
 
 
@@ -1182,6 +1204,19 @@ at_C4p::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_C4p::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_RNA ())
+    return 0.1065;
+  else if (res->GetType ()->is_DNA ())
+    return 0.1629;
+  else
+    return 0;
+}
+
+
+
 void
 at_C4p::Binoutput (oBinstream &obs) const
 {
@@ -1209,6 +1244,19 @@ at_C5p::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return (type->is_C4p () || type->is_O5p () || type->is_1H5p ()
 	  || type->is_2H5p ());
+}
+
+
+
+float
+at_C5p::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_RNA ())
+    return 0.0558;
+  else if (res->GetType ()->is_DNA ())
+    return -0.0069;
+  else
+    return 0;
 }
 
 
@@ -1243,6 +1291,33 @@ at_H1p::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_H1p::getAmberCharge (const CResidue *res) const
+{
+  const t_Residue *r = res->GetType ();
+  
+  if (r->is_dA ())
+    return 0.1838;
+  else if (r->is_rA ())
+    return 0.2007;
+  else if (r->is_dC ())
+    return 0.1963;
+  else if (r->is_rC ())
+    return 0.2029;
+  else if (r->is_dG ())
+    return 0.1746;
+  else if (r->is_rG ())
+    return 0.2006;
+  else if (r->is_dT ())
+    return 0.1804;
+  else if (r->is_rU ())
+    return 0.1824;
+  else
+    return 0;
+}
+
+
+
 void
 at_H1p::Binoutput (oBinstream &obs) const
 {
@@ -1269,6 +1344,19 @@ bool
 at_H2p::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_C2p ();
+}
+
+
+
+float
+at_H2p::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_DNA ())
+    return 0.0718;
+  else if (res->GetType ()->is_RNA ())
+    return 0.0972;
+  else
+    return 0;
 }
 
 
@@ -1303,6 +1391,19 @@ at_H3p::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_H3p::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_DNA ())
+    return 0.0985;
+  else if (res->GetType ()->is_RNA ())
+    return 0.0615;
+  else
+    return 0;
+}
+
+
+
 void
 at_H3p::Binoutput (oBinstream &obs) const
 {
@@ -1329,6 +1430,19 @@ bool
 at_H4p::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_C4p ();
+}
+
+
+
+float
+at_H4p::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_DNA ())
+    return 0.1176;
+  else if (res->GetType ()->is_RNA ())
+    return 0.1174;
+  else
+    return 0;
 }
 
 
@@ -1363,6 +1477,19 @@ at_H5p::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_H5p::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_DNA ())
+    return 0.0754;
+  else if (res->GetType ()->is_RNA ())
+    return 0.0679;
+  else
+    return 0;
+}
+
+
+
 void
 at_H5p::Binoutput (oBinstream &obs) const
 {
@@ -1389,6 +1516,19 @@ bool
 at_O1P::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_P ();
+}
+
+
+
+float
+at_O1P::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_DNA ())
+    return -0.7761;
+  else if (res->GetType ()->is_RNA ())
+    return -0.7760;
+  else
+    return 0;
 }
 
 
@@ -1423,6 +1563,17 @@ at_O2p::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_O2p::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_RNA ())
+    return -0.6139;
+  else
+    return 0;
+}
+
+
+
 void
 at_O2p::Binoutput (oBinstream &obs) const
 {
@@ -1449,6 +1600,19 @@ bool
 at_O2P::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_P ();
+}
+
+
+
+float
+at_O2P::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_DNA ())
+    return -0.7761;
+  else if (res->GetType ()->is_RNA ())
+    return -0.7760;
+  else
+    return 0;
 }
 
 
@@ -1484,6 +1648,46 @@ at_O3p::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_O3p::getVDWR (const CResidue *res) const
+{
+  return res->find (a_H3T) != res->end () ? 1.7210 : 1.6837;
+}
+
+
+
+float
+at_O3p::getAmberEpsilon (const CResidue *res) const
+{
+  return res->find (a_H3T) != res->end () ? 0.2104 : 0.1700;
+}
+
+
+
+float
+at_O3p::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+  
+  if (res->find (a_H3T) == res->end ())
+    {
+      if (r->is_DNA ())
+	return -0.5232;
+      else if (r->is_RNA ())
+	return -0.5246;
+    }
+  else
+    {
+      if (r->is_DNA ())
+	return -0.6549;
+      else if (r->is_RNA ())
+	return -0.6541;
+    }
+  return 0;
+}
+
+
+
 void
 at_O3p::Binoutput (oBinstream &obs) const
 {
@@ -1510,6 +1714,19 @@ bool
 at_O3P::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_P ();
+}
+
+
+
+float
+at_O3P::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_DNA ())
+    return -0.7761;
+  else if (res->GetType ()->is_RNA ())
+    return -0.7760;
+  else
+    return 0;
 }
 
 
@@ -1544,6 +1761,21 @@ at_O4p::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_O4p::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+  
+  if (r->is_DNA ())
+    return -0.3691;
+  else if (r->is_RNA ())
+    return -0.3548;
+  else
+    return 0;
+}
+
+
+
 void
 at_O4p::Binoutput (oBinstream &obs) const
 {
@@ -1570,6 +1802,46 @@ bool
 at_O5p::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_C5p () || type->is_P () || type->is_H5T ();
+}
+
+
+
+float
+at_O5p::getVDWR (const CResidue *res) const
+{
+  return res->find (a_H5T) != res->end () ? 1.7210 : 1.6837;
+}
+
+
+
+float
+at_O5p::getAmberEpsilon (const CResidue *res) const
+{
+  return res->find (a_H5T) != res->end () ? 0.2104 : 0.1700;
+}
+
+
+
+float
+at_O5p::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (res->find (a_H5T) != res->end ())
+    {
+      if (r->is_DNA ())
+	return -0.6318;
+      else if (r->is_RNA ())
+	return -0.6223;
+    }
+  else
+    {
+      if (r->is_DNA ())
+	return -0.4954;
+      else if (r->is_RNA ())
+	return -0.4989;
+    }
+  return 0;
 }
 
 
@@ -1605,6 +1877,20 @@ at_P::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_P::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_DNA ())
+    return 1.1659;
+  else if (r->is_RNA ())
+    return 1.1662;
+  return 0;
+}
+
+
+
 void
 at_P::Binoutput (oBinstream &obs) const
 {
@@ -1631,6 +1917,20 @@ bool
 at_1H2p::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_C2p ();
+}
+
+
+
+float
+at_1H2p::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_DNA ())
+    return 0.0718;
+  else if (r->is_RNA ())
+    return 0.0972;
+  return 0;
 }
 
 
@@ -1665,6 +1965,20 @@ at_1H5p::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_1H5p::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_DNA ())
+    return 0.0754;
+  else if (r->is_RNA ())
+    return 0.0679;
+  return 0;
+}
+
+
+
 void
 at_1H5p::Binoutput (oBinstream &obs) const
 {
@@ -1691,6 +2005,14 @@ bool
 at_2H2p::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_C2p ();
+}
+
+
+
+float
+at_2H2p::getAmberCharge (const CResidue *res) const
+{
+  return 0.0718;
 }
 
 
@@ -1725,6 +2047,20 @@ at_2H5p::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_2H5p::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_DNA ())
+    return 0.0754;
+  else if (r->is_RNA ())
+    return 0.0679;
+  return 0;
+}
+
+
+
 void
 at_2H5p::Binoutput (oBinstream &obs) const
 {
@@ -1751,6 +2087,14 @@ bool
 at_HO2p::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_O2p ();
+}
+
+
+
+float
+at_HO2p::getAmberCharge (const CResidue *res) const
+{
+  return 0.4186;
 }
 
 
@@ -1817,12 +2161,32 @@ at_C2::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_C2::get_charge (const t_Residue *r) const
+at_C2::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_A ())      return 0.5875;
-  else if (r->is_C ()) return 0.7538;
-  else if (r->is_G ()) return 0.7657;
-  else if (r->is_U ()) return 0.4687;
+  t_Residue *r = res->GetType ();
+
+  if (r->is_DNA ())
+    {
+      if (r->is_A ())
+	return 0.5716;
+      else if (r->is_T ())
+	return 0.5677;
+      else if (r->is_G ())
+	return 0.7432;
+      else if (r->is_C ())
+	return 0.7959;
+    }
+  else if (r->is_RNA ())
+    {
+      if (r->is_A ())
+	return 0.5875;
+      else if (r->is_U ())
+	return 0.4687;
+      else if (r->is_G ())
+	return 0.7657;
+      else if (r->is_C ())
+	return 0.7538;
+    }
   return 0;
 }
 
@@ -1860,12 +2224,32 @@ at_C4::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_C4::get_charge (const t_Residue *r) const
+at_C4::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_A ())      return 0.3053;
-  else if (r->is_C ()) return 0.8185;
-  else if (r->is_G ()) return 0.1222;
-  else if (r->is_U ()) return 0.5952;
+  t_Residue *r = res->GetType ();
+
+  if (r->is_DNA ())
+    {
+      if (r->is_A ())
+	return 0.3800;
+      else if (r->is_T ())
+	return 0.5194;
+      else if (r->is_G ())
+	return 0.1814;
+      else if (r->is_C ())
+	return 0.8439;
+    }
+  else if (r->is_RNA ())
+    {
+      if (r->is_A ())
+	return 0.3053;
+      else if (r->is_C ())
+	return 0.8185;
+      else if (r->is_G ())
+	return 0.1222;
+      else if (r->is_U ())
+	return 0.5952;
+    }
   return 0;
 }
 
@@ -1903,12 +2287,32 @@ at_C5::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_C5::get_charge (const t_Residue *r) const
+at_C5::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_A ())      return  0.0515;
-  else if (r->is_C ()) return -0.5215;
-  else if (r->is_G ()) return  0.1744;
-  else if (r->is_U ()) return -0.3635;
+  t_Residue *r = res->GetType ();
+
+  if (r->is_DNA ())
+    {
+      if (r->is_A ())
+	return 0.0725;
+      else if (r->is_T ())
+	return 0.0025;
+      else if (r->is_G ())
+	return 0.1991;
+      else if (r->is_C ())
+	return -0.5222;
+    }
+  else if (r->is_RNA ())
+    {
+      if (r->is_A ())
+	return  0.0515;
+      else if (r->is_C ())
+	return -0.5215;
+      else if (r->is_G ())
+	return  0.1744;
+      else if (r->is_U ())
+	return -0.3635;
+    }
   return 0;
 }
 
@@ -1977,12 +2381,32 @@ at_C6::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_C6::get_charge (const t_Residue *r) const
+at_C6::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_A ())      return  0.7009;
-  else if (r->is_C ()) return  0.0053;
-  else if (r->is_G ()) return  0.4770;
-  else if (r->is_U ()) return -0.1126;
+  t_Residue *r = res->GetType ();
+
+  if (r->is_DNA ())
+    {
+      if (r->is_A ())
+	return 0.6897;
+      else if (r->is_T ())
+	return -0.2209;
+      else if (r->is_G ())
+	return 0.4918;
+      else if (r->is_C ())
+	return -0.0183;
+    }
+  else if (r->is_RNA ())
+    {
+      if (r->is_A ())
+	return  0.7009;
+      else if (r->is_C ())
+	return 0.0053;
+      else if (r->is_G ())
+	return 0.4770;
+      else if (r->is_U ())
+	return -0.1126;
+    }
   return 0;
 }
 
@@ -2019,10 +2443,24 @@ at_C8::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_C8::get_charge (const t_Residue *r) const
+at_C8::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_A ())      return 0.2006;
-  else if (r->is_G ()) return 0.1374;
+  t_Residue *r = res->GetType ();
+
+  if (r->is_DNA ())
+    {
+      if (r->is_A ())
+	return 0.1607;
+      else if (r->is_G ())
+	return 0.0736;
+    }
+  else if (r->is_RNA ())
+    {
+      if (r->is_A ())
+	return 0.2006;
+      else if (r->is_G ())
+	return 0.1374;
+    }
   return 0;
 }
 
@@ -2059,9 +2497,12 @@ at_H1::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_H1::get_charge (const t_Residue *r) const
+at_H1::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_G ()) return 0.3424;
+  if (res->GetType ()->is_dG ())
+    return 0.3520;
+  else if (res->GetType ()->is_rG ())
+    return 0.3424;
   return 0;
 }
 
@@ -2098,9 +2539,12 @@ at_H2::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_H2::get_charge (const t_Residue *r) const
+at_H2::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_A ())      return 0.0473;
+  if (res->GetType ()->is_dA ())
+    return 0.0598;
+  else if (res->GetType ()->is_rA ())
+    return 0.0473;
   return 0;
 }
 
@@ -2137,9 +2581,12 @@ at_H3::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_H3::get_charge (const t_Residue *r) const
+at_H3::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_U ())      return 0.3154;
+  if (res->GetType ()->is_T ())
+    return 0.3420;
+  else if (res->GetType ()->is_U ())
+    return 0.3154;
   return 0;
 }
 
@@ -2176,10 +2623,16 @@ at_H5::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_H5::get_charge (const t_Residue *r) const
+at_H5::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_C ())      return 0.1928;
-  else if (r->is_U ()) return 0.1811;
+  t_Residue *r = res->GetType ();
+
+  if (r->is_dC ())
+    return 0.1863;
+  else if (r->is_rC ())
+    return 0.1928;
+  else if (r->is_rU ())
+    return 0.1811;
   return 0;
 }
 
@@ -2216,10 +2669,24 @@ at_H6::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_H6::get_charge (const t_Residue *r) const
+at_H6::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_C ())      return 0.1958;
-  else if (r->is_U ()) return 0.2188;
+  t_Residue *r = res->GetType ();
+
+  if (r->is_DNA ())
+    {
+      if (r->is_T ())
+	return 0.2607;
+      else if (r->is_C ())
+	return 0.2293;
+    }
+  else if (r->is_RNA ())
+    {
+      if (r->is_C ())
+	return 0.1958;
+      else if (r->is_U ())
+	return 0.2188;
+    }
   return 0;
 }
 
@@ -2286,10 +2753,24 @@ at_H8::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_H8::get_charge (const t_Residue *r) const
+at_H8::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_A ())      return 0.1553;
-  else if (r->is_G ()) return 0.1640;
+  t_Residue *r = res->GetType ();
+
+  if (r->is_DNA ())
+    {
+      if (r->is_A ())
+	return 0.1877;
+      else if (r->is_G ())
+	return 0.1997;
+    }
+  else if (r->is_DNA ())
+    {
+      if (r->is_A ())
+	return 0.1553;
+      else if (r->is_G ())
+	return 0.1640;
+    }
   return 0;
 }
 
@@ -2327,12 +2808,32 @@ at_N1::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_N1::get_charge (const t_Residue *r) const
+at_N1::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_A ())      return -0.7615;
-  else if (r->is_C ()) return -0.0484;
-  else if (r->is_G ()) return -0.4787;
-  else if (r->is_U ()) return  0.0418;
+  t_Residue *r = res->GetType ();
+
+  if (r->is_DNA ())
+    {
+      if (r->is_A ())
+	return -0.7624;
+      else if (r->is_T ())
+	return -0.0239;
+      else if (r->is_G ())
+	return -0.5053;
+      else if (r->is_C ())
+	return -0.0339;
+    }
+  else if (r->is_RNA ())
+    {
+      if (r->is_A ())
+	return -0.7615;
+      else if (r->is_C ())
+	return -0.0484;
+      else if (r->is_G ())
+	return -0.4787;
+      else if (r->is_U ())
+	return 0.0418;
+    }
   return 0;
 }
 
@@ -2369,9 +2870,12 @@ at_N2::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_N2::get_charge (const t_Residue *r) const
+at_N2::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_G ()) return -0.9672;
+  if (res->GetType ()->is_dG ())
+    return -0.9230;
+  else if (res->GetType ()->is_rG ())
+    return -0.9672;
   return 0;
 }
 
@@ -2409,12 +2913,32 @@ at_N3::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_N3::get_charge (const t_Residue *r) const
+at_N3::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_A ())      return -0.6997;
-  else if (r->is_C ()) return -0.7584;
-  else if (r->is_G ()) return -0.6323;
-  else if (r->is_U ()) return -0.3549;
+  t_Residue *r = res->GetType ();
+
+  if (r->is_DNA ())
+    {
+      if (r->is_A ())
+	return -0.7417;
+      else if (r->is_T ())
+	return -0.4340;
+      else if (r->is_G ())
+	return -0.6636;
+      else if (r->is_C ())
+	return -0.7748;
+    }
+  else if (r->is_RNA ())
+    {
+      if (r->is_A ())
+	return -0.6997;
+      else if (r->is_C ())
+	return -0.7584;
+      else if (r->is_G ())
+	return -0.6323;
+      else if (r->is_U ())
+	return -0.3549;
+    }
   return 0;
 }
 
@@ -2451,9 +2975,12 @@ at_N4::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_N4::get_charge (const t_Residue *r) const
+at_N4::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_C ()) return -0.9530;
+  if (res->GetType ()->is_dC ())
+    return -0.9773;
+  else if (res->GetType ()->is_rC ())
+    return -0.9530;
   return 0;
 }
 
@@ -2490,9 +3017,12 @@ at_N6::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_N6::get_charge (const t_Residue *r) const
+at_N6::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_A ())      return -0.9019;
+  if (res->GetType ()->is_dA ())
+    return -0.9123;
+  else if (res->GetType ()->is_rA ())
+    return -0.9019;
   return 0;
 }
 
@@ -2530,10 +3060,24 @@ at_N7::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_N7::get_charge (const t_Residue *r) const
+at_N7::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_A ())      return -0.6073;
-  else if (r->is_G ()) return -0.5709;
+  t_Residue *r = res->GetType ();
+
+  if (r->is_DNA ())
+    {
+      if (r->is_dA ())
+	return -0.6175;
+      else if (r->is_dG ())
+	return -0.5725;
+    }
+  else if (r->is_RNA ())
+    {
+      if (r->is_rA ())
+	return -0.6073;
+      else if (r->is_rG ())
+	return -0.5709;
+    }
   return 0;
 }
 
@@ -2570,10 +3114,24 @@ at_N9::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_N9::get_charge (const t_Residue *r) const
+at_N9::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_A ())      return -0.0251;
-  else if (r->is_G ()) return  0.0492;
+  t_Residue *r = res->GetType ();
+
+  if (r->is_DNA ())
+    {
+      if (r->is_dA ())
+	return -0.0268;
+      else if (r->is_dG ())
+	return 0.0577;
+    }
+  else if (r->is_RNA ())
+    {
+      if (r->is_rA ())
+	return -0.0251;
+      else if (r->is_rG ())
+	return  0.0492;
+    }
   return 0;
 }
 
@@ -2611,10 +3169,24 @@ at_O2::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_O2::get_charge (const t_Residue *r) const
+at_O2::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_C ())      return -0.6252;
-  else if (r->is_U ()) return -0.5477;
+  t_Residue *r = res->GetType ();
+
+  if (r->is_DNA ())
+    {
+      if (r->is_dT ())
+	return -0.5881;
+      else if (r->is_dC ())
+	return -0.6548;
+    }
+  else if (r->is_RNA ())
+    {
+      if (r->is_rC ())
+	return -0.6252;
+      else if (r->is_rU ())
+	return -0.5477;
+    }
   return 0;
 }
 
@@ -2651,9 +3223,12 @@ at_O4::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_O4::get_charge (const t_Residue *r) const
+at_O4::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_U ()) return -0.5761;
+  if (res->GetType ()->is_dT ())
+    return -0.5563;
+  else if (res->GetType ()->is_rU ())
+    return -0.5761;
   return 0;
 }
 
@@ -2690,9 +3265,12 @@ at_O6::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_O6::get_charge (const t_Residue *r) const
+at_O6::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_G ()) return -0.5597;
+  if (res->GetType ()->is_dG ())
+    return -0.5699;
+  else if (res->GetType ()->is_rG ())
+    return -0.5597;
   return 0;
 }
 
@@ -2729,9 +3307,12 @@ at_1H2::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_1H2::get_charge (const t_Residue *r) const
+at_1H2::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_G ()) return 0.4364;
+  if (res->GetType ()->is_dG ())
+    return 0.4235;
+  else if (res->GetType ()->is_rG ())
+    return 0.4364;
   return 0;
 }
 
@@ -2768,9 +3349,12 @@ at_1H4::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_1H4::get_charge (const t_Residue *r) const
+at_1H4::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_C ()) return 0.4234;
+  if (res->GetType ()->is_dC ())
+    return 0.4314;
+  else if (res->GetType ()->is_rC ())
+    return 0.4234;
   return 0;
 }
 
@@ -2806,6 +3390,16 @@ at_1H5M::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_1H5M::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_dT ())
+    return 0.0770;
+  return 0;
+}
+
+
+
 void
 at_1H5M::Binoutput (oBinstream &obs) const
 {
@@ -2837,9 +3431,12 @@ at_1H6::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_1H6::get_charge (const t_Residue *r) const
+at_1H6::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_A ()) return 0.4115;
+  if (res->GetType ()->is_dA ())
+    return 0.4167;
+  else if (res->GetType ()->is_rA ())
+    return 0.4115;
   return 0;
 }
 
@@ -2876,9 +3473,12 @@ at_2H2::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_2H2::get_charge (const t_Residue *r) const
+at_2H2::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_G ()) return 0.4364;
+  if (res->GetType ()->is_dG ())
+    return 0.4235;
+  else if (res->GetType ()->is_rG ())
+    return 0.4364;
   return 0;
 }
 
@@ -2915,9 +3515,12 @@ at_2H4::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_2H4::get_charge (const t_Residue *r) const
+at_2H4::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_C ()) return 0.4234;
+  if (res->GetType ()->is_dC ())
+    return 0.4314;
+  else if (res->GetType ()->is_rC ())
+    return 0.4234;
   return 0;
 }
 
@@ -2953,6 +3556,16 @@ at_2H5M::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_2H5M::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_dT ())
+    return 0.0770;
+  return 0;
+}
+
+
+
 void
 at_2H5M::Binoutput (oBinstream &obs) const
 {
@@ -2984,9 +3597,12 @@ at_2H6::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 float
-at_2H6::get_charge (const t_Residue *r) const
+at_2H6::getAmberCharge (const CResidue *res) const
 {
-  if (r->is_A ()) return 0.4115;
+  if (res->GetType ()->is_dA ())
+    return 0.4167;
+  else if (res->GetType ()->is_rA ())
+    return 0.4115;
   return 0;
 }
 
@@ -3018,6 +3634,16 @@ bool
 at_3H5M::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_C5M ();
+}
+
+
+
+float
+at_3H5M::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_dT ())
+    return 0.0770;
+  return 0;
 }
 
 
@@ -3382,6 +4008,18 @@ at_H3T::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_H3T::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_DNA ())
+    return 0.4396;
+  else if (res->GetType ()->is_RNA ())
+    return 0.4376;
+  return 0;
+}
+
+
+
 void
 at_H3T::Binoutput (oBinstream &obs) const
 {
@@ -3408,6 +4046,18 @@ bool
 at_H5T::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_O5p ();
+}
+
+
+
+float
+at_H5T::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_DNA ())
+    return 0.4422;
+  else if (res->GetType ()->is_RNA ())
+    return 0.4295;
+  return 0;
 }
 
 
@@ -3440,6 +4090,28 @@ at_C::is_connected (const t_Atom *type, const t_Residue *res) const
 }
 
 
+
+float
+at_C::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_ALA () || r->is_GLY () || r->is_SER () || r->is_THR ()
+      || r->is_LEU () || r->is_ILE () || r->is_VAL () || r->is_ASN ()
+      || r->is_GLN () || r->is_HIS () || r->is_TRP () || r->is_PHE ()
+      || r->is_TYR () || r->is_CYS () || r->is_MET ())
+    return 0.59730;
+  else if (r->is_ARG () || r->is_LYS ())
+    return 0.73410;
+  else if (r->is_GLU () || r->is_ASP ())
+    return 0.53660;
+  else if (r->is_PRO ())
+    return 0.58960;
+  return 0;
+}
+
+
+
 void
 at_C::Binoutput (oBinstream &obs) const
 {
@@ -3461,12 +4133,64 @@ at_CA::operator= (const at_CA &right)
 }
 
 
+
 bool
 at_CA::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return (type->is_C () || type->is_N () || type->is_CB ()
 	  || type->is_HA () || type->is_HA1 () || type->is_HA2 ());
 }
+
+
+
+float
+at_CA::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_ALA ())
+    return 0.03370;
+  else if (r->is_GLY ())
+    return -0.02520;
+  else if (r->is_SER ())
+    return -0.02490;
+  else if (r->is_THR ())
+    return -0.03890;
+  else if (r->is_LEU ())
+    return -0.05180;
+  else if (r->is_ILE ())
+    return -0.05970;
+  else if (r->is_VAL ())
+    return -0.08750;
+  else if (r->is_ASN ())
+    return 0.01430;
+  else if (r->is_GLN ())
+    return -0.00310;
+  else if (r->is_ARG ())
+    return -0.26370;
+  else if (r->is_HIS ())
+    return 0.01880;
+  else if (r->is_TRP ())
+    return -0.02750;
+  else if (r->is_PHE ())
+    return -0.00240;
+  else if (r->is_TYR ())
+    return -0.00140;
+  else if (r->is_GLU ())
+    return 0.03970;
+  else if (r->is_ASP ())
+    return 0.03810;
+  else if (r->is_LYS ())
+    return -0.24000;
+  else if (r->is_PRO ())
+    return -0.02660;
+  else if (r->is_CYS ())
+    return 0.02130;
+  else if (r->is_MET ())
+    return -0.02370;
+  return 0;
+}
+
 
 
 void
@@ -3490,6 +4214,7 @@ at_CB::operator= (const at_CB &right)
 }
 
 
+
 bool
 at_CB::is_connected (const t_Atom *type, const t_Residue *res) const
 {
@@ -3498,6 +4223,55 @@ at_CB::is_connected (const t_Atom *type, const t_Residue *res) const
 	  || type->is_CG1 () || type->is_CG2 () || type->is_HB ()
 	  || type->is_OG () || type->is_OG1 ());
 }
+
+
+
+float
+at_CB::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_ALA ())
+    return -0.18250;
+  else if (r->is_SER ())
+    return 0.21170;
+  else if (r->is_THR ())
+    return 0.36540;
+  else if (r->is_LEU ())
+    return -0.11020;
+  else if (r->is_ILE ())
+    return 0.13030;
+  else if (r->is_VAL ())
+    return 0.29850;
+  else if (r->is_ASN ())
+    return -0.20410;
+  else if (r->is_GLN ())
+    return -0.00360;
+  else if (r->is_ARG ())
+    return -0.00070;
+  else if (r->is_HIS ())
+    return -0.04620;
+  else if (r->is_TRP ())
+    return -0.00500;
+  else if (r->is_PHE ())
+    return -0.03430;
+  else if (r->is_TYR ())
+    return -0.01520;
+  else if (r->is_GLU ())
+    return 0.05600;
+  else if (r->is_ASP ())
+    return -0.03030;
+  else if (r->is_LYS ())
+    return -0.00940;
+  else if (r->is_PRO ())
+    return -0.00700;
+  else if (r->is_CYS ())
+    return -0.12310;
+  else if (r->is_MET ())
+    return 0.03420;
+  return 0;
+}
+
 
 
 void
@@ -3531,6 +4305,37 @@ at_CD::is_connected (const t_Atom *type, const t_Residue *res) const
 }
 
 
+
+float
+at_CD::getAmberEpsilon (const CResidue *res) const
+{
+  t_Residue *type = res->GetType ();
+  
+  return type->is_GLN () || type->is_GLU () ? 0.0860 : 0.1094;
+}
+
+
+
+float
+at_CD::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_GLN ())
+    return 0.69510;
+  else if (r->is_ARG ())
+    return 0.04860;
+  else if (r->is_GLU ())
+    return 0.80540;
+  else if (r->is_LYS ())
+    return -0.04790;
+  else if (r->is_PRO ())
+    return 0.01920;
+  return 0;
+}
+
+
+
 void
 at_CD::Binoutput (oBinstream &obs) const
 {
@@ -3559,6 +4364,38 @@ at_CD1::is_connected (const t_Atom *type, const t_Residue *res) const
 	  || type->is_3HD1 () || type->is_CG () || type->is_CE1 ()
 	  || type->is_HD1 () || type->is_NE1 ());
 }
+
+
+
+float
+at_CD1::getAmberEpsilon (const CResidue *res) const
+{
+  t_Residue *type = res->GetType ();
+  
+  return (type->is_PHE () || type->is_TYR () || type->is_TRP ()
+	  ? 0.0860 : 0.1094);
+}
+
+
+
+float
+at_CD1::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_LEU ())
+    return -0.41210;
+  else if (r->is_ILE ())
+    return -0.06600;
+  else if (r->is_TRP ())
+    return -0.16380;
+  else if (r->is_PHE ())
+    return -0.12560;
+  else if (r->is_TYR ())
+    return -0.19060;
+  return 0;
+}
+
 
 
 void
@@ -3591,6 +4428,26 @@ at_CD2::is_connected (const t_Atom *type, const t_Residue *res) const
 }
 
 
+float
+at_CD2::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_LEU ())
+    return -0.41210;
+  else if (r->is_HIS ())
+    return 0.12920;
+  else if (r->is_TRP ())
+    return 0.12430;
+  else if (r->is_PHE ())
+    return -0.12560;
+  else if (r->is_TYR ())
+    return -0.19060;
+  return 0;
+}
+
+
+
 void
 at_CD2::Binoutput (oBinstream &obs) const
 {
@@ -3612,12 +4469,28 @@ at_CE::operator= (const at_CE &right)
 }
 
 
+
 bool
 at_CE::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return (type->is_CD () || type->is_NZ () || type->is_HE1 ()
 	  || type->is_HE2 () || type->is_SD () || type->is_HE3 ());
 }
+
+
+
+float
+at_CE::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_LYS ())
+    return -0.01430;
+  else if (r->is_MET ())
+    return -0.05360;
+  return 0;
+}
+
 
 
 void
@@ -3641,12 +4514,30 @@ at_CE1::operator= (const at_CE1 &right)
 }
 
 
+
 bool
 at_CE1::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return (type->is_ND1 () || type->is_NE2 () || type->is_HE1 ()
 	  || type->is_CD1 () || type->is_CZ ());
 }
+
+
+
+float
+at_CE1::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_HIS ())
+    return 0.20570;
+  else if (r->is_PHE ())
+    return -0.17040;
+  else if (r->is_TYR ())
+    return -0.23410;
+  return 0;
+}
+
 
 
 void
@@ -3670,12 +4561,30 @@ at_CE2::operator= (const at_CE2 &right)
 }
 
 
+
 bool
 at_CE2::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return (type->is_CD2 () || type->is_CZ () || type->is_HE2 ()
 	  || type->is_NE1 () || type->is_CZ2 ());
 }
+
+
+
+float
+at_CE2::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_TRP ())
+    return 0.13800;
+  else if (r->is_PHE ())
+    return -0.17040;
+  else if (r->is_TYR ())
+    return -0.23410;
+  return 0;
+}
+
 
 
 void
@@ -3699,11 +4608,23 @@ at_CE3::operator= (const at_CE3 &right)
 }
 
 
+
 bool
 at_CE3::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CD2 () || type->is_CZ3 () || type->is_HE3 ();
 }
+
+
+
+float
+at_CE3::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_TRP ())
+    return -0.23870;
+  return 0;
+}
+
 
 
 void
@@ -3727,6 +4648,7 @@ at_CG::operator= (const at_CG &right)
 }
 
 
+
 bool
 at_CG::is_connected (const t_Atom *type, const t_Residue *res) const
 {
@@ -3735,6 +4657,55 @@ at_CG::is_connected (const t_Atom *type, const t_Residue *res) const
 	  || type->is_OD2 () || type->is_ND1 () || type->is_CD1 ()
 	  || type->is_CD2 () || type->is_HG () || type->is_SD ());
 }
+
+
+
+float
+at_CG::getAmberEpsilon (const CResidue *res) const
+{
+  t_Residue *type = res->GetType ();
+  
+  return ((type->is_ASN () || type->is_HIS () || type->is_TRP ()
+	   || type->is_PHE () || type->is_TYR () || type->is_ASP ())
+	  ? 0.0860 : 0.1094);
+}
+
+
+
+float
+at_CG::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_LEU ())
+    return 0.35310;
+  else if (r->is_ASN ())
+    return 0.71300;
+  else if (r->is_GLN ())
+    return -0.06450;
+  else if (r->is_ARG ())
+    return 0.03900;
+  else if (r->is_HIS ())
+    return -0.02660;
+  else if (r->is_TRP ())
+    return -0.14150;
+  else if (r->is_PHE ())
+    return 0.01180;
+  else if (r->is_TYR ())
+    return -0.00110;
+  else if (r->is_GLU ())
+    return 0.01360;
+  else if (r->is_ASP ())
+    return 0.79940;
+  else if (r->is_LYS ())
+    return 0.01870;
+  else if (r->is_PRO ())
+    return 0.01890;
+  else if (r->is_MET ())
+    return 0.00180;
+  return 0;
+}
+
 
 
 void
@@ -3758,12 +4729,28 @@ at_CG1::operator= (const at_CG1 &right)
 }
 
 
+
 bool
 at_CG1::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return (type->is_CB () || type->is_CD1 () || type->is_1HG1 ()
 	  || type->is_2HG1 () || type->is_3HG1 ());
 }
+
+
+
+float
+at_CG1::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_ILE ())
+    return -0.04300;
+  else if (r->is_VAL ())
+    return -0.31920;
+  return 0;
+}
+
 
 
 void
@@ -3787,12 +4774,30 @@ at_CG2::operator= (const at_CG2 &right)
 }
 
 
+
 bool
 at_CG2::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return (type->is_CB () || type->is_1HG2 () || type->is_2HG2 ()
 	  || type->is_3HG2 ());
 }
+
+
+
+float
+at_CG2::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_THR ())
+    return -0.24380;
+  else if (r->is_ILE ())
+    return -0.32040;
+  else if (r->is_VAL ())
+    return -0.31920;
+  return 0;
+}
+
 
 
 void
@@ -3816,11 +4821,23 @@ at_CH2::operator= (const at_CH2 &right)
 }
 
 
+
 bool
 at_CH2::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CZ2 () || type->is_CZ3 () || type->is_HH2 ();
 }
+
+
+
+float
+at_CH2::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_TRP ())
+    return -0.11340;
+  return 0;
+}
+
 
 
 void
@@ -3844,6 +4861,7 @@ at_CZ::operator= (const at_CZ &right)
 }
 
 
+
 bool
 at_CZ::is_connected (const t_Atom *type, const t_Residue *res) const
 {
@@ -3851,6 +4869,23 @@ at_CZ::is_connected (const t_Atom *type, const t_Residue *res) const
 	  || type->is_CE1 () || type->is_CE2 () || type->is_HZ ()
 	  || type->is_OH ());
 }
+
+
+
+float
+at_CZ::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_ARG ())
+    return 0.80760;
+  else if (r->is_PHE ())
+    return -0.10720;
+  else if (r->is_TYR ())
+    return 0.32260;
+  return 0;
+}
+
 
 
 void
@@ -3874,11 +4909,23 @@ at_CZ2::operator= (const at_CZ2 &right)
 }
 
 
+
 bool
 at_CZ2::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CE2 () || type->is_CH2 () || type->is_HZ2 ();
 }
+
+
+
+float
+at_CZ2::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_TRP ())
+    return -0.26010;
+  return 0;
+}
+
 
 
 void
@@ -3902,11 +4949,23 @@ at_CZ3::operator= (const at_CZ3 &right)
 }
 
 
+
 bool
 at_CZ3::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CE3 () || type->is_CH2 () || type->is_HZ3 ();
 }
+
+
+
+float
+at_CZ3::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_TRP ())
+    return -0.19720;
+  return 0;
+}
+
 
 
 void
@@ -3930,11 +4989,32 @@ at_H::operator= (const at_H &right)
 }
 
 
+
 bool
 at_H::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_N ();
 }
+
+
+
+float
+at_H::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_ALA () || r->is_GLY () || r->is_SER () || r->is_THR ()
+      || r->is_LEU () || r->is_ILE () || r->is_VAL () || r->is_ASN ()
+      || r->is_GLN () || r->is_HIS () || r->is_TRP () || r->is_PHE ()
+      || r->is_TYR () || r->is_CYS () || r->is_MET ())
+    return 0.27190;
+  else if (r->is_ARG () || r->is_LYS ())
+    return 0.27470;
+  else if (r->is_GLU () || r->is_ASP ())
+    return 0.29360;
+  return 0;
+}
+
 
 
 void
@@ -3958,11 +5038,13 @@ at_1H::operator= (const at_1H &right)
 }
 
 
+
 bool
 at_1H::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_N ();
 }
+
 
 
 void
@@ -3986,11 +5068,13 @@ at_2H::operator= (const at_2H &right)
 }
 
 
+
 bool
 at_2H::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_N ();
 }
+
 
 
 void
@@ -4012,6 +5096,7 @@ at_3H::operator= (const at_3H &right)
     }
   return *this;
 }
+
 
 
 bool
@@ -4043,11 +5128,59 @@ at_HA::operator= (const at_HA &right)
 }
 
 
+
 bool
 at_HA::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CA ();
 }
+
+
+
+float
+at_HA::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_ALA ())
+    return 0.08230;
+  else if (r->is_SER ())
+    return 0.08430;
+  else if (r->is_THR ())
+    return 0.10070;
+  else if (r->is_LEU ())
+    return 0.09220;
+  else if (r->is_ILE ())
+    return 0.08690;
+  else if (r->is_VAL ())
+    return 0.09690;
+  else if (r->is_ASN ())
+    return 0.10480;
+  else if (r->is_GLN ())
+    return 0.08500;
+  else if (r->is_ARG ())
+    return 0.15600;
+  else if (r->is_HIS ())
+    return 0.08810;
+  else if (r->is_TRP ())
+    return 0.11230;
+  else if (r->is_PHE ())
+    return 0.09780;
+  else if (r->is_TYR ())
+    return 0.08760;
+  else if (r->is_GLU ())
+    return 0.11050;
+  else if (r->is_ASP () || r->is_MET ())
+    return 0.08800;
+  else if (r->is_LYS ())
+    return 0.14260;
+  else if (r->is_PRO ())
+    return 0.06410;
+  else if (r->is_CYS ())
+    return 0.11240;
+  return 0;
+}
+
 
 
 void
@@ -4071,11 +5204,23 @@ at_HA1::operator= (const at_HA1 &right)
 }
 
 
+
 bool
 at_HA1::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CA ();
 }
+
+
+
+float
+at_HA1::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_GLY ())
+    return 0.06980;
+  return 0;
+}
+
 
 
 void
@@ -4099,11 +5244,23 @@ at_HA2::operator= (const at_HA2 &right)
 }
 
 
+
 bool
 at_HA2::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CA ();
 }
+
+
+
+float
+at_HA2::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_GLY ())
+    return 0.06980;
+  return 0;
+}
+
 
 
 void
@@ -4127,11 +5284,29 @@ at_HB::operator= (const at_HB &right)
 }
 
 
+
 bool
 at_HB::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CB ();
 }
+
+
+
+float
+at_HB::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_THR ())
+    return 0.00430;
+  else if (r->is_ILE ())
+    return 0.01870;
+  else if (r->is_VAL ())
+    return -0.02970;
+  return 0;
+}
+
 
 
 void
@@ -4155,11 +5330,23 @@ at_HB1::operator= (const at_HB1 &right)
 }
 
 
+
 bool
 at_HB1::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CB ();
 }
+
+
+
+float
+at_HB1::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_ALA ())
+    return 0.06030;
+  return 0;
+}
+
 
 
 void
@@ -4183,11 +5370,63 @@ at_HB2::operator= (const at_HB2 &right)
 }
 
 
+
 bool
 at_HB2::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CB ();
 }
+
+
+
+float
+at_HB2::getVDWR (const CResidue *res) const
+{
+  t_Residue *type = res->GetType ();
+  
+  return type->is_SER () || type->is_CYS () ? 1.3870 : 1.4870;
+}
+
+
+
+float
+at_HB2::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_ALA ())
+    return 0.06030;
+  else if (r->is_SER ())
+    return 0.03520;
+  else if (r->is_LEU ())
+    return 0.04570;
+  else if (r->is_ASN ())
+    return 0.07970;
+  else if (r->is_GLN ())
+    return 0.01710;
+  else if (r->is_ARG ())
+    return 0.03270;
+  else if (r->is_HIS ())
+    return 0.04020;
+  else if (r->is_TRP ())
+    return 0.03390;
+  else if (r->is_PHE () || r->is_TYR ())
+    return 0.02950;
+  else if (r->is_GLU ())
+    return -0.01730;
+  else if (r->is_ASP ())
+    return -0.01220;
+  else if (r->is_LYS ())
+    return 0.03620;
+  else if (r->is_PRO ())
+    return 0.02530;
+  else if (r->is_CYS ())
+    return 0.11120;
+  else if (r->is_MET ())
+    return 0.02410;
+  return 0;
+}
+
 
 
 void
@@ -4211,11 +5450,63 @@ at_HB3::operator= (const at_HB3 &right)
 }
 
 
+
 bool
 at_HB3::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CB ();
 }
+
+
+
+float
+at_HB3::getVDWR (const CResidue *res) const
+{
+  t_Residue *type = res->GetType ();
+  
+  return type->is_SER () || type->is_CYS () ? 1.3870 : 1.4870;
+}
+
+
+
+float
+at_HB3::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_ALA ())
+    return 0.06030;
+  else if (r->is_SER ())
+    return 0.03520;
+  else if (r->is_LEU ())
+    return 0.04570;
+  else if (r->is_ASN ())
+    return 0.07970;
+  else if (r->is_GLN ())
+    return 0.01710;
+  else if (r->is_ARG ())
+    return 0.03270;
+  else if (r->is_HIS ())
+    return 0.04020;
+  else if (r->is_TRP ())
+    return 0.03390;
+  else if (r->is_PHE () || r->is_TYR ())
+    return 0.02950;
+  else if (r->is_GLU ())
+    return -0.01730;
+  else if (r->is_ASP ())
+    return -0.01220;
+  else if (r->is_LYS ())
+    return 0.03620;
+  else if (r->is_PRO ())
+    return 0.02530;
+  else if (r->is_CYS ())
+    return 0.11120;
+  else if (r->is_MET ())
+    return 0.02410;
+  return 0;
+}
+
 
 
 void
@@ -4239,11 +5530,54 @@ at_HD1::operator= (const at_HD1 &right)
 }
 
 
+
 bool
 at_HD1::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CD () || type->is_ND1 () || type->is_CD1 ();
 }
+
+
+
+float
+at_HD1::getVDWR (const CResidue *res) const
+{
+  t_Residue *type = res->GetType ();
+
+  if (type->is_HIS ())
+    return 0.6000;
+  else if (type->is_TRP ())
+    return 1.4090;
+  else
+    return 1.4590;
+}
+
+
+
+float
+at_HD1::getAmberEpsilon (const CResidue *res) const
+{
+  return res->GetType ()->is_HIS () ? 0.0157 : 0.0150;
+}
+
+
+
+float
+at_HD1::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_HIS ())
+    return 0.36490;
+  else if (r->is_TRP ())
+    return 0.20620;
+  else if (r->is_PHE ())
+    return 0.13300;
+  else if (r->is_TYR ())
+    return 0.16990;
+  return 0;
+}
+
 
 
 void
@@ -4267,11 +5601,69 @@ at_HD2::operator= (const at_HD2 &right)
 }
 
 
+
 bool
 at_HD2::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CD () || type->is_CD2 ();
 }
+
+
+
+float
+at_HD2::getVDWR (const CResidue *res) const
+{
+  t_Residue *type = res->GetType ();
+
+  if (type->is_ARG () || type->is_PRO ())
+    return 1.3870; // H1
+  else if (type->is_HIS ())
+    return 1.4090; // H4
+  else if (type->is_PHE () || type->is_TYR ())
+    return 1.4590; // HA
+  else if (type->is_LYS ())
+    return 1.4870; // HC
+  else
+    return 0.0000; // HO
+}
+
+
+
+float
+at_HD2::getAmberEpsilon (const CResidue *res) const
+{
+  t_Residue *type = res->GetType ();
+
+  if (type->is_ARG () || type->is_PRO () || type->is_LYS ())
+    return 0.0157; // H1 HC
+  else if (type->is_HIS () || type->is_PHE () || type->is_TYR ())
+    return 0.0150; // H4 HA
+  else
+    return 0.0000; // HO
+}
+
+
+
+float
+at_HD2::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_ARG ())
+    return 0.06870;
+  else if (r->is_HIS ())
+    return 0.11470;
+  else if (r->is_PHE ())
+    return 0.13300;
+  else if (r->is_TYR ())
+    return 0.16990;
+  else if (r->is_LYS ())
+    return 0.06210;
+  else if (r->is_PRO ())
+    return 0.03910;
+  return 0;
+}
+
 
 
 void
@@ -4295,11 +5687,23 @@ at_HE::operator= (const at_HE &right)
 }
 
 
+
 bool
 at_HE::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_NE ();
 }
+
+
+
+float
+at_HE::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_ARG ())
+    return 0.34560;
+  return 0;
+}
+
 
 
 void
@@ -4323,11 +5727,64 @@ at_HE1::operator= (const at_HE1 &right)
 }
 
 
+
 bool
 at_HE1::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CE1 () || type->is_CE () || type->is_NE1 ();
 }
+
+
+float
+at_HE1::getVDWR (const CResidue *res) const
+{
+  t_Residue *type = res->GetType ();
+
+  if (type->is_HIS ())
+    return 1.3590; // H5
+  else if (type->is_TRP ())
+    return 0.6000; // H
+  else if (type->is_PHE () || type->is_TYR ())
+    return 1.4590; // HA
+  else if (type->is_MET ())
+    return 1.3870; // H1
+  return 0;
+}
+
+
+
+float
+at_HE1::getAmberEpsilon (const CResidue *res) const
+{
+  t_Residue *type = res->GetType ();
+
+  if (type->is_HIS () || type->is_PHE () || type->is_TYR ())
+    return 0.0150; // H5 HA
+  else if (type->is_TRP () || type->is_MET ())
+    return 0.0157; // H H1
+  return 0;
+}
+
+
+
+float
+at_HE1::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_HIS ())
+    return 0.13920;
+  else if (r->is_TRP ())
+    return 0.34120;
+  else if (r->is_PHE ())
+    return 0.14300;
+  else if (r->is_TYR ())
+    return 0.16560;
+  else if (r->is_MET ())
+    return 0.06940;
+  return 0;
+}
+
 
 
 void
@@ -4351,11 +5808,67 @@ at_HE2::operator= (const at_HE2 &right)
 }
 
 
+
 bool
 at_HE2::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CE () || type->is_CE2 () || type->is_NE2 ();
 }
+
+
+
+float
+at_HE2::getVDWR (const CResidue *res) const
+{
+  t_Residue *type = res->GetType ();
+
+  if (type->is_HIS ())
+    return 0.6000; // H
+  else if (type->is_PHE () || type->is_TYR ())
+    return 1.4590; // HA
+  else if (type->is_LYS ())
+    return 1.1000; // HP
+  else if (type->is_MET ())
+    return 1.3870; // H1
+  else if (type->is_GLU ())
+    return 0.0000;
+  return 0;
+}
+
+
+
+float
+at_HE2::getAmberEpsilon (const CResidue *res) const
+{
+  t_Residue *type = res->GetType ();
+
+  if (type->is_HIS () || type->is_LYS () || type->is_MET ())
+    return 0.0157; // H HP H1
+  else if (type->is_PHE () || type->is_TYR ())
+    return 0.0150; // HA
+  else if (type->is_GLU ())
+    return 0.0000; // HO
+  return 0;
+}
+
+
+
+float
+at_HE2::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_PHE ())
+    return 0.14300;
+  else if (r->is_TYR ())
+    return 0.16560;
+  else if (r->is_LYS ())
+    return 0.11350;
+  else if (r->is_MET ())
+    return 0.06840;
+  return 0;
+}
+
 
 
 void
@@ -4379,11 +5892,59 @@ at_HE3::operator= (const at_HE3 &right)
 }
 
 
+
 bool
 at_HE3::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CE () || type->is_CE3 ();
 }
+
+
+
+float
+at_HE3::getVDWR (const CResidue *res) const
+{
+  t_Residue *type = res->GetType ();
+
+  if (type->is_TRP ())
+    return 1.4590; // HA
+  else if (type->is_LYS ())
+    return 1.1000; // HP
+  else if (type->is_MET ())
+    return 1.3870; // H1
+  return 0;
+}
+
+
+
+float
+at_HE3::getAmberEpsilon (const CResidue *res) const
+{
+  t_Residue *type = res->GetType ();
+
+  if (type->is_LYS () || type->is_MET ())
+    return 0.0157; // HP H1
+  else if (type->is_TRP ())
+    return 0.0150; // HA
+  return 0;
+}
+
+
+
+float
+at_HE3::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_TRP ())
+    return 0.17000;
+  else if (r->is_LYS ())
+    return 0.11350;
+  else if (r->is_MET ())
+    return 0.06840;
+  return 0;
+}
+
 
 
 void
@@ -4407,11 +5968,29 @@ at_HG::operator= (const at_HG &right)
 }
 
 
+
 bool
 at_HG::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_SG () || type->is_CG () || type->is_OG ();
 }
+
+
+
+float
+at_HG::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_SER ())
+    return 0.42750;
+  else if (r->is_LEU ())
+    return -0.03610;
+  else if (r->is_CYS ())
+    return 0.19330;
+  return 0;
+}
+
 
 
 void
@@ -4435,11 +6014,23 @@ at_HG1::operator= (const at_HG1 &right)
 }
 
 
+
 bool
 at_HG1::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CG () || type->is_OG1 ();
 }
+
+
+
+float
+at_HG1::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_THR ())
+    return 0.41020;
+  return 0;
+}
+
 
 
 void
@@ -4463,11 +6054,50 @@ at_HG2::operator= (const at_HG2 &right)
 }
 
 
+
 bool
 at_HG2::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CG ();
 }
+
+
+
+float
+at_HG2::getVDWR (const CResidue *res) const
+{
+  t_Residue *type = res->GetType ();
+
+  if (type->is_GLN () || type->is_ARG () || type->is_GLU () || type->is_LYS ()
+      || type->is_PRO ())
+    return 1.4870; // HC
+  else if (type->is_MET ())
+    return 1.3870; // H1
+  return 0;
+}
+
+
+
+float
+at_HG2::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_GLN ())
+    return 0.03520;
+  else if (r->is_ARG ())
+    return 0.02850;
+  else if (r->is_GLU ())
+    return -0.04250;
+  else if (r->is_LYS ())
+    return 0.01030;
+  else if (r->is_PRO ())
+    return 0.02130;
+  else if (r->is_MET ())
+    return 0.04400;
+  return 0;
+}
+
 
 
 void
@@ -4491,11 +6121,23 @@ at_HH::operator= (const at_HH &right)
 }
 
 
+
 bool
 at_HH::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_OH ();
 }
+
+
+
+float
+at_HH::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_TYR ())
+    return 0.39920;
+  return 0;
+}
+
 
 
 void
@@ -4524,6 +6166,16 @@ bool
 at_HH2::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CH2 ();
+}
+
+
+
+float
+at_HH2::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_TRP ())
+    return 0.14170;
+  return 0;
 }
 
 
@@ -4588,6 +6240,16 @@ at_HZ::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_HZ::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_PHE ())
+    return 0.12970;
+  return 0;
+}
+
+
+
 void
 at_HZ::Binoutput (oBinstream &obs) const
 {
@@ -4614,6 +6276,16 @@ bool
 at_HZ1::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_NZ ();
+}
+
+
+
+float
+at_HZ1::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_LYS ())
+    return 0.34000;
+  return 0;
 }
 
 
@@ -4648,6 +6320,46 @@ at_HZ2::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_HZ2::getVDWR (const CResidue *res) const
+{
+  t_Residue *type = res->GetType ();
+
+  if (type->is_TRP ())
+    return 1.4590; // HA
+  else if (type->is_LYS ())
+    return 0.6000; // H
+  return 0;
+}
+
+
+
+float
+at_HZ2::getAmberEpsilon (const CResidue *res) const
+{
+  t_Residue *type = res->GetType ();
+
+  if (type->is_TRP ())
+    return 0.0150; // HA
+  else if (type->is_LYS ())
+    return 0.0157; // H
+  return 0;
+}
+
+
+
+float
+at_HZ2::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_TRP ())
+    return 0.15720;
+  else if (res->GetType ()->is_LYS ())
+    return 0.34000;
+  return 0;
+}
+
+
+
 void
 at_HZ2::Binoutput (oBinstream &obs) const
 {
@@ -4674,6 +6386,46 @@ bool
 at_HZ3::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_NZ () || type->is_CZ3 ();
+}
+
+
+
+float
+at_HZ3::getVDWR (const CResidue *res) const
+{
+  t_Residue *type = res->GetType ();
+
+  if (type->is_TRP ())
+    return 1.4590; // HA
+  else if (type->is_LYS ())
+    return 0.6000; // H
+  return 0;
+}
+
+
+
+float
+at_HZ3::getAmberEpsilon (const CResidue *res) const
+{
+  t_Residue *type = res->GetType ();
+
+  if (type->is_TRP ())
+    return 0.0150; // HA
+  else if (type->is_LYS ())
+    return 0.0157; // H
+  return 0;
+}
+
+
+
+float
+at_HZ3::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_TRP ())
+    return 0.14470;
+  else if (res->GetType ()->is_LYS ())
+    return 0.34000;
+  return 0;
 }
 
 
@@ -4710,6 +6462,27 @@ at_N::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_N::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_ALA () || r->is_GLY () || r->is_SER () || r->is_THR ()
+      || r->is_LEU () || r->is_ILE () || r->is_VAL () || r->is_ASN ()
+      || r->is_GLN () || r->is_HIS () || r->is_TRP () || r->is_PHE ()
+      || r->is_TYR () || r->is_CYS () || r->is_MET ())
+    return -0.41570;
+  else if (r->is_ARG () || r->is_LYS ())
+    return -0.34790;
+  else if (r->is_GLU () || r->is_ASP ())
+    return -0.51630;
+  else if (r->is_PRO ())
+    return -0.25480;
+  return 0;
+}
+
+
+
 void
 at_N::Binoutput (oBinstream &obs) const
 {
@@ -4736,6 +6509,16 @@ bool
 at_ND1::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CG () || type->is_CE1 () || type->is_HD1 ();
+}
+
+
+
+float
+at_ND1::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_HIS ())
+    return -0.38110;
+  return 0;
 }
 
 
@@ -4770,6 +6553,16 @@ at_ND2::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_ND2::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_ASN ())
+    return -0.91910;
+  return 0;
+}
+
+
+
 void
 at_ND2::Binoutput (oBinstream &obs) const
 {
@@ -4800,6 +6593,16 @@ at_NE::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_NE::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_ARG ())
+    return -0.52950;
+  return 0;
+}
+
+
+
 void
 at_NE::Binoutput (oBinstream &obs) const
 {
@@ -4826,6 +6629,16 @@ bool
 at_NE1::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CD1 () || type->is_CE2 () || type->is_HE1 ();
+}
+
+
+
+float
+at_NE1::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_TRP ())
+    return -0.34180;
+  return 0;
 }
 
 
@@ -4861,6 +6674,20 @@ at_NE2::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_NE2::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_GLN ())
+    return -0.94070;
+  else if (r->is_HIS ())
+    return -0.57270;
+  return 0;
+}
+
+
+
 void
 at_NE2::Binoutput (oBinstream &obs) const
 {
@@ -4891,6 +6718,16 @@ at_NH1::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_NH1::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_ARG ())
+    return -0.86270;
+  return 0;
+}
+
+
+
 void
 at_NH1::Binoutput (oBinstream &obs) const
 {
@@ -4917,6 +6754,16 @@ bool
 at_NH2::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CZ () || type->is_1HH2 () || type->is_2HH2 ();
+}
+
+
+
+float
+at_NH2::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_ARG ())
+    return -0.86270;
+  return 0;
 }
 
 
@@ -4952,6 +6799,16 @@ at_NZ::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_NZ::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_LYS ())
+    return -0.38540;
+  return 0;
+}
+
+
+
 void
 at_NZ::Binoutput (oBinstream &obs) const
 {
@@ -4978,6 +6835,27 @@ bool
 at_O::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_C ();
+}
+
+
+
+float
+at_O::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_ALA () || r->is_GLY () || r->is_SER () || r->is_THR ()
+      || r->is_LEU () || r->is_ILE () || r->is_VAL () || r->is_ASN ()
+      || r->is_GLN () || r->is_HIS () || r->is_TRP () || r->is_PHE ()
+      || r->is_TYR () || r->is_CYS () || r->is_MET ())
+    return -0.56790;
+  else if (r->is_ARG () || r->is_LYS ())
+    return -0.58940;
+  else if (r->is_GLU () || r->is_ASP ())
+    return -0.58190;
+  else if (r->is_PRO ())
+    return -0.57480;
+  return 0;
 }
 
 
@@ -5012,6 +6890,20 @@ at_OD1::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_OD1::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_ASN ())
+    return -0.59310;
+  else if (r->is_ASP ())
+    return -0.80140;
+  return 0;
+}
+
+
+
 void
 at_OD1::Binoutput (oBinstream &obs) const
 {
@@ -5038,6 +6930,16 @@ bool
 at_OD2::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CG ();
+}
+
+
+
+float
+at_OD2::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_ASP ())
+    return -0.80140;
+  return 0;
 }
 
 
@@ -5072,6 +6974,20 @@ at_OE1::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_OE1::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_GLN ())
+    return -0.60860;
+  else if (r->is_GLU ())
+    return -0.81880;
+  return 0;
+}
+
+
+
 void
 at_OE1::Binoutput (oBinstream &obs) const
 {
@@ -5098,6 +7014,16 @@ bool
 at_OE2::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CD ();
+}
+
+
+
+float
+at_OE2::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_GLU ())
+    return -0.81880;
+  return 0;
 }
 
 
@@ -5132,6 +7058,16 @@ at_OG::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_OG::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_SER ())
+    return -0.65460;
+  return 0;
+}
+
+
+
 void
 at_OG::Binoutput (oBinstream &obs) const
 {
@@ -5162,6 +7098,16 @@ at_OG1::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_OG1::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_THR ())
+    return -0.67610;
+  return 0;
+}
+
+
+
 void
 at_OG1::Binoutput (oBinstream &obs) const
 {
@@ -5188,6 +7134,16 @@ bool
 at_OH::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CZ () || type->is_HH ();
+}
+
+
+
+float
+at_OH::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_TYR ())
+    return -0.55790;
+  return 0;
 }
 
 
@@ -5252,6 +7208,16 @@ at_SD::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_SD::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_MET ())
+    return -0.27370;
+  return 0;
+}
+
+
+
 void
 at_SD::Binoutput (oBinstream &obs) const
 {
@@ -5278,6 +7244,16 @@ bool
 at_SG::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CB () || type->is_HG ();
+}
+
+
+
+float
+at_SG::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_CYS ())
+    return -0.31190;
+  return 0;
 }
 
 
@@ -5312,6 +7288,20 @@ at_1HD1::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_1HD1::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_LEU ())
+    return 0.10000;
+  else if (r->is_ILE ())
+    return 0.01860;
+  return 0;
+}
+
+
+
 void
 at_1HD1::Binoutput (oBinstream &obs) const
 {
@@ -5338,6 +7328,20 @@ bool
 at_1HD2::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_ND2 () || type->is_CD2 ();
+}
+
+
+
+float
+at_1HD2::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_LEU ())
+    return 0.10000;
+  else if (r->is_ASN ())
+    return 0.41960;
+  return 0;
 }
 
 
@@ -5372,6 +7376,16 @@ at_1HE2::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_1HE2::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_GLN ())
+    return 0.42510;
+  return 0;
+}
+
+
+
 void
 at_1HE2::Binoutput (oBinstream &obs) const
 {
@@ -5398,6 +7412,16 @@ bool
 at_1HG1::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CG1 ();
+}
+
+
+
+float
+at_1HG1::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_VAL ())
+    return 0.07910;
+  return 0;
 }
 
 
@@ -5432,6 +7456,22 @@ at_1HG2::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_1HG2::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_THR ())
+    return 0.06420;
+  else if (r->is_ILE ())
+    return 0.08820;
+  else if (r->is_VAL ())
+    return 0.07910;
+  return 0;
+}
+
+
+
 void
 at_1HG2::Binoutput (oBinstream &obs) const
 {
@@ -5458,6 +7498,16 @@ bool
 at_1HH1::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_NH1 ();
+}
+
+
+
+float
+at_1HH1::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_ARG ())
+    return 0.44780;
+  return 0;
 }
 
 
@@ -5492,6 +7542,16 @@ at_1HH2::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_1HH2::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_ARG ())
+    return 0.44780;
+  return 0;
+}
+
+
+
 void
 at_1HH2::Binoutput (oBinstream &obs) const
 {
@@ -5518,6 +7578,20 @@ bool
 at_2HD1::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CD1 ();
+}
+
+
+
+float
+at_2HD1::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_LEU ())
+    return 0.10000;
+  else if (r->is_ILE ())
+    return 0.01860;
+  return 0;
 }
 
 
@@ -5552,6 +7626,20 @@ at_2HD2::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_2HD2::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_LEU ())
+    return 0.10000;
+  else if (r->is_ASN ())
+    return 0.41960;
+  return 0;
+}
+
+
+
 void
 at_2HD2::Binoutput (oBinstream &obs) const
 {
@@ -5578,6 +7666,16 @@ bool
 at_2HE2::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_NE2 ();
+}
+
+
+
+float
+at_2HE2::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_GLN ())
+    return 0.42510;
+  return 0;
 }
 
 
@@ -5612,6 +7710,20 @@ at_2HG1::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_2HG1::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_ILE ())
+    return 0.02360;
+  else if (r->is_VAL ())
+    return 0.07910;
+  return 0;
+}
+
+
+
 void
 at_2HG1::Binoutput (oBinstream &obs) const
 {
@@ -5638,6 +7750,22 @@ bool
 at_2HG2::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CG2 ();
+}
+
+
+
+float
+at_2HG2::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_THR ())
+    return 0.06420;
+  else if (r->is_ILE ())
+    return 0.08820;
+  else if (r->is_VAL ())
+    return 0.07910;
+  return 0;
 }
 
 
@@ -5672,6 +7800,16 @@ at_2HH1::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_2HH1::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_ARG ())
+    return 0.44780;
+  return 0;
+}
+
+
+
 void
 at_2HH1::Binoutput (oBinstream &obs) const
 {
@@ -5698,6 +7836,16 @@ bool
 at_2HH2::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_NH2 ();
+}
+
+
+
+float
+at_2HH2::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_ARG ())
+    return 0.44780;
+  return 0;
 }
 
 
@@ -5732,6 +7880,20 @@ at_3HD1::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_3HD1::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_LEU ())
+    return 0.10000;
+  else if (r->is_ILE ())
+    return 0.01860;
+  return 0;
+}
+
+
+
 void
 at_3HD1::Binoutput (oBinstream &obs) const
 {
@@ -5758,6 +7920,16 @@ bool
 at_3HD2::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CD2 ();
+}
+
+
+
+float
+at_3HD2::getAmberCharge (const CResidue *res) const
+{
+  if (res->GetType ()->is_LEU ())
+    return 0.10000;
+  return 0;
 }
 
 
@@ -5792,6 +7964,20 @@ at_3HG1::is_connected (const t_Atom *type, const t_Residue *res) const
 
 
 
+float
+at_3HG1::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_ILE ())
+    return 0.02360;
+  else if (r->is_VAL ())
+    return 0.07910;
+  return 0;
+}
+
+
+
 void
 at_3HG1::Binoutput (oBinstream &obs) const
 {
@@ -5818,6 +8004,22 @@ bool
 at_3HG2::is_connected (const t_Atom *type, const t_Residue *res) const
 {
   return type->is_CG2 ();
+}
+
+
+
+float
+at_3HG2::getAmberCharge (const CResidue *res) const
+{
+  t_Residue *r = res->GetType ();
+
+  if (r->is_THR ())
+    return 0.06420;
+  else if (r->is_ILE ())
+    return 0.08820;
+  else if (r->is_VAL ())
+    return 0.07910;
+  return 0;
 }
 
 

@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Aug 29 11:49:18 2001
-// Update Count     : 8
+// Last Modified On : Wed Sep  5 13:53:35 2001
+// Update Count     : 9
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -30,6 +30,7 @@
 #define _AtomType_h_
 
 
+class CResidue;
 class t_Residue;
 class iBinstream;
 class oBinstream;
@@ -1115,24 +1116,24 @@ public:
 
   /**
    * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return the Van Der Waals radius value.
    */
-  virtual float GetVDWR () const { return 0; }
+  virtual float getVDWR (const CResidue *res) const = 0;
 
   /**
    * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return the Amber epsilon value.
    */
-  virtual float get_epsilon () const { return 0; }
+  virtual float getAmberEpsilon (const CResidue *res) const = 0;
 
   /**
    * Gets the Amber charge value for the atom in the given residue type.
-   * Throws a CFatalLibException when the chage is not defined.
    * @param res the residue type.
-   * @exception CFatalLibException
    * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *res) const;
+  virtual float getAmberCharge (const CResidue *res) const = 0;
 
   // I/O  -----------------------------------------------------------------
 

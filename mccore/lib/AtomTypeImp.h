@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Aug 29 11:49:30 2001
-// Update Count     : 4
+// Last Modified On : Wed Sep  5 13:53:40 2001
+// Update Count     : 5
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -31,6 +31,9 @@
 
 
 #include "AtomType.h"
+
+class CResidue;
+class t_Residue;
 
 
 
@@ -163,6 +166,27 @@ public:
    */
   virtual bool is_LonePair () const { return GetFirstAlpha () == 'L'; }
 
+  /**
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Van Der Waals radius value.
+   */
+  virtual float getVDWR (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Amber epsilon value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const { return 0; }
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -232,6 +256,27 @@ public:
    * @return true.
    */
   virtual bool is_NucleicAcid () const { return true; }
+
+  /**
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Van Der Waals radius value.
+   */
+  virtual float getVDWR (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Amber epsilon value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const { return 0; }
 
   // I/O  -----------------------------------------------------------------
 
@@ -303,6 +348,27 @@ public:
    */
   virtual bool is_AminoAcid () const { return true; }
 
+  /**
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Van Der Waals radius value.
+   */
+  virtual float getVDWR (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Amber epsilon value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const { return 0; }
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -372,6 +438,27 @@ public:
    * @return true.
    */
   virtual bool is_Backbone () const { return true; }
+
+  /**
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Van Der Waals radius value.
+   */
+  virtual float getVDWR (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Amber epsilon value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const { return 0; }
 
   // I/O  -----------------------------------------------------------------
 
@@ -443,6 +530,27 @@ public:
    */
   virtual bool is_SideChain () const { return true; }
 
+  /**
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Van Der Waals radius value.
+   */
+  virtual float getVDWR (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Amber epsilon value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const { return 0; }
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -512,6 +620,27 @@ public:
    * @return true.
    */
   virtual bool is_Carbon () const { return true; }
+
+  /**
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Van Der Waals radius value.
+   */
+  virtual float getVDWR (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Amber epsilon value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const { return 0; }
 
   // I/O  -----------------------------------------------------------------
 
@@ -583,6 +712,27 @@ public:
    */
   virtual bool is_Hydrogen () const { return true; }
 
+  /**
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Van Der Waals radius value.
+   */
+  virtual float getVDWR (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Amber epsilon value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const { return 0; }
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -652,6 +802,27 @@ public:
    * @return true.
    */
   virtual bool is_Nitrogen () const { return true; }
+
+  /**
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Van Der Waals radius value.
+   */
+  virtual float getVDWR (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Amber epsilon value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const { return 0; }
 
   // I/O  -----------------------------------------------------------------
 
@@ -723,6 +894,27 @@ public:
    */
   virtual bool is_Phosphate () const { return true; }
 
+  /**
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Van Der Waals radius value.
+   */
+  virtual float getVDWR (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Amber epsilon value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const { return 0; }
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -792,6 +984,27 @@ public:
    * @return true.
    */
   virtual bool is_Oxygen () const { return true; }
+
+  /**
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Van Der Waals radius value.
+   */
+  virtual float getVDWR (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Amber epsilon value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const { return 0; }
 
   // I/O  -----------------------------------------------------------------
 
@@ -863,6 +1076,27 @@ public:
    */
   virtual bool is_Sulfur () const { return true; }
 
+  /**
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Van Der Waals radius value.
+   */
+  virtual float getVDWR (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Amber epsilon value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const { return 0; }
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -932,6 +1166,27 @@ public:
    * @return true.
    */
   virtual bool is_Magnesium () const { return true; }
+
+  /**
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Van Der Waals radius value.
+   */
+  virtual float getVDWR (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Amber epsilon value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const { return 0; }
 
   // I/O  -----------------------------------------------------------------
 
@@ -1003,6 +1258,27 @@ public:
    */
   virtual bool is_LonePair () const { return true; }
 
+  /**
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Van Der Waals radius value.
+   */
+  virtual float getVDWR (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Amber epsilon value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const { return 0.2; }
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -1072,6 +1348,27 @@ public:
    * @return true.
    */
   virtual bool is_Pseudo () const { return true; }
+
+  /**
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Van Der Waals radius value.
+   */
+  virtual float getVDWR (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Amber epsilon value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const { return 0.2; }
 
   // I/O  -----------------------------------------------------------------
 
@@ -1155,23 +1452,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.9080; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.1094.
    */
-  virtual float get_epsilon () const { return 0.1094; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1094; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -1255,10 +1554,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.9080; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.1094.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1094; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -1342,10 +1656,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.9080; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.1094.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1094; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -1429,10 +1758,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.9080; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.1094.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1094; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -1516,10 +1860,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.9080; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.1094.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1094; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -1603,10 +1962,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.29.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.2870.
    */
-  virtual float GetVDWR () const { return 1.29; }
+  virtual float getVDWR (const CResidue *res) const { return 1.2870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -1690,10 +2064,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.36.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.3870.
    */
-  virtual float GetVDWR () const { return 1.36; }
+  virtual float getVDWR (const CResidue *res) const { return 1.3870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -1777,10 +2166,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.39.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.3870.
    */
-  virtual float GetVDWR () const { return 1.39; }
+  virtual float getVDWR (const CResidue *res) const { return 1.3870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -1864,10 +2268,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.39.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.3870.
    */
-  virtual float GetVDWR () const { return 1.39; }
+  virtual float getVDWR (const CResidue *res) const { return 1.3870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -1951,10 +2370,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.3870.
    */
-  virtual float GetVDWR () const { return 0; }
+  virtual float getVDWR (const CResidue *res) const { return 1.3870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -2038,10 +2472,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.66.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.6612.
    */
-  virtual float GetVDWR () const { return 1.66; }
+  virtual float getVDWR (const CResidue *res) const { return 1.6612; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.2100.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.2100; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -2125,10 +2574,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.72.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.7210.
    */
-  virtual float GetVDWR () const { return 1.72; }
+  virtual float getVDWR (const CResidue *res) const { return 1.7210; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.2104.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.2104; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -2212,10 +2676,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.66.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.6612.
    */
-  virtual float GetVDWR () const { return 1.66; }
+  virtual float getVDWR (const CResidue *res) const { return 1.6612; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.2100.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.2100; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -2299,10 +2778,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.72.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the returned value depends if the residue is a terminal.
    */
-  virtual float GetVDWR () const { return 1.72; }
+  virtual float getVDWR (const CResidue *res) const;
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the returned value depends if the residue is a terminal.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const;
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -2386,10 +2880,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.66.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.6612.
    */
-  virtual float GetVDWR () const { return 1.66; }
+  virtual float getVDWR (const CResidue *res) const { return 1.6612; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.2100.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.2100; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -2473,10 +2982,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.68.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.6837.
    */
-  virtual float GetVDWR () const { return 1.68; }
+  virtual float getVDWR (const CResidue *res) const { return 1.6837; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.1700.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1700; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -2560,10 +3084,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.72.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the returned value depends if the residue is a terminal.
    */
-  virtual float GetVDWR () const { return 1.72; }
+  virtual float getVDWR (const CResidue *res) const;
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the returned value depends if the residue is a terminal.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const;
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -2647,10 +3186,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 2.10.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 2.1000.
    */
-  virtual float GetVDWR () const { return 2.10; }
+  virtual float getVDWR (const CResidue *res) const { return 2.1000; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.2000.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.2000; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -2734,10 +3288,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.39.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.4870.
    */
-  virtual float GetVDWR () const { return 1.39; }
+  virtual float getVDWR (const CResidue *res) const { return 1.4870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -2821,10 +3390,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.39.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.3870.
    */
-  virtual float GetVDWR () const { return 1.39; }
+  virtual float getVDWR (const CResidue *res) const { return 1.3870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -2908,10 +3492,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.49.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.4870.
    */
-  virtual float GetVDWR () const { return 1.49; }
+  virtual float getVDWR (const CResidue *res) const { return 1.4870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -2995,10 +3594,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.39.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.3870.
    */
-  virtual float GetVDWR () const { return 1.39; }
+  virtual float getVDWR (const CResidue *res) const { return 1.3870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -3063,7 +3677,7 @@ public:
 
   /**
    * Converts the atom type to an Amber string representation.
-   * @return "HO'2".
+   * @return "HO'2.
    */
   virtual const char* AmberRep () const { return "HO'2"; }
 
@@ -3082,10 +3696,27 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.60.
+   * Gets the Van Der Waals radius value for the atom.  The value is not defined
+   * in Amber.
+   * @param res the residue that contains the atom.
+   * @return 0.
    */
-  virtual float GetVDWR () const { return 0.60; }
+  virtual float getVDWR (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.  The value is not defined
+   * in Amber.
+   * @param res the residue that contains the atom.
+   * @return 0.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -3169,10 +3800,28 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.60.
+   * Gets the Van Der Waals radius value for the atom.  The value is not defined
+   * in Amber.
+   * @param res the residue that contains the atom.
+   * @return 0.
    */
-  virtual float GetVDWR () const { return 0.60; }
+  virtual float getVDWR (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.  The value is not defined
+   * in Amber.
+   * @param res the residue that contains the atom.
+   * @return 0.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * The value is not defined in Amber.
+   * @param res the residue type.
+   * @return 0.
+   */
+  virtual float getAmberCharge (const CResidue *res) const { return 0; }
 
   // I/O  -----------------------------------------------------------------
 
@@ -3256,24 +3905,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.9080; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.0860.
    */
-  virtual float get_epsilon () const { return 0.0860; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0860; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -3356,24 +4007,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.9080; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.0860.
    */
-  virtual float get_epsilon () const { return 0.0860; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0860; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -3456,24 +4109,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.9080; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.0860.
    */
-  virtual float get_epsilon () const { return 0.0860; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0860; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -3556,10 +4211,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.9080; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0860.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0860; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const { return -0.2269; }
 
   // I/O  -----------------------------------------------------------------
 
@@ -3643,24 +4313,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.9080; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.0860.
    */
-  virtual float get_epsilon () const { return 0.0860; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0860; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -3743,24 +4415,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.9080; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.0860.
    */
-  virtual float get_epsilon () const { return 0.0860; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0860; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -3843,24 +4517,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.6000.
    */
-  virtual float GetVDWR () const { return 0.6000; }
+  virtual float getVDWR (const CResidue *res) const { return 0.6000; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.0157.
    */
-  virtual float get_epsilon () const { return 0.0157; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -3943,24 +4619,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.3590.
    */
-  virtual float GetVDWR () const { return 1.3590; }
+  virtual float getVDWR (const CResidue *res) const { return 1.3590; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.0150.
    */
-  virtual float get_epsilon () const { return 0.0150; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0150; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -4043,24 +4721,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.6000.
    */
-  virtual float GetVDWR () const { return 0.6000; }
+  virtual float getVDWR (const CResidue *res) const { return 0.6000; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.0157.
    */
-  virtual float get_epsilon () const { return 0.0157; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -4143,24 +4823,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.4590.
    */
-  virtual float GetVDWR () const { return 1.4590; }
+  virtual float getVDWR (const CResidue *res) const { return 1.4590; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.0150.
    */
-  virtual float get_epsilon () const { return 0.0150; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0150; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -4243,24 +4925,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.4090.
    */
-  virtual float GetVDWR () const { return 1.4090; }
+  virtual float getVDWR (const CResidue *res) const { return 1.4090; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.0150.
    */
-  virtual float get_epsilon () const { return 0.0150; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0150; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -4343,10 +5027,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.60.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.4870.
    */
-  virtual float GetVDWR () const { return 0.60; }
+  virtual float getVDWR (const CResidue *res) const { return 1.4870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const { return 0.0770; }
 
   // I/O  -----------------------------------------------------------------
 
@@ -4430,24 +5129,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.3590.
    */
-  virtual float GetVDWR () const { return 1.3590; }
+  virtual float getVDWR (const CResidue *res) const { return 1.3590; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.0150.
    */
-  virtual float get_epsilon () const { return 0.0150; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0150; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -4530,24 +5231,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.8240.
    */
-  virtual float GetVDWR () const { return 1.8240; }
+  virtual float getVDWR (const CResidue *res) const { return 1.8240; }
 
   /**
-   * Gets the Amber epsilon value.
-   * @return 0.0700.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.1700.
    */
-  virtual float get_epsilon () const { return 0.1700; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1700; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -4630,24 +5333,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.8240.
    */
-  virtual float GetVDWR () const { return 1.8240; }
+  virtual float getVDWR (const CResidue *res) const { return 1.8240; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.1700.
    */
-  virtual float get_epsilon () const { return 0.1700; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1700; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -4730,24 +5435,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.8240.
    */
-  virtual float GetVDWR () const { return 1.8240; }
+  virtual float getVDWR (const CResidue *res) const { return 1.8240; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.1700.
    */
-  virtual float get_epsilon () const { return 0.1700; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1700; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -4830,24 +5537,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.8240.
    */
-  virtual float GetVDWR () const { return 1.8240; }
+  virtual float getVDWR (const CResidue *res) const { return 1.8240; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.1700.
    */
-  virtual float get_epsilon () const { return 0.1700; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1700; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -4930,24 +5639,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.8240.
    */
-  virtual float GetVDWR () const { return 1.8240; }
+  virtual float getVDWR (const CResidue *res) const { return 1.8240; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.1700.
    */
-  virtual float get_epsilon () const { return 0.1700; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1700; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -5030,24 +5741,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.8240.
    */
-  virtual float GetVDWR () const { return 1.8240; }
+  virtual float getVDWR (const CResidue *res) const { return 1.8240; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.1700.
    */
-  virtual float get_epsilon () const { return 0.1700; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1700; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -5130,24 +5843,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.8240.
    */
-  virtual float GetVDWR () const { return 1.8240; }
+  virtual float getVDWR (const CResidue *res) const { return 1.8240; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.1700.
    */
-  virtual float get_epsilon () const { return 0.1700; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1700; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -5228,24 +5943,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.6612.
    */
-  virtual float GetVDWR () const { return 1.6612; }
+  virtual float getVDWR (const CResidue *res) const { return 1.6612; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.2100.
    */
-  virtual float get_epsilon () const { return 0.2100; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.2100; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -5328,24 +6045,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.6612.
    */
-  virtual float GetVDWR () const { return 1.6612; }
+  virtual float getVDWR (const CResidue *res) const { return 1.6612; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.2100.
    */
-  virtual float get_epsilon () const { return 0.2100; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.2100; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -5428,24 +6147,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 1.6612.
    */
-  virtual float GetVDWR () const { return 1.6612; }
+  virtual float getVDWR (const CResidue *res) const { return 1.6612; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.2100.
    */
-  virtual float get_epsilon () const { return 0.2100; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.2100; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -5528,23 +6249,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.6000.
    */
-  virtual float GetVDWR () const { return 0.6000; }
+  virtual float getVDWR (const CResidue *res) const { return 0.6000; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.0157.
    */
-  virtual float get_epsilon () const { return 0.0157; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
+  virtual float getAmberCharge (const CResidue *res) const;
   
   // I/O  -----------------------------------------------------------------
 
@@ -5628,24 +6351,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.6000.
    */
-  virtual float GetVDWR () const { return 0.6000; }
+  virtual float getVDWR (const CResidue *res) const { return 0.6000; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.0157.
    */
-  virtual float get_epsilon () const { return 0.0157; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -5728,10 +6453,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.60.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.4870.
    */
-  virtual float GetVDWR () const { return 0.60; }
+  virtual float getVDWR (const CResidue *res) const { return 1.4870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -5815,24 +6555,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.6000.
    */
-  virtual float GetVDWR () const { return 0.6000; }
+  virtual float getVDWR (const CResidue *res) const { return 0.6000; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.0157.
    */
-  virtual float get_epsilon () const { return 0.0157; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -5915,24 +6657,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.6000.
    */
-  virtual float GetVDWR () const { return 0.6000; }
+  virtual float getVDWR (const CResidue *res) const { return 0.6000; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.0157.
    */
-  virtual float get_epsilon () const { return 0.0157; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -6015,24 +6759,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.6000.
    */
-  virtual float GetVDWR () const { return 0.6000; }
+  virtual float getVDWR (const CResidue *res) const { return 0.6000; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.0157.
    */
-  virtual float get_epsilon () const { return 0.0157; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -6115,10 +6861,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.60.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.4870.
    */
-  virtual float GetVDWR () const { return 0.60; }
+  virtual float getVDWR (const CResidue *res) const { return 1.4870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -6202,24 +6963,26 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.6000.
    */
-  virtual float GetVDWR () const { return 0.6000; }
+  virtual float getVDWR (const CResidue *res) const { return 0.6000; }
 
   /**
-   * Gets the Amber epsilon value.
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
    * @return 0.0157.
    */
-  virtual float get_epsilon () const { return 0.0157; }
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
 
   /**
-   * Gets the Amber atom charge value in residue r.
-   * @param r the residue.
-   * @return the charge value of the atom in the residue.
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
    */
-  virtual float get_charge (const t_Residue *r) const;
-  
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -6302,10 +7065,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.60.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.4870.
    */
-  virtual float GetVDWR () const { return 0.60; }
+  virtual float getVDWR (const CResidue *res) const { return 1.4870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -6388,6 +7166,30 @@ public:
    */
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
+  /**
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Pseudo atom value.
+   */
+  virtual float getVDWR (const CResidue *res) const
+  { return at_Pseudo::getVDWR (res); }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Pseudo atom value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const
+  { return at_Pseudo::getAmberEpsilon (res); }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const
+  { return at_Pseudo::getAmberCharge (res); }
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -6468,6 +7270,30 @@ public:
    * @return true if the 2 atoms are connected.
    */
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
+
+  /**
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Pseudo atom value.
+   */
+  virtual float getVDWR (const CResidue *res) const
+  { return at_Pseudo::getVDWR (res); }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Pseudo atom value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const
+  { return at_Pseudo::getAmberEpsilon (res); }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Pseudo atom Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const
+  { return at_Pseudo::getAmberCharge (res); }
 
   // I/O  -----------------------------------------------------------------
 
@@ -6551,10 +7377,28 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.30.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the LonePair atom value.
    */
-  virtual float GetVDWR () const { return 0.30; }
+  virtual float getVDWR (const CResidue *res) const
+  { return at_LonePair::getVDWR (res); }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the LonePair atom value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const
+  { return at_LonePair::getAmberEpsilon (res); }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the LonePair atom Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const
+  { return at_LonePair::getAmberCharge (res); }
 
   // I/O  -----------------------------------------------------------------
 
@@ -6638,10 +7482,28 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.30.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the LonePair atom value.
    */
-  virtual float GetVDWR () const { return 0.30; }
+  virtual float getVDWR (const CResidue *res) const
+  { return at_LonePair::getVDWR (res); }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the LonePair atom value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const
+  { return at_LonePair::getAmberEpsilon (res); }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the LonePair atom Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const
+  { return at_LonePair::getAmberCharge (res); }
 
   // I/O  -----------------------------------------------------------------
 
@@ -6725,10 +7587,28 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.30.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the LonePair atom value.
    */
-  virtual float GetVDWR () const { return 0.30; }
+  virtual float getVDWR (const CResidue *res) const
+  { return at_LonePair::getVDWR (res); }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the LonePair atom value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const
+  { return at_LonePair::getAmberEpsilon (res); }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the LonePair atom Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const
+  { return at_LonePair::getAmberCharge (res); }
 
   // I/O  -----------------------------------------------------------------
 
@@ -6812,10 +7692,28 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.30.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the LonePair atom value.
    */
-  virtual float GetVDWR () const { return 0.30; }
+  virtual float getVDWR (const CResidue *res) const
+  { return at_LonePair::getVDWR (res); }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the LonePair atom value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const
+  { return at_LonePair::getAmberEpsilon (res); }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the LonePair atom Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const
+  { return at_LonePair::getAmberCharge (res); }
 
   // I/O  -----------------------------------------------------------------
 
@@ -6899,10 +7797,28 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.30.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the LonePair atom value.
    */
-  virtual float GetVDWR () const { return 0.30; }
+  virtual float getVDWR (const CResidue *res) const
+  { return at_LonePair::getVDWR (res); }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the LonePair atom value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const
+  { return at_LonePair::getAmberEpsilon (res); }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the LonePair atom Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const
+  { return at_LonePair::getAmberCharge (res); }
 
   // I/O  -----------------------------------------------------------------
 
@@ -6986,10 +7902,28 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.30.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the LonePair atom value.
    */
-  virtual float GetVDWR () const { return 0.30; }
+  virtual float getVDWR (const CResidue *res) const
+  { return at_LonePair::getVDWR (res); }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the LonePair atom value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const
+  { return at_LonePair::getAmberEpsilon (res); }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the LonePair atom Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const
+  { return at_LonePair::getAmberCharge (res); }
 
   // I/O  -----------------------------------------------------------------
 
@@ -7073,10 +8007,28 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.30.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the LonePair atom value.
    */
-  virtual float GetVDWR () const { return 0.30; }
+  virtual float getVDWR (const CResidue *res) const
+  { return at_LonePair::getVDWR (res); }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the LonePair atom value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const
+  { return at_LonePair::getAmberEpsilon (res); }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the LonePair atom Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const
+  { return at_LonePair::getAmberCharge (res); }
 
   // I/O  -----------------------------------------------------------------
 
@@ -7160,10 +8112,28 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.30.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the LonePair atom value.
    */
-  virtual float GetVDWR () const { return 0.30; }
+  virtual float getVDWR (const CResidue *res) const
+  { return at_LonePair::getVDWR (res); }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the LonePair atom value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const
+  { return at_LonePair::getAmberEpsilon (res); }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the LonePair atom Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const
+  { return at_LonePair::getAmberCharge (res); }
 
   // I/O  -----------------------------------------------------------------
 
@@ -7247,10 +8217,28 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.30.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the LonePair atom value.
    */
-  virtual float GetVDWR () const { return 0.30; }
+  virtual float getVDWR (const CResidue *res) const
+  { return at_LonePair::getVDWR (res); }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the LonePair atom value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const
+  { return at_LonePair::getAmberEpsilon (res); }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the LonePair atom Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const
+  { return at_LonePair::getAmberCharge (res); }
 
   // I/O  -----------------------------------------------------------------
 
@@ -7333,6 +8321,27 @@ public:
    */
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
+  /**
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.
+   */
+  virtual float getVDWR (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -7414,6 +8423,27 @@ public:
    */
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
+  /**
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.
+   */
+  virtual float getVDWR (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
+
   // I/O  -----------------------------------------------------------------
 
   /**
@@ -7431,8 +8461,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_C : public virtual at_AminoAcid,
-	      public virtual at_Carbon,
-	      public virtual at_Backbone
+	     public virtual at_Carbon,
+	     public virtual at_Backbone
 {
 
 public:
@@ -7496,10 +8526,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.91.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.91; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0860.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0860; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -7583,10 +8628,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.91.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.91; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.1094.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1094; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -7670,10 +8730,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.91.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.91; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.1094.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1094; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -7757,10 +8832,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.91.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.91; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the value depends of the residue type.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const;
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -7779,8 +8869,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_CD1 : public virtual at_AminoAcid,
-	      public virtual at_Carbon,
-	      public virtual at_SideChain
+	       public virtual at_Carbon,
+	       public virtual at_SideChain
 {
 
 public:
@@ -7844,10 +8934,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.91.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.91; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the value depends of the residue type.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const;
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -7866,8 +8971,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_CD2 : public virtual at_AminoAcid,
-	      public virtual at_Carbon,
-	      public virtual at_SideChain
+	       public virtual at_Carbon,
+	       public virtual at_SideChain
 {
 
 public:
@@ -7931,10 +9036,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.91.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.91; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0860.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0860; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -8018,10 +9138,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.91.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.91; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.1094.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1094; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -8040,8 +9175,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_CE1 : public virtual at_AminoAcid,
-	      public virtual at_Carbon,
-	      public virtual at_SideChain
+	       public virtual at_Carbon,
+	       public virtual at_SideChain
 {
 
 public:
@@ -8105,10 +9240,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.91.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.91; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0860.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0860; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -8127,8 +9277,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_CE2 : public virtual at_AminoAcid,
-	      public virtual at_Carbon,
-	      public virtual at_SideChain
+	       public virtual at_Carbon,
+	       public virtual at_SideChain
 {
 
 public:
@@ -8192,10 +9342,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.91.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.91; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0860.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0860; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -8214,8 +9379,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_CE3 : public virtual at_AminoAcid,
-	      public virtual at_Carbon,
-	      public virtual at_SideChain
+	       public virtual at_Carbon,
+	       public virtual at_SideChain
 {
 
 public:
@@ -8279,10 +9444,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.91.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.91; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0860.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0860; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -8366,10 +9546,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.91.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.91; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the value depends of the residue type.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const;
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -8388,8 +9583,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_CG1 : public virtual at_AminoAcid,
-	      public virtual at_Carbon,
-	      public virtual at_SideChain
+	       public virtual at_Carbon,
+	       public virtual at_SideChain
 {
 
 public:
@@ -8453,10 +9648,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.91.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.91; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.1094.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1094; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -8475,8 +9685,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_CG2 : public virtual at_AminoAcid,
-	      public virtual at_Carbon,
-	      public virtual at_SideChain
+	       public virtual at_Carbon,
+	       public virtual at_SideChain
 {
 
 public:
@@ -8540,10 +9750,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.91.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.91; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.1094.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1094; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -8562,8 +9787,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_CH2 : public virtual at_AminoAcid,
-	      public virtual at_Carbon,
-	      public virtual at_SideChain
+	       public virtual at_Carbon,
+	       public virtual at_SideChain
 {
 
 public:
@@ -8627,10 +9852,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.91.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.91; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0860.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0860; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -8714,10 +9954,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.91.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.91; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0860.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0860; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -8736,8 +9991,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_CZ2 : public virtual at_AminoAcid,
-	      public virtual at_Carbon,
-	      public virtual at_SideChain
+	       public virtual at_Carbon,
+	       public virtual at_SideChain
 {
 
 public:
@@ -8801,10 +10056,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.91.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.91; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0860.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0860; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -8823,8 +10093,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_CZ3 : public virtual at_AminoAcid,
-	      public virtual at_Carbon,
-	      public virtual at_SideChain
+	       public virtual at_Carbon,
+	       public virtual at_SideChain
 {
 
 public:
@@ -8888,10 +10158,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.91.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.9080.
    */
-  virtual float GetVDWR () const { return 1.91; }
+  virtual float getVDWR (const CResidue *res) const { return 1.9080; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0860.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0860; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -8975,10 +10260,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.6.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.6000.
    */
-  virtual float GetVDWR () const { return 0.6; }
+  virtual float getVDWR (const CResidue *res) const { return 0.6000; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -9062,10 +10362,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0000.
    */
-  virtual float GetVDWR () const { return 0; }
+  virtual float getVDWR (const CResidue *res) const { return 0.0000; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0000.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0000; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const { return 0.00000; }
 
   // I/O  -----------------------------------------------------------------
 
@@ -9149,10 +10464,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0000.
    */
-  virtual float GetVDWR () const { return 0; }
+  virtual float getVDWR (const CResidue *res) const { return 0.0000; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0000.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0000; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const { return 0.00000; }
 
   // I/O  -----------------------------------------------------------------
 
@@ -9236,10 +10566,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0000.
    */
-  virtual float GetVDWR () const { return 0; }
+  virtual float getVDWR (const CResidue *res) const { return 0.0000; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0000.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0000; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const { return 0.00000; }
 
   // I/O  -----------------------------------------------------------------
 
@@ -9323,10 +10668,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.39.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.3870.
    */
-  virtual float GetVDWR () const { return 1.39; }
+  virtual float getVDWR (const CResidue *res) const { return 1.3870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -9345,8 +10705,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_HA1 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+	       public virtual at_Hydrogen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -9393,7 +10753,7 @@ public:
    * Converts the atom type to an Amber string representation.
    * @return "HA".
    */
-  virtual const char* AmberRep () const { return "HA"; }
+  virtual const char* AmberRep () const { return "HA2"; }
 
   /**
    * Tells if the atom is a HA1.
@@ -9410,10 +10770,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.39.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.3870.
    */
-  virtual float GetVDWR () const { return 1.39; }
+  virtual float getVDWR (const CResidue *res) const { return 1.3870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -9432,8 +10807,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_HA2 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+	       public virtual at_Hydrogen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -9480,7 +10855,7 @@ public:
    * Converts the atom type to an Amber string representation.
    * @return "HA2".
    */
-  virtual const char* AmberRep () const { return "HA2"; }
+  virtual const char* AmberRep () const { return "HA3"; }
 
   /**
    * Tells if the atom is a HA2.
@@ -9497,10 +10872,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.39.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.3870.
    */
-  virtual float GetVDWR () const { return 1.39; }
+  virtual float getVDWR (const CResidue *res) const { return 1.3870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -9584,10 +10974,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.39.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.4870.
    */
-  virtual float GetVDWR () const { return 1.39; }
+  virtual float getVDWR (const CResidue *res) const { return 1.4870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -9606,8 +11011,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_HB1 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+	       public virtual at_Hydrogen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -9671,10 +11076,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.49.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.4870.
    */
-  virtual float GetVDWR () const { return 1.49; }
+  virtual float getVDWR (const CResidue *res) const { return 1.4870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -9693,8 +11113,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_HB2 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+	       public virtual at_Hydrogen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -9758,10 +11178,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.39.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the result depends of the residue type.
    */
-  virtual float GetVDWR () const { return 1.39; }
+  virtual float getVDWR (const CResidue *res) const;
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -9780,8 +11215,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_HB3 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+	       public virtual at_Hydrogen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -9845,10 +11280,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.39.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the result depends of the residue type.
    */
-  virtual float GetVDWR () const { return 1.39; }
+  virtual float getVDWR (const CResidue *res) const;
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -9867,8 +11317,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_HD1 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+	       public virtual at_Hydrogen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -9932,10 +11382,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.6.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the result depends of the residue type.
    */
-  virtual float GetVDWR () const { return 0.6; }
+  virtual float getVDWR (const CResidue *res) const;
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the result depends of the residue type.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const;
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -9954,8 +11419,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_HD2 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+	       public virtual at_Hydrogen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -10019,10 +11484,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.39.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the result depends of the residue type.
    */
-  virtual float GetVDWR () const { return 1.39; }
+  virtual float getVDWR (const CResidue *res) const;
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the result depends of the residue type.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const;
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -10106,10 +11586,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.6.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.6000.
    */
-  virtual float GetVDWR () const { return 0.6; }
+  virtual float getVDWR (const CResidue *res) const { return 0.6000; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -10128,8 +11623,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_HE1 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+	       public virtual at_Hydrogen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -10193,10 +11688,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.6.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the result depends of the residue type.
    */
-  virtual float GetVDWR () const { return 0.6; }
+  virtual float getVDWR (const CResidue *res) const;
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the result depends of the residue type.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const;
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -10215,8 +11725,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_HE2 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+	       public virtual at_Hydrogen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -10280,10 +11790,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.6.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the result depends of the residue type.
    */
-  virtual float GetVDWR () const { return 0.6; }
+  virtual float getVDWR (const CResidue *res) const;
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the result depends of the residue type.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const;
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -10302,8 +11827,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_HE3 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+	       public virtual at_Hydrogen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -10367,10 +11892,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.39.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the result depends of the residue type.
    */
-  virtual float GetVDWR () const { return 1.39; }
+  virtual float getVDWR (const CResidue *res) const;
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the result depends of the residue type.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const;
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -10454,10 +11994,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.49.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.6000.
    */
-  virtual float GetVDWR () const { return 1.49; }
+  virtual float getVDWR (const CResidue *res) const { return 0.6000; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -10476,8 +12031,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_HG1 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+	       public virtual at_Hydrogen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -10541,10 +12096,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.0.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0000.
    */
-  virtual float GetVDWR () const { return 0.0; }
+  virtual float getVDWR (const CResidue *res) const { return 0.0000; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0000.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0000; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -10563,8 +12133,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_HG2 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+	       public virtual at_Hydrogen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -10628,10 +12198,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.39.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the result depends of the residue type.
    */
-  virtual float GetVDWR () const { return 1.39; }
+  virtual float getVDWR (const CResidue *res) const;
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -10715,10 +12300,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.0.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0000.
    */
-  virtual float GetVDWR () const { return 0.0; }
+  virtual float getVDWR (const CResidue *res) const { return 0.0000; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0000.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0000; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -10737,8 +12337,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_HH2 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+	       public virtual at_Hydrogen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -10802,10 +12402,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.46.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.4590.
    */
-  virtual float GetVDWR () const { return 1.46; }
+  virtual float getVDWR (const CResidue *res) const { return 1.4590; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0150.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0150; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -10889,10 +12504,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0000.
    */
-  virtual float GetVDWR () const { return 0; }
+  virtual float getVDWR (const CResidue *res) const { return 0.0000; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0000.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0000; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const { return 0.00000; }
 
   // I/O  -----------------------------------------------------------------
 
@@ -10976,10 +12606,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.46.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.4590.
    */
-  virtual float GetVDWR () const { return 1.46; }
+  virtual float getVDWR (const CResidue *res) const { return 1.4590; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0150.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0150; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -10998,8 +12643,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_HZ1 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+	       public virtual at_Hydrogen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -11063,10 +12708,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.6.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.6000.
    */
-  virtual float GetVDWR () const { return 0.6; }
+  virtual float getVDWR (const CResidue *res) const { return 0.6000; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -11085,8 +12745,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_HZ2 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+	       public virtual at_Hydrogen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -11150,10 +12810,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.6.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the result depends of the residue type.
    */
-  virtual float GetVDWR () const { return 0.6; }
+  virtual float getVDWR (const CResidue *res) const;
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the result depends of the residue type.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const;
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -11172,8 +12847,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_HZ3 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+	       public virtual at_Hydrogen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -11237,10 +12912,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.6.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the result depends of the residue type.
    */
-  virtual float GetVDWR () const { return 0.6; }
+  virtual float getVDWR (const CResidue *res) const;
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the result depends of the residue type.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const;
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -11259,8 +12949,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_N : public virtual at_AminoAcid,
-	      public virtual at_Nitrogen,
-	      public virtual at_Backbone
+	     public virtual at_Nitrogen,
+	     public virtual at_Backbone
 {
 
 public:
@@ -11324,10 +13014,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.82.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.8240.
    */
-  virtual float GetVDWR () const { return 1.82; }
+  virtual float getVDWR (const CResidue *res) const { return 1.8240; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.1700.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1700; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -11346,8 +13051,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_ND1 : public virtual at_AminoAcid,
-	      public virtual at_Nitrogen,
-	      public virtual at_SideChain
+	       public virtual at_Nitrogen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -11411,10 +13116,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.82.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.8240.
    */
-  virtual float GetVDWR () const { return 1.82; }
+  virtual float getVDWR (const CResidue *res) const { return 1.8240; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.1700.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1700; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -11433,8 +13153,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_ND2 : public virtual at_AminoAcid,
-	      public virtual at_Nitrogen,
-	      public virtual at_SideChain
+	       public virtual at_Nitrogen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -11498,10 +13218,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.82.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.8240.
    */
-  virtual float GetVDWR () const { return 1.82; }
+  virtual float getVDWR (const CResidue *res) const { return 1.8240; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.1700.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1700; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -11585,10 +13320,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.82.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.8240.
    */
-  virtual float GetVDWR () const { return 1.82; }
+  virtual float getVDWR (const CResidue *res) const { return 1.8240; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.1700.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1700; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -11607,8 +13357,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_NE1 : public virtual at_AminoAcid,
-	      public virtual at_Nitrogen,
-	      public virtual at_SideChain
+	       public virtual at_Nitrogen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -11672,10 +13422,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.82.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.8240.
    */
-  virtual float GetVDWR () const { return 1.82; }
+  virtual float getVDWR (const CResidue *res) const { return 1.8240; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.1700.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1700; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -11694,8 +13459,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_NE2 : public virtual at_AminoAcid,
-	      public virtual at_Nitrogen,
-	      public virtual at_SideChain
+	       public virtual at_Nitrogen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -11759,10 +13524,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.82.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.8240.
    */
-  virtual float GetVDWR () const { return 1.82; }
+  virtual float getVDWR (const CResidue *res) const { return 1.8240; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.1700.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1700; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -11781,8 +13561,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_NH1 : public virtual at_AminoAcid,
-	      public virtual at_Nitrogen,
-	      public virtual at_SideChain
+	       public virtual at_Nitrogen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -11846,10 +13626,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.82.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.8240.
    */
-  virtual float GetVDWR () const { return 1.82; }
+  virtual float getVDWR (const CResidue *res) const { return 1.8240; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.1700.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1700; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -11868,8 +13663,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_NH2 : public virtual at_AminoAcid,
-	      public virtual at_Nitrogen,
-	      public virtual at_SideChain
+	       public virtual at_Nitrogen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -11933,10 +13728,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.82.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.8240.
    */
-  virtual float GetVDWR () const { return 1.82; }
+  virtual float getVDWR (const CResidue *res) const { return 1.8240; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.1700.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1700; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -12020,10 +13830,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.82.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.8240.
    */
-  virtual float GetVDWR () const { return 1.82; }
+  virtual float getVDWR (const CResidue *res) const { return 1.8240; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.1700.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.1700; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -12042,8 +13867,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_O : public virtual at_AminoAcid,
-	      public virtual at_Oxygen,
-	      public virtual at_Backbone
+	     public virtual at_Oxygen,
+	     public virtual at_Backbone
 {
 
 public:
@@ -12107,10 +13932,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.66.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.6612.
    */
-  virtual float GetVDWR () const { return 1.66; }
+  virtual float getVDWR (const CResidue *res) const { return 1.6612; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.2100.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.2100; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -12129,8 +13969,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_OD1 : public virtual at_AminoAcid,
-	      public virtual at_Oxygen,
-	      public virtual at_SideChain
+	       public virtual at_Oxygen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -12194,10 +14034,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.66.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.6612.
    */
-  virtual float GetVDWR () const { return 1.66; }
+  virtual float getVDWR (const CResidue *res) const { return 1.6612; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.2100.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.2100; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -12216,8 +14071,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_OD2 : public virtual at_AminoAcid,
-	      public virtual at_Oxygen,
-	      public virtual at_SideChain
+	       public virtual at_Oxygen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -12281,10 +14136,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.66.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.6612.
    */
-  virtual float GetVDWR () const { return 1.66; }
+  virtual float getVDWR (const CResidue *res) const { return 1.6612; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.2100.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.2100; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -12303,8 +14173,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_OE1 : public virtual at_AminoAcid,
-	      public virtual at_Oxygen,
-	      public virtual at_SideChain
+	       public virtual at_Oxygen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -12368,10 +14238,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.66.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.6612.
    */
-  virtual float GetVDWR () const { return 1.66; }
+  virtual float getVDWR (const CResidue *res) const { return 1.6612; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.2100.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.2100; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -12390,8 +14275,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_OE2 : public virtual at_AminoAcid,
-	      public virtual at_Oxygen,
-	      public virtual at_SideChain
+	       public virtual at_Oxygen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -12455,10 +14340,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.66.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.6612.
    */
-  virtual float GetVDWR () const { return 1.66; }
+  virtual float getVDWR (const CResidue *res) const { return 1.6612; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.2100.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.2100; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -12542,10 +14442,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.72.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.7210.
    */
-  virtual float GetVDWR () const { return 1.72; }
+  virtual float getVDWR (const CResidue *res) const { return 1.7210; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.2104.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.2104; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -12564,8 +14479,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_OG1 : public virtual at_AminoAcid,
-	      public virtual at_Oxygen,
-	      public virtual at_SideChain
+	       public virtual at_Oxygen,
+	       public virtual at_SideChain
 {
 
 public:
@@ -12629,10 +14544,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.72.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.7210.
    */
-  virtual float GetVDWR () const { return 1.72; }
+  virtual float getVDWR (const CResidue *res) const { return 1.7210; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.2104.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.2104; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -12716,10 +14646,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.72.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.7210.
    */
-  virtual float GetVDWR () const { return 1.72; }
+  virtual float getVDWR (const CResidue *res) const { return 1.7210; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.2104.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.2104; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -12803,10 +14748,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.66.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.7210.
    */
-  virtual float GetVDWR () const { return 1.66; }
+  virtual float getVDWR (const CResidue *res) const { return 1.7210; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.2104.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.2104; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const { return 0.00000; }
 
   // I/O  -----------------------------------------------------------------
 
@@ -12890,10 +14850,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 2.0.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 2.0000.
    */
-  virtual float GetVDWR () const { return 2.0; }
+  virtual float getVDWR (const CResidue *res) const { return 2.0000; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.2500.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.2500; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -12977,10 +14952,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 2.0.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 2.0000.
    */
-  virtual float GetVDWR () const { return 2.0; }
+  virtual float getVDWR (const CResidue *res) const { return 2.0000; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.2500.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.2500; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -12999,8 +14989,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_1HD1 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+		public virtual at_Hydrogen,
+		public virtual at_SideChain
 {
 
 public:
@@ -13064,10 +15054,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.6.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.4870.
    */
-  virtual float GetVDWR () const { return 0.6; }
+  virtual float getVDWR (const CResidue *res) const { return 1.4870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -13086,8 +15091,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_1HD2 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+		public virtual at_Hydrogen,
+		public virtual at_SideChain
 {
 
 public:
@@ -13151,10 +15156,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.6.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.6000.
    */
-  virtual float GetVDWR () const { return 0.6; }
+  virtual float getVDWR (const CResidue *res) const { return 0.6000; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -13173,8 +15193,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_1HE2 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+		public virtual at_Hydrogen,
+		public virtual at_SideChain
 {
 
 public:
@@ -13238,10 +15258,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.6.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.6000.
    */
-  virtual float GetVDWR () const { return 0.6; }
+  virtual float getVDWR (const CResidue *res) const { return 0.6000; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -13260,8 +15295,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_1HG1 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+		public virtual at_Hydrogen,
+		public virtual at_SideChain
 {
 
 public:
@@ -13325,10 +15360,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.49.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.4870.
    */
-  virtual float GetVDWR () const { return 1.49; }
+  virtual float getVDWR (const CResidue *res) const { return 1.4870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -13347,8 +15397,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_1HG2 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+		public virtual at_Hydrogen,
+		public virtual at_SideChain
 {
 
 public:
@@ -13412,10 +15462,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.49.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.4870.
    */
-  virtual float GetVDWR () const { return 1.49; }
+  virtual float getVDWR (const CResidue *res) const { return 1.4870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -13434,8 +15499,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_1HH1 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+		public virtual at_Hydrogen,
+		public virtual at_SideChain
 {
 
 public:
@@ -13499,10 +15564,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.6.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.6000.
    */
-  virtual float GetVDWR () const { return 0.6; }
+  virtual float getVDWR (const CResidue *res) const { return 0.6000; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -13521,8 +15601,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_1HH2 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+		public virtual at_Hydrogen,
+		public virtual at_SideChain
 {
 
 public:
@@ -13586,10 +15666,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.6.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.6000.
    */
-  virtual float GetVDWR () const { return 0.6; }
+  virtual float getVDWR (const CResidue *res) const { return 0.6000; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -13608,8 +15703,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_2HD1 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+		public virtual at_Hydrogen,
+		public virtual at_SideChain
 {
 
 public:
@@ -13673,10 +15768,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.6.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.4870.
    */
-  virtual float GetVDWR () const { return 0.6; }
+  virtual float getVDWR (const CResidue *res) const { return 1.4870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -13695,8 +15805,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_2HD2 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+		public virtual at_Hydrogen,
+		public virtual at_SideChain
 {
 
 public:
@@ -13760,10 +15870,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.6.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.6000.
    */
-  virtual float GetVDWR () const { return 0.6; }
+  virtual float getVDWR (const CResidue *res) const { return 0.6000; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -13782,8 +15907,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_2HE2 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+		public virtual at_Hydrogen,
+		public virtual at_SideChain
 {
 
 public:
@@ -13847,10 +15972,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.6.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.6000.
    */
-  virtual float GetVDWR () const { return 0.6; }
+  virtual float getVDWR (const CResidue *res) const { return 0.6000; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -13869,8 +16009,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_2HG1 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+		public virtual at_Hydrogen,
+		public virtual at_SideChain
 {
 
 public:
@@ -13934,10 +16074,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.49.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.4870.
    */
-  virtual float GetVDWR () const { return 1.49; }
+  virtual float getVDWR (const CResidue *res) const { return 1.4870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -13956,8 +16111,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_2HG2 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+		public virtual at_Hydrogen,
+		public virtual at_SideChain
 {
 
 public:
@@ -14021,10 +16176,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.49.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.4870.
    */
-  virtual float GetVDWR () const { return 1.49; }
+  virtual float getVDWR (const CResidue *res) const { return 1.4870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -14043,8 +16213,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_2HH1 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+		public virtual at_Hydrogen,
+		public virtual at_SideChain
 {
 
 public:
@@ -14108,10 +16278,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.6.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.6000.
    */
-  virtual float GetVDWR () const { return 0.6; }
+  virtual float getVDWR (const CResidue *res) const { return 0.6000; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -14130,8 +16315,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_2HH2 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+		public virtual at_Hydrogen,
+		public virtual at_SideChain
 {
 
 public:
@@ -14195,10 +16380,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.6.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.6000.
    */
-  virtual float GetVDWR () const { return 0.6; }
+  virtual float getVDWR (const CResidue *res) const { return 0.6000; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -14217,8 +16417,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_3HD1 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+		public virtual at_Hydrogen,
+		public virtual at_SideChain
 {
 
 public:
@@ -14282,10 +16482,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.6.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.4870.
    */
-  virtual float GetVDWR () const { return 0.6; }
+  virtual float getVDWR (const CResidue *res) const { return 1.4870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -14304,8 +16519,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_3HD2 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+		public virtual at_Hydrogen,
+		public virtual at_SideChain
 {
 
 public:
@@ -14369,10 +16584,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.49.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.4870.
    */
-  virtual float GetVDWR () const { return 1.49; }
+  virtual float getVDWR (const CResidue *res) const { return 1.4870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -14391,8 +16621,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_3HG1 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+		public virtual at_Hydrogen,
+		public virtual at_SideChain
 {
 
 public:
@@ -14456,10 +16686,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.49.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.4870.
    */
-  virtual float GetVDWR () const { return 1.49; }
+  virtual float getVDWR (const CResidue *res) const { return 1.4870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -14478,8 +16723,8 @@ public:
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class at_3HG2 : public virtual at_AminoAcid,
-	      public virtual at_Hydrogen,
-	      public virtual at_SideChain
+		public virtual at_Hydrogen,
+		public virtual at_SideChain
 {
 
 public:
@@ -14543,10 +16788,25 @@ public:
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 1.49.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 1.4870.
    */
-  virtual float GetVDWR () const { return 1.49; }
+  virtual float getVDWR (const CResidue *res) const { return 1.4870; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0157.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0157; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const;
 
   // I/O  -----------------------------------------------------------------
 
@@ -14629,10 +16889,25 @@ public:
   { return false; }
   
   /**
-   * Gets the Van Der Waals radius value.
-   * @return 0.
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0000.
    */
-  virtual float GetVDWR () const { return 0; }
+  virtual float getVDWR (const CResidue *res) const { return 0.0000; }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return 0.0000.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const { return 0.0000; }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const { return 0.00000; }
 
   // I/O  -----------------------------------------------------------------
 
@@ -14714,6 +16989,30 @@ public:
    * @return true if the 2 atoms are connected.
    */
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
+
+  /**
+   * Gets the Van Der Waals radius value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Pseudo atom value.
+   */
+  virtual float getVDWR (const CResidue *res) const
+  { return at_Pseudo::getVDWR (res); }
+
+  /**
+   * Gets the Amber epsilon value for the atom.
+   * @param res the residue that contains the atom.
+   * @return the Pseudo atom value.
+   */
+  virtual float getAmberEpsilon (const CResidue *res) const
+  { return at_Pseudo::getAmberEpsilon (res); }
+
+  /**
+   * Gets the Amber charge value for the atom in the given residue type.
+   * @param res the residue type.
+   * @return the Pseudo atom Amber charge.
+   */
+  virtual float getAmberCharge (const CResidue *res) const
+  { return at_Pseudo::getAmberCharge (res); }
 
   // I/O  -----------------------------------------------------------------
 
