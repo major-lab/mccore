@@ -3,9 +3,9 @@
 // Copyright © 2002 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Mon Feb 18 16:07:09 2002
-// Last Modified By : Labo Lbit
-// Last Modified On : Tue Apr  2 14:33:07 2002
-// Update Count     : 2
+// Last Modified By : Patrick Gendron
+// Last Modified On : Tue May  7 11:26:01 2002
+// Update Count     : 3
 // Status           : Unknown.
 // 
 
@@ -14,13 +14,13 @@
 #define _Graph_h_
 
 #include <iostream.h>
+
+#include <vector.h>
 #include <map.h>
 #include <vector.h>
 
 /**
- * @short Description
- *
- * Long Description
+ * @short A class for a path in a graph.
  *
  * @author Patrick Gendron
  */
@@ -90,11 +90,11 @@ ostream &operator<< (ostream &out, const Path< Node > &path)
 }
 
 
-
 /**
- * @short Description
+ * @short A class for a graph.
  *
- * Long Description
+ * Class implementing the graph ADT with a adjacency lists implementation
+ * and making it possible to treat oriented/non-oriented/semi-oriented graphs.
  *
  * @author Patrick Gendron
  */
@@ -157,7 +157,7 @@ public:
   Node &getNode (int index);
   
   int getNodeValue (int index) const;
-  void setNodeValue (int v);
+  void setNodeValue (int index, int v);
   
   int getNodeIndex (const Node &n) const;
   

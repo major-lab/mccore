@@ -3,9 +3,9 @@
 // Copyright © 2002 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Mon Feb 18 16:07:09 2002
-// Last Modified By : Labo Lbit
-// Last Modified On : Tue Apr  2 14:32:36 2002
-// Update Count     : 2
+// Last Modified By : Patrick Gendron
+// Last Modified On : Tue May  7 11:25:48 2002
+// Update Count     : 3
 // Status           : Unknown.
 // 
 
@@ -95,7 +95,7 @@ int Graph< Node, Edge >::getNodeValue (int index) const
 
 
 template< class Node, class Edge >
-void Graph< Node, Edge >::setNodeValue (int v)
+void Graph< Node, Edge >::setNodeValue (int index, int v)
 {
   assert (index >= 0 && index < (int)mNodeValues.size());
   mNodeValues[ index ] = v;
@@ -114,7 +114,7 @@ int Graph< Node, Edge >::getNodeIndex (const Node &n) const
 template< class Node, class Edge >
 const Edge &Graph< Node, Edge >::getEdge (int index) const
 {
-  assert (index >= 0 && index < (int)mEdge.size());
+  assert (index >= 0 && index < (int)mEdges.size());
   return mEdges[ index ]; 
 }
 
@@ -122,7 +122,7 @@ const Edge &Graph< Node, Edge >::getEdge (int index) const
 template< class Node, class Edge >
 Edge &Graph< Node, Edge >::getEdge (int index)
 {
-  assert (index >= 0 && index < (int)mEdge.size());
+  assert (index >= 0 && index < (int)mEdges.size());
   return mEdges[ index ]; 
 }
 
@@ -191,8 +191,8 @@ template< class Node, class Edge >
 int Graph< Node, Edge >::getEdgeIndex (const Edge &e) const
 {
   vector< Edge >::const_iterator i = ::find (mEdges.begin(), mEdges.end(), e);
-  if  (i == mEdge.end()) return -1;
-  return  (i - mEdge.begin());
+  if  (i == mEdges.end()) return -1;
+  return  (i - mEdges.begin());
 }
 
 
