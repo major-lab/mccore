@@ -29,9 +29,18 @@ namespace mccore
 
   ResidueType* ResidueType::rRNA = 0;
   ResidueType* ResidueType::rDNA = 0;
+  
   ResidueType* ResidueType::rPhosphate = 0;
+  
   ResidueType* ResidueType::rRRibose = 0;
+  ResidueType* ResidueType::rRRibose5 = 0;
+  ResidueType* ResidueType::rRRibose3 = 0;
+  ResidueType* ResidueType::rRRibose53 = 0;
   ResidueType* ResidueType::rDRibose = 0;
+  ResidueType* ResidueType::rDRibose5 = 0;
+  ResidueType* ResidueType::rDRibose3 = 0;
+  ResidueType* ResidueType::rDRibose53 = 0;
+  
   ResidueType* ResidueType::rPurine = 0;
   ResidueType* ResidueType::rPyrimidine = 0;
   ResidueType* ResidueType::rRPurine = 0;

@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.15 $
+// $Revision: 1.16 $
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -127,10 +127,16 @@ namespace mccore {
 
     /** specialized residue types **/
     
-    stringType["(PO4)"] = ResidueType::rPhosphate = new Phosphate ("(PO4)", "(PO4)");
-    stringType["(R:RIB)"] = ResidueType::rRRibose = new DRibose ("(R:RIB)", "(R:RIB)");
-    stringType["(D:RIB)"] = ResidueType::rDRibose = new RRibose ("(D:RIB)", "(D:RIB)");
-
+    stringType["(PO4)"]     = ResidueType::rPhosphate = new Phosphate ("(PO4)", "(PO4)");
+    stringType["(R:RIB)"]   = ResidueType::rRRibose   = new RRibose   ("(R:RIB)", "(R:RIB)");
+    stringType["(R:RIB5)"]  = ResidueType::rRRibose5  = new RRibose5  ("(R:RIB5)", "(R:RIB5)");
+    stringType["(R:RIB3)"]  = ResidueType::rRRibose3  = new RRibose3  ("(R:RIB3)", "(R:RIB3)");
+    stringType["(R:RIB53)"] = ResidueType::rRRibose53 = new RRibose53 ("(R:RIB53)", "(R:RIB53)");
+    stringType["(D:RIB)"]   = ResidueType::rDRibose   = new DRibose   ("(D:RIB)", "(D:RIB)");
+    stringType["(D:RIB5)"]  = ResidueType::rDRibose5  = new DRibose5  ("(D:RIB5)", "(D:RIB5)");
+    stringType["(D:RIB3)"]  = ResidueType::rDRibose3  = new DRibose3  ("(D:RIB3)", "(D:RIB3)");
+    stringType["(D:RIB53)"] = ResidueType::rDRibose53 = new DRibose53 ("(D:RIB53)", "(D:RIB53)");
+    
     /** amino acid **/
     
     stringType["AminoAcid"] = ResidueType::rAminoAcid = new AminoAcid ("(AA)", "(AA)");

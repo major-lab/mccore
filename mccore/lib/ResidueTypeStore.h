@@ -3,7 +3,7 @@
 // Copyright © 2003, 2004 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 // 
 //  This file is part of mccore.
 //  
@@ -41,7 +41,7 @@ namespace mccore {
    * Repository of residue types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueTypeStore.h,v 1.9 2004-09-27 21:29:04 larosem Exp $
+   * @version $Id: ResidueTypeStore.h,v 1.10 2004-09-29 20:34:42 thibaup Exp $
    */
   class ResidueTypeStore
   {
@@ -193,6 +193,49 @@ namespace mccore {
     };
 
     /**
+     *  Public abstract class for ribose residue with 5' phosphate' atoms.
+     */
+    class Ribose5 : public virtual Ribose
+    {
+    public:
+      Ribose5 () { }
+      Ribose5 (const char* t, const char* lt) : ResidueType (t, lt) { }
+
+      virtual bool isRibose5 () const { return true; }
+      virtual bool describe (const ResidueType* t) const
+      { return dynamic_cast< const Ribose5* > (t); }
+    };
+
+    /**
+     *  Public abstract class for ribose residue with 3' phosphate' atoms.
+     */
+    class Ribose3 : public virtual Ribose
+    {
+    public:
+      Ribose3 () { }
+      Ribose3 (const char* t, const char* lt) : ResidueType (t, lt) { }
+
+      virtual bool isRibose3 () const { return true; }
+      virtual bool describe (const ResidueType* t) const
+      { return dynamic_cast< const Ribose3* > (t); }
+    };
+
+    /**
+     *  Public abstract class for ribose residue with both 5' and 3' phosphates' atoms.
+     */
+    class Ribose53 : public virtual Ribose
+    {
+    public:
+      Ribose53 () { }
+      Ribose53 (const char* t, const char* lt) : ResidueType (t, lt) { }
+
+      virtual bool isRibose53 () const { return true; }
+      virtual bool describe (const ResidueType* t) const
+      { return dynamic_cast< const Ribose53* > (t); }
+    };
+
+
+    /**
      *  Public abstract class for Amber residue representation.
      */
     class Amber : public virtual ResidueType
@@ -215,7 +258,6 @@ namespace mccore {
       DPhosphate () { }
       DPhosphate (const char* t, const char* lt) : ResidueType (t, lt) { }
 
-      virtual bool isDPhosphate () const { return true; }
       virtual bool describe (const ResidueType* t) const
       { return dynamic_cast< const DPhosphate* > (t); }
     };
@@ -229,7 +271,6 @@ namespace mccore {
       RPhosphate () { }
       RPhosphate (const char* t, const char* lt) : ResidueType (t, lt) { }
 
-      virtual bool isRPhosphate () const { return true; }
       virtual bool describe (const ResidueType* t) const
       { return dynamic_cast< const RPhosphate* > (t); }
     };
@@ -243,9 +284,47 @@ namespace mccore {
       DRibose () { }
       DRibose (const char* t, const char* lt) : ResidueType (t, lt) { }
 
-      virtual bool isDRibose () const { return true; }
       virtual bool describe (const ResidueType* t) const
       { return dynamic_cast< const DRibose* > (t); }
+    };
+
+    /**
+     *  Public abstract class for DNA ribose residue with 5' phosphate' atoms.
+     */
+    class DRibose5 : public virtual Ribose5, public virtual DRibose
+    {
+    public:
+      DRibose5 () { }
+      DRibose5 (const char* t, const char* lt) : ResidueType (t, lt) { }
+
+      virtual bool describe (const ResidueType* t) const
+      { return dynamic_cast< const DRibose5* > (t); }
+    };
+
+    /**
+     *  Public abstract class for DNA ribose residue with 3' phosphate' atoms.
+     */
+    class DRibose3 : public virtual Ribose3, public virtual DRibose
+    {
+    public:
+      DRibose3 () { }
+      DRibose3 (const char* t, const char* lt) : ResidueType (t, lt) { }
+
+      virtual bool describe (const ResidueType* t) const
+      { return dynamic_cast< const DRibose3* > (t); }
+    };
+
+    /**
+     *  Public abstract class for DNA ribose residue with both 5' and 3' phosphates' atoms.
+     */
+    class DRibose53 : public virtual Ribose53, public virtual DRibose
+    {
+    public:
+      DRibose53 () { }
+      DRibose53 (const char* t, const char* lt) : ResidueType (t, lt) { }
+
+      virtual bool describe (const ResidueType* t) const
+      { return dynamic_cast< const DRibose53* > (t); }
     };
 
     /**
@@ -257,11 +336,49 @@ namespace mccore {
       RRibose () { }
       RRibose (const char* t, const char* lt) : ResidueType (t, lt) { }
 
-      virtual bool isRRibose () const { return true; }
       virtual bool describe (const ResidueType* t) const
       { return dynamic_cast< const RRibose* > (t); }
     };
+    
+    /**
+     *  Public abstract class for RNA ribose residue with 5' phosphate' atoms.
+     */
+    class RRibose5 : public virtual Ribose5, public virtual RRibose
+    {
+    public:
+      RRibose5 () { }
+      RRibose5 (const char* t, const char* lt) : ResidueType (t, lt) { }
 
+      virtual bool describe (const ResidueType* t) const
+      { return dynamic_cast< const RRibose5* > (t); }
+    };
+
+    /**
+     *  Public abstract class for RNA ribose residue with 3' phosphate' atoms.
+     */
+    class RRibose3 : public virtual Ribose3, public virtual RRibose
+    {
+    public:
+      RRibose3 () { }
+      RRibose3 (const char* t, const char* lt) : ResidueType (t, lt) { }
+
+      virtual bool describe (const ResidueType* t) const
+      { return dynamic_cast< const RRibose3* > (t); }
+    };
+
+    /**
+     *  Public abstract class for RNA ribose residue with both 5' and 3' phosphates' atoms.
+     */
+    class RRibose53 : public virtual Ribose53, public virtual RRibose
+    {
+    public:
+      RRibose53 () { }
+      RRibose53 (const char* t, const char* lt) : ResidueType (t, lt) { }
+
+      virtual bool describe (const ResidueType* t) const
+      { return dynamic_cast< const RRibose53* > (t); }
+    };
+    
     /**
      *  Public abstract class for N residue (any).
      */
@@ -478,62 +595,6 @@ namespace mccore {
       }
     };
     
-//     /**
-//      * Public abstract class for RNA residues.
-//      */
-//     class RNA : public virtual NucleicAcid {
-//     public:      
-//       RNA () {}
-//       RNA (const char* t, const char* lt) : ResidueType (t, lt) {}
-
-//       virtual bool isRNA () const { return true; }
-//       virtual bool describe (const ResidueType* t) const {
-// 	return dynamic_cast< const RNA* > (t);
-//       }
-//     };
-    
-//     /**
-//      * Public abstract class for DNA residues.
-//      */
-//     class DNA : public virtual NucleicAcid {
-//     public:      
-//       DNA () {}
-//       DNA (const char* t, const char* lt) : ResidueType (t, lt) {}
-
-//       virtual bool isDNA () const { return true; }
-//       virtual bool describe (const ResidueType* t) const {
-// 	return dynamic_cast< const DNA* > (t);
-//       }
-//     };
-
-//     /**
-//      * Public Phosphate residue type class.
-//      */
-//     class Phosphate : public virtual ResidueType {
-//     public:      
-//       Phosphate () {}
-//       Phosphate (const char* t, const char* lt) : ResidueType (t, lt) {}
-
-//       virtual bool isPhosphate () const { return true; }
-//       virtual bool describe (const ResidueType* t) const {
-// 	return dynamic_cast< const Phosphate* > (t);
-//       }
-//     };
-
-//     /**
-//      * Public Ribose residue type class.
-//      */
-//     class Ribose : public virtual ResidueType {
-//     public:      
-//       Ribose () {}
-//       Ribose (const char* t, const char* lt) : ResidueType (t, lt) {}
-
-//       virtual bool isRibose () const { return true; }
-//       virtual bool describe (const ResidueType* t) const {
-// 	return dynamic_cast< const Ribose* > (t);
-//       }
-//     };
-    
     
     // -------------------------------------------------------------------------
 
@@ -546,7 +607,6 @@ namespace mccore {
       RN () { }
       RN (const char* t, const char* lt) : ResidueType (t, lt) { }
 
-      virtual bool isRN () const { return true; }
       virtual bool describe (const ResidueType* t) const
       { return dynamic_cast< const RN* > (t); }
     };

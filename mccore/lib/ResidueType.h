@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.25 $
-// $Id: ResidueType.h,v 1.25 2004-09-27 21:28:59 larosem Exp $
+// $Revision: 1.26 $
+// $Id: ResidueType.h,v 1.26 2004-09-29 20:34:30 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -53,7 +53,7 @@ namespace mccore {
    *   - The nature of a type (nucleic acid (pur/pyr) or amino acid)<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueType.h,v 1.25 2004-09-27 21:28:59 larosem Exp $
+   * @version $Id: ResidueType.h,v 1.26 2004-09-29 20:34:30 thibaup Exp $
    */
   class ResidueType
   {    
@@ -251,6 +251,27 @@ namespace mccore {
     virtual bool isRibose () const {
         return false;
     }
+
+    /**
+     * is Ribose5?
+     */
+    virtual bool isRibose5 () const {
+        return false;
+    }
+
+    /**
+     * is Ribose3?
+     */
+    virtual bool isRibose3 () const {
+        return false;
+    }
+
+    /**
+     * is Ribose53?
+     */
+    virtual bool isRibose53 () const {
+        return false;
+    }
     
     /** 
      * is Amino Acid?
@@ -363,11 +384,21 @@ namespace mccore {
     static ResidueType* rUnknown;
     static ResidueType* rNucleicAcid;
     static ResidueType* rAminoAcid;
+
     static ResidueType* rRNA;
     static ResidueType* rDNA;
+
     static ResidueType* rPhosphate;
+
     static ResidueType* rRRibose;
+    static ResidueType* rRRibose5;
+    static ResidueType* rRRibose3;
+    static ResidueType* rRRibose53;
     static ResidueType* rDRibose;
+    static ResidueType* rDRibose5;
+    static ResidueType* rDRibose3;
+    static ResidueType* rDRibose53;
+    
     static ResidueType* rPurine; // (R = A || G)
     static ResidueType* rPyrimidine; // (Y = C || U)
     static ResidueType* rRPurine;
