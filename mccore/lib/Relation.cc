@@ -1000,7 +1000,8 @@ namespace mccore {
     Vector3D ta, tb;
 
     ExtendedResidue A (ResidueType::rRA, ResId ('A', 1));
-    A.setIdeal ();
+    A.setTheoretical ();
+    A.setupHLP ();
     A.setReferential (HomogeneousTransfo ());
 
     ta = *A.find (AtomType::aH8);	
@@ -1027,7 +1028,8 @@ namespace mccore {
     faces_A.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
 
     ExtendedResidue C (ResidueType::rRC, ResId ('C', 1));
-    C.setIdeal ();
+    C.setTheoretical ();
+    C.setupHLP ();
     C.setReferential (HomogeneousTransfo ());
 
     ta = *C.find (AtomType::aH6);
@@ -1052,7 +1054,8 @@ namespace mccore {
     faces_C.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
 
     ExtendedResidue G (ResidueType::rRG, ResId ('G', 1));
-    G.setIdeal ();
+    G.setTheoretical ();
+    G.setupHLP ();
     G.setReferential (HomogeneousTransfo ());
 
     ta = *G.find (AtomType::aH8);
@@ -1081,7 +1084,8 @@ namespace mccore {
     faces_G.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
     
     ExtendedResidue U (ResidueType::rRU, ResId ('U', 1));
-    U.setIdeal ();
+    U.setTheoretical ();
+    U.setupHLP ();
     U.setReferential (HomogeneousTransfo ());
 	
     ta = *U.find (AtomType::aH6);
@@ -1108,7 +1112,8 @@ namespace mccore {
     faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
     
     ExtendedResidue T (ResidueType::rDT, ResId ('T', 1));
-    T.setIdeal ();
+    T.setTheoretical ();
+    T.setupHLP ();
     T.setReferential (HomogeneousTransfo ());
     
     ta = *T.find (AtomType::aH6);
