@@ -71,8 +71,8 @@ iBinstream&
 iBinstream::operator>> (int &n)
 {
   int nl;
-  this->read ((char*) &nl, sizeof (int));
 
+  this->read ((char*)&nl, sizeof (int));
   n = (int)ntohl (nl);
   return *this;
 }
@@ -84,8 +84,8 @@ iBinstream::operator>> (float &x)
 {
   int nl;
   int hl;
-  this->read ((char*)&nl, sizeof (int));
 
+  this->read ((char*)&nl, sizeof (int));
   hl = ntohl (nl);
   x = *((float*)&hl);
   return *this;
