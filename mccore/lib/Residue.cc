@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.51 $
-// $Id: Residue.cc,v 1.51 2004-11-25 16:34:33 larosem Exp $
+// $Revision: 1.51.2.1 $
+// $Id: Residue.cc,v 1.51.2.1 2005-02-25 19:06:13 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -1155,7 +1155,7 @@ namespace mccore {
 	v = *r1 + (x + y + z).normalize () * Residue::C_H_DIST;
 	this->insert (Atom (v, AtomType::aH1p));
       }
-      catch (NoSuchAtomException& ex)
+      catch (IntLibException& ex)
       {
 	gOut (3) << "Failed to add hydrogen " << AtomType::aH1p << " in "
 		 << *this << ": " << ex << endl;
