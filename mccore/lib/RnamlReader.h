@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
-// $Revision: 1.1.2.1 $
+// $Revision: 1.1.2.2 $
 // 
 // This file is part of mccore.
 // 
@@ -26,12 +26,12 @@
 #ifndef _mccore_RnamlReader_h_
 #define _mccore_RnamlReader_h_
 
-#include <cstdio>
 #include <vector>
 
 namespace rnaml {
   class Atom;
   class Base;
+  class InputStream;
   class Model;
   class Molecule;
   class Object;
@@ -53,7 +53,7 @@ class ResidueFactoryMethod;
  * molecule.
  *
  * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
- * @version $Id: RnamlReader.h,v 1.1.2.1 2003-10-30 21:26:04 larosem Exp $
+ * @version $Id: RnamlReader.h,v 1.1.2.2 2003-11-11 19:55:16 larosem Exp $
  */
 class RnamlReader
 {
@@ -63,7 +63,7 @@ class RnamlReader
   /**
    * The input stream.
    */
-  FILE *is;
+  rnaml::InputStream *is;
 
   /**
    * The residue factory method.  It is set to the default residue fm of the
@@ -91,16 +91,18 @@ class RnamlReader
   // LIFECYCLE ------------------------------------------------------------
   
   /**
-   * Initializes the object.
-   * @param f the input stream.
-   */
-  RnamlReader (FILE *f, ResidueFactoryMethod *fm = 0);
-
-  /**
    * Initializes the reader with a file name.
    * @param name the file name.
+   * @param fm the residue factory method optionnal parameter.
    */
   RnamlReader (const char *name, ResidueFactoryMethod *fm = 0);
+
+  /**
+   * Inintializes the reader with a input stream.
+   * @param is the input stream.
+   * @param fm the residue factory method optionnal parameter.
+   */
+  RnamlReader (rnaml::InputStream *is, ResidueFactoryMethod *fm = 0);
   
   /**
    * Destroys the object.

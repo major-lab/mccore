@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.28.8.3 $
-# $Id: Makefile.in,v 1.28.8.3 2003-10-30 21:25:53 larosem Exp $
+# $Revision: 1.28.8.4 $
+# $Id: Makefile.in,v 1.28.8.4 2003-11-11 19:55:09 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -117,7 +117,7 @@ all: $(LIBRARY).so.$(VERSION) TAGS
 static: $(LIBRARY).a TAGS
 
 $(LIBRARY).so.$(VERSION): $(SHOBJECTS)
-	$(LD) $(LINKOPTIONS) -shared $(LDFLAGS) -o $@ -Wl,-soname,$@ $^
+	$(LD) $(LINKOPTIONS) -shared $(LDFLAGS) -o $@ -Wl,-soname,$@ $^ $(LIBS)
 
 $(LIBRARY).a: $(OBJECTS)
 	$(AR) crs $@ $^

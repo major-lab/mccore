@@ -4,8 +4,8 @@
 //                  UniversitÅÈ de MontrÅÈal.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
-// $Revision: 1.1.2.1 $
-// $Id: RnamlReader.cc,v 1.1.2.1 2003-10-30 21:26:01 larosem Exp $
+// $Revision: 1.1.2.2 $
+// $Id: RnamlReader.cc,v 1.1.2.2 2003-11-11 19:55:13 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -28,8 +28,6 @@
 #include <config.h>
 #endif
 
-#include <cstdio>
-#include <cstdlib>
 #include <cstring>
 #include <cerrno>
 
@@ -47,23 +45,15 @@
 
 #include "xmlcpg/Atom.h"
 #include "xmlcpg/Base.h"
+#include "xmlcpg/FileInputStream.h"
+#include "xmlcpg/GZIPInputStream.h"
+#include "xmlcpg/InputStream.h"
 #include "xmlcpg/Model.h"
 #include "xmlcpg/Molecule.h"
 #include "xmlcpg/Object.h"
 #include "xmlcpg/Rnaml.h"
 #include "xmlcpg/Structure.h"
 #include "xmlcpg/Unmarshaller.h"
-
-
-
-RnamlReader::RnamlReader (FILE *f, ResidueFactoryMethod *fm)
-  : is (f),
-    residueFM (fm),
-    rnaml (0)
-{
-  if (0 == residueFM)
-    residueFM = new CResidueFM ();
-}
 
 
 
@@ -74,10 +64,29 @@ RnamlReader::RnamlReader (const char *name, ResidueFactoryMethod *fm)
 {
   if (0 != name)
     {
-      is = fopen (name, "r");
+      is = (rnaml::InputStream*) new rnaml::FileInputStream (name);
       if (0 == is)
 	gOut (2) << "File " << name << " " << strerror (errno) << endl;
+      else if (is->getError ())
+	{
+	  gOut (2) << "File " << name << " " << is->getErrorString () << endl;
+	  delete is;
+	  is = 0;
+	}
+      else
+	is = (rnaml::InputStream*) new rnaml::GZIPInputStream ((rnaml::FileInputStream*) is);
     }
+  if (0 == fm)
+    residueFM = new CResidueFM ();
+}
+
+
+  
+RnamlReader::RnamlReader (rnaml::InputStream *is, ResidueFactoryMethod *fm)
+  : is (is),
+    residueFM (fm),
+    rnaml (0)
+{
   if (0 == fm)
     residueFM = new CResidueFM ();
 }
@@ -86,11 +95,8 @@ RnamlReader::RnamlReader (const char *name, ResidueFactoryMethod *fm)
   
 RnamlReader::~RnamlReader ()
 {
-  if (0 != is && 0 != fileno (is))
-    {
-      fclose (is);
-      free (is);
-    }
+  if (0 != is)
+    delete is;
   delete residueFM;
   if (0 != rnaml)
     delete rnaml;
@@ -200,12 +206,8 @@ RnamlReader::toMccore (const rnaml::Molecule &molecule)
 void
 RnamlReader::close ()
 {
-  if (0 != is && 0 != fileno (is))
-    {
-      fclose (is);
-      free (is);
-    }
-  is = 0;
+  if (0 != is)
+    is->close ();
 }
 
 
@@ -221,7 +223,7 @@ RnamlReader::read ()
       rnaml::Unmarshaller um;
       
       um.setValidating (true);
-      rnaml = um.unmarshall (is);
+      rnaml = um.unmarshall (*is);
       if (0 != rnaml)
 	children = rnaml->getChildren ();
       it = children.begin ();

@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.1.4.2 $
-// $Id: RnamlWriter.h,v 1.1.4.2 2003-10-30 21:26:10 larosem Exp $
+// $Revision: 1.1.4.3 $
+// $Id: RnamlWriter.h,v 1.1.4.3 2003-11-11 19:55:23 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -27,14 +27,13 @@
 #ifndef _mccore_RnamlWriter_h_
 #define _mccore_RnamlWriter_h_
 
-#include <stdio.h>
-
 namespace rnaml
 {
   class Atom;
   class Base;
   class Model;
   class Molecule;
+  class PrintStream;
   class Rnaml;
 }
 
@@ -56,26 +55,26 @@ class Molecule;
 class RnamlWriter
 {
   /**
-   * The output stream.
+   * The print stream.
    */
-  FILE *of;
+  rnaml::PrintStream *ps;
   
  public:
   
   // LIFECYCLE ------------------------------------------------------------
   
   /**
-   * Initializes the object.
-   * @param f the output stream.
-   */
-  RnamlWriter (FILE *f) : of (f) { }
-
-  /**
    * Initializes the writer with a file name.
    * @param name the file name.
    */
   RnamlWriter (const char *name);
   
+  /**
+   * Initializes the object.
+   * @param ps the print stream.
+   */
+  RnamlWriter (rnaml::PrintStream *ps) : ps (ps) { }
+
   /**
    * Destroys the object.
    */

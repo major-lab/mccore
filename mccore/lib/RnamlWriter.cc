@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.1.4.2 $
-// $Id: RnamlWriter.cc,v 1.1.4.2 2003-10-30 21:26:08 larosem Exp $
+// $Revision: 1.1.4.3 $
+// $Id: RnamlWriter.cc,v 1.1.4.3 2003-11-11 19:55:19 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -47,22 +47,33 @@
 
 #include "xmlcpg/Atom.h"
 #include "xmlcpg/Base.h"
+#include "xmlcpg/FileOutputStream.h"
 #include "xmlcpg/Marshaller.h"
 #include "xmlcpg/Model.h"
 #include "xmlcpg/Molecule.h"
+#include "xmlcpg/PrintStream.h"
 #include "xmlcpg/Rnaml.h"
 #include "xmlcpg/Structure.h"
 
 
 
 RnamlWriter::RnamlWriter (const char *name)
-  : of (0)
+  : ps (0)
 {
   if (0 != name)
     {
-      of = fopen (name, "w");
-      if (0 == of)
+      rnaml::FileOutputStream *os;
+      
+      os = new rnaml::FileOutputStream (name);
+      if (0 == os)
 	gOut (2) << "File " << name << ": " << strerror (errno) << endl;
+      else if (os->getError ())
+	{
+	  gOut (2) << "File " << name << ": " << os->getErrorString () << endl;
+	  delete os;
+	}
+      else
+	ps = new rnaml::PrintStream (os);
     }
 }
 
@@ -70,11 +81,8 @@ RnamlWriter::RnamlWriter (const char *name)
 
 RnamlWriter::~RnamlWriter ()
 {
-  if (0 != of && 1 != fileno (of) && 2 != fileno (of))
-    {
-      fclose (of);
-      free (of);
-    }
+  if (0 != ps)
+    delete ps;
 }
 
 
@@ -192,12 +200,8 @@ RnamlWriter::toRnaml (const Molecule &molecule)
 void
 RnamlWriter::close ()
 {
-  if (0 != of && 1 != fileno (of) && 2 != fileno (of))
-    {
-      fclose (of);
-      free (of);
-    }
-  of = 0;
+  if (0 != ps)
+    ps->close ();
 }
 
 
@@ -205,7 +209,7 @@ RnamlWriter::close ()
 void
 RnamlWriter::write (const Molecule &molecule)
 {
-  if (0 != of)
+  if (0 != ps)
     {
       rnaml::Molecule *m;
       rnaml::Rnaml rnaml ("1.1");
@@ -216,6 +220,6 @@ RnamlWriter::write (const Molecule &molecule)
       rnaml.addChild (m);
       marshaller.setValidating (true);
       marshaller.setFormatted (true);
-      marshaller.marshall (rnaml, of);
+      marshaller.marshall (rnaml, *ps);
     }
 }
