@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.59 $
-# $Id: Makefile.in,v 1.59 2005-01-10 16:47:02 thibaup Exp $
+# $Revision: 1.60 $
+# $Id: Makefile.in,v 1.60 2005-02-02 18:01:15 thibaup Exp $
 # 
 # This file is part of mccore.
 # 
@@ -122,10 +122,6 @@ SOURCES = $(RNAML_SOURCES) \
 	  ResidueTopology.cc \
 	  ResidueType.cc \
 	  ResidueTypeStore.cc \
-          RiboseBuilder.cc \
-          RiboseEstimator.cc \
-	  RiboseOptimizer5D.cc \
-          RiboseOptimizer2D.cc \
 	  Rmsd.cc \
 	  ServerSocket.cc \
 	  Sequence.cc \
