@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.32.2.6 $
-// $Id: Relation.cc,v 1.32.2.6 2004-12-25 02:44:01 larosem Exp $
+// $Revision: 1.32.2.7 $
+// $Id: Relation.cc,v 1.32.2.7 2004-12-27 01:52:30 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -44,7 +44,6 @@
 #include "PairingPattern.h"
 #include "PropertyType.h"
 #include "Relation.h"
-#include "Residue.h"
 #include "ResidueType.h"
 
 
@@ -111,6 +110,33 @@ namespace mccore
   }
   
 
+  void
+  Relation::reassignResiduePointers (const set< const Residue*, less_deref< Residue> > &resSet) throw (NoSuchElementException)
+  {
+    set< const Residue* >::iterator resIt;
+    vector< HBondFlow >::iterator hbfIt;
+    set< const Residue*, less_deref< Residue > > newSet;
+    
+    if (resSet.end () == (resIt = resSet.find (ref)))
+      {
+	throw NoSuchElementException ("Residue not found", __FILE__, __LINE__);
+      }
+    ref = *resIt;
+    newSet.insert (ref);
+    if (resSet.end () == (resIt = resSet.find (res)))
+      {
+	throw NoSuchElementException ("Residue not found", __FILE__, __LINE__);
+      }
+    res = *resIt;
+    newSet.insert (res);
+    
+    for (hbfIt = hbonds.begin (); hbonds.end () != hbfIt; ++hbfIt)
+      {
+	hbfIt->hbond.reassignResiduePointers (newSet);
+      }
+  }
+
+  
   bool
   Relation::annotate () 
   {
@@ -136,7 +162,8 @@ namespace mccore
     {
       // compute transfo from 5' base to phosphate
       vector< Atom > pVec;
-      const Residue *r5, *r3;
+      const Residue *r5;
+      const Residue *r3;
 
       if (is (PropertyType::pDIR_5p))
       {
@@ -192,37 +219,37 @@ namespace mccore
   Relation::areAdjacent ()
   {
     static const float ADJACENCY_SQUARED_DISTANCE = 4.0;
-    Residue::const_iterator up, down;
+    Residue::const_iterator up;
+    Residue::const_iterator down;
     
     if (ref->end () != (down = ref->find (AtomType::aO3p))
 	&& res->end () != (up = res->find (AtomType::aP))
 	&& down->squareDistance (*up) <= ADJACENCY_SQUARED_DISTANCE)
-    {
-      labels.insert (PropertyType::pAdjacent);
-      labels.insert (PropertyType::pDIR_5p);
-    }
+      {
+	labels.insert (PropertyType::pAdjacent);
+	labels.insert (PropertyType::pDIR_5p);
+      }
     else if (res->end () != (down = res->find (AtomType::aO3p))
 	     && ref->end () != (up = ref->find (AtomType::aP))
 	     && down->squareDistance (*up) <= ADJACENCY_SQUARED_DISTANCE)
-    {
-      labels.insert (PropertyType::pAdjacent);
-      labels.insert (PropertyType::pDIR_3p);
-    }
+      {
+	labels.insert (PropertyType::pAdjacent);
+	labels.insert (PropertyType::pDIR_3p);
+      }
     else if (ref->end () != (down = ref->find (AtomType::aC))
 	     && res->end () != (up = res->find (AtomType::aN))
 	     && down->squareDistance (*up) <= ADJACENCY_SQUARED_DISTANCE)
-    {
-      labels.insert (PropertyType::pAdjacent);
-      labels.insert (PropertyType::pDIR_5p);
-    }
+      {
+	labels.insert (PropertyType::pAdjacent);
+	labels.insert (PropertyType::pDIR_5p);
+      }
     else if (res->end () != (down = res->find (AtomType::aC))
 	     && ref->end () != (up = ref->find (AtomType::aN))
 	     && down->squareDistance (*up) <= ADJACENCY_SQUARED_DISTANCE)
-    {
-      labels.insert (PropertyType::pAdjacent);
-      labels.insert (PropertyType::pDIR_3p);
-    }
-    
+      {
+	labels.insert (PropertyType::pAdjacent);
+	labels.insert (PropertyType::pDIR_3p);
+      }
   }
 
 
@@ -240,28 +267,28 @@ namespace mccore
     AtomSetSideChain as_sidechain;
 
     for (i = ref->begin (as_sidechain); i != ref->end (); ++i)
-    {
-      if (i->getType ()->isNitrogen () || i->getType ()->isOxygen ())
       {
-	for (j = res->begin (as_sidechain); j != res->end (); ++j)
-	{
-	  if (j->getType ()->isNitrogen () || j->getType ()->isOxygen ())
+	if (i->getType ()->isNitrogen () || i->getType ()->isOxygen ())
 	  {
-	    if (i->distance (*j) > 1.7 && i->distance (*j) < 3.2)
-	    {
-	      string str;
+	    for (j = res->begin (as_sidechain); j != res->end (); ++j)
+	      {
+		if (j->getType ()->isNitrogen () || j->getType ()->isOxygen ())
+		  {
+		    if (i->distance (*j) > 1.7 && i->distance (*j) < 3.2)
+		      {
+			string str;
 			
-	      labels.insert (PropertyType::parseType ("unclassified"));
-	      labels.insert (PropertyType::pPairing);
-	      str.append ((const char*) *(i->getType ()));
-	      str.append ("-");
-	      str.append ((const char*) *(j->getType ()));
-	      labels.insert (PropertyType::parseType (str.c_str ()));
-	    }
+			labels.insert (PropertyType::parseType ("unclassified"));
+			labels.insert (PropertyType::pPairing);
+			str.append ((const char*) *(i->getType ()));
+			str.append ("-");
+			str.append ((const char*) *(j->getType ()));
+			labels.insert (PropertyType::parseType (str));
+		      }
+		  }
+	      }
 	  }
-	}
       }
-    }
     
 
     // TODO: This is experimental and is a tentative to identify as
@@ -410,15 +437,15 @@ namespace mccore
   void
   Relation::arePaired ()
   {
-    static const float PAIRING_CUTOFF = 0.8f;
-    static const float TWO_BONDS_CUTOFF = 1.5f;
-    static const float THREE_BONDS_CUTOFF = 2.1f;
     typedef MaximumFlowGraph< unsigned int, HBond > HBondFlowGraph;
     typedef map< Residue::const_iterator, unsigned int > AtomToInt;
 
     try
       {
-	Residue::const_iterator i, j, k, l;
+	Residue::const_iterator i;
+	Residue::const_iterator j;
+	Residue::const_iterator k;
+	Residue::const_iterator l;
 	AtomToInt atomToInt;
 	unsigned int node;
 	HBondFlowGraph graph;
@@ -487,13 +514,12 @@ namespace mccore
 		  {
 		    HBond h (j->getType (), i->getType (), l->getType (), k->getType ());
 		  
-		    h.evalStatistically (*ref, *res);
+		    h.evalStatistically (ref, res);
 		    if (h.getValue () > 0.01)
 		      {
-			HBond fake;
+			HBond fake (1);
 			pair< AtomToInt::iterator, bool > iIt = atomToInt.insert (make_pair (i, node));
 
-			fake.setInitialValue (1);
 			if (iIt.second)
 			  {
 			    graph.insert (node, 1);
@@ -514,13 +540,12 @@ namespace mccore
 		  {
 		    HBond h (l->getType (), k->getType (), j->getType (), i->getType ());
 		  
-		    h.evalStatistically (*res, *ref);
+		    h.evalStatistically (res, ref);
 		    if (h.getValue () > 0.01)
 		      {
-			HBond fake;
+			HBond fake (1);
 			pair< AtomToInt::iterator, bool > kIt = atomToInt.insert (make_pair (k, node));
 			
-			fake.setInitialValue (1);
 			if (kIt.second)
 			  {
 			    graph.insert (node, 1);
@@ -568,90 +593,7 @@ namespace mccore
 	    
 	    if (sum_flow >= PAIRING_CUTOFF)
 	      {
-		Vector3D pa;
-		Vector3D pb;
-		Vector3D pva;
-		Vector3D pvb;
-		list< HBondFlow > hbf (hbonds.begin (), hbonds.end ());
-		vector< HBondFlow >::iterator hbIt;
-	  
-		labels.insert (PropertyType::pPairing);
-		
-		if (sum_flow < TWO_BONDS_CUTOFF)
-		  {
-		    labels.insert (PropertyType::pOneHbond);
-		  }
-		
-		// Compute contact points and visual contact points
-		for (hbIt = hbonds.begin (); hbonds.end () != hbIt; ++hbIt)
-		  {
-		    HBondFlow &fl = *hbIt;
-		    
-		    if (fl.hbond.getDonorResidue () == ref)
-		      {
-			pa = pa + (fl.hbond.getHydrogen () * fl.flow);
-			pb = pb + (fl.hbond.getLonePair () * fl.flow);
-			pva = pva + (fl.hbond.getHydrogen () * fl.flow);
-			pvb = pvb + (fl.hbond.getAcceptor () * fl.flow);
-		      }
-		    else
-		      {
-			pa = pa + (fl.hbond.getLonePair () * fl.flow);
-			pb = pb + (fl.hbond.getHydrogen () * fl.flow);
-			pva = pva + (fl.hbond.getAcceptor () * fl.flow);
-			pvb = pvb + (fl.hbond.getHydrogen () * fl.flow);
-		      }
-		  }
-			
-		pa = pa / sum_flow;
-		pb = pb / sum_flow;
-		pva = pva / sum_flow;
-		pvb = pvb / sum_flow;
-	      
-		Vector3D pc, pd;
-		pc = *ref->safeFind (AtomType::aC1p); 
-		pc = pc - *ref->safeFind (AtomType::aPSY);
-		pc = pc + pa;
-		pd = *res->safeFind (AtomType::aC1p); 
-		pd = pd - *res->safeFind (AtomType::aPSY);
-		pd = pd + pb;
-	      
-		float rad = fabs (pa.torsionAngle (pc, pb, pd));
-		const PropertyType *iso = (rad < M_PI / 2
-					   ? PropertyType::pCis
-					   : PropertyType::pTrans);
-	      
-		labels.insert (iso);
-	      
-		refFace = getFace (ref, pa);
-		resFace = getFace (res, pb);
-	      
-		int size_hint;
-		if (sum_flow >= PAIRING_CUTOFF && sum_flow < TWO_BONDS_CUTOFF)
-		  {
-		    size_hint = 1;
-		  }
-		else if (sum_flow < THREE_BONDS_CUTOFF)
-		  {
-		    size_hint = 2;
-		  }
-		else
-		  {
-		    size_hint = 3;
-		  }
-		
-		hbf.sort ();
-	      
-		while ((int)hbf.size () != size_hint)
-		  {
-		    hbf.pop_front ();
-		  }
-		
-		const PropertyType *pp = translatePairing (ref, res, hbf, sum_flow, size_hint);
-		if (pp)
-		  {
-		    labels.insert (pp);
-		  }
+		addPairingLabels ();
 	      }
 	  }
 	else
@@ -665,17 +607,99 @@ namespace mccore
 	gOut (3) << "An error occured during pairing annotation: " << ex << endl;
       }
   }
+
+
+  void
+  Relation::addPairingLabels ()
+  {
+    Vector3D pa;
+    Vector3D pb;
+    Vector3D pc;
+    Vector3D pd;
+    Vector3D pva;
+    Vector3D pvb;
+    list< HBondFlow > hbf (hbonds.begin (), hbonds.end ());
+    vector< HBondFlow >::iterator hbIt;
+    float rad;
+    unsigned int size_hint;
+    const PropertyType *pp;
     
+    labels.insert (PropertyType::pPairing);
+    if (sum_flow < TWO_BONDS_CUTOFF)
+      {
+	labels.insert (PropertyType::pOneHbond);
+      }
+		
+    // Compute contact points and visual contact points
+    for (hbIt = hbonds.begin (); hbonds.end () != hbIt; ++hbIt)
+      {
+	HBondFlow &fl = *hbIt;
+		    
+	if (fl.hbond.getDonorResidue () == ref)
+	  {
+	    pa = pa + (fl.hbond.getHydrogen () * fl.flow);
+	    pb = pb + (fl.hbond.getLonePair () * fl.flow);
+	    pva = pva + (fl.hbond.getHydrogen () * fl.flow);
+	    pvb = pvb + (fl.hbond.getAcceptor () * fl.flow);
+	  }
+	else
+	  {
+	    pa = pa + (fl.hbond.getLonePair () * fl.flow);
+	    pb = pb + (fl.hbond.getHydrogen () * fl.flow);
+	    pva = pva + (fl.hbond.getAcceptor () * fl.flow);
+	    pvb = pvb + (fl.hbond.getHydrogen () * fl.flow);
+	  }
+      }
+			
+    pa = pa / sum_flow;
+    pb = pb / sum_flow;
+    pva = pva / sum_flow;
+    pvb = pvb / sum_flow;
+	      
+    pc = *ref->safeFind (AtomType::aC1p); 
+    pc = pc - *ref->safeFind (AtomType::aPSY);
+    pc = pc + pa;
+    pd = *res->safeFind (AtomType::aC1p); 
+    pd = pd - *res->safeFind (AtomType::aPSY);
+    pd = pd + pb;
+	      
+    rad = fabs (pa.torsionAngle (pc, pb, pd));
+    labels.insert (rad < M_PI / 2 ? PropertyType::pCis : PropertyType::pTrans);
+	      
+    refFace = getFace (ref, pa);
+    resFace = getFace (res, pb);
+	      
+    if (sum_flow >= PAIRING_CUTOFF && sum_flow < TWO_BONDS_CUTOFF)
+      {
+	size_hint = 1;
+      }
+    else if (sum_flow < THREE_BONDS_CUTOFF)
+      {
+	size_hint = 2;
+      }
+    else
+      {
+	size_hint = 3;
+      }
+    hbf.sort ();
+    while (hbf.size () != size_hint)
+      {
+	hbf.pop_front ();
+      }
+    if (0 != (pp = translatePairing (ref, res, hbf, sum_flow, size_hint)))
+      {
+	labels.insert (pp);
+      }
+  }
+  
   
   void
   Relation::areStacked ()
   {
     static const float STACK_DISTANCE_CUTOFF = 4.50f;
     static const float STACK_NORMAL_CUTOFF   = 0.61f; // 35 deg
-    static const float STACK_OVERLAP_CUTOFF  = 0.61f; // 35 deg       
- 
+    static const float STACK_OVERLAP_CUTOFF  = 0.61f; // 35 deg
     
-    //    if (ref->getType ()->isNucleicAcid () || res->getType ()->isNucleicAcid ())
     try
       {
 	Vector3D pyrCenterA;
@@ -852,45 +876,54 @@ namespace mccore
   Relation::invert () const
   {
     Relation inv;
+    set< const PropertyType* >::const_iterator i;
+
     inv.ref = res;
     inv.res = ref;
     inv.tfo = tfo.invert ();
     inv.po4_tfo = inv.tfo * po4_tfo;
     inv.refFace = resFace;
     inv.resFace = refFace;
-    for (set< const PropertyType* >::const_iterator i=labels.begin (); i!=labels.end (); ++i) {
-      if (*i == PropertyType::pDIR_5p) inv.labels.insert (PropertyType::pDIR_3p);
-      else if (*i == PropertyType::pDIR_3p) inv.labels.insert (PropertyType::pDIR_5p);
-      else inv.labels.insert (*i);
-    }
+    for (i = labels.begin (); i != labels.end (); ++i)
+      {
+	if (*i == PropertyType::pDIR_5p)
+	  {
+	    inv.labels.insert (PropertyType::pDIR_3p);
+	  }
+	else if (*i == PropertyType::pDIR_3p)
+	  {
+	    inv.labels.insert (PropertyType::pDIR_5p);
+	  }
+	else
+	  {
+	    inv.labels.insert (*i);
+	  }
+      }
     return inv;
   }
 
 
-  // I/O -----------------------------------------------------------------------
-  
-
   ostream&
   Relation::write (ostream &os) const
   {
-    if (ref!=0 && res!=0) {
-      os << "{" 
-	 << ref->getResId () << ref->getType () << " -> " 
-	 << res->getResId () << res->getType () << ": ";
-      copy (labels.begin (), labels.end (), ostream_iterator< const PropertyType* > (os, " "));
-      if (is (PropertyType::pPairing))
-	os << " " << refFace << "/" << resFace;
-      os << "}";
-    }	
+    if (ref != 0 && res != 0)
+      {
+	os << "{" 
+	   << ref->getResId () << ref->getType () << " -> " 
+	   << res->getResId () << res->getType () << ": ";
+	copy (labels.begin (), labels.end (), ostream_iterator< const PropertyType* > (os, " "));
+	if (is (PropertyType::pPairing))
+	  {
+	    os << " " << refFace << "/" << resFace;
+	  }
+	os << "}";
+      }
     return os;
   }
 
 
-  // STATIC METHODS ------------------------------------------------------------
-
-
-  set< const PropertyType* > 
-  Relation::areAdjacent (const Residue* ra, const Residue *rb)
+  set< const PropertyType* >
+  Relation::areAdjacent (const Residue *ra, const Residue *rb)
   {
     Relation rel (ra, rb);
 
@@ -899,9 +932,8 @@ namespace mccore
   }
   
 
-  set< const PropertyType* > 
-  Relation::arePaired (const Residue* ra, const Residue *rb, 
-		       const PropertyType* &pta, const PropertyType* &ptb)
+  set< const PropertyType* >
+  Relation::arePaired (const Residue *ra, const Residue *rb, const PropertyType *pta, const PropertyType *ptb)
   {
     Relation rel (ra, rb);
 
@@ -912,26 +944,26 @@ namespace mccore
   }
 
   
-  set< const PropertyType* > 
-  Relation::areStacked (const Residue* ra, const Residue *rb)
+  set< const PropertyType* >
+  Relation::areStacked (const Residue *ra, const Residue *rb)
   {
     Relation rel (ra, rb);
 
     rel.areStacked ();
     return rel.getLabels ();
   }
-
   
-  set< const PropertyType* > 
-  Relation::areHBonded (const Residue* ra, const Residue *rb)
+  
+  set< const PropertyType* >
+  Relation::areHBonded (const Residue *ra, const Residue *rb)
   {
     Relation rel (ra, rb);
-
+    
     rel.areHBonded ();
     return rel.getLabels ();
   }
     
-
+  
   Vector3D 
   Relation::pyrimidineNormal (const Residue *res)
   {
@@ -992,48 +1024,71 @@ namespace mccore
 
 
   const PropertyType* 
-  Relation::getFace (const Residue *r, const Vector3D& p)
+  Relation::getFace (const Residue *r, const Vector3D &p)
   {
-    if (!Relation::isInit) Relation::init ();
+    if (! Relation::isInit)
+      {
+	Relation::init ();
+      }
 
     HomogeneousTransfo t;
     t = r->getReferential ();
     t = t.invert ();
     Vector3D pp = t * p;
-
     vector< pair< Vector3D, const PropertyType* > > *faces = 0;
 
-    if (r->getType ()->isA ()) faces = &faces_A;
-    else if (r->getType ()->isC ()) faces = &faces_C;
-    else if (r->getType ()->isG ()) faces = &faces_G;
-    else if (r->getType ()->isU ()) faces = &faces_U;
-    else if (r->getType ()->isT ()) faces = &faces_T;
+    if (r->getType ()->isA ())
+      {
+	faces = &faces_A;
+      }
+    else if (r->getType ()->isC ())
+      {
+	faces = &faces_C;
+      }
+    else if (r->getType ()->isG ())
+      {
+	faces = &faces_G;
+      }
+    else if (r->getType ()->isU ())
+      {
+	faces = &faces_U;
+      }
+    else if (r->getType ()->isT ())
+      {
+	faces = &faces_T;
+      }
 
     int face_index = 0;
+    unsigned int x;
     float dist = numeric_limits< float >::max ();
-    for (unsigned int x=0; x<faces->size (); ++x) {
-      float tmp = pp.distance ((*faces)[x].first);
-      if (tmp < dist) {
-	face_index = x;
-	dist = tmp;
+    
+    for (x = 0; x < faces->size (); ++x)
+      {
+	float tmp = pp.distance ((*faces)[x].first);
+	if (tmp < dist)
+	  {
+	    face_index = x;
+	    dist = tmp;
+	  }
       }
-    }
 
     return (*faces)[face_index].second;   
   }
-
-
+  
+  
   void 
   Relation::init () 
   {
     try
     {
-      
       Vector3D ta, tb;
-
       ExtendedResidue A (ResidueType::rRA, ResId ('A', 1));
-      A.setTheoretical ();
+      ExtendedResidue C (ResidueType::rRC, ResId ('C', 1));
+      ExtendedResidue G (ResidueType::rRG, ResId ('G', 1));
+      ExtendedResidue U (ResidueType::rRU, ResId ('U', 1));
+      ExtendedResidue T (ResidueType::rDT, ResId ('T', 1));
 
+      A.setTheoretical ();
       ta = *A.safeFind (AtomType::aH8);	
       faces_A.push_back (make_pair (ta, PropertyType::parseType ("C8")));
       ta = (*A.safeFind (AtomType::aH8) + *A.safeFind (AtomType::aLP7)) / 2;	
@@ -1057,9 +1112,7 @@ namespace mccore
       ta = *A.safeFind (AtomType::aLP3);
       faces_A.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
 
-      ExtendedResidue C (ResidueType::rRC, ResId ('C', 1));
       C.setTheoretical ();
-
       ta = *C.safeFind (AtomType::aH6);
       faces_C.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
       ta = (*C.safeFind (AtomType::a1H4) + *C.safeFind (AtomType::aH5)) / 2;
@@ -1081,9 +1134,7 @@ namespace mccore
       ta = *C.safeFind (AtomType::a1LP2);
       faces_C.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
 
-      ExtendedResidue G (ResidueType::rRG, ResId ('G', 1));
       G.setTheoretical ();
-
       ta = *G.safeFind (AtomType::aH8);
       faces_G.push_back (make_pair (ta, PropertyType::parseType ("C8")));
       ta = (*G.safeFind (AtomType::aH8) + *G.safeFind (AtomType::aLP7)) / 2;
@@ -1109,9 +1160,7 @@ namespace mccore
       ta = (*G.safeFind (AtomType::a1H2) + *G.safeFind (AtomType::aLP3)) / 2;
       faces_G.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
     
-      ExtendedResidue U (ResidueType::rRU, ResId ('U', 1));
       U.setTheoretical ();
-	
       ta = *U.safeFind (AtomType::aH6);
       faces_U.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
       ta = (*U.safeFind (AtomType::a1LP4) + *U.safeFind (AtomType::aH5)) / 2;
@@ -1135,9 +1184,7 @@ namespace mccore
       ta = *U.safeFind (AtomType::a1LP2);
       faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
     
-      ExtendedResidue T (ResidueType::rDT, ResId ('T', 1));
       T.setTheoretical ();
-    
       ta = *T.safeFind (AtomType::aH6);
       faces_T.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
       ta = (*T.safeFind (AtomType::a1LP4) + *T.safeFind (AtomType::aC5M)) / 2;
@@ -1174,27 +1221,30 @@ namespace mccore
 
 
   const PropertyType* 
-  Relation::translatePairing (const Residue* ra, const Residue *rb, 
-			      list< HBondFlow > &hbf, 
-			      float total_flow, unsigned int size_hint)
+  Relation::translatePairing (const Residue *ra, const Residue *rb, list< HBondFlow > &hbf, float total_flow, unsigned int size_hint)
   {
     list< PairingPattern >::const_iterator i;
     const PropertyType *type;
     const PropertyType *best_type = 0;
     unsigned int best_size = 0;
 
-    for (i=PairingPattern::patternList().begin ();
-	 i!=PairingPattern::patternList().end (); ++i) {
-      if (size_hint >= (*i).size ()
-	  && (type = (*i).evaluate (ra, rb, hbf)) != 0) {
-	if ((*i).size () > best_size) {
-	  best_size = (*i).size ();
-	  best_type = type;
-	}
+    for (i = PairingPattern::patternList ().begin ();
+	 i != PairingPattern::patternList().end ();
+	 ++i)
+      {
+	if (size_hint >= (*i).size ()
+	    && (type = (*i).evaluate (ra, rb, hbf)) != 0)
+	  {
+	    if ((*i).size () > best_size)
+	      {
+		best_size = (*i).size ();
+		best_type = type;
+	      }
+	  }
       }
-    }
     return best_type;
   }
+  
 }
 
 

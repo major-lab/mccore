@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.13.4.4 $
+// $Revision: 1.13.4.5 $
 // 
 // This file is part of mccore.
 // 
@@ -31,8 +31,11 @@
 #include <utility>
 #include <vector>
 
-#include "HomogeneousTransfo.h"
+#include "Algo.h"
+#include "Exception.h"
 #include "HBond.h"
+#include "HomogeneousTransfo.h"
+#include "Residue.h"
 #include "Vector3D.h"
 
 using namespace std;
@@ -41,7 +44,6 @@ using namespace std;
 
 namespace mccore
 {
-  class Residue;
   class PropertyType;
 
   
@@ -64,25 +66,29 @@ namespace mccore
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.13.4.4 2004-12-25 02:44:08 larosem Exp $
+   * @version $Id: Relation.h,v 1.13.4.5 2004-12-27 01:52:35 larosem Exp $
    */
   class Relation
   {
+    static const float PAIRING_CUTOFF = 0.8f;
+    static const float TWO_BONDS_CUTOFF = 1.5f;
+    static const float THREE_BONDS_CUTOFF = 2.1f;
 
   protected:
     
     /**
-     * The residue at the origin of this relation.
+     * The residue location at the origin of this relation.
      */
-    const Residue* ref;
+    const Residue *ref;
 
     /**
-     * The residue at the destination of this relation.
+     * The residue location at the destination of this relation.
      */
-    const Residue* res;
+    const Residue *res;
 
     /**
-     * The homogeneous matrix that expresses the transformation from the ref to the res.
+     * The homogeneous matrix that expresses the transformation from the ref
+     * to the res.
      */
     HomogeneousTransfo tfo;
 
@@ -95,12 +101,12 @@ namespace mccore
     /**
      * A property for the interacting face of the ref.
      */
-    const PropertyType* refFace;
+    const PropertyType *refFace;
     
     /**
      * A property for the interacting face of the res.
      */
-    const PropertyType* resFace;
+    const PropertyType *resFace;
     
     /**
      * General properties of the interaction.
@@ -137,8 +143,8 @@ namespace mccore
     /**
      * Initializes the object. The relation keeps only pointers to the
      * original residues.
-     * @param rA the residue of origin of the relation.
-     * @param rB the residue of destination of the relation.
+     * @param rA the residue location of origin of the relation.
+     * @param rB the residue location of destination of the relation.
      */
     Relation (const Residue *rA, const Residue *rB);
 
@@ -171,12 +177,12 @@ namespace mccore
     // ACCESS ---------------------------------------------------------------
 
     /**
-     * Returns the origin residue of the relation.
+     * Returns the origin residue location of the relation.
      */
     const Residue* getRef () const { return ref; }
 
     /**
-     * Returns the destination residue of the relation.
+     * Returns the destination residue location of the relation.
      */
     const Residue* getRes () const { return res; }
     
@@ -219,6 +225,16 @@ namespace mccore
      */
     float getFlowSum () const { return sum_flow; }
 
+    /**
+     * Replaces the Residue pointers with those coming from the set.  It
+     * is used by the GraphModel class to do a deep copy without doing a full
+     * re-annotation.
+     * @param resSet a set of Residue pointers.
+     * @exception NoSuchElementException is thrown when ref or res is not found
+     * in resSet.
+     */
+    void reassignResiduePointers (const set< const Residue*, less_deref< Residue > > &resSet) throw (NoSuchElementException);
+
     // METHODS --------------------------------------------------------------
 
     bool is (const PropertyType* t) const
@@ -239,6 +255,15 @@ namespace mccore
      */
     void areAdjacent ();
 
+  private:
+
+    /**
+     * Adds the pairing labels into the Relation.
+     */
+    void addPairingLabels ();
+
+  protected:
+    
     /**
      * Tests for h-bonded relation.
      */
@@ -276,8 +301,7 @@ namespace mccore
      * @param rb another residue.
      * @return a set of properties describing the adjacency state.
      */
-    static set< const PropertyType* >
-    areAdjacent (const Residue* ra, const Residue *rb);
+    static set< const PropertyType* > areAdjacent (const Residue *ra, const Residue *rb);
     
     /**
      * Determines if the given residues are stacked in space based
@@ -286,8 +310,7 @@ namespace mccore
      * @param rb another residue.
      * @return a set of properties describing the stacked state.
      */
-    static set< const PropertyType* > 
-    areStacked (const Residue* ra, const Residue *rb);
+    static set< const PropertyType* > areStacked (const Residue *ra, const Residue *rb);
     
     /**
      * Determines if the given residues are paired in space based on
@@ -303,17 +326,14 @@ namespace mccore
      * @return a Vector containing a Set of keywords describing the paired state,
      *          the face of ra and the face of rb interacting in the pairing.
      */
-    static set< const PropertyType* > 
-    arePaired (const Residue* ra, const Residue *rb, 
-	       const PropertyType*& pta, const PropertyType*& ptb);
+    static set< const PropertyType* > arePaired (const Residue *ra, const Residue *rb, const PropertyType *pta, const PropertyType *ptb);
 
     /**
      * [Experimental] Determines if there is at least one H-HBond
      * possible between the two residues, regardless of the position
      * of the donors and acceptors.
      */
-    static set< const PropertyType* > 
-    areHBonded (const Residue* ra, const Residue *rb);
+    static set< const PropertyType* > areHBonded (const Residue *ra, const Residue *rb);
     
 
     // PRIVATE METHODS ------------------------------------------------------
@@ -333,7 +353,7 @@ namespace mccore
     /**
      * 
      */
-    static const PropertyType* getFace (const Residue *r, const Vector3D& p);
+    static const PropertyType* getFace (const Residue *r, const Vector3D &p);
 
     /**
      * 
@@ -343,10 +363,7 @@ namespace mccore
     /**
      * 
      */
-    static const PropertyType* 
-    translatePairing (const Residue* ra, const Residue *rb, 
-		      list< HBondFlow > &hbf, float total_flow,
-		      unsigned int size_hint);
+    static const PropertyType* translatePairing (const Residue *ra, const Residue *rb, list< HBondFlow > &hbf, float total_flow, unsigned int size_hint);
 
     // I/O  -----------------------------------------------------------------
 
