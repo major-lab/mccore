@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Nov 14 16:43:40 2001
-// Update Count     : 6
+// Last Modified On : Wed Dec 19 10:01:45 2001
+// Update Count     : 7
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -152,7 +152,7 @@ AbstractResidue&
 Model::operator[] (size_type nth)
 {
   if (nth > size ())
-    return *(end ());
+    return *end ();
   else
     {
       iterator it;
@@ -168,7 +168,7 @@ const AbstractResidue&
 Model::operator[] (size_type nth) const
 {
   if (nth > size ())
-    return *(end ());
+    return *end ();
   else
     {
       const_iterator cit;
@@ -192,14 +192,13 @@ Model::setResidueFM (ResidueFactoryMethod *fm)
 AbstractResidue::iterator
 Model::find (const char *str)
 {
-  char *s = new char[strlen (str) + 1];
+  char *s = strdup (str);
   char *p = s;
   char *argum;
   vector< char* > tok;
   Model::iterator mit;
   AbstractResidue::iterator it;
   
-  strcpy (s, str);
   argum = strsep (&p, ":");
   while (argum)
     {
@@ -208,12 +207,12 @@ Model::find (const char *str)
       argum = strsep (&p, ":");
     }
 
-  if (tok.size () == 2
-      && (mit = find (CResId (tok[0]))) != end ()
-      && (it = mit->find (iPdbstream::GetAtomType (tok[1]))) != mit->end ())
-    return it;
-  else
-    return AbstractResidue::iterator ();
+  if (tok.size () != 2
+      || (mit = find (CResId (tok[0]))) == end ()
+      || (it = mit->find (iPdbstream::GetAtomType (tok[1]))) == mit->end ())
+    it = AbstractResidue::iterator ();
+  delete[] s;
+  return it;
 }
 
 
