@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.17 $
+// $Revision: 1.18 $
 //
 // This file is part of mccore.
 // 
@@ -61,7 +61,7 @@ namespace mccore {
    * details).
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Model.h,v 1.17 2004-05-27 17:35:19 thibaup Exp $
+   * @version $Id: Model.h,v 1.18 2004-07-12 19:37:07 thibaup Exp $
    */
   class Model
   {
@@ -70,7 +70,7 @@ namespace mccore {
     
     typedef unsigned int size_type;
 
-  private:
+  protected:
 
     /**
      * Factory method for creating new residues.

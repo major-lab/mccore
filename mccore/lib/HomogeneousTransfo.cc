@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.13 $
+// $Revision: 1.14 $
 //
 //  This file is part of mccore.
 //  
@@ -434,7 +434,10 @@ namespace mccore
   HomogeneousTransfo::invert () const 
   {
     if ((matrix[3] + matrix[7] + matrix[11]) != 0.0)
-      throw FatalIntLibException ("HomogeneousTransfo containing scale cannot be inverted.", __FILE__, __LINE__);
+    {
+      FatalIntLibException ex ("HomogeneousTransfo containing scale cannot be inverted.", __FILE__, __LINE__);
+      throw ex;
+    }
 
     return HomogeneousTransfo (matrix[0], matrix[1], matrix[2], 
 			       -(matrix[12]*matrix[0] + matrix[13]*matrix[1] + matrix[14]*matrix[2]),
