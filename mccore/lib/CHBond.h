@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // CHBond.h
-// Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
@@ -13,15 +13,19 @@
 #ifndef _CHBond_h
 #define _CHBond_h
 
+#include <stdlib.h>
 
 class CResidue;
 class t_Atom;
+class CAtom;
 class ostream;
 
 
 
 /**
  * @short Describes the H-bond between to atoms.
+ *
+ * This class implements the methods defined in the article: TODO.
  *
  * @author Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
  */
@@ -64,6 +68,16 @@ class CHBond
   mutable float cache_penality;
 
 public:
+  /**
+   * Parameters (mean, variance, weight, prob H-bond) for each measure.
+   */
+  static const int sNbGauss;
+  static const float sProbH[7];
+  static const float sWeight[7];
+  static const float sMean[7][3];
+  static const float sCovarInv[7][3][3];
+  static const float sCovarDet[7];
+  
 
   // LIFECYCLE ------------------------------------------------------------
 
@@ -126,8 +140,25 @@ public:
   void SetHBond (const CResidue *nResidueA, const CResidue *nResidueB,
 		 t_Atom *nDonor, t_Atom *nHydro,
 		 t_Atom *nAcceptor, t_Atom *nLonePair);
+  const CResidue *GetResidueA () const { return mResidueA; }
+  const CResidue *GetResidueB () const { return mResidueB; }
+  const CAtom &GetDonor (const CResidue *r = NULL) const ;
+  const CAtom &GetHydrogen (const CResidue *r = NULL) const ;
+  const CAtom &GetAcceptor (const CResidue *r = NULL) const ;
+  const CAtom &GetLonePair (const CResidue *r = NULL) const ;
 
   // METHODS --------------------------------------------------------------
+
+  /**
+   * Evaluate a H-Bond given the three parameter
+   * @param dist the donor-acceptor distance
+   * @param angle_h the acceptor-donor-hydrogen angle
+   * @param angle_l the donor-acceptor-lonepair angle
+   * @param decision
+   * @return a score for that H-Bond in the range [0,1]
+   */
+  static float Eval (float dist, float angle_h, float angle_l, bool decision = false);
+
 
   // I/O  -----------------------------------------------------------------
 

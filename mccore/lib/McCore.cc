@@ -23,7 +23,7 @@
 #include "CResidue.h"
 #include "CTransfo.h"
 #include "ResidueTypeImp.h"
-
+#include "CException.h"
 
 
 map< const char *, t_Atom*, less_string > gMiscAtomString;
@@ -541,16 +541,41 @@ RadToDegree (float r)
 
 
 
-float 
-rmsd (const vector< CResidue::iterator > &mgr1,
-      const vector< CResidue::iterator > &mgr2)
-{
-  float rmsd = 0;
-  vector< CResidue::iterator >::const_iterator i, j;
+//  float 
+//  rmsd (const vector< CResidue::iterator > &mgr1,
+//        const vector< CResidue::iterator > &mgr2)
+//  {
+//    float rmsd = 0;
+//    vector< CResidue::iterator >::const_iterator i, j;
   
-  for (i = mgr1.begin (), j = mgr2.begin (); i != mgr1.end (); i++, j++)
-    rmsd += **i || **j;
-  return sqrt (rmsd / (float)mgr1.size ());
+//    for (i = mgr1.begin (), j = mgr2.begin (); i != mgr1.end (); i++, j++)
+//      rmsd += **i || **j;
+//    return sqrt (rmsd / (float)mgr1.size ());
+//  }
+
+
+
+float 
+rmsd (const CResidue::iterator &begin_a, const CResidue::iterator &end_a,
+      const CResidue::iterator &begin_b, const CResidue::iterator &end_b)
+{
+  float rmsd = 0.0;
+  int count = 0;
+  CResidue::iterator i,j;
+  
+  for (i=begin_a, j=begin_b; (i!=end_a || j!=end_b); ++i, ++j) {
+    if (i->GetType () != j->GetType ())
+      throw CFatalIntLibException ("Mismatch atom in rmsd computation.", 
+				   __FILE__, __LINE__);
+    rmsd += *i || *j;
+    count ++;
+  }
+  
+  if (i!=end_a || j!=end_b)
+    throw CFatalIntLibException ("One residue is missing some atoms", 
+				 __FILE__, __LINE__);
+    
+  return sqrt (rmsd / (float)count);
 }
 
 

@@ -31,7 +31,8 @@ class oBinstream;
  * 
  * This object is the container for residues.  It is an unsorted list of
  * residues.  Random access is simulated with sequential access.  This class
- * should be the replacement for nearly all CResidue*.
+ * should be the replacement for nearly all CResidue*.  Note: A
+ * validated model contains only nucleic acids residues.
  *
  * @author Martin Larose
  */
@@ -85,7 +86,8 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Creates a new model with validated residues.
+   * Creates a new model with validated residues.  Only nucleic acids
+   * residues are considered valid at this point.
    * @return the new model.
    */
   CModel Validate () const;

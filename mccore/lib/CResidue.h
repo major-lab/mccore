@@ -42,6 +42,10 @@ class oBinstream;
  * residue is created, modified and returned.  This way existing iterators
  * over the residue are not dandling.
  *
+ * The origin atoms (mAtomRef) are now sorted by CAtom in order to accelerate 
+ * some operations.  Combined with the origin_iterator, this allows to
+ * iterate without placing and calculate a rmsd more efficiently.
+ *
  * @author Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
  */
 class CResidue : public CResId
@@ -251,6 +255,7 @@ public:
     // I/O  -----------------------------------------------------------------
   };
   
+
   /**
    * @short Const iterator class over atoms in residues.
    *
@@ -272,7 +277,7 @@ public:
     const CResidue *mRes;
     
     /**
-     * The index of the atom global referencial container.
+     * The index of the atom global referential container.
      */
     size_type mPos;
     
@@ -407,11 +412,173 @@ public:
     
     // I/O  -----------------------------------------------------------------
   };
+
+
+
+  /**
+   * @short Const iterator class over atoms in residues at origin.
+   *
+   * @author Patrick Gendron <pgendron@iro.umontreal.ca>
+   */
+  class origin_residue_iterator
+  {
+  public:
+    typedef random_access_iterator_tag iterator_category;
+    typedef const CAtom value_type;
+    typedef ptrdiff_t difference_type;
+    typedef const CAtom* pointer;
+    typedef const CAtom& reference;
+    typedef size_t size_type;
+  private:
+    /**
+     * The pointer over the residue.
+     */
+    const CResidue *mRes;
+    
+    /**
+     * The index of the atom global referential container.
+     */
+    size_type mPos;
+    
+    /**
+     * The unary function filter.
+     */
+    const AtomSet *mSet;
+    
+  public:
+    
+    // LIFECYCLE ------------------------------------------------------------
+    
+    /**
+     * Initializes the iterator.
+     */
+    origin_residue_iterator ();
+    
+    /**
+     * Initializes the iterator with a residue and position.
+     * @param nRes the residue.
+     * @param nPos the position over the atom global referential container.
+     * @param nSet the atom set unary filter function.
+     * @param nOption the atom set option unary filter function.
+     */
+    origin_residue_iterator (const CResidue *nRes, int nPos,
+			     const AtomSet *nSet = 0);
+    
+    /**
+     * Initializes the origin_iterator with the right's contents.
+     * @param right the origin_iterator to copy.
+     */
+    origin_residue_iterator (const origin_residue_iterator &right);
+    
+    /**
+     * Destructs the object.
+     */
+    ~origin_residue_iterator () { delete mSet; }
+    
+    // OPERATORS ------------------------------------------------------------
+    
+    /**
+     * Assigns the origin_iterator with the right's content.
+     * @param right the object to copy.
+     * @return itself.
+     */
+    origin_residue_iterator& operator= (const origin_residue_iterator &right);
+    
+    /**
+     * Advances and assigns the origin_iterator of k positions.
+     * @param k the number of positions to advance.
+     * @return itself.
+     */
+    origin_residue_iterator& operator+= (difference_type k);
+    
+    /**
+     * Gets the atom pointed by the current mPos index.  Places the atom if
+     * needed.
+     * @return the atom pointer over local referential atom container.
+     */
+    pointer operator-> () const { return &(mRes->mAtomRef[mPos]); }
+    
+    /**
+     * Dereferences the iterator.  Places the atom if needed.
+     * @return the atom reference over local referential atom container.
+     */
+    reference operator* () const { return mRes->mAtomRef[mPos]; }
+    
+    /**
+     * Pre-advances the iterator to the next atom filtered by the unary
+     * functions.
+     * @return the iterator over the next atom.
+     */
+    origin_residue_iterator& operator++ ();
+    
+    /**
+     * Post-advances the iterator to the next atom filtered by the unary
+     * functions.
+     * @param ign ignored parameter.
+     * @return the iterator over the current atom.
+     */
+    origin_residue_iterator operator++ (int ign);
+    
+    /**
+     * Adds the origin_iterator to a distance type k.  The result may points
+     * to the end of the residue.
+     * @param k the distance type.
+     * @return a new iterator pointing to itself + k.
+     */
+    origin_residue_iterator operator+ (difference_type k) const;
+    
+    /**
+     * Calculates the distance between 2 origin_iterators.  Self and i must
+     * be origin_iterators from the same container.
+     * @param i the origin_iterator.
+     * @return the difference type between 2 origin_iterators.
+     */
+    difference_type operator- (const origin_residue_iterator &i) const;
+    
+    /**
+     * Tests whether the iterators are equal.
+     * @param right the right iterator.
+     * @return the truth value.
+     */
+    bool operator== (const origin_residue_iterator &right) const
+    { return mPos == right.mPos; }
+    
+    /**
+     * Tests whether the iterators are different.
+     * @param right the right iterator.
+     * @return the truth value.
+     */
+    bool operator!= (const origin_residue_iterator &right) const
+    { return !(operator== (right)); }
+    
+    /**
+     * Tests whether the current iterator is less than the right.
+     * @param right the right iterator.
+     * @return the truth value.
+     */
+    bool operator< (const origin_residue_iterator &right) const
+    { return mPos < right.mPos; }
+    
+    // ACCESS ---------------------------------------------------------------
+    
+    /**
+     * Casts the iterator to a residue.
+     * @return the residue pointed by the iterator.
+     */
+    operator const CResidue* () const { return mRes; }
+    
+    // METHODS --------------------------------------------------------------
+    
+    // I/O  -----------------------------------------------------------------
+  };
+
   
   friend residue_iterator;
   friend const_residue_iterator;
+  friend origin_residue_iterator;
   typedef residue_iterator iterator;
   typedef const_residue_iterator const_iterator;
+  typedef origin_residue_iterator origin_iterator;
 
   // LIFECYCLE ------------------------------------------------------------
 
@@ -534,6 +701,19 @@ public:
   const_iterator end () const { return const_iterator (this, size ()); }
 
   /**
+   * Gets the begin origin iterator.
+   * @return the origin_iterator over the first element.
+   */
+  origin_iterator orig_begin (AtomSet *atomset = 0) const
+  { return origin_iterator (this, 0, atomset); }
+
+  /**
+   * Gets the end origin iterator.
+   * @return the origin_iterator past the last element.
+   */
+  origin_iterator orig_end () const { return origin_iterator (this, size ()); }
+
+  /**
    * Finds an element whose key is k.
    * @param k the atom type key.
    * @return the iterator to the element or end () if it is not found.
@@ -564,7 +744,7 @@ public:
    * Sets the residue id.
    * @param resid the new residue id.
    */
-  void SetResId (const CResId &resid) { CResId::operator= (resid); }
+  void SetId (const CResId &resid) { CResId::operator= (resid); }
 
   /**
    * Gets the residue type.

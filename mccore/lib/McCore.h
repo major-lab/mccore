@@ -1764,15 +1764,16 @@ float RadToDegree (float r);
 
 
 /**
- * Calculates the rmsd between the vectors of atoms without performing an
- * alignment.
- * @param mgr1 the first vector of atoms.
- * @param mgr2 the second vector of atoms.
- * @return the rmsd value.
+ * Calculates the rmsd between the atoms in the iterator range 
+ * without performing an alignment.
+ *@param begin_a a start iterator on the first atom container
+ *@param end_a an end iterator on the first atom container
+ *@param begin_b a start iterator on the second atom container
+ *@param end_b an end iterator on the second atom container
+ *@return the rmsd value.
  */
-float rmsd (const vector< CResidue::iterator > &mgr1,
-	    const vector< CResidue::iterator > &mgr2);
-
+float rmsd (const CResidue::iterator &begin_a, const CResidue::iterator &end_a,
+	    const CResidue::iterator &begin_b, const CResidue::iterator &end_b);
 
 
 /**

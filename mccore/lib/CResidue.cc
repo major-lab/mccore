@@ -241,6 +241,111 @@ CResidue::const_residue_iterator::operator- (const CResidue::const_iterator &i) 
 
 
 
+CResidue::origin_residue_iterator::origin_residue_iterator ()
+  : mRes (0),
+    mPos (0),
+    mSet (new all_atom_set ())
+{ }
+
+
+
+CResidue::origin_residue_iterator::origin_residue_iterator (const CResidue *nRes,
+							    int nPos,
+							    const AtomSet *nSet)
+  : mRes (nRes), mPos (nPos), mSet (nSet)
+{
+  size_type size = mRes->size ();
+
+  if (! mSet)
+    mSet = new all_atom_set ();
+  while (mPos < size && ! mSet->operator() (mRes->mAtomRef[mPos]))
+    ++mPos;
+}
+
+
+
+CResidue::origin_residue_iterator::origin_residue_iterator (const CResidue::origin_iterator &right)
+  : mRes (right.mRes),
+    mPos (right.mPos),
+    mSet (right.mSet->clone ())
+{ }
+
+
+
+CResidue::origin_iterator&
+CResidue::origin_residue_iterator::operator= (const CResidue::origin_iterator &right)
+{
+  if (this != &right)
+    {
+      mRes = right.mRes;
+      mPos = right.mPos;
+      delete mSet;
+      mSet = right.mSet->clone ();
+    }
+  return *this;
+}
+
+
+
+CResidue::origin_iterator&
+CResidue::origin_residue_iterator::operator+= (difference_type k)
+{
+  size_type size = mRes->mAtomRef.size ();
+
+  while (k > 0 && mPos < size)
+    if (++mPos != size && mSet->operator() (mRes->mAtomRef[mPos]))
+      --k;
+  return *this;
+}
+
+
+
+CResidue::origin_iterator&
+CResidue::origin_residue_iterator::operator++ ()
+{
+  size_type size = mRes->mAtomRef.size ();
+
+  while (mPos < size)
+    if (++mPos == size || mSet->operator() (mRes->mAtomRef[mPos]))
+      break;
+	
+  return *this;
+}
+
+
+
+CResidue::origin_iterator
+CResidue::origin_residue_iterator::operator++ (int ign)
+{
+  origin_residue_iterator ret = *this;
+  size_type size = mRes->mAtomRef.size ();
+  
+  while (mPos < size)
+    if (++mPos == size || mSet->operator() (mRes->mAtomRef[mPos]))
+      break;
+
+  return ret;
+}
+
+
+
+CResidue::origin_iterator
+CResidue::origin_residue_iterator::operator+ (difference_type k) const
+{
+  return origin_residue_iterator (*this) += k;
+}
+
+
+
+CResidue::origin_iterator::difference_type
+CResidue::origin_residue_iterator::operator- (const CResidue::origin_iterator &i) const
+{
+  return difference_type (mPos - i.mPos);
+}
+
+
+
+
 CResidue::CResidue (t_Residue *type, const vector< CAtom > &vec,
 		    const CResId &nId)
   : CResId (nId), mType (type), mResName (0),
@@ -251,7 +356,11 @@ CResidue::CResidue (t_Residue *type, const vector< CAtom > &vec,
   vector< CAtom >::const_iterator cit;
   vector< CAtom >::size_type i;
   
-  for (cit = vec.begin (), i = 0; cit != vec.end (); ++cit, ++i)
+  vector< CAtom > sorted_vec = vec;
+  // Sort the Atom vector before doing anything else
+  ::sort (sorted_vec.begin (), sorted_vec.end ());
+
+  for (cit = sorted_vec.begin (), i = 0; cit != sorted_vec.end (); ++cit, ++i)
     {
       map< const t_Atom*, int >::iterator pos = mAtomIndex.find (cit->GetType ());
       
