@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu May 10 14:49:18 2001
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 // 
 // This file is part of mccore.
 // 
@@ -44,7 +44,7 @@ namespace mccore
    * Directed graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: OrientedGraph.h,v 1.3 2005-02-01 22:13:33 larosem Exp $
+   * @version $Id: OrientedGraph.h,v 1.4 2005-03-09 22:42:30 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -54,18 +54,22 @@ namespace mccore
   class OrientedGraph : public Graph< V, E, VW, EW, Vertex_Comparator >
   {
 
+  protected:
+
+    typedef Graph< V, E, VW, EW, Vertex_Comparator > super;
+    
   public:
 
-    typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::size_type size_type;
-    typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::label label;
-    typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::iterator iterator;
-    typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::const_iterator const_iterator;
+    typedef typename super::size_type size_type;
+    typedef typename super::label label;
+    typedef typename super::iterator iterator;
+    typedef typename super::const_iterator const_iterator;
 
   protected:
     
-    typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::V2VLabel V2VLabel;
-    typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::EV2ELabel EV2ELabel;
-    typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::EndVertices EndVertices;
+    typedef typename super::V2VLabel V2VLabel;
+    typedef typename super::EV2ELabel EV2ELabel;
+    typedef typename super::EndVertices EndVertices;
 
   public:
     
@@ -74,20 +78,20 @@ namespace mccore
     /**
      * Initializes the object.
      */
-    OrientedGraph () : Graph< V, E, VW, EW, Vertex_Comparator > () { }
+    OrientedGraph () : super () { }
 
     /**
      * Initializes the object with the right's content.
      * @param right the object to copy.
      */
     OrientedGraph (const OrientedGraph &right)
-      : Graph< V, E, VW, EW, Vertex_Comparator > (right) { }
+      : super (right) { }
 
     /**
      * Clones the object.
      * @return a copy of the object.
      */
-    virtual Graph< V, E, VW, EW, Vertex_Comparator >* cloneGraph () const
+    virtual super* cloneGraph () const
     {
       return new OrientedGraph< V, E, VW, EW, Vertex_Comparator> (*this);
     }
@@ -470,7 +474,7 @@ namespace mccore
     virtual ostream& write (ostream& os) const
     {
       os << "[OrientedGraph]" << endl;
-      return Graph< V, E, VW, EW, Vertex_Comparator >::write (os);
+      return super::write (os);
     }
     
   };
