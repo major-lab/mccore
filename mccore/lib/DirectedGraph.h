@@ -29,11 +29,9 @@
 #ifndef _DirectedGraph_h_
 #define _DirectedGraph_h_
 
-#include <iostream>
+#include <iostream.h>
 #include <map.h>
 #include <vector.h>
-
-using namespace std;
 
 
 

@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
-// $Revision: 1.1.2.2 $
+// $Revision: 1.1.2.3 $
 // 
 // This file is part of mccore.
 // 
@@ -26,7 +26,7 @@
 #ifndef _mccore_RnamlReader_h_
 #define _mccore_RnamlReader_h_
 
-#include <vector>
+#include <vector.h>
 
 namespace rnaml {
   class Atom;
@@ -53,7 +53,7 @@ class ResidueFactoryMethod;
  * molecule.
  *
  * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
- * @version $Id: RnamlReader.h,v 1.1.2.2 2003-11-11 19:55:16 larosem Exp $
+ * @version $Id: RnamlReader.h,v 1.1.2.3 2003-11-18 19:34:04 larosem Exp $
  */
 class RnamlReader
 {

@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.1.4.4 $
-// $Id: RnamlWriter.cc,v 1.1.4.4 2003-11-18 16:22:03 larosem Exp $
+// $Revision: 1.1.4.5 $
+// $Id: RnamlWriter.cc,v 1.1.4.5 2003-11-18 19:34:12 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -28,10 +28,11 @@
 #include <config.h>
 #endif
 
-#include <iostream>
+#include <iostream.h>
+#include <stdio.h>
 #include <string>
 #include <string.h>
-#include <sstream>
+// #include <sstream>
 #include <errno.h>
 
 #include "AbstractResidue.h"
@@ -183,11 +184,15 @@ RnamlWriter::toRnaml (const Molecule &molecule)
       for (cit = molecule.begin (); molecule.end () != cit; ++cit)
 	{
 	  rnaml::Model *model;
-	  std::ostringstream oss;
-	  
+// 	  std::ostringstream oss;
+	  char *id;
+
 	  model = RnamlWriter::toRnaml (**cit);
-	  oss << (std::string) "model" << ++i;
-	  model->setId (oss.str ().c_str ());
+// 	  oss << (std::string) "model" << ++i;
+// 	  model->setId (oss.str ().c_str ());
+	  id = new char[256];
+	  sprintf (id, "model%d", ++i);
+	  model->setId (id);
 	  s->addModel (model);
 	}
       m->setStructure (s);

@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // CAtom.cc
-// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
