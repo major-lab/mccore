@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.30 $
-// $Id: Pdbstream.h,v 1.30 2004-10-15 20:37:46 thibaup Exp $
+// $Revision: 1.31 $
+// $Id: Pdbstream.h,v 1.31 2004-11-22 14:15:42 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -142,7 +142,7 @@ namespace mccore
    * </pre>
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Pdbstream.h,v 1.30 2004-10-15 20:37:46 thibaup Exp $
+   * @version $Id: Pdbstream.h,v 1.31 2004-11-22 14:15:42 thibaup Exp $
    */
   class iPdbstream : public istream
   {
@@ -388,7 +388,7 @@ namespace mccore
      * Sets the atomset filter used for dumping residues.
      * @param s the atom set filter.
      */
-    void setAtomSet (AtomSet *s) { atomset = s; }
+    void setAtomSet (AtomSet *s);
     
     /**
      * Sets the residue type of all successive calls to write (atom).

@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.43 $
-// $Id: Pdbstream.cc,v 1.43 2004-10-15 20:37:42 thibaup Exp $
+// $Revision: 1.44 $
+// $Id: Pdbstream.cc,v 1.44 2004-11-22 14:15:37 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -470,6 +470,14 @@ namespace mccore
     delete atomset; 
   }
   
+  
+  void
+  oPdbstream::setAtomSet (AtomSet *s)
+  {
+    delete this->atomset;
+    atomset = s;
+  }
+
   
   void
   oPdbstream::setPDBType (unsigned int type)
