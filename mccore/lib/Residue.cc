@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.44 $
-// $Id: Residue.cc,v 1.44 2004-08-17 18:30:37 thibaup Exp $
+// $Revision: 1.45 $
+// $Id: Residue.cc,v 1.45 2004-08-30 22:40:29 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -2279,7 +2279,7 @@ namespace mccore {
     if (it == atomIndex.end ())
       {
 	NoSuchAtomException ex ("", __FILE__, __LINE__);
-	ex << "residue " << *this << " is missing atom " << aType;
+	ex << "residue " << *this << " is missing atom " << *aType;
 	throw ex;
       }
     return atomGlobal[it->second];
