@@ -3,7 +3,7 @@
 // Copyright © 2003, 2004 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 // 
 //  This file is part of mccore.
 //  
@@ -41,7 +41,7 @@ namespace mccore {
    * Repository of residue types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueTypeStore.h,v 1.8 2004-09-24 22:26:00 larosem Exp $
+   * @version $Id: ResidueTypeStore.h,v 1.9 2004-09-27 21:29:04 larosem Exp $
    */
   class ResidueTypeStore
   {
@@ -190,6 +190,20 @@ namespace mccore {
       virtual bool isRibose () const { return true; }
       virtual bool describe (const ResidueType* t) const
       { return dynamic_cast< const Ribose* > (t); }
+    };
+
+    /**
+     *  Public abstract class for Amber residue representation.
+     */
+    class Amber : public virtual ResidueType
+    {
+    public:
+      Amber () { }
+      Amber (const char* t, const char* lt) : ResidueType (t, lt) { }
+
+      virtual bool isAmber () const { return true; }
+      virtual bool describe (const ResidueType* t) const
+      { return dynamic_cast< const Amber* > (t); }
     };
 
     /**
@@ -683,7 +697,7 @@ namespace mccore {
     /**
      * Public Amber RA RNA residue type class.
      */
-    class RRA : public virtual RA
+    class RRA : public virtual RA, public virtual Amber
     {
     public:
       RRA () {}
@@ -697,7 +711,7 @@ namespace mccore {
     /**
      * Public Amber RA5 RNA residue type class.
      */
-    class RRA5 : public virtual RRA
+    class RRA5 : public virtual RRA, public virtual Amber
     {
     public:
       RRA5 () {}
@@ -711,7 +725,7 @@ namespace mccore {
     /**
      * Public Amber RA3 RNA residue type class.
      */
-    class RRA3 : public virtual RRA
+    class RRA3 : public virtual RRA, public virtual Amber
     {
     public:
       RRA3 () {}
@@ -738,7 +752,7 @@ namespace mccore {
     /**
      * Public Amber RC RNA residue type class.
      */
-    class RRC : public virtual RC
+    class RRC : public virtual RC, public virtual Amber
     {
     public:
       RRC () {}
@@ -752,7 +766,7 @@ namespace mccore {
     /**
      * Public Amber RC5 RNA residue type class.
      */
-    class RRC5 : public virtual RRC
+    class RRC5 : public virtual RRC, public virtual Amber
     {
     public:
       RRC5 () {}
@@ -766,7 +780,7 @@ namespace mccore {
     /**
      * Public Amber RC3 RNA residue type class.
      */
-    class RRC3 : public virtual RRC
+    class RRC3 : public virtual RRC, public virtual Amber
     {
     public:
       RRC3 () {}
@@ -793,7 +807,7 @@ namespace mccore {
     /**
      * Public Amber RG RNA residue type class.
      */
-    class RRG : public virtual RG
+    class RRG : public virtual RG, public virtual Amber
     {
     public:
       RRG () {}
@@ -807,7 +821,7 @@ namespace mccore {
     /**
      * Public Amber RG5 RNA residue type class.
      */
-    class RRG5 : public virtual RRG
+    class RRG5 : public virtual RRG, public virtual Amber
     {
     public:
       RRG5 () {}
@@ -821,7 +835,7 @@ namespace mccore {
     /**
      * Public Amber RG3 RNA residue type class.
      */
-    class RRG3 : public virtual RRG
+    class RRG3 : public virtual RRG, public virtual Amber
     {
     public:
       RRG3 () {}
@@ -848,7 +862,7 @@ namespace mccore {
     /**
      * Public Amber RU RNA residue type class.
      */
-    class RRU : public virtual RU
+    class RRU : public virtual RU, public virtual Amber
     {
     public:
       RRU () {}
@@ -862,7 +876,7 @@ namespace mccore {
     /**
      * Public Amber RU5 RNA residue type class.
      */
-    class RRU5 : public virtual RRU
+    class RRU5 : public virtual RRU, public virtual Amber
     {
     public:
       RRU5 () {}
@@ -876,7 +890,7 @@ namespace mccore {
     /**
      * Public Amber RU3 RNA residue type class.
      */
-    class RRU3 : public virtual RRU
+    class RRU3 : public virtual RRU, public virtual Amber
     {
     public:
       RRU3 () {}
@@ -1048,7 +1062,7 @@ namespace mccore {
     /**
      * Public Amber RU DNA residue type class.
      */
-    class DDA : public virtual DA
+    class DDA : public virtual DA, public virtual Amber
     {
     public:
       DDA () {}
@@ -1062,7 +1076,7 @@ namespace mccore {
     /**
      * Public Amber RU5 DNA residue type class.
      */
-    class DDA5 : public virtual DDA
+    class DDA5 : public virtual DDA, public virtual Amber
     {
     public:
       DDA5 () {}
@@ -1076,7 +1090,7 @@ namespace mccore {
     /**
      * Public Amber RU3 DNA residue type class.
      */
-    class DDA3 : public virtual DDA
+    class DDA3 : public virtual DDA, public virtual Amber
     {
     public:
       DDA3 () {}
@@ -1103,7 +1117,7 @@ namespace mccore {
     /**
      * Public Amber RU DNA residue type class.
      */
-    class DDC : public virtual DC
+    class DDC : public virtual DC, public virtual Amber
     {
     public:
       DDC () {}
@@ -1117,7 +1131,7 @@ namespace mccore {
     /**
      * Public Amber RU5 DNA residue type class.
      */
-    class DDC5 : public virtual DDC
+    class DDC5 : public virtual DDC, public virtual Amber
     {
     public:
       DDC5 () {}
@@ -1131,7 +1145,7 @@ namespace mccore {
     /**
      * Public Amber RU3 DNA residue type class.
      */
-    class DDC3 : public virtual DDC
+    class DDC3 : public virtual DDC, public virtual Amber
     {
     public:
       DDC3 () {}
@@ -1158,7 +1172,7 @@ namespace mccore {
     /**
      * Public Amber RU DNA residue type class.
      */
-    class DDG : public virtual DG
+    class DDG : public virtual DG, public virtual Amber
     {
     public:
       DDG () {}
@@ -1172,7 +1186,7 @@ namespace mccore {
     /**
      * Public Amber RU5 DNA residue type class.
      */
-    class DDG5 : public virtual DDG
+    class DDG5 : public virtual DDG, public virtual Amber
     {
     public:
       DDG5 () {}
@@ -1186,7 +1200,7 @@ namespace mccore {
     /**
      * Public Amber RU3 DNA residue type class.
      */
-    class DDG3 : public virtual DDG
+    class DDG3 : public virtual DDG, public virtual Amber
     {
     public:
       DDG3 () {}
@@ -1213,7 +1227,7 @@ namespace mccore {
     /**
      * Public Amber RU DNA residue type class.
      */
-    class DDT : public virtual DT
+    class DDT : public virtual DT, public virtual Amber
     {
     public:
       DDT () {}
@@ -1227,7 +1241,7 @@ namespace mccore {
     /**
      * Public Amber RU5 DNA residue type class.
      */
-    class DDT5 : public virtual DDT
+    class DDT5 : public virtual DDT, public virtual Amber
     {
     public:
       DDT5 () {}
@@ -1241,7 +1255,7 @@ namespace mccore {
     /**
      * Public Amber RU3 DNA residue type class.
      */
-    class DDT3 : public virtual DDT
+    class DDT3 : public virtual DDT, public virtual Amber
     {
     public:
       DDT3 () {}

@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.24 $
-// $Id: ResidueType.h,v 1.24 2004-09-24 22:23:38 larosem Exp $
+// $Revision: 1.25 $
+// $Id: ResidueType.h,v 1.25 2004-09-27 21:28:59 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -53,7 +53,7 @@ namespace mccore {
    *   - The nature of a type (nucleic acid (pur/pyr) or amino acid)<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueType.h,v 1.24 2004-09-24 22:23:38 larosem Exp $
+   * @version $Id: ResidueType.h,v 1.25 2004-09-27 21:28:59 larosem Exp $
    */
   class ResidueType
   {    
@@ -210,6 +210,13 @@ namespace mccore {
       return dynamic_cast< const ResidueType* >(t);
     }
     
+    /** 
+     * is Amber representation?
+     */
+    virtual bool isAmber () const {
+      return false;
+    }
+
     /** 
      * is Nucleic Acid?
      */
