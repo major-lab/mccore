@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // ResidueType.h
-// Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.23 $
-// $Id: ResidueType.h,v 1.23 2004-08-26 15:21:23 thibaup Exp $
+// $Revision: 1.24 $
+// $Id: ResidueType.h,v 1.24 2004-09-24 22:23:38 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -30,8 +30,6 @@
 #include <iostream>
 #include <typeinfo>
 
-
-
 using namespace std;
 
 
@@ -55,7 +53,7 @@ namespace mccore {
    *   - The nature of a type (nucleic acid (pur/pyr) or amino acid)<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueType.h,v 1.23 2004-08-26 15:21:23 thibaup Exp $
+   * @version $Id: ResidueType.h,v 1.24 2004-09-24 22:23:38 larosem Exp $
    */
   class ResidueType
   {    
@@ -153,14 +151,14 @@ namespace mccore {
     bool operator< (const ResidueType &other) const
     { return strcmp (type, other.type) < 0; }
 
-    // METHODS -----------------------------------------------------------------
-    
     /**
      * Converts the residuetype into a string.
      * @return the string.
      */
     virtual operator const char* () const { return type; }
  
+    // METHODS -----------------------------------------------------------------
+    
     /**
      * Converts the residuetype into a string.
      * @return the string.
@@ -177,8 +175,9 @@ namespace mccore {
      * Converts the residuetype into a PDB compliant string.
      * @return the string.
      */
-    virtual const char* toPdbString () const {       
-      return (isAminoAcid ()?longtype:type); 
+    virtual const char* toPdbString () const
+    {       
+      return isAminoAcid () ? longtype : type;
     }
 
     /**
