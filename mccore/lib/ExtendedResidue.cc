@@ -25,10 +25,9 @@
 #include <config.h>
 #endif
 
-#include <assert.h>
-
 #include "ExtendedResidue.h"
 #include "Messagestream.h"
+#include "CException.h"
 
 
 namespace mccore {
@@ -196,13 +195,14 @@ namespace mccore {
       atomGlobal.push_back (atom.clone ());
       it = atomIndex.find (atom.getType ());
     } else {
+      *atomLocal[it->second] = atom;
       *atomGlobal[it->second] = atom;
     }
 
     // Transform the atom to the origin
     if (!tfo.isIdentity ()) {
       (*atomLocal[it->second]).transform (tfo.invert ());
-    }
+    }    
   }
 
 
@@ -281,6 +281,12 @@ namespace mccore {
 
     if (!type || empty ()) return;
     
+    if (getType ()->isNucleicAcid ()) {
+      removeOptionals ();
+      addHydrogens ();
+      addLonePairs ();
+    }
+
     /* Compute the location of the pseudo atoms. */
     if (((v1 = get (AtomType::aN9)) != 0 
 	 && (v2 = get (AtomType::aC8)) != 0 
@@ -354,13 +360,38 @@ namespace mccore {
   }
 
 
+  void ExtendedResidue::atomCopy (const Residue& other) 
+  {
+    const ExtendedResidue *resp = dynamic_cast< const ExtendedResidue* > (&other);
+
+    if (this != &other && resp) {
+      if (type != resp->type) {
+	CLibException exc ("Invalid residue type ");
+	
+	exc << *resp->type << ".";
+	throw exc;
+      }
+
+      AtomMap::const_iterator i, j;
+
+      for (i=atomIndex.begin (), j=resp->atomIndex.end ();
+	   i!=atomIndex.end () && j!=resp->atomIndex.end ();
+	   ++i, ++j) {
+	atomLocal[i->second] = resp->atomLocal[j->second];
+	atomGlobal[i->second] = resp->atomGlobal[j->second];
+      }
+      placed = true;
+      tfo = resp->tfo;      
+    }
+  }
+
+
   // PRIVATE METHODS------------------------------------------------------------
 
 
   Atom& 
   ExtendedResidue::get (size_type pos) const
   {
-    assert (pos < atomGlobal.size ());
     place ();
     return *atomGlobal[pos];
   }
@@ -408,14 +439,14 @@ namespace mccore {
   ostream&
   ExtendedResidue::output (ostream &os) const 
   {
-    place ();
     os << resId << type;
-//     os << endl << tfo;
-//     AtomMap::const_iterator cit;
-//     os << "\n\tLocal coordinates\t\tGlobal coordinates";
-//     for (cit=atomIndex.begin (); cit!=atomIndex.end (); ++cit) {
-//       os << "\n\t" << *(atomLocal[cit->second]) << "\t" << *(atomGlobal[cit->second]) << flush;
-//     }
+    os << endl << tfo;
+    AtomMap::const_iterator cit;
+    os << "\n\tLocal coordinates\t\tGlobal coordinates";
+    for (cit=atomIndex.begin (); cit!=atomIndex.end (); ++cit) {
+      os << "\n\t" << *(atomLocal[cit->second]) << "\t" << *(atomGlobal[cit->second]) 
+	 << ((!isPlaced ())?" [invalid]":"") << flush;
+    }
     return os;
   }
   

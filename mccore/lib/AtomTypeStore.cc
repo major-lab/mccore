@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Tue Mar 11 13:56:50 2003
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -12,6 +12,7 @@
 #include <string>
 
 #include "AtomTypeStore.h"
+#include "Residue.h"
 
 namespace mccore {
 
@@ -214,4 +215,2272 @@ namespace mccore {
     delete[] str;
     return t;
   }
+
+
+  // TYPES ---------------------------------------------------------------------
+
+  float
+  AtomTypeStore::AC1p::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+    
+    if (r == ResidueType::rRA)      return 0.0394;
+    else if (r == ResidueType::rDA) return 0.0431;
+    else if (r == ResidueType::rRC) return 0.0066;
+    else if (r == ResidueType::rDC) return -0.0116;
+    else if (r == ResidueType::rRG) return 0.0191;
+    else if (r == ResidueType::rDG) return 0.0358;
+    else if (r == ResidueType::rRU) return 0.0674;
+    else if (r == ResidueType::rDT) return 0.0680;
+    else                  return 0;
+  }
+
+  
+  float
+  AtomTypeStore::AC2p::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType ()->isRNA ())
+      return 0.0670;
+    else if (res->getType ()->isDNA ())
+      return -0.0854;
+    else
+      return 0;
+  }
+  
+
+  float
+  AtomTypeStore::AC3p::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType ()->isRNA ())
+      return 0.2022;
+    else if (res->getType ()->isDNA ())
+      return 0.0713;
+    else
+      return 0;
+  }
+
+
+  float
+  AtomTypeStore::AC4p::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType ()->isRNA ())
+      return 0.1065;
+    else if (res->getType ()->isDNA ())
+      return 0.1629;
+    else
+      return 0;
+  }
+
+  float
+  AtomTypeStore::AC5p::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType ()->isRNA ())
+      return 0.0558;
+    else if (res->getType ()->isDNA ())
+      return -0.0069;
+    else
+      return 0;
+  }
+
+  float
+  AtomTypeStore::AH1p::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+  
+    if (r == ResidueType::rDA) return 0.1838;
+    else if (r == ResidueType::rRA) return 0.2007;
+    else if (r == ResidueType::rDC) return 0.1963;
+    else if (r == ResidueType::rRC) return 0.2029;
+    else if (r == ResidueType::rDG) return 0.1746;
+    else if (r == ResidueType::rRG) return 0.2006;
+    else if (r == ResidueType::rDT) return 0.1804;
+    else if (r == ResidueType::rRU) return 0.1824;
+    else return 0;
+  }
+
+
+  float
+  AtomTypeStore::AH2p::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType ()->isDNA ())
+      return 0.0718;
+    else if (res->getType ()->isRNA ())
+      return 0.0972;
+    else
+      return 0;
+  }
+
+  float
+  AtomTypeStore::AH3p::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType ()->isDNA ())
+      return 0.0985;
+    else if (res->getType ()->isRNA ())
+      return 0.0615;
+    else
+      return 0;
+  }
+
+  float
+  AtomTypeStore::AH4p::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType ()->isDNA ())
+      return 0.1176;
+    else if (res->getType ()->isRNA ())
+      return 0.1174;
+    else
+      return 0;
+  }
+
+
+  float
+  AtomTypeStore::AH5p::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType ()->isDNA ())
+      return 0.0754;
+    else if (res->getType ()->isRNA ())
+      return 0.0679;
+    else
+      return 0;
+  }
+
+
+
+  float
+  AtomTypeStore::AO1P::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType ()->isDNA ())
+      return -0.7761;
+    else if (res->getType ()->isRNA ())
+      return -0.7760;
+    else
+      return 0;
+  }
+
+
+  float
+  AtomTypeStore::AO2p::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType ()->isRNA ())
+      return -0.6139;
+    else
+      return 0;
+  }
+
+
+  float
+  AtomTypeStore::AO2P::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType ()->isDNA ())
+      return -0.7761;
+    else if (res->getType ()->isRNA ())
+      return -0.7760;
+    else
+      return 0;
+  }
+
+
+
+
+
+  float
+  AtomTypeStore::AO3p::getVDWR (const Residue *res) const
+  {
+    return res->find (AtomType::aH3T) != res->end () ? 1.7210 : 1.6837;
+  }
+
+
+
+  float
+  AtomTypeStore::AO3p::getAmberEpsilon (const Residue *res) const
+  {
+    return res->find (AtomType::aH3T) != res->end () ? 0.2104 : 0.1700;
+  }
+  
+  
+  
+  float
+  AtomTypeStore::AO3p::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+    
+    if (res->find (AtomType::aH3T) == res->end ())
+      {
+	if (r->isDNA ())
+	  return -0.5232;
+	else if (r->isRNA ())
+	  return -0.5246;
+      }
+    else
+      {
+	if (r->isDNA ())
+	  return -0.6549;
+	else if (r->isRNA ())
+	  return -0.6541;
+      }
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AO3P::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType ()->isDNA ())
+      return -0.7761;
+    else if (res->getType ()->isRNA ())
+      return -0.7760;
+    else
+      return 0;
+  }
+
+
+  float
+  AtomTypeStore::AO4p::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+  
+    if (r->isDNA ())
+      return -0.3691;
+    else if (r->isRNA ())
+      return -0.3548;
+    else
+      return 0;
+  }
+
+
+
+  float
+  AtomTypeStore::AO5p::getVDWR (const Residue *res) const
+  {
+    return res->find (AtomType::aH5T) != res->end () ? 1.7210 : 1.6837;
+  }
+
+
+
+  float
+  AtomTypeStore::AO5p::getAmberEpsilon (const Residue *res) const
+  {
+    return res->find (AtomType::aH5T) != res->end () ? 0.2104 : 0.1700;
+  }
+
+
+
+  float
+  AtomTypeStore::AO5p::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (res->find (AtomType::aH5T) != res->end ())
+      {
+	if (r->isDNA ())
+	  return -0.6318;
+	else if (r->isRNA ())
+	  return -0.6223;
+      }
+    else
+      {
+	if (r->isDNA ())
+	  return -0.4954;
+	else if (r->isRNA ())
+	  return -0.4989;
+      }
+    return 0;
+  }
+
+
+
+  float
+  AtomTypeStore::AP::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r->isDNA ())
+      return 1.1659;
+    else if (r->isRNA ())
+      return 1.1662;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::A1H2p::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r->isDNA ())
+      return 0.0718;
+    else if (r->isRNA ())
+      return 0.0972;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::A1H5p::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r->isDNA ())
+      return 0.0754;
+    else if (r->isRNA ())
+      return 0.0679;
+    return 0;
+  }
+
+  float
+  AtomTypeStore::A2H2p::getAmberCharge (const Residue *res) const
+  {
+    return 0.0718;
+  }
+
+
+  float
+  AtomTypeStore::A2H5p::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r->isDNA ())
+      return 0.0754;
+    else if (r->isRNA ())
+      return 0.0679;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AHO2p::getAmberCharge (const Residue *res) const
+  {
+    return 0.4186;
+  }
+
+
+  float
+  AtomTypeStore::AC2::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r->isDNA ())
+      {
+	if (r->isA ())
+	  return 0.5716;
+	else if (r->isT ())
+	  return 0.5677;
+	else if (r->isG ())
+	  return 0.7432;
+	else if (r->isC ())
+	  return 0.7959;
+      }
+    else if (r->isRNA ())
+      {
+	if (r->isA ())
+	  return 0.5875;
+	else if (r->isU ())
+	  return 0.4687;
+	else if (r->isG ())
+	  return 0.7657;
+	else if (r->isC ())
+	  return 0.7538;
+      }
+    return 0;
+  }
+
+  float
+  AtomTypeStore::AC4::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r->isDNA ())
+      {
+	if (r->isA ())
+	  return 0.3800;
+	else if (r->isT ())
+	  return 0.5194;
+	else if (r->isG ())
+	  return 0.1814;
+	else if (r->isC ())
+	  return 0.8439;
+      }
+    else if (r->isRNA ())
+      {
+	if (r->isA ())
+	  return 0.3053;
+	else if (r->isC ())
+	  return 0.8185;
+	else if (r->isG ())
+	  return 0.1222;
+	else if (r->isU ())
+	  return 0.5952;
+      }
+    return 0;
+  }
+
+  float
+  AtomTypeStore::AC5::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r->isDNA ())
+      {
+	if (r->isA ())
+	  return 0.0725;
+	else if (r->isT ())
+	  return 0.0025;
+	else if (r->isG ())
+	  return 0.1991;
+	else if (r->isC ())
+	  return -0.5222;
+      }
+    else if (r->isRNA ())
+      {
+	if (r->isA ())
+	  return  0.0515;
+	else if (r->isC ())
+	  return -0.5215;
+	else if (r->isG ())
+	  return  0.1744;
+	else if (r->isU ())
+	  return -0.3635;
+      }
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AC6::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r->isDNA ())
+      {
+	if (r->isA ())
+	  return 0.6897;
+	else if (r->isT ())
+	  return -0.2209;
+	else if (r->isG ())
+	  return 0.4918;
+	else if (r->isC ())
+	  return -0.0183;
+      }
+    else if (r->isRNA ())
+      {
+	if (r->isA ())
+	  return  0.7009;
+	else if (r->isC ())
+	  return 0.0053;
+	else if (r->isG ())
+	  return 0.4770;
+	else if (r->isU ())
+	  return -0.1126;
+      }
+    return 0;
+  }
+
+  float
+  AtomTypeStore::AC8::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r->isDNA ())
+      {
+	if (r->isA ())
+	  return 0.1607;
+	else if (r->isG ())
+	  return 0.0736;
+      }
+    else if (r->isRNA ())
+      {
+	if (r->isA ())
+	  return 0.2006;
+	else if (r->isG ())
+	  return 0.1374;
+      }
+    return 0;
+  }
+  float
+  AtomTypeStore::AH1::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rDG)
+      return 0.3520;
+    else if (res->getType () == ResidueType::rRG)
+      return 0.3424;
+    return 0;
+  }
+
+
+
+  float
+  AtomTypeStore::AH2::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rDA)
+      return 0.0598;
+    else if (res->getType () == ResidueType::rRA)
+      return 0.0473;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AH3::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rDT)
+      return 0.3420;
+    else if (res->getType () == ResidueType::rRU)
+      return 0.3154;
+    return 0;
+  }
+
+
+
+  float
+  AtomTypeStore::AH5::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rDC)
+      return 0.1863;
+    else if (r == ResidueType::rRC)
+      return 0.1928;
+    else if (r == ResidueType::rRU)
+      return 0.1811;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AH6::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r->isDNA ())
+      {
+	if (r->isT ())
+	  return 0.2607;
+	else if (r->isC ())
+	  return 0.2293;
+      }
+    else if (r->isRNA ())
+      {
+	if (r->isC ())
+	  return 0.1958;
+	else if (r->isU ())
+	  return 0.2188;
+      }
+    return 0;
+  }
+  float
+  AtomTypeStore::AH8::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r->isDNA ())
+      {
+	if (r->isA ())
+	  return 0.1877;
+	else if (r->isG ())
+	  return 0.1997;
+      }
+    else if (r->isDNA ())
+      {
+	if (r->isA ())
+	  return 0.1553;
+	else if (r->isG ())
+	  return 0.1640;
+      }
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AN1::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r->isDNA ())
+      {
+	if (r->isA ())
+	  return -0.7624;
+	else if (r->isT ())
+	  return -0.0239;
+	else if (r->isG ())
+	  return -0.5053;
+	else if (r->isC ())
+	  return -0.0339;
+      }
+    else if (r->isRNA ())
+      {
+	if (r->isA ())
+	  return -0.7615;
+	else if (r->isC ())
+	  return -0.0484;
+	else if (r->isG ())
+	  return -0.4787;
+	else if (r->isU ())
+	  return 0.0418;
+      }
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AN2::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rDG)
+      return -0.9230;
+    else if (res->getType () == ResidueType::rRG)
+      return -0.9672;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AN3::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r->isDNA ())
+      {
+	if (r->isA ())
+	  return -0.7417;
+	else if (r->isT ())
+	  return -0.4340;
+	else if (r->isG ())
+	  return -0.6636;
+	else if (r->isC ())
+	  return -0.7748;
+      }
+    else if (r->isRNA ())
+      {
+	if (r->isA ())
+	  return -0.6997;
+	else if (r->isC ())
+	  return -0.7584;
+	else if (r->isG ())
+	  return -0.6323;
+	else if (r->isU ())
+	  return -0.3549;
+      }
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AN4::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rDC)
+      return -0.9773;
+    else if (res->getType () == ResidueType::rRC)
+      return -0.9530;
+    return 0;
+  }
+
+  float
+  AtomTypeStore::AN6::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rDA)
+      return -0.9123;
+    else if (res->getType () == ResidueType::rRA)
+      return -0.9019;
+    return 0;
+  }
+
+  float
+  AtomTypeStore::AN7::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r->isDNA ())
+      {
+	if (r->isA ())
+	  return -0.6175;
+	else if (r->isG ())
+	  return -0.5725;
+      }
+    else if (r->isRNA ())
+      {
+	if (r->isA ())
+	  return -0.6073;
+	else if (r->isG ())
+	  return -0.5709;
+      }
+    return 0;
+  }
+
+  float
+  AtomTypeStore::AN9::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r->isDNA ())
+      {
+	if (r->isA ())
+	  return -0.0268;
+	else if (r->isG ())
+	  return 0.0577;
+      }
+    else if (r->isRNA ())
+      {
+	if (r->isA ())
+	  return -0.0251;
+	else if (r->isG ())
+	  return  0.0492;
+      }
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AO2::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r->isDNA ())
+      {
+	if (r->isT ())
+	  return -0.5881;
+	else if (r->isC ())
+	  return -0.6548;
+      }
+    else if (r->isRNA ())
+      {
+	if (r->isC ())
+	  return -0.6252;
+	else if (r->isU ())
+	  return -0.5477;
+      }
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AO4::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rDT)
+      return -0.5563;
+    else if (res->getType () == ResidueType::rRU)
+      return -0.5761;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AO6::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rDG)
+      return -0.5699;
+    else if (res->getType () == ResidueType::rRG)
+      return -0.5597;
+    return 0;
+  }
+
+  float
+  AtomTypeStore::A1H2::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rDG)
+      return 0.4235;
+    else if (res->getType () == ResidueType::rRG)
+      return 0.4364;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::A1H4::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rDC)
+      return 0.4314;
+    else if (res->getType () == ResidueType::rRC)    
+      return 0.4234;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::A1H5M::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rDT)
+      return 0.0770;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::A1H6::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rDA)
+      return 0.4167;
+    else if (res->getType () == ResidueType::rRA)
+      return 0.4115;
+    return 0;
+  }
+
+  float
+  AtomTypeStore::A2H2::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rDG)
+      return 0.4235;
+    else if (res->getType () == ResidueType::rRG)
+      return 0.4364;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::A2H4::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rDC)
+      return 0.4314;
+    else if (res->getType () == ResidueType::rRC)    
+      return 0.4234;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::A2H5M::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rDT)
+      return 0.0770;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::A2H6::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rDA)
+      return 0.4167;
+    else if (res->getType () == ResidueType::rRA)
+      return 0.4115;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::A3H5M::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rDT)
+      return 0.0770;
+    return 0;
+  }
+
+
+
+  float
+  AtomTypeStore::AH3T::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType ()->isDNA ())
+      return 0.4396;
+    else if (res->getType ()->isRNA ())
+      return 0.4376;
+    return 0;
+  }
+
+  float
+  AtomTypeStore::AH5T::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType ()->isDNA ())
+      return 0.4422;
+    else if (res->getType ()->isRNA ())
+      return 0.4295;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AC::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rALA || r == ResidueType::rGLY || r == ResidueType::rSER || r == ResidueType::rTHR       
+	|| r == ResidueType::rLEU || r == ResidueType::rILE || r == ResidueType::rVAL || r == ResidueType::rASN       
+	|| r == ResidueType::rGLN || r == ResidueType::rHIS || r == ResidueType::rTRP || r == ResidueType::rPHE       
+	|| r == ResidueType::rTYR || r == ResidueType::rCYS || r == ResidueType::rMET)
+      return 0.59730;
+    else if (r == ResidueType::rARG || r == ResidueType::rLYS)
+      return 0.73410;
+    else if (r == ResidueType::rGLU || r == ResidueType::rASP)
+      return 0.53660;
+    else if (r == ResidueType::rPRO)
+      return 0.58960;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::ACA::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rALA)
+      return 0.03370;
+    else if (r == ResidueType::rGLY)
+      return -0.02520;
+    else if (r == ResidueType::rSER)
+      return -0.02490;
+    else if (r == ResidueType::rTHR)
+      return -0.03890;
+    else if (r == ResidueType::rLEU)
+      return -0.05180;
+    else if (r == ResidueType::rILE)
+      return -0.05970;
+    else if (r == ResidueType::rVAL)
+      return -0.08750;
+    else if (r == ResidueType::rASN)
+      return 0.01430;
+    else if (r == ResidueType::rGLN)
+      return -0.00310;
+    else if (r == ResidueType::rARG)
+      return -0.26370;
+    else if (r == ResidueType::rHIS)
+      return 0.01880;
+    else if (r == ResidueType::rTRP)
+      return -0.02750;
+    else if (r == ResidueType::rPHE)
+      return -0.00240;
+    else if (r == ResidueType::rTYR)
+      return -0.00140;
+    else if (r == ResidueType::rGLU)
+      return 0.03970;
+    else if (r == ResidueType::rASP)
+      return 0.03810;
+    else if (r == ResidueType::rLYS)
+      return -0.24000;
+    else if (r == ResidueType::rPRO)
+      return -0.02660;
+    else if (r == ResidueType::rCYS)
+      return 0.02130;
+    else if (r == ResidueType::rMET)
+      return -0.02370;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::ACB::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rALA)
+      return -0.18250;
+    else if (r == ResidueType::rSER)
+      return 0.21170;
+    else if (r == ResidueType::rTHR)
+      return 0.36540;
+    else if (r == ResidueType::rLEU)
+      return -0.11020;
+    else if (r == ResidueType::rILE)
+      return 0.13030;
+    else if (r == ResidueType::rVAL)
+      return 0.29850;
+    else if (r == ResidueType::rASN)
+      return -0.20410;
+    else if (r == ResidueType::rGLN)
+      return -0.00360;
+    else if (r == ResidueType::rARG)
+      return -0.00070;
+    else if (r == ResidueType::rHIS)
+      return -0.04620;
+    else if (r == ResidueType::rTRP)
+      return -0.00500;
+    else if (r == ResidueType::rPHE)
+      return -0.03430;
+    else if (r == ResidueType::rTYR)
+      return -0.01520;
+    else if (r == ResidueType::rGLU)
+      return 0.05600;
+    else if (r == ResidueType::rASP)
+      return -0.03030;
+    else if (r == ResidueType::rLYS)
+      return -0.00940;
+    else if (r == ResidueType::rPRO)
+      return -0.00700;
+    else if (r == ResidueType::rCYS)
+      return -0.12310;
+    else if (r == ResidueType::rMET)
+      return 0.03420;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::ACD::getAmberEpsilon (const Residue *res) const
+  {
+    const ResidueType *type = res->getType ();
+  
+    return type == ResidueType::rGLN || type == ResidueType::rGLU ? 0.0860 : 0.1094;
+  }
+
+
+
+  float
+  AtomTypeStore::ACD::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rGLN)
+      return 0.69510;
+    else if (r == ResidueType::rARG)
+      return 0.04860;
+    else if (r == ResidueType::rGLU)
+      return 0.80540;
+    else if (r == ResidueType::rLYS)
+      return -0.04790;
+    else if (r == ResidueType::rPRO)
+      return 0.01920;
+    return 0;
+  }
+
+  float
+  AtomTypeStore::ACD1::getAmberEpsilon (const Residue *res) const
+  {
+    const ResidueType *type = res->getType ();
+  
+    return (type == ResidueType::rPHE
+	    || type == ResidueType::rTYR
+	    || type == ResidueType::rTRP
+	    ? 0.0860 : 0.1094);
+  }
+
+
+
+  float
+  AtomTypeStore::ACD1::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rLEU)
+      return -0.41210;
+    else if (r == ResidueType::rILE)
+      return -0.06600;
+    else if (r == ResidueType::rTRP)
+      return -0.16380;
+    else if (r == ResidueType::rPHE)
+      return -0.12560;
+    else if (r == ResidueType::rTYR)
+      return -0.19060;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::ACD2::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rLEU)
+      return -0.41210;
+    else if (r == ResidueType::rHIS)
+      return 0.12920;
+    else if (r == ResidueType::rTRP)
+      return 0.12430;
+    else if (r == ResidueType::rPHE)
+      return -0.12560;
+    else if (r == ResidueType::rTYR)
+      return -0.19060;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::ACE::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rLYS)
+      return -0.01430;
+    else if (r == ResidueType::rMET)
+      return -0.05360;
+    return 0;
+  }
+
+  float
+  AtomTypeStore::ACE1::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rHIS)
+      return 0.20570;
+    else if (r == ResidueType::rPHE)
+      return -0.17040;
+    else if (r == ResidueType::rTYR)
+      return -0.23410;
+    return 0;
+  }
+
+
+
+  float
+  AtomTypeStore::ACE2::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rTRP)
+      return 0.13800;
+    else if (r == ResidueType::rPHE)
+      return -0.17040;
+    else if (r == ResidueType::rTYR)
+      return -0.23410;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::ACE3::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rTRP)
+      return -0.23870;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::ACG::getAmberEpsilon (const Residue *res) const
+  {
+    const ResidueType *type = res->getType ();
+  
+    return ((type == ResidueType::rASN || type == ResidueType::rHIS || type == ResidueType::rTRP
+	     || type == ResidueType::rPHE || type == ResidueType::rTYR || type == ResidueType::rASP)
+	    ? 0.0860 : 0.1094);
+  }
+
+
+
+  float
+  AtomTypeStore::ACG::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rLEU)
+      return 0.35310;
+    else if (r == ResidueType::rASN)
+      return 0.71300;
+    else if (r == ResidueType::rGLN)
+      return -0.06450;
+    else if (r == ResidueType::rARG)
+      return 0.03900;
+    else if (r == ResidueType::rHIS)
+      return -0.02660;
+    else if (r == ResidueType::rTRP)
+      return -0.14150;
+    else if (r == ResidueType::rPHE)
+      return 0.01180;
+    else if (r == ResidueType::rTYR)
+      return -0.00110;
+    else if (r == ResidueType::rGLU)
+      return 0.01360;
+    else if (r == ResidueType::rASP)
+      return 0.79940;
+    else if (r == ResidueType::rLYS)
+      return 0.01870;
+    else if (r == ResidueType::rPRO)
+      return 0.01890;
+    else if (r == ResidueType::rMET)
+      return 0.00180;
+    return 0;
+  }
+
+
+
+  float
+  AtomTypeStore::ACG1::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rILE)
+      return -0.04300;
+    else if (r == ResidueType::rVAL)
+      return -0.31920;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::ACG2::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rTHR)
+      return -0.24380;
+    else if (r == ResidueType::rILE)
+      return -0.32040;
+    else if (r == ResidueType::rVAL)
+      return -0.31920;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::ACH2::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rTRP)
+      return -0.11340;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::ACZ::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rARG)
+      return 0.80760;
+    else if (r == ResidueType::rPHE)
+      return -0.10720;
+    else if (r == ResidueType::rTYR)
+      return 0.32260;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::ACZ2::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rTRP)
+      return -0.26010;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::ACZ3::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rTRP)
+      return -0.19720;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AH::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rALA || r == ResidueType::rGLY || r == ResidueType::rSER || r == ResidueType::rTHR
+	|| r == ResidueType::rLEU || r == ResidueType::rILE || r == ResidueType::rVAL || r == ResidueType::rASN
+	|| r == ResidueType::rGLN || r == ResidueType::rHIS || r == ResidueType::rTRP || r == ResidueType::rPHE
+	|| r == ResidueType::rTYR || r == ResidueType::rCYS || r == ResidueType::rMET)
+      return 0.27190;
+    else if (r == ResidueType::rARG || r == ResidueType::rLYS)
+      return 0.27470;
+    else if (r == ResidueType::rGLU || r == ResidueType::rASP)
+      return 0.29360;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AHA::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rALA)
+      return 0.08230;
+    else if (r == ResidueType::rSER)
+      return 0.08430;
+    else if (r == ResidueType::rTHR)
+      return 0.10070;
+    else if (r == ResidueType::rLEU)
+      return 0.09220;
+    else if (r == ResidueType::rILE)
+      return 0.08690;
+    else if (r == ResidueType::rVAL)
+      return 0.09690;
+    else if (r == ResidueType::rASN)
+      return 0.10480;
+    else if (r == ResidueType::rGLN)
+      return 0.08500;
+    else if (r == ResidueType::rARG)
+      return 0.15600;
+    else if (r == ResidueType::rHIS)
+      return 0.08810;
+    else if (r == ResidueType::rTRP)
+      return 0.11230;
+    else if (r == ResidueType::rPHE)
+      return 0.09780;
+    else if (r == ResidueType::rTYR)
+      return 0.08760;
+    else if (r == ResidueType::rGLU)
+      return 0.11050;
+    else if (r == ResidueType::rASP || r == ResidueType::rMET)
+      return 0.08800;
+    else if (r == ResidueType::rLYS)
+      return 0.14260;
+    else if (r == ResidueType::rPRO)
+      return 0.06410;
+    else if (r == ResidueType::rCYS)
+      return 0.11240;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AHA1::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rGLY)
+      return 0.06980;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AHA2::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rGLY)
+      return 0.06980;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AHB::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rTHR)
+      return 0.00430;
+    else if (r == ResidueType::rILE)
+      return 0.01870;
+    else if (r == ResidueType::rVAL)
+      return -0.02970;
+    return 0;
+  }
+
+  float
+  AtomTypeStore::AHB1::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rALA)
+      return 0.06030;
+    return 0;
+  }
+
+
+
+  float
+  AtomTypeStore::AHB2::getVDWR (const Residue *res) const
+  {
+    const ResidueType *type = res->getType ();
+  
+    return (type == ResidueType::rSER || type == ResidueType::rCYS) ? 1.3870 : 1.4870;
+  }
+
+
+
+  float
+  AtomTypeStore::AHB2::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rALA)
+      return 0.06030;
+    else if (r == ResidueType::rSER)
+      return 0.03520;
+    else if (r == ResidueType::rLEU)
+      return 0.04570;
+    else if (r == ResidueType::rASN)
+      return 0.07970;
+    else if (r == ResidueType::rGLN)
+      return 0.01710;
+    else if (r == ResidueType::rARG)
+      return 0.03270;
+    else if (r == ResidueType::rHIS)
+      return 0.04020;
+    else if (r == ResidueType::rTRP)
+      return 0.03390;
+    else if (r == ResidueType::rPHE || r == ResidueType::rTYR)
+      return 0.02950;
+    else if (r == ResidueType::rGLU)
+      return -0.01730;
+    else if (r == ResidueType::rASP)
+      return -0.01220;
+    else if (r == ResidueType::rLYS)
+      return 0.03620;
+    else if (r == ResidueType::rPRO)
+      return 0.02530;
+    else if (r == ResidueType::rCYS)
+      return 0.11120;
+    else if (r == ResidueType::rMET)
+      return 0.02410;
+    return 0;
+  }
+
+  float
+  AtomTypeStore::AHB3::getVDWR (const Residue *res) const
+  {
+    const ResidueType *type = res->getType ();
+  
+    return type == ResidueType::rSER || type == ResidueType::rCYS ? 1.3870 : 1.4870;
+  }
+
+
+
+  float
+  AtomTypeStore::AHB3::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rALA)
+      return 0.06030;
+    else if (r == ResidueType::rSER)
+      return 0.03520;
+    else if (r == ResidueType::rLEU)
+      return 0.04570;
+    else if (r == ResidueType::rASN)
+      return 0.07970;
+    else if (r == ResidueType::rGLN)
+      return 0.01710;
+    else if (r == ResidueType::rARG)
+      return 0.03270;
+    else if (r == ResidueType::rHIS)
+      return 0.04020;
+    else if (r == ResidueType::rTRP)
+      return 0.03390;
+    else if (r == ResidueType::rPHE || r == ResidueType::rTYR)
+      return 0.02950;
+    else if (r == ResidueType::rGLU)
+      return -0.01730;
+    else if (r == ResidueType::rASP)
+      return -0.01220;
+    else if (r == ResidueType::rLYS)
+      return 0.03620;
+    else if (r == ResidueType::rPRO)
+      return 0.02530;
+    else if (r == ResidueType::rCYS)
+      return 0.11120;
+    else if (r == ResidueType::rMET)
+      return 0.02410;
+    return 0;
+  }
+
+  float
+  AtomTypeStore::AHD1::getVDWR (const Residue *res) const
+  {
+    const ResidueType *type = res->getType ();
+
+    if (type == ResidueType::rHIS)
+      return 0.6000;
+    else if (type == ResidueType::rTRP)
+      return 1.4090;
+    else
+      return 1.4590;
+  }
+
+
+
+  float
+  AtomTypeStore::AHD1::getAmberEpsilon (const Residue *res) const
+  {
+    return res->getType () == ResidueType::rHIS ? 0.0157 : 0.0150;
+  }
+
+
+
+  float
+  AtomTypeStore::AHD1::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rHIS)
+      return 0.36490;
+    else if (r == ResidueType::rTRP)
+      return 0.20620;
+    else if (r == ResidueType::rPHE)
+      return 0.13300;
+    else if (r == ResidueType::rTYR)
+      return 0.16990;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AHD2::getVDWR (const Residue *res) const
+  {
+    const ResidueType *type = res->getType ();
+
+    if (type == ResidueType::rARG || type == ResidueType::rPRO)
+      return 1.3870; // H1
+    else if (type == ResidueType::rHIS)
+      return 1.4090; // H4
+    else if (type == ResidueType::rPHE || type == ResidueType::rTYR)
+      return 1.4590; // HA
+    else if (type == ResidueType::rLYS)
+      return 1.4870; // HC
+    else
+      return 0.0000; // HO
+  }
+
+
+
+  float
+  AtomTypeStore::AHD2::getAmberEpsilon (const Residue *res) const
+  {
+    const ResidueType *type = res->getType ();
+
+    if (type == ResidueType::rARG || type == ResidueType::rPRO || type == ResidueType::rLYS)
+      return 0.0157; // H1 HC
+    else if (type == ResidueType::rHIS || type == ResidueType::rPHE || type == ResidueType::rTYR)
+      return 0.0150; // H4 HA
+    else
+      return 0.0000; // HO
+  }
+
+
+
+  float
+  AtomTypeStore::AHD2::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rARG)
+      return 0.06870;
+    else if (r == ResidueType::rHIS)
+      return 0.11470;
+    else if (r == ResidueType::rPHE)
+      return 0.13300;
+    else if (r == ResidueType::rTYR)
+      return 0.16990;
+    else if (r == ResidueType::rLYS)
+      return 0.06210;
+    else if (r == ResidueType::rPRO)
+      return 0.03910;
+    return 0;
+  }
+
+  float
+  AtomTypeStore::AHE::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rARG)
+      return 0.34560;
+    return 0;
+  }
+
+
+
+  float
+  AtomTypeStore::AHE1::getVDWR (const Residue *res) const
+  {
+    const ResidueType *type = res->getType ();
+
+    if (type == ResidueType::rHIS)
+      return 1.3590; // H5
+    else if (type == ResidueType::rTRP)
+      return 0.6000; // H
+    else if (type == ResidueType::rPHE || type == ResidueType::rTYR)
+      return 1.4590; // HA
+    else if (type == ResidueType::rMET)
+      return 1.3870; // H1
+    return 0;
+  }
+
+
+
+  float
+  AtomTypeStore::AHE1::getAmberEpsilon (const Residue *res) const
+  {
+    const ResidueType *type = res->getType ();
+
+    if (type == ResidueType::rHIS || type == ResidueType::rPHE || type == ResidueType::rTYR)
+      return 0.0150; // H5 HA
+    else if (type == ResidueType::rTRP || type == ResidueType::rMET)
+      return 0.0157; // H H1
+    return 0;
+  }
+
+
+
+  float
+  AtomTypeStore::AHE1::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rHIS)
+      return 0.13920;
+    else if (r == ResidueType::rTRP)
+      return 0.34120;
+    else if (r == ResidueType::rPHE)
+      return 0.14300;
+    else if (r == ResidueType::rTYR)
+      return 0.16560;
+    else if (r == ResidueType::rMET)
+      return 0.06940;
+    return 0;
+  }
+
+  float
+  AtomTypeStore::AHE2::getVDWR (const Residue *res) const
+  {
+    const ResidueType *type = res->getType ();
+
+    if (type == ResidueType::rHIS)
+      return 0.6000; // H
+    else if (type == ResidueType::rPHE || type == ResidueType::rTYR)
+      return 1.4590; // HA
+    else if (type == ResidueType::rLYS)
+      return 1.1000; // HP
+    else if (type == ResidueType::rMET)
+      return 1.3870; // H1
+    else if (type == ResidueType::rGLU)
+      return 0.0000;
+    return 0;
+  }
+
+
+
+  float
+  AtomTypeStore::AHE2::getAmberEpsilon (const Residue *res) const
+  {
+    const ResidueType *type = res->getType ();
+
+    if (type == ResidueType::rHIS || type == ResidueType::rLYS || type == ResidueType::rMET)
+      return 0.0157; // H HP H1
+    else if (type == ResidueType::rPHE || type == ResidueType::rTYR)
+      return 0.0150; // HA
+    else if (type == ResidueType::rGLU)
+      return 0.0000; // HO
+    return 0;
+  }
+
+
+
+  float
+  AtomTypeStore::AHE2::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rPHE)
+      return 0.14300;
+    else if (r == ResidueType::rTYR)
+      return 0.16560;
+    else if (r == ResidueType::rLYS)
+      return 0.11350;
+    else if (r == ResidueType::rMET)
+      return 0.06840;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AHE3::getVDWR (const Residue *res) const
+  {
+    const ResidueType *type = res->getType ();
+
+    if (type == ResidueType::rTRP)
+      return 1.4590; // HA
+    else if (type == ResidueType::rLYS)
+      return 1.1000; // HP
+    else if (type == ResidueType::rMET)
+      return 1.3870; // H1
+    return 0;
+  }
+
+
+
+  float
+  AtomTypeStore::AHE3::getAmberEpsilon (const Residue *res) const
+  {
+    const ResidueType *type = res->getType ();
+
+    if (type == ResidueType::rLYS || type == ResidueType::rMET)
+      return 0.0157; // HP H1
+    else if (type == ResidueType::rTRP)
+      return 0.0150; // HA
+    return 0;
+  }
+
+
+
+  float
+  AtomTypeStore::AHE3::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rTRP)
+      return 0.17000;
+    else if (r == ResidueType::rLYS)
+      return 0.11350;
+    else if (r == ResidueType::rMET)
+      return 0.06840;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AHG::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rSER)
+      return 0.42750;
+    else if (r == ResidueType::rLEU)
+      return -0.03610;
+    else if (r == ResidueType::rCYS)
+      return 0.19330;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AHG1::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rTHR)
+      return 0.41020;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AHG2::getVDWR (const Residue *res) const
+  {
+    const ResidueType *type = res->getType ();
+
+    if (type == ResidueType::rGLN || type == ResidueType::rARG || type == ResidueType::rGLU || type == ResidueType::rLYS
+	|| type == ResidueType::rPRO)
+      return 1.4870; // HC
+    else if (type == ResidueType::rMET)
+      return 1.3870; // H1
+    return 0;
+  }
+
+
+
+  float
+  AtomTypeStore::AHG2::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rGLN)
+      return 0.03520;
+    else if (r == ResidueType::rARG)
+      return 0.02850;
+    else if (r == ResidueType::rGLU)
+      return -0.04250;
+    else if (r == ResidueType::rLYS)
+      return 0.01030;
+    else if (r == ResidueType::rPRO)
+      return 0.02130;
+    else if (r == ResidueType::rMET)
+      return 0.04400;
+    return 0;
+  }
+
+  float
+  AtomTypeStore::AHH::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rTYR)
+      return 0.39920;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AHH2::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rTRP)
+      return 0.14170;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AHZ::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rPHE)
+      return 0.12970;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AHZ1::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rLYS)
+      return 0.34000;
+    return 0;
+  }
+
+
+
+  float
+  AtomTypeStore::AHZ2::getVDWR (const Residue *res) const
+  {
+    const ResidueType *type = res->getType ();
+
+    if (type == ResidueType::rTRP)
+      return 1.4590; // HA
+    else if (type == ResidueType::rLYS)
+      return 0.6000; // H
+    return 0;
+  }
+
+
+
+  float
+  AtomTypeStore::AHZ2::getAmberEpsilon (const Residue *res) const
+  {
+    const ResidueType *type = res->getType ();
+
+    if (type == ResidueType::rTRP)
+      return 0.0150; // HA
+    else if (type == ResidueType::rLYS)
+      return 0.0157; // H
+    return 0;
+  }
+
+
+
+  float
+  AtomTypeStore::AHZ2::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rTRP)
+      return 0.15720;
+    else if (res->getType ()== ResidueType::rLYS)
+      return 0.34000;
+    return 0;
+  }
+
+  float
+  AtomTypeStore::AHZ3::getVDWR (const Residue *res) const
+  {
+    const ResidueType *type = res->getType ();
+    
+    if (type == ResidueType::rTRP)
+      return 1.4590; // HA
+    else if (type == ResidueType::rLYS)
+      return 0.6000; // H
+    return 0;
+  }
+
+
+
+  float
+  AtomTypeStore::AHZ3::getAmberEpsilon (const Residue *res) const
+  {
+    const ResidueType *type = res->getType ();
+
+    if (type == ResidueType::rTRP)
+      return 0.0150; // HA
+    else if (type == ResidueType::rLYS)
+      return 0.0157; // H
+    return 0;
+  }
+
+
+
+  float
+  AtomTypeStore::AHZ3::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rTRP)
+      return 0.14470;
+    else if (res->getType () == ResidueType::rLYS)
+      return 0.34000;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AN::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rALA || r == ResidueType::rGLY || r == ResidueType::rSER || r == ResidueType::rTHR
+	|| r == ResidueType::rLEU || r == ResidueType::rILE || r == ResidueType::rVAL || r == ResidueType::rASN
+	|| r == ResidueType::rGLN || r == ResidueType::rHIS || r == ResidueType::rTRP || r == ResidueType::rPHE
+	|| r == ResidueType::rTYR || r == ResidueType::rCYS || r == ResidueType::rMET)
+      return -0.41570;
+    else if (r == ResidueType::rARG || r == ResidueType::rLYS)
+      return -0.34790;
+    else if (r == ResidueType::rGLU || r == ResidueType::rASP)
+      return -0.51630;
+    else if (r == ResidueType::rPRO)
+      return -0.25480;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AND1::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rHIS)
+      return -0.38110;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AND2::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rASN)
+      return -0.91910;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::ANE::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rARG)
+      return -0.52950;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::ANE1::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rTRP)
+      return -0.34180;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::ANE2::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rGLN)
+      return -0.94070;
+    else if (r == ResidueType::rHIS)
+      return -0.57270;
+    return 0;
+  }
+
+  float
+  AtomTypeStore::ANH1::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rARG)
+      return -0.86270;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::ANH2::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rARG)
+      return -0.86270;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::ANZ::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rLYS)
+      return -0.38540;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AO::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rALA || r == ResidueType::rGLY || r == ResidueType::rSER || r == ResidueType::rTHR
+	|| r == ResidueType::rLEU || r == ResidueType::rILE || r == ResidueType::rVAL || r == ResidueType::rASN
+	|| r == ResidueType::rGLN || r == ResidueType::rHIS || r == ResidueType::rTRP || r == ResidueType::rPHE
+	|| r == ResidueType::rTYR || r == ResidueType::rCYS || r == ResidueType::rMET)
+      return -0.56790;
+    else if (r == ResidueType::rARG || r == ResidueType::rLYS)
+      return -0.58940;
+    else if (r == ResidueType::rGLU || r == ResidueType::rASP)
+      return -0.58190;
+    else if (r == ResidueType::rPRO)
+      return -0.57480;
+    return 0;
+  }
+
+  float
+  AtomTypeStore::AOD1::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rASN)
+      return -0.59310;
+    else if (r == ResidueType::rASP)
+      return -0.80140;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AOD2::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rASP)
+      return -0.80140;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AOE1::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rGLN)
+      return -0.60860;
+    else if (r == ResidueType::rGLU)
+      return -0.81880;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AOE2::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rGLU)
+      return -0.81880;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AOG::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rSER)
+      return -0.65460;
+    return 0;
+  }
+
+  float
+  AtomTypeStore::AOG1::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rTHR)
+      return -0.67610;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::AOH::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rTYR)
+      return -0.55790;
+    return 0;
+  }
+
+  float
+  AtomTypeStore::ASD::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rMET)
+      return -0.27370;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::ASG::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rCYS)
+      return -0.31190;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::A1HD1::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rLEU)
+      return 0.10000;
+    else if (r == ResidueType::rILE)
+      return 0.01860;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::A1HD2::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rLEU)
+      return 0.10000;
+    else if (r == ResidueType::rASN)
+      return 0.41960;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::A1HE2::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rGLN)
+      return 0.42510;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::A1HG1::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rVAL)
+      return 0.07910;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::A1HG2::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rTHR)
+      return 0.06420;
+    else if (r == ResidueType::rILE)
+      return 0.08820;
+    else if (r == ResidueType::rVAL)
+      return 0.07910;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::A1HH1::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rARG)
+      return 0.44780;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::A1HH2::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rARG)
+      return 0.44780;
+    return 0;
+  }
+
+  float
+  AtomTypeStore::A2HD1::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rLEU)
+      return 0.10000;
+    else if (r == ResidueType::rILE)
+      return 0.01860;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::A2HD2::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rLEU)
+      return 0.10000;
+    else if (r == ResidueType::rASN)
+      return 0.41960;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::A2HE2::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rGLN)
+      return 0.42510;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::A2HG1::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rILE)
+      return 0.02360;
+    else if (r == ResidueType::rVAL)
+      return 0.07910;
+    return 0;
+  }
+
+  float
+  AtomTypeStore::A2HG2::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rTHR)
+      return 0.06420;
+    else if (r == ResidueType::rILE)
+      return 0.08820;
+    else if (r == ResidueType::rVAL)
+      return 0.07910;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::A2HH1::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rARG)
+      return 0.44780;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::A2HH2::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rARG)
+      return 0.44780;
+    return 0;
+  }
+
+  float
+  AtomTypeStore::A3HD1::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rLEU)
+      return 0.10000;
+    else if (r == ResidueType::rILE)
+      return 0.01860;
+    return 0;
+  }
+
+
+
+  float
+  AtomTypeStore::A3HD2::getAmberCharge (const Residue *res) const
+  {
+    if (res->getType () == ResidueType::rLEU)
+      return 0.10000;
+    return 0;
+  }
+
+
+  float
+  AtomTypeStore::A3HG1::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rILE)
+      return 0.02360;
+    else if (r == ResidueType::rVAL)
+      return 0.07910;
+    return 0;
+  }
+
+  float
+  AtomTypeStore::A3HG2::getAmberCharge (const Residue *res) const
+  {
+    const ResidueType *r = res->getType ();
+
+    if (r == ResidueType::rTHR)
+      return 0.06420;
+    else if (r == ResidueType::rILE)
+      return 0.08820;
+    else if (r == ResidueType::rVAL)
+      return 0.07910;
+    return 0;
+  }
+
+
 }

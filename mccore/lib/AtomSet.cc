@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron
 // Created On       : Thu Mar 13 13:03:07 2003
 // Last Modified By : Patrick Gendron
-// Last Modified On : Thu Apr 10 21:33:12 2003
-// Update Count     : 23
+// Last Modified On : Thu Aug 21 19:37:23 2003
+// Update Count     : 30
 // Status           : Unknown.
 // 
 
@@ -40,11 +40,64 @@ namespace mccore {
   }
 
 
+  iBinstream& operator>> (iBinstream &ibs, AtomSet *&as)
+  {
+    int nb;
+    AtomSet *op1;
+    AtomSet *op2;
+    
+
+    ibs >> nb;
+
+    switch (nb) {
+    case AtomSet::ATOMSET_ALL:
+      as = new AtomSetAll ();
+      break;
+    case AtomSet::ATOMSET_NOT:
+      ibs >> op1;
+      as = new AtomSetNot (op1);
+      break;
+    case AtomSet::ATOMSET_AND:
+      ibs >> op1;
+      ibs >> op2;
+      as = new AtomSetAnd (op1, op2);
+      break;
+    case AtomSet::ATOMSET_OR:
+      ibs >> op1;
+      ibs >> op2;
+      as = new AtomSetOr (op1, op2);
+      break;      
+    case AtomSet::ATOMSET_SIDECHAIN:
+      as = new AtomSetSideChain ();
+      break;
+    case AtomSet::ATOMSET_BACKBONE:
+      as = new AtomSetBackbone ();
+      break;
+    case AtomSet::ATOMSET_PSE:
+      as = new AtomSetPSE ();
+      break;
+    case AtomSet::ATOMSET_HYDROGEN: 
+      as = new AtomSetHydrogen ();
+      break;
+    case AtomSet::ATOMSET_LP:
+      as = new AtomSetLP ();
+      break;
+    case AtomSet::ATOMSET_ATOM:
+      const AtomType* t;
+      ibs >> t;
+      as = new AtomSetAtom (t);
+      break;
+    }
+    return ibs;
+  }
+  
+
   oBinstream&
   operator<< (oBinstream &obs, const AtomSet &as)
   {
     return as.output (obs);
   }
+
 
   AtomSetAll&
   AtomSetAll::operator= (const AtomSetAll &other)
@@ -55,6 +108,7 @@ namespace mccore {
       }
     return *this;
   }
+
 
   ostream& 
   AtomSetAll::output (ostream &os) const

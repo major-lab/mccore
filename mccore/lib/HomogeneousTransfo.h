@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 
 
 #ifndef _HomogeneousTransfo_h_
@@ -34,7 +34,7 @@ namespace mccore
  * </pre>
  *
  * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
- * @version $Id: HomogeneousTransfo.h,v 1.3 2003-05-30 16:47:47 gendrop Exp $
+ * @version $Id: HomogeneousTransfo.h,v 1.4 2003-08-28 14:29:22 gendrop Exp $
  */
 class HomogeneousTransfo
 {
@@ -213,10 +213,16 @@ public:
   HomogeneousTransfo getRotation () const;
   
   /**
+   * Gets a transfo containing the rotation part of this transfo.
+   * @return the transfo.
+   */
+  HomogeneousTransfo getTranslation () const;
+
+  /**
    * Gets the translation vector from the homogeneous matrix.
    * @return the translation vector.
    */
-  HomogeneousTransfo getTranslation () const;
+  Vector3D getTranslationVector () const;
 
   /**
    * Calculates the homogeneous rotation matrix by a given angle

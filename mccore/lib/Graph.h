@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Apr 30 16:04:32 2003
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 // 
 //  This file is part of mccore.
 //  
@@ -25,105 +25,91 @@
 #ifndef _Graph_h_
 #define _Graph_h_
 
+
 #include <iostream>
 #include <map>
-#include <list>
 #include <vector>
-#include <set>
-
-#include <values.h>
 #include <assert.h>
 
+#include "AdjacencyMatrix.h"
 #include "Path.h"
+
+using namespace std;
+
+#ifndef HAVE_NUMERIC_LIMITS
+#include <values.h>
+#else
+#define MAXFLOAT numeric_limits< float > ().max ()
+#define MAXINT numeric_limits< int > ().max ()
+#endif
+
 
 namespace mccore {
 
   /**
-   * @short A templated directed graph class.  Graphs are always weighted using floats!
+   * Abstract base class for graphs.  This implementation is not a
+   * container for the object of the graph but rather an addition to
+   * the real object container, meaning that no optimisation is done
+   * to prevent recopying large objects.  You should insert references
+   * to object by passing the correct node comparator if needed.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: Graph.h,v 1.14 2003-07-09 21:49:30 gendrop Exp $
+   * @version $Id: Graph.h,v 1.15 2003-08-28 14:29:12 gendrop Exp $
    */
   template< class node_type, 
-	    class edge_type = bool, 
+	    class edge_type = bool,
+	    class matrix_type = MapMatrix,
 	    class node_comparator = less< node_type > >
   class Graph
   {
 
   protected:
 
-    /**
-     * Comparison class that dereferences objects stored in the graph.
-     */
-    class comparator {
-    public:
-      bool operator() (const node_type* o, const node_type* p) const {
-	return node_comparator() (*o, *p);
-      }
-    };
-
     // TYPEDEFS ----------------------------------------------------------------
 
+
     /**
-     * The size type of the abstract residue container.
+     * The size type of the container.
      */
     typedef unsigned int size_type;
 
-    /**
-     * The type of a mapping node/edge.
-     */
-    typedef map< const node_type*, const edge_type*, comparator > adjacency_type;
-    
-    /**
-     * The type of a mapping node/node/edge.
-     */
-    typedef map< const node_type*, adjacency_type, comparator > graph_type;
-
-    /**
-     * A node to value associative container.
-     */
-    typedef map< const node_type*, float, comparator > node_adapter;
-
-    /**
-     * A node to node to value associative container.
-     */
-    typedef map< const node_type*, node_adapter, comparator > edge_adapter;
-        
     
     // MEMBERS -----------------------------------------------------------------
 
 
     /**
-     * The graph implemented as a map of map, that is an adjacency
-     * matrix but where empty cells do not take space in memory.
+     * Mapping from the node to its internal id.
      */
-    graph_type graph;
-
+    map< node_type, int > mapping;
 
     /**
-     * The actual nodes.
+     * Mapping from the internal id to the node.
      */
-    set< node_type > nodes;
-
+    vector< node_type > nodes;
 
     /**
      * The actual edges.
      */
-    list< edge_type > edges;
+    vector< edge_type > edges;
 
+    /**
+     * The adjacency matrix.
+     */
+    matrix_type graph;
 
     /**
      * Node weights.
      */
-    node_adapter nodeWeights;
-
-
+    vector< float > nodeWeights;
+    
+    
     /**
      * Edge weights.
      */
-    edge_adapter edgeWeights;
+    vector< float > edgeWeights;
 
-    
+
+
     // PUBLIC TYPEDEFS ---------------------------------------------------------
 
 
@@ -138,18 +124,18 @@ namespace mccore {
     typedef graph_const_iterator const_iterator;
 
 
-
     // LIFECYCLE ---------------------------------------------------------------
 
 
   public:
-
-
+    
     /**
      * Initializes the object.
      */
-    Graph () {}
-
+    Graph (int size_hint = 0) {
+      graph.resize (size_hint);
+    }
+    
 
     /**
      * Initializes the object with the other's content.
@@ -157,6 +143,8 @@ namespace mccore {
      */
     Graph (const Graph &other) {
       const_iterator i, j;
+
+      graph.resize (other.size ());
 
       for (i=other.begin (); i!=other.end (); ++i) {
 	insert (*i);
@@ -171,9 +159,7 @@ namespace mccore {
       }
     }
 
-  public:
-
-
+    
     /**
      * Destroys the object.
      */
@@ -181,8 +167,8 @@ namespace mccore {
       clear ();
     }
 
-    
-    // OPERATORS ------------------------------------------------------------
+
+    // OPERATORS ---------------------------------------------------------------
 
 
     /**
@@ -193,6 +179,8 @@ namespace mccore {
     virtual Graph& operator= (const Graph &other) {
       if (this != &other) {
 	clear ();
+	
+	graph.resize (other.size ());
 
 	const_iterator i, j;
 	
@@ -210,9 +198,9 @@ namespace mccore {
       }
       return *this;
     }
+    
 
-
-    // ACCESS ---------------------------------------------------------------
+    // ACCESS ------------------------------------------------------------------
 
 
   public:
@@ -222,30 +210,30 @@ namespace mccore {
      * Gets the iterator pointing to the beginning of the graph.
      * @return the iterator.
      */
-    iterator begin () { return iterator (graph.begin ()); }
+    iterator begin () { return iterator (mapping.begin ()); }
 
 
     /**
      * Gets the iterator pointing to the end of the graph.
      * @return the iterator.
      */
-    iterator end () { return iterator (graph.end ()); }
+    iterator end () { return iterator (mapping.end ()); }
 
 
     /**
      * Gets the const_iterator pointing to the beginning of the graph.
      * @return the iterator.
      */
-    const_iterator begin () const { return const_iterator (graph.begin ()); }
+    const_iterator begin () const { return const_iterator (mapping.begin ()); }
 
 
     /**
      * Gets the const_iterator pointing to the end of the graph.
      * @return the iterator.
      */
-    const_iterator end () const { return const_iterator (graph.end ()); }
+    const_iterator end () const { return const_iterator (mapping.end ()); }
 
-
+    
     /**
      * Sets the weight of this node.
      * @param n the node.
@@ -254,7 +242,7 @@ namespace mccore {
     virtual void setWeight (const node_type& n, float w)
     {
       assert (contains (n));
-      nodeWeights.find (nodeToPtr (n))->second = w;
+      internalSetWeight (mapping[n], w);
     }
 
 
@@ -266,7 +254,7 @@ namespace mccore {
     virtual float getWeight (const node_type& n) const 
     {
       assert (contains (n));
-      return nodeWeights.find (nodeToPtr (n))->second;
+      return internalGetWeight (mapping.find (n)->second);
     }
 
 
@@ -278,42 +266,33 @@ namespace mccore {
      */
     virtual float getWeight (const node_type& o, const node_type& p) const 
     {
+      assert (contains (o));
+      assert (contains (p));
       assert (areConnected (o, p));
-      return edgeWeights.find(nodeToPtr (o))->second.find (nodeToPtr (p))->second;
+      return internalGetWeight (mapping.find (o)->second, 
+				mapping.find (p)->second);
     }
-
-
+    
+    
     /**
      * Gets the edge that exists between nodes o and p.
      * @param o an extremity of the edge.
      * @param p an extremity of the edge.
      * @return the edge.
      */
-    virtual const edge_type& getEdge (const node_type& o, const node_type& p) const {
+    virtual const edge_type getEdge (const node_type& o, const node_type& p) const {
+      assert (contains (o));
+      assert (contains (p));
       assert (areConnected (o, p));
-      return *graph.find(nodeToPtr (o))->second.find (nodeToPtr (p))->second;
+      return edges[internalGetEdge (mapping.find (o)->second, 
+				    mapping.find (p)->second)];
     }
 
+    
 
-  protected:
-
-
-    const node_type* nodeToPtr (const node_type &n) const 
-    {
-      return &*nodes.find (n);
-    }
-
-
-    bool equals (const node_type& o, const node_type& p) {
-      return !node_comparator () (o, p) && !node_comparator () (p, o);
-    }
-
-
-    // METHODS --------------------------------------------------------------
-
+    // METHODS -----------------------------------------------------------------
 
   public:
-
 
     /**
      * Inserts a node in the graph.
@@ -325,15 +304,17 @@ namespace mccore {
     {
       if (contains (n))	return find (n);
       
-      const node_type* np = &*nodes.insert (n).first;
+      mapping[n] = nodes.size ();
+      nodes.push_back (n);
+      nodeWeights.push_back (weight);
 
-      graph[np] = adjacency_type ();
-      nodeWeights[np] = weight;
+      graph.resize (size ());
+
       iterator p = find (n);
-      return p;
+      return p;     
     }
 
-
+    
     /**
      * Inserts the residue range before pos.  It calls the list<> method.
      * @param pos the iterator where the residue will be placed.
@@ -351,28 +332,15 @@ namespace mccore {
 	}
     }
 
-    
+
     /**
      * Erase a node from the graph.
      * @param n the node to remove.
      * @return the number of nodes that were erased.
      */ 
     virtual size_type erase (const node_type &n) {
-      if (!contains (n)) return 0;
-   
-      const node_type* np = &*nodes.insert (n).first;
-
-      graph.erase (np);
-      nodeWeights.erase (np);
-      
-      typename graph_type::iterator i;    
-      for (i=graph.begin (); i!=graph.end (); ++i) {
-	i->second.erase (np);
-      }
-
-      nodes.erase (*np);
-
-      return 1;
+      cerr << "Undefined method (erase)" << endl;
+      return 0;
     }
 
 
@@ -382,9 +350,9 @@ namespace mccore {
      * @return an iterator on the node found or on end () if not found.
      */
     iterator find (const node_type &n) {
-      return graph.find (nodeToPtr (n));
+      return iterator (mapping.find (n));
     }
-  
+
 
     /**
      * Finds a node in the graph.
@@ -392,17 +360,18 @@ namespace mccore {
      * @return a const_iterator on the node found or on end () if not found.
      */
     const_iterator find (const node_type &n) const {
-      return graph.find (nodeToPtr (n));
+      return const_iterator (mapping.find (n));
     }
 
-  
+
+
     /**
-     * Determines if the 
+     * Determines if the node is in the graph
      * @param n the node to find.
      * @return a const_iterator on the node found or on end () if not found.
      */
     bool contains (const node_type &n) const {
-      return (nodes.find (n) != nodes.end ());
+      return (mapping.find (n) != mapping.end ());
     }
 
 
@@ -411,32 +380,29 @@ namespace mccore {
      * @return the number of elements in the graph.
      */
     int size () const {
-      return graph.size ();
+      return nodes.size ();
     }
 
-  
+    
     /**
      * Determines if the graph is empty.
      * @return true if the graph contains 0 nodes.
      */
     bool empty () const {
-      return (graph.size () == 0);
+      return (size () == 0);
     }
-  
+
 
     /**
      * Removes all of the elements from the graph.  
      */
     virtual void clear() {
       graph.clear ();
-      nodeWeights.clear ();
-      edgeWeights.clear ();
       nodes.clear ();
       edges.clear ();
+      nodeWeights.clear ();
+      edgeWeights.clear ();
     }
-
-
-    // GRAPH RELATED METHODS ------------------------------------------------
 
 
     /**
@@ -453,14 +419,13 @@ namespace mccore {
       if (!contains (o) || !contains (p)) return false;
     
       edges.push_back (e);
-      const edge_type* ep = &edges.back ();
+      edgeWeights.push_back (w);
 
-      graph[nodeToPtr (o)][nodeToPtr (p)] = ep;
-      edgeWeights[nodeToPtr (o)][nodeToPtr (p)] = w;
+      graph.connect (mapping[o], mapping[p], edges.size ()-1);
 
       return true;
     }
-
+    
 
     /**
      * Disconnect two nodes of the graph.
@@ -471,19 +436,13 @@ namespace mccore {
     virtual bool disconnect (const node_type &o, const node_type &p) 
     {
       if (!contains (o) || !contains (p)) return false;
-
-      const edge_type* ep = graph[nodeToPtr (o)][nodeToPtr (p)];
-
-      graph.find (nodeToPtr (o))->second.erase (nodeToPtr (p));
-      edgeWeights.find (nodeToPtr (o))->second.erase (nodeToPtr (p));
-
-      typename list< edge_type >::iterator i;
-      for (i=edges.begin (); i!=edges.end (); ++i) {
-	if (&*i == ep) break;
-      }
-      if (i!=edges.end ())
-	edges.erase (i);
+      if (!areConnected (o, p)) return false;
       
+      int e = graph.elem (mapping[o], mapping[p]);
+      graph.disconnect (mapping[o], mapping[p]);
+
+      edges.erase (edges.begin () + e);
+      edgeWeights.erase (edgeWeights.begin () + e);
       return true;
     }
 
@@ -496,10 +455,10 @@ namespace mccore {
      */
     virtual bool areConnected (const node_type &o, const node_type &p) const 
     {
-      if (!contains (o) || !contains (p)) return false;
-    
-      return graph.find (nodeToPtr (o))->second.find (nodeToPtr (p)) != 
-	graph.find (nodeToPtr (o))->second.end ();
+      int oi, pi;
+      oi = mapping.find(o)->second;
+      pi = mapping.find(p)->second;
+      return internalAreConnected (oi, pi);
     }
 
 
@@ -512,13 +471,14 @@ namespace mccore {
     {
       list< node_type > n;
       if (!contains (o)) return n;
+      
+      list< int > l = internalGetNeighbors (mapping.find (o)->second);
+      list< int >::iterator i;
 
-      const adjacency_type &at = graph.find (nodeToPtr (o))->second;
-      typename adjacency_type::const_iterator i;
-
-      for (i=at.begin (); i!=at.end (); ++i) {
-	n.push_back (*i->first);
+      for (i=l.begin (); i!=l.end (); ++i) {
+	n.push_back (nodes[*i]);
       }
+
       return n;
     }
 
@@ -536,37 +496,104 @@ namespace mccore {
       typedef float value_type;
       if (!contains (source) || !contains (dest)) return Path< node_type, value_type >();
       
-      map< const node_type*, Path< const node_type*, value_type > > paths;
-      paths = shortestPath (source);
+      vector< Path< int, value_type > > paths;
+      Path< int, value_type >::iterator kt; 
 
-      map< node_type, Path< node_type, value_type > > realpaths;      
-
-      typename map< const node_type*, Path< const node_type*, value_type > >::iterator it;
-      typename Path< const node_type*, value_type >::iterator kt; 
+      internalShortestPath (mapping.find (source)->second, paths);
       
-      for  (it=paths.begin (); it!=paths.end (); ++it) {
-	if (it->second.size () > 0) {
-	  Path< node_type, value_type > aPath;
-	  for (kt=it->second.begin (); kt!=it->second.end (); ++kt) {
-	    aPath.push_back (**kt);
-	  }
-	  aPath.setValue (it->second.getValue ());
-	  realpaths[*(it->first)] = aPath;
-	}
+      Path< node_type, float > realpath;
+
+      for (kt=paths[mapping.find (dest)->second].begin ();
+	   kt!=paths[mapping.find (dest)->second].end (); ++kt) {
+	realpath.push_back (nodes[*kt]);
       }
-      
-      if (realpaths.find (dest) != realpaths.end ()) 
-	return realpaths[dest];
-      
-      // Recreate the resulting map.
-      
-      return Path< node_type, value_type >();
+      realpath.setValue (paths[mapping.find (dest)->second].getValue ());
+      return realpath;
     }
 
-    // PRIVATE METHODS -----------------------------------------------------------
-
+    
+    // PROTECTED METHODS -------------------------------------------------------
+  
   protected:
+    
+    /**
+     * Sets the weight of this node.
+     * @param n the node.
+     * @return the weight.
+     */
+    virtual void internalSetWeight (int n, float w)
+    {
+      nodeWeights[n] = w;
+    }
 
+
+    /**
+     * Gets the weight of this node.
+     * @param n the node.
+     * @return the weight.
+     */
+    virtual float internalGetWeight (int n) const 
+    {
+      return nodeWeights[n];
+    }
+
+
+    /**
+     * Gets the weight of this edge.
+     * @param o the origin node.
+     * @param p the destination node.
+     * @return the weight.
+     */
+    virtual float internalGetWeight (int o, int p) const 
+    {
+      return edgeWeights[graph.get (o, p)];
+    }
+
+
+    /**
+     * Gets the edge that exists between nodes o and p.
+     * @param o an extremity of the edge.
+     * @param p an extremity of the edge.
+     * @return the edge.
+     */
+    virtual int internalGetEdge (int o, int p) const {
+      return graph.get (o, p);
+    }
+    
+    
+    /**
+     * Determines if the node is in the graph
+     * @param n the node to find.
+     * @return a const_iterator on the node found or on end () if not found.
+     */
+    bool internalContains (int n) const {
+      return (graph.contains (n));
+    }
+
+
+    /**
+     * Returns true if there exists an edge between o and p.
+     * @param o an extremity of the edge.
+     * @param p an extremity of the edge.
+     * @return true if there exists an edge between o and p.
+     */
+    virtual bool internalAreConnected (int o, int p) const 
+    {
+      return graph.areConnected (o, p);
+    }
+
+
+    /**
+     * Returns the neighbors of the given node.
+     * @param o a node in the graph.
+     * @return the list of neighbors.
+     */
+    virtual list< int > internalGetNeighbors (int o) const
+    {
+      return graph.neighbors (o);
+    }
+
+    
     /**
      * Dijkstra's algorithm for the shortest path in a directed graph.
      * NOTE: value_type must be a float since we still use gcc-2.95.3
@@ -575,132 +602,112 @@ namespace mccore {
      * @param source the source node of the paths.
      * @return a map of nodes with their paths from the source.
      */
-    map< const node_type*, Path< const node_type*, float > >
-    shortestPath (const node_type &source) 
+    void internalShortestPath (int source, vector< Path< int, float > > &paths)
     {
       typedef float value_type;
-      value_type MAXVALUE = MAXFLOAT;
+      value_type MAXVALUE = MAXFLOAT;  
 
-      if (!contains (source)) 
-	return map< const node_type*, Path< const node_type*, value_type > > ();
+      int i;
+      int graphsize = size ();
+      paths.clear ();
+      paths.resize (graphsize);                     // path description  
+      vector< int > C;                              // node set
+      vector< int >::iterator k;
       
-      map< const node_type*, Path< const node_type*, value_type > > p;  // path description
-      vector< const node_type* > c;                                     // node set
-      typename graph_type::const_iterator i;
-      int j, k;
-      
-      // Initialize.
-      for (i=graph.begin (); i!=graph.end (); ++i) {
-      	if (equals (source, *i->first)) {
-      	  p[i->first] = Path< const node_type*, value_type > ();
-      	} else {
-      	  c.push_back (i->first);
-      	  if (areConnected (source, *i->first)) {
-      	    p[i->first] = Path< const node_type*, value_type > ();
-      	    p[i->first].setValue (getWeight (source, *i->first));
-      	    p[i->first].push_back (nodeToPtr (source));
-      	    p[i->first].push_back (i->first);
-      	  } else {
-      	    p[i->first] = Path< const node_type*, value_type > ();
-      	    p[i->first].setValue (MAXVALUE);
-      	  }	
-	}
-      }
-
-//       {
-// 	map< const node_type*, Path< const node_type*, value_type > >::iterator it;
-// 	Path< const node_type*, value_type >::iterator kt; 
-// 	vector< const node_type* >::iterator jt; 
-
-// 	cout << "p =  (" << endl;
-// 	for  (it=p.begin (); it!=p.end (); ++it) {
-// 	  cout << *(it->first) << "=[";
-// 	  for (kt=it->second.begin (); kt!=it->second.end (); ++kt) {
-// 	    cout << **kt << " ";
-// 	  }
-// 	  cout << "] " << it->second.getValue () << endl;
-// 	} 
-// 	cout << ")" << endl;
-
-// 	cout << "c = ";
-// 	for (jt=c.begin (); jt!=c.end (); ++jt) {
-// 	  cout << **jt << " ";
-// 	}
-// 	cout << endl;
-//       }
-
-      // Execute ---
-      for (j=0; j<size ()-2; ++j) {
-	// Find an element of c that minimizes the current path weight.
-	int minId = 0;
-	value_type minVal = p[c[minId]].getValue ();
-	for (k=0; k<(int)c.size (); ++k) {
-	  value_type currVal = p[c[k]].getValue ();
-	  if (currVal < minVal) {
-	    minVal = currVal;
-	    minId = k;
-	  }
-	}	
-	
-	// Break if nothing was found.
-	if (minVal == MAXVALUE) break;
-	
-	// Remove this element from the node set.
-	const node_type* minNode = c[minId];
-	c.erase (c.begin ()+minId);
-
-	// Update paths.
-	for (k=0; k<(int)c.size (); ++k) {
-	  value_type oldVal = p[c[k]].getValue ();
-	  value_type newVal;
-	  const node_type* kp = c[k];
-	  if (areConnected (*minNode, *kp))
-	    newVal = minVal + getWeight (*minNode, *kp);
-	  else
-	    newVal = MAXVALUE;
-
-	  if (oldVal > newVal) {
-	    p[kp] = p[minNode];
-	    p[kp].push_back (kp);
-	    p[kp].setValue (newVal);
+      // Initialize ---
+      for  (i=0; i<graphsize; i++) {
+	if  (i == source) { 
+	  paths[i].setValue (0);
+	} else { 
+	  C.push_back (i);
+	  if  (internalAreConnected(source, i)) {
+	    paths[i].setValue (internalGetWeight (source, i));	 
+	    paths[i].push_back (source); 
+	    paths[i].push_back (i);
+	  } else {
+	    paths[i].setValue (MAXVALUE);
 	  }
 	}
       }
-      
-      return p;
+    
+      for  (i=0; i<graphsize-2; i++) {
+	vector< int >::iterator min_iter = C.begin();
+	value_type min_value = paths[*min_iter].getValue (); // in C
+	int min_index;
+	
+	for  (k=C.begin(); k!=C.end(); k++) {
+	  if  (paths[*k].getValue () < min_value) {
+	    min_value = paths[*k].getValue ();
+	    min_iter = k;
+	  } 
+	}
+	min_index = *min_iter;
+	C.erase (min_iter);
+	
+	if  (min_value == MAXVALUE) break; // in case there is no better element...
+	
+	for (k=C.begin(); k!=C.end(); k++) {
+	  value_type old_val = paths[*k].getValue ();
+	  value_type new_val;
+	  if (internalAreConnected (min_index, *k))
+	    new_val = min_value + internalGetWeight (min_index, *k);
+	  else 
+	    new_val = MAXVALUE;
+	  if  (old_val > new_val) {
+	    paths[*k] = paths[ min_index ];
+	    paths[*k].push_back (*k);
+	    paths[*k].setValue (new_val);
+	  }
+	}
+      }
     }
 
 
-    // I/O -----------------------------------------------------------------------
-
+    // I/O ---------------------------------------------------------------------    
+    
 
   public:
-
-
+    
     virtual ostream& output (ostream& os) const
     {
-      typename graph_type::const_iterator i;
-      typename adjacency_type::const_iterator j;
-
-      for (i=graph.begin (); i!=graph.end (); ++i) {
-	cout << *i->first << " : ";
-	for (j=i->second.begin (); j!=i->second.end (); ++j) {
-	  cout << *j->first << " "; // << "(" << *j->second << ") ";
-	}
-	cout << endl;
+      typename Graph::const_iterator ki, kj;
+      typename vector< node_type >::const_iterator i;
+      typename vector< edge_type >::const_iterator j;
+ 
+      os << "Nodes:" << endl;
+      for (i=nodes.begin (); i!=nodes.end (); ++i) {
+	os << i-nodes.begin () << " : " << *i << " (" 
+	   << nodeWeights[i-nodes.begin ()] << ")" << endl;
       }
-
+      os << "Edges:" << endl;
+      for (j=edges.begin (); j!=edges.end (); ++j) {
+	os << j-edges.begin () << " : " << *j << " (" 
+	   << edgeWeights[j-edges.begin ()] << ")" << endl;
+      }
+      os << "Adjacency:" << endl;
+      for (ki=begin (); ki!=end (); ++ki) {      
+	os << *ki << "(" << getWeight (*ki) << ")" << " : ";      
+	for (kj=begin (); kj!=end (); ++kj) {
+	  if (areConnected (*ki, *kj)) 
+	    os << *kj << "(" << getEdge (*ki, *kj) << ") ";
+	}
+	os << endl;
+      }
+      
+      graph.output (os);
       return os;
     }
-  
 
-  protected:
     
 
     // ITERATORS ------------------------------------------------------------
 
-    typedef typename graph_type::iterator gtiterator;
-    typedef typename graph_type::const_iterator gtciterator;
+    
+protected:
+
+    
+    typedef typename map< node_type, int >::iterator gtiterator;
+    typedef typename map< node_type, int >::const_iterator gtciterator;
     
     class graph_iterator : public gtiterator
     {      
@@ -714,7 +721,7 @@ namespace mccore {
       
       const node_type& operator* () const 
       {
-	return *gtiterator::operator* ().first;
+	return gtiterator::operator* ().first;
       }
       
       const node_type* operator-> () const 
@@ -740,7 +747,7 @@ namespace mccore {
 
       const node_type& operator* () const 
       {
-	return *gtciterator::operator* ().first;
+	return gtciterator::operator* ().first;
       }
 
       const node_type* operator-> () const 
@@ -749,18 +756,19 @@ namespace mccore {
       }
     };
 
-
+    
   };
 
-  
   template< class node_type, 
-	    class edge_type, 
+	    class edge_type,
+	    class matrix_type,
 	    class node_comparator >
-  ostream &operator<< (ostream &out, const Graph< node_type, edge_type, node_comparator> &g)
-  {
+  ostream &operator<< (ostream &out, const Graph< node_type, edge_type, matrix_type, node_comparator> &g)
+  {    
     return g.output (out);
   }  
 
 }
+
 
 #endif

@@ -244,7 +244,7 @@ HBond::evalStatistically (const Residue &ra, const Residue &rb)
   resA = &rb;
 
   // PreCheck on the donor/acceptor distance
-  if (getDonor ().distance (getAcceptor ()) > 3) return 0;
+  if (getDonor ().distance (getAcceptor ()) > 5) return 0;
 
   if (donor == AtomType::aC5M) {
     Vector3D px, py, pz, up, pv;

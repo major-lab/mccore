@@ -3,7 +3,7 @@
 // Copyright © 2000-01, 03 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 // 
 //  This file is part of mccore.
 //  
@@ -37,6 +37,7 @@ class oBinstream;
 
 namespace mccore { 
 
+  class Residue;
   class AtomTypeStore;
 
   /**
@@ -50,7 +51,7 @@ namespace mccore {
    *   - The charge and van der Waals radius<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: AtomType.h,v 1.14 2003-07-11 21:27:06 gendrop Exp $ 
+   * @version $Id: AtomType.h,v 1.15 2003-08-28 14:28:51 gendrop Exp $ 
    */
   class AtomType 
   {
@@ -256,6 +257,27 @@ namespace mccore {
     virtual bool isUnknown () const {
       return (typeid (*this) == typeid (AtomType));
     }
+        
+    /**
+     * Gets the Van Der Waals radius value for the atom.
+     * @param res the residue that contains the atom.
+     * @return the Van Der Waals radius value.
+     */
+    virtual float getVDWR (const Residue *res) const { return 0; }
+    
+    /**
+     * Gets the Amber epsilon value for the atom.
+     * @param res the residue that contains the atom.
+     * @return the Amber epsilon value.
+     */
+    virtual float getAmberEpsilon (const Residue *res) const { return 0; }
+    
+    /**
+     * Gets the Amber charge value for the atom in the given residue type.
+     * @param res the residue type.
+     * @return the Amber charge.
+     */
+    virtual float getAmberCharge (const Residue *res) const { return 0; }
     
   private:
 

@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
 // Last Modified By : Patrick Gendron
-// Last Modified On : Wed Jul  9 17:49:40 2003
-// Update Count     : 26
+// Last Modified On : Fri Aug 22 13:37:42 2003
+// Update Count     : 27
 // Status           : Unknown.
 // 
 
@@ -183,6 +183,13 @@ namespace mccore
 			       matrix[1], matrix[5], matrix[9],  0,
 			       matrix[2], matrix[6], matrix[10], 0,
 			       0, 0, 0, 1);
+  }
+  
+
+  Vector3D
+  HomogeneousTransfo::getTranslationVector () const 
+  {
+    return Vector3D (matrix[12], matrix[13], matrix[14]);
   }
   
 

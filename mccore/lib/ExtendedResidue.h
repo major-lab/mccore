@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 // 
 //  This file is part of mccore.
 //  
@@ -52,7 +52,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: ExtendedResidue.h,v 1.3 2003-07-11 21:25:56 gendrop Exp $
+   * @version $Id: ExtendedResidue.h,v 1.4 2003-08-28 14:29:08 gendrop Exp $
    */
   class ExtendedResidue : public virtual Residue
   {
@@ -247,8 +247,15 @@ namespace mccore {
      *  residue to the origin of the global coordinate and stores the
      *  transformation internally.  
      */
-    void finalize ();
+    virtual void finalize ();
 
+    /**
+     * Copies the atom of other into *this without verification.  It
+     * is implied that both residues ar of the same type and contain
+     * the same atoms.  
+     * @param other the residue from which to copy atom locations.
+     */
+    virtual void atomCopy (const Residue& other); 
 
     // PRIVATE METHODS ------------------------------------------------------
 

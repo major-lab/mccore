@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron
 // Created On       : Thu Mar 13 13:03:07 2003
 // Last Modified By : Patrick Gendron
-// Last Modified On : Thu Apr 10 21:33:19 2003
-// Update Count     : 37
+// Last Modified On : Thu Aug 21 19:33:23 2003
+// Update Count     : 44
 // Status           : Unknown.
 // 
 
@@ -111,6 +111,14 @@ namespace mccore {
     virtual ostream& output (ostream &os) const = 0;
 
     /**
+     * Inputs the atom from the binary stream.
+     * @param ibs the input binary stream.
+     * @param atom the atom to fill.
+     * @return the input binary stream used.
+     */
+    friend iBinstream& operator>> (iBinstream &ibs, AtomSet *&as);
+
+    /**
      * Ouputs the set to the stream.
      * @param os the output stream.
      * @return the used output stream.
@@ -125,15 +133,6 @@ namespace mccore {
    * @return the used output stream.
    */
   ostream& operator<< (ostream &os, const AtomSet &as);
-
-//   /**
-//    * Inputs the atom from the binary stream.
-//    * @param ibs the input binary stream.
-//    * @param atom the atom to fill.
-//    * @return the input binary stream used.
-//    */
-//   iBinstream& operator>> (iBinstream &ibs, Atom &atom);
-
 
   /**
    * Outputs the atom to the binary stream.

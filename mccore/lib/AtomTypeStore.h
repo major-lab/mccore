@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 12:30:39 2003
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 // 
 //  This file is part of mccore.
 //  
@@ -38,11 +38,13 @@ using namespace std;
 
 namespace mccore { 
 
+  class Residue;
+
   /**
    * @short Repository of atomtypes.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: AtomTypeStore.h,v 1.3 2003-07-11 21:27:13 gendrop Exp $
+   * @version $Id: AtomTypeStore.h,v 1.4 2003-08-28 14:29:02 gendrop Exp $
    */
   class AtomTypeStore
   {
@@ -250,6 +252,27 @@ namespace mccore {
     public:
       AC1p () {}
       AC1p (const char* t) : AtomType (t) {}
+      
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1094.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1094; }
+      
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -260,6 +283,28 @@ namespace mccore {
     public:
       AC2p () {}
       AC2p (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1094.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1094; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
+
     };
 
     /**
@@ -270,6 +315,26 @@ namespace mccore {
     public:
       AC3p () {}
       AC3p (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1094.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1094; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -280,6 +345,27 @@ namespace mccore {
     public:
       AC4p () {}
       AC4p (const char*  t) : AtomType (t) {}
+ 
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1094.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1094; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -290,6 +376,27 @@ namespace mccore {
     public:
       AC5p () {}
       AC5p (const char*  t) : AtomType (t) {}
+ 
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1094.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1094; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -300,6 +407,27 @@ namespace mccore {
     public:
       AH1p () {}
       AH1p (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.2870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.2870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -310,6 +438,27 @@ namespace mccore {
     public:
       AH2p () {}
       AH2p (const char*  t) : AtomType (t) {}
+  
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.3870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.3870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -320,6 +469,27 @@ namespace mccore {
     public:
       AH3p () {}
       AH3p (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.3870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.3870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -330,6 +500,27 @@ namespace mccore {
     public:
       AH4p () {}
       AH4p (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.3870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.3870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -340,6 +531,27 @@ namespace mccore {
     public:
       AH5p () {}
       AH5p (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.3870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.3870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -350,6 +562,27 @@ namespace mccore {
     public:
       AO1P () {}
       AO1P (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.6612.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.6612; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.2100.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.2100; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -360,6 +593,27 @@ namespace mccore {
     public:
       AO2p () {}
       AO2p (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.7210.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.7210; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.2104.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.2104; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -370,6 +624,27 @@ namespace mccore {
     public:
       AO2P () {}
       AO2P (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.6612.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.6612; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.2100.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.2100; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -380,6 +655,27 @@ namespace mccore {
     public:
       AO3p () {}
       AO3p (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the returned value depends if the residue is a terminal.
+       */
+      virtual float getVDWR (const Residue *res) const;
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the returned value depends if the residue is a terminal.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const;
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -390,6 +686,27 @@ namespace mccore {
     public:
       AO3P () {}
       AO3P (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.6612.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.6612; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.2100.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.2100; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -400,6 +717,27 @@ namespace mccore {
     public:
       AO4p () {}
       AO4p (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.6837.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.6837; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1700.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -410,6 +748,27 @@ namespace mccore {
     public:
       AO5p () {}
       AO5p (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the returned value depends if the residue is a terminal.
+       */
+      virtual float getVDWR (const Residue *res) const;
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the returned value depends if the residue is a terminal.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const;
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -420,6 +779,28 @@ namespace mccore {
     public:
       AP () {}
       AP (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 2.1000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 2.1000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.2000.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.2000; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
+
     };
 
     /**
@@ -430,6 +811,27 @@ namespace mccore {
     public:
       A1H2p () {}
       A1H2p (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.4870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -440,6 +842,27 @@ namespace mccore {
     public:
       A1H5p () {}
       A1H5p (const char*  t) : AtomType (t) {}
+ 
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.3870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.3870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -450,6 +873,27 @@ namespace mccore {
     public:
       A2H2p () {}
       A2H2p (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.4870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -460,6 +904,27 @@ namespace mccore {
     public:
       A2H5p () {}
       A2H5p (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.3870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.3870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -470,6 +935,29 @@ namespace mccore {
     public:
       AHO2p () {}
       AHO2p (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.  The value is not defined
+       * in Amber.
+       * @param res the residue that contains the atom.
+       * @return 0.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.  The value is not defined
+       * in Amber.
+       * @param res the residue that contains the atom.
+       * @return 0.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -480,6 +968,30 @@ namespace mccore {
     public:
       AHO3p () {}
       AHO3p (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.  The value is not defined
+       * in Amber.
+       * @param res the residue that contains the atom.
+       * @return 0.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.  The value is not defined
+       * in Amber.
+       * @param res the residue that contains the atom.
+       * @return 0.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * The value is not defined in Amber.
+       * @param res the residue type.
+       * @return 0.
+       */
+      virtual float getAmberCharge (const Residue *res) const { return 0; }
     };
 
     /**
@@ -490,6 +1002,27 @@ namespace mccore {
     public:
       AC2 () {}
       AC2 (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0860.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -500,6 +1033,27 @@ namespace mccore {
     public:
       AC4 () {}
       AC4 (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0860.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -510,6 +1064,27 @@ namespace mccore {
     public:
       AC5 () {}
       AC5 (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0860.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -520,6 +1095,27 @@ namespace mccore {
     public:
       AC5M () {}
       AC5M (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0860.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const { return -0.2269; }
     };
 
     /**
@@ -530,6 +1126,27 @@ namespace mccore {
     public:
       AC6 () {}
       AC6 (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0860.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -540,6 +1157,27 @@ namespace mccore {
     public:
       AC8 () {}
       AC8 (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0860.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -550,6 +1188,27 @@ namespace mccore {
     public:
       AH1 () {}
       AH1 (const char*  t) : AtomType (t) {}
+
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.6000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -560,6 +1219,26 @@ namespace mccore {
     public:
       AH2 () {}
       AH2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.3590.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.3590; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0150.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0150; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -570,6 +1249,26 @@ namespace mccore {
     public:
       AH3 () {}
       AH3 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.6000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -580,6 +1279,26 @@ namespace mccore {
     public:
       AH5 () {}
       AH5 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.4590.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.4590; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0150.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0150; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -590,6 +1309,26 @@ namespace mccore {
     public:
       AH6 () {}
       AH6 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.4090.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.4090; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0150.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0150; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -600,6 +1339,26 @@ namespace mccore {
     public:
       AH7 () {}
       AH7 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.4870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const { return 0.0770; }
     };
 
     /**
@@ -610,6 +1369,26 @@ namespace mccore {
     public:
       AH8 () {}
       AH8 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.3590.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.3590; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0150.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0150; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -620,6 +1399,26 @@ namespace mccore {
     public:
       AN1 () {}
       AN1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.8240.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1700.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -630,6 +1429,26 @@ namespace mccore {
     public:
       AN2 () {}
       AN2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.8240.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1700.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -640,6 +1459,26 @@ namespace mccore {
     public:
       AN3 () {}
       AN3 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.8240.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1700.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -650,6 +1489,26 @@ namespace mccore {
     public:
       AN4 () {}
       AN4 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.8240.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1700.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -660,6 +1519,26 @@ namespace mccore {
     public:
       AN6 () {}
       AN6 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.8240.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1700.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -670,6 +1549,26 @@ namespace mccore {
     public:
       AN7 () {}
       AN7 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.8240.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1700.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -680,6 +1579,26 @@ namespace mccore {
     public:
       AN9 () {}
       AN9 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.8240.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1700.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -690,6 +1609,26 @@ namespace mccore {
     public:
       AO2 () {}
       AO2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.6612.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.6612; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.2100.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.2100; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -700,6 +1639,26 @@ namespace mccore {
     public:
       AO4 () {}
       AO4 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.6612.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.6612; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.2100.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.2100; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -710,6 +1669,26 @@ namespace mccore {
     public:
       AO6 () {}
       AO6 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.6612.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.6612; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.2100.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.2100; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -720,6 +1699,26 @@ namespace mccore {
     public:
       A1H2 () {}
       A1H2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.6000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -730,6 +1729,26 @@ namespace mccore {
     public:
       A1H4 () {}
       A1H4 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.6000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -740,6 +1759,26 @@ namespace mccore {
     public:
       A1H5M () {}
       A1H5M (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.4870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -750,6 +1789,26 @@ namespace mccore {
     public:
       A1H6 () {}
       A1H6 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.6000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -760,6 +1819,26 @@ namespace mccore {
     public:
       A2H2 () {}
       A2H2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.6000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -770,6 +1849,26 @@ namespace mccore {
     public:
       A2H4 () {}
       A2H4 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.6000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -780,6 +1879,26 @@ namespace mccore {
     public:
       A2H5M () {}
       A2H5M (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.4870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -790,6 +1909,26 @@ namespace mccore {
     public:
       A2H6 () {}
       A2H6 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.6000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -800,6 +1939,26 @@ namespace mccore {
     public:
       A3H5M () {}
       A3H5M (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.4870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -810,6 +1969,29 @@ namespace mccore {
     public:
       APSY () {}
       APSY (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the Pseudo atom value.
+       */
+      virtual float getVDWR (const Residue *res) const
+      { return Pseudo::getVDWR (res); }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the Pseudo atom value.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const
+      { return Pseudo::getAmberEpsilon (res); }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const
+      { return Pseudo::getAmberCharge (res); }
     };
 
     /**
@@ -820,6 +2002,29 @@ namespace mccore {
     public:
       APSZ () {}
       APSZ (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the Pseudo atom value.
+       */
+      virtual float getVDWR (const Residue *res) const
+      { return Pseudo::getVDWR (res); }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the Pseudo atom value.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const
+      { return Pseudo::getAmberEpsilon (res); }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Pseudo atom Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const
+      { return Pseudo::getAmberCharge (res); }
     };
 
     /**
@@ -830,6 +2035,29 @@ namespace mccore {
     public:
       ALP1 () {}
       ALP1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the LonePair atom value.
+       */
+      virtual float getVDWR (const Residue *res) const
+      { return LonePair::getVDWR (res); }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the LonePair atom value.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const
+      { return LonePair::getAmberEpsilon (res); }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the LonePair atom Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const
+      { return LonePair::getAmberCharge (res); }
     };
 
     /**
@@ -840,6 +2068,29 @@ namespace mccore {
     public:
       ALP3 () {}
       ALP3 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the LonePair atom value.
+       */
+      virtual float getVDWR (const Residue *res) const
+      { return LonePair::getVDWR (res); }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the LonePair atom value.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const
+      { return LonePair::getAmberEpsilon (res); }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the LonePair atom Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const
+      { return LonePair::getAmberCharge (res); }
     };
 
     /**
@@ -850,6 +2101,29 @@ namespace mccore {
     public:
       ALP7 () {}
       ALP7 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the LonePair atom value.
+       */
+      virtual float getVDWR (const Residue *res) const
+      { return LonePair::getVDWR (res); }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the LonePair atom value.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const
+      { return LonePair::getAmberEpsilon (res); }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the LonePair atom Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const
+      { return LonePair::getAmberCharge (res); }
     };
 
     /**
@@ -860,6 +2134,29 @@ namespace mccore {
     public:
       A1LP2 () {}
       A1LP2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the LonePair atom value.
+       */
+      virtual float getVDWR (const Residue *res) const
+      { return LonePair::getVDWR (res); }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the LonePair atom value.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const
+      { return LonePair::getAmberEpsilon (res); }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the LonePair atom Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const
+      { return LonePair::getAmberCharge (res); }
     };
 
     /**
@@ -870,6 +2167,29 @@ namespace mccore {
     public:
       A1LP4 () {}
       A1LP4 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the LonePair atom value.
+       */
+      virtual float getVDWR (const Residue *res) const
+      { return LonePair::getVDWR (res); }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the LonePair atom value.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const
+      { return LonePair::getAmberEpsilon (res); }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the LonePair atom Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const
+      { return LonePair::getAmberCharge (res); }
     };
 
     /**
@@ -880,6 +2200,29 @@ namespace mccore {
     public:
       A1LP6 () {}
       A1LP6 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the LonePair atom value.
+       */
+      virtual float getVDWR (const Residue *res) const
+      { return LonePair::getVDWR (res); }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the LonePair atom value.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const
+      { return LonePair::getAmberEpsilon (res); }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the LonePair atom Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const
+      { return LonePair::getAmberCharge (res); }
     };
 
     /**
@@ -890,6 +2233,29 @@ namespace mccore {
     public:
       A2LP2 () {}
       A2LP2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the LonePair atom value.
+       */
+      virtual float getVDWR (const Residue *res) const
+      { return LonePair::getVDWR (res); }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the LonePair atom value.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const
+      { return LonePair::getAmberEpsilon (res); }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the LonePair atom Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const
+      { return LonePair::getAmberCharge (res); }
     };
 
     /**
@@ -900,6 +2266,29 @@ namespace mccore {
     public:
       A2LP4 () {}
       A2LP4 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the LonePair atom value.
+       */
+      virtual float getVDWR (const Residue *res) const
+      { return LonePair::getVDWR (res); }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the LonePair atom value.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const
+      { return LonePair::getAmberEpsilon (res); }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the LonePair atom Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const
+      { return LonePair::getAmberCharge (res); }
     };
 
     /**
@@ -910,6 +2299,29 @@ namespace mccore {
     public:
       A2LP6 () {}
       A2LP6 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the LonePair atom value.
+       */
+      virtual float getVDWR (const Residue *res) const
+      { return LonePair::getVDWR (res); }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the LonePair atom value.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const
+      { return LonePair::getAmberEpsilon (res); }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the LonePair atom Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const
+      { return LonePair::getAmberCharge (res); }
     };
 
     /**
@@ -920,6 +2332,26 @@ namespace mccore {
     public:
       AH3T () {}
       AH3T (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -930,6 +2362,26 @@ namespace mccore {
     public:
       AH5T () {}
       AH5T (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -940,6 +2392,26 @@ namespace mccore {
     public:
       AC () {}
       AC (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0860.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -950,6 +2422,26 @@ namespace mccore {
     public:
       ACA () {}
       ACA (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1094.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1094; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -960,6 +2452,26 @@ namespace mccore {
     public:
       ACB () {}
       ACB (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1094.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1094; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -970,6 +2482,26 @@ namespace mccore {
     public:
       ACD () {}
       ACD (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the value depends of the residue type.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const;
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -980,6 +2512,26 @@ namespace mccore {
     public:
       ACD1 () {}
       ACD1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the value depends of the residue type.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const;
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -990,6 +2542,26 @@ namespace mccore {
     public:
       ACD2 () {}
       ACD2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0860.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1000,6 +2572,26 @@ namespace mccore {
     public:
       ACE () {}
       ACE (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1094.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1094; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1010,6 +2602,26 @@ namespace mccore {
     public:
       ACE1 () {}
       ACE1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0860.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1020,6 +2632,26 @@ namespace mccore {
     public:
       ACE2 () {}
       ACE2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0860.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1030,6 +2662,26 @@ namespace mccore {
     public:
       ACE3 () {}
       ACE3 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0860.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1040,6 +2692,26 @@ namespace mccore {
     public:
       ACG () {}
       ACG (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the value depends of the residue type.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const;
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1050,6 +2722,26 @@ namespace mccore {
     public:
       ACG1 () {}
       ACG1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1094.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1094; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1060,6 +2752,26 @@ namespace mccore {
     public:
       ACG2 () {}
       ACG2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1094.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1094; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1070,6 +2782,26 @@ namespace mccore {
     public:
       ACH2 () {}
       ACH2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0860.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1080,6 +2812,26 @@ namespace mccore {
     public:
       ACZ () {}
       ACZ (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0860.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1090,6 +2842,26 @@ namespace mccore {
     public:
       ACZ2 () {}
       ACZ2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0860.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1100,6 +2872,26 @@ namespace mccore {
     public:
       ACZ3 () {}
       ACZ3 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.9080.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0860.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1110,6 +2902,26 @@ namespace mccore {
     public:
       AH () {}
       AH (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.6000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1120,6 +2932,26 @@ namespace mccore {
     public:
       A1H () {}
       A1H (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.0000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0000.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0000; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const { return 0.00000; }
     };
 
     /**
@@ -1130,6 +2962,26 @@ namespace mccore {
     public:
       A2H () {}
       A2H (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.0000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0000.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0000; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const { return 0.00000; }
     };
 
     /**
@@ -1140,6 +2992,26 @@ namespace mccore {
     public:
       A3H () {}
       A3H (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.0000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0000.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0000; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const { return 0.00000; }
     };
 
     /**
@@ -1150,6 +3022,26 @@ namespace mccore {
     public:
       AHA () {}
       AHA (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.3870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.3870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1160,6 +3052,26 @@ namespace mccore {
     public:
       AHA1 () {}
       AHA1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.3870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.3870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1170,6 +3082,26 @@ namespace mccore {
     public:
       AHA2 () {}
       AHA2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.3870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.3870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1180,6 +3112,26 @@ namespace mccore {
     public:
       AHB () {}
       AHB (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.4870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1190,6 +3142,26 @@ namespace mccore {
     public:
       AHB1 () {}
       AHB1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.4870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1200,6 +3172,26 @@ namespace mccore {
     public:
       AHB2 () {}
       AHB2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the result depends of the residue type.
+       */
+      virtual float getVDWR (const Residue *res) const;
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1210,6 +3202,26 @@ namespace mccore {
     public:
       AHB3 () {}
       AHB3 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the result depends of the residue type.
+       */
+      virtual float getVDWR (const Residue *res) const;
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1220,6 +3232,26 @@ namespace mccore {
     public:
       AHD1 () {}
       AHD1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the result depends of the residue type.
+       */
+      virtual float getVDWR (const Residue *res) const;
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the result depends of the residue type.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const;
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1230,6 +3262,26 @@ namespace mccore {
     public:
       AHD2 () {}
       AHD2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the result depends of the residue type.
+       */
+      virtual float getVDWR (const Residue *res) const;
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the result depends of the residue type.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const;
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1240,6 +3292,26 @@ namespace mccore {
     public:
       AHE () {}
       AHE (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.6000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1250,6 +3322,26 @@ namespace mccore {
     public:
       AHE1 () {}
       AHE1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the result depends of the residue type.
+       */
+      virtual float getVDWR (const Residue *res) const;
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the result depends of the residue type.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const;
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1260,6 +3352,26 @@ namespace mccore {
     public:
       AHE2 () {}
       AHE2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the result depends of the residue type.
+       */
+      virtual float getVDWR (const Residue *res) const;
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the result depends of the residue type.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const;
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1270,6 +3382,26 @@ namespace mccore {
     public:
       AHE3 () {}
       AHE3 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the result depends of the residue type.
+       */
+      virtual float getVDWR (const Residue *res) const;
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the result depends of the residue type.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const;
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1280,6 +3412,26 @@ namespace mccore {
     public:
       AHG () {}
       AHG (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.6000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1290,6 +3442,26 @@ namespace mccore {
     public:
       AHG1 () {}
       AHG1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.0000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0000.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0000; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1300,6 +3472,26 @@ namespace mccore {
     public:
       AHG2 () {}
       AHG2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the result depends of the residue type.
+       */
+      virtual float getVDWR (const Residue *res) const;
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1310,6 +3502,26 @@ namespace mccore {
     public:
       AHH () {}
       AHH (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.0000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0000.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0000; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1320,6 +3532,26 @@ namespace mccore {
     public:
       AHH2 () {}
       AHH2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.4590.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.4590; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0150.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0150; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1330,6 +3562,26 @@ namespace mccore {
     public:
       AHXT () {}
       AHXT (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.0000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0000.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0000; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const { return 0.00000; }
     };
 
     /**
@@ -1340,6 +3592,26 @@ namespace mccore {
     public:
       AHZ () {}
       AHZ (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.4590.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.4590; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0150.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0150; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1350,6 +3622,26 @@ namespace mccore {
     public:
       AHZ1 () {}
       AHZ1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.6000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1360,6 +3652,26 @@ namespace mccore {
     public:
       AHZ2 () {}
       AHZ2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the result depends of the residue type.
+       */
+      virtual float getVDWR (const Residue *res) const;
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the result depends of the residue type.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const;
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1370,6 +3682,26 @@ namespace mccore {
     public:
       AHZ3 () {}
       AHZ3 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the result depends of the residue type.
+       */
+      virtual float getVDWR (const Residue *res) const;
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the result depends of the residue type.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const;
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1380,6 +3712,26 @@ namespace mccore {
     public:
       AN () {}
       AN (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.8240.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1700.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1390,6 +3742,26 @@ namespace mccore {
     public:
       AND1 () {}
       AND1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.8240.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1700.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1400,6 +3772,26 @@ namespace mccore {
     public:
       AND2 () {}
       AND2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.8240.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1700.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1410,6 +3802,26 @@ namespace mccore {
     public:
       ANE () {}
       ANE (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.8240.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1700.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1420,6 +3832,26 @@ namespace mccore {
     public:
       ANE1 () {}
       ANE1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.8240.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1700.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1430,6 +3862,26 @@ namespace mccore {
     public:
       ANE2 () {}
       ANE2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.8240.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1700.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1440,6 +3892,26 @@ namespace mccore {
     public:
       ANH1 () {}
       ANH1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.8240.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1700.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1450,6 +3922,26 @@ namespace mccore {
     public:
       ANH2 () {}
       ANH2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.8240.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1700.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1460,6 +3952,26 @@ namespace mccore {
     public:
       ANZ () {}
       ANZ (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.8240.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.1700.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1470,6 +3982,26 @@ namespace mccore {
     public:
       AO () {}
       AO (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.6612.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.6612; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.2100.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.2100; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1480,6 +4012,26 @@ namespace mccore {
     public:
       AOD1 () {}
       AOD1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.6612.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.6612; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.2100.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.2100; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1490,6 +4042,26 @@ namespace mccore {
     public:
       AOD2 () {}
       AOD2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.6612.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.6612; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.2100.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.2100; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1500,6 +4072,26 @@ namespace mccore {
     public:
       AOE1 () {}
       AOE1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.6612.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.6612; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.2100.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.2100; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1510,6 +4102,26 @@ namespace mccore {
     public:
       AOE2 () {}
       AOE2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.6612.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.6612; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.2100.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.2100; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1520,6 +4132,26 @@ namespace mccore {
     public:
       AOG () {}
       AOG (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.7210.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.7210; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.2104.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.2104; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1530,6 +4162,26 @@ namespace mccore {
     public:
       AOG1 () {}
       AOG1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.7210.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.7210; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.2104.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.2104; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1540,6 +4192,26 @@ namespace mccore {
     public:
       AOH () {}
       AOH (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.7210.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.7210; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.2104.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.2104; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1550,6 +4222,26 @@ namespace mccore {
     public:
       AOXT () {}
       AOXT (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.7210.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.7210; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.2104.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.2104; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const { return 0.00000; }
     };
 
     /**
@@ -1560,6 +4252,26 @@ namespace mccore {
     public:
       ASD () {}
       ASD (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 2.0000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 2.0000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.2500.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.2500; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1570,6 +4282,26 @@ namespace mccore {
     public:
       ASG () {}
       ASG (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 2.0000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 2.0000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.2500.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.2500; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1580,6 +4312,26 @@ namespace mccore {
     public:
       A1HD1 () {}
       A1HD1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.4870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1590,6 +4342,26 @@ namespace mccore {
     public:
       A1HD2 () {}
       A1HD2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.6000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1600,6 +4372,26 @@ namespace mccore {
     public:
       A1HE2 () {}
       A1HE2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.6000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1610,6 +4402,26 @@ namespace mccore {
     public:
       A1HG1 () {}
       A1HG1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.4870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1620,6 +4432,26 @@ namespace mccore {
     public:
       A1HG2 () {}
       A1HG2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.4870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1630,6 +4462,26 @@ namespace mccore {
     public:
       A1HH1 () {}
       A1HH1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.6000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1640,6 +4492,26 @@ namespace mccore {
     public:
       A1HH2 () {}
       A1HH2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.6000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1650,6 +4522,26 @@ namespace mccore {
     public:
       A2HD1 () {}
       A2HD1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.4870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1660,6 +4552,26 @@ namespace mccore {
     public:
       A2HD2 () {}
       A2HD2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.6000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1670,6 +4582,26 @@ namespace mccore {
     public:
       A2HE2 () {}
       A2HE2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.6000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1680,6 +4612,26 @@ namespace mccore {
     public:
       A2HG1 () {}
       A2HG1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.4870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1690,6 +4642,26 @@ namespace mccore {
     public:
       A2HG2 () {}
       A2HG2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.4870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1700,6 +4672,26 @@ namespace mccore {
     public:
       A2HH1 () {}
       A2HH1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.6000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1710,6 +4702,26 @@ namespace mccore {
     public:
       A2HH2 () {}
       A2HH2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.6000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1720,6 +4732,26 @@ namespace mccore {
     public:
       A3HD1 () {}
       A3HD1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.4870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1730,6 +4762,26 @@ namespace mccore {
     public:
       A3HD2 () {}
       A3HD2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.4870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1740,6 +4792,26 @@ namespace mccore {
     public:
       A3HG1 () {}
       A3HG1 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.4870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1750,6 +4822,26 @@ namespace mccore {
     public:
       A3HG2 () {}
       A3HG2 (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 1.4870.
+       */
+      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0157.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const;
     };
 
     /**
@@ -1760,6 +4852,26 @@ namespace mccore {
     public:
       AMG () {}
       AMG (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0000.
+       */
+      virtual float getVDWR (const Residue *res) const { return 0.0000; }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return 0.0000.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const { return 0.0000; }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const { return 0.00000; }
     };
 
     /**
@@ -1770,6 +4882,29 @@ namespace mccore {
     public:
       APSAZ () {}
       APSAZ (const char*  t) : AtomType (t) {}
+      /**
+       * Gets the Van Der Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the Pseudo atom value.
+       */
+      virtual float getVDWR (const Residue *res) const
+      { return Pseudo::getVDWR (res); }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the Pseudo atom value.
+       */
+      virtual float getAmberEpsilon (const Residue *res) const
+      { return Pseudo::getAmberEpsilon (res); }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Pseudo atom Amber charge.
+       */
+      virtual float getAmberCharge (const Residue *res) const
+      { return Pseudo::getAmberCharge (res); }
     };
 
   };  

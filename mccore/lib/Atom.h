@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:00:09 2003
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 // 
 //  This file is part of mccore.
 //  
@@ -44,7 +44,7 @@ namespace mccore {
    * Derived from Vector3D, this class adds the type of the atom.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Atom.h,v 1.3 2003-07-11 21:27:00 gendrop Exp $
+   * @version $Id: Atom.h,v 1.4 2003-08-28 14:28:42 gendrop Exp $
    */
   class Atom : public Vector3D
   {
@@ -53,6 +53,11 @@ namespace mccore {
      */
     const AtomType *type;
     
+    /**
+     * The serial number for use in PDB output.
+     */
+    mutable int serialNo;
+
     // LIFECYCLE ------------------------------------------------------------
 
   public:
@@ -159,6 +164,16 @@ namespace mccore {
       set (x, y, z);
       type = t;
     }
+
+    /**
+     * Sets the serial number of atoms in PDB files.
+     */
+    void setSerialNo (int serial) const { serialNo = serial; }
+
+    /**
+     * Sets the serial number of the atom when dumped in a PDB file.
+     */
+    int getSerialNo () const { return serialNo; }
 
     // METHODS --------------------------------------------------------------
 
