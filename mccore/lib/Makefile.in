@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.28.8.4 $
-# $Id: Makefile.in,v 1.28.8.4 2003-11-11 19:55:09 larosem Exp $
+# $Revision: 1.28.8.5 $
+# $Id: Makefile.in,v 1.28.8.5 2003-11-19 20:35:21 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -38,12 +38,15 @@ libdir = @libdir@
 
 CXX = @CXX@
 CXXFLAGS = @CXXFLAGS@
-CXXSHFLAGS = @CXXSHFLAGS@
 DEPFLAGS = @DEPFLAGS@
 DEFS = @DEFS@
 LD = @CXX@
-LIBS = @LIBS@
 LINKOPTIONS = @LINKOPTIONS@
+LDNAMEPARAM = @LDNAMEPARAM@
+LDFLAGS = @LDFLAGS@
+LIBS = @LIBS@
+LIBALLFLAGSTART = @LIBALLFLAGSTART@
+LIBALLFLAGSTOP = @LIBALLFLAGSTOP@
 
 AR = @AR@
 
@@ -53,7 +56,7 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 
 
 .SUFFIXES:
-.SUFFIXES: .cc .o .lo .d
+.SUFFIXES: .cc .o .d
 
 .cc.d:
 	@ $(SHELL) -ec '$(CXX) $(DEPFLAGS) $(DEFS) -I.. -I$(srcdir) $< \
@@ -62,9 +65,6 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 
 .cc.o:
 	$(CXX) $(CXXFLAGS) $(DEFS) -I.. -I$(srcdir) -c $<
-
-.cc.lo:
-	$(CXX) $(CXXSHFLAGS) $(DEFS) -I.. -I$(srcdir) -c $< -o $@
 
 
 SOURCES = zfstream.cc \
@@ -105,8 +105,6 @@ zfBinstream.h zfPdbstream.h SymmetricalMatrix.h SymmetricalMatrix.cc
 
 OBJECTS = $(SOURCES:.cc=.o)
 
-SHOBJECTS = $(SOURCES:.cc=.lo)
-
 LIBRARY = lib$(PACKAGE)
 
 DISTFILES = Makefile.in $(SOURCES) $(HEADERS)
@@ -116,8 +114,8 @@ all: $(LIBRARY).so.$(VERSION) TAGS
 
 static: $(LIBRARY).a TAGS
 
-$(LIBRARY).so.$(VERSION): $(SHOBJECTS)
-	$(LD) $(LINKOPTIONS) -shared $(LDFLAGS) -o $@ -Wl,-soname,$@ $^ $(LIBS)
+$(LIBRARY).so.$(VERSION): $(OBJECTS)
+	$(LD) $(LINKOPTIONS) -o $@ $(LDNAMEPARAM)$@ $^ $(LDFLAGS) $(LIBS)
 
 $(LIBRARY).a: $(OBJECTS)
 	$(AR) crs $@ $^
@@ -144,13 +142,13 @@ install: all
 	@ $(srcdir)/../mkinstalldirs $(libdir)
 	@ $(srcdir)/../mkinstalldirs $(includedir)/$(PACKAGE)-$(VERSION)
 	@ $(INSTALL_DATA) $(LIBRARY).so.$(VERSION) $(libdir)/$(LIBRARY).so.$(VERSION)
-	@ rm -f $(libdir)/$(LIBRARY).so
+	@ $(RM) $(libdir)/$(LIBRARY).so
 	@ ln -s $(LIBRARY).so.$(VERSION) $(libdir)/$(LIBRARY).so
 	@ echo Installing headers in $(includedir)/$(PACKAGE)-$(VERSION)
 	@ for file in $(HEADERS); do \
            $(INSTALL_DATA) $(srcdir)/$$file $(includedir)/$(PACKAGE)-$(VERSION)/$$file; \
 	  done
-	@ rm -f $(includedir)/$(PACKAGE)
+	@ $(RM) $(includedir)/$(PACKAGE)
 	@ ln -s $(PACKAGE)-$(VERSION) $(includedir)/$(PACKAGE)
 
 install-static: static
@@ -158,38 +156,38 @@ install-static: static
 	@ $(srcdir)/../mkinstalldirs $(libdir)
 	@ $(srcdir)/../mkinstalldirs $(includedir)/$(PACKAGE)-$(VERSION)
 	@ $(INSTALL_DATA) $(LIBRARY).a $(libdir)/$(LIBRARY)-$(VERSION).a
-	@ rm -f $(libdir)/$(LIBRARY).a
+	@ $(RM) $(libdir)/$(LIBRARY).a
 	@ ln -s $(LIBRARY)-$(VERSION).a $(libdir)/$(LIBRARY).a
 	@ echo Installing headers in $(includedir)/$(PACKAGE)-$(VERSION)
 	@ for file in $(HEADERS); do \
            $(INSTALL_DATA) $(srcdir)/$$file $(includedir)/$(PACKAGE)-$(VERSION)/$$file; \
 	  done;
-	@ rm -f $(includedir)/$(PACKAGE)
+	@ $(RM) $(includedir)/$(PACKAGE)
 	@ ln -s $(PACKAGE)-$(VERSION) $(includedir)/$(PACKAGE)
 
 uninstall:
-	@ rm -f $(libdir)/$(LIBRARY).a
-	@ rm -f $(libdir)/$(LIBRARY)-$(VERSION).a
-	@ rm -f $(libdir)/$(LIBRARY).so
-	@ rm -f $(libdir)/$(LIBRARY).so.$(VERSION)
+	@ $(RM) $(libdir)/$(LIBRARY).a
+	@ $(RM) $(libdir)/$(LIBRARY)-$(VERSION).a
+	@ $(RM) $(libdir)/$(LIBRARY).so
+	@ $(RM) $(libdir)/$(LIBRARY).so.$(VERSION)
 	@ for file in $(HEADERS); do \
-           rm -f $(includedir)/$(PACKAGE)-$(VERSION)/$$file; \
+           $(RM) $(includedir)/$(PACKAGE)-$(VERSION)/$$file; \
           done;
 	@- rmdir $(includedir)/$(PACKAGE)-$(VERSION)
-	@ rm -f $(includedir)/$(PACKAGE)
+	@ $(RM) $(includedir)/$(PACKAGE)
 
 
 mostlyclean:
-	@ rm -f *~
+	@ $(RM) *~
 
 clean: mostlyclean
 	@ echo "Cleaning project"
-	@ rm -f $(LIBRARY).so $(LIBRARY).so.$(VERSION) $(LIBRARY).a
-	@ rm -f $(OBJECTS) $(SHOBJECTS) TAGS
-	@ rm -f *.d
+	@ $(RM) $(LIBRARY).so $(LIBRARY).so.$(VERSION) $(LIBRARY).a
+	@ $(RM) $(OBJECTS) TAGS
+	@ $(RM) *.d
 
 distclean: clean
-	@ rm -f Makefile stamp-h
+	@ $(RM) Makefile stamp-h
 
 topclean: distclean
 	@ echo "The project is getting _top_ clean\!"

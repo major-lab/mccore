@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
-# $Revision: 1.14.8.4 $
-# $Id: configure.in,v 1.14.8.4 2003-11-18 16:19:42 larosem Exp $
+# $Revision: 1.14.8.5 $
+# $Id: configure.in,v 1.14.8.5 2003-11-19 20:35:16 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -39,6 +39,7 @@ AC_PROG_MAKE_SET
 
 AC_C_BIGENDIAN
 AC_PROG_CXX
+AC_LANG(C++)
 AC_CANONICAL_HOST
 
 AC_PROG_INSTALL
@@ -62,38 +63,44 @@ AC_MSG_RESULT($ac_cv_have_fstreambase)
 if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
     case "$host" in
     *-sgi-*)
-        CXXSHFLAGS="$CXXFLAGS -O2 -woff 1681 -woff 3303 -ptused -LANG:std"
-	CXXFLAGS="$CXXFLAGS -O2 -woff 1681 -woff 3303 -ptused"
+	CXXFLAGS="$CXXFLAGS -O2 -woff 1681 -woff 3303 -ptused -LANG:std"
   	DEPFLAGS="-M"
 	echo "appending values of CPLUS_INCLUDE_PATH to include path..."
 	for t in `echo $CPLUS_INCLUDE_PATH | sed "s/\.*:/ /g"`; do
-	  CXXSHFLAGS="$CXXSHFLAGS -I$t";
-	  CXXFLAGS="$CXXFLAGS -I$t";
- 	  DEPFLAGS="$DEPFLAGS -I$t";
+	  CXXFLAGS="$CXXFLAGS -I$t"
+ 	  DEPFLAGS="$DEPFLAGS -I$t"
 	  echo "        " $t;
 	done
-  	LDFLAGS=
+  	LINKOPTIONS="-shared"
+	LDNAMEPARAM="-Wl,-soname,"
 	echo "appending values of LIBRARY_PATH to lib path..."
 	for t in `echo $LIBRARY_PATH | sed "s/\.*:/ /g"`; do
-	  LINKOPTIONS="$LINKOPTIONS -L$t";    
+	  LDFLAGS="$LDFLAGS -L$t";   
 	  echo "        " $t;
 	done
-	;;
+	AC_CHECK_LIB(z,gzopen)
+	AC_CHECK_LIB(rnamlc++,xmlcpginit)
+	LIBALLFLAGSTART="-all"
+	LIBALLFLAGSTOP="-notall";;
     *-sun-*)
-        CXXSHFLAGS="$CXXFLAGS -O2 -fPIC"
 	CXXFLAGS="$CXXFLAGS -O2"
-	DEPFLAGS="-MM"
-        LDFLAGS="-static $LDFLAGS"
-        LINKOPTIONS= ;;
+	DEPFLAGS="-xM"
+	LINKOPTIONS="-G"
+	LDNAMEPARAM="-h"
+	AC_CHECK_LIB(z,gzopen)
+	AC_CHECK_LIB(rnamlc++,xmlcpginit)
+	LIBALLFLAGSTART="-z allextract"
+	LIBALLFLAGSTOP="-z defaultextract";;
     esac;
 elif eval "test \"`echo $GXX`\" = yes"; then     # gnu compiler
         AC_CHECK_LIB(z,main)
         AC_CHECK_LIB(rnamlc++,main)
-	CXXSHFLAGS="$CXXFLAGS -Wall";
-	CXXFLAGS="$CXXFLAGS -Wall";
+	CXXFLAGS="$CXXFLAGS -Wall"
 	DEPFLAGS="-MM"
-	LDFLAGS="-static $LDFLAGS"
-	LINKOPTIONS=;
+	LINKOPTIONS="-shared"
+	LDNAMEPARAM="-Wl,-soname,"
+	LIBALLFLAGSTART="-Wl,-whole-archive"
+	LIBALLFLAGSTOP="-Wl,-no-whole-archive";
 fi
 
 
@@ -104,9 +111,11 @@ AC_DEFINE(__USE_MALLOC),
 
 AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)
-AC_SUBST(CXXSHFLAGS)
 AC_SUBST(DEPFLAGS)
-AC_SUBST(LDFLAGS)
 AC_SUBST(LINKOPTIONS)
+AC_SUBST(LDNAMEPARAM)
+AC_SUBST(LDFLAGS)
+AC_SUBST(LIBALLFLAGSTART)
+AC_SUBST(LIBALLFLAGSTOP)
 
 AC_OUTPUT( Makefile docs/Makefile lib/Makefile, echo timestamp > stamp-h )
