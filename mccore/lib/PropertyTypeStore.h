@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:42:25 2003
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 // 
 // This file is part of mccore.
 // 
@@ -42,7 +42,7 @@ namespace mccore
    *
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: PropertyTypeStore.h,v 1.9 2005-01-07 17:10:06 thibaup Exp $
+   * @version $Id: PropertyTypeStore.h,v 1.10 2005-04-06 16:21:56 thibaup Exp $
    */
   class PropertyTypeStore
   {
@@ -2527,7 +2527,7 @@ namespace mccore
     /**
      * Public class for helix.
      */
-    class Helix : public virtual PropertyType {
+    class Helix : public virtual Stack {
     public:
       Helix () {}
       Helix (const string& ks) : PropertyType (ks) {}
