@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu May 10 14:49:18 2001
-// $Revision: 1.1.2.6 $
+// $Revision: 1.1.2.7 $
 // 
 // This file is part of mccore.
 // 
@@ -43,7 +43,7 @@ namespace mccore
    * Directed graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: OrientedGraph.h,v 1.1.2.6 2004-12-22 21:35:44 larosem Exp $
+   * @version $Id: OrientedGraph.h,v 1.1.2.7 2004-12-27 01:44:06 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -59,10 +59,15 @@ namespace mccore
     typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::label label;
     typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::iterator iterator;
     typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::const_iterator const_iterator;
+
+  protected:
+    
     typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::V2VLabel V2VLabel;
     typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::EV2ELabel EV2ELabel;
     typedef typename Graph< V, E, VW, EW, Vertex_Comparator >::EndVertices EndVertices;
 
+  public:
+    
     // LIFECYCLE ------------------------------------------------------------
 
     /**
