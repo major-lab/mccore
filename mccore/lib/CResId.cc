@@ -4,9 +4,9 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Thu Sep 28 15:55:29 2000
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Sep  6 17:24:31 2001
-// Update Count     : 10
+// Last Modified By : Philippe Thibault
+// Last Modified On : Wed Mar 19 08:30:42 2003
+// Update Count     : 11
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -126,6 +126,19 @@ CResId::operator= (const CResId &right)
   return *this;
 }
 
+
+CResId
+CResId::operator+ (int offset) const
+{
+  return CResId (no + 1, chain, iCode);
+}
+
+
+CResId
+CResId::operator- (int offset) const
+{
+  return CResId (no - 1, chain, iCode);
+}
 
 
 CResId::operator const char* () const

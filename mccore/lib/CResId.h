@@ -4,9 +4,9 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Thu Sep 28 15:55:29 2000
-// Last Modified By : Martin Larose
-// Last Modified On : Fri Aug 24 17:35:51 2001
-// Update Count     : 8
+// Last Modified By : Philippe Thibault
+// Last Modified On : Wed Mar 19 08:30:47 2003
+// Update Count     : 9
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -136,6 +136,20 @@ public:
 		&& iCode < right.iCode));
   }
 
+  /**
+   * Calculate an id equal to this with its residue number incremented.
+   * @param offset the increment.
+   * @return the increment id.
+   */
+  CResId operator+ (int offset) const;
+
+  /**
+   * Calculate an id equal to this with its residue number decremented.
+   * @param offset the decrement.
+   * @return the increment id.
+   */
+  CResId operator- (int offset) const;
+  
   /**
    * Converts the residue id to a string representation.
    */
