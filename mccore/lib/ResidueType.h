@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:26:33 2003
-// $Revision: 1.13 $
+// $Revision: 1.14 $
 // 
 //  This file is part of mccore.
 //  
@@ -40,12 +40,14 @@ namespace mccore {
   /**
    * Residue types.<br>
    *
+   * The type member is the one that should be used when creating pdb files.
+   *
    * Implicit information: <br>
    *   - Mapping from string to actual type.<br>
    *   - The nature of a type (nucleic acid (pur/pyr) or amino acid)<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueType.h,v 1.13 2003-07-11 21:25:10 gendrop Exp $
+   * @version $Id: ResidueType.h,v 1.14 2003-07-31 18:09:45 gendrop Exp $
    */
   class ResidueType
   {    

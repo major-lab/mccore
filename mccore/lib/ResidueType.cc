@@ -13,6 +13,7 @@
 #include "ResidueTypeStore.h"
 #include "Binstream.h"
 
+
 namespace mccore {
 
   // STATIC MEMBERS ------------------------------------------------------------
@@ -201,14 +202,14 @@ namespace mccore {
   ostream &
   ResidueType::output (ostream &out) const
   {
-    return out << type;
+    return out << longtype;
   }
   
 
   oBinstream &
   ResidueType::output (oBinstream &out) const
   {
-    return out << type;
+    return out << longtype;
   }
 
 
@@ -227,7 +228,7 @@ namespace mccore {
     return out;
   }
 
-  
+
   oBinstream&
   operator<< (oBinstream &obs, const ResidueType *t)
   {

@@ -509,13 +509,15 @@ namespace mccore {
 
   void Residue::validate () 
   {
+    gOut (5) << "Validating " << resId << " " << type << endl;
+
     if (!type) {
-      gOut (3) << "Validate called on an empty residue" << endl;
+      gOut (2) << "Validate called on an empty residue" << endl;
       return;
     }
 
     if (!type->isNucleicAcid () && !type->isAminoAcid ()) {
-      gOut (3) << "Validate called on a non valid residue" << endl;
+      gOut (2) << "Validate called on a unknown residue: " << type << endl;
       return;
     }
     
@@ -524,6 +526,8 @@ namespace mccore {
       addHydrogens ();
       addLonePairs ();
     }
+
+    gOut (5) << "Fixed atom content" << endl;
 
     set< const AtomType* > actset;
     set< const AtomType* > diffset;    
@@ -543,6 +547,8 @@ namespace mccore {
     } else {
       // Add here the removal of non obligatory or optional atoms.
     }     
+
+    gOut (5) << "Validated obligatory atoms" << endl;
   }
   
 
@@ -761,7 +767,8 @@ namespace mccore {
 	    if (0 == get(AtomType::aN3) || 0 == get(AtomType::aC2)
 		|| 0 == get(AtomType::aC4) || 0 == get(AtomType::aC5)
 		|| 0 == get(AtomType::aC6) || 0 == get(AtomType::aN1)
-		|| 0 == get(AtomType::aO2) || 0 == get(AtomType::aO4)) {
+		|| 0 == get(AtomType::aO2) || 0 == get(AtomType::aO4)
+		|| 0 == get(AtomType::aC5M)) {
 	      gOut (2) << "Residue " << getType() << " " << getResId ()
 		       << " is missing one or more critical atoms." << endl;
 	      type = type->invalidate ();
@@ -779,7 +786,7 @@ namespace mccore {
 	    y = (*get (AtomType::aC6) - *get (AtomType::aN1)).normalize ();
 	    z = (x + y).normalize ();
 	    h6 = *get (AtomType::aC6) + z * C_H_DIST_CYC;
-	    
+
 	    // 1H5M, 2H5M, 3H5M (arbitrarily placed)	    
 	    x = (*get (AtomType::aC5M) - *get (AtomType::aC5)).normalize ();
 	    y = (*get (AtomType::aC5) - *get (AtomType::aC4)).normalize ();
