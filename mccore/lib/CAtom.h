@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CAtom.h
-// Copyright © 1999, 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Dec  4 15:38:07 2000
-// Update Count     : 3
+// Last Modified On : Mon Jan 22 15:12:05 2001
+// Update Count     : 4
 // Status           : Ok.
 // 
 
@@ -15,6 +15,7 @@
 
 
 #include <function.h>
+#include <stdio.h>
 
 #include "CPoint3D.h"
 #include "AtomType.h"
@@ -252,12 +253,18 @@ struct AtomSet : public unary_function< const CAtom&, bool >
    */
   typedef CAtom argument_type;
   virtual bool operator() (const CAtom &atom) const { return false; }
+  virtual operator const char* () const { return ""; }
   virtual AtomSet* clone () const { return new AtomSet (); }
+  virtual void BinOutput (oBinstream& obs) const;
 };
 
 
 
-class atomset_and : public AtomSet
+iBinstream& operator>> (iBinstream &ibs, AtomSet *&as);
+oBinstream& operator<< (oBinstream &obs, const AtomSet *as);
+
+
+struct atomset_and : public AtomSet
 {
 protected:
   AtomSet *op1;
@@ -279,8 +286,19 @@ public:
   }
   virtual bool operator() (const CAtom& x) const
   { return op1->operator() (x) && op2->operator() (x); }
+  virtual operator const char* () const
+  {
+    char str[256];
+
+    sprintf (str,
+	     "%s %s",
+	     op1->operator const char* (),
+	     op2->operator const char* ());
+    return str;
+  }
   virtual AtomSet* clone () const
   { return new atomset_and (op1->clone (), op2->clone ()); }
+  virtual void BinOutput (oBinstream& obs) const;
 };
 
 
@@ -298,7 +316,9 @@ struct all_atom_set : public AtomSet
    * @return true.
    */
   virtual bool operator() (const CAtom &atom) const { return true; }
+  virtual operator const char* () const { return "all"; }
   virtual AtomSet* clone () const { return new all_atom_set (); }
+  virtual void BinOutput (oBinstream& obs) const;
 };
 
 
@@ -317,7 +337,9 @@ struct base_atom_set : public AtomSet
    */
   virtual bool operator() (const CAtom &atom) const
   { return atom.GetType ()->is_SideChain (); }
+  virtual operator const char* () const { return "base_only"; }
   virtual AtomSet* clone () const { return new base_atom_set (); }
+  virtual void BinOutput (oBinstream& obs) const;
 };
 
 
@@ -336,7 +358,9 @@ struct backbone_atom_set : public AtomSet
    */
   virtual bool operator() (const CAtom &atom) const
   { return atom.GetType ()->is_Backbone (); }
+  virtual operator const char* () const { return "backbone_only"; }
   virtual AtomSet* clone () const { return new backbone_atom_set (); }
+  virtual void BinOutput (oBinstream& obs) const;
 };
 
 
@@ -356,7 +380,9 @@ struct pse_atom_set : public AtomSet
   virtual bool operator() (const CAtom &atom) const
   { return (atom.GetType ()->is_C1p () || atom.GetType ()->is_PSY ()
 	    || atom.GetType ()->is_PSZ ()); }
+  virtual operator const char* () const { return "pse_only"; }
   virtual AtomSet* clone () const { return new pse_atom_set (); }
+  virtual void BinOutput (oBinstream& obs) const;
 };
 
 
@@ -375,7 +401,9 @@ struct no_hydrogen_opt : public AtomSet
    */
   virtual bool operator() (const CAtom &atom) const
   { return ! atom.GetType ()->is_Hydrogen (); }
+  virtual operator const char* () const { return "no_hydrogen"; }
   virtual AtomSet* clone () const { return new no_hydrogen_opt (); }
+  virtual void BinOutput (oBinstream& obs) const;
 };
 
 
@@ -400,7 +428,9 @@ struct no_pse_lp_atom_set : public AtomSet
     return ! (atom.GetType ()->is_Pseudo ()
 	      || atom.GetType ()->is_LonePair ());
   }
+  virtual operator const char* () const { return "no_pse_lp"; }
   virtual AtomSet* clone () const { return new no_pse_lp_atom_set (); }
+  virtual void BinOutput (oBinstream& obs) const;
 };
 
 #endif

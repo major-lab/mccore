@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CAtom.cc
-// Copyright © 1999, 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : 
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Nov  9 10:44:45 2000
-// Update Count     : 41
+// Last Modified On : Mon Jan 22 15:12:03 2001
+// Update Count     : 42
 // Status           : Ok.
 // 
 
@@ -16,7 +16,19 @@
 #include "CAtom.h"
 
 #include "Binstream.h"
+#include "CException.h"
 #include "Pdbstream.h"
+
+
+
+#define AS_NONE         1
+#define AS_AND          2
+#define AS_ALL          3
+#define AS_BASE         4
+#define AS_BACKBONE     5
+#define AS_PSE          6
+#define AS_NO_HYDROGEN  7
+#define AS_NO_PSE_LP    8
 
 
 
@@ -138,4 +150,124 @@ operator<< (oPdbstream &ops, const CAtom &atom)
   if (atom.GetType ())    
     ops.putatom (atom);
   return ops;
+}
+
+
+
+void
+AtomSet::BinOutput (oBinstream &obs) const
+{
+  obs << (unsigned char) AS_NONE;
+}
+
+
+
+iBinstream&
+operator>> (iBinstream &ibs, AtomSet *&as)
+{
+  int val;
+
+  ibs >> val;
+  switch (val)
+    {
+    case AS_NONE:
+      as = new AtomSet ();
+      break;
+    case AS_AND:
+      {
+	AtomSet *op1;
+	AtomSet *op2;
+
+	ibs >> op1;
+	ibs >> op2;
+	as = new atomset_and (op1, op2);
+	break;
+      }
+    case AS_ALL:
+      as = new all_atom_set ();
+      break;
+    case AS_BASE:
+      as = new base_atom_set ();
+      break;
+    case AS_BACKBONE:
+      as = new backbone_atom_set ();
+      break;
+    case AS_PSE:
+      as = new pse_atom_set ();
+      break;
+    case AS_NO_HYDROGEN:
+      as = new no_hydrogen_opt ();
+      break;
+    case AS_NO_PSE_LP:
+      as = new no_pse_lp_atom_set ();
+      break;
+    default:
+      throw CFatalIntLibException ("Invalid atom set code.");
+    }
+  return ibs;
+}
+
+
+
+oBinstream&
+operator<< (oBinstream &obs, const AtomSet *as)
+{
+  as->BinOutput (obs);
+  return obs;
+}
+
+
+
+void
+atomset_and::BinOutput (oBinstream &obs) const
+{
+  obs << (unsigned char) AS_AND << op1 << op2;
+}
+
+
+
+void
+all_atom_set::BinOutput (oBinstream &obs) const
+{
+  obs << (unsigned char) AS_ALL;
+}
+
+
+
+void
+base_atom_set::BinOutput (oBinstream &obs) const
+{
+  obs << (unsigned char) AS_BASE;
+}
+
+
+
+void
+backbone_atom_set::BinOutput (oBinstream &obs) const
+{
+  obs << (unsigned char) AS_BACKBONE;
+}
+
+
+
+void
+pse_atom_set::BinOutput (oBinstream &obs) const
+{
+  obs << (unsigned char) AS_PSE;
+}
+
+
+
+void
+no_hydrogen_opt::BinOutput (oBinstream &obs) const
+{
+  obs << (unsigned char) AS_NO_HYDROGEN;
+}
+
+
+
+void
+no_pse_lp_atom_set::BinOutput (oBinstream &obs) const
+{
+  obs << (unsigned char) AS_NO_PSE_LP;
 }
