@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 // 
 //  This file is part of mccore.
 //  
@@ -41,7 +41,7 @@ namespace mccore {
    * Repository of residue types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueTypeStore.h,v 1.4 2003-10-01 15:50:01 thibaup Exp $
+   * @version $Id: ResidueTypeStore.h,v 1.5 2003-10-09 17:57:38 gendrop Exp $
    */
   class ResidueTypeStore
   {
@@ -367,7 +367,7 @@ namespace mccore {
     /**
      * Public Phosphate residue type class.
      */
-    class Phosphate : public virtual NucleicAcid {
+    class Phosphate : public virtual ResidueType {
     public:      
       Phosphate () {}
       Phosphate (const char* t, const char* lt) : ResidueType (t, lt) {}
@@ -381,7 +381,7 @@ namespace mccore {
     /**
      * Public Ribose residue type class.
      */
-    class Ribose : public virtual NucleicAcid {
+    class Ribose : public virtual ResidueType {
     public:      
       Ribose () {}
       Ribose (const char* t, const char* lt) : ResidueType (t, lt) {}
