@@ -4,8 +4,8 @@
 // Author           : Martin Larose
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Nov 22 14:35:23 2000
-// Update Count     : 3
+// Last Modified On : Mon Dec  4 15:43:25 2000
+// Update Count     : 4
 // Status           : Ok.
 // 
 
@@ -194,6 +194,10 @@ iPdbstream::GetAtomType (char *s)
     return a_2LP4;
   if (strcmp (tmpstr, "1LP4") == 0)
     return a_1LP4;
+  if (strcmp (tmpstr, "PSY") == 0)
+    return a_PSY;
+  if (strcmp (tmpstr, "PSZ") == 0)
+    return a_PSZ;
   if (strcmp (tmpstr, "H3T") == 0)
     return a_H3T;
   if (strcmp (tmpstr, "C") == 0)
