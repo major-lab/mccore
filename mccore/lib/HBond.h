@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // HBond.h
-// Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
@@ -46,7 +46,7 @@ namespace mccore {
    * between any two atoms.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: HBond.h,v 1.3 2003-06-09 20:38:32 gendrop Exp $
+   * @version $Id: HBond.h,v 1.4 2004-03-17 20:54:05 larosem Exp $
    */
   class HBond
     {
@@ -249,12 +249,3 @@ namespace mccore {
 }
 
 #endif
-
-
-
-
-
-
-
-
-
