@@ -140,9 +140,10 @@ namespace mccore
   RiboseBuilder::RiboseBuilder (char quality)
     : rho (0),
       chi (0),
-      gamma (M_PI),
-      beta (M_PI),
-      epsilon (0),
+      // most frequent values for gamma, beta and epsilon
+      gamma (55.0 * M_PI / 180.0),
+      beta (180.0 * M_PI / 180.0),
+      epsilon (215.0 * M_PI / 180.0),
       built_count (0)
   {
     if (quality == QFCT_PTP)
@@ -208,6 +209,20 @@ namespace mccore
   }
 
 
+  float
+  RiboseBuilder::build ()
+  {
+    ribose.reset ();
+    ++built_count;
+  
+    buildFuranose ();
+    build5p ();
+    build3p ();
+  
+    return 0.0;
+  }
+
+  
   void
   RiboseBuilder::buildFuranose ()
   {
@@ -486,10 +501,12 @@ namespace mccore
 
 
   Residue*
-  RiboseBuilder::createPhosphate5p (ResidueFactoryMethod* fm) const
+  RiboseBuilder::createPhosphate5p (Residue::const_iterator rib_o5p_it,
+				    Residue::const_iterator rib_p5p_it,
+				    ResidueFactoryMethod* fm)
   {
     Vector3D p5p, o5p, u, v;
-    Vector3D rib_p5p (ribose.P5p), rib_o5p (ribose.O5p);
+    Vector3D rib_p5p (*rib_p5p_it), rib_o5p (*rib_o5p_it);
     HomogeneousTransfo tfo;
     Residue::const_iterator p5p_it, o5p_it;
   
@@ -497,10 +514,7 @@ namespace mccore
     po4->setType (ResidueType::rPhosphate);
     po4->setIdeal ();
     po4->setReferential (HomogeneousTransfo ());
-    
-    rib_p5p.transform (alignment);
-    rib_o5p.transform (alignment);
-  
+      
     po4->setType (ResidueType::rPhosphate);
     po4->setIdeal ();
 
@@ -513,8 +527,8 @@ namespace mccore
     
     o5p = *o5p_it;
 
-    u = o5p - p5p;
-    v = rib_o5p - p5p;
+    u = o5p - rib_p5p;
+    v = rib_o5p - rib_p5p;
 
     po4->transform
       (tfo.translate (rib_p5p) *
@@ -524,4 +538,5 @@ namespace mccore
     return po4;
   }
 
+  
 }

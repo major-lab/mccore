@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Philippe Thibault <thibaup@iro.umontreal.ca>
 // Created On       : Mon Sep 29 14:59:19 2003
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 //
 //  This file is part of mccore.
 //  
@@ -25,21 +25,22 @@
 #ifndef __RiboseBuilder_h_
 #define __RiboseBuilder_h_
 
+#include <vector>
+
+using namespace std;
 
 #include "Residue.h"
 #include "ResidueFactoryMethod.h"
-
+#include "Binstream.h"
 
 namespace mccore
 {
 
   /**
-   * @short Interface class. Builds a theoretical ribose between a RNA
-   * base and its two adjacent phosphates.
+   * @short Interface class. Builds a theoritical ribose.
    *
-   * Interface class. Builds a theoretical ribose between a RNA base
-   * and its two adjacent phosphates.  Building is addressed in
-   * torsion space < rho, chi, gamma, beta, epsilon >
+   * Interface class. Builds a theoritical ribose addressed
+   * in torsion space < rho, chi, gamma, beta, epsilon >
    *
    * @author Philippe Thibault <thibaup@iro.umontreal.ca>
    */
@@ -449,7 +450,7 @@ namespace mccore
      * Clones the object.
      * @return a copy of the object.
      */
-    virtual RiboseBuilder* clone () const = 0;
+    virtual RiboseBuilder* clone () const { return new RiboseBuilder (*this); }
 
     /**
      * Destructs the object.
@@ -557,13 +558,13 @@ namespace mccore
     /**
      * Building pre-processing : calculate initial building referential.
      */
-    virtual void init () = 0;
+    virtual void init () { }
 
     /**
      * Builds ribose's atoms according to current torsions value and building referential.
      * @return Built ribose quality.
      */
-    virtual float build () = 0;
+    virtual float build ();
 
   protected:
 
@@ -588,20 +589,20 @@ namespace mccore
      * Finds parameters for ribose best fit according to anchors, and builds it.
      * @return Best fitted ribose quality.
      */
-    virtual float solve () = 0;
+    virtual float solve () { return build (); }
 
     /**
      * Evaluate currently built ribose according to the distance between built
      * and anchor atoms.
      * @return quality value (A^2)
      */
-    virtual float evaluate_ptp () const = 0;
+    virtual float evaluate_ptp () const { return 0.0; }
 
     /**
      * Evaluate currently built ribose according to its implicit bond length.
      * @return quality value (A^2)
      */
-    virtual float evaluate_bond () const = 0;
+    virtual float evaluate_bond () const { return 0.0; }
 
     /**
      * Fill residue with currently built ribose atoms, overwritting any existing atom.
@@ -614,14 +615,21 @@ namespace mccore
 
     /**
      * Create a new phosphate-typed residue with its O5'-P bond aligned onto
-     * 5' anchor phosphate O5'-P bond.
+     * built ribose's  O5'-P bond.
+     * @param rib_o5p_it Residue iterator for ribose's placed O5'
+     * @param rib_p5p_it Residue iterator for ribose's placed P(5')
+     * @param fm Residue factory method used to create phosphate (default: creates ExtendedResidue)
      * @return Newly created phosphate residue.
      */
-    virtual Residue* createPhosphate5p (ResidueFactoryMethod* fm = 0) const;
+    static Residue* createPhosphate5p (Residue::const_iterator rib_o5p_it,
+				       Residue::const_iterator rib_p5p_it,
+				       ResidueFactoryMethod* fm = 0);
   
     // I/O  -----------------------------------------------------------------
+    
   };
 
+  
 
 }
 
