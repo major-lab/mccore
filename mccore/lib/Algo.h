@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // Algo.h
-// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-04 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sebastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Wed Feb 14 15:33:58 2001
@@ -27,10 +27,10 @@
 #define _Algo_h_
 
 #include <algorithm>
+#include <cmath>
+#include <limits>
 #include <map>
-#include <math.h>
 #include <utility>
-#include <values.h>
 #include <vector>
 
 #include "Residue.h"
@@ -50,7 +50,7 @@ namespace mccore {
    * the functions may be called with const_iterator and iterator types.
    *
    * @author Sebastien Lemieux
-   * @version $Id: Algo.h,v 1.18 2003-12-23 14:46:12 larosem Exp $
+   * @version $Id: Algo.h,v 1.19 2004-11-25 16:17:07 larosem Exp $
    */
   class Algo
   {
@@ -79,8 +79,8 @@ namespace mccore {
 	  Residue::const_iterator j;
 	  
 	  float minX, minY, minZ, maxX, maxY, maxZ;
-	  minX = minY = minZ = HUGE;
-	  maxX = maxY = maxZ = -HUGE;
+	  minX = minY = minZ = numeric_limits<float>::max ();
+	  maxX = maxY = maxZ = numeric_limits<float>::min ();
 	  
 	  for (j = i->begin (new AtomSetNot (new AtomSetPSE ())); j != i->end (); ++j)
 	    {
