@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.33 $
+// $Revision: 1.34 $
 // 
 // This file is part of mccore.
 // 
@@ -57,7 +57,7 @@ namespace mccore
    *   - The charge and van der Waals radius<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: AtomType.h,v 1.33 2005-01-03 22:50:49 larosem Exp $ 
+   * @version $Id: AtomType.h,v 1.34 2005-01-25 15:00:05 thibaup Exp $ 
    */
   class AtomType 
   {
@@ -596,7 +596,7 @@ namespace std
    * @param out the output stream.
    * @return the output stream used.
    */
-  ostream &operator<< (ostream &out, const mccore::AtomType *a);
+  ostream &operator<< (ostream &out, const mccore::AtomType* a);
 
 }
 
