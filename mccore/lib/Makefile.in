@@ -105,6 +105,11 @@ SOURCES = zfstream.cc \
 	  Relation.cc \
 	  PairingPattern.cc \
 \
+          RiboseBuilder.cc \
+          RiboseOptimizer5D.cc \
+          RiboseOptimizer2D.cc \
+          RiboseEstimator.cc \
+\
 	  sockstream.cc \
 	  ServerSocket.cc \
 \
