@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu Mar 13 13:03:07 2003
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 // 
 // This file is part of mccore.
 // 
@@ -47,7 +47,7 @@ namespace mccore {
    * residues iterators.
    *
    * @author Martin Larose (<a href="larosem@IRO.UMontreal.CA">larosem@iro.umontreal.ca</a>)
-   * @version $Id: AtomSet.h,v 1.8 2005-01-03 22:50:27 larosem Exp $
+   * @version $Id: AtomSet.h,v 1.9 2005-02-02 18:09:07 thibaup Exp $
    */
   class AtomSet
   {
@@ -102,12 +102,16 @@ namespace mccore {
     
     // OPERATORS ------------------------------------------------------------
 
+  protected:
+
     /**
      * Assigns the object with the other's content.
      * @param other the object to copy.
      * @return itself.
      */
     AtomSet& operator= (const AtomSet &other) { return *this; }
+
+  public:
 
     /**
      * Tests wheter the atom is within the set.
