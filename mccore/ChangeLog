@@ -1,6 +1,291 @@
-2004-07-12  Philippe Thibault  <thibaup@iro.umontreal.ca>
+2004-12-06  Philippe Thibault  <thibaup@yeti.iro.umontreal.ca>
 
-	* lib/Model.h, lib/HomogeneousTransfo.cc: *** empty log message ***
+	* lib/RnamlWriter.cc, lib/RnamlReader.cc, lib/RiboseEstimator.cc, lib/Residue.h, lib/Residue.cc, lib/Relation.cc, lib/PropertyType.h, lib/Pdbstream.h, lib/Pdbstream.cc, lib/Molecule.h, lib/Molecule.cc, lib/Model.h, lib/Model.cc, lib/Makefile.in, lib/HomogeneousTransfo.h, lib/HomogeneousTransfo.cc, lib/ExtendedResidue.h, lib/ExtendedResidue.cc, lib/AtomTypeStore.h, lib/AtomTypeStore.cc, lib/AtomType.h, lib/AtomType.cc, lib/Algo.h, configure.in, configure:
+	version 1.5
+
+2004-12-06  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* configure, configure.in: no-deprecated used only for an old
+	version of sqlc++
+
+	* lib/TypeRepresentationTables.h: Minor changes.
+
+2004-12-03  sebastienl  <sebastienl@yeti.iro.umontreal.ca>
+
+	* lib/Pdbstream.cc: A ResidueType is only converted from RNA (the
+	default) to DNA if a deoxyribose is found instead of simply in
+	absence of a O2'.
+
+	* lib/AtomTypeStore.cc: Corrected a compilation warning in
+	AtomTypeStore.cc.
+
+	* lib/AtomTypeStore.cc, lib/AtomTypeStore.h, lib/AtomType.h: Changed
+	the getVDWR, getAmberEpsilon and getAmberCharge methods to require a
+	ResidueType instead of a Residue.  This creates a new problem: the
+	type is not sufficient to distinguish terminal residues.  Parameters
+	currently assumes that no residue is terminal.
+
+2004-12-02  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Pdbstream.h, lib/Pdbstream.cc: Type representations are loaded
+	on demand and not on Pdbstream initialization which causes bugs
+	depending on class loading order.
+
+	* lib/ResidueType.h, lib/ResidueType.cc: Static object
+	ResidueTypeStore corrected to pointer.  class declaration on object
+	is buggy.
+
+	* lib/AtomType.h, lib/AtomType.cc: Static object AtomTypeStore
+	corrected to pointer.  class declaration on object is buggy.
+
+2004-11-25  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Residue.cc, lib/MaximumFlowGraph.h, lib/Graph.h: Removed
+	values.h.
+
+	* lib/Algo.h: HUGE replaced with standard C++
+	numeric_limits<float>::max().
+
+2004-11-22  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Makefile.in, configure.in, configure: Apple darwin
+	configuration completed.
+
+	* configure, configure.in, lib/Makefile.in: LIBEXT variable added.
+
+	* lib/HBond.cc: _GLIBCPP_USE_C99 defined for isnan (patch for darwin).
+
+2004-11-22  Philippe Thibault  <thibaup@yeti.iro.umontreal.ca>
+
+	* lib/Pdbstream.h, lib/Pdbstream.cc:
+	Potential memory leak corrected in oPdbstream::setAtomSet().
+	Dynamic object ownership should be revised in Pdbstream.
+
+2004-11-19  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/RiboseEstimator.cc: MAXFLOAT replaced with standard C++
+	numeric_limits<float>::max().
+
+	* lib/sockstream.cc: Added Darwin gcc test.
+
+	* config.guess, config.sub: Version with MacOSX Darwin.
+
+	* lib/HBond.cc: cmath header file added.
+
+	* lib/Binstream.cc: cstring header file added.
+
+	* config.sub, config.guess: New config.guess and config.sub from
+	automake 1.8.
+
+2004-11-01  Anita Boisgontier  <boisgona@yeti.iro.umontreal.ca>
+
+	* configure.in: nouvelle version de mysql++
+
+2004-10-15  Philippe Thibault  <thibaup@yeti.iro.umontreal.ca>
+
+	* lib/TypeRepresentationTables.cc, lib/RnamlWriter.cc, lib/Atom.cc:
+	minor corrections
+
+	* lib/Pdbstream.h, lib/Pdbstream.cc: added static methods
+	parse{Residue,Atom}Type({const char*, const string&}) and
+	stringify{Residue,Atom}Type (Type*)
+
+	* lib/ResidueTypeStore.h, lib/ResidueTypeStore.cc, lib/ResidueType.h, lib/ResidueType.cc, lib/PropertyTypeStore.h, lib/PropertyTypeStore.cc, lib/PropertyType.h, lib/PropertyType.cc, lib/AtomTypeStore.h, lib/AtomTypeStore.cc, lib/AtomType.h, lib/AtomType.cc:
+	Implementation now uses STL string instead of C-style char*.
+	External view unchanged except:
+	  1- toString() (and toLongString() for residue types) returns a reference to a STL string.
+	     operator const char* () can still be used.
+	  2- static method AtomType::getColor() now moved within atom type classes.
+	  3- atom types aliases removed (ex. 2H5 == H25 == H5** etc.), only standard notation is matched.
+	  4- added different is[typename]() method in property types.
+	  5- augmented propertytype hierarchy with families BaseOrientation, RiboseOrientation, Face, PuckerMode and GlycosylMode
+
+2004-10-08  Philippe Thibault  <thibaup@yeti.iro.umontreal.ca>
+
+	* lib/ExtendedResidue.cc: *** empty log message ***
+
+	* lib/Residue.h, lib/Residue.cc, lib/ExtendedResidue.h, lib/ExtendedResidue.cc:
+	* Removed AtomType::less comparator in Residue's atom map. Comparison is made by atomtype pointer address.
+	* Friendship with inner iterator classes upgraded to both ways.
+	* Bug correction in erase(iterator) implementation.
+	* Removed erase(const_iterator).
+	* Removed addHLP().
+	* addHydrogens() and addLonePairs() takes a boolean parameter to force atom overwritting (default is to overwrite).
+	* New static methods nitrogenType19(ResidueType*), carbonType24(ResidueType*) and carbonType68(ResidueType*)
+	  that selects the appropriate nucleic acid atom depending on passed residue type's family (purine or pyrimidine).
+	* Ribose building major implementation modification:
+	    - 5' branch construction places also O1P and O2P along.
+	    - Removed static method createPhosphate5p().
+	    - Removed all buildRiboseByCCM4D methods and renamed buildRiboseByCCM2D() to buildRiboseByCCM().
+	    - Added the possibility to pass a referential to override the calculation in the init phase
+	      (useful in the case of a basic Residue that doesn't remember its referential)
+
+2004-10-07  Philippe Thibault  <thibaup@yeti.iro.umontreal.ca>
+
+	* lib/AtomType.h:
+	AtomType::less comparator nows checks for null pointers and uses AtomType::pNull instead.
+
+2004-10-04  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/ResidueTypeStore.h, lib/ResidueTypeStore.cc, lib/ResidueType.h, lib/Pdbstream.h, lib/Pdbstream.cc, lib/Makefile.in, lib/AtomType.h:
+	New pdb output system.  It consist of context tables for input and output inserter in Pdbstream.
+
+	* lib/TypeRepresentationTables.h, lib/TypeRepresentationTables.cc:
+	New pdb output system.  It consist of context tables for input and output.
+
+2004-09-30  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Pdbstream.cc, lib/AtomTypeStore.h, lib/AtomType.h:
+	Added toAmberString method.
+
+2004-09-29  Philippe Thibault  <thibaup@yeti.iro.umontreal.ca>
+
+	* lib/ResidueTypeStore.h, lib/ResidueTypeStore.cc, lib/ResidueType.h, lib/ResidueType.cc:
+	Added new specialized ribose types for endpoint ribose building:
+	  - ResidueType::r{R,D}Ribose5  for 5' startpoint
+	  - ResidueType::r{R,D}Ribose3  for 3' endpoint
+	  - ResidueType::r{R,D}Ribose53 for a single residue strand (both start and end)
+
+	* lib/AtomSet.h, lib/AtomSet.cc:
+	Added string representation to atomset.
+	Added static method create(char*) that creates a new atomset based on string representation.
+
+	* lib/Atom.cc: default type set to AtomType::aNull
+
+2004-09-27  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/ResidueTypeStore.h, lib/ResidueType.h:
+	Addition of the Amber ResidueType class.
+
+2004-09-24  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/ResidueTypeStore.h, lib/ResidueTypeStore.cc:
+	R?, R?5, R?3, D?, D?5 and D?3 types added for ? = A, C, G, U and T.
+
+	* lib/ResidueType.h: *** empty log message ***
+
+	* lib/Relation.cc:
+	The list of pairing patterns should be returned as const.
+
+	* lib/Pdbstream.h, lib/Pdbstream.cc:
+	Pdb type for Amber is added and output differs on the kind.
+
+	* lib/PairingPattern.h:
+	The list of pairing patterns should be returned as const.
+
+	* lib/HBond.h, lib/HBond.cc: writeAmberRestraints moved to toleap.
+
+	* lib/AtomTypeStore.h, lib/AtomType.h: Test added on oPdbstream type.
+
+2004-09-19  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/PairingPattern.cc:
+	Changed verbosity level to 5.  Level 3 is WAY to much infos for simple program debugging.
+
+	* lib/stlio.h: PrintLn added.
+
+	* lib/Relation.cc: *** empty log message ***
+
+	* lib/PairingPattern.h, lib/PairingPattern.cc: Bug corrections.
+
+	* lib/ResidueTypeStore.cc, lib/PropertyTypeStore.cc, lib/AtomTypeStore.cc:
+	Correction of deallocation function.
+
+2004-09-17  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/PairingPattern.cc: return statement omitted.
+
+2004-09-16  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/PairingPattern.cc:
+	Pairing description has changed to bundle informations.
+
+2004-09-16  Philippe Thibault  <thibaup@yeti.iro.umontreal.ca>
+
+	* lib/Residue.h, lib/Residue.cc:
+	theoretical ribose building method (buildRibose()) now returns a 0.0 floating point value.
+
+2004-09-15  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/stlio.h: New Print class for the for_each funtion.
+
+	* lib/Relation.h, lib/Relation.cc, lib/PairingPattern.h, lib/PairingPattern.cc:
+	Pairing description has changed to bundle informations.
+
+2004-09-10  Philippe Thibault  <thibaup@yeti.iro.umontreal.ca>
+
+	* lib/Residue.cc, lib/PropertyType.cc, lib/AtomType.cc:
+	Minor bug correction in AtomType and PropertyType output to Exception stream
+
+2004-09-09  Philippe Thibault  <thibaup@yeti.iro.umontreal.ca>
+
+	* lib/Residue.cc: Bug correction in _build_ribose_preprocess()
+
+2004-09-07  Philippe Thibault  <thibaup@yeti.iro.umontreal.ca>
+
+	* lib/AtomTypeStore.cc:
+	Re-enabled quoted atom type parsing (e.g. both string "C4*" and "C4'" are parsed into type ResidueType::aC4p)
+
+	* lib/Residue.cc, lib/Pdbstream.cc: Added some error messages...
+
+2004-09-03  Anita Boisgontier  <boisgona@yeti.iro.umontreal.ca>
+
+	* configure.in, configure, lib/Makefile.in:
+	modification for MySql inclusion
+
+	* lib/SqlExtrac.cc, lib/SqlExtrac.h, lib/SqlReader.cc, lib/SqlReader.h:
+	New Files
+
+2004-09-02  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/UndirectedGraph.h, lib/UndirectedArrayGraph.h, lib/Path.h, lib/GraphAlgo.h, lib/ArrayGraph.h:
+	Final implementation of union of minimal cycle bases.
+
+	* configure: *** empty log message ***
+
+2004-09-01  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* configure.in, lib/Makefile.in:
+	rnaml reader and writer are only included with the configure --with-rnaml flag.
+
+	* lib/Pdbstream.cc: Pdbstream always give residues rna type.
+
+2004-08-30  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Residue.cc: Error message corrected.
+
+2004-08-26  Philippe Thibault  <thibaup@yeti.iro.umontreal.ca>
+
+	* lib/ResidueTypeStore.cc, lib/PropertyTypeStore.cc, lib/AtomTypeStore.cc:
+	Modified string key and string representation for Null types to the empty string "" (after some discussion ... ;))
+
+	* lib/ResidueTypeStore.h, lib/ResidueTypeStore.cc, lib/ResidueType.h, lib/ResidueType.cc, lib/PropertyTypeStore.cc, lib/PropertyType.h, lib/PropertyType.cc, lib/AtomTypeStore.h, lib/AtomTypeStore.cc, lib/AtomType.h, lib/AtomType.cc:
+	- Corrected a memory bug in type parsing
+	- Added null static member type that should be used anywhere instead of a null pointer (AtomType::aNull, ResidueType::rNull, PropertyType::pNull)
+	- Binstream type ouput now throws an exception if the type is a null pointer
+
+	* lib/Model.h: virtualized find() methods
+
+2004-08-24  Patrick Gendron  <gendrop@yeti.iro.umontreal.ca>
+
+	* lib/Makefile.in, configure.in, configure:
+	Modifications to allow building the library without xmlcpg.
+
+2004-08-17  Philippe Thibault  <thibaup@yeti.iro.umontreal.ca>
+
+	* lib/Residue.cc, lib/Relation.h, lib/Relation.cc:
+	*** empty log message ***
+
+	* lib/PropertyTypeStore.h, lib/PropertyTypeStore.cc, lib/PropertyType.h, lib/PropertyType.cc:
+	- Added new property type Null to wrap the eventual null pointer.
+	- Slight modification in string type parsing implementation.
+
+2004-07-12  Philippe Thibault  <thibaup@yeti.iro.umontreal.ca>
+
+	* lib/Residue.cc, lib/Relation.cc:
+	Warning message levels downgraded to 3 when atoms are missing.
+
+	* ChangeLog: updated ChangeLog
 
 	* lib/Relation.cc, lib/HBond.cc:
 	The annotation methods trap NoSuchAtomException and send a warning message when a mandatory atom is missing.
