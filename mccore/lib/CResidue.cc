@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CResidue.cc
-// Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Dec  4 15:42:22 2000
-// Update Count     : 9
+// Last Modified On : Mon Jan 22 15:17:41 2001
+// Update Count     : 10
 // Status           : Ok.
 // 
 
@@ -1148,6 +1148,8 @@ CResidue::Validate () const
 	}
       else
 	{
+	  if (mType->is_AminoAcid ())
+	    gOut (3) << 'p';
 	  res.mType = 0;
 	  return res;
 	}
@@ -1160,6 +1162,7 @@ CResidue::Validate () const
 		      inserter (diffset, diffset.begin ()));
       if (! diffset.empty ())
 	{
+	  gOut (3) << 'i';
 	  res.mType = 0;
 	  return res;
 	}
@@ -1169,8 +1172,10 @@ CResidue::Validate () const
 		      allset.begin (), allset.end (),
 		      inserter (diffset, diffset.begin ()));
       res.erase (diffset.begin (), diffset.end ());
+      gOut (3) << '.';
       return res;
     }
+  gOut (3) << 'i';
   return res;
 }
 
