@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Philippe Thibault
-// Last Modified On : Wed Mar 19 16:57:34 2003
-// Update Count     : 35
+// Last Modified On : Tue May 20 09:06:51 2003
+// Update Count     : 36
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -122,11 +122,16 @@ CResidue::setIdeal ()
     insert (CAtom (0.329, 0.571, 3.657, a_C5)); 
     insert (CAtom (0.000, 0.000, 0.000, a_C1p));
   } else if (mType->is_Phosphate ()) {
-      insert (CAtom ( 99.755, 106.228, 6.380, a_O3p));
-      insert (CAtom (100.821, 105.050, 6.479, a_P));
-      insert (CAtom (100.856, 104.272, 5.224, a_O1P));
-      insert (CAtom (100.658, 104.316, 7.746, a_O2P));
-      insert (CAtom (102.198, 105.850, 6.595, a_O5p));
+//       insert (CAtom ( 99.755, 106.228, 6.380, a_O3p));
+//       insert (CAtom (100.821, 105.050, 6.479, a_P));
+//       insert (CAtom (100.856, 104.272, 5.224, a_O1P));
+//       insert (CAtom (100.658, 104.316, 7.746, a_O2P));
+//       insert (CAtom (102.198, 105.850, 6.595, a_O5p));
+    insert (CAtom ( 4.691f,  0.327f, -2.444f, a_P));
+    insert (CAtom ( 5.034f,  1.678f, -1.932f, a_O1P));
+    insert (CAtom ( 4.718f,  0.068f, -3.906f, a_O2P));
+    insert (CAtom ( 3.246f, -0.057f, -1.895f, a_O5p));
+    insert (CAtom ( 5.662f, -0.712f, -1.734f, a_O3p));
   }
   else {
     gOut (2) << "Oups, setIdeal erased the residue " << (const char*)*mType  
