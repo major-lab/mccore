@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Aug 16 16:21:12 2001
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 // 
 // This file is part of mccore.
 // 
@@ -34,31 +34,37 @@ namespace mccore
    * @short Abstract class for socket commands.
    * 
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: SocketCommand.h,v 1.5 2005-01-03 23:06:53 larosem Exp $
+   * @version $Id: SocketCommand.h,v 1.6 2005-01-26 15:11:44 thibaup Exp $
    */
   class SocketCommand 
   {
   public:
 
-    static const int NONE         = 0;
-    static const int SEND_CHAR    = 1;
-    static const int SEND_INT     = 2;
-    static const int SEND_FLOAT   = 3;
-    static const int SEND_STRING  = 4;
-    static const int SEND_POINT3D = 5;
-    static const int SEND_ATOM    = 6;
-    static const int SEND_TRANSFO = 7;
-    static const int SEND_RESIDUE = 8;
-    static const int SEND_MODEL   = 9;
-    static const int FETCH_CHAR    = 51;
-    static const int FETCH_INT     = 52;
-    static const int FETCH_FLOAT   = 53;
-    static const int FETCH_STRING  = 54;
-    static const int FETCH_POINT3D = 55;
-    static const int FETCH_ATOM    = 56;
-    static const int FETCH_TRANSFO = 57;
-    static const int FETCH_RESIDUE = 58;
-    static const int FETCH_MODEL   = 59;
+    typedef int com_type;
+
+    static const com_type NONE               =  0;
+
+    static const com_type SEND_CHAR          =  1;
+    static const com_type SEND_COM_TYPE      =  2;
+    static const com_type SEND_FLOAT         =  3;
+    static const com_type SEND_STRING        =  4;
+    static const com_type SEND_POCOM_TYPE3D  =  5;
+    static const com_type SEND_ATOM          =  6;
+    static const com_type SEND_TRANSFO       =  7;
+    static const com_type SEND_RESIDUE       =  8;
+    static const com_type SEND_MODEL         =  9;
+    static const com_type SEND_MOLECULE      = 10;
+
+    static const com_type FETCH_CHAR         = 51;
+    static const com_type FETCH_COM_TYPE     = 52;
+    static const com_type FETCH_FLOAT        = 53;
+    static const com_type FETCH_STRING       = 54;
+    static const com_type FETCH_POCOM_TYPE3D = 55;
+    static const com_type FETCH_ATOM         = 56;
+    static const com_type FETCH_TRANSFO      = 57;
+    static const com_type FETCH_RESIDUE      = 58;
+    static const com_type FETCH_MODEL        = 59;
+    static const com_type FETCH_MOLECULE     = 60;
   
     // LIFECYCLE ------------------------------------------------------------
 
