@@ -1,11 +1,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -*- Mode: Text -*- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; README
-;; Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
+;; Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 ;; Author           : Martin Larose
 ;; Created On       : Tue Sep 19 18:16:58 2000
 ;; Last Modified By : Martin Larose
-;; Last Modified On : Tue Oct 24 11:13:57 2000
-;; Update Count     : 1
+;; Last Modified On : Fri May 11 17:59:28 2001
+;; Update Count     : 2
 ;; Status           : Ok.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -36,9 +36,7 @@ AUTHORS:
 Sébastien Lemieux
 François Major,
 Patrick Gendron,
-Daniel St-Arnaud,
-Martin Larose,
-Michel Boivin.
+Martin Larose.
 
 
 BUGS:
