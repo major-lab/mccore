@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.50 $
-// $Id: Residue.cc,v 1.50 2004-10-08 13:06:53 thibaup Exp $
+// $Revision: 1.51 $
+// $Id: Residue.cc,v 1.51 2004-11-25 16:34:33 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -30,8 +30,7 @@
 #include <typeinfo>
 
 #include <algorithm>
-#include <assert.h>
-#include <math.h>
+#include <cmath>
 #include <set>
 
 #include "Binstream.h"

@@ -3,7 +3,7 @@
 // Copyright © 2003, 2004 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Apr  7 18:28:55 2003
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 // 
 //  This file is part of mccore.
 //  
@@ -25,10 +25,11 @@
 #ifndef _MaximumFlowGraph_h_
 #define _MaximumFlowGraph_h_
 
-#include <iostream>
-#include <map>
-#include <list>
 #include <algorithm>
+#include <iostream>
+#include <limits>
+#include <list>
+#include <map>
 
 #include "Graph.h"
 
@@ -40,7 +41,7 @@ namespace mccore {
    * only been tested when nodes are int.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: MaximumFlowGraph.h,v 1.9 2004-01-09 21:47:36 gendrop Exp $
+   * @version $Id: MaximumFlowGraph.h,v 1.10 2004-11-25 16:34:29 larosem Exp $
    */
   template < class node_type,
 	     class edge_type = bool, 
@@ -271,7 +272,7 @@ namespace mccore {
       vector< float > excess;
       
       for (i=0; i<size (); ++i) {
-	label.push_back (MAXINT);
+	label.push_back (numeric_limits<int>::max ());
 	excess.push_back (0);
       }
 
