@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.49 $
-// $Id: Residue.cc,v 1.49 2004-09-16 13:46:44 thibaup Exp $
+// $Revision: 1.50 $
+// $Id: Residue.cc,v 1.50 2004-10-08 13:06:53 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -97,7 +97,7 @@ namespace mccore {
       rib_built_count (0)
   {
     this->setType (0);
-    rib_C1p = rib_C2p = rib_C3p = rib_C4p = rib_C5p = rib_O2p = rib_O3p = rib_O4p = rib_O5p = rib_P = 0;
+    rib_C1p = rib_C2p = rib_C3p = rib_C4p = rib_C5p = rib_O2p = rib_O3p = rib_O4p = rib_O5p = rib_P = rib_O1P = rib_O2P = 0;
   }
 
   
@@ -109,7 +109,7 @@ namespace mccore {
   {
     this->setType (t);
     this->setResId (i);
-    rib_C1p = rib_C2p = rib_C3p = rib_C4p = rib_C5p = rib_O2p = rib_O3p = rib_O4p = rib_O5p = rib_P = 0;
+    rib_C1p = rib_C2p = rib_C3p = rib_C4p = rib_C5p = rib_O2p = rib_O3p = rib_O4p = rib_O5p = rib_O1P = rib_O2P = rib_P = 0;
   }
 
 
@@ -125,7 +125,7 @@ namespace mccore {
       insert (*j);
     }
 
-    rib_C1p = rib_C2p = rib_C3p = rib_C4p = rib_C5p = rib_O2p = rib_O3p = rib_O4p = rib_O5p = rib_P = 0;
+    rib_C1p = rib_C2p = rib_C3p = rib_C4p = rib_C5p = rib_O2p = rib_O3p = rib_O4p = rib_O5p = rib_O1P = rib_O2P = rib_P = 0;
   }
 
 
@@ -142,7 +142,7 @@ namespace mccore {
     }    
     atomIndex = other.atomIndex;
 
-    rib_C1p = rib_C2p = rib_C3p = rib_C4p = rib_C5p = rib_O2p = rib_O3p = rib_O4p = rib_O5p = rib_P = 0;
+    rib_C1p = rib_C2p = rib_C3p = rib_C4p = rib_C5p = rib_O2p = rib_O3p = rib_O4p = rib_O5p = rib_O1P = rib_O2P = rib_P = 0;
     rib_dirty_ref = true;
     rib_built_valid = other.rib_built_valid;
     rib_built_count = other.rib_built_count;
@@ -183,6 +183,14 @@ namespace mccore {
       this->insert (Atom ( 0.579f,  2.170f,  2.844f, AtomType::aC5));
       this->insert (Atom ( 0.747f,  0.934f,  3.454f, AtomType::aN7));
       this->insert (Atom ( 0.520f,  0.074f,  2.491f, AtomType::aC8));
+
+      this->insert (Atom ( -0.0303076f, 5.03468f, 0.54474f, AtomType::aH2));
+      this->insert (Atom ( 1.04802f, 4.75317f, 4.88051f, AtomType::a1H6));
+      this->insert (Atom ( 1.16578f, 3.04933f, 5.25911f, AtomType::a2H6));
+      this->insert (Atom ( 0.569712f, -0.995716f, 2.63113f, AtomType::aH8));
+      this->insert (Atom ( 0.510616f, 5.44634f, 2.75495f, AtomType::aLP1));
+      this->insert (Atom ( -0.219929f, 2.84729f, -0.341479f, AtomType::aLP3));
+      this->insert (Atom ( 0.985635f, 0.744068f, 4.40635f, AtomType::aLP7));
     }
     else if (this->type->isC ())
     {
@@ -193,7 +201,15 @@ namespace mccore {
       this->insert (Atom ( 0.511f,  2.687f,  2.504f, AtomType::aN3)); 
       this->insert (Atom ( 0.491f,  1.984f,  3.638f, AtomType::aC4)); 
       this->insert (Atom ( 0.631f,  2.649f,  4.788f, AtomType::aN4)); 
-      this->insert (Atom ( 0.328f,  0.569f,  3.645f, AtomType::aC5)); 
+      this->insert (Atom ( 0.328f,  0.569f,  3.645f, AtomType::aC5));
+
+      this->insert (Atom ( 0.620979f, 2.14851f, 5.66522f, AtomType::a1H4));
+      this->insert (Atom ( 0.746876f, 3.6523f, 4.78031f, AtomType::a2H4));
+      this->insert (Atom ( 0.313722f, 0.00583071f, 4.57813f, AtomType::aH5));
+      this->insert (Atom ( 0.0671006f, -1.11515f, 2.42957f, AtomType::aH6)); 
+      this->insert (Atom ( 0.284334f, 2.178f, -0.622688f, AtomType::a1LP2)); 
+      this->insert (Atom ( 0.502955f, 3.66636f, 0.235793f, AtomType::a2LP2));
+      this->insert (Atom ( 0.627097f, 3.67983f, 2.53261f, AtomType::aLP3));
     }
     else if (this->type->isG ())
     {
@@ -207,7 +223,16 @@ namespace mccore {
       this->insert (Atom ( 0.941f,  3.789f,  4.552f, AtomType::aO6)); 
       this->insert (Atom ( 0.562f,  2.154f,  2.846f, AtomType::aC5)); 
       this->insert (Atom ( 0.712f,  0.912f,  3.448f, AtomType::aN7)); 
-      this->insert (Atom ( 0.498f,  0.057f,  2.485f, AtomType::aC8)); 
+      this->insert (Atom ( 0.498f,  0.057f,  2.485f, AtomType::aC8));
+
+      this->insert (Atom ( 0.502066f, 5.40203f, 2.7193f, AtomType::aH1));
+      this->insert (Atom ( -0.271768f, 5.15574f, -0.642136f, AtomType::a1H2));
+      this->insert (Atom ( 0.0354486f, 6.19476f, 0.731306f, AtomType::a2H2));
+      this->insert (Atom ( 0.539896f, -1.01379f, 2.61934f, AtomType::aH8));
+      this->insert (Atom ( -0.184759f, 2.79908f, -0.368048f, AtomType::aLP3));
+      this->insert (Atom ( 0.988664f, 4.75695f, 4.79856f, AtomType::a2LP6));
+      this->insert (Atom ( 1.10746f, 3.08769f, 5.24515f, AtomType::a1LP6));
+      this->insert (Atom ( 0.933818f, 0.716543f, 4.4033f, AtomType::aLP7));
     }
     else if (this->type->isU ())
     {
@@ -218,7 +243,15 @@ namespace mccore {
       this->insert (Atom ( 0.505f,  2.629f,  2.502f, AtomType::aN3)); 
       this->insert (Atom ( 0.497f,  1.990f,  3.725f, AtomType::aC4)); 
       this->insert (Atom ( 0.629f,  2.653f,  4.755f, AtomType::aO4)); 
-      this->insert (Atom ( 0.329f,  0.571f,  3.657f, AtomType::aC5)); 
+      this->insert (Atom ( 0.329f,  0.571f,  3.657f, AtomType::aC5));
+
+      this->insert (Atom ( 0.632158f, 3.71141f, 2.51965f, AtomType::aH3));
+      this->insert (Atom ( 0.310285f, -0.0229714f, 4.57076f, AtomType::aH5));
+      this->insert (Atom ( 0.0682911f, -1.09504f, 2.43321f, AtomType::aH6));
+      this->insert (Atom ( 0.289004f, 2.23923f, -0.647795f, AtomType::a1LP2));
+      this->insert (Atom ( 0.507414f, 3.69039f, 0.272225f, AtomType::a2LP2));
+      this->insert (Atom ( 0.624348f, 2.19893f, 5.64595f, AtomType::a1LP4));
+      this->insert (Atom ( 0.740793f, 3.64521f, 4.70007f, AtomType::a2LP4));
     }
     else if (this->type->isT ())
     {
@@ -230,7 +263,17 @@ namespace mccore {
       this->insert (Atom ( 0.449f,  1.933f,  3.767f, AtomType::aC4)); 
       this->insert (Atom ( 0.560f,  2.568f,  4.812f, AtomType::aO4)); 
       this->insert (Atom ( 0.279f,  0.500f,  3.685f, AtomType::aC5)); 
-      this->insert (Atom ( 0.231f, -0.299f,  4.949f, AtomType::aC5M)); 
+      this->insert (Atom ( 0.231f, -0.299f,  4.949f, AtomType::aC5M));
+
+      this->insert (Atom ( 0.610471f, 3.67381f, 2.59215f, AtomType::aH3));
+      this->insert (Atom ( 0.338584f, 0.359726f, 5.81075f, AtomType::a1H5M));
+      this->insert (Atom ( 1.03978f, -1.02966f, 4.95911f, AtomType::a2H5M));
+      this->insert (Atom ( -0.72125f, -0.824345f, 5.02202f, AtomType::a3H5M));
+      this->insert (Atom ( 0.0428929f, -1.12249f, 2.40652f, AtomType::aH6));
+      this->insert (Atom ( 0.332737f, 2.2627f, -0.608996f, AtomType::a1LP2));
+      this->insert (Atom ( 0.533682f, 3.69636f, 0.341925f, AtomType::a2LP2));
+      this->insert (Atom ( 0.535573f, 2.09218f, 5.69121f, AtomType::a1LP4)); 
+      this->insert (Atom ( 0.67483f, 3.56099f, 4.78389f, AtomType::a2LP4));
     }
     else if (this->type->isPhosphate ())
     {
@@ -248,8 +291,30 @@ namespace mccore {
       this->insert (Atom ( 1.509f, -1.478f, -1.022f, AtomType::aC4p));                     
       this->insert (Atom ( 2.957f, -1.393f, -1.443f, AtomType::aC5p));
       this->insert (Atom ( 1.286f, -0.587f,  0.103f, AtomType::aO4p));
+
+      this->insert (Atom ( -0.608679f, -0.1782100f,  0.886482f, AtomType::aH1p));
+      this->insert (Atom ( -1.391530f,  0.0203483f, -1.741500f, AtomType::aH2p));
+      this->insert (Atom (  0.859627f, -0.2273900f, -2.709070f, AtomType::aH3p));
+      this->insert (Atom (  1.354260f, -2.5362900f, -0.811835f, AtomType::aH4p));
+      this->insert (Atom (  3.151990f, -2.1054000f, -2.244600f, AtomType::a1H5p));
+      this->insert (Atom (  3.602570f, -1.6472600f, -0.602352f, AtomType::a2H5p));
+      
       if (this->type->isRNA ())
+      {
 	this->insert (Atom (-1.474f, -1.731f, -0.795f, AtomType::aO2p));
+	this->insert (Atom ( -1.90769f, -2.12145f, -1.55727f, AtomType::aHO2p));
+      }
+      
+      if (this->type->isRibose5 () || this->type->isRibose53 ())
+      {
+	this->insert (Atom ( 4.691f,  0.327f, -2.444f, AtomType::aP));
+	this->insert (Atom ( 5.034f,  1.678f, -1.932f, AtomType::aO1P));
+	this->insert (Atom ( 4.718f,  0.068f, -3.906f, AtomType::aO2P));
+	this->insert (Atom ( 3.246f, -0.057f, -1.895f, AtomType::aO5p));
+      }
+
+      if (this->type->isRibose3 () || this->type->isRibose53 ())
+	this->insert (Atom ( 0.178f, -2.084f, -2.981f, AtomType::aO3p));
     }
     else
     {
@@ -262,11 +327,11 @@ namespace mccore {
     this->setReferential (HomogeneousTransfo::identity);
 
     // every atoms are present: inhibits warning
-    int vlv = gOut.getVerboseLevel ();
-    gOut.setVerboseLevel (2);
-    this->addHydrogens ();
-    this->addLonePairs ();
-    gOut.setVerboseLevel (vlv);
+ //    int vlv = gOut.getVerboseLevel ();
+//     gOut.setVerboseLevel (2);
+//     this->addHydrogens ();
+//     this->addLonePairs ();
+//     gOut.setVerboseLevel (vlv);
     
   }
 
@@ -274,9 +339,7 @@ namespace mccore {
   Residue::setFullTheoretical ()
   {
     if (this->type->isNucleicAcid ())
-    {
       this->setTheoretical ();
-    }
     else
     {
       IntLibException ex ("", __FILE__, __LINE__);
@@ -286,12 +349,6 @@ namespace mccore {
     
     // create a C3' endo anti ribose
     this->buildRibose (PropertyType::pC3p_endo, PropertyType::pAnti, true, true);
-
-    // finish up 5' phosphate
-    Residue *po4 = Residue::createPhosphate5p (*this);
-    this->insert (*po4->find (AtomType::aO1P));
-    this->insert (*po4->find (AtomType::aO2P));
-    delete po4;
   }
   
 
@@ -369,7 +426,7 @@ namespace mccore {
   void 
   Residue::setType (const ResidueType* t) 
   { 
-    type = t == 0 ? ResidueType::parseType ("undefined") : t; 
+    type = t == 0 ? ResidueType::rNull : t; 
   }
 
   
@@ -595,42 +652,50 @@ namespace mccore {
 
 
   Residue::iterator 
-  Residue::erase (const AtomType *aType)
+  Residue::erase (const AtomType *atype)
   {
-    AtomMap::iterator i = atomIndex.find (aType);
-    
-    if (i!=atomIndex.end ()) {
-      vector< Atom* >::const_iterator cit;
-      const AtomType* next;
-      size_type index;
+    return this->erase (this->find (atype));
+  }
 
-      rib_dirty_ref = true;
+
+  Residue::iterator 
+  Residue::erase (const iterator& rit)
+  {
+    if (this->end () != rit)
+    {
+      vector< Atom* >::iterator avit;
+      vector< Atom* >::const_iterator cavit;
+      const AtomType* next = 0;
+      size_type index = 0;
+      iterator next_rit = rit + 1;
+
+      // invalidate ribose pointers
+      this->rib_dirty_ref = true;
       
-      delete atomGlobal[i->second];
-      atomGlobal.erase (atomGlobal.begin () + i->second);
-      next = ++i == atomIndex.end () ? 0 : i->first;
-      atomIndex.clear ();
-      for (cit = atomGlobal.begin (), index = 0;
-	   cit != atomGlobal.end ();
-	   ++cit, ++index)
-	atomIndex[(*cit)->getType ()] = index;
-      return find (next);
-    } 
-    return end ();
-  }
+      // get next atom type before deletion
+      if (this->end () != next_rit)
+	next = next_rit.pos->first;
+      
+      // delete atom
+      avit = this->atomGlobal.begin () + rit.pos->second;
+      delete *avit;
+      this->atomGlobal.erase (avit);
 
+      // fix atom map
+      this->atomIndex.clear ();
+      for (cavit = this->atomGlobal.begin (); cavit != this->atomGlobal.end (); ++cavit, ++index)
+	this->atomIndex.insert (make_pair ((*cavit)->getType (), index));
 
-  Residue::iterator 
-  Residue::erase (const iterator pos)
-  { 
-    return erase (pos->getType ()); 
-  }
-
-
-  Residue::iterator 
-  Residue::erase (const const_iterator pos)
-  { 
-    return erase (pos->getType ()); 
+      if (next)
+      {
+	// fetch iterator to saved atom type and set its filter.
+	next_rit = this->find (next);
+	delete next_rit.filter;
+	next_rit.filter = rit.filter->clone ();
+	return next_rit;
+      }
+    }
+    return this->end (); 
   }
 
 
@@ -657,7 +722,7 @@ namespace mccore {
     atomGlobal.clear ();
     atomIndex.clear();
 
-    rib_C1p = rib_C2p = rib_C3p = rib_C4p = rib_C5p = rib_O2p = rib_O3p = rib_O4p = rib_O5p = rib_P = 0;
+    rib_C1p = rib_C2p = rib_C3p = rib_C4p = rib_C5p = rib_O2p = rib_O3p = rib_O4p = rib_O5p = rib_O1P = rib_O2P = rib_P = 0;
     rib_dirty_ref = true;
     rib_built_valid = false;
   }
@@ -771,7 +836,8 @@ namespace mccore {
   }
   
 
-  void Residue::removeOptionals () 
+  void
+  Residue::removeOptionals () 
   {
     if (!type->isNucleicAcid () && !type->isAminoAcid ()) return;    
     set< const AtomType* > oblset = ResidueTopology::getOblSet (type);
@@ -787,259 +853,285 @@ namespace mccore {
   }
 
 
-  void Residue::addHydrogens () 
+  void
+  Residue::addHydrogens (bool overwrite) 
   { 
     Vector3D x, y, z, up, a, b, v;
 
     if (this->type->isA ()) 
     {
-      try // H2
-      {
-	x = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN1)).normalize ();
-	y = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN3)).normalize ();
-	z = (x + y).normalize ();
-	v = *this->_safe_get (AtomType::aC2) + z * Residue::C_H_DIST_CYC;
-	this->insert (Atom (v, AtomType::aH2));
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add hydrogen " << AtomType::aH2 << " in "
-		 << *this << ": " << ex << endl;
-      }
-      try // H8
-      {
-	x = (*this->_safe_get (AtomType::aC8) - *this->_safe_get (AtomType::aN7)).normalize ();
-	y = (*this->_safe_get (AtomType::aC8) - *this->_safe_get (AtomType::aN9)).normalize ();
-	z = (x + y).normalize ();
-	v = *this->_safe_get (AtomType::aC8) + z * Residue::C_H_DIST_CYC;	
-	this->insert (Atom (v, AtomType::aH8));
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add hydrogen " << AtomType::aH8 << " in "
-		 << *this << ": " << ex << endl;
-      }
-      try // H61 and H62
-      {
-	x = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aN1)).normalize ();
-	y = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aC5)).normalize ();
-	z = (*this->_safe_get (AtomType::aN6) - *this->_safe_get (AtomType::aC6)).normalize ();  // axe N6-C6     
-	up = x.cross (y).normalize ();
+      if (overwrite || 0 == this->_get (AtomType::aH2))
+	try // H2
+	{
+	  x = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN1)).normalize ();
+	  y = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN3)).normalize ();
+	  z = (x + y).normalize ();
+	  v = *this->_safe_get (AtomType::aC2) + z * Residue::C_H_DIST_CYC;
+	  this->insert (Atom (v, AtomType::aH2));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add hydrogen " << AtomType::aH2 << " in "
+		   << *this << ": " << ex << endl;
+	}
+      
+      if (overwrite || 0 == this->_get (AtomType::aH8))
+	try // H8
+	{
+	  x = (*this->_safe_get (AtomType::aC8) - *this->_safe_get (AtomType::aN7)).normalize ();
+	  y = (*this->_safe_get (AtomType::aC8) - *this->_safe_get (AtomType::aN9)).normalize ();
+	  z = (x + y).normalize ();
+	  v = *this->_safe_get (AtomType::aC8) + z * Residue::C_H_DIST_CYC;	
+	  this->insert (Atom (v, AtomType::aH8));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add hydrogen " << AtomType::aH8 << " in "
+		   << *this << ": " << ex << endl;
+	}
+      
+      if (overwrite || 0 == this->_get (AtomType::a1H6) || 0 == this->_get (AtomType::a2H6))
+	try // H61 and H62
+	{
+	  x = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aN1)).normalize ();
+	  y = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aC5)).normalize ();
+	  z = (*this->_safe_get (AtomType::aN6) - *this->_safe_get (AtomType::aC6)).normalize ();  // axe N6-C6     
+	  up = x.cross (y).normalize ();
 
-	a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
-	v = *this->_safe_get (AtomType::aN6) + a * Residue::N_H_DIST;
-	this->insert (Atom (v, AtomType::a1H6));
+	  a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
+	  v = *this->_safe_get (AtomType::aN6) + a * Residue::N_H_DIST;
+	  this->insert (Atom (v, AtomType::a1H6));
 	
-	b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();	    
-	v = *this->_safe_get (AtomType::aN6) + b * Residue::N_H_DIST;
-	this->insert (Atom (v, AtomType::a2H6));
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add hydrogens " << AtomType::a1H6 << " and "
-		 << AtomType::a2H6 << " in " << *this << ": " << ex << endl;
-      }
+	  b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();	    
+	  v = *this->_safe_get (AtomType::aN6) + b * Residue::N_H_DIST;
+	  this->insert (Atom (v, AtomType::a2H6));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add hydrogens " << AtomType::a1H6 << " and "
+		   << AtomType::a2H6 << " in " << *this << ": " << ex << endl;
+	}
     }
     else if (this->type->isG ()) 
     {
-      try // H1
-      {
-	x = (*this->_safe_get (AtomType::aN1) - *this->_safe_get (AtomType::aC2)).normalize ();
-	y = (*this->_safe_get (AtomType::aN1) - *this->_safe_get (AtomType::aC6)).normalize ();
-	z = (x + y).normalize ();
-	v = *this->_safe_get (AtomType::aN1) + z * Residue::N_H_DIST;
-	this->insert (Atom (v, AtomType::aH1));
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add hydrogen " << AtomType::aH1 << " in "
-		 << *this << ": " << ex << endl;
-      }
-      try // H8
-      {
-	x = (*this->_safe_get (AtomType::aC8) - *this->_safe_get (AtomType::aN7)).normalize ();
-	y = (*this->_safe_get (AtomType::aC8) - *this->_safe_get (AtomType::aN9)).normalize ();
-	z = (x + y).normalize ();
-	v = *this->_safe_get (AtomType::aC8) + z * Residue::C_H_DIST_CYC;
-	this->insert (Atom (v, AtomType::aH8));
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add hydrogen " << AtomType::aH8 << " in "
-		 << *this << ": " << ex << endl;
-      }    
-      try // 1H2 and 2H2
-      {
-	x = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN1)).normalize ();
-	y = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN3)).normalize ();
-	z = (*this->_safe_get (AtomType::aN2) - *this->_safe_get (AtomType::aC2)).normalize ();  // axe N2-C2	    
-	up = x.cross (y).normalize ();
+      if (overwrite || 0 == this->_get (AtomType::aH1))
+	try // H1
+	{
+	  x = (*this->_safe_get (AtomType::aN1) - *this->_safe_get (AtomType::aC2)).normalize ();
+	  y = (*this->_safe_get (AtomType::aN1) - *this->_safe_get (AtomType::aC6)).normalize ();
+	  z = (x + y).normalize ();
+	  v = *this->_safe_get (AtomType::aN1) + z * Residue::N_H_DIST;
+	  this->insert (Atom (v, AtomType::aH1));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add hydrogen " << AtomType::aH1 << " in "
+		   << *this << ": " << ex << endl;
+	}
+      
+      if (overwrite || 0 == this->_get (AtomType::aH8))
+	try // H8
+	{
+	  x = (*this->_safe_get (AtomType::aC8) - *this->_safe_get (AtomType::aN7)).normalize ();
+	  y = (*this->_safe_get (AtomType::aC8) - *this->_safe_get (AtomType::aN9)).normalize ();
+	  z = (x + y).normalize ();
+	  v = *this->_safe_get (AtomType::aC8) + z * Residue::C_H_DIST_CYC;
+	  this->insert (Atom (v, AtomType::aH8));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add hydrogen " << AtomType::aH8 << " in "
+		   << *this << ": " << ex << endl;
+	}
+      
+      if (overwrite || 0 == this->_get (AtomType::a1H2) || 0 == this->_get (AtomType::a2H2))
+	try // 1H2 and 2H2
+	{
+	  x = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN1)).normalize ();
+	  y = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN3)).normalize ();
+	  z = (*this->_safe_get (AtomType::aN2) - *this->_safe_get (AtomType::aC2)).normalize ();  // axe N2-C2	    
+	  up = x.cross (y).normalize ();
 		
-	b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();
-	v = *this->_safe_get (AtomType::aN2) + b * Residue::N_H_DIST;
-	this->insert (Atom (v, AtomType::a1H2));
+	  b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();
+	  v = *this->_safe_get (AtomType::aN2) + b * Residue::N_H_DIST;
+	  this->insert (Atom (v, AtomType::a1H2));
 	
-	a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
-	v = *this->_safe_get (AtomType::aN2) + a * Residue::N_H_DIST;
-	this->insert (Atom (v, AtomType::a2H2));
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add hydrogens " << AtomType::a1H2 << " and "
-		 << AtomType::a2H2 << " in " << *this << ": " << ex << endl;
-      }
+	  a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
+	  v = *this->_safe_get (AtomType::aN2) + a * Residue::N_H_DIST;
+	  this->insert (Atom (v, AtomType::a2H2));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add hydrogens " << AtomType::a1H2 << " and "
+		   << AtomType::a2H2 << " in " << *this << ": " << ex << endl;
+	}
     }
     else if (this->type->isC ())
     {
-      try // H5
-      {
-	x = (*this->_safe_get (AtomType::aC5) - *this->_safe_get (AtomType::aC4)).normalize ();
-	y = (*this->_safe_get (AtomType::aC5) - *this->_safe_get (AtomType::aC6)).normalize ();
-	z = (x + y).normalize ();
-	v = *this->_safe_get (AtomType::aC5) + z * Residue::C_H_DIST; // Exceptionnal distance!
-	this->insert (Atom (v, AtomType::aH5));
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add hydrogen " << AtomType::aH5 << " in "
-		 << *this << ": " << ex << endl;
-      }          
-      try // H6
-      {
-	x = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aC5)).normalize ();
-	y = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aN1)).normalize ();
-	z = (x + y).normalize ();
-	v = *this->_safe_get (AtomType::aC6) + z * Residue::C_H_DIST_CYC;
-	this->insert (Atom (v, AtomType::aH6));
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add hydrogen " << AtomType::aH6 << " in "
-		 << *this << ": " << ex << endl;
-      }	    
-      try // 1H4 and 2H4
-      {
-	x = (*this->_safe_get (AtomType::aC4) - *this->_safe_get (AtomType::aN3)).normalize ();
-	y = (*this->_safe_get (AtomType::aC4) - *this->_safe_get (AtomType::aC5)).normalize ();
-	z = (*this->_safe_get (AtomType::aN4) - *this->_safe_get (AtomType::aC4)).normalize ();	    
-	up = x.cross (y).normalize ();
+      if (overwrite || 0 == this->_get (AtomType::aH5))
+	try // H5
+	{
+	  x = (*this->_safe_get (AtomType::aC5) - *this->_safe_get (AtomType::aC4)).normalize ();
+	  y = (*this->_safe_get (AtomType::aC5) - *this->_safe_get (AtomType::aC6)).normalize ();
+	  z = (x + y).normalize ();
+	  v = *this->_safe_get (AtomType::aC5) + z * Residue::C_H_DIST; // Exceptionnal distance!
+	  this->insert (Atom (v, AtomType::aH5));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add hydrogen " << AtomType::aH5 << " in "
+		   << *this << ": " << ex << endl;
+	}
+      
+      if (overwrite || 0 == this->_get (AtomType::aH6))
+	try // H6
+	{
+	  x = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aC5)).normalize ();
+	  y = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aN1)).normalize ();
+	  z = (x + y).normalize ();
+	  v = *this->_safe_get (AtomType::aC6) + z * Residue::C_H_DIST_CYC;
+	  this->insert (Atom (v, AtomType::aH6));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add hydrogen " << AtomType::aH6 << " in "
+		   << *this << ": " << ex << endl;
+	}
+      
+      if (overwrite || 0 == this->_get (AtomType::a1H4) || 0 == this->_get (AtomType::a2H4))
+	try // 1H4 and 2H4
+	{
+	  x = (*this->_safe_get (AtomType::aC4) - *this->_safe_get (AtomType::aN3)).normalize ();
+	  y = (*this->_safe_get (AtomType::aC4) - *this->_safe_get (AtomType::aC5)).normalize ();
+	  z = (*this->_safe_get (AtomType::aN4) - *this->_safe_get (AtomType::aC4)).normalize ();	    
+	  up = x.cross (y).normalize ();
 
-	b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();	    
-	v = *this->_safe_get (AtomType::aN4) + b * Residue::N_H_DIST;
-	this->insert (Atom (v, AtomType::a1H4));
+	  b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();	    
+	  v = *this->_safe_get (AtomType::aN4) + b * Residue::N_H_DIST;
+	  this->insert (Atom (v, AtomType::a1H4));
 
-	a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
-	v = *this->_safe_get (AtomType::aN4) + a * Residue::N_H_DIST;
-	this->insert (Atom (v, AtomType::a2H4));
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add hydrogens " << AtomType::a1H4 << " and "
-		 << AtomType::a2H4 << " in " << *this << ": " << ex << endl;
-      }	
+	  a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
+	  v = *this->_safe_get (AtomType::aN4) + a * Residue::N_H_DIST;
+	  this->insert (Atom (v, AtomType::a2H4));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add hydrogens " << AtomType::a1H4 << " and "
+		   << AtomType::a2H4 << " in " << *this << ": " << ex << endl;
+	}	
     }
     else if (this->type->isU ()) 
     {
-      try // H3
-      {
-	x = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC2)).normalize ();
-	y = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC4)).normalize ();
-	z = (x + y).normalize ();
-	v = *this->_safe_get (AtomType::aN3) + z * Residue::C_H_DIST; // Exceptionnal distance!
-	this->insert (Atom (v, AtomType::aH3));
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add hydrogen " << AtomType::aH3 << " in "
-		 << *this << ": " << ex << endl;
-      }	 	    
-      try // H5
-      {
-	x = (*this->_safe_get (AtomType::aC5) - *this->_safe_get (AtomType::aC4)).normalize ();
-	y = (*this->_safe_get (AtomType::aC5) - *this->_safe_get (AtomType::aC6)).normalize ();
-	z = (x + y).normalize ();
-	v = *this->_safe_get (AtomType::aC5) + z * Residue::C_H_DIST; // Exceptionnal distance!	    
-	this->insert (Atom (v, AtomType::aH5));
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add hydrogen " << AtomType::aH5 << " in "
-		 << *this << ": " << ex << endl;
-      }		    
-      try // H6
-      {
-	x = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aC5)).normalize ();
-	y = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aN1)).normalize ();
-	z = (x + y).normalize ();
-	v = *this->_safe_get (AtomType::aC6) + z * Residue::C_H_DIST_CYC; 
-	this->insert (Atom (v, AtomType::aH6));
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add hydrogen " << AtomType::aH6 << " in "
-		 << *this << ": " << ex << endl;
-      }	
+      if (overwrite || 0 == this->_get (AtomType::aH3))
+	try // H3
+	{
+	  x = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC2)).normalize ();
+	  y = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC4)).normalize ();
+	  z = (x + y).normalize ();
+	  v = *this->_safe_get (AtomType::aN3) + z * Residue::C_H_DIST; // Exceptionnal distance!
+	  this->insert (Atom (v, AtomType::aH3));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add hydrogen " << AtomType::aH3 << " in "
+		   << *this << ": " << ex << endl;
+	}
+      
+      if (overwrite || 0 == this->_get (AtomType::aH5))
+	try // H5
+	{
+	  x = (*this->_safe_get (AtomType::aC5) - *this->_safe_get (AtomType::aC4)).normalize ();
+	  y = (*this->_safe_get (AtomType::aC5) - *this->_safe_get (AtomType::aC6)).normalize ();
+	  z = (x + y).normalize ();
+	  v = *this->_safe_get (AtomType::aC5) + z * Residue::C_H_DIST; // Exceptionnal distance!	    
+	  this->insert (Atom (v, AtomType::aH5));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add hydrogen " << AtomType::aH5 << " in "
+		   << *this << ": " << ex << endl;
+	}
+      
+      if (overwrite || 0 == this->_get (AtomType::aH6))
+	try // H6
+	{
+	  x = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aC5)).normalize ();
+	  y = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aN1)).normalize ();
+	  z = (x + y).normalize ();
+	  v = *this->_safe_get (AtomType::aC6) + z * Residue::C_H_DIST_CYC; 
+	  this->insert (Atom (v, AtomType::aH6));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add hydrogen " << AtomType::aH6 << " in "
+		   << *this << ": " << ex << endl;
+	}	
     }
     else if (this->type->isT ())
     {
-      try // H3
-      {
-	x = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC2)).normalize ();
-	y = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC4)).normalize ();
-	z = (x + y).normalize ();
-	v = *this->_safe_get (AtomType::aN3) + z * Residue::C_H_DIST; // Exceptionnal distance! 
-	this->insert (Atom (v, AtomType::aH3));	    
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add hydrogen " << AtomType::aH3 << " in "
-		 << *this << ": " << ex << endl;
-      }		    
-      try // H6
-      {
-	x = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aC5)).normalize ();
-	y = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aN1)).normalize ();
-	z = (x + y).normalize ();
-	v = *this->_safe_get (AtomType::aC6) + z * Residue::C_H_DIST_CYC;
-	this->insert (Atom (v, AtomType::aH6));
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add hydrogen " << AtomType::aH6 << " in "
-		 << *this << ": " << ex << endl;
-      }	
-      try // 1H5M, 2H5M, 3H5M (arbitrarily placed)
-      {
-	x = (*this->_safe_get (AtomType::aC5M) - *this->_safe_get (AtomType::aC5)).normalize ();
-	y = (*this->_safe_get (AtomType::aC5) - *this->_safe_get (AtomType::aC4)).normalize ();
-	up = x.cross (y).normalize ();
-	z = x.cross (up);
+      if (overwrite || 0 == this->_get (AtomType::aH3))
+	try // H3
+	{
+	  x = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC2)).normalize ();
+	  y = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC4)).normalize ();
+	  z = (x + y).normalize ();
+	  v = *this->_safe_get (AtomType::aN3) + z * Residue::C_H_DIST; // Exceptionnal distance! 
+	  this->insert (Atom (v, AtomType::aH3));	    
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add hydrogen " << AtomType::aH3 << " in "
+		   << *this << ": " << ex << endl;
+	}
+      
+      if (overwrite || 0 == this->_get (AtomType::aH6))
+	try // H6
+	{
+	  x = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aC5)).normalize ();
+	  y = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aN1)).normalize ();
+	  z = (x + y).normalize ();
+	  v = *this->_safe_get (AtomType::aC6) + z * Residue::C_H_DIST_CYC;
+	  this->insert (Atom (v, AtomType::aH6));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add hydrogen " << AtomType::aH6 << " in "
+		   << *this << ": " << ex << endl;
+	}
+      
+      if (overwrite || 0 == this->_get (AtomType::a1H5M) || 0 == this->_get (AtomType::a2H5M) || 0 == this->_get (AtomType::a3H5M))
+	try // 1H5M, 2H5M, 3H5M (arbitrarily placed)
+	{
+	  x = (*this->_safe_get (AtomType::aC5M) - *this->_safe_get (AtomType::aC5)).normalize ();
+	  y = (*this->_safe_get (AtomType::aC5) - *this->_safe_get (AtomType::aC4)).normalize ();
+	  up = x.cross (y).normalize ();
+	  z = x.cross (up);
 	
-	v = *this->_safe_get (AtomType::aC5M) + (x + z * Residue::TAN70).normalize () * Residue::C_H_DIST;
-	this->insert (Atom (v, AtomType::a1H5M));
+	  v = *this->_safe_get (AtomType::aC5M) + (x + z * Residue::TAN70).normalize () * Residue::C_H_DIST;
+	  this->insert (Atom (v, AtomType::a1H5M));
 	
-	a = (up - z*Residue::TAN30).normalize ();
-	v = *this->_safe_get (AtomType::aC5M) + (x + a * Residue::TAN70).normalize () * Residue::C_H_DIST;
-	this->insert (Atom (v, AtomType::a2H5M));
+	  a = (up - z*Residue::TAN30).normalize ();
+	  v = *this->_safe_get (AtomType::aC5M) + (x + a * Residue::TAN70).normalize () * Residue::C_H_DIST;
+	  this->insert (Atom (v, AtomType::a2H5M));
 	    
-	b = (-up - z*Residue::TAN30).normalize ();
-	v = *this->_safe_get (AtomType::aC5M) + (x + b * Residue::TAN70).normalize () * Residue::C_H_DIST;
-	this->insert (Atom (v, AtomType::a3H5M));
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add hydrogens " << AtomType::a1H5M << ", "
-		 << AtomType::a2H5M << " and " << AtomType::a3H5M << " in "
-		 << *this << ": " << ex << endl;
-      }	      
+	  b = (-up - z*Residue::TAN30).normalize ();
+	  v = *this->_safe_get (AtomType::aC5M) + (x + b * Residue::TAN70).normalize () * Residue::C_H_DIST;
+	  this->insert (Atom (v, AtomType::a3H5M));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add hydrogens " << AtomType::a1H5M << ", "
+		   << AtomType::a2H5M << " and " << AtomType::a3H5M << " in "
+		   << *this << ": " << ex << endl;
+	}	      
     }
 
-    this->_add_ribose_hydrogens ();
+    this->_add_ribose_hydrogens (overwrite);
   }
 
 
   void
-  Residue::_add_ribose_hydrogens ()
+  Residue::_add_ribose_hydrogens (bool overwrite)
   {
     Vector3D x, y, z, up, v;
 	  
@@ -1048,13 +1140,13 @@ namespace mccore {
     const Vector3D *r3;
     const Vector3D *r4;
 	    
-    if (0 == this->_get (AtomType::aH1p))
+    if (overwrite || 0 == this->_get (AtomType::aH1p))
     {
       try
       {
 	r1 = this->_safe_get (AtomType::aC1p);
 	r2 = this->_safe_get (AtomType::aC2p);
-	r3 = (type->isPurine ()) ? this->_safe_get (AtomType::aN9) : this->_safe_get (AtomType::aN1);
+	r3 = this->_safe_get (Residue::nitrogenType19 (this->type));
 	r4 = this->_safe_get (AtomType::aO4p);
 	  
 	x = (*r1 - *r2).normalize ();
@@ -1070,7 +1162,8 @@ namespace mccore {
 		 << *this << ": " << ex << endl;
       }
     }
-    if (0 == this->_get (AtomType::aH3p))
+    
+    if (overwrite || 0 == this->_get (AtomType::aH3p))
     {
       try
       {
@@ -1092,7 +1185,8 @@ namespace mccore {
 		 << *this << ": " << ex << endl;
       }
     }
-    if (0 == this->_get (AtomType::aH4p))
+    
+    if (overwrite || 0 == this->_get (AtomType::aH4p))
     {
       try
       {
@@ -1114,7 +1208,8 @@ namespace mccore {
 		 << *this << ": " << ex << endl;
       }
     }
-    if (0 == this->_get (AtomType::a1H5p) || 0 == this->_get (AtomType::a1H5p))
+    
+    if (overwrite || 0 == this->_get (AtomType::a1H5p) || 0 == this->_get (AtomType::a2H5p))
     {
       try
       {
@@ -1146,7 +1241,7 @@ namespace mccore {
     
     if (0 == this->_get (AtomType::aO2p))
     {
-      if (0 == this->_get (AtomType::a1H2p) || 0 == this->_get (AtomType::a2H2p))
+      if (overwrite || 0 == this->_get (AtomType::a1H2p) || 0 == this->_get (AtomType::a2H2p))
       {
 	try
 	{
@@ -1174,7 +1269,7 @@ namespace mccore {
     }
     else
     {
-      if (0 == this->_get (AtomType::aH2p))
+      if (overwrite || 0 == this->_get (AtomType::aH2p))
       {
 	try
 	{
@@ -1196,7 +1291,7 @@ namespace mccore {
 		   << *this << ": " << ex << endl;
 	}
       }
-      if (0 == this->_get (AtomType::aHO2p))
+      if (overwrite || 0 == this->_get (AtomType::aHO2p))
       {
 	try
 	{
@@ -1223,9 +1318,9 @@ namespace mccore {
 
 
   void
-  Residue::addHO3p ()
+  Residue::addHO3p (bool overwrite)
   {
-    if (0 == this->_get (AtomType::aHO3p))
+    if (overwrite || 0 == this->_get (AtomType::aHO3p))
     {
       try
       {
@@ -1250,200 +1345,219 @@ namespace mccore {
 
   
   void 
-  Residue::addLonePairs () 
+  Residue::addLonePairs (bool overwrite) 
   {
     Vector3D x, y, z, up, a, b, v;
     
     if (this->type->isA ()) 
-    {	
-      try // LP1
-      {
-	x = (*this->_safe_get (AtomType::aN1) - *this->_safe_get (AtomType::aC2)).normalize ();
-	y = (*this->_safe_get (AtomType::aN1) - *this->_safe_get (AtomType::aC6)).normalize ();
-	z = (x + y).normalize ();
-	v = *this->_safe_get (AtomType::aN1) + z * Residue::N_LP_DIST;
-	this->insert (Atom (v, AtomType::aLP1));
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add lone pair " << AtomType::aLP1 << " in "
-		 << *this << ": " << ex << endl;
-      }
-      try // LP3
-      {
-	x = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC2)).normalize ();
-	y = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC4)).normalize ();
-	z = (x + y).normalize ();
-	v =*this->_safe_get (AtomType::aN3) + z * Residue::N_LP_DIST;
-	this->insert (Atom (v, AtomType::aLP3));
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add lone pair " << AtomType::aLP3 << " in "
-		 << *this << ": " << ex << endl;
-      }      
-      try // LP7
-      {
-	x = (*this->_safe_get (AtomType::aN7) - *this->_safe_get (AtomType::aC5)).normalize ();
-	y = (*this->_safe_get (AtomType::aN7) - *this->_safe_get (AtomType::aC8)).normalize ();
-	z = (x + y).normalize ();
-	v = *this->_safe_get (AtomType::aN7) + z * Residue::N_LP_DIST;
-	this->insert (Atom (v, AtomType::aLP7));
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add lone pair " << AtomType::aLP7 << " in "
-		 << *this << ": " << ex << endl;
-      }  	
+    {
+      if (overwrite || 0 == this->_get (AtomType::aLP1))
+	try // LP1
+	{
+	  x = (*this->_safe_get (AtomType::aN1) - *this->_safe_get (AtomType::aC2)).normalize ();
+	  y = (*this->_safe_get (AtomType::aN1) - *this->_safe_get (AtomType::aC6)).normalize ();
+	  z = (x + y).normalize ();
+	  v = *this->_safe_get (AtomType::aN1) + z * Residue::N_LP_DIST;
+	  this->insert (Atom (v, AtomType::aLP1));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add lone pair " << AtomType::aLP1 << " in "
+		   << *this << ": " << ex << endl;
+	}
+
+      if (overwrite || 0 == this->_get (AtomType::aLP3))
+	try // LP3
+	{
+	  x = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC2)).normalize ();
+	  y = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC4)).normalize ();
+	  z = (x + y).normalize ();
+	  v =*this->_safe_get (AtomType::aN3) + z * Residue::N_LP_DIST;
+	  this->insert (Atom (v, AtomType::aLP3));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add lone pair " << AtomType::aLP3 << " in "
+		   << *this << ": " << ex << endl;
+	}
+
+      if (overwrite || 0 == this->_get (AtomType::aLP7))
+	try // LP7
+	{
+	  x = (*this->_safe_get (AtomType::aN7) - *this->_safe_get (AtomType::aC5)).normalize ();
+	  y = (*this->_safe_get (AtomType::aN7) - *this->_safe_get (AtomType::aC8)).normalize ();
+	  z = (x + y).normalize ();
+	  v = *this->_safe_get (AtomType::aN7) + z * Residue::N_LP_DIST;
+	  this->insert (Atom (v, AtomType::aLP7));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add lone pair " << AtomType::aLP7 << " in "
+		   << *this << ": " << ex << endl;
+	}  	
     } 
     else if (this->type->isG ()) 
-    {	
-      try // LP3
-      {
-	x = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC2)).normalize ();
-	y = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC4)).normalize ();
-	z = (x + y).normalize ();
-	v = *this->_safe_get (AtomType::aN3) + z * Residue::N_LP_DIST;
-	this->insert (Atom (v, AtomType::aLP3));
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add lone pair " << AtomType::aLP3 << " in "
-		 << *this << ": " << ex << endl;
-      }	
-      try // LP7
-      {
-	x = (*this->_safe_get (AtomType::aN7) - *this->_safe_get (AtomType::aC5)).normalize ();
-	y = (*this->_safe_get (AtomType::aN7) - *this->_safe_get (AtomType::aC8)).normalize ();
-	z = (x + y).normalize ();
-	v = *this->_safe_get (AtomType::aN7) + z * Residue::N_LP_DIST;
-	this->insert (Atom (v, AtomType::aLP7));
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add lone pair " << AtomType::aLP7 << " in "
-		 << *this << ": " << ex << endl;
-      }	
-      try // 1LP6 and 2LP6
-      {
-	x = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aN1)).normalize ();
-	y = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aC5)).normalize ();
-	z = (*this->_safe_get (AtomType::aO6) - *this->_safe_get (AtomType::aC6)).normalize ();	
-	up = x.cross (y).normalize ();
-	
-	b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();	
-	v = *this->_safe_get (AtomType::aO6) + b * Residue::O_LP_DIST;
-	this->insert (Atom (v, AtomType::a1LP6));
+    {
+      if (overwrite || 0 == this->_get (AtomType::aLP3))
+	try // LP3
+	{
+	  x = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC2)).normalize ();
+	  y = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC4)).normalize ();
+	  z = (x + y).normalize ();
+	  v = *this->_safe_get (AtomType::aN3) + z * Residue::N_LP_DIST;
+	  this->insert (Atom (v, AtomType::aLP3));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add lone pair " << AtomType::aLP3 << " in "
+		   << *this << ": " << ex << endl;
+	}
 
-	a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
-	v = *this->_safe_get (AtomType::aO6) + a * Residue::O_LP_DIST;
-	this->insert (Atom (v, AtomType::a2LP6));
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add lone pairs " << AtomType::a1LP6 << " and "
-		 << AtomType::a2LP6 << " in " << *this << ": " << ex << endl;
-      }	
+      if (overwrite || 0 == this->_get (AtomType::aLP7))
+	try // LP7
+	{
+	  x = (*this->_safe_get (AtomType::aN7) - *this->_safe_get (AtomType::aC5)).normalize ();
+	  y = (*this->_safe_get (AtomType::aN7) - *this->_safe_get (AtomType::aC8)).normalize ();
+	  z = (x + y).normalize ();
+	  v = *this->_safe_get (AtomType::aN7) + z * Residue::N_LP_DIST;
+	  this->insert (Atom (v, AtomType::aLP7));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add lone pair " << AtomType::aLP7 << " in "
+		   << *this << ": " << ex << endl;
+	}
+
+      if (overwrite || 0 == this->_get (AtomType::a1LP6) || 0 == this->_get (AtomType::a2LP6))
+	try // 1LP6 and 2LP6
+	{
+	  x = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aN1)).normalize ();
+	  y = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aC5)).normalize ();
+	  z = (*this->_safe_get (AtomType::aO6) - *this->_safe_get (AtomType::aC6)).normalize ();	
+	  up = x.cross (y).normalize ();
+	
+	  b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();	
+	  v = *this->_safe_get (AtomType::aO6) + b * Residue::O_LP_DIST;
+	  this->insert (Atom (v, AtomType::a1LP6));
+
+	  a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
+	  v = *this->_safe_get (AtomType::aO6) + a * Residue::O_LP_DIST;
+	  this->insert (Atom (v, AtomType::a2LP6));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add lone pairs " << AtomType::a1LP6 << " and "
+		   << AtomType::a2LP6 << " in " << *this << ": " << ex << endl;
+	}	
     } 
     else if (this->type->isC ()) 
     {
-      try // LP3
-      {
-	x = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC2)).normalize ();
-	y = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC4)).normalize ();
-	z = (x + y).normalize ();
-	v = *this->_safe_get (AtomType::aN3) + z * Residue::N_LP_DIST;
-	this->insert (Atom (v, AtomType::aLP3));
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add lone pair " << AtomType::aLP3 << " in "
-		 << *this << ": " << ex << endl;
-      }			
-      try // 1LP2 and 2LP2
-      {
-	x = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN1)).normalize ();
-	y = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN3)).normalize ();
-	z = (*this->_safe_get (AtomType::aO2) - *this->_safe_get (AtomType::aC2)).normalize ();
-	up = x.cross (y).normalize ();
+      if (overwrite || 0 == this->_get (AtomType::aLP3))
+	try // LP3
+	{
+	  x = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC2)).normalize ();
+	  y = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC4)).normalize ();
+	  z = (x + y).normalize ();
+	  v = *this->_safe_get (AtomType::aN3) + z * Residue::N_LP_DIST;
+	  this->insert (Atom (v, AtomType::aLP3));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add lone pair " << AtomType::aLP3 << " in "
+		   << *this << ": " << ex << endl;
+	}
 
-	a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
-	v = *this->_safe_get (AtomType::aO2) + a * Residue::O_LP_DIST;
-	this->insert (Atom (v, AtomType::a1LP2));
+      if (overwrite || 0 == this->_get (AtomType::a1LP2) || 0 == this->_get (AtomType::a2LP2))
+	try // 1LP2 and 2LP2
+	{
+	  x = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN1)).normalize ();
+	  y = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN3)).normalize ();
+	  z = (*this->_safe_get (AtomType::aO2) - *this->_safe_get (AtomType::aC2)).normalize ();
+	  up = x.cross (y).normalize ();
 
-	b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();	
-	v = *this->_safe_get (AtomType::aO2) + b * Residue::O_LP_DIST;
-	this->insert (Atom (v, AtomType::a2LP2));
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add lone pairs " << AtomType::a1LP2 << " and "
-		 << AtomType::a2LP2 << " in " << *this << ": " << ex << endl;
-      }	      
+	  a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
+	  v = *this->_safe_get (AtomType::aO2) + a * Residue::O_LP_DIST;
+	  this->insert (Atom (v, AtomType::a1LP2));
+
+	  b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();	
+	  v = *this->_safe_get (AtomType::aO2) + b * Residue::O_LP_DIST;
+	  this->insert (Atom (v, AtomType::a2LP2));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add lone pairs " << AtomType::a1LP2 << " and "
+		   << AtomType::a2LP2 << " in " << *this << ": " << ex << endl;
+	}	      
     } 
     else if (this->type->isU () || this->type->isT ()) 
-    {	    
-      try // 1LP2 and 2LP2
-      {
-	x = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN1)).normalize ();
-	y = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN3)).normalize ();
-	z = (*this->_safe_get (AtomType::aO2) - *this->_safe_get (AtomType::aC2)).normalize ();
-	up = x.cross (y).normalize ();
+    {
+      if (overwrite || 0 == this->_get (AtomType::a1LP2) || 0 == this->_get (AtomType::a2LP2))
+	try // 1LP2 and 2LP2
+	{
+	  x = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN1)).normalize ();
+	  y = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN3)).normalize ();
+	  z = (*this->_safe_get (AtomType::aO2) - *this->_safe_get (AtomType::aC2)).normalize ();
+	  up = x.cross (y).normalize ();
 
-	a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
-	v = *this->_safe_get (AtomType::aO2) + a * Residue::O_LP_DIST;
-	this->insert (Atom (v, AtomType::a1LP2));
+	  a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
+	  v = *this->_safe_get (AtomType::aO2) + a * Residue::O_LP_DIST;
+	  this->insert (Atom (v, AtomType::a1LP2));
 	
-	b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();
-	v = *this->_safe_get (AtomType::aO2) + b * Residue::O_LP_DIST;
-	this->insert (Atom (v, AtomType::a2LP2));
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add lone pairs " << AtomType::a1LP2 << " and "
-		 << AtomType::a2LP2 << " in " << *this << ": " << ex << endl;
-      }	        
-      try // 1LP4 and 2LP4
-      {
-	x = (*this->_safe_get (AtomType::aC4) - *this->_safe_get (AtomType::aN3)).normalize ();
-	y = (*this->_safe_get (AtomType::aC4) - *this->_safe_get (AtomType::aC5)).normalize ();
-	z = (*this->_safe_get (AtomType::aO4) - *this->_safe_get (AtomType::aC4)).normalize ();	
-	up = x.cross (y).normalize ();
+	  b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();
+	  v = *this->_safe_get (AtomType::aO2) + b * Residue::O_LP_DIST;
+	  this->insert (Atom (v, AtomType::a2LP2));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add lone pairs " << AtomType::a1LP2 << " and "
+		   << AtomType::a2LP2 << " in " << *this << ": " << ex << endl;
+	}
+
+      if (overwrite || 0 == this->_get (AtomType::a1LP4) || 0 == this->_get (AtomType::a2LP4))
+	try // 1LP4 and 2LP4
+	{
+	  x = (*this->_safe_get (AtomType::aC4) - *this->_safe_get (AtomType::aN3)).normalize ();
+	  y = (*this->_safe_get (AtomType::aC4) - *this->_safe_get (AtomType::aC5)).normalize ();
+	  z = (*this->_safe_get (AtomType::aO4) - *this->_safe_get (AtomType::aC4)).normalize ();	
+	  up = x.cross (y).normalize ();
 	
-	b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();
-	v = *this->_safe_get (AtomType::aO4) + b * Residue::O_LP_DIST;
-	this->insert (Atom (v, AtomType::a1LP4));
+	  b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();
+	  v = *this->_safe_get (AtomType::aO4) + b * Residue::O_LP_DIST;
+	  this->insert (Atom (v, AtomType::a1LP4));
 	
-	a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
-	v = *this->_safe_get (AtomType::aO4) + a * Residue::O_LP_DIST;
-	this->insert (Atom (v, AtomType::a2LP4));
-      }
-      catch (NoSuchAtomException& ex)
-      {
-	gOut (3) << "Failed to add lone pairs " << AtomType::a1LP4 << " and "
-		 << AtomType::a2LP4 << " in " << *this << ": " << ex << endl;
-      }	       
+	  a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
+	  v = *this->_safe_get (AtomType::aO4) + a * Residue::O_LP_DIST;
+	  this->insert (Atom (v, AtomType::a2LP4));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (3) << "Failed to add lone pairs " << AtomType::a1LP4 << " and "
+		   << AtomType::a2LP4 << " in " << *this << ": " << ex << endl;
+	}	       
     }      
   }
 
   
-  void
-  Residue::setupHLP ()
-  {
-    this->removeOptionals ();
-    this->addHydrogens ();
-    this->addLonePairs ();
-  }
-  
-  
   float
   Residue::getRho () const
   {
-    Atom* c1p = this->_safe_get (AtomType::aC1p);
-    Atom* c2p = this->_safe_get (AtomType::aC2p);
-    Atom* c3p = this->_safe_get (AtomType::aC3p);
-    Atom* c4p = this->_safe_get (AtomType::aC4p);
-    Atom* o4p = this->_safe_get (AtomType::aO4p);
+    Atom *c1p, *c2p, *c3p, *c4p, *o4p;
+
+    try
+    {
+      c1p = this->_safe_get (AtomType::aC1p);
+      c2p = this->_safe_get (AtomType::aC2p);
+      c3p = this->_safe_get (AtomType::aC3p);
+      c4p = this->_safe_get (AtomType::aC4p);
+      o4p = this->_safe_get (AtomType::aO4p);
+    }
+    catch (Exception& iex)
+    {
+      IntLibException ex ("", __FILE__, __LINE__);
+      ex << "cannot evaluate pseudorotation for " << *this <<  "\n\t"
+	 << iex.what ();
+      throw ex;
+    }
     
     double nu0 = o4p->torsionAngle (*c4p, *c1p, *c2p);
     double nu1 = c1p->torsionAngle (*o4p, *c2p, *c3p);
@@ -1477,26 +1591,21 @@ namespace mccore {
   Residue::getChi () const
   {
     Atom *c24, *n19, *c1p, *o4p;
-    
-    if (this->type->isPyrimidine ())
+
+    try
     {
-      c24 = this->_safe_get (AtomType::aC2);
-      n19 = this->_safe_get (AtomType::aN1);
+      c24 = this->_safe_get (Residue::carbonType24 (this->type));
+      n19 = this->_safe_get (Residue::nitrogenType19 (this->type));
+      c1p = this->_safe_get (AtomType::aC1p);
+      o4p = this->_safe_get (AtomType::aO4p);
     }
-    else if (this->type->isPurine ())
-    {
-      c24 = this->_safe_get (AtomType::aC4);
-      n19 = this->_safe_get (AtomType::aN9);
-    }
-    else
+    catch (Exception& iex)
     {
       IntLibException ex ("", __FILE__, __LINE__);
-      ex << "cannot evaluate glycosyl torsion for " << *this;
+      ex << "cannot evaluate glycosyl torsion for " << *this <<  "\n\t"
+	 << iex.what ();
       throw ex;
     }
-
-    c1p = this->_safe_get (AtomType::aC1p);
-    o4p = this->_safe_get (AtomType::aO4p);
     
     return c1p->torsionAngle (*o4p, *n19, *c24);
   }
@@ -1666,193 +1775,232 @@ namespace mccore {
   Residue::buildRibose (const PropertyType* pucker, const PropertyType* glycosyl,
 			bool build5p, bool build3p)
   {
+    return this->buildRibose (pucker, glycosyl, build5p, build3p, this->getReferential ());
+  }
+
+  
+  float
+  Residue::buildRibose (const PropertyType* pucker, const PropertyType* glycosyl,
+			bool build5p, bool build3p,
+			const HomogeneousTransfo& ref_override)
+  {
     float p0 = Residue::getMinRho (pucker), p1 = Residue::getMaxRho (pucker);
     float g0 = Residue::getMinChi (glycosyl), g1 = Residue::getMaxChi (glycosyl);
-    this->buildRibose (p0 + (p1 - p0) / 2.0, g0 + (g1 - g0) / 2.0, 1, M_PI, build5p, build3p);
-    return 0.0;
+    return this->buildRibose (p0 + (p1 - p0) / 2.0, g0 + (g1 - g0) / 2.0,
+			      M_PI, M_PI,
+			      build5p, build3p,
+			      ref_override);
   }
 
   
   float
   Residue::buildRibose (float rho, float chi, float gamma, float beta,
-			bool build5p, bool build3p)
+			bool build5p, bool build3p,
+			const HomogeneousTransfo& ref_override)
   {
-    HomogeneousTransfo tfo;
     Atom a1, a2;
+    
     this->_build_ribose_preprocess (0, 0,
 				    build5p, build3p,
 				    a1, a2,
-				    tfo);
+				    ref_override);
     this->_build_ribose (rho, chi, gamma, beta, build5p, build3p);
-    this->_build_ribose_postprocess (tfo, build5p, build3p);
+    this->_build_ribose_postprocess (ref_override, build5p, build3p);
     this->rib_built_valid = true;
+    
     return 0.0;
   }
 
-  
+
   float
-  Residue::buildRiboseByCCM4D (const Residue* po4_5p,
-			       const Residue* po4_3p,
-			       const PropertyType* pucker,
-			       const PropertyType* glycosyl)
+  Residue::buildRiboseByEstimation (const Residue* po4_5p, const Residue* po4_3p)
   {
-    return this->buildRiboseByCCM4D
-      (po4_5p, po4_3p, s_rib_minshift, s_rib_mindrop, s_rib_shiftrate, pucker, glycosyl);
+    return this->buildRiboseByEstimation (po4_5p, po4_3p, this->getReferential ());
   }
 
+  
   float
-  Residue::buildRiboseByCCM4D (const Residue* po4_5p,
-			       const Residue* po4_3p,
-			       float minshift,
-			       float mindrop,
-			       float shiftrate,
-			       const PropertyType* pucker,
-			       const PropertyType* glycosyl)
+  Residue::buildRiboseByEstimation (const Residue* po4_5p, const Residue* po4_3p,
+				    const HomogeneousTransfo& ref_override)
   {
-    HomogeneousTransfo tfo;
     Atom anchor_O5p, anchor_O3p;
     bool build5p = po4_5p == 0;
-    bool build3p = po4_3p == 0;
 
-    if (build5p && build3p)
+    float def_gamma = M_PI;
+    float def_beta = M_PI;
+    float erho1, erho2;
+    float x, z, xz_len;
+    float anchor_yrot, built_yrot;
+    float value1 = 0, value2 = 0, final_value;
+    //HomogeneousTransfo rotation;
+    
+    if (po4_3p == 0)
     {
       IntLibException ex ("", __FILE__, __LINE__);
-      ex << "needs at least one phosphate to build ribose for " << *this;
+      ex << "3' phosphate is mandatory to estimate ribose for " << *this;
       throw ex;
     }
+
+    /** preprocessing **/
     
     this->_build_ribose_preprocess (po4_5p, po4_3p,
-				    build5p, build3p,
+				    build5p, false,
 				    anchor_O5p, anchor_O3p,
-				    tfo);
-    
-    // [0] -> rho
-    // [1] -> chi
-    // [3] -> gamma
-    // [4] -> beta
-    
-    int i;
-    float x[4], new_x[4];
-    float p_min[4], p_max[4], p_range[4], p_shift[4];
-    float eval_x, eval_new_x;
-    bool not_shifted;
-
-    if (pucker)
-    {
-      p_min[0] = Residue::getMinRho (pucker);
-      p_max[0] = Residue::getMaxRho (pucker);
-    }
-    else
-    {
-      p_min[0] = 0.0;
-      p_max[0] = s_2xpi;
-    }
-
-    if (glycosyl)
-    {
-      p_min[1] = Residue::getMinChi (pucker);
-      p_max[1] = Residue::getMaxChi (pucker);
-    }
-    else
-    {
-      p_min[1] = 0.0;
-      p_max[1] = s_2xpi;
-    }
-    
-    p_min[2] = p_min[3] = 0.0;
-    p_max[2] = p_max[3] = 360.0;
-
-    for (i = 0; i < 4; ++i)
-    {
-      p_range[i] = p_max[i] - p_min[i];
-      p_shift[i] = 0.25 * p_range[i];
-      new_x[i] = x[i] = p_min[i] + 0.5 * p_range[i];
-    }
-
-    rib_built_count = 0;
-    this->_build_ribose (x[0], x[1], x[2], x[3], build5p, build3p);
-    eval_x = this->_evaluate_ribose (anchor_O5p, anchor_O3p, build5p, build3p);
-
-    while (p_shift[0] > minshift ||
-	   p_shift[1] > minshift ||
-	   p_shift[2] > minshift ||
-	   p_shift[3] > minshift)
-    {
-      not_shifted = true;
-
-      for (i = 0; i < 4; ++i)
-      {
-	new_x[i] = x[i] + p_shift[i];
-	if (new_x[i] > p_max[i])
-	  new_x[i] = p_max[i];
-
-	this->_build_ribose (x[0], x[1], x[2], x[3], build5p, build3p);
-	eval_new_x = this->_evaluate_ribose (anchor_O5p, anchor_O3p, build5p, build3p);
-	    
-	if (eval_new_x < eval_x - mindrop)
-	{
-	  x[i] = new_x[i];
-	  eval_x = eval_new_x;
-	  not_shifted = false;
-	}
-	else
-	{
-	  new_x[i] = x[i] - p_shift[i];
-	  if (new_x[i] < p_min[i])
-	    new_x[i] = p_min[i];
-
-	  this->_build_ribose (x[0], x[1], x[2], x[3], build5p, build3p);
-	  eval_new_x = this->_evaluate_ribose (anchor_O5p, anchor_O3p, build5p, build3p);
-
-	  if (eval_new_x < eval_x - mindrop)
-	  {
-	    x[i] = new_x[i];
-	    eval_x = eval_new_x;
-	    not_shifted = false;
-	  }
-	  else
-	    new_x[i] = x[i];
-	}
-      }
-      if (not_shifted)
-      {
-	for (i = 0; i < 4; ++i)
-	  p_shift[i] *= shiftrate;
-      }
-    }
-
-    this->_build_ribose (x[0], x[1], x[2], x[3], build5p, build3p);
-    eval_x = this->_evaluate_ribose (anchor_O5p, anchor_O3p, build5p, build3p);
-
-    this->_build_ribose_postprocess (tfo, build5p, build3p);
+				    ref_override);
     this->rib_built_valid = true;
+    this->rib_built_count = 0;
     
-    return sqrt (eval_x / 2.0);
+    // dummy O3'
+    // O3' must be built for estimation but 3' branch is always constrained
+    Atom dummy_O3p;
+    this->rib_O3p = &dummy_O3p;
+
+    
+    /** pseudorotation estimation  **/
+    
+    // O3' XZ plane projection vector length
+    x = anchor_O3p.getX ();
+    z = anchor_O3p.getZ ();
+    xz_len = sqrt (x*x + z*z);
+
+    // rho estimation with respect to O3'
+    erho1 = (xz_len - Residue::s_cosf_vshift) / Residue::s_cosf_amplitude;
+    
+    // +/- 0.2 tolerance on cos amplitude
+    if (erho1 < -1.2 || erho1 > 1.2)
+    {
+      this->rib_built_valid = false;
+      return MAXFLOAT;
+    }
+    if (erho1 < -1)
+      erho1 = -1;
+    else if (erho1 > 1)
+      erho1 = 1;
+
+    erho1 = acos (erho1) - Residue::s_cosf_phase;
+
+    // get mirror rho
+    if  (erho1 > 0)
+      erho2 = Residue::s_2xpi - 2 * Residue::s_cosf_phase - erho1;
+    else
+    {
+      erho1 = Residue::s_2xpi + erho1;
+      erho2 = Residue::s_4xpi - Residue::s_cosf_phase - erho1;
+    }
+
+    /** glycosyl torsion estimation **/
+
+    // Y rotation from X axis to anchored O3'
+    anchor_yrot = z < 0 ? acos (x / xz_len) : Residue::s_2xpi - acos (x / xz_len);
+    
+    // build with first rho. Must build O3'! 
+    this->_build_ribose (erho1, 0, def_gamma, def_beta, build5p, true);
+  
+    // Y rotation from X axis to built O3'
+    x = this->rib_O3p->getX ();
+    z = this->rib_O3p->getZ ();
+    xz_len = sqrt (x*x + z*z);
+    built_yrot = z < 0 ? acos (x / xz_len) : Residue::s_2xpi - acos (x / xz_len);
+
+    // compute estimated chi and apply Y rotation
+    //this->_transform_ribose (rotation.rotate (0.0, anchor_yrot - built_yrot, 0.0), build5p, false);
+    this->_transform_ribose (HomogeneousTransfo::rotationY (anchor_yrot - built_yrot), build5p, false);
+    value1 = this->_evaluate_ribose (anchor_O5p, anchor_O3p, build5p, false);
+
+    // back up this ribose
+    vector< Atom > saved_rib;
+    saved_rib.push_back (*this->rib_C1p);
+    saved_rib.push_back (*this->rib_C2p);
+    saved_rib.push_back (*this->rib_C3p);
+    saved_rib.push_back (*this->rib_C4p);
+    saved_rib.push_back (*this->rib_C5p);
+    if (this->rib_O2p)
+      saved_rib.push_back (*this->rib_O2p);
+    saved_rib.push_back (*this->rib_O4p);
+    if (build5p)
+    {
+      saved_rib.push_back (*this->rib_O5p);
+      saved_rib.push_back (*this->rib_O1P);
+      saved_rib.push_back (*this->rib_O2P);
+      saved_rib.push_back (*this->rib_P);
+    }
+    
+    // build with second rho. Must build O3'!
+    this->_build_ribose (erho2, 0, def_gamma, def_beta, build5p, true);
+    
+    // Y rotation from X axis to built O3'
+    x = this->rib_O3p->getX ();
+    z = this->rib_O3p->getZ ();
+    xz_len = sqrt (x*x + z*z);
+    built_yrot = z < 0 ? acos (x / xz_len) : Residue::s_2xpi - acos (x / xz_len);
+  
+    // compute estimated chi and apply Y rotation
+    //this->_transform_ribose (rotation.rotate (0.0, anchor_yrot - built_yrot, 0.0), build5p, false);
+    this->_transform_ribose (HomogeneousTransfo::rotationY (anchor_yrot - built_yrot), build5p, false);
+    value2 = this->_evaluate_ribose (anchor_O5p, anchor_O3p, build5p, false);
+    
+    if (value1 < value2)
+    {
+      // set as first estimation: retrieve back upped ribose.
+      int i = -1;
+      *this->rib_C1p = saved_rib[++i];
+      *this->rib_C2p = saved_rib[++i];
+      *this->rib_C3p = saved_rib[++i];
+      *this->rib_C4p = saved_rib[++i];
+      *this->rib_C5p = saved_rib[++i];
+      if (this->rib_O2p)
+	*this->rib_O2p = saved_rib[++i];
+      *this->rib_O4p = saved_rib[++i];
+      if (build5p)
+      {
+	*this->rib_O5p = saved_rib[++i];
+	*this->rib_O1P = saved_rib[++i];
+	*this->rib_O2P = saved_rib[++i];	
+	*this->rib_P = saved_rib[++i];
+      }
+      final_value = value1;
+    }
+    
+    // set as second estimation: keep current ribose.
+    final_value = value2;
+    this->_build_ribose_postprocess (ref_override, build5p, false);
+    this->rib_O3p = 0;
+    
+    return sqrt (final_value / 2.0);
   }
 
   
   float
-  Residue::buildRiboseByCCM2D (const Residue* po4_5p,
-			       const Residue* po4_3p,
-			       const PropertyType* pucker,
-			       const PropertyType* glycosyl)
+  Residue::buildRiboseByCCM (const Residue* po4_5p, const Residue* po4_3p,
+			     const PropertyType* pucker, const PropertyType* glycosyl)
   {
-    return this->buildRiboseByCCM2D
-      (po4_5p, po4_3p, s_rib_minshift, s_rib_mindrop, s_rib_shiftrate, pucker, glycosyl);
+    return this->buildRiboseByCCM
+      (po4_5p, po4_3p,
+       this->getReferential (),
+       Residue::s_rib_minshift, Residue::s_rib_mindrop, Residue::s_rib_shiftrate,
+       pucker, glycosyl);
   }
 
 
+  float
+  Residue::buildRiboseByCCM (const Residue* po4_5p, const Residue* po4_3p,
+			     const HomogeneousTransfo& ref_override,
+			     const PropertyType* pucker, const PropertyType* glycosyl)
+  {
+    return this->buildRiboseByCCM
+      (po4_5p, po4_3p,
+       ref_override,
+       Residue::s_rib_minshift, Residue::s_rib_mindrop, Residue::s_rib_shiftrate,
+       pucker, glycosyl);
+  }
+
   
   float
-  Residue::buildRiboseByCCM2D (const Residue* po4_5p,
-			       const Residue* po4_3p,
-			       float minshift,
-			       float mindrop,
-			       float shiftrate,
-			       const PropertyType* pucker,
-			       const PropertyType* glycosyl)
+  Residue::buildRiboseByCCM (const Residue* po4_5p, const Residue* po4_3p,
+			     const HomogeneousTransfo& ref_override,
+			     float minshift, float mindrop, float shiftrate,
+			     const PropertyType* pucker, const PropertyType* glycosyl)
   {
-    HomogeneousTransfo tfo;
     Atom anchor_O5p, anchor_O3p;
     bool build5p = po4_5p == 0;
     bool build3p = po4_3p == 0;
@@ -1867,7 +2015,7 @@ namespace mccore {
     this->_build_ribose_preprocess (po4_5p, po4_3p,
 				    build5p, build3p,
 				    anchor_O5p, anchor_O3p,
-				    tfo);
+				    ref_override);
 
     // [0] -> rho
     // [1] -> chi
@@ -1876,30 +2024,30 @@ namespace mccore {
     float x[2], new_x[2];
     float p_min[2], p_max[2], p_range[2], p_shift[2];
     float eval_x, eval_new_x;
-    float def_gamma = RAD(55.0);
+    float def_gamma = M_PI;
     float def_beta = M_PI;
     bool not_shifted;
 
-    if (pucker)
-    {
-      p_min[0] = Residue::getMinRho (pucker);
-      p_max[0] = Residue::getMaxRho (pucker);
-    }
-    else
+    if (PropertyType::pNull == pucker || 0 == pucker)
     {
       p_min[0] = 0.0;
       p_max[0] = s_2xpi;
     }
-
-    if (glycosyl)
-    {
-      p_min[1] = Residue::getMinChi (pucker);
-      p_max[1] = Residue::getMaxChi (pucker);
-    }
     else
+    {
+      p_min[0] = Residue::getMinRho (pucker);
+      p_max[0] = Residue::getMaxRho (pucker);
+    }
+
+    if (PropertyType::pNull == glycosyl || 0 == glycosyl)
     {
       p_min[1] = 0.0;
       p_max[1] = s_2xpi;
+    }
+    else
+    {
+      p_min[1] = Residue::getMinChi (pucker);
+      p_max[1] = Residue::getMaxChi (pucker);
     }
     
     for (i = 0; i < 2; ++i)
@@ -1961,198 +2109,58 @@ namespace mccore {
     this->_build_ribose (x[0], x[1], def_gamma, def_beta, build5p, build3p);
     eval_x = this->_evaluate_ribose (anchor_O5p, anchor_O3p, build5p, build3p);
 
-    this->_build_ribose_postprocess (tfo, build5p, build3p);
+    this->_build_ribose_postprocess (ref_override, build5p, build3p);
     this->rib_built_valid = true;
     
     return sqrt (eval_x / 2.0);
   }
 
-  
-  float
-  Residue::buildRiboseByEstimation (const Residue* po4_5p, const Residue* po4_3p)
+
+  const AtomType*
+  Residue::nitrogenType19 (const ResidueType* rtype)
   {
-    HomogeneousTransfo tfo;
-    Atom anchor_O5p, anchor_O3p;
-    bool build5p = po4_5p == 0;
-
-    float erho1, erho2;
-    float x, z, xz_len;
-    float anchor_yrot, built_yrot;
-    float value1 = 0, value2 = 0, final_value;
-    HomogeneousTransfo rotation;
-    
-    if (po4_3p == 0)
+    if (rtype)
     {
-      IntLibException ex ("", __FILE__, __LINE__);
-      ex << "3' phosphate is mandatory to estimate ribose for " << *this;
-      throw ex;
+      if (rtype->isPurine ())     return AtomType::aN9;
+      if (rtype->isPyrimidine ()) return AtomType::aN1;
     }
-
-    /** preprocessing **/
-    
-    this->_build_ribose_preprocess (po4_5p, po4_3p,
-				    build5p, false,
-				    anchor_O5p, anchor_O3p,
-				    tfo);
-    this->rib_built_valid = true;
-    this->rib_built_count = 0;
-    
-    // dummy O3'
-    // O3' must be built for estimation but 3' branch is always constrained
-    Atom dummy_O3p;
-    this->rib_O3p = &dummy_O3p;
-
-    
-    /** pseudorotation estimation  **/
-    
-    // O3' XZ plane projection vector length
-    x = anchor_O3p.getX ();
-    z = anchor_O3p.getZ ();
-    xz_len = sqrt (x*x + z*z);
-
-    // rho estimation with respect to O3'
-    erho1 = (xz_len - Residue::s_cosf_vshift) / Residue::s_cosf_amplitude;
-    
-    // +/- 0.2 tolerance on cos amplitude
-    if (erho1 < -1.2 || erho1 > 1.2)
-    {
-      this->rib_built_valid = false;
-      return MAXFLOAT;
-    }
-    if (erho1 < -1)
-      erho1 = -1;
-    else if (erho1 > 1)
-      erho1 = 1;
-
-    erho1 = acos (erho1) - Residue::s_cosf_phase;
-
-    // get mirror rho
-    if  (erho1 > 0)
-      erho2 = Residue::s_2xpi - 2 * Residue::s_cosf_phase - erho1;
-    else
-    {
-      erho1 = Residue::s_2xpi + erho1;
-      erho2 = Residue::s_4xpi - Residue::s_cosf_phase - erho1;
-    }
-
-    /** glycosyl torsion estimation **/
-
-    // Y rotation from X axis to anchored O3'
-    anchor_yrot = z < 0 ? acos (x / xz_len) : Residue::s_2xpi - acos (x / xz_len);
-    
-    // build with first rho. Must build O3'! 
-    this->_build_ribose (erho1, 0, 1, M_PI, build5p, true);
-  
-    // Y rotation from X axis to built O3'
-    x = this->rib_O3p->getX ();
-    z = this->rib_O3p->getZ ();
-    xz_len = sqrt (x*x + z*z);
-    built_yrot = z < 0 ? acos (x / xz_len) : Residue::s_2xpi - acos (x / xz_len);
-
-    // compute estimated chi and apply Y rotation
-    this->_transform_ribose (rotation.rotate (0.0, anchor_yrot - built_yrot, 0.0), build5p, false);
-    value1 = this->_evaluate_ribose (anchor_O5p, anchor_O3p, build5p, false);
-
-    // back up this ribose
-    vector< Atom > saved_rib;
-    saved_rib.push_back (*this->rib_C1p);
-    saved_rib.push_back (*this->rib_C2p);
-    saved_rib.push_back (*this->rib_C3p);
-    saved_rib.push_back (*this->rib_C4p);
-    saved_rib.push_back (*this->rib_C5p);
-    if (this->rib_O2p)
-      saved_rib.push_back (*this->rib_O2p);
-    saved_rib.push_back (*this->rib_O4p);
-    if (build5p)
-    {
-      saved_rib.push_back (*this->rib_O5p);
-      saved_rib.push_back (*this->rib_P);
-    }
-    
-    // build with second rho. Must build O3'!
-    this->_build_ribose (erho2, 0, 1, M_PI, build5p, true);
-    
-    // Y rotation from X axis to built O3'
-    x = this->rib_O3p->getX ();
-    z = this->rib_O3p->getZ ();
-    xz_len = sqrt (x*x + z*z);
-    built_yrot = z < 0 ? acos (x / xz_len) : Residue::s_2xpi - acos (x / xz_len);
-  
-    // compute estimated chi and apply Y rotation
-    this->_transform_ribose (rotation.rotate (0.0, anchor_yrot - built_yrot, 0.0), build5p, false);
-    value2 = this->_evaluate_ribose (anchor_O5p, anchor_O3p, build5p, false);
-    
-    if (value1 < value2)
-    {
-      // set as first estimation: retrieve back upped ribose.
-      int i = -1;
-      *this->rib_C1p = saved_rib[++i];
-      *this->rib_C2p = saved_rib[++i];
-      *this->rib_C3p = saved_rib[++i];
-      *this->rib_C4p = saved_rib[++i];
-      *this->rib_C5p = saved_rib[++i];
-      if (this->rib_O2p)
-	*this->rib_O2p = saved_rib[++i];
-      *this->rib_O4p = saved_rib[++i];
-      if (build5p)
-      {
-	*this->rib_O5p = saved_rib[++i];
-	*this->rib_P = saved_rib[++i];
-      }
-      final_value = value1;
-    }
-    
-    // set as second estimation: keep current ribose.
-    final_value = value2;
-    this->_build_ribose_postprocess (tfo, build5p, false);
-    this->rib_O3p = 0;
-    
-    return sqrt (final_value / 2.0);
+    IntLibException ex ("", __FILE__, __LINE__);
+    ex << "No terminus nitrogen known for residue type \"" << rtype << "\".";
+    throw ex;
+    return 0;
   }
 
 
-  Residue*
-  Residue::createPhosphate5p (const Residue& reference,
-			      const ResidueFactoryMethod* fm)
+  const AtomType*
+  Residue::carbonType24 (const ResidueType* rtype)
   {
-    Vector3D phos_v, oxy_v, u, v;
-    Residue::const_iterator phos_it, oxy_it;
-    
-    Vector3D rib_phos_v = *reference._safe_get (AtomType::aP);
-    Vector3D rib_oxy_v  = *reference._safe_get (AtomType::aO5p);
-
-    ExtendedResidueFM def_fm;
-    if (fm == 0) fm = &def_fm;
-    Residue* po4 = fm->createResidue ();
-    
-    po4->setType (ResidueType::rPhosphate);
-    po4->setResId (ResId ("p0"));
-    po4->setTheoretical ();
-    po4->setReferential (HomogeneousTransfo::identity);
-      
-    phos_it = po4->find (AtomType::aP);
-    oxy_it = po4->find (AtomType::aO5p);
-    phos_v = *phos_it;
-  
-    po4->transform (HomogeneousTransfo::translation (rib_phos_v - phos_v));
-    
-    oxy_v = *oxy_it;
-
-    u = oxy_v - rib_phos_v;
-    v = rib_oxy_v - rib_phos_v;
-
-    po4->transform
-      (HomogeneousTransfo::translation (rib_phos_v) *
-       
-       HomogeneousTransfo::rotation
-       ((u.cross (v)).normalize (), rib_phos_v.angle (oxy_v, rib_oxy_v)) *
-       
-       HomogeneousTransfo::translation (rib_phos_v * -1));
-
-    return po4;
+    if (rtype)
+    {
+      if (rtype->isPurine ())     return AtomType::aC4;
+      if (rtype->isPyrimidine ()) return AtomType::aC2;
+    }
+    IntLibException ex ("", __FILE__, __LINE__);
+    ex << "No terminus carbon known for residue type \"" << rtype << "\".";
+    throw ex;
+    return 0;
   }
 
 
+  const AtomType*
+  Residue::carbonType68 (const ResidueType* rtype)
+  {
+    if (rtype)
+    {
+      if (rtype->isPurine ())     return AtomType::aC8;
+      if (rtype->isPyrimidine ()) return AtomType::aC6;
+    }
+    IntLibException ex ("", __FILE__, __LINE__);
+    ex << "No terminus carbon known for residue type \"" << rtype << "\".";
+    throw ex;
+    return 0;
+  }
+
+  
   const PropertyType*
   Residue::getPuckerType (float rho)
   {
@@ -2429,7 +2437,7 @@ namespace mccore {
 				     bool build3p,
 				     Atom& o5p,
 				     Atom& o3p,
-				     HomogeneousTransfo& referential)
+				     const HomogeneousTransfo& referential)
   {
     // set reference to ribose's atoms
     
@@ -2463,6 +2471,8 @@ namespace mccore {
       {
 	this->rib_O5p = _get_or_create (AtomType::aO5p);
 	this->rib_P   = _get_or_create (AtomType::aP);
+	this->rib_O1P   = _get_or_create (AtomType::aO1P);
+	this->rib_O2P   = _get_or_create (AtomType::aO2P);
       }
 	
       if (build3p)
@@ -2471,12 +2481,9 @@ namespace mccore {
       this->rib_dirty_ref = false;
     }
 
-    // save referential and align anchor atoms
+    // align anchor atoms
     
-    referential = getReferential ();
-    HomogeneousTransfo inv (referential.invert ());
-    
-    // fetch phosphates' anchor atoms
+    HomogeneousTransfo inv = referential.invert ();
     
     if (po4_5p)
     {
@@ -2509,6 +2516,8 @@ namespace mccore {
     if (build5p)
     {
       this->rib_O5p->transform (tfo);
+      this->rib_O1P->transform (tfo);
+      this->rib_O2P->transform (tfo);
       this->rib_P->transform (tfo);
     }
 
@@ -2521,9 +2530,6 @@ namespace mccore {
   Residue::_build_ribose (float rho, float chi, float gamma, float beta,
 			  bool build5p, bool build3p)
   {
-    // use explicit method for now...
-    //_build_ribose_explicitly (rho, chi, gamma, beta, build5p, build3p);
-
     ++this->rib_built_count;
     
     // nu0 = 37.68 * cos (rho + 3 * 144)
@@ -2747,6 +2753,22 @@ namespace mccore {
 
       this->rib_P->set (0.0, 0.0, 0.0);
       this->rib_P->transform (branch5p * tfo);
+
+      // O1P and O2P position from P (arbitrary rotation)
+      rib_O1P->set (0.0, 0.0, 0.0);
+      rib_O1P->transform
+	( branch5p *
+	  tfo *
+	  HomogeneousTransfo::rotationZ (RAD(72.1)) *
+	  HomogeneousTransfo::translation (Vector3D (0.0, -1.486, 0.0)) );
+
+      rib_O2P->set (0.0, 0.0, 0.0);
+      rib_O2P->transform
+	( branch5p *
+	  tfo *
+	  HomogeneousTransfo::rotationY (RAD(-119.47)) *
+	  HomogeneousTransfo::rotationZ (RAD(71.5)) *
+	  HomogeneousTransfo::translation (Vector3D (0.0, -1.483, 0.0)) );
     }
 
     if (build3p)
@@ -2868,13 +2890,30 @@ namespace mccore {
       rib_O5p->transform (branch5p * o5p);
 
       // P from O5' according to beta (aligned on furanose for 5' branch)
+      HomogeneousTransfo p =
+	o5p *
+	HomogeneousTransfo::rotationY (-beta) *
+	HomogeneousTransfo::rotationZ (RAD(59.066)) *
+	HomogeneousTransfo::translation (Vector3D (0.0, -1.593, 0.0));
       rib_P->set (0.0, 0.0, 0.0);
-      rib_P->transform
+      rib_P->transform (branch5p * p);
+      
+      // O1P and O2P position from P (arbitrary rotation)
+      rib_O1P->set (0.0, 0.0, 0.0);
+      rib_O1P->transform
 	( branch5p *
-	  o5p *
-	  HomogeneousTransfo::rotationY (-beta) *
-	  HomogeneousTransfo::rotationZ (RAD(59.066)) *
-	  HomogeneousTransfo::translation (Vector3D (0.0, -1.593, 0.0)) );
+	  p *
+	  HomogeneousTransfo::rotationZ (RAD(72.1)) *
+	  HomogeneousTransfo::translation (Vector3D (0.0, -1.486, 0.0)) );
+
+      rib_O2P->set (0.0, 0.0, 0.0);
+      rib_O2P->transform
+	( branch5p *
+	  p *
+	  HomogeneousTransfo::rotationY (RAD(-119.47)) *
+	  HomogeneousTransfo::rotationZ (RAD(71.5)) *
+	  HomogeneousTransfo::translation (Vector3D (0.0, -1.483, 0.0)) );
+	  
     }
 
     if (build3p)
@@ -2905,7 +2944,7 @@ namespace mccore {
   {
     // place built ribose's atoms back in referential
     this->_transform_ribose (referential, build5p, build3p);
-    this->_add_ribose_hydrogens ();
+    this->_add_ribose_hydrogens (true);
   }
   
   // I/O -----------------------------------------------------------------------
@@ -3089,7 +3128,7 @@ namespace mccore {
   Residue::ResidueIterator::operator++ ()
   {
     AtomMap::iterator last = res->atomIndex.end ();
-
+    
     while (pos != last)
       if (++pos == last || (*filter) (res->_get (pos->second)))
 	break;

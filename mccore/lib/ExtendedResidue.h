@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 // 
 //  This file is part of mccore.
 //  
@@ -56,7 +56,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: ExtendedResidue.h,v 1.10 2004-07-12 19:34:14 thibaup Exp $
+   * @version $Id: ExtendedResidue.h,v 1.11 2004-10-08 13:06:48 thibaup Exp $
    */
   class ExtendedResidue : public Residue
   {
@@ -199,21 +199,14 @@ namespace mccore {
      * @param type the atom type to remove.
      * @return the iterator to the atom that follows the one that was erased.
      */
-    virtual iterator erase (const AtomType *type);
+    virtual iterator erase (const AtomType* atype);
     
     /**
      * Erases the atom at position pos.
-     * @param pos the atom position.
+     * @param rit the residue iterator wrapping the atom position.
      * @return the iterator to the atom that follows the one that was erased.
      */
-    iterator erase (const iterator pos);
-
-    /**
-     * Erases the atom at position pos.
-     * @param pos the atom position.
-     * @return the iterator to the atom that follows the one that was erased.
-     */
-    iterator erase (const const_iterator pos);
+    virtual iterator erase (const iterator& rit);
 
     /**
      * Returns the number of atoms in the residue.

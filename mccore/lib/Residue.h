@@ -3,8 +3,8 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.23 $
-// $Id: Residue.h,v 1.23 2004-09-16 13:46:50 thibaup Exp $
+// $Revision: 1.24 $
+// $Id: Residue.h,v 1.24 2004-10-08 13:06:58 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -63,7 +63,7 @@ namespace mccore
    * the atom types.
    *
    * @author Patrick Gendron <gendrop@iro.umontreal.ca>
-   * @version $Id: Residue.h,v 1.23 2004-09-16 13:46:50 thibaup Exp $
+   * @version $Id: Residue.h,v 1.24 2004-10-08 13:06:58 thibaup Exp $
    */
   class Residue
   {
@@ -79,7 +79,7 @@ namespace mccore
     /**
      * Definition of the sorted mapping.
      */
-    typedef map< const AtomType*, size_type, AtomType::less > AtomMap;
+    typedef map< const AtomType*, size_type > AtomMap;
     
   protected:
 
@@ -106,7 +106,7 @@ namespace mccore
     /**
      * Ribose's atom aliases used in the theoretical building method.
      */
-    Atom *rib_C1p, *rib_C2p, *rib_C3p, *rib_C4p, *rib_C5p, *rib_O2p, *rib_O3p, *rib_O4p, *rib_O5p, *rib_P;
+    Atom *rib_C1p, *rib_C2p, *rib_C3p, *rib_C4p, *rib_C5p, *rib_O2p, *rib_O3p, *rib_O4p, *rib_O5p, *rib_P, *rib_O1P, *rib_O2P;
 
     /**
      * Flag asserting ribose's atoms pointer validity. Any methods modifying the atoms' container should raise this flag.
@@ -185,6 +185,9 @@ namespace mccore
      */
     class ResidueIterator
     {
+      friend class Residue;
+      friend class ExtendedResidue;
+      
     public:
       
       typedef random_access_iterator_tag iterator_category;
@@ -338,7 +341,8 @@ namespace mccore
        * @param coord The atom's new coordinates.
        */
       void setLocal (const Vector3D& coord) { res->_insert_local (coord, pos); }
-      
+
+
     };
     friend class Residue::ResidueIterator;
 
@@ -355,6 +359,9 @@ namespace mccore
      */
     class ResidueConstIterator
     {
+      friend class Residue;
+      friend class ExtendedResidue;
+      
     public:
 
       typedef random_access_iterator_tag iterator_category;
@@ -514,7 +521,7 @@ namespace mccore
        * @return the residue pointed by the iterator.
        */
       operator const Residue* () const { return res; }
-    
+
     };
     
     friend class Residue::ResidueConstIterator;
@@ -752,21 +759,14 @@ namespace mccore
      * @param type the atom type to remove.
      * @return the iterator to the atom that follows the one that was erased.
      */
-    virtual iterator erase (const AtomType *type);
+    virtual iterator erase (const AtomType* atype);
     
     /**
      * Erases the atom at position pos.
-     * @param pos the atom position.
+     * @param rit the residue iterator wrapping the atom position.
      * @return the iterator to the atom that follows the one that was erased.
      */
-    iterator erase (const iterator pos);
-
-    /**
-     * Erases the atom at position pos.
-     * @param pos the atom position.
-     * @return the iterator to the atom that follows the one that was erased.
-     */
-    iterator erase (const const_iterator pos);
+    virtual iterator erase (const iterator& rit);
 
     /**
      * Returns the number of atoms in the residue.
@@ -804,23 +804,18 @@ namespace mccore
      * deviation in their positions.  Backbone hydrogens will only be
      * placed if they do not already exist.
      */
-    virtual void addHydrogens ();
+    virtual void addHydrogens (bool overwrite = true);
 
     /**
      * Adds the HO3' hydrogen. Mandatory if the residue ends a strand.
      */
-    void addHO3p ();
+    void addHO3p (bool overwrite = true);
 
     /**
      * Adds the lone pairs to the residue.
      */
-    virtual void addLonePairs ();
+    virtual void addLonePairs (bool overwrite = true);
 
-    /**
-     * Calls removeOptionals, addHydrogens and addLonePairs.
-     */
-    void setupHLP ();
-    
     /**
      * Determines the pucker pseudorotation (rho) of the NucleicAcid backbone.
      * @return The pseudorotation value (rad).
@@ -888,8 +883,13 @@ namespace mccore
      * @param build3p Flag to enable 3' branch construction (O3' atom).
      * @return Zero value.
      */
+
     float buildRibose (const PropertyType* pucker, const PropertyType* glycosyl,
 		       bool build5p, bool build3p);
+    
+    float buildRibose (const PropertyType* pucker, const PropertyType* glycosyl,
+		       bool build5p, bool build3p,
+		       const HomogeneousTransfo& ref_override);
 
     /**
      * Builds a theoretical ribose onto a nucleic acid's nitrogen base.
@@ -905,7 +905,8 @@ namespace mccore
      */
     float buildRibose (float rho, float chi,
 		       float gamma, float beta,
-		       bool build5p, bool build3p);
+		       bool build5p, bool build3p,
+		       const HomogeneousTransfo& ref_override);
 
     /**
      * Builds a theoretical ribose onto a nucleic acid's nitrogen base that fits the global
@@ -921,7 +922,12 @@ namespace mccore
      * @return Rms deviation for the implicit C5'-O5' and C3'-O3' bond lengths (Angstroms).
      * @exception LibException is thrown if 3' phosphate is unspecified.
      */
-    float buildRiboseByEstimation (const Residue* po4_5p, const Residue* po4_3p);
+    float buildRiboseByEstimation (const Residue* po4_5p,
+				   const Residue* po4_3p);
+
+    float buildRiboseByEstimation (const Residue* po4_5p,
+				   const Residue* po4_3p,
+				   const HomogeneousTransfo& ref_override);
 
     /**
      * Builds a theoretical ribose onto a nucleic acid's nitrogen base that fits the global
@@ -940,10 +946,12 @@ namespace mccore
      * @return Rms deviation for the implicit C5'-O5' and C3'-O3' bond lengths (Angstroms).
      * @exception LibException is thrown if both phosphates are unspecified.
      */
-    float buildRiboseByCCM2D (const Residue* po4_5p,
-			      const Residue* po4_3p,
-			      const PropertyType* pucker = 0,
-			      const PropertyType* glycosyl = 0);
+    float buildRiboseByCCM (const Residue* po4_5p, const Residue* po4_3p,
+			    const PropertyType* pucker = 0, const PropertyType* glycosyl = 0);
+
+    float buildRiboseByCCM (const Residue* po4_5p, const Residue* po4_3p,
+			    const HomogeneousTransfo& ref_override,
+			    const PropertyType* pucker = 0, const PropertyType* glycosyl = 0);
     
     /**
      * Builds a theoretical ribose onto a nucleic acid's nitrogen base that fits the global
@@ -965,75 +973,41 @@ namespace mccore
      * @return Rms deviation for the implicit C5'-O5' and C3'-O3' bond lengths (Angstroms).
      * @exception LibException is thrown if both phosphates are unspecified.
      */
-    float buildRiboseByCCM2D (const Residue* po4_5p,
-			      const Residue* po4_3p,
-			      float minshift,
-			      float mindrop,
-			      float shiftrate,
-			      const PropertyType* pucker = 0,
-			      const PropertyType* glycosyl = 0);
+    float buildRiboseByCCM (const Residue* po4_5p, const Residue* po4_3p,
+			    const HomogeneousTransfo& ref_override,
+			    float minshift, float mindrop, float shiftrate,			    
+			    const PropertyType* pucker = 0, const PropertyType* glycosyl = 0);
 
     /**
-     * Builds a theoretical ribose onto a nucleic acid's nitrogen base that fits the global
-     * position of two adjacent phosphates (toward 5' and 3'). A constant step cyclic
-     * coordinates method solves the optimization problem in the 4D torsion space created
-     * by rho, chi, gamma and beta. Both pucker and glycosyl types can be forced, otherwise
-     * the best geometrical fit is favored. Fitting is quantified by the rms deviation for
-     * the implicit C5'-O5' and C3'-O3' bond lengths. Any of the two phosphates can be ommited
-     * (set to NULL) resulting in the unconstrained building of the corresponding ribose branch.
-     * Default optimization paramaters are used.
-     *
-     * @param po4_5p Phosphate residue toward 5' (set it to NULL for an unconstrained branch).
-     * @param po4_3p Phosphate residue toward 3' (set it to NULL for an unconstrained branch).
-     * @param pucker Optional pucker type restriction.
-     * @param glycosyl Optional glycosyl torsion type restriction.
-     * @return Rms deviation for the implicit C5'-O5' and C3'-O3' bond lengths (Angstroms).
-     * @exception LibException is thrown if both phosphates are unspecified.
+     * Utility method to find appropriate terminus nitrogen in nucleic acid's nitrogen base
+     * (N1 for pyrimidine or N9 for purine).
+     * Throws an exception if residue type is neither a purine nor a pyrimide.
+     * @param rtype The residue type to analyze.
+     * @return The appropriate nitrogen atom type.
+     * @throws IntLibException
      */
-    float buildRiboseByCCM4D (const Residue* po4_5p,
-			      const Residue* po4_3p,
-			      const PropertyType* pucker = 0,
-			      const PropertyType* glycosyl = 0);
+    static const AtomType* nitrogenType19 (const ResidueType* rtype);
 
     /**
-     * Builds a theoretical ribose onto a nucleic acid's nitrogen base that fits the global
-     * position of two adjacent phosphates (toward 5' and 3'). A constant step cyclic
-     * coordinates method solves the optimization problem in the 4D torsion space created
-     * by rho, chi, gamma and beta. Both pucker and glycosyl types can be forced, otherwise
-     * the best geometrical fit is favored. Fitting is quantified by the rms deviation for
-     * the implicit C5'-O5' and C3'-O3' bond lengths. Any of the two phosphates can be ommited
-     * (set to NULL) resulting in the unconstrained building of the corresponding ribose branch.
-     * Optimization paramaters are specified.
-     *
-     * @param po4_5p Phosphate residue toward 5' (set it to NULL for an unconstrained branch).
-     * @param po4_3p Phosphate residue toward 3' (set it to NULL for an unconstrained branch).
-     * @param minshift Torsion shift threshold during optimization (rad).
-     * @param mindrop Displacement threshold in the optimization's objective function.
-     * @param shiftrate Torsion shift reduction rate during optimization (assumed < 1).
-     * @param pucker Optional pucker type restriction.
-     * @param glycosyl Optional glycosyl torsion type restriction.
-     * @return Rms deviation for the implicit C5'-O5' and C3'-O3' bond lengths (Angstroms).
-     * @exception LibException is thrown if both phosphates are unspecified.
+     * Utility method to find appropriate terminus right hand side carbon in
+     * nucleic acid's nitrogen base (C2 for pyrimidine or C4 for purine).
+     * Throws an exception if residue type is neither a purine nor a pyrimide.
+     * @param rtype The residue type to analyze.
+     * @return The appropriate carbon atom type.
+     * @throws IntLibException
      */
-    float buildRiboseByCCM4D (const Residue* po4_5p,
-			      const Residue* po4_3p,
-			      float minshift,
-			      float mindrop,
-			      float shiftrate,
-			      const PropertyType* pucker = 0,
-			      const PropertyType* glycosyl = 0);
+    static const AtomType* carbonType24 (const ResidueType* rtype);
+
+    /**
+     * Utility method to find appropriate terminus left hand side carbon in
+     * nucleic acid's nitrogen base (C6 for pyrimidine or C8 for purine).
+     * Throws an exception if residue type is neither a purine nor a pyrimide.
+     * @param rtype The residue type to analyze.
+     * @return The appropriate carbon atom type.
+     * @throws IntLibException
+     */
+    static const AtomType* carbonType68 (const ResidueType* rtype);
     
-    /**
-     * Creates and returns a new phosphate typed residue with its O5'-P bond aligned onto
-     * reference residue's  O5'-P bond.
-     * @param reference Residue onto which phosphate should be aligned.
-     * @param fm Residue factory method used to create phosphate (default: creates ExtendedResidue)
-     * @return Newly created phosphate residue. The object is dynamically created, therefore caller has ownership on memory (caller should delete it...).
-     * @exception LibException is thrown if reference is missing the needed atoms.
-     */
-    static Residue* createPhosphate5p (const Residue& reference,
-				       const ResidueFactoryMethod* fm = 0);
-
     /**
      * Gets the pucker type associated with the specified pseudorotation (rho) value.
      * @param rho The pseudorotation (rho) value (rad).
@@ -1117,7 +1091,7 @@ namespace mccore
     /**
      * Adds backbone's hydrogens only if they aren't already in the residue.
      */
-    void _add_ribose_hydrogens ();
+    void _add_ribose_hydrogens (bool overwrite = true);
     
     /**
      * Preprocesses ribose building. Setups atom pointers if needed. Fetches, copies
@@ -1135,7 +1109,7 @@ namespace mccore
     void _build_ribose_preprocess (const Residue* po4_5p, const Residue* po4_3p,
 				   bool build5p, bool build3p,
 				   Atom& o5p, Atom& o3p,
-				   HomogeneousTransfo& referential);
+				   const HomogeneousTransfo& referential);
 
     /**
      * Builds ribose atom-wise according to the given torsion parameters. Uses idealized

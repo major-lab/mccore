@@ -3,7 +3,7 @@
 // Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.21 $
+// $Revision: 1.22 $
 // 
 //  This file is part of mccore.
 //  
@@ -37,18 +37,21 @@ namespace mccore {
 
   ExtendedResidue::ExtendedResidue () 
     : Residue (), placed (true)
-  {      
+  {
+
   }
 
 
   ExtendedResidue::ExtendedResidue (const ResidueType *t, const ResId &i) 
     : Residue (t, i) , placed (true)
   {
+
   } 
   
   ExtendedResidue::ExtendedResidue (const ResidueType *t, const ResId &i, vector< Atom > &vec)
     : Residue (t, i, vec) , placed (true)
   {
+
   }
 
   ExtendedResidue::ExtendedResidue (const ExtendedResidue &other)
@@ -191,46 +194,50 @@ namespace mccore {
 
 
   ExtendedResidue::iterator 
-  ExtendedResidue::erase (const AtomType *aType)
+  ExtendedResidue::erase (const AtomType *atype)
   {
-    AtomMap::iterator i = atomIndex.find (aType);
-    
-    if (i!=atomIndex.end ()) {
-      vector< Atom* >::const_iterator cit;
-      const AtomType* next;
-      size_type index;
-
-      rib_dirty_ref = true;
-      
-      delete atomGlobal[i->second];
-      atomGlobal.erase (atomGlobal.begin () + i->second);
-      delete atomLocal[i->second];
-      atomLocal.erase (atomLocal.begin () + i->second);
-
-      next = ++i == atomIndex.end () ? 0 : i->first;
-      atomIndex.clear ();
-      for (cit = atomLocal.begin (), index = 0;
-	   cit != atomLocal.end ();
-	   ++cit, ++index)
-	atomIndex[(*cit)->getType ()] = index;
-      
-      return find (next);
-    } 
-    return end ();
+    return this->erase (this->find (atype));
   }
 
 
   ExtendedResidue::iterator 
-  ExtendedResidue::erase (const iterator pos)
+  ExtendedResidue::erase (const iterator& rit)
   { 
-    return erase (pos->getType ()); 
-  }
+    if (this->end () != rit)
+    {
+      vector< Atom* >::iterator avit;
+      vector< Atom* >::const_iterator cavit;
+      const AtomType* next = 0;
+      size_type index = 0;
+      iterator next_rit = rit + 1;
 
+      // invalidate ribose pointers
+      this->rib_dirty_ref = true;
+      
+      // get next atom type before deletion
+      if (this->end () != next_rit)
+	next = next_rit.pos->first;
+      
+      // delete atom
+      avit = this->atomGlobal.begin () + rit.pos->second;
+      delete *avit;
+      this->atomGlobal.erase (avit);
 
-  ExtendedResidue::iterator 
-  ExtendedResidue::erase (const const_iterator pos)
-  { 
-    return erase (pos->getType ()); 
+      // fix atom map
+      this->atomIndex.clear ();
+      for (cavit = this->atomGlobal.begin (); cavit != this->atomGlobal.end (); ++cavit, ++index)
+	this->atomIndex.insert (make_pair ((*cavit)->getType (), index));
+
+      if (next)
+      {
+	// fetch iterator to saved atom type and set its filter.
+	next_rit = this->find (next);
+	delete next_rit.filter;
+	next_rit.filter = rit.filter->clone ();
+	return next_rit;
+      }
+    }
+    return this->end ();  
   }
 
 
@@ -393,7 +400,7 @@ namespace mccore {
 
     // TODO: place only ribose atoms...
     displace (); // -> place all atoms :(
-    _add_ribose_hydrogens ();
+    _add_ribose_hydrogens (true);
   }
   
   // I/O -----------------------------------------------------------------------
