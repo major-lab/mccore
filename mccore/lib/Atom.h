@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:00:09 2003
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 // 
 // This file is part of mccore.
 // 
@@ -49,7 +49,7 @@ namespace mccore
    * Warning: nothing is done to prevents slicing when assigning from a Vector*.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Atom.h,v 1.10 2005-02-10 18:49:46 thibaup Exp $
+   * @version $Id: Atom.h,v 1.11 2005-03-30 18:59:42 larosem Exp $
    */
   class Atom : public Vector3D
   {
@@ -74,26 +74,35 @@ namespace mccore
      * @param z the z coordinate.
      * @param aType the atom type.
      */
-    Atom (float x, float y, float z, const AtomType *aType);
+    Atom (float x, float y, float z, const AtomType *aType)
+      : Vector3D (x, y, z),
+	type (aType)
+    { }
     
     /**
      * Initializes the atom with a point and a type.
      * @param aPoint the coordinates
      * @param aType the atom type.
      */
-    Atom (Vector3D aPoint, const AtomType *aType);
+    Atom (Vector3D aPoint, const AtomType *aType)
+      : Vector3D (aPoint),
+	type (aType)
+    { }
 
     /**
      * Initializes the object with the other's content.
      * @param other the object to copy.
      */
-    Atom (const Atom &other);
+    Atom (const Atom &other)
+      : Vector3D (other),
+	type (other.type)
+    { }
     
     /**
      * Clones the atom.
      * @return a copy of itself.
      */
-    virtual Atom* clone () const;
+    virtual Atom* clone () const { return new Atom (*this); }
 
     /**
      * Destroys the object.
@@ -140,17 +149,13 @@ namespace mccore
      * Gets the atom type.
      * @return the atom type.
      */
-    const AtomType* getType () const {
-      return type;
-    }
+    const AtomType* getType () const { return type; }
     
     /**
      * Sets the atom type.
      * @param type the new atom type.
      */
-    void setType (const AtomType *t) {
-      type = t;
-    }
+    void setType (const AtomType *t) { type = t; }
     
     /**
      * Sets the atom's coordinates and type.
