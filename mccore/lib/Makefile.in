@@ -5,8 +5,8 @@
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:57:11 2000
 ## Last Modified By : Martin Larose
-## Last Modified On : Thu Sep 20 12:45:17 2001
-## Update Count     : 19
+## Last Modified On : Mon Oct  1 13:16:40 2001
+## Update Count     : 20
 ## Status           : Ok.
 ###############################################################################
 #
@@ -113,7 +113,7 @@ $(LIBRARY).a: $(OBJECTS)
 	$(AR) crs $@ $^
 
 TAGS: $(SOURCES) $(HEADERS)
-	@ etags --c++ $^
+	@- etags --c++ $^
 
 
 doc: html texi docbook
