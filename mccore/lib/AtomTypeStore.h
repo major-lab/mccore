@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 12:30:39 2003
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 // 
 //  This file is part of mccore.
 //  
@@ -44,7 +44,7 @@ namespace mccore {
    * @short Repository of atomtypes.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: AtomTypeStore.h,v 1.5 2004-01-29 17:26:17 larosem Exp $
+   * @version $Id: AtomTypeStore.h,v 1.6 2004-06-01 19:43:16 thibaup Exp $
    */
   class AtomTypeStore
   {
@@ -144,6 +144,20 @@ namespace mccore {
     };
 
     /**
+     * Private abstract class for phosphate atoms.
+     */
+    class Phosphate : public virtual AtomType {
+    public:
+      Phosphate () {}
+      Phosphate (const char* t) : AtomType (t) {}
+
+      virtual bool isPhosphate () const { return true; }
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const Phosphate* > (t);
+      }
+    };
+    
+    /**
      * Private abstract class for sidechain atoms.
      */
     class SideChain : public virtual AtomType {
@@ -242,16 +256,16 @@ namespace mccore {
     };
 
     /**
-     * Private abstract class for phosphate atoms.
+     * Private abstract class for phosphorus atoms.
      */
-    class Phosphate : public virtual AtomType {
+    class Phosphorus : public virtual AtomType {
     public:
-      Phosphate () {}
-      Phosphate (const char* t) : AtomType (t) {}
+      Phosphorus () {}
+      Phosphorus (const char* t) : AtomType (t) {}
 
-      virtual bool isPhosphate () const { return true; }
+      virtual bool isPhosphorus () const { return true; }
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const Phosphate* > (t);
+	return dynamic_cast< const Phosphorus* > (t);
       }
     };
 
@@ -637,7 +651,7 @@ namespace mccore {
     /**
      * Global O1P atom type class.
      */
-    class AO1P : public virtual NucleicAcid, public virtual Oxygen, public virtual Backbone
+    class AO1P : public virtual NucleicAcid, public virtual Oxygen, public virtual Phosphate, public virtual Backbone
     { 
     public:
       AO1P () {}
@@ -707,7 +721,7 @@ namespace mccore {
     /**
      * Global O2P atom type class.
      */
-    class AO2P : public virtual NucleicAcid, public virtual Oxygen, public virtual Backbone
+    class AO2P : public virtual NucleicAcid, public virtual Oxygen, public virtual Phosphate, public virtual Backbone
     { 
     public:
       AO2P () {}
@@ -742,7 +756,7 @@ namespace mccore {
     /**
      * Global O3p atom type class.
      */
-    class AO3p : public virtual NucleicAcid, public virtual Oxygen, public virtual Backbone
+    class AO3p : public virtual NucleicAcid, public virtual Oxygen, public virtual Phosphate, public virtual Backbone
     { 
     public:
       AO3p () {}
@@ -777,7 +791,7 @@ namespace mccore {
     /**
      * Global O3P atom type class.
      */
-    class AO3P : public virtual NucleicAcid, public virtual Oxygen, public virtual Backbone
+    class AO3P : public virtual NucleicAcid, public virtual Oxygen, public virtual Phosphate, public virtual Backbone
     { 
     public:
       AO3P () {}
@@ -847,7 +861,7 @@ namespace mccore {
     /**
      * Global O5p atom type class.
      */
-    class AO5p : public virtual NucleicAcid, public virtual Oxygen, public virtual Backbone
+    class AO5p : public virtual NucleicAcid, public virtual Oxygen, public virtual Phosphate, public virtual Backbone
     { 
     public:
       AO5p () {}
@@ -882,7 +896,7 @@ namespace mccore {
     /**
      * Global P atom type class.
      */
-    class AP : public virtual NucleicAcid, public virtual Phosphate, public virtual Backbone
+    class AP : public virtual NucleicAcid, public virtual Phosphorus, public virtual Phosphate, public virtual Backbone
     { 
     public:
       AP () {}

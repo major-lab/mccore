@@ -3,7 +3,7 @@
 // Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
-// $Revision: 1.20 $
+// $Revision: 1.21 $
 // 
 //  This file is part of mccore.
 //  
@@ -55,7 +55,7 @@ namespace mccore {
    *   - The charge and van der Waals radius<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: AtomType.h,v 1.20 2004-01-29 17:26:13 larosem Exp $ 
+   * @version $Id: AtomType.h,v 1.21 2004-06-01 19:43:10 thibaup Exp $ 
    */
   class AtomType 
   {
@@ -216,10 +216,10 @@ namespace mccore {
     }
     
     /** 
-     * is Phosphate?
+     * is Phosphorus?
      */
-    virtual bool isPhosphate () const {
-      return (getFirstLetter () == 'P' && !isPseudo ());
+    virtual bool isPhosphorus () const {
+      return (getFirstLetter () == 'P');
     }
     
     /** 
@@ -264,6 +264,14 @@ namespace mccore {
       return false;
     }
 
+    /** 
+     * is Phosphate?
+     */
+    virtual bool isPhosphate () const {
+      return false;
+    }
+    
+    
     /**
      * is Side Chain?
      */

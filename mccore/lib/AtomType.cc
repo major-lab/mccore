@@ -215,7 +215,7 @@ namespace mccore {
     if (type->isHydrogen ())       return Vector3D (1.00f, 1.00f, 1.00f);
     else if (type->isOxygen ())    return Vector3D (0.76f, 0.00f, 0.00f);
     else if (type->isNitrogen ())  return Vector3D (0.20f, 0.15f, 0.80f);
-    else if (type->isPhosphate ()) return Vector3D (0.82f, 0.53f, 0.00f);
+    else if (type->isPhosphorus ()) return Vector3D (0.82f, 0.53f, 0.00f);
     else if (type->isCarbon ())    return Vector3D (0.60f, 0.60f, 0.60f);
     else if (type->isSulfur ())    return Vector3D (0.80f, 0.80f, 0.00f);
     else if (type->isLonePair ())  return Vector3D (0.00f, 0.80f, 0.00f);
