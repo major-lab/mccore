@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 24 20:22:42 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 // 
 //  This file is part of mccore.
 //  
@@ -131,7 +131,10 @@ namespace mccore {
       }
       for (ip = 0; ip < n; ++ip) {
 	b[ip] += z[ip];
-	d[ip] = b[ip];
+
+	// this assumes that all d[i] >= 0 (?)
+	d[ip] = b[ip] < 0.0 ? 0.0 : b[ip];
+	
 	z[ip] = 0;
       }
     }

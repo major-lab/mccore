@@ -3,7 +3,7 @@
 // Copyright © 2003, 2004 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 24 20:17:50 2003
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 // 
 //  This file is part of mccore.
 //  
@@ -38,7 +38,7 @@ namespace mccore {
    * algorithm by Kabsch, 1976.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Rmsd.h,v 1.6 2004-05-13 15:40:01 larosem Exp $
+   * @version $Id: Rmsd.h,v 1.7 2004-12-08 19:22:07 thibaup Exp $
    */
   class Rmsd 
   {
@@ -119,7 +119,7 @@ namespace mccore {
  
       center_a /= count;
       center_b /= count;
-    
+      
       // R computation
       memset (r, 0, sizeof (double) * 3 * 3);
     
@@ -153,8 +153,7 @@ namespace mccore {
 		 + pow((*cij).getZ() - center_b.getZ(), 2));
 	}
       e0 /= 2;
-	
-    
+
       // RR Computation
       double rr[3 * 3];
       for (i = 0; i < 3; ++i) {
@@ -165,7 +164,7 @@ namespace mccore {
 	  }
 	}
       }
-    
+
       // Diagonalization
       double mu[3];
       double a[3*3];
@@ -227,12 +226,13 @@ namespace mccore {
       } else {
 	sigma_3 = 1;
       }
-    
+      
       b[0*3+2] = right_b3[0];
       b[1*3+2] = right_b3[1];
       b[2*3+2] = right_b3[2];
     
       double result = 2 * (e0 - sqrt(mu[0]) - sqrt(mu[1]) - sigma_3 * sqrt(mu[2])) / count;
+      
       if (result < 0) {
 	result = 0;
       }
@@ -257,7 +257,7 @@ namespace mccore {
       t = HomogeneousTransfo().translate(center_b) 
 	* rot 
 	* HomogeneousTransfo().translate(-center_a);
-    
+      
       return (float) result;
     }
 
@@ -332,7 +332,6 @@ namespace mccore {
 		 + pow((**cij).getZ() - center_b.getZ(), 2));
 	}
       e0 /= 2;
-	
     
       // RR Computation
       double rr[3 * 3];
@@ -344,7 +343,7 @@ namespace mccore {
 	  }
 	}
       }
-    
+
       // Diagonalization
       double mu[3];
       double a[3*3];
@@ -406,12 +405,13 @@ namespace mccore {
       } else {
 	sigma_3 = 1;
       }
-    
+          
       b[0*3+2] = right_b3[0];
       b[1*3+2] = right_b3[1];
       b[2*3+2] = right_b3[2];
-    
+      
       double result = 2 * (e0 - sqrt(mu[0]) - sqrt(mu[1]) - sigma_3 * sqrt(mu[2])) / count;
+      
       if (result < 0) {
 	result = 0;
       }
@@ -436,7 +436,7 @@ namespace mccore {
       t = HomogeneousTransfo().translate(center_b) 
 	* rot 
 	* HomogeneousTransfo().translate(-center_a);
-      
+            
       return (float) result;
     }
   
