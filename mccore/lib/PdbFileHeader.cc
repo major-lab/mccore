@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Tue Mar 11 18:45:58 2003
-// $Revision: 1.5 $
-// $Id: PdbFileHeader.cc,v 1.5 2005-02-10 18:49:46 thibaup Exp $
+// $Revision: 1.6 $
+// $Id: PdbFileHeader.cc,v 1.6 2005-03-10 18:36:52 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -34,6 +34,7 @@
 #include <sstream>
 
 #include "Pdbstream.h"
+#include "Binstream.h"
 #include "Exception.h"
 #include "Messagestream.h"
 #include "PdbFileHeader.h"
@@ -51,9 +52,9 @@ namespace mccore
 
   // LIFECYCLE ------------------------------------------------------------
 
-  PdbFileHeader::PdbFileHeader ()
+  PdbFileHeader::PdbFileHeader (bool reset)
   {
-    this->clear (true);
+    this->clear (reset);
   }
 
 
@@ -396,6 +397,28 @@ namespace mccore
     return ops;
   }
 
+
+  oBinstream&
+  PdbFileHeader::write (oBinstream& obs) const
+  {
+    map< string, string >::const_iterator mit;
+    list< string >::const_iterator lit;
+
+    obs << this->classification << this->date << this->pdbId << this->title 
+	<< this->resolution
+	<< this->methods.size ();
+    for (mit = this->methods.begin (); this->methods.end () != mit; ++mit)
+      obs << mit->first << mit->second;
+    obs << this->authors.size ();
+    for (lit = this->authors.begin (); this->authors.end () != lit; ++lit)
+      obs << *lit;
+    obs << this->unclassified.size ();
+    for (lit = this->unclassified.begin (); this->unclassified.end () != lit; ++lit)
+      obs << *lit;
+    return obs;
+  }
+
+
   iPdbstream&
   PdbFileHeader::read (iPdbstream& ips)
   {
@@ -562,10 +585,45 @@ namespace mccore
   }
 
 
+  iBinstream&
+  PdbFileHeader::read (iBinstream& ibs)
+  {
+    size_t qty;
+    string s1, s2;
+    
+    this->clear ();
+    ibs >> this->classification >> this->date >> this->pdbId >> this->title 
+	>> this->resolution;
+    for (ibs >> qty; ibs.good () && qty > 0; --qty) 
+    {
+      ibs >> s1 >> s2;
+      this->methods.insert (make_pair (s1, s2));
+    }
+    for (ibs >> qty; ibs.good () && qty > 0; --qty)
+    {
+      ibs >> s1;
+      this->authors.push_back (s1);
+    }
+    for (ibs >> qty; ibs.good () && qty > 0; --qty)
+    {
+      ibs >> s1;
+      this->unclassified.push_back (s1);
+    }
+    return ibs;
+  }
+
+
   oPdbstream& 
   operator<< (oPdbstream &ops, const PdbFileHeader& obj)
   {
     return obj.write (ops);
+  }
+
+
+  oBinstream& 
+  operator<< (oBinstream &obs, const PdbFileHeader& obj)
+  {
+    return obj.write (obs);
   }
 
 
@@ -575,6 +633,11 @@ namespace mccore
     return obj.read (ips);
   }
 
+  iBinstream& 
+  operator<< (iBinstream &ibs, PdbFileHeader& obj)
+  {
+    return obj.read (ibs);
+  }
 }
 
 

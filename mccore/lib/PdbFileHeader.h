@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 16:01:52 2003
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 // 
 // This file is part of mccore.
 // 
@@ -37,8 +37,10 @@ using namespace std;
 
 namespace mccore
 {
-  class iPdbstream;
   class oPdbstream;
+  class oBinstream;
+  class iPdbstream;
+  class iBinstream;
 
   /**
    * @short Representation of a PDB file header in memory.
@@ -110,7 +112,7 @@ namespace mccore
    * </pre>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: PdbFileHeader.h,v 1.6 2005-02-10 18:49:46 thibaup Exp $
+   * @version $Id: PdbFileHeader.h,v 1.7 2005-03-10 18:36:52 thibaup Exp $
    */
   class PdbFileHeader
   {
@@ -173,8 +175,9 @@ namespace mccore
 
     /**
      * Initializes the object.
+     * @param reset if true then default content is assigned (default is true).
      */
-    PdbFileHeader ();
+    PdbFileHeader (bool reset = true);
 
     /**
      * Initializes the object with the other's content.
@@ -383,11 +386,25 @@ namespace mccore
     oPdbstream& write (oPdbstream& ops) const;
 
     /**
+     * Writes content to a binary stream. 
+     * @param ops the output stream.
+     * @return the written stream.
+     */
+    oBinstream& write (oBinstream& obs) const;
+
+    /**
      * Read and assign content from a pdb stream.
      * @param ips the input stream.
      * @return the read stream.
      */
     iPdbstream& read (iPdbstream& ips);
+
+    /**
+     * Read and assign content from a binary stream.
+     * @param ips the input stream.
+     * @return the read stream.
+     */
+    iBinstream& read (iBinstream& ibs);
 
   };
 
@@ -399,6 +416,13 @@ namespace mccore
    */
   oPdbstream& operator<< (oPdbstream &ops, const PdbFileHeader& obj);
 
+  /**
+   * Outputs to a binary stream. 
+   * @param ops the output binary stream.
+   * @param obj the header records written.
+   * @return the output binary stream.
+   */
+  oBinstream& operator<< (oBinstream &obs, const PdbFileHeader& obj);
 
   /**
    * Inputs from a pdb stream.
@@ -407,6 +431,14 @@ namespace mccore
    * @return the input pdb stream.
    */
   iPdbstream& operator>> (iPdbstream& ips, PdbFileHeader& obj);
+
+  /**
+   * Inputs from a binary stream.
+   * @param ips the input binary stream.
+   * @param obj the header records read
+   * @return the input binary stream.
+   */
+  iBinstream& operator>> (iBinstream& ibs, PdbFileHeader& obj);
 }
 
 
