@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:10:38 2000
-# $Revision: 1.16 $
-# $Id: Makefile.in,v 1.16 2004-07-05 20:19:17 larosem Exp $
+# $Revision: 1.16.2.1 $
+# $Id: Makefile.in,v 1.16.2.1 2004-12-21 22:40:51 larosem Exp $
 #
 #  This file is part of mccore.
 #  
@@ -42,7 +42,7 @@ INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 
-SUBDIRS = lib docs
+SUBDIRS = lib test docs
 
 RELEASESUBDIRS = $(SUBDIRS)
 
@@ -52,29 +52,15 @@ stamp-h.in
 
 
 .SUFFIXES:
+.PHONY: test doc
 
 
 
-all static:
+all static doc test:
 	@ for subdir in $(SUBDIRS); do \
 	   echo "Building $@ in $$subdir"; \
 	   (cd $$subdir && $(MAKE) $@) || exit 1; \
 	  done
-
-doc:
-	@ for subdir in $(SUBDIRS); do \
-	   echo "Building $@ in $$subdir"; \
-	   (cd $$subdir && $(MAKE) $@) || exit 1; \
-	  done
-
-#all static doc:
-#	@ for subdir in $(SUBDIRS); do \
-#	   echo "Building $@ in $$subdir"; \
-#	   (cd $$subdir && $(MAKE) $@) || exit 1; \
-#	  done
-
-test: basic.cc
-	$(CXX) -O2 -fmessage-length=0 -DHAVE_CONFIG_H -I$(srcdir)/lib -I$(srcdir) -I. -o basic $(srcdir)/basic.cc -lmccore -lz
 
 install install-static:
 	@ for subdir in $(SUBDIRS); do \
