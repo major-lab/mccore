@@ -5,7 +5,7 @@
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:11:41 EDT
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:09:28 2001
+// Last Modified On : Mon Oct  1 14:35:50 2001
 // Update count     : 0
 // Status           : Ok.
 //
@@ -145,6 +145,20 @@ public:
   iBinstream& operator>> (unsigned int &n) { return operator>> ((int&)n); }
 
   /**
+   * Inputs long integers from the binary stream.
+   * @param n the integer to read.
+   * @return itself.
+   */
+  iBinstream& operator>> (long int &n);
+
+  /**
+   * Inputs unsigned long integers from the binary stream.
+   * @param n the integer to read.
+   * @return itself.
+   */
+  iBinstream& operator>> (unsigned long int &n) { return operator>> ((long int&)n); }
+
+  /**
    * Inputs floats from the binary stream.
    * @param x the float to read.
    * @return itself.
@@ -272,6 +286,20 @@ public:
    * @return itself.
    */
   oBinstream& operator<< (unsigned int n) { return operator<< ((int)n); }
+
+  /**
+   * Outputs long integers to binary stream.
+   * @param n the integer to ouput.
+   * @return itself.
+   */
+  oBinstream& operator<< (long int n);
+
+  /**
+   * Outputs unsigned integers to binary stream.
+   * @param n the integer to ouput.
+   * @return itself.
+   */
+  oBinstream& operator<< (unsigned long int n) { return operator<< ((long int)n); }
 
   /**
    * Outputs floats to binary stream.

@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@orage.IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:18:52 EDT
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Oct  1 14:10:36 2001
-// Update Count     : 12
+// Last Modified On : Mon Oct  1 14:35:45 2001
+// Update Count     : 13
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -104,6 +104,18 @@ iBinstream::operator>> (int &n)
 
 
 iBinstream&
+iBinstream::operator>> (long int &n)
+{
+  long int nl;
+
+  this->read ((char*)&nl, sizeof (long int));
+  n = (long int)ntohl (nl);
+  return *this;
+}
+
+
+
+iBinstream&
 iBinstream::operator>> (float &x)
 {
   int nl;
@@ -175,6 +187,17 @@ oBinstream::operator<< (int n)
   int nl = htonl (n);
 
   this->write ((char*)&nl, sizeof (int));
+  return *this;
+}
+
+
+
+oBinstream&
+oBinstream::operator<< (long int n)
+{
+  long int nl = htonl (n);
+
+  this->write ((char*)&nl, sizeof (long int));
   return *this;
 }
 
