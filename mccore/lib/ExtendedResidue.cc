@@ -3,7 +3,7 @@
 // Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.22 $
+// $Revision: 1.23 $
 // 
 //  This file is part of mccore.
 //  
@@ -222,6 +222,9 @@ namespace mccore {
       avit = this->atomGlobal.begin () + rit.pos->second;
       delete *avit;
       this->atomGlobal.erase (avit);
+      avit = this->atomLocal.begin () + rit.pos->second;
+      delete *avit;
+      this->atomLocal.erase (avit);
 
       // fix atom map
       this->atomIndex.clear ();
