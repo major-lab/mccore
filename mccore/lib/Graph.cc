@@ -3,9 +3,9 @@
 // Copyright © 2002 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Mon Feb 18 16:07:09 2002
-// Last Modified By : Patrick Gendron
-// Last Modified On : Fri Jul 26 15:21:18 2002
-// Update Count     : 6
+// Last Modified By : Martin Larose
+// Last Modified On : Fri Nov  1 17:16:05 2002
+// Update Count     : 7
 // Status           : Unknown.
 // 
 
@@ -960,7 +960,7 @@ Graph< Node, Edge >::cycle_base ()
 
 template< class Node, class Edge >
 void 
-Graph< Node, Edge >::build_tree (int index = -1, int depth = 0)
+Graph< Node, Edge >::build_tree (int index, int depth)
 {
   if (index == -1) {
     for (unsigned int i = 0; i < mNodeMarks.size (); ++i) mNodeMarks[i] = false;

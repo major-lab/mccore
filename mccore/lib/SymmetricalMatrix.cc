@@ -2,9 +2,9 @@
 // SymmetricalMatrix.cc
 // Author           : Philippe Thibault
 // Created On       : Wed Oct 16 09:28:54 2002
-// Last Modified By : Philippe Thibault
-// Last Modified On : Wed Oct 23 08:14:02 2002
-// Update Count     : 2
+// Last Modified By : Martin Larose
+// Last Modified On : Fri Nov  1 17:16:16 2002
+// Update Count     : 3
 // Status           : Ok.
 // 
 
@@ -22,7 +22,7 @@
 
 
 template< class Type >
-SymmetricalMatrix< Type >::SymmetricalMatrix (int n = 1, void (*cf) (Type&) = NULL)
+SymmetricalMatrix< Type >::SymmetricalMatrix (int n, void (*cf) (Type&))
   : twoSize (n),
     cleanup (cf)
 {
