@@ -3,7 +3,7 @@
 // Copyright © 2003, 2004 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 24 21:30:26 2003
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 // 
 //  This file is part of mccore.
 //  
@@ -45,7 +45,7 @@ namespace mccore {
    * a node ordering determined by the node_comparator function object.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: UndirectedGraph.h,v 1.10 2004-01-09 21:47:43 gendrop Exp $
+   * @version $Id: UndirectedGraph.h,v 1.11 2004-04-06 21:09:03 larosem Exp $
    */
   template< class node_type, 
 	    class edge_type = bool, 
@@ -121,7 +121,7 @@ namespace mccore {
 
       graph[mapping[o]][mapping[p]] = edges.size ()-1;
       graph[mapping[p]][mapping[o]] = edges.size ()-1;
-
+      edgeCoordinates.insert (make_pair (edges.size () - 1, make_pair (mapping[o], mapping[p])));
         
       return true;
     }
@@ -134,8 +134,10 @@ namespace mccore {
      */
     virtual bool disconnect (const node_type &o, const node_type &p) 
     {
-      if (!contains (o) || !contains (p)) return false;
-      if (!areConnected (o, p)) return false;
+      if (!contains (o)
+	  || !contains (p)
+	  || !areConnected (o, p))
+	return false;
     
       int e = graph[mapping[o]][mapping[p]];
       graph.find (mapping[o])->second.erase (mapping[p]);
@@ -144,6 +146,8 @@ namespace mccore {
       edges.erase (edges.begin () + e);
       edgeWeights.erase (edgeWeights.begin () + e);
 
+      map< int, pair< int, int > >::iterator eIt;
+      map< int, pair< int, int > >::iterator eIt2;
       map< int, map< int, int > >::iterator i;
       map< int, int >::iterator j;
     
@@ -153,6 +157,15 @@ namespace mccore {
 	}
       }
     
+      eIt = edgeCoordinates.find (e);
+      eIt2 = eIt++;
+      edgeCoordinates.erase (eIt2);
+      while (edgeCoordinates.end () != eIt)
+	{
+	  edgeCoordinates.insert (make_pair (eIt->first - 1, eIt->second));
+	  eIt2 = eIt++;
+	  edgeCoordinates.erase (eIt2);
+	}
       return true;
     }
   
@@ -181,17 +194,18 @@ namespace mccore {
     /**
      * Computes a minimum cycle basis for this graph.
      */
-    vector< Path< node_type, float > > cycleBase () { 
+    template< class value_type >
+    vector< Path< node_type, value_type > > cycleBase () { 
 
-      vector< Path< int, float > > paths;
-      vector< Path< int, float > >::iterator p;
-      Path< int, float >::iterator pi;
-      vector< Path< node_type, float > > realpaths;
+      vector< Path< int, value_type > > paths;
+      typename vector< Path< int, value_type > >::iterator p;
+      typename Path< int, value_type >::iterator pi;
+      vector< Path< node_type, value_type > > realpaths;
 
-      paths = GraphAlgo::cycleBaseHorton (*this, 0); 
+      paths = GraphAlgo::cycleBaseHorton< node_type, edge_type, node_comparator, value_type > (*this, 0); 
       
       for (p=paths.begin (); p!=paths.end (); ++p) {
-      	Path< node_type, float > aPath;
+      	Path< node_type, value_type > aPath;
       	for (pi=p->begin (); pi!=p->end (); ++pi) {
       	  aPath.push_back (nodes[*pi]);
       	}
@@ -205,17 +219,18 @@ namespace mccore {
     /**
      * Computes the union of the minimum cycle basis for this graph.
      */
-    vector< Path< node_type, float > > cycleBaseUnion () { 
+    template< class value_type >
+    vector< Path< node_type, value_type > > cycleBaseUnion () { 
 
-      vector< Path< int, float > > paths;
-      vector< Path< int, float > >::iterator p;
-      Path< int, float >::iterator pi;
-      vector< Path< node_type, float > > realpaths;
+      vector< Path< int, value_type > > paths;
+      typename vector< Path< int, value_type > >::iterator p;
+      typename Path< int, value_type >::iterator pi;
+      vector< Path< node_type, value_type > > realpaths;
 
-      paths = GraphAlgo::cycleBaseHorton (*this, 1); 
+      paths = GraphAlgo::cycleBaseHorton< node_type, edge_type , node_comparator, value_type > (*this, 1); 
       
       for (p=paths.begin (); p!=paths.end (); ++p) {
-      	Path< node_type, float > aPath;
+      	Path< node_type, value_type > aPath;
       	for (pi=p->begin (); pi!=p->end (); ++pi) {
       	  aPath.push_back (nodes[*pi]);
       	}
@@ -229,17 +244,18 @@ namespace mccore {
     /**
      * Computes the union of all the minimum cycles for this graph.
      */
-    vector< Path< node_type, float > > minimumCycles () { 
+    template< class value_type >
+    vector< Path< node_type, value_type > > minimumCycles () { 
 
-      vector< Path< int, float > > paths;
-      vector< Path< int, float > >::iterator p;
-      Path< int, float >::iterator pi;
-      vector< Path< node_type, float > > realpaths;
+      vector< Path< int, value_type > > paths;
+      typename vector< Path< int, value_type > >::iterator p;
+      typename Path< int, value_type >::iterator pi;
+      vector< Path< node_type, value_type > > realpaths;
 
-      paths = GraphAlgo::cycleBaseHorton (*this, 2);
+      paths = GraphAlgo::cycleBaseHorton< node_type, edge_type, node_comparator, value_type > (*this, 2);
       
       for (p=paths.begin (); p!=paths.end (); ++p) {
-      	Path< node_type, float > aPath;
+      	Path< node_type, value_type > aPath;
       	for (pi=p->begin (); pi!=p->end (); ++pi) {
       	  aPath.push_back (nodes[*pi]);
       	}

@@ -3,7 +3,7 @@
 // Copyright © 2003, 2004 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Dec  5 17:25:17 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 // 
 //  This file is part of mccore.
 //  
@@ -25,9 +25,9 @@
 #ifndef _ArrayGraph_h_
 #define _ArrayGraph_h_
 
-
 #include <iostream>
 #include <map>
+#include <utility>
 #include <vector>
 #include <assert.h>
 
@@ -51,7 +51,7 @@ namespace mccore {
    * comparator if needed.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: ArrayGraph.h,v 1.1 2004-01-21 19:45:03 larosem Exp $
+   * @version $Id: ArrayGraph.h,v 1.2 2004-04-06 21:08:17 larosem Exp $
    */
   template< class node_type, 
 	    class edge_type = bool,
@@ -77,6 +77,11 @@ namespace mccore {
      * The adjacency matrix.
      */
     int* graph;
+
+    /**
+     * The edge coordinate map.
+     */
+    map< int, pair< int, int > > edgeCoordinates;
 
     /**
      * Node weights.
@@ -356,13 +361,14 @@ namespace mccore {
     virtual bool connect (const node_type &o, const node_type &p, 
 			  const edge_type &e = edge_type(), float w = 1) 
     {
-      if (!contains (o) || !contains (p)) return false;
+      if (!contains (o) || !contains (p))
+	return false;
 
       edges.push_back (e);
       edgeWeights.push_back (w);
       
       graph[index (mapping[o], mapping[p])] = edges.size ()-1;
-      
+      edgeCoordinates.insert (make_pair (edges.size () - 1, make_pair (mapping[o], mapping[p])));
       return true;
     }
     
@@ -375,10 +381,15 @@ namespace mccore {
      */
     virtual bool disconnect (const node_type &o, const node_type &p) 
     {
-      if (!contains (o) || !contains (p)) return false;
-      if (!areConnected (o, p)) return false;
+      if (!contains (o)
+	  || !contains (p)
+	  || !areConnected (o, p))
+	return false;
       
       int e = graph[index (mapping[o], mapping[p])];
+      map< int, pair< int, int > >::iterator eIt;
+      map< int, pair< int, int > >::iterator eIt2;
+      
       graph[index (mapping[o], mapping[p])] = -1;
       
       edges.erase (edges.begin () + e);
@@ -387,7 +398,15 @@ namespace mccore {
       for (int i=0; i<size ()*size (); ++i) {
 	if (graph[i] > e) graph[i]--;
       }
-
+      eIt = edgeCoordinates.find (e);
+      eIt2 = eIt++;
+      edgeCoordinates.erase (eIt2);
+      while (edgeCoordinates.end () != eIt)
+	{
+	  edgeCoordinates.insert (make_pair (eIt->first - 1, eIt->second));
+	  eIt2 = eIt++;
+	  edgeCoordinates.erase (eIt2);
+	}
       return true;
     }
 
@@ -549,6 +568,16 @@ namespace mccore {
       for (int i=0; i<size (); ++i) 
 	if (graph[index (o, i)] != -1) l.push_back (i);
       return l;
+    }
+
+    
+    /**
+     * Gets the edge coordinates map.
+     * @return a map of edge id has key and nodes id pair.
+     */
+    virtual const map< int, pair< int, int > >& getInternalEdgeCoordinateMap () const
+    {
+      return edgeCoordinates;
     }
 
     

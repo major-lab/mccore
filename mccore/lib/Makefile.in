@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.44 $
-# $Id: Makefile.in,v 1.44 2004-03-02 20:37:17 larosem Exp $
+# $Revision: 1.45 $
+# $Id: Makefile.in,v 1.45 2004-04-06 21:08:52 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -121,7 +121,7 @@ SOURCES = Binstream.cc \
 HEADERS = $(SOURCES:.cc=.h) AbstractGraph.h AdjacencyMatrix.h Algo.h \
 ArrayGraph.h Graph.h GraphAlgo.h MaximumFlowGraph.h Path.h SocketCommand.h \
 SymmetricalMatrix.h SymmetricalMatrix.cc UndirectedArrayGraph.h \
-sBinstream.h stlio.h
+UndirectedGraph.h sBinstream.h stlio.h
 
 
 OBJECTS = $(SOURCES:.cc=.o)

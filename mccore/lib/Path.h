@@ -25,7 +25,7 @@
 #define _Path_h_
 
 #include <iostream>
-#include <list>
+#include <vector>
 
 using namespace std;
 
@@ -35,10 +35,10 @@ namespace mccore {
    * @short A path in a graph.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Path.h,v 1.4 2004-04-02 18:59:52 larosem Exp $
+   * @version $Id: Path.h,v 1.5 2004-04-06 21:08:56 larosem Exp $
    */
   template< class node_type, class valuetype >
-  class Path : public list< node_type >
+  class Path : public vector< node_type >
   {    
 
     valuetype value;
@@ -46,8 +46,8 @@ namespace mccore {
   public:
    
     
-    typedef typename list< node_type >::const_iterator const_iterator;
-    typedef typename list< node_type >::iterator iterator;
+    typedef typename vector< node_type >::const_iterator const_iterator;
+    typedef typename vector< node_type >::iterator iterator;
 
  
     // LIFECYCLE ------------------------------------------------------------
@@ -56,7 +56,7 @@ namespace mccore {
      * Initializes the object.
      */
     Path ()
-      : list< node_type > (),
+      : vector< node_type > (),
 	value (valuetype ())
     { }
 
@@ -65,7 +65,7 @@ namespace mccore {
      * @param other the object to copy.
      */
     Path (const Path &other)
-      : list< node_type > (other),
+      : vector< node_type > (other),
 	value (other.value)
     { }
 
@@ -85,7 +85,7 @@ namespace mccore {
     {
       if  (this != &other)
 	{
-	  list< node_type >::operator= (other);
+	  vector< node_type >::operator= (other);
 	  value = other.value;
 	}
       return *this;
@@ -96,8 +96,14 @@ namespace mccore {
      * @param other another path.
      * @return true if this path is shorter.
      */
-    bool operator< (const Path &other) const {
-      return  (size () < other.size ());
+    bool operator< (const Path &other) const
+    {
+      return (value < other.value
+	      || (value == other.value
+		  && (size () < other.size ()
+		      || (size () == other.size ()
+			  && (const vector< node_type >&) *this < (const vector< node_type >&) other))));
+//       return  (size () < other.size ());
     }
 
     /**
@@ -120,7 +126,7 @@ namespace mccore {
 	      
 	      for (i = 0; i <(int) a.size (); ++i)
 		{
-		  if ((const list< node_type >&) a == (list< node_type >&) b)
+		  if ((const vector< node_type >&) a == (vector< node_type >&) b)
 		    return true;
 		  b.rotate ();
 		}
@@ -129,7 +135,7 @@ namespace mccore {
 	      
 	      for (i = 0; i < (int) a.size (); ++i)
 		{
-		  if ((list< node_type >&) a == (list< node_type >&) b)
+		  if ((vector< node_type >&) a == (vector< node_type >&) b)
 		    return true;
 		  b.rotate ();
 		}

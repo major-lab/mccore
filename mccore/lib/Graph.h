@@ -3,8 +3,8 @@
 // Copyright © 2003, 2004 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Apr 30 16:04:32 2003
-// $Revision: 1.20 $
-// $Id: Graph.h,v 1.20 2004-02-19 15:43:47 larosem Exp $
+// $Revision: 1.21 $
+// $Id: Graph.h,v 1.21 2004-04-06 21:08:26 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -29,6 +29,7 @@
 #include <iomanip>
 #include <iostream>
 #include <map>
+#include <utility>
 #include <vector>
 #include <assert.h>
 
@@ -60,7 +61,7 @@ namespace mccore {
    * correct node comparator if needed.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: Graph.h,v 1.20 2004-02-19 15:43:47 larosem Exp $
+   * @version $Id: Graph.h,v 1.21 2004-04-06 21:08:26 larosem Exp $
    */
   template< class node_type, 
 	    class edge_type = bool,
@@ -86,6 +87,11 @@ namespace mccore {
      * The adjacency matrix.
      */
     map< int, map< int, int > > graph;
+
+    /**
+     * The edge coordinate map.
+     */
+    map< int, pair< int, int > > edgeCoordinates;
 
     /**
      * Node weights.
@@ -412,13 +418,14 @@ namespace mccore {
     virtual bool connect (const node_type &o, const node_type &p, 
 			  const edge_type &e = edge_type(), float w = 1) 
     {
-      if (!contains (o) || !contains (p)) return false;
-    
+      if (!contains (o) || !contains (p))
+	return false;
+      
       edges.push_back (e);
       edgeWeights.push_back (w);
 
       graph[mapping[o]][mapping[p]] = edges.size ()-1;
-
+      edgeCoordinates.insert (make_pair (edges.size () - 1, make_pair (mapping[o], mapping[p])));
       return true;
     }
     
@@ -431,23 +438,35 @@ namespace mccore {
      */
     virtual bool disconnect (const node_type &o, const node_type &p) 
     {
-      if (!contains (o) || !contains (p)) return false;
-      if (!areConnected (o, p)) return false;
+      if (!contains (o)
+	  || !contains (p)
+	  || !areConnected (o, p))
+	return false;
       
       int e = graph[mapping[o]][mapping[p]];
       graph.find (mapping[o])->second.erase (mapping[p]);
 
       edges.erase (edges.begin () + e);
       edgeWeights.erase (edgeWeights.begin () + e);
+      edgeCoordinates.erase (e);
 
       map< int, map< int, int > >::iterator i;
       map< int, int >::iterator j;
 
-      for (i=graph.begin (); i!=graph.end (); ++i) {
-	for (j=i->second.begin (); j!=i->second.end (); ++j) {
-	  if (j->second > e) j->second--;
+      for (i=graph.begin (); i!=graph.end (); ++i)
+	{
+	  for (j=i->second.begin (); j!=i->second.end (); ++j)
+	    {
+	      if (j->second > e)
+		{
+		  pair< int, int > coord;
+
+		  coord = edgeCoordinates[j->second];
+		  edgeCoordinates.erase (j->second);
+		  edgeCoordinates.insert (make_pair (--(j->second), coord));
+		}
+	    }
 	}
-      }
 
       return true;
     }
@@ -528,7 +547,6 @@ namespace mccore {
       return nodes[n];
     }
 
-    
     /**
      * Sets the weight of this node.
      * @param n the node.
@@ -631,6 +649,16 @@ namespace mccore {
       return l;
     }
 
+
+    /**
+     * Gets the edge coordinates map.
+     * @return a map of edge id has key and nodes id pair.
+     */
+    virtual const map< int, pair< int, int > >& getInternalEdgeCoordinateMap () const
+    {
+      return edgeCoordinates;
+    }
+    
 
     // CUSTOM INTERFACE --------------------------------------------------------
 

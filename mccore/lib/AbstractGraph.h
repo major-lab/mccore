@@ -3,7 +3,7 @@
 // Copyright © 2003, 2004 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Dec  5 16:47:20 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 // 
 //  This file is part of mccore.
 //  
@@ -27,7 +27,9 @@
 
 
 #include <iostream>
+#include <list>
 #include <map>
+#include <utility>
 #include <vector>
 #include <assert.h>
 
@@ -46,7 +48,7 @@ namespace mccore {
    * correct node comparator if needed.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: AbstractGraph.h,v 1.1 2004-01-21 19:45:00 larosem Exp $
+   * @version $Id: AbstractGraph.h,v 1.2 2004-04-06 21:08:11 larosem Exp $
    */
   template< class node_type, 
 	    class edge_type = bool,
@@ -315,6 +317,22 @@ namespace mccore {
     virtual const node_type& internalGetNode (int n) const = 0;
 
     /**
+     * Gets the id of the node.
+     * @param node the node.
+     * @return the node id.
+     */
+    virtual int getInternalNodeId (const node_type &node) const
+    {
+      typename map< node_type, int, node_comparator >::const_iterator res;
+
+      if (mapping.end () == (res = mapping.find (node)))
+	return -1;
+      else
+	return res->second;
+    }
+    
+
+    /**
      * Sets the weight of this node.
      * @param n the node.
      * @return the weight.
@@ -381,6 +399,13 @@ namespace mccore {
     virtual list< int > internalGetNeighbors (int o) const = 0;
 
     
+    /**
+     * Gets the edge coordinates map.
+     * @return a map of edge id has key and nodes id pair.
+     */
+    virtual const map< int, pair< int, int > >& getInternalEdgeCoordinateMap () const = 0;
+
+
     // I/O ---------------------------------------------------------------------    
     
   public:
@@ -464,7 +489,7 @@ namespace mccore {
   /**
    * Abstract base class for Undirected graphs. 
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: AbstractGraph.h,v 1.1 2004-01-21 19:45:00 larosem Exp $
+   * @version $Id: AbstractGraph.h,v 1.2 2004-04-06 21:08:11 larosem Exp $
    */
   template< class node_type, 
 	    class edge_type = bool,

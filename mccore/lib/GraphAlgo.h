@@ -5,22 +5,24 @@
 // Author           : Patrick Gendron
 // Created On       : Fri Dec  5 16:47:26 2003
 // Last Modified By : Martin Larose
-// Last Modified On : Fri Apr  2 14:11:17 2004
-// Update Count     : 52
+// Last Modified On : Tue Apr  6 17:21:12 2004
+// Update Count     : 53
 // Status           : Unknown.
 // 
 
 #ifndef _GraphAlgo_h_
 #define _GraphAlgo_h_
 
-
+#include <algorithm>
 #include <assert.h>
 #include <iostream>
 #include <limits>
+#include <list>
 #include <map>
 #include <vector>
 
 #include "AbstractGraph.h"
+#include "Messagestream.h"
 #include "Path.h"
 
 using namespace std;
@@ -31,6 +33,21 @@ using namespace std;
 
 namespace mccore {
 
+
+//   template< class value_type >
+//   class lessPath
+//   {
+//   public:
+//     bool operator () (const Path< int, value_type> &l, const Path< int, value_type> &r) const
+//     {
+//       return (l < r
+// 	      || (l.getValue () == r.getValue ()
+// 		  && ((const list< int >&) l) < ((const list< int >&) r)));
+//     }
+//   };
+  
+  
+  
   /**
    * @short Algorithms on graphs.  
    * 
@@ -39,7 +56,7 @@ namespace mccore {
    * actual nodes.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: GraphAlgo.h,v 1.3 2004-04-02 18:59:20 larosem Exp $
+   * @version $Id: GraphAlgo.h,v 1.4 2004-04-06 21:08:34 larosem Exp $
    */
   class GraphAlgo 
   {
@@ -247,77 +264,83 @@ namespace mccore {
      * @param searchType (0 = minimum cycle basis, 1 = union of minimum cycle basis, 2 = minimum cycles)
      * @return cycles.
      */
-    template< class node_type, class edge_type, class node_comparator >
-    static vector< Path< int, float > > 
+    template< class node_type,
+	      class edge_type,
+	      class node_comparator,
+	      class value_type >
+    static vector< Path< int, value_type > > 
     cycleBaseHorton (UndirectedAbstractGraph< node_type, edge_type, node_comparator > &graph, int searchType = 0)
     {
-      vector< Path< int, float > > bag;
-      vector< Path< int, float > >::iterator p;
-      int i, j;
-      vector< vector< Path< int, float > > >::iterator ii;
+      vector< Path< int, value_type > > bag;
+      typename vector< Path< int, value_type > >::iterator p;
+      int i;
+      typename vector< vector< Path< int, value_type > > >::iterator ii;
+      const map< int, pair< int, int > > &edgesCoordinates = graph.getInternalEdgeCoordinateMap ();
+      map< int, pair< int, int > >::const_iterator ecIt;
+//       set< Path< int, value_type >, lessPath< value_type > > uniquePaths;
+      set< Path< int, value_type > > uniquePaths;
       
-      for (i=0; i<graph.size (); ++i) {
-	vector< Path< int, float > > tmp;
-	
-	shortestPath (graph, i, tmp);
-	for (j=0; j!=graph.size (); ++j)
-	  {
-	    list< int > ln = graph.internalGetNeighbors (j);
-	    list< int >::iterator k;
-	    
-	    for (k=ln.begin (); k!=ln.end (); ++k)
-	      {
-		// if P(v,x) ^ P(v,y) = {v}
-		Path< int, float > Pvx = tmp[j];
-		Path< int, float > Pvy = tmp[*k];
-		Path< int, float > Pvxp = Pvx; 
-		Path< int, float > Pvyp = Pvy; 
-		Path< int, float > inter;
-		
-		Pvxp.sort ();
-		Pvyp.sort ();
-		set_intersection (Pvxp.begin (), Pvxp.end (),
-				  Pvyp.begin (), Pvyp.end (),
-				  inserter (inter, inter.begin ()));
-		
-		// 	  cout << "Inter = " << inter << endl;
-		
-		if (inter.size () == 1 && inter.front () == i)
-		  {
-		    Path< int, float > C = Pvx;
-		    
-		    C.insert (C.end (), Pvy.rbegin (), Pvy.rend ());
-		    C.pop_back ();
-		    C.setValue (Pvx.getValue () + Pvy.getValue () + 1);
-		    
-		    for (p=bag.begin (); p!=bag.end (); ++p)
-		      {
-			if (*p == C)
-			  {  // Redundancy test
-			    break;
-			  }
-		      }
-		    if (p==bag.end ())
-		      {
-			bag.push_back (C);
-			// 	      cout << "Inserting " << C << endl;
-		      }
-		  }
-	      }	  
-	  }
-      }
-    
+      for (i = 0; i < graph.size (); ++i)
+	{
+	  vector< Path< int, value_type > > tmp;
+	  
+	  shortestPath (graph, i, tmp);
+	  for (ecIt = edgesCoordinates.begin (); edgesCoordinates.end () != ecIt; ++ecIt)
+	    {
+	      int j;
+	      int k;
+	      
+	      j = ecIt->second.first;
+	      k = ecIt->second.second;
+	      // if P(v,x) ^ P(v,y) = {v}
+	      if (++(tmp[j].begin ()) != ++(tmp[k].begin ()))
+		{
+		  Path< int, value_type > Pvx = tmp[j];
+		  Path< int, value_type > Pvy = tmp[k];
+		  Path< int, value_type > Pvxp = Pvx; 
+		  Path< int, value_type > Pvyp = Pvy; 
+		  Path< int, value_type > inter;
+		  
+		  std::sort (Pvxp.begin (), Pvxp.end ());
+		  std::sort (Pvyp.begin (), Pvyp.end ());
+		  set_intersection (Pvxp.begin (), Pvxp.end (),
+				    Pvyp.begin (), Pvyp.end (),
+				    inserter (inter, inter.begin ()));
+		  
+		  if (inter.size () == 1 && inter.front () == i)
+		    {
+		      Path< int, value_type > C = Pvx;
+		      
+		      C.insert (C.end (), Pvy.rbegin (), Pvy.rend ());
+		      C.pop_back ();
+		      C.setValue (Pvx.getValue () + Pvy.getValue () + 1);
+
+		      Path< int, value_type > key = C;
+		      std::sort (key.begin (), key.end ());
+		      if (uniquePaths.end () == uniquePaths.find (key))
+			{
+			  uniquePaths.insert (key);
+			  bag.push_back (C);
+			}
+		    }
+		}
+	    }
+	}
+      
       sort (bag.begin (), bag.end ());
       
-      cout << "Found " << bag.size () << " potential cycles before elimination" << endl;
+      gOut (3) << "Found " << bag.size () << " potential cycles before elimination" << endl;
       
       if (searchType == 2)
-	// 	bag = nonSimpleCycleElimination (graph, bag);
-	nonSimpleCycleElimination (graph, bag);
+	{
+	  nonSimpleCycleElimination (graph, bag);
+	}
       else
-	bag = gaussianElimination (graph, bag, searchType);    
+	{
+	  bag = gaussianElimination (graph, bag, searchType);
+	}
       
-      cout << "Found " << bag.size () << " cycles." << endl;
+      gOut (3) << "Found " << bag.size () << " cycles." << endl;
       
       return bag;
     }
@@ -331,50 +354,42 @@ namespace mccore {
      */
     template< class node_type, 
 	      class edge_type,
-	      class node_comparator >
-//     static vector< Path< int, float > >
+	      class node_comparator,
+	      class value_type >
     static void
-    nonSimpleCycleElimination (UndirectedAbstractGraph< node_type, edge_type, node_comparator > &graph, vector< Path< int, float > > &bag)
+    nonSimpleCycleElimination (UndirectedAbstractGraph< node_type, edge_type, node_comparator > &graph, vector< Path< int, value_type > > &bag)
     {
-//       vector< Path< int, float > > newbag;
-      vector< Path< int, float > >::iterator p;
-      Path< int, float >::iterator i;
-      Path< int, float >::iterator j;
-      Path< int, float >::iterator k;
-      Path< int, float >::iterator l;
-      Path< int, float >::iterator m;
-    
-      for (p = bag.begin (); bag.end () != p;)
+      typename vector< Path< int, value_type > >::iterator bagIt;
+
+      for (bagIt = bag.begin (); bag.end () != bagIt; )
 	{
-	  for (i = p->begin (); i != p->end (); ++i)
+	  Path< int, value_type > &path = *bagIt;
+	  typename Path< int, value_type >::iterator pathIt;
+	  unsigned int edgeCount;
+	  const unsigned int cycleSize = path.size ();
+	  typename Path< int, value_type >::iterator pathIt2;
+
+	  edgeCount = 0;
+	  for (pathIt = path.begin (); path.end () != pathIt; ++pathIt)
 	    {
-	      for (j = p->begin (); j != p->end (); ++j)
+	      for (++pathIt2 = pathIt; path.end () != pathIt2; ++pathIt2)
 		{
-		  k = l = j;
-		  m = i;
-		  if (j != i
-		      && (++k) != i
-		      && (--l) != i
-		      && ! (i == p->begin () && k == p->end ())
-		      && ! (j == p->begin () && (++m) == p->end ())
-		      && graph.internalAreConnected (*i, *j))
-		    break;
+		  if (graph.internalAreConnected (*pathIt, *pathIt2))
+		    {
+		      if (cycleSize < ++edgeCount)
+			break;
+		    }
 		}
-	      if (j != p->end ())
+	      if (path.end () != pathIt2)
 		break;
 	    }
-// 	  if (i == p->end ())
-// 	    newbag.push_back (*p);
-
-	  // too slow, should consider using a list
-	  if (p->end () == i)
-	    ++p;
+	  if (path.end () != pathIt2)
+	    bagIt = bag.erase (bagIt);
 	  else
-	    p = bag.erase (p);
+	    ++bagIt;
 	}
-//       return newbag;
     }
-
+    
   
     /**
      * Uses the Gaussian Elimination algorithm to find non linearly
@@ -386,12 +401,13 @@ namespace mccore {
      */
     template< class node_type, 
 	      class edge_type,
-	      class node_comparator >
-    static vector< Path< int, float > >
+	      class node_comparator,
+	      class value_type >
+    static vector< Path< int, value_type > >
     gaussianElimination (UndirectedAbstractGraph< node_type, edge_type, node_comparator > &graph,
-			 vector< Path< int, float > >& bag, bool minBasisUnion)
+			 vector< Path< int, value_type > >& bag, bool minBasisUnion)
     {
-      typedef vector< Path< int, float > >::iterator vpiterator;
+      typedef typename vector< Path< int, value_type > >::iterator vpiterator;
     
       if (bag.size () == 0) return bag;
     
@@ -399,7 +415,7 @@ namespace mccore {
       vector< bool* >::iterator n;
 
       int i, j;
-      vector< Path< int, float > > newbag;
+      vector< Path< int, value_type > > newbag;
       vpiterator p, q;
 
       vector< vpiterator > marked;
@@ -413,7 +429,7 @@ namespace mccore {
 	// Let's see if *p is linearly independent to the content of newbag 
 	//       cout << "Treating " << *p << endl;
       
-	Path< int, float >::iterator r, s;
+	typename Path< int, value_type >::iterator r, s;
 	for (r=p->begin (), s=r, ++s; r!=p->end (); ++r, ++s) {
 	  if (s==p->end ()) row[graph.internalGetEdge(*r, *p->begin ())] = true;
 	  else row[graph.internalGetEdge(*r, *s)] = true;
@@ -467,7 +483,7 @@ namespace mccore {
 	    bool* row2 = new bool[graph.edgeSize ()];	  
 	    memset (row2, false, graph.edgeSize () * sizeof (bool));
 	  
-	    Path< int, float >::iterator r, s;
+	    typename Path< int, value_type >::iterator r, s;
 	    for (r=marked[i]->begin (), s=r, ++s; r!=marked[i]->end (); ++r, ++s) {
 	      if (s==marked[i]->end ()) row2[graph.internalGetEdge(*r, *marked[i]->begin ())] = true;
 	      else row2[graph.internalGetEdge (*r, *s)] = true;
