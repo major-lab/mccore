@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Patrick Gendron
-// Last Modified On : Fri Mar  7 11:41:45 2003
-// Update Count     : 57
+// Last Modified On : Tue Apr  8 18:22:28 2003
+// Update Count     : 60
 // Status           : 
 // 
 //  This file is part of mccore.
@@ -242,6 +242,8 @@ CHBond::operator float () const
 	x[2] = atanh (cos ((*mResidueB)[acceptor].Angle ((*mResidueA)[donor], (*mResidueB)[lonepair])));
       }
 
+      cout << x[0] << " " << x[1] << " " << x[2] << endl;
+
       float p_x = 0;
       float p_h = 0;
       for (int i = 0; i < sNbGauss; ++i) {
@@ -323,6 +325,7 @@ float CHBond::Eval (float dist, float angle_h, float angle_l, bool decision)
   x[0] = dist;
   x[1] = angle_h;
   x[2] = angle_l;
+
   
   float p_x = 0;
   float p_h = 0;

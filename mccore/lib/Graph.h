@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Tue Mar 25 10:40:26 2003
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 // 
 //  This file is part of mccore.
 //  
@@ -27,19 +27,21 @@
 
 #include <iostream>
 #include <map>
+#include <list>
+#include <vector>
 
 #include "Path.h"
 
 namespace mccore {
 
-    /**
+  /**
    * @short A templated directed graph class.  Graphs are always weighted using floats!
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Graph.h,v 1.8 2003-04-03 21:43:32 gendrop Exp $
+   * @version $Id: Graph.h,v 1.9 2003-04-11 01:33:50 gendrop Exp $
    */
   template< class node_type, 
-	    class edge_type = int, 
+	    class edge_type = bool, 
 	    class node_comparator = less< node_type > >
   class Graph
   {
@@ -76,6 +78,16 @@ namespace mccore {
     typedef pair< node_type, node_type > node_pair;
 
     /**
+     * A node to value associative container.
+     */
+    typedef map< node_type, float, node_comparator > node_adapter;
+
+    /**
+     * A node to node to value associative container.
+     */
+    typedef map< node_type, node_adapter, node_comparator > edge_adapter;
+
+    /**
      * The graph implemented as a map of map, that is an adjacency
      * matrix but where empty cells do not take space in memory.
      */
@@ -84,12 +96,12 @@ namespace mccore {
     /**
      * Node weights.
      */
-    map< node_type, float, node_comparator > node_weights;
+    node_adapter nodeWeights;
 
     /**
      * Edge weights.
      */
-    map< node_type, map< node_type, float, node_comparator >, node_comparator > edge_weights;
+    edge_adapter edgeWeights;
 
   public:
   
@@ -106,8 +118,8 @@ namespace mccore {
      */
     Graph (const Graph &other) {
       graph = other.graph;
-      node_weights = other.node_weights;
-      edge_weights = other.edge_weights;
+      nodeWeights = other.nodeWeights;
+      edgeWeights = other.edgeWeights;
     }
 
     /**
@@ -127,8 +139,8 @@ namespace mccore {
     virtual Graph& operator= (const Graph &other) {
       if (this != &other) {
 	graph = other.graph;
-	node_weights = other.node_weights;
-	edge_weights = other.edge_weights;
+	nodeWeights = other.nodeWeights;
+	edgeWeights = other.edgeWeights;
       }
       return *this;
     }
@@ -164,9 +176,10 @@ namespace mccore {
      * @param n the node.
      * @return the weight.
      */
-    float getWeight (const node_type& n) {
+    virtual float getWeight (const node_type& n) const 
+    {
       assert (contains (n));
-      return node_weights[n];
+      return nodeWeights.find (n)->second;
     }
 
     /**
@@ -175,9 +188,21 @@ namespace mccore {
      * @param p the destination node.
      * @return the weight.
      */
-    float getWeight (const node_type& o, const node_type& p) {
+    virtual float getWeight (const node_type& o, const node_type& p) const 
+    {
       assert (areConnected (o, p));
-      return edge_weights[o][p];
+      return edgeWeights.find(o)->second.find (p)->second;
+    }
+
+    /**
+     * Gets the edge that exists between nodes o and p.
+     * @param o an extremity of the edge.
+     * @param p an extremity of the edge.
+     * @return the edge.
+     */
+    const edge_type& getEdge (const node_type& o, const node_type& p) const {
+      assert (areConnected (o, p));
+      return graph.find(o)->second.find (p)->second;
     }
 
     // METHODS --------------------------------------------------------------
@@ -188,9 +213,12 @@ namespace mccore {
      * @param w the weight of this node (default=1)
      * @return an iterator on the node that was inserted.
      */
-    virtual iterator insert (const node_type &n, float weight = 1) {
+    virtual iterator insert (const node_type &n, float weight = 1) 
+    {
+      if (contains (n)) return graph.find (n);
+
       graph[n] = adjacency_type ();
-      node_weights[n] = weight;
+      nodeWeights[n] = weight;
       iterator p = graph.find (n);
       return p;
     }
@@ -204,12 +232,13 @@ namespace mccore {
       if (!contains (n)) return 0;
    
       graph.erase (n);
-      node_weights.erase (n);
+      nodeWeights.erase (n);
       
       graph_type::iterator i;    
       for (i=graph.begin (); i!=graph.end (); ++i) {
 	i->second.erase (n);
       }
+      return 1;
     }
 
     /**
@@ -260,8 +289,8 @@ namespace mccore {
      */
     virtual void clear() {
       graph.clear ();
-      node_weights.clear ();
-      edge_weights.clear ();
+      nodeWeights.clear ();
+      edgeWeights.clear ();
     }
 
     // GRAPH RELATED METHODS ------------------------------------------------
@@ -270,14 +299,17 @@ namespace mccore {
      * Connect two nodes of the graph by a directed edge.
      * @param o a node.
      * @param p another node.
+     * @param e the edge.
      * @param w the weight of this edge (default=1).
      * @return true if the connect operation succeeded.
      */
-    virtual bool connect (const node_type &o, const node_type &p, const edge_type &e, float w = 1) {
+    virtual bool connect (const node_type &o, const node_type &p, 
+			  const edge_type &e = edge_type(), float w = 1) 
+    {
       if (!contains (o) || !contains (p)) return false;
     
       graph[o][p] = e;
-      edge_weights[o][p] = w;
+      edgeWeights[o][p] = w;
 
       return true;
     }
@@ -288,11 +320,12 @@ namespace mccore {
      * @param p another node.
      * @return true if the nodes were disconnected.
      */
-    virtual bool disconnect (const node_type &o, const node_type &p) {
+    virtual bool disconnect (const node_type &o, const node_type &p) 
+    {
       if (!contains (o) || !contains (p)) return false;
 
       graph.find (o)->second.erase (p);
-      edge_weights.find (o)->second.erase (p);
+      edgeWeights.find (o)->second.erase (p);
 
       return true;
     }
@@ -303,11 +336,52 @@ namespace mccore {
      * @param p an extremity of the edge.
      * @return true if there exists an edge between o and p.
      */
-    virtual bool areConnected (const node_type &o, const node_type &p) const {
+    virtual bool areConnected (const node_type &o, const node_type &p) const 
+    {
       if (!contains (o) || !contains (p)) return false;
     
       return graph.find (o)->second.find (p) != graph.find (o)->second.end ();
     }
+
+
+    /**
+     * Returns the neighbors of the given node.
+     * @param o a node in the graph.
+     * @return the list of neighbors.
+     */
+    virtual list< node_type > getNeighbors (const node_type& o) const
+    {
+      list< node_type > n;
+      if (!contains (o)) return n;
+
+      const adjacency_type &at = graph.find (o)->second;
+      for (adjacency_type::const_iterator i=at.begin (); i!=at.end (); ++i) {
+	n.push_back (i->first);
+      }
+      return n;
+    }
+
+
+    /**
+     * Algorithm for determining the shortest path between two nodes
+     * in a directed graph.
+     * @param source the start node of the path.
+     * @param dest the end node of the path. 
+     * @return a Path of object that represents the path.
+     */
+    Path< node_type, float >
+    shortestPath (const node_type &source, const node_type &dest) 
+    {
+      typedef float value_type;
+      if (!contains (source) || !contains (dest)) return Path< node_type, value_type >();
+      
+      map< node_type, Path< node_type, value_type > > paths;
+      paths = shortestPath (source);
+      if (paths.find (dest) != paths.end ()) 
+	return paths[dest];
+      return Path< node_type, value_type >();
+    }
+
 
 
     /**
@@ -334,7 +408,7 @@ namespace mccore {
       
       // Initialize.
       for (i=begin (); i!=end (); ++i) {
-      	if (!node_comparator() (source, *i) && !node_comparator() (*i, source)) {
+      	if (!equals (source, *i)) {
       	  v[&*i] = value_type ();
       	  p[&*i] = vector< const node_type* > ();
       	} else {
@@ -433,28 +507,13 @@ namespace mccore {
       return paths;
     }
 
+    // PRIVATE METHODS -----------------------------------------------------------
 
-    /**
-     * Algorithm for determining the shortest path between two nodes
-     * in a directed graph.
-     * @param source the start node of the path.
-     * @param dest the end node of the path. 
-     * @return a Path of object that represents the path.
-     */
-    Path< node_type, float >
-    shortestPath (const node_type &source, const node_type &dest) 
-    {
-      typedef float value_type;
-      if (!contains (source) || !contains (dest)) return Path< node_type, value_type >();
-      
-      map< node_type, Path< node_type, value_type > > paths;
-      paths = shortestPath (source);
-      if (paths.find (dest) != paths.end ()) 
-	return paths[dest];
-      return Path< node_type, value_type >();
+  protected:
+
+    bool equals (const node_type& o, const node_type& p) {
+      return !node_comparator () (o, p) && !node_comparator () (p, o);
     }
-
-
 
     // I/O -----------------------------------------------------------------------
 
@@ -491,11 +550,6 @@ namespace mccore {
       return os;
     }
   
-    friend ostream &operator<< (ostream &out, const Graph &g)
-    {
-      return g.output (out);
-    }
-
   protected:
     
 
@@ -550,6 +604,14 @@ namespace mccore {
 
   };  
 
+
+//   template< class node_type, 
+// 	    class edge_type = bool, 
+// 	    class node_comparator = less< node_type > >
+//   ostream &operator<< (ostream &out, const Graph< node_type, edge_type, node_comparator> &g)
+//   {
+//     return g.output (out);
+//   }
 
   
 }

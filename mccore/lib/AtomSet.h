@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron
 // Created On       : Thu Mar 13 13:03:07 2003
 // Last Modified By : Patrick Gendron
-// Last Modified On : Fri Mar 14 17:24:47 2003
-// Update Count     : 31
+// Last Modified On : Thu Apr 10 21:33:19 2003
+// Update Count     : 37
 // Status           : Unknown.
 // 
 
@@ -18,8 +18,11 @@
 #include <set>
 
 #include "Atom.h"
+#include "AtomType.h"
 
 namespace mccore {
+
+  class AtomType;
 
   /**
    * @short Base unary function for the atomset.
@@ -857,7 +860,7 @@ namespace mccore {
      * @return wheter the atom is within the set.
      */
     virtual bool operator() (const Atom &atom) const
-    { return atom.getType ()->isPseudo (); }
+    { return atom.getType ()->isLonePair (); }
 
     // METHODS --------------------------------------------------------------
 
@@ -942,7 +945,7 @@ namespace mccore {
      * @return wheter the atom is within the set.
      */
     virtual bool operator() (const Atom &atom) const
-    { return atom.getType ()->isPseudo (); }
+    { return atom.getType ()->isHydrogen (); }
 
     // METHODS --------------------------------------------------------------
 

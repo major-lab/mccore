@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 // 
 //  This file is part of mccore.
 //  
@@ -416,7 +416,7 @@ namespace mccore {
     
     os << "MODEL :" << flush;
     for (cit = begin (); cit != end (); ++cit)
-      os << cit->getResId ()  << " ";
+      os << *cit  << " ";
     return os;
   }
   

@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 12:30:39 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 // 
 //  This file is part of mccore.
 //  
@@ -38,10 +38,10 @@ using namespace std;
 namespace mccore { 
 
   /**
-   * Repository of atomtypes.
+   * @short Repository of atomtypes.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: AtomTypeStore.h,v 1.1 2003-04-03 21:55:55 gendrop Exp $
+   * @version $Id: AtomTypeStore.h,v 1.2 2003-04-11 01:33:26 gendrop Exp $
    */
   class AtomTypeStore
   {
@@ -94,9 +94,7 @@ namespace mccore {
      */
     AtomType* get (const char* s);
 
-
   private:
-
     
     // TYPES -------------------------------------------------------------------
 
@@ -108,7 +106,7 @@ namespace mccore {
       AminoAcid () {}
       AminoAcid (const char* t) : AtomType (t) {}
 
-      virtual bool isAminoAcid () { return true; }
+      virtual bool isAminoAcid () const { return true; }
     };
     
     /**
@@ -119,7 +117,7 @@ namespace mccore {
       NucleicAcid () {}
       NucleicAcid (const char* t) : AtomType (t) {}
 
-      virtual bool isNucleicAcid () { return true; }
+      virtual bool isNucleicAcid () const { return true; }
     };
 
     /**
@@ -130,7 +128,7 @@ namespace mccore {
       Backbone () {}
       Backbone (const char* t) : AtomType (t) {}
 
-      virtual bool isBackbone () { return true; }
+      virtual bool isBackbone () const { return true; }
     };
 
     /**
@@ -141,7 +139,7 @@ namespace mccore {
       SideChain () {}
       SideChain (const char* t) : AtomType (t) {}
 
-      virtual bool isSideChain () { return true; }
+      virtual bool isSideChain () const { return true; }
     };
 
     /**
@@ -152,7 +150,7 @@ namespace mccore {
       Carbon () {}
       Carbon (const char* t) : AtomType (t) {}
 
-      virtual bool isCarbon () { return true; }
+      virtual bool isCarbon () const { return true; }
     };
 
     /**
@@ -163,7 +161,7 @@ namespace mccore {
       Hydrogen () {}
       Hydrogen (const char* t) : AtomType (t) {}
 
-      virtual bool isHydrogen () { return true; }
+      virtual bool isHydrogen () const { return true; }
     };
 
     /**
@@ -174,7 +172,7 @@ namespace mccore {
       LonePair () {}
       LonePair (const char* t) : AtomType (t) {}
 
-      virtual bool isLonePair () { return true; }
+      virtual bool isLonePair () const { return true; }
     };
 
     /**
@@ -185,7 +183,7 @@ namespace mccore {
       Magnesium () {}
       Magnesium (const char* t) : AtomType (t) {}
 
-      virtual bool isMagnesium () { return true; }
+      virtual bool isMagnesium () const { return true; }
     };
 
     /**
@@ -196,7 +194,7 @@ namespace mccore {
       Nitrogen () {}
       Nitrogen (const char* t) : AtomType (t) {}
 
-      virtual bool isNitrogen () { return true; }
+      virtual bool isNitrogen () const { return true; }
     };
 
     /**
@@ -207,7 +205,7 @@ namespace mccore {
       Oxygen () {}
       Oxygen (const char* t) : AtomType (t) {}
 
-      virtual bool isOxygen () { return true; }
+      virtual bool isOxygen () const { return true; }
     };
 
     /**
@@ -218,7 +216,7 @@ namespace mccore {
       Phosphate () {}
       Phosphate (const char* t) : AtomType (t) {}
 
-      virtual bool isPhosphate () { return true; }
+      virtual bool isPhosphate () const { return true; }
     };
 
     /**
@@ -229,7 +227,7 @@ namespace mccore {
       Pseudo () {}
       Pseudo (const char* t) : AtomType (t) {}
 
-      virtual bool isPseudo () { return true; }
+      virtual bool isPseudo () const { return true; }
     };
 
     /**
@@ -240,7 +238,7 @@ namespace mccore {
       Sulfur () {}
       Sulfur (const char* t) : AtomType (t) {}
 
-      virtual bool isSulfur () { return true; }
+      virtual bool isSulfur () const { return true; }
     };
 
     /**
@@ -250,7 +248,7 @@ namespace mccore {
     { 
     public:
       AC1p () {}
-      AC1p (const char* t) : AtomType (t) {}      
+      AC1p (const char* t) : AtomType (t) {}
     };
 
     /**

@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron
 // Created On       : Thu Mar 13 13:03:07 2003
 // Last Modified By : Patrick Gendron
-// Last Modified On : Thu Mar 13 18:34:55 2003
-// Update Count     : 19
+// Last Modified On : Thu Apr 10 21:33:12 2003
+// Update Count     : 23
 // Status           : Unknown.
 // 
 
@@ -45,7 +45,6 @@ namespace mccore {
   {
     return as.output (obs);
   }
-
 
   AtomSetAll&
   AtomSetAll::operator= (const AtomSetAll &other)
@@ -274,7 +273,7 @@ namespace mccore {
   ostream& 
   AtomSetHydrogen::output (ostream &os) const
   {
-    os << "pse";
+    os << "hydrogen";
     return os;
   }
 

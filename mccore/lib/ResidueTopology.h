@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 21 15:30:27 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 // 
 //  This file is part of mccore.
 //  
@@ -30,6 +30,7 @@
 #include <set>
 
 #include "AtomType.h"
+#include "UndirectedGraph.h"
 
 namespace mccore {
 
@@ -39,11 +40,13 @@ namespace mccore {
    * The topology of known residues including obligatory and optionnal atoms.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueTopology.h,v 1.1 2003-04-03 21:55:55 gendrop Exp $
+   * @version $Id: ResidueTopology.h,v 1.2 2003-04-11 01:35:51 gendrop Exp $
    */
   class ResidueTopology
   {
 
+    static map< const ResidueType*, UndirectedGraph< const AtomType* > > topologies;
+    
   public:
 
     // LIFECYCLE ------------------------------------------------------------
@@ -62,7 +65,7 @@ namespace mccore {
     /**
      * Destroys the object.
      */
-    ~ResidueTopology ();
+    ~ResidueTopology () { cout << "AHAH" << endl; }
 
     // OPERATORS ------------------------------------------------------------
 
@@ -75,6 +78,13 @@ namespace mccore {
 
     // ACCESS ---------------------------------------------------------------
 
+    /**
+     * Gets the standard topology corresponding to the residue type.
+     * @param type the ResidueType.
+     * @return the topology or null if the type is non-standard.
+     */
+    static const UndirectedGraph< const AtomType* >* get (const ResidueType* type);
+
     // METHODS --------------------------------------------------------------
 
     /**
@@ -83,7 +93,11 @@ namespace mccore {
     static set< const AtomType* > getOblSet (const ResidueType* type);
   
 
-    // I/O  -----------------------------------------------------------------
+    // PRIVATE METHODS ------------------------------------------------------
+
+  private:
+
+    static bool init (const ResidueType* type);
 
   };
 

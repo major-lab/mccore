@@ -5,8 +5,8 @@
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:57:11 2000
 ## Last Modified By : Patrick Gendron
-## Last Modified On : Thu Apr  3 16:35:55 2003
-## Update Count     : 61
+## Last Modified On : Thu Apr 10 21:34:08 2003
+## Update Count     : 68
 ## Status           : Ok.
 ###############################################################################
 #
@@ -96,16 +96,18 @@ SOURCES = Vector3D.cc \
 	  Pdbstream.cc \
 \
 	  Rmsd.cc \
-\
 	  HBond.cc \
-\
-	  Model.cc
+	  Model.cc \
+	  PropertyType.cc \
+	  PropertyTypeStore.cc \
+	  Relation.cc \
+	  PairingPattern.cc
 
 
 HEADERS = $(SOURCES:.cc=.h) Algo.h Path.h Graph.h UndirectedGraph.h \
 fstreambase.h fPdbstream.h zfPdbstream.h fBinstream.h zfBinstream.h \
 sBinstream.h SocketCommand.h Messagestream.h oMessagestream.h \
-SymmetricalMatrix.h SymmetricalMatrix.cc
+SymmetricalMatrix.h SymmetricalMatrix.cc stlio.h
 
 OBJECTS = $(SOURCES:.cc=.o)
 

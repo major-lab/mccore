@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Patrick Gendron
-// Last Modified On : Thu Mar 20 19:09:42 2003
-// Update Count     : 29
+// Last Modified On : Wed Apr  9 11:23:49 2003
+// Update Count     : 30
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -46,7 +46,7 @@ namespace mccore {
    * between any two atoms.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: HBond.h,v 1.1 2003-04-03 21:55:55 gendrop Exp $
+   * @version $Id: HBond.h,v 1.2 2003-04-11 01:33:56 gendrop Exp $
    */
   class HBond
     {
@@ -201,6 +201,8 @@ namespace mccore {
       const BasicResidue* getAcceptorResidue () const {
 	return resA;
       }
+
+      float getValue () { return value; }
 
       // METHODS ---------------------------------------------------------------
 

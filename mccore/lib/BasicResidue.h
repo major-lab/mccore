@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 //
 //  This file is part of mccore.
 //  
@@ -30,10 +30,12 @@
 #include <map>
 
 #include "ResId.h"
-#include "ResidueType.h"
 #include "Atom.h"
-#include "HomogeneousTransfo.h"
+#include "AtomType.h"
 #include "AtomSet.h"
+#include "ResidueType.h"
+#include "HomogeneousTransfo.h"
+
 
 using namespace std;
 
@@ -41,6 +43,8 @@ class iBinstream;
 class oBinstream;
 
 namespace mccore {
+
+  class PropertyType;
 
   /**
    * @short A basic residue.
@@ -52,7 +56,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Patrick Gendron <gendrop@iro.umontreal.ca>
-   * @version $Id: BasicResidue.h,v 1.1 2003-04-03 21:55:55 gendrop Exp $
+   * @version $Id: BasicResidue.h,v 1.2 2003-04-11 01:33:44 gendrop Exp $
    */
   class BasicResidue
   {
@@ -260,21 +264,22 @@ namespace mccore {
      */
     virtual const HomogeneousTransfo& getReferential (HomogeneousTransfo *t) const; 
 
-//     /**
-//      * Sets the homogeneous matrix representing the local referential.
-//      * @param m the new referential.
-//      */
-//     void setReferential (const HomogeneousTransfo& m);
+    /**
+     * Sets the homogeneous matrix representing the local referential.
+     * @param m the new referential.
+     */
+    void setReferential (const HomogeneousTransfo& m);
   
-//     /**
-//      * Applies a tfo over each atoms.
-//      * @param aTransfo the transfo to apply.
-//      * @return itself.
-//      */
-//     const BasicResidue& transform (const HomogeneousTransfo &aTransfo) {
-//       setReferential(aTransfo * getReferential());
-//       return *this;
-//     }
+    /**
+     * Applies a tfo over each atoms.
+     * @param aTransfo the transfo to apply.
+     * @return itself.
+     */
+    const BasicResidue& transform (const HomogeneousTransfo &aTransfo) {
+      HomogeneousTransfo curr;
+      setReferential(aTransfo * getReferential(&curr));
+      return *this;
+    }
 
     /**
      * Inserts an atom in the residue.  It crushes the existing atom if it
@@ -330,36 +335,11 @@ namespace mccore {
      */
     virtual void validate ();
 
-     /**
+    /**
      * Removes all optional atoms.
      */
     virtual void removeOptionals ();
-
-  public:
-
-    // PRIVATE METHODS ------------------------------------------------------
-
-    /**
-     *  Initializes all the internals of the residue.  It aligns the
-     *  residue to the origin of the global coordinate and stores the
-     *  transformation internally.  
-     */
-    virtual void finalize ();
-
-    /**
-     * Gets the atom at a position given by an index.  This is used by the iterators.
-     * @param pos the position of the atom in the atom vector;
-     * @return the atom.
-     */
-    virtual Atom& get (size_type pos) const;
-
-    /**
-     * Gets the atom of given type.  
-     * @param type the atom type.
-     * @return the atom.
-     */
-    virtual Atom* get (const AtomType* type) const;
-
+    
     /**
      * Adds the hydrogens to the residue.  Hydrogens from the
      * sidechain will always be placed since their position is quite
@@ -374,6 +354,46 @@ namespace mccore {
      */
     virtual void addLonePairs ();
    
+    /**
+     * Determines the pucker mode of the NucleicAcid backbone.
+     */
+    virtual const PropertyType* getPucker ();
+
+    /**
+     * Determines the glycosidic angle classification.
+     */
+    virtual const PropertyType* getGlycosyl ();
+    
+    /**
+     *  Initializes all the internals of the residue.  It aligns the
+     *  residue to the origin of the global coordinate and stores the
+     *  transformation internally.  
+     */
+    virtual void finalize ();
+
+  private:
+
+    // PRIVATE METHODS ------------------------------------------------------
+
+    /**
+     * Gets the atom at a position given by an index.  This is used by
+     * the iterators.  It is private since no atom pointers should be
+     * used outside the residue; these pointers are not guaranteed to be valid.
+     * @param pos the position of the atom in the atom vector;
+     * @return the atom.
+     */
+    virtual Atom& get (size_type pos) const;
+
+    /**
+     * Gets the atom of given type.  It is private since no atom
+     * pointers should be used outside the residue; these pointers are
+     * not guaranteed to be valid.
+     * @param type the atom type.
+     * @return the atom.
+     */
+    virtual Atom* get (const AtomType* type) const;
+
+  public:
 
     // I/O  --------------------------------------------------------------------
 
@@ -551,7 +571,8 @@ namespace mccore {
        */
       bool operator< (const ResidueIterator &right) const
       {
-	return res == right.res && pos->first < right.pos->first;
+	return (res < right.res ||
+		res == right.res && pos->first < right.pos->first);
       }
       
       /**
@@ -726,7 +747,8 @@ namespace mccore {
        */
       bool operator< (const ResidueConstIterator &right) const
       {
-	return res == right.res && pos->first < right.pos->first;
+	return (res < right.res ||
+		res == right.res && pos->first < right.pos->first);
       }
     
       /**

@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:00:09 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 // 
 //  This file is part of mccore.
 //  
@@ -26,16 +26,17 @@
 #define _Atom_h_
 
 #include <iostream>
+
 #include "Vector3D.h"
-#include "AtomType.h"
 
 using namespace std;
 
 class iBinstream;
 class oBinstream;
 
-
 namespace mccore {
+
+  class AtomType;
 
   /**
    * @short Derived from Vector3D, this class adds the type of the atom.
@@ -43,7 +44,7 @@ namespace mccore {
    * Derived from Vector3D, this class adds the type of the atom.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Atom.h,v 1.1 2003-04-03 21:55:55 gendrop Exp $
+   * @version $Id: Atom.h,v 1.2 2003-04-11 01:33:06 gendrop Exp $
    */
   class Atom : public Vector3D
   {
@@ -59,7 +60,7 @@ namespace mccore {
     /**
      * Initializes the object.
      */
-    Atom () : type (0) {}
+    Atom ();
 
     /**
      * Initializes the atom with coordinates and a type.
@@ -68,34 +69,26 @@ namespace mccore {
      * @param z the z coordinate.
      * @param aType the atom type.
      */
-    Atom (float x, float y, float z, AtomType *aType) 
-      : Vector3D (x, y, z), 
-	type (aType) {}
+    Atom (float x, float y, float z, AtomType *aType);
     
     /**
      * Initializes the atom with a point and a type.
      * @param aPoint the coordinates
      * @param aType the atom type.
      */
-    Atom (Vector3D aPoint, const AtomType *aType)
-      : Vector3D (aPoint.getX(), aPoint.getY(), aPoint.getZ()),
-	type (aType) {}
+    Atom (Vector3D aPoint, const AtomType *aType);
 
     /**
      * Initializes the object with the other's content.
      * @param other the object to copy.
      */
-    Atom (const Atom &other) 
-      : Vector3D (other),
-	type (other.type) {}
+    Atom (const Atom &other);
     
     /**
      * Clones the atom.
      * @return a copy of itself.
      */
-    virtual Atom* clone () const { 
-      return new Atom (*this); 
-    }
+    virtual Atom* clone () const;
 
     /**
      * Destroys the object.
@@ -109,13 +102,7 @@ namespace mccore {
      * @param other the object to copy.
      * @return itself.
      */
-    Atom& operator= (const Atom &other){
-      if (&other != this) {
-	Vector3D::operator= (other);
-	type = other.type;
-      }
-      return *this;
-    }
+    Atom& operator= (const Atom &other);
 
     /**
      * Indicates whether some other atom is "equal to" this one.
@@ -123,8 +110,7 @@ namespace mccore {
      * @param true if this object is the same as the obj argument;
      * false otherwise.
      */
-    bool operator== (const Atom &other) const
-    { return *type == *other.getType (); }
+    bool operator== (const Atom &other) const;
 
     /**
      * Indicates whether some other atom is "not equal to" this one.
@@ -132,7 +118,7 @@ namespace mccore {
      * @param true if this object is the same as the obj argument;
      * false otherwise.
      */
-    bool operator!= (const Atom &other) const { return ! operator== (other); }
+    bool operator!= (const Atom &other) const;
 
     /**
      * Imposes a total ordering on the Atom objects.  They are sorted
@@ -140,8 +126,7 @@ namespace mccore {
      * @param other the atom to compare.
      * @return true if this atom is less than the other.
      */
-    bool operator< (const Atom &other) const
-    { return *type < *other.type; }
+    bool operator< (const Atom &other) const;
 
 
     // ACCESS ---------------------------------------------------------------
@@ -181,19 +166,7 @@ namespace mccore {
      * Returns the color of the given atom as a Vector3D in RGB space.
      * @return the atom color.
      */
-    Vector3D color () const {
-// 	if (type.isHydrogen ())       return new Vector3D (1.00f, 1.00f, 1.00f);
-// 	else if (type.isOxygen ())    return new Vector3D (0.76f, 0.00f, 0.00f);
-// 	else if (type.isNitrogen ())  return new Vector3D (0.20f, 0.15f, 0.80f);
-// 	else if (type.isPhosphate ()) return new Vector3D (0.82f, 0.53f, 0.00f);
-// 	else if (type.isCarbon ())    return new Vector3D (0.60f, 0.60f, 0.60f);
-// 	else if (type.isSulfur ())    return new Vector3D (0.80f, 0.80f, 0.00f);
-// 	else if (type.isLonePair ())  return new Vector3D (0.00f, 0.80f, 0.00f);
-// 	else if (type.isMagnesium ()) return new Vector3D (0.13f, 0.54f, 0.13f);
-// 	else 
-      return Vector3D (0.10f, 0.10f, 0.10f);
-    }
-    
+    Vector3D color () const;    
     
 
     // I/O  -----------------------------------------------------------------

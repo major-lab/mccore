@@ -25,6 +25,7 @@
 #define _Path_h_
 
 #include <iostream>
+#include <list>
 
 namespace mccore {
 
@@ -32,10 +33,10 @@ namespace mccore {
    * @short A path in a graph.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Path.h,v 1.1 2003-04-03 21:55:55 gendrop Exp $
+   * @version $Id: Path.h,v 1.2 2003-04-11 01:34:28 gendrop Exp $
    */
   template< class node_type, class valuetype >
-  class Path : public vector< node_type >
+  class Path : public list< node_type >
   {
 
     valuetype value;
@@ -47,13 +48,13 @@ namespace mccore {
     /**
      * Initializes the object.
      */
-    Path () : vector< node_type >(), value (valuetype ()) { }
+    Path () : list< node_type >(), value (valuetype ()) { }
 
     /**
      * Initializes the object with the other's content.
      * @param other the object to copy.
      */
-    Path (const Path &other) : vector< node_type > (other) { value = other.value; }
+    Path (const Path &other) : list< node_type > (other) { value = other.value; }
 
     /**
      * Destroys the object.
@@ -70,7 +71,7 @@ namespace mccore {
     Path& operator= (const Path &other)
     {
       if  (this != &other) {
-	vector< node_type >::operator= (other);
+	list< node_type >::operator= (other);
 	value = other.value;
       } 
       return *this;
@@ -97,8 +98,7 @@ namespace mccore {
 
     ostream &output (ostream &out) const {
       out << "[ " << flush;
-      for  (int i=0; i<(int)size(); i++) 
-	out << (*this)[i] << " ";
+      copy (begin (), end (), ostream_iterator< node_type > (out, " "));
       out << "] " << value << flush;
       return out;
     }

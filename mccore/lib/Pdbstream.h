@@ -3,7 +3,7 @@
 // Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.15 $
+// $Revision: 1.16 $
 //  This file is part of mccore.
 //  
 //  mccore is free software; you can redistribute it and/or
@@ -74,7 +74,7 @@ namespace mccore {
    * </pre>
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Pdbstream.h,v 1.15 2003-04-03 21:43:35 gendrop Exp $
+   * @version $Id: Pdbstream.h,v 1.16 2003-04-11 01:34:31 gendrop Exp $
    */
   class iPdbstream : public istream
   {
@@ -457,6 +457,8 @@ namespace mccore {
      */
     oPdbstream& operator<< (long double n) { return operator<< ((double)n); }
 
+  public:
+
     /**
      * Modifies the pdb stream.
      * @param func the ios manipulator function.
@@ -472,9 +474,6 @@ namespace mccore {
      */
     oPdbstream& operator<< (ostream& (*func)(ostream&))
     { (*func)(*(ostream*)this); return *this; }
-
-
-  public:
 
     /**
      * Writes an atom to the pdb stream.

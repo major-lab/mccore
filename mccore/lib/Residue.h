@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 // 
 //  This file is part of mccore.
 //  
@@ -52,7 +52,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Residue.h,v 1.6 2003-04-03 21:43:36 gendrop Exp $
+   * @version $Id: Residue.h,v 1.7 2003-04-11 01:35:31 gendrop Exp $
    */
   class Residue : public virtual BasicResidue
   {
@@ -261,7 +261,7 @@ namespace mccore {
     virtual void clear();
 
 
-  public:
+    //  private:
 
     // PRIVATE METHODS ------------------------------------------------------
 

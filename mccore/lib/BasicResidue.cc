@@ -32,6 +32,7 @@
 #include "ResidueTopology.h"
 #include "ResId.h"
 #include "Binstream.h"
+#include "PropertyType.h"
 
 namespace mccore {
 
@@ -174,6 +175,8 @@ namespace mccore {
     }
 
     finalize ();
+    addHydrogens();
+    addLonePairs();
 
     return true;    
   }
@@ -338,7 +341,44 @@ namespace mccore {
     }
 
     *t = HomogeneousTransfo::align (*pivot[0], *pivot[1], *pivot[2]);
+
     return *t; 
+  }
+
+
+  void 
+  BasicResidue::setReferential (const HomogeneousTransfo& m) 
+  {
+    Vector3D *pivot[3];
+    HomogeneousTransfo curr;
+
+    if ((get (AtomType::aN9) != 0 || get (AtomType::aN1) != 0) 
+	&& get (AtomType::aPSY) != 0
+	&& get (AtomType::aPSZ) != 0) {
+      pivot[0] = get (AtomType::aN9) != 0 ? get (AtomType::aN9) : get (AtomType::aN1);
+      pivot[1] = get (AtomType::aPSY);
+      pivot[2] = get (AtomType::aPSZ);	   
+    } else if (type->isAminoAcid ()) {
+      pivot[0] = get (AtomType::aCA);
+      pivot[1] = get (AtomType::aN);
+      pivot[2] = get (AtomType::aPSAZ);	   
+    } else if (size() >= 3) {
+      pivot[0] = (Atom*) atomGlobal[0];
+      pivot[1] = (Atom*) atomGlobal[1];
+      pivot[2] = (Atom*) atomGlobal[2];
+    } else {
+      //System.err.println("Residue " + getType() + "-" + getResId ()
+      //	       + " cannot be moved since it has less then 3 atoms.");
+    }
+    curr = HomogeneousTransfo::align (*pivot[0], *pivot[1], *pivot[2]);
+
+    /* Align the residue to the origin and transform. */
+    unsigned int i;
+    HomogeneousTransfo inv = curr.invert ();
+    inv = m * inv;
+    for (i=0; i<atomGlobal.size (); ++i) {
+      atomGlobal[i]->transform (inv);
+    }
   }
 
 
@@ -425,6 +465,12 @@ namespace mccore {
   {
     if (!type->isNucleicAcid () && !type->isAminoAcid ()) return;
     
+    if (getType ()->isNucleicAcid ()) {
+      removeOptionals ();
+      addHydrogens ();
+      addLonePairs ();
+    }
+
     set< const AtomType* > actset;
     set< const AtomType* > diffset;    
     set< const AtomType* > oblset = ResidueTopology::getOblSet (type);
@@ -433,7 +479,7 @@ namespace mccore {
     for (i=atomIndex.begin (); i!=atomIndex.end (); ++i) {
       actset.insert (i->first);
     }
-
+    
     set_difference (oblset.begin (), oblset.end (),
  		    actset.begin (), actset.end (),
 		    inserter (diffset, diffset.begin ()));
@@ -443,8 +489,8 @@ namespace mccore {
     } else {
       // Add here the removal of non obligatory or optional atoms.
     }     
-   }
-
+  }
+  
 
   void BasicResidue::removeOptionals () 
   {
@@ -585,7 +631,7 @@ namespace mccore {
 	    insert (Atom (h61, AtomType::a1H6));
 	    insert (Atom (h62, AtomType::a2H6));
 	}
-    else if (type->isC ()) 
+    else if (type->isG ()) 
 	{
 	    Vector3D h1;
 	    Vector3D h8;
@@ -1083,8 +1129,8 @@ namespace mccore {
 	up = x.cross (y).normalize ();
 	a = (z + up.cross (z).normalize () * TAN60).normalize ();
 	b = (z + z.cross (up).normalize () * TAN60).normalize ();
-	lp21 = *get (AtomType::aO4) + b * O_LP_DIST;
-	lp22 = *get (AtomType::aO4) + a * O_LP_DIST;
+	lp21 = *get (AtomType::aO2) + a * O_LP_DIST;
+	lp22 = *get (AtomType::aO2) + b * O_LP_DIST;
 	
 	// 1LP4 and 2LP4
 	x = (*get (AtomType::aC4) - *get (AtomType::aN3)).normalize ();
@@ -1104,6 +1150,87 @@ namespace mccore {
       }      
   }
   
+
+  const PropertyType* 
+  BasicResidue::getPucker ()
+  {
+    if (!getType ()->isNucleicAcid ()) return 0;
+
+    double nu0, nu1, nu2, nu3, nu4;
+    double P;
+    
+    // Evaluation of the pucker mode
+    
+    nu0 = get (AtomType::aO4p)->torsionAngle (*get (AtomType::aC4p),
+					      *get (AtomType::aC1p),
+					      *get (AtomType::aC2p));
+    nu1 = get (AtomType::aC1p)->torsionAngle (*get (AtomType::aO4p),
+					      *get (AtomType::aC2p),
+					      *get (AtomType::aC3p));
+    nu2 = get (AtomType::aC2p)->torsionAngle (*get (AtomType::aC1p),
+					      *get (AtomType::aC3p),
+					      *get (AtomType::aC4p));    
+    nu3 = get (AtomType::aC3p)->torsionAngle (*get (AtomType::aC2p),
+					      *get (AtomType::aC4p),
+					      *get (AtomType::aO4p));    
+    nu4 = get (AtomType::aC4p)->torsionAngle (*get (AtomType::aC3p),
+					      *get (AtomType::aO4p),
+					      *get (AtomType::aC1p));
+    
+    P = atan2 (nu4+nu1-nu3-nu0, nu2*3.07768354 );
+    
+    if  (P > 0)
+      P = P * 180 / M_PI;
+    else
+      P = 360 + P * 180 / M_PI;
+    
+    if (((P >= 0) &&  (P < 36)) ||  (P == 360))
+      return PropertyType::pC3p_endo;
+    else if ((P >= 36) &&  (P < 72))
+      return PropertyType::pC4p_exo;
+    else if ((P >= 72) &&  (P < 108))
+      return PropertyType::pO4p_endo;
+    else if ((P >= 108) &&  (P < 144))
+      return PropertyType::pC1p_exo;
+    else if ((P >= 144) &&  (P < 180)) 
+      return PropertyType::pC2p_endo;
+    else if ((P >= 180) &&  (P < 216))
+      return PropertyType::pC3p_exo;
+    else if ((P >= 216) &&  (P < 252)) 
+      return PropertyType::pC4p_endo;
+    else if ((P >= 252) &&  (P < 288))
+      return PropertyType::pO4p_exo;
+    else if ((P >= 288) &&  (P < 324))
+      return PropertyType::pC1p_endo;
+    else 
+      return PropertyType::pC2p_exo;   
+  }
+  
+  const PropertyType* 
+  BasicResidue::getGlycosyl ()
+  {
+    if (!getType ()->isNucleicAcid ()) return 0;
+    
+    double chi;
+    
+    if  (getType ()->isPurine ())
+      chi = get (AtomType::aC1p)->torsionAngle (*get (AtomType::aO4p),
+						 *get (AtomType::aN9),
+						*get (AtomType::aC4));
+    else 
+      chi = get (AtomType::aC1p)->torsionAngle (*get (AtomType::aO4p),
+						*get (AtomType::aN1),
+						*get (AtomType::aC2));
+    
+    if  ((chi >= -10 && chi <= -M_PI/2)
+	 || (chi > M_PI/2 && chi <= 10))
+      return PropertyType::pAnti;
+    else if  ((chi > -M_PI/2 && chi <= 0)
+	      || (chi > 0 && chi <= M_PI/2))
+      return PropertyType::pSyn;
+    return 0;
+  }
+
   
   // I/O -----------------------------------------------------------------------
 
@@ -1352,7 +1479,6 @@ namespace mccore {
     pos = right.pos;
     delete filter;
     filter = right.filter->clone ();
-
     return *this;
   }
 

@@ -26,6 +26,8 @@
 #include <config.h>
 #endif
 
+#include <iomanip>
+
 #include "HBond.h"
 
 #include "AtomType.h"
@@ -193,7 +195,7 @@ const Atom&
 HBond::getAcceptor () const
 {
   if (resA == 0) cerr << "Residue not set in HBond" << endl;
-  return *resA->find (hydrogen);
+  return *resA->find (acceptor);
 }
 
 const Atom&
@@ -244,6 +246,9 @@ HBond::evalStatistically (const BasicResidue &ra, const BasicResidue &rb)
   x[1] = atanh (cos (getDonor ().angle (getHydrogen (), getAcceptor ())));
   x[2] = atanh (cos (getAcceptor ().angle (getDonor (), getLonePair ())));
   
+//   cout << *this << " " << getHydrogen () << " " << getLonePair () 
+//        << " " << x[0] << endl;
+
   for (int i=0; i<sNbGauss; ++i) {
     float diff[3];
     diff[0] = x[0] - sMean[i][0];
@@ -298,15 +303,17 @@ HBond::writeAmberRestraint (ostream &os) const
 ostream &
 HBond::output (ostream &os) const
 {
-  if (resA != 0 && resD != 0)
+  if (resA != 0 && resD != 0) {
+    os.precision (8);
     return os << resD->getResId () << " -> " 
 	      << resA->getResId () << "  "
 	      << donor << "-" << hydrogen << " -> " 
 	      << acceptor << " (" << lonepair << ")"
 	      << " [" << value << "]";
-  else
+  } else {
     return os << donor << "-" << hydrogen << " -> " 
 	      << acceptor << " (" << lonepair << ")";  
+  }
 }
 
 

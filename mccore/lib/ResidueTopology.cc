@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 21 15:30:27 2003
 // Last Modified By : Patrick Gendron
-// Last Modified On : Fri Mar 21 16:29:15 2003
-// Update Count     : 13
+// Last Modified On : Mon Apr  7 17:12:52 2003
+// Update Count     : 28
 // Status           : Unknown.
 // 
 
@@ -19,9 +19,389 @@
 #include "ResidueTopology.h"
 #include "AtomType.h"
 #include "ResidueType.h"
-
+#include "ResidueTopology.h"
 
 namespace mccore {
+
+  map< const ResidueType*, UndirectedGraph< const AtomType* > >
+  ResidueTopology::topologies;
+  
+
+  const UndirectedGraph< const AtomType* >* 
+  ResidueTopology::get (const ResidueType* type) 
+  {
+    bool isKnown = true;
+    if (topologies.find (type) == topologies.end ())
+      isKnown = init (type);
+    if (isKnown) return &topologies[type];
+    else return 0;
+  }
+
+
+  bool
+  ResidueTopology::init (const ResidueType* type) 
+  {
+    if (type == ResidueType::rRA) {      
+      UndirectedGraph< const AtomType* > &g = topologies[type];
+      
+      g.insert(AtomType::aC1p);
+      g.insert(AtomType::aC2);
+      g.insert(AtomType::aC2p);
+      g.insert(AtomType::aC3p);
+      g.insert(AtomType::aC4);
+      g.insert(AtomType::aC4p);
+      g.insert(AtomType::aC5);
+      g.insert(AtomType::aC5p);
+      g.insert(AtomType::aC6);
+      g.insert(AtomType::aC8);
+      g.insert(AtomType::aN1);
+      g.insert(AtomType::aN3);
+      g.insert(AtomType::aN6);
+      g.insert(AtomType::aN7);
+      g.insert(AtomType::aN9);
+      g.insert(AtomType::aO1P);
+      g.insert(AtomType::aO2P);
+      g.insert(AtomType::aO2p);
+      g.insert(AtomType::aO3p);
+      g.insert(AtomType::aO4p);
+      g.insert(AtomType::aO5p);
+      g.insert(AtomType::aP);
+
+      g.insert(AtomType::aH2);
+      g.insert(AtomType::aH8);
+      g.insert(AtomType::a1H6);
+      g.insert(AtomType::a2H6);
+      g.insert(AtomType::aLP1);
+      g.insert(AtomType::aLP3);
+      g.insert(AtomType::aLP7);
+      g.insert(AtomType::aH1p);
+      g.insert(AtomType::aH2p);
+      g.insert(AtomType::aH3p);
+      g.insert(AtomType::aH4p);
+      g.insert(AtomType::a1H5p);
+      g.insert(AtomType::a2H5p);
+      g.insert(AtomType::aHO2p);
+      g.insert(AtomType::aHO3p);
+      // 	    g.insert(AtomType::a1H2p);
+      // 	    g.insert(AtomType::aH5p);
+	    
+      // BACKBONE
+      g.connect (AtomType::aC1p, AtomType::aC2p);
+      g.connect (AtomType::aC1p, AtomType::aO4p);
+      g.connect (AtomType::aC1p, AtomType::aH1p);	    
+      g.connect (AtomType::aC2p, AtomType::aC3p);
+      g.connect (AtomType::aC2p, AtomType::aO2p);
+      g.connect (AtomType::aC2p, AtomType::aH2p);
+      g.connect (AtomType::aO2p, AtomType::aHO2p);
+      g.connect (AtomType::aC3p, AtomType::aO3p);
+      g.connect (AtomType::aO3p, AtomType::aHO3p);
+      g.connect (AtomType::aC3p, AtomType::aH3p);
+      g.connect (AtomType::aC3p, AtomType::aC4p);
+      g.connect (AtomType::aC4p, AtomType::aO4p);
+      g.connect (AtomType::aC4p, AtomType::aH4p);
+      g.connect (AtomType::aC4p, AtomType::aC5p);	    
+      g.connect (AtomType::aC5p, AtomType::a1H5p);
+      g.connect (AtomType::aC5p, AtomType::a2H5p);
+      g.connect (AtomType::aC5p, AtomType::aO5p);	    
+      g.connect (AtomType::aO5p, AtomType::aP);
+      g.connect (AtomType::aP, AtomType::aO1P);
+      g.connect (AtomType::aP, AtomType::aO2P);
+	    
+      g.connect (AtomType::aN9, AtomType::aC1p);
+
+      // SIDECHAIN
+      g.connect (AtomType::aN1, AtomType::aC2);
+      g.connect (AtomType::aC2, AtomType::aN3);
+      g.connect (AtomType::aC2, AtomType::aH2);
+      g.connect (AtomType::aN3, AtomType::aC4);
+      g.connect (AtomType::aC4, AtomType::aC5);
+      g.connect (AtomType::aC4, AtomType::aN9);
+      g.connect (AtomType::aC5, AtomType::aC6);
+      g.connect (AtomType::aC6, AtomType::aN1);
+      g.connect (AtomType::aC6, AtomType::aN6);
+      g.connect (AtomType::aN6, AtomType::a1H6);
+      g.connect (AtomType::aN6, AtomType::a2H6);
+      g.connect (AtomType::aC5, AtomType::aN7);
+      g.connect (AtomType::aN7, AtomType::aC8);
+      g.connect (AtomType::aC8, AtomType::aH8);
+      g.connect (AtomType::aC8, AtomType::aN9);
+
+      g.connect (AtomType::aLP1, AtomType::aN1);
+      g.connect (AtomType::aLP3, AtomType::aN3);
+      g.connect (AtomType::aLP7, AtomType::aN7);
+      
+      return true;
+    } else if (type == ResidueType::rRC) {
+      UndirectedGraph< const AtomType* > &g = topologies[type];
+
+      g.insert(AtomType::aC1p);
+      g.insert(AtomType::aC2);
+      g.insert(AtomType::aC2p);
+      g.insert(AtomType::aC3p);
+      g.insert(AtomType::aC4);
+      g.insert(AtomType::aC4p);
+      g.insert(AtomType::aC5);
+      g.insert(AtomType::aC5p);
+      g.insert(AtomType::aC6);
+      g.insert(AtomType::aN1);
+      g.insert(AtomType::aN3);
+      g.insert(AtomType::aN4);
+      g.insert(AtomType::aO1P);
+      g.insert(AtomType::aO2);
+      g.insert(AtomType::aO2P);
+      g.insert(AtomType::aO2p);
+      g.insert(AtomType::aO3p);
+      g.insert(AtomType::aO4p);
+      g.insert(AtomType::aO5p);
+      g.insert(AtomType::aP);	   
+
+      g.insert(AtomType::aH5);
+      g.insert(AtomType::aH6);
+      g.insert(AtomType::a1H4);
+      g.insert(AtomType::a2H4);
+      g.insert(AtomType::aLP3);
+      g.insert(AtomType::a1LP2);
+      g.insert(AtomType::a2LP2);
+      g.insert(AtomType::aH1p);
+      g.insert(AtomType::aH2p);
+      g.insert(AtomType::aH3p);
+      g.insert(AtomType::aH4p);
+      g.insert(AtomType::a1H5p);
+      g.insert(AtomType::a2H5p);
+      g.insert(AtomType::aHO2p);
+      g.insert(AtomType::aHO3p);
+      // 	    g.insert(AtomType::a1H2p);
+      // 	    g.insert(AtomType::aH5p);
+	
+      // BACKBONE
+      g.connect (AtomType::aC1p, AtomType::aC2p);
+      g.connect (AtomType::aC1p, AtomType::aO4p);
+      g.connect (AtomType::aC1p, AtomType::aH1p);
+      g.connect (AtomType::aC2p, AtomType::aC3p);
+      g.connect (AtomType::aC2p, AtomType::aO2p);
+      g.connect (AtomType::aC2p, AtomType::aH2p);
+      g.connect (AtomType::aO2p, AtomType::aHO2p);
+      g.connect (AtomType::aC3p, AtomType::aO3p);
+      g.connect (AtomType::aO3p, AtomType::aHO3p);
+      g.connect (AtomType::aC3p, AtomType::aH3p);
+      g.connect (AtomType::aC3p, AtomType::aC4p);
+      g.connect (AtomType::aC4p, AtomType::aO4p);
+      g.connect (AtomType::aC4p, AtomType::aH4p);
+      g.connect (AtomType::aC4p, AtomType::aC5p);	    
+      g.connect (AtomType::aC5p, AtomType::a1H5p);
+      g.connect (AtomType::aC5p, AtomType::a2H5p);
+      g.connect (AtomType::aC5p, AtomType::aO5p);	    
+      g.connect (AtomType::aO5p, AtomType::aP);
+      g.connect (AtomType::aP, AtomType::aO1P);
+      g.connect (AtomType::aP, AtomType::aO2P);
+	    
+      g.connect (AtomType::aN1, AtomType::aC1p);
+
+      //SIDECHAIN	   
+      g.connect (AtomType::aN1, AtomType::aC2);
+      g.connect (AtomType::aC2, AtomType::aN3);
+      g.connect (AtomType::aC2, AtomType::aO2);
+      g.connect (AtomType::aN3, AtomType::aC4);
+      g.connect (AtomType::aC4, AtomType::aN4);
+      g.connect (AtomType::aN4, AtomType::a1H4);
+      g.connect (AtomType::aN4, AtomType::a2H4);
+      g.connect (AtomType::aC4, AtomType::aC5);
+      g.connect (AtomType::aC5, AtomType::aH5);
+      g.connect (AtomType::aC5, AtomType::aC6);
+      g.connect (AtomType::aC6, AtomType::aH6);
+      g.connect (AtomType::aC6, AtomType::aN1);
+	    	    
+      g.connect (AtomType::aLP3, AtomType::aN3);
+      g.connect (AtomType::a1LP2, AtomType::aO2);
+      g.connect (AtomType::a2LP2, AtomType::aO2);
+
+      return true;
+    } else if (type == ResidueType::rRG) {
+      UndirectedGraph< const AtomType* > &g = topologies[type];
+
+      g.insert(AtomType::aC1p);
+      g.insert(AtomType::aC2);
+      g.insert(AtomType::aC2p);
+      g.insert(AtomType::aC3p);
+      g.insert(AtomType::aC4);
+      g.insert(AtomType::aC4p);
+      g.insert(AtomType::aC5);
+      g.insert(AtomType::aC5p);
+      g.insert(AtomType::aC6);
+      g.insert(AtomType::aC8);
+      g.insert(AtomType::aN1);
+      g.insert(AtomType::aN2);
+      g.insert(AtomType::aN3);
+      g.insert(AtomType::aN7);
+      g.insert(AtomType::aN9);
+      g.insert(AtomType::aO1P);
+      g.insert(AtomType::aO2p);
+      g.insert(AtomType::aO2P);
+      g.insert(AtomType::aO3p);
+      g.insert(AtomType::aO4p);
+      g.insert(AtomType::aO5p);
+      g.insert(AtomType::aO6);
+      g.insert(AtomType::aP);
+	    
+      g.insert(AtomType::aH1);
+      g.insert(AtomType::aH8);
+      g.insert(AtomType::a1H2);
+      g.insert(AtomType::a2H2);
+      g.insert(AtomType::aLP3);
+      g.insert(AtomType::aLP7);
+      g.insert(AtomType::a1LP6);
+      g.insert(AtomType::a2LP6);
+      g.insert(AtomType::aH1p);
+      g.insert(AtomType::aH2p);
+      g.insert(AtomType::aH3p);
+      g.insert(AtomType::aH4p);
+      g.insert(AtomType::a1H5p);
+      g.insert(AtomType::a2H5p);
+      g.insert(AtomType::aHO2p);
+      g.insert(AtomType::aHO3p);
+      // 	    g.insert(AtomType::a1H2p);
+      // 	    g.insert(AtomType::a2H2p); 
+      // 	    g.insert(AtomType::aH5p);
+
+      // BACKBONE
+      g.connect (AtomType::aC1p, AtomType::aC2p);
+      g.connect (AtomType::aC1p, AtomType::aO4p);
+      g.connect (AtomType::aC1p, AtomType::aH1p);	    
+      g.connect (AtomType::aC2p, AtomType::aC3p);
+      g.connect (AtomType::aC2p, AtomType::aO2p);
+      g.connect (AtomType::aC2p, AtomType::aH2p);
+      g.connect (AtomType::aO2p, AtomType::aHO2p);
+      g.connect (AtomType::aC3p, AtomType::aO3p);
+      g.connect (AtomType::aO3p, AtomType::aHO3p);
+      g.connect (AtomType::aC3p, AtomType::aH3p);
+      g.connect (AtomType::aC3p, AtomType::aC4p);
+      g.connect (AtomType::aC4p, AtomType::aO4p);
+      g.connect (AtomType::aC4p, AtomType::aH4p);
+      g.connect (AtomType::aC4p, AtomType::aC5p);	    
+      g.connect (AtomType::aC5p, AtomType::a1H5p);
+      g.connect (AtomType::aC5p, AtomType::a2H5p);
+      g.connect (AtomType::aC5p, AtomType::aO5p);	    
+      g.connect (AtomType::aO5p, AtomType::aP);
+      g.connect (AtomType::aP, AtomType::aO1P);
+      g.connect (AtomType::aP, AtomType::aO2P);
+	    
+      g.connect (AtomType::aN9, AtomType::aC1p);
+
+      // SIDECHAIN
+      g.connect (AtomType::aN1, AtomType::aC2);
+      g.connect (AtomType::aN1, AtomType::aH1);
+      g.connect (AtomType::aC2, AtomType::aN3);
+      g.connect (AtomType::aC2, AtomType::aN2);
+      g.connect (AtomType::aN2, AtomType::a1H2);
+      g.connect (AtomType::aN2, AtomType::a2H2);
+      g.connect (AtomType::aN3, AtomType::aC4);
+      g.connect (AtomType::aC4, AtomType::aC5);
+      g.connect (AtomType::aC4, AtomType::aN9);
+      g.connect (AtomType::aC5, AtomType::aC6);
+      g.connect (AtomType::aC6, AtomType::aN1);
+      g.connect (AtomType::aC6, AtomType::aO6);
+      g.connect (AtomType::aC5, AtomType::aN7);
+      g.connect (AtomType::aN7, AtomType::aC8);
+      g.connect (AtomType::aC8, AtomType::aH8);
+      g.connect (AtomType::aC8, AtomType::aN9);
+	    
+      g.connect (AtomType::aLP3, AtomType::aN3);
+      g.connect (AtomType::aLP7, AtomType::aN7);
+      g.connect (AtomType::a1LP6, AtomType::aO6);
+      g.connect (AtomType::a2LP6, AtomType::aO6);
+
+      return true;
+    } else if (type == ResidueType::rRU) {
+      UndirectedGraph< const AtomType* > &g = topologies[type];
+
+      g.insert(AtomType::aC1p);
+      g.insert(AtomType::aC2);
+      g.insert(AtomType::aC2p);
+      g.insert(AtomType::aC3p);
+      g.insert(AtomType::aC4);
+      g.insert(AtomType::aC4p);
+      g.insert(AtomType::aC5);
+      g.insert(AtomType::aC5p);
+      g.insert(AtomType::aC6);
+      g.insert(AtomType::aN1);
+      g.insert(AtomType::aN3);
+      g.insert(AtomType::aO1P);
+      g.insert(AtomType::aO2);
+      g.insert(AtomType::aO2p);
+      g.insert(AtomType::aO2P);
+      g.insert(AtomType::aO3p);
+      g.insert(AtomType::aO4);
+      g.insert(AtomType::aO4p);
+      g.insert(AtomType::aO5p);
+      g.insert(AtomType::aP);
+	    
+      g.insert(AtomType::aH3);
+      g.insert(AtomType::aH5);
+      g.insert(AtomType::aH6);
+      g.insert(AtomType::a1LP2);
+      g.insert(AtomType::a2LP2);
+      g.insert(AtomType::a1LP4);
+      g.insert(AtomType::a2LP4);
+      g.insert(AtomType::aH1p);
+      g.insert(AtomType::aH2p);
+      g.insert(AtomType::aH3p);
+      g.insert(AtomType::aH4p);
+      g.insert(AtomType::a1H5p);
+      g.insert(AtomType::a2H5p);
+      g.insert(AtomType::aHO2p);
+      g.insert(AtomType::aHO3p);
+      // 	    g.insert(AtomType::a1H2p);
+      // 	    g.insert(AtomType::aH5p);
+
+      // BACKBONE
+      g.connect (AtomType::aC1p, AtomType::aC2p);
+      g.connect (AtomType::aC1p, AtomType::aO4p);
+      g.connect (AtomType::aC1p, AtomType::aH1p);	    
+      g.connect (AtomType::aC2p, AtomType::aC3p);
+      g.connect (AtomType::aC2p, AtomType::aO2p);
+      g.connect (AtomType::aC2p, AtomType::aH2p);
+      g.connect (AtomType::aO2p, AtomType::aHO2p);
+      g.connect (AtomType::aC3p, AtomType::aO3p);
+      g.connect (AtomType::aO3p, AtomType::aHO3p);
+      g.connect (AtomType::aC3p, AtomType::aH3p);
+      g.connect (AtomType::aC3p, AtomType::aC4p);
+      g.connect (AtomType::aC4p, AtomType::aO4p);
+      g.connect (AtomType::aC4p, AtomType::aH4p);
+      g.connect (AtomType::aC4p, AtomType::aC5p);	    
+      g.connect (AtomType::aC5p, AtomType::a1H5p);
+      g.connect (AtomType::aC5p, AtomType::a2H5p);
+      g.connect (AtomType::aC5p, AtomType::aO5p);	    
+      g.connect (AtomType::aO5p, AtomType::aP);
+      g.connect (AtomType::aP, AtomType::aO1P);
+      g.connect (AtomType::aP, AtomType::aO2P);
+
+      g.connect (AtomType::aN1, AtomType::aC1p);
+
+      //SIDECHAIN	   
+      g.connect (AtomType::aN1, AtomType::aC2);
+      g.connect (AtomType::aC2, AtomType::aN3);
+      g.connect (AtomType::aC2, AtomType::aO2);
+      g.connect (AtomType::aN3, AtomType::aC4);
+      g.connect (AtomType::aN3, AtomType::aH3);
+      g.connect (AtomType::aC4, AtomType::aO4);	    
+      g.connect (AtomType::aC4, AtomType::aC5);
+      g.connect (AtomType::aC5, AtomType::aH5);
+      g.connect (AtomType::aC5, AtomType::aC6);
+      g.connect (AtomType::aC6, AtomType::aH6);
+      g.connect (AtomType::aC6, AtomType::aN1);
+
+      g.connect (AtomType::a1LP2, AtomType::aO2);
+      g.connect (AtomType::a2LP2, AtomType::aO2);
+      g.connect (AtomType::a1LP4, AtomType::aO4);
+      g.connect (AtomType::a2LP4, AtomType::aO4);
+
+      return true;
+    }
+
+    return false;
+  }
+
+
 
   set< const AtomType* >
   ResidueTopology::getOblSet (const ResidueType* type)
