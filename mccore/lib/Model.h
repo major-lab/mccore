@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.21.2.3 $
+// $Revision: 1.21.2.4 $
 //
 // This file is part of mccore.
 // 
@@ -59,7 +59,7 @@ namespace mccore
    *   iterators yields object.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Model.h,v 1.21.2.3 2004-12-27 01:42:33 larosem Exp $
+   * @version $Id: Model.h,v 1.21.2.4 2004-12-29 21:14:27 larosem Exp $
    */
   class Model : public AbstractModel
   {
@@ -82,7 +82,7 @@ namespace mccore
      * Initializes the object with the right's content.
      * @param right the object to copy.
      */
-    Model (const Model &right);
+    Model (const AbstractModel &right);
 
     /**
      * Clones the model.
@@ -102,7 +102,7 @@ namespace mccore
      * @param right the object to copy.
      * @return itself.
      */
-    Model& operator= (const Model &right);
+    Model& operator= (const AbstractModel &right);
 
     /**
      * Gets the model reference at nth position.
@@ -163,10 +163,7 @@ namespace mccore
      * @param pos the position to erase.
      * @return an iterator on the next residue.
      */ 
-    virtual iterator erase (iterator pos) 
-    {
-      return residues.erase (pos);
-    }
+    virtual iterator erase (iterator pos);
     
     /**
      * Sorts the model according to the Residue::operator<

@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.26.2.2 $
-// $Id: Model.cc,v 1.26.2.2 2004-12-27 04:25:40 larosem Exp $
+// $Revision: 1.26.2.3 $
+// $Id: Model.cc,v 1.26.2.3 2004-12-29 21:14:22 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -45,15 +45,10 @@
 namespace mccore
 {
   
-  Model::Model (const Model &right)
+  Model::Model (const AbstractModel &right)
     : AbstractModel (right)
   {
-    const_iterator cit;
-    
-    for (cit = right.begin (); cit != right.end (); ++cit)
-      {
-	insert (*cit);
-      }
+    AbstractModel::insert (right.begin (), right.end ());
   }
 
 
@@ -69,18 +64,13 @@ namespace mccore
 
 
   Model&
-  Model::operator= (const Model &right)
+  Model::operator= (const AbstractModel &right)
   {
     if (this != &right)
       {
-	const_iterator cit;
-
+	clear ();	
 	AbstractModel::operator= (right);
-	this->clear ();	
-	for (cit = right.begin (); cit != right.end (); ++cit)
-	  {
-	    insert (*cit);
-	  }
+	AbstractModel::insert (right.begin (), right.end ());
       }
     return *this;
   }
@@ -116,6 +106,14 @@ namespace mccore
   }
   
   
+  Model::iterator
+  Model::erase (iterator pos)
+  {
+    delete &*pos;
+    return residues.erase (pos);
+  }
+  
+    
   void
   Model::sort ()
   {
