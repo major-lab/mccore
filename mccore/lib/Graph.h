@@ -4,7 +4,7 @@
 //                  Université de Montréal
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 00:05:15 2004
-// $Revision: 1.23.4.9 $
+// $Revision: 1.23.4.10 $
 // 
 // This file is part of mccore.
 // 
@@ -80,7 +80,7 @@ namespace mccore
    * costly.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Graph.h,v 1.23.4.9 2004-12-16 17:08:13 larosem Exp $
+   * @version $Id: Graph.h,v 1.23.4.10 2004-12-16 22:29:33 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -409,7 +409,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * vertex.
      */
-    void setVertexWeight (const V &v, VW &w) throw (NoSuchElementException)
+    void setVertexWeight (const V &v, const VW &w) throw (NoSuchElementException)
     {
       typename V2VLabel::const_iterator it;
       
@@ -536,7 +536,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * vertices or the edge.
      */
-    void setEdgeWeight (const V &h, const V &t, EW &w) throw (NoSuchElementException)
+    void setEdgeWeight (const V &h, const V &t, const EW &w) throw (NoSuchElementException)
     {
       typename V2VLabel::const_iterator ith;
       typename V2VLabel::const_iterator itt;
@@ -693,7 +693,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    void internalSetVertexWeight (Graph::label l, VW &w) throw (NoSuchElementException)
+    void internalSetVertexWeight (Graph::label l, const VW &w) throw (NoSuchElementException)
     {
       if (vertexWeights.size () <= l)
 	{
@@ -862,7 +862,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * labels or the vertices are not connected.
      */
-    void internalSetEdgeWeight (Graph::label h, Graph::label t, EW w) throw (NoSuchElementException)
+    void internalSetEdgeWeight (Graph::label h, Graph::label t, const EW w) throw (NoSuchElementException)
     {
       typename EV2ELabel::iterator evit;
       EndVertices ev (h, t);
@@ -953,7 +953,7 @@ namespace mccore
      * @param v the vertex to insert.
      * @return true if the element was inserted, false if already present.
      */
-    virtual bool insert (V &v)
+    virtual bool insert (const V &v)
     {
       typename V2VLabel::iterator it;
 
@@ -973,7 +973,7 @@ namespace mccore
      * @param w the vertex weight.
      * @return true if the element was inserted, false if already present.
      */
-    virtual bool insert (V &v, VW &w)
+    virtual bool insert (const V &v, const VW &w)
     {
       typename V2VLabel::iterator it;
 
@@ -1109,7 +1109,7 @@ namespace mccore
      * @param e the edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool uncheckedInternalConnect (Graph::label h, Graph::label t, E &e) = 0;
+    virtual bool uncheckedInternalConnect (Graph::label h, Graph::label t, const E &e) = 0;
     
     /**
      * Connects two vertices of the graph with an edge and weight.  No check
@@ -1120,7 +1120,7 @@ namespace mccore
      * @param w the weight of this edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool uncheckedInternalConnect (Graph::label h, Graph::label t, E &e, EW &w) = 0;
+    virtual bool uncheckedInternalConnect (Graph::label h, Graph::label t, const E &e, const EW &w) = 0;
     
   public:
     
@@ -1131,7 +1131,7 @@ namespace mccore
      * @param e the edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool connect (const V &h, const V &t, E &e)
+    virtual bool connect (const V &h, const V &t, const E &e)
     {
       typename V2VLabel::const_iterator ith;
       typename V2VLabel::const_iterator itt;
@@ -1150,7 +1150,7 @@ namespace mccore
      * @param w the weight of this edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool connect (const V &h, const V &t, E &e, EW &w)
+    virtual bool connect (const V &h, const V &t, const E &e, const EW &w)
     {
       typename V2VLabel::const_iterator ith;
       typename V2VLabel::const_iterator itt;
@@ -1168,7 +1168,7 @@ namespace mccore
      * @param e the edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool internalConnect (Graph::label h, Graph::label t, E &e)
+    virtual bool internalConnect (Graph::label h, Graph::label t, const E &e)
     {
       return (vertices.size () > h && vertices.size () > t
 	      ? uncheckedInternalConnect (h, t, e)
@@ -1183,7 +1183,7 @@ namespace mccore
      * @param w the weight of this edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool internalConnect (Graph::label h, Graph::label t, E &e, EW &w)
+    virtual bool internalConnect (Graph::label h, Graph::label t, const E &e, const EW &w)
     {
       return (vertices.size () > h && vertices.size () > t
 	      ? uncheckedInternalConnect (h, t, e, w)

@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Dec 10 19:09:13 2004
-// $Revision: 1.12.2.6 $
+// $Revision: 1.12.2.7 $
 // 
 // This file is part of mccore.
 // 
@@ -27,6 +27,7 @@
 #define _mccore_UndirectedGraph_h_
 
 #include <functional>
+#include <limits>
 #include <list>
 #include <utility>
 #include <vector>
@@ -43,7 +44,7 @@ namespace mccore
    * Undirected graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: UndirectedGraph.h,v 1.12.2.6 2004-12-16 17:09:55 larosem Exp $
+   * @version $Id: UndirectedGraph.h,v 1.12.2.7 2004-12-16 22:29:48 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -149,7 +150,7 @@ namespace mccore
     {
       list< label > res;
 
-      if (vertices.size () > v)
+      if (vertices.size () > l)
 	{
 	  typename EV2ELabel::const_iterator evit;
 
@@ -176,19 +177,20 @@ namespace mccore
      */
     virtual iterator uncheckedInternalErase (label l)
     {
-      list< label > neighbors = internalOutNeighborhood (l);
+      list< label > neighbors = internalNeighborhood (l);
 
       if (! neighbors.empty ())
 	{
-	  list< label > lit;
+	  typename list< label >::iterator lit;
 	  typename EV2ELabel::iterator evit;
 	  EV2ELabel newEV2;
+	  typename vector< V >::iterator res;
 
 	  for (lit = neighbors.begin (); neighbors.end () != lit; ++lit)
 	    {
 	      uncheckedInternalDisconnect (l, *lit);
 	    }
-	  vertices.erase (vertices.begin () + l);
+	  res = vertices.erase (vertices.begin () + l);
 	  vertexWeights.erase (vertexWeights.begin () + l);
 	  rebuildV2VLabel ();
 	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
@@ -211,9 +213,9 @@ namespace mccore
 	      newEV2.insert (make_pair (ev, evit->second));
 	    }
 	  ev2elabel = newEV2;
-	  return true;
+	  return res;
 	}
-      return false;
+      return vertices.end ();
     }
     
     /**
@@ -225,7 +227,7 @@ namespace mccore
      * @param e the edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool uncheckedInternalConnect (label h, label t, E &e)
+    virtual bool uncheckedInternalConnect (label h, label t, const E &e)
     {
       EndVertices ev (h, t);
       typename EV2ELabel::const_iterator evit;
@@ -253,7 +255,7 @@ namespace mccore
      * @param w the weight of this edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool uncheckedInternalConnect (label h, label t, E &e, EW &w)
+    virtual bool uncheckedInternalConnect (label h, label t, const E &e, const EW &w)
     {
       EndVertices ev (h, t);
       typename EV2ELabel::const_iterator evit;
@@ -305,6 +307,91 @@ namespace mccore
       return false;
     }      
 
+  protected:
+    
+    /**
+     * Prim's algorithm for the minimum spanning tree.
+     * @param graph an undirected graph
+     * @param edge_nodes a vector of pairs of node ids.
+     * @return a vector of edges representing a spanning tree of the graph.
+     */
+    static void minimumSpanningTree (const UndirectedGraph< V, E, VW, EW, Vertex_Comparator > &graph, vector< pair< label, label > > &edge_nodes) 
+    {
+      vector< label > nearest (graph.size (), 0);
+      vector< float > mindist (graph.size (), numeric_limits< float >::max ());
+      unsigned int i;
+      unsigned int j;
+
+      if (! graph.empty ())
+	{
+	  // Initialize
+	  for (i = 1; i < graph.size (); ++i)
+	    {
+	      if (graph.internalAreConnected (i, 0))
+		{
+		  mindist[i] = graph.internalGetEdgeWeight (i, 0);
+		}
+	    }
+	  edge_nodes.clear ();
+  
+	  // Execute
+	  for (i = 0; i < graph.size () - 1; ++i)
+	    {
+	      float min = numeric_limits< float >::max ();
+	      label k = numeric_limits< unsigned int >::max ();
+	  
+	      for (j = 1; j < graph.size (); ++j)
+		{
+		  if (mindist[j] >= 0 && mindist[j] < min)
+		    {
+		      min = mindist[j];
+		      k = j;
+		    }
+		}
+	
+	      // This is a test to see if we stay in the same connected
+	      // component
+	      if (k != numeric_limits< unsigned int >::max ())
+		{
+		  edge_nodes.push_back (make_pair (nearest[k], k));
+		  mindist[k] = numeric_limits< unsigned int >::max ();
+	    
+		  for (j = 1; j < graph.size (); ++j)
+		    {
+		      float val = (graph.internalAreConnected (j, k)
+				   ? graph.internalGetEdgeWeight (j, k)
+				   : numeric_limits< float >::max ());
+		    if (val < mindist[j])
+		      {
+			mindist[j] = val;
+			nearest[j] = k;
+		      }
+		    }
+		}
+	    }
+	}
+    }
+
+  public:
+    
+    /**
+     * Prim's algorithm for the minimum spanning tree.
+     * @return a vector of edges representing a spanning tree of the graph.
+     */
+    vector< pair< V, V > > minimumSpanningTree () const
+    {
+      vector< pair< label, label > > aedges;
+      typename vector< pair< label, label > >::iterator i;
+      vector< pair< V, V > > realedges;
+
+      UndirectedGraph::minimumSpanningTree (*this, aedges);
+      for (i = aedges.begin (); aedges.end () != i; ++i)
+	{
+	  realedges.push_back (make_pair (vertices[i->first], vertices[i->second]));
+	}
+      return realedges;
+    }
+    
     // I/O  -----------------------------------------------------------------
 
   public:

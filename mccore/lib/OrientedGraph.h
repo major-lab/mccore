@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu May 10 14:49:18 2001
-// $Revision: 1.1.2.3 $
+// $Revision: 1.1.2.4 $
 // 
 // This file is part of mccore.
 // 
@@ -43,7 +43,7 @@ namespace mccore
    * Directed graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: OrientedGraph.h,v 1.1.2.3 2004-12-16 17:08:44 larosem Exp $
+   * @version $Id: OrientedGraph.h,v 1.1.2.4 2004-12-16 22:29:41 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -305,7 +305,7 @@ namespace mccore
      * @param e the edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool uncheckedInternalConnect (label h, label t, E &e)
+    virtual bool uncheckedInternalConnect (label h, label t, const E &e)
     {
       EndVertices ev (h, t);
       typename EV2ELabel::const_iterator evit;
@@ -329,7 +329,7 @@ namespace mccore
      * @param w the weight of this edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool uncheckedInternalConnect (label h, label t, E &e, EW &w)
+    virtual bool uncheckedInternalConnect (label h, label t, const E &e, const EW &w)
     {
       EndVertices ev (h, t);
       typename EV2ELabel::const_iterator evit;

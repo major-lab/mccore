@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Apr  7 18:28:55 2003
-// $Revision: 1.10.4.3 $
+// $Revision: 1.10.4.4 $
 // 
 // This file is part of mccore.
 // 
@@ -48,7 +48,7 @@ namespace mccore
    * </pre>
    * for flow calculation.
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: MaximumFlowGraph.h,v 1.10.4.3 2004-12-16 17:08:39 larosem Exp $
+   * @version $Id: MaximumFlowGraph.h,v 1.10.4.4 2004-12-16 22:29:37 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -130,7 +130,7 @@ namespace mccore
      * @param e the edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool connect (const V &h, const V &t, E &e) { return false; }
+    virtual bool connect (const V &h, const V &t, const E &e) { return false; }
 
   public:
     
@@ -142,7 +142,7 @@ namespace mccore
      * @param w the edge weight.
      * @return true if the connect operation succeeded.
      */
-    virtual bool connect (const V &h, const V &t, E &e, float w)
+    virtual bool connect (const V &h, const V &t, const E &e, const float w)
     {
       return OrientedGraph< V, E, VW, float, Vertex_Comparator >::connect (h, t, e, w);
     }
@@ -157,7 +157,7 @@ namespace mccore
      * @param e the edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool internalConnect (label h, label t, E &e)
+    virtual bool internalConnect (label h, label t, const E &e)
     {
       return false;
     }      

@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.13.4.2 $
+// $Revision: 1.13.4.3 $
 // 
 // This file is part of mccore.
 // 
@@ -65,7 +65,7 @@ namespace mccore {
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.13.4.2 2004-12-16 17:09:18 larosem Exp $
+   * @version $Id: Relation.h,v 1.13.4.3 2004-12-16 22:29:45 larosem Exp $
    */
   class Relation
   {
@@ -125,6 +125,8 @@ namespace mccore {
     static vector< pair< Vector3D, const PropertyType* > > faces_T;
     
     static bool isInit;
+
+  public:
     
     // LIFECYCLE ------------------------------------------------------------
 
