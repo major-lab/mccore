@@ -5,8 +5,8 @@
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
 # Last Modified By : Martin Larose
-# Last Modified On : Thu Sep 20 12:44:39 2001
-# Update Count     : 7
+# Last Modified On : Wed Sep 26 15:49:20 2001
+# Update Count     : 8
 # Status           : Ok.
 # 
 #  This file is part of mccore.
@@ -64,14 +64,14 @@ if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
         CXXSHFLAGS="$CXXFLAGS -O2 -fPIC"
 	CXXFLAGS="$CXXFLAGS -O2"
 	DEPFLAGS="-MM"
-        LDFLAGS="-static"
+        LDFLAGS="-static $LDFLAGS"
         LINKOPTIONS= ;;
     esac;
 elif eval "test \"`echo $GXX`\" = yes"; then     # gnu compiler
 	CXXSHFLAGS="$CXXFLAGS -Wall";
 	CXXFLAGS="$CXXFLAGS -Wall";
 	DEPFLAGS="-MM"
-	LDFLAGS="-static"
+	LDFLAGS="-static $LDFLAGS"
 	LINKOPTIONS=;
 fi
 
