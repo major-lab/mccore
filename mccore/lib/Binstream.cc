@@ -12,34 +12,17 @@
 
 
 #include <string.h>
+#include <netinet/in.h>
 
 #include "Binstream.h"
-
-
-
-#ifdef WORDS_BIGENDIAN
-
-#define MASK_0 0xff000000L
-#define MASK_1 0x00ff0000L
-#define MASK_2 0x0000ff00L
-#define MASK_3 0x000000ffL
-
-void
-swap_endian (long *x)
-{
-  long oldl = *x;
-  
-  *x = (((oldl & MASK_3) << 24) | ((oldl & MASK_2) << 8)
-	| ((oldl & MASK_1) >> 8) | ((oldl & MASK_0) >> 24));
-}
-#endif
-
 
 
 iBinstream&
 iBinstream::operator>> (char &c)
 {
-  this->read (&c, sizeof (char));
+  short int ns;
+  this->read ((char*)&ns, sizeof (short int));
+  c = (char)ntohs (ns);
   return *this;
 }
 
@@ -48,10 +31,10 @@ iBinstream::operator>> (char &c)
 iBinstream&
 iBinstream::operator>> (char *str)
 {
-  size_t tmpInt;
-
-  *this >> tmpInt;
-  this->read (str, sizeof (char) * (tmpInt + 1));
+  short int length;
+  *this >> length;
+  this->read ((char*)str, sizeof (char) * length);
+  str[length] = '\0';
   return *this;
 }
 
@@ -60,11 +43,22 @@ iBinstream::operator>> (char *str)
 iBinstream&
 iBinstream::operator>> (char **str)
 {
-  size_t tmpInt;
+  short int length;
+  *this >> length;
+  *str = new char[length + 1];
+  this->read (*str, sizeof (char) * length);
+  (*str)[length] = '\0';
+  return *this;
+}
 
-  *this >> tmpInt;
-  *str = new char[tmpInt + 1];
-  this->read (*str, sizeof (char) * (tmpInt + 1));
+
+
+iBinstream&
+iBinstream::operator>> (short int &n)
+{
+  int ns;
+  this->read ((char*) &ns, sizeof (short int));
+  n = ntohs (ns);
   return *this;
 }
 
@@ -73,10 +67,9 @@ iBinstream::operator>> (char **str)
 iBinstream&
 iBinstream::operator>> (int &n)
 {
-  this->read ((char*) &n, sizeof (int));
-#ifdef WORDS_BIGENDIAN
-  swap_endian ((long*)&n);
-#endif
+  int nl;
+  this->read ((char*) &nl, sizeof (int));
+  n = (int)ntohl (nl);
   return *this;
 }
 
@@ -85,10 +78,11 @@ iBinstream::operator>> (int &n)
 iBinstream&
 iBinstream::operator>> (float &x)
 {
-  this->read ((char*)&x, sizeof (float));
-#ifdef WORDS_BIGENDIAN
-  swap_endian ((long*)&x);
-#endif
+  int nl;
+  int hl;
+  this->read ((char*)&nl, sizeof (int));
+  hl = ntohl (nl);
+  x = *((float*)&hl);
   return *this;
 }
 
@@ -115,7 +109,8 @@ iBinstream::operator>> (ios& (*func)(ios&))
 oBinstream&
 oBinstream::operator<< (char c)
 {
-  this->write (&c, sizeof (char));
+  short int ns = htons (c);
+  this->write ((char*)&ns, sizeof (short int));
   return *this;
 }
 
@@ -124,10 +119,19 @@ oBinstream::operator<< (char c)
 oBinstream&
 oBinstream::operator<< (const char *str)
 {
-  size_t tmpInt = strlen (str);
+  short int length = strlen (str);
+  *this << length;
+  this->write ((char*)str, sizeof (char) * length);
+  return *this;
+}
 
-  *this << tmpInt;
-  this->write (str, sizeof (char) * (tmpInt + 1));
+
+
+oBinstream&
+oBinstream::operator<< (short int n)
+{
+  short int ns = htons (n);
+  this->write ((char*)&ns, sizeof (short int));
   return *this;
 }
 
@@ -136,12 +140,8 @@ oBinstream::operator<< (const char *str)
 oBinstream&
 oBinstream::operator<< (int n)
 {
-  int tmp = n;
-
-#ifdef WORDS_BIGENDIAN
-  swap_endian ((long*)&tmp);
-#endif
-  this->write ((char*)&tmp, sizeof (int));
+  int nl = htonl (n);
+  this->write ((char*)&nl, sizeof (int));
   return *this;
 }
 
@@ -150,12 +150,8 @@ oBinstream::operator<< (int n)
 oBinstream&
 oBinstream::operator<< (float x)
 {
-  float tmp = x;  
-  
-#ifdef WORDS_BIGENDIAN
-  swap_endian ((long*)&tmp);
-#endif
-  this->write ((char*)&tmp, sizeof (float));
+  int nl = htonl (*((int*)&x));
+  this->write ((char*)&nl, sizeof (int));
   return *this;
 }
 

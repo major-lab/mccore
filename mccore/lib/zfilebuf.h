@@ -1,5 +1,5 @@
 //                              -*- Mode: C++ -*- 
-// zfstreambase.h
+// zfilebuf.h
 // Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : Fri Mar 10 15:24:55 2000
@@ -10,8 +10,8 @@
 // 
 
 
-#ifndef _zfstreambase_h_
-#define _zfstreambase_h_
+#ifndef _zfilebuf_h_
+#define _zfilebuf_h_
 
 
 #if defined(__GNUC__)
@@ -35,8 +35,7 @@ typedef int _openmode;
 /**
  * @short Implementation of compressed file buffer.
  *
- * This implementation of buffer suits for compressed file streams.  The
- * wrapper of the buffer (zfstreambase) is defined below.
+ * This implementation of buffer suits for compressed file streams.  
  *
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
@@ -63,7 +62,7 @@ public:
   // LIFECYCLE ------------------------------------------------------------
 
   /**
-   * Initializes the objet.
+   * Initializes the object.
    */
   zfilebuf () : filebuf (), zf (0) { }
 

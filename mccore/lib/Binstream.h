@@ -16,18 +16,6 @@
 #include <iostream.h>
 
 
-
-#ifdef WORDS_BIGENDIAN
-/**
- * Function used to swap bytes in case of big endianness.  This function
- * works only on 32 bits words.
- * @param obj the basic type to convert to little endian.
- */
-void swap_endian (long* obj);
-#endif
-
-
-
 /**
  * @short Input binary stream for database and cache input.
  *
@@ -39,12 +27,13 @@ void swap_endian (long* obj);
  * saved in binary format must define operators << and >> on iBinstream and
  * oBinstream in their class implementation.
  *
- * Binary streams saves the types according to the little endianness.  Types
- * are converted from big endianness to little on read and write on system
- * that uses this encoding.
+ * Binary streams saves the types according to the big endianness
+ * which is the standard on network protocols.  Types are converted
+ * from little endianness to big on read and write on system that uses
+ * this encoding.
  *
- * @author Martin Larose <larosem@iro.umontreal.ca>
- */
+ * @author Martin Larose <larosem@iro.umontreal.ca> 
+*/
 class iBinstream : public istream
 {
   
@@ -119,6 +108,13 @@ public:
   iBinstream& operator>> (bool &b) { return operator>> ((char&)b); }
 
   /**
+   * Inputs short integers from the binary stream.
+   * @param n the integer to read.
+   * @return itself.
+   */
+  iBinstream& operator>> (short int &n);
+
+  /**
    * Inputs integers from the binary stream.
    * @param n the integer to read.
    * @return itself.
@@ -183,13 +179,14 @@ public:
  * saved in binary format must define operators << and >> on iBinstream and
  * oBinstream in their class implementation.
  *
- * Binary streams saves the types according to the little endianness.  Types
- * are converted from big endianness to little on read and write on system
- * that uses this encoding.
+ * Binary streams saves the types according to the big endianness
+ * which is the standard on network protocols.  Types are converted
+ * from little endianness to big on read and write on system that uses
+ * this encoding.
  *
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
-class oBinstream : public ostream
+class oBinstream : virtual public ostream
 {
   
 public:
@@ -238,6 +235,13 @@ public:
    * @return itself.
    */
   oBinstream& operator<< (bool b) { return operator<< ((char)b); }
+
+  /**
+   * Outputs short integers to binary stream.
+   * @param n the integer to ouput.
+   * @return itself.
+   */
+  oBinstream& operator<< (short int n);
 
   /**
    * Outputs integers to binary stream.
@@ -304,9 +308,10 @@ public:
  * saved in binary format must define operators << and >> on iBinstream and
  * oBinstream in their class implementation.
  *
- * Binary streams saves the types according to the little endianness.  Types
- * are converted from big endianness to little on read and write on system
- * that uses this encoding.
+ * Binary streams saves the types according to the big endianness
+ * which is the standard on network protocols.  Types are converted
+ * from little endianness to big on read and write on system that uses
+ * this encoding.
  *
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */

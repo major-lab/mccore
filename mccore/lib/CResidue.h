@@ -728,10 +728,8 @@ public:
  */
 ostream& operator<< (ostream &os, const CResidue &res);
 
-
-
 /**
- * Inputs a residue from an input binary stream.
+ * Inputs a residue from an input binary stream
  * @param ibs the input binary stream.
  * @param res the residue.
  * @return the used input binary stream.

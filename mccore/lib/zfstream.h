@@ -31,7 +31,7 @@ Written by Martin Larose <larosem@acm.org>
 
 #include <iostream.h>
 
-#include "zfstreambase.h"
+#include "zfilebuf.h"
 
 
 
@@ -43,9 +43,13 @@ Written by Martin Larose <larosem@acm.org>
  *
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
-class izfstream : public zfstreambase, public istream
+class izfstream : public istream
 {
-  
+  /**
+   * The compressed stream buffer.
+   */
+  mutable zfilebuf buf;
+
 public:
 
   // LIFECYCLE ------------------------------------------------------------
@@ -53,13 +57,16 @@ public:
   /**
    * Initializes the stream.
    */
-  izfstream () : zfstreambase () { }
+  izfstream () { init (rdbuf ()); }
 
   /**
    * Initializes the objet with a file descriptor.
    * @param fd the input file descriptor.
    */
-  izfstream (int fd) : zfstreambase (fd) { }
+  izfstream (int fd) { 
+    init (rdbuf ());
+    rdbuf ()->attach (fd);
+  }
   
   /**
    * Initializes the stream with file name and parameters.
@@ -67,8 +74,11 @@ public:
    * @param mode the open mode (default ios::in).
    * @param prot the protection (default 0644).
    */
-  izfstream(const char *name, int mode = ios::in, int prot = 0664)
-    : zfstreambase(name, mode, Z_BEST_SPEED, prot) { }
+  izfstream(const char *name, int mode = ios::in, int prot = 0664) { 
+    init (rdbuf ());
+    if (!rdbuf()->open (name, mode, Z_BEST_SPEED, prot))
+      setstate(ios::badbit);
+  }
 
   // OPERATORS ------------------------------------------------------------
 
@@ -82,14 +92,36 @@ public:
    * @param mode the open mode (default ios::in).
    * @param prot the protection (default 0644).
    */
-  void open(const char *name, int mode=ios::in, int prot = 0664)
-    { zfstreambase::open(name, mode, Z_BEST_SPEED, prot); }
+  void open(const char *name, int mode=ios::in, int prot = 0664) { 
+    clear ();
+    if (!rdbuf ()->open (name, mode, Z_BEST_SPEED, prot))
+      setstate(ios::badbit);
+  }
 
   /**
    * Closes the stream.  It calls zfstreambase close () method to empty the
    * buffer and put the compression trailer at the end of the file.
    */
-  void close () { zfstreambase::close (); }
+  void close () {
+    if (!rdbuf ()->close ())
+      setstate(ios::failbit); 
+  }
+  
+  /**
+   * Gets the buffer.
+   * @return the compressed file buffer object.
+   */
+  zfilebuf* rdbuf () { return &buf; }
+  
+  /**
+   * Attaches the stream with a file descriptor.
+   * @param fd the file descriptor.
+   */
+  void attach (int fd) {
+    if (!rdbuf ()->attach (fd))
+      setstate(ios::failbit);
+  }
+
 
   // I/O ------------------------------------------------------------------
 };
@@ -104,9 +136,13 @@ public:
  *
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
-class ozfstream : public zfstreambase, public ostream
+class ozfstream : public ostream
 {
-  
+  /**
+   * The compressed stream buffer.
+   */
+  mutable zfilebuf buf;
+
 public:
   
   // LIFECYCLE ------------------------------------------------------------
@@ -114,13 +150,16 @@ public:
   /**
    * Initializes the stream.
    */
-  ozfstream () : zfstreambase () { }
+  ozfstream () { init (rdbuf ()); }
 
   /**
    * Initializes the objet with a file descriptor.
    * @param fd the input file descriptor.
    */
-  ozfstream (int fd) : zfstreambase (fd) { }
+  ozfstream (int fd) { 
+    init (rdbuf ());
+    rdbuf ()->attach (fd);
+  }
 
   /**
    * Initializes the stream with file name and parameters.
@@ -130,8 +169,11 @@ public:
    * @param prot the protection (default 0644).
    */
   ozfstream (const char *name, int level = Z_BEST_SPEED,
-	     int mode = ios::out, int prot = 0664)
-    : zfstreambase (name, mode, level, prot) { }
+	     int mode = ios::out, int prot = 0664) { 
+    init (rdbuf ());
+    if (!rdbuf()->open (name, mode, level, prot))
+      setstate(ios::badbit);
+  }
 
   // OPERATORS ------------------------------------------------------------
 
@@ -147,14 +189,35 @@ public:
    * @param prot the protection (default 0644).
    */
   void open (const char *name, int level = Z_BEST_SPEED,
-	     int mode = ios::out, int prot = 0664)
-    { zfstreambase::open (name, mode, level, prot); }
-
+	     int mode = ios::out, int prot = 0664) { 
+    clear ();
+    if (!rdbuf ()->open (name, mode, level, prot))
+      setstate(ios::badbit);
+  }
+  
   /**
    * Closes the stream.  It calls zfstreambase close () method to empty the
    * buffer and put the compression trailer at the end of the file.
    */
-  void close () { zfstreambase::close (); }
+  void close () { 
+    if (!rdbuf ()->close ())
+      setstate(ios::failbit); 
+  }
+
+  /**
+   * Gets the buffer.
+   * @return the compressed file buffer object.
+   */
+  zfilebuf* rdbuf () { return &buf; }
+  
+  /**
+   * Attaches the stream with a file descriptor.
+   * @param fd the file descriptor.
+   */
+  void attach (int fd) {
+    if (!rdbuf ()->attach (fd))
+      setstate(ios::failbit);
+  }
 
   // I/O ------------------------------------------------------------------
 };
@@ -169,8 +232,13 @@ public:
  *
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
-class zfstream : public zfstreambase, public iostream
+class zfstream : public iostream
 {
+  /**
+   * The compressed stream buffer.
+   */
+  mutable zfilebuf buf;
+
   
 public:
   
@@ -179,13 +247,16 @@ public:
   /**
    * Initializes the stream.
    */
-  zfstream () : zfstreambase () { }
+  zfstream () { init (rdbuf ()); }
 
   /**
    * Initializes the objet with a file descriptor.
    * @param fd the input file descriptor.
    */
-  zfstream (int fd) : zfstreambase (fd) { }
+  zfstream (int fd) { 
+    init (rdbuf ());
+    rdbuf ()->attach (fd);
+  }
 
   /**
    * Initializes the stream with file name and parameters.
@@ -195,8 +266,11 @@ public:
    * @param prot the protection (default 0644).
    */
   zfstream (const char *name, int level = Z_BEST_SPEED,
-	    int mode = ios::in, int prot = 0664)
-    : zfstreambase(name, mode, level, prot) { }
+	    int mode = ios::in, int prot = 0664) {
+    init (rdbuf ());
+    if (!rdbuf()->open (name, mode, level, prot))
+      setstate(ios::badbit);
+  }
 
   // OPERATORS ------------------------------------------------------------
 
@@ -212,14 +286,35 @@ public:
    * @param prot the protection (default 0644).
    */
   void open (const char *name, int level = Z_BEST_SPEED,
-	     int mode = ios::in, int prot = 0664)
-    { zfstreambase::open (name, mode, level, prot); }
+	     int mode = ios::in, int prot = 0664) { 
+    clear ();
+    if (!rdbuf ()->open (name, mode, level, prot))
+      setstate(ios::badbit);
+  }
 
   /**
    * Closes the stream.  It calls zfstreambase close () method to empty the
    * buffer and put the compression trailer at the end of the file.
    */
-  void close () { zfstreambase::close (); }
+  void close () { 
+    if (!rdbuf ()->close ())
+      setstate(ios::failbit); 
+  }
+  
+  /**
+   * Gets the buffer.
+   * @return the compressed file buffer object.
+   */
+  zfilebuf* rdbuf () { return &buf; }
+  
+  /**
+   * Attaches the stream with a file descriptor.
+   * @param fd the file descriptor.
+   */
+  void attach (int fd) {
+    if (!rdbuf ()->attach (fd))
+      setstate(ios::failbit);
+  }
 
   // I/O ------------------------------------------------------------------
 };

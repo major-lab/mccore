@@ -1,5 +1,5 @@
 //                              -*- Mode: C++ -*- 
-// zfstreambase.cc
+// zfilebuf.cc
 // Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : Fri Mar 10 15:36:48 2000
@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#include "zfstreambase.h"
+#include "zfilebuf.h"
 
 #if defined(__GNUC__)
 #include <sys/types.h>
@@ -365,54 +365,3 @@ zfilebuf::setbuf(char* p, int len)
   return (streambuf*)this;
 }
 #endif
-
-
-
-zfstreambase::zfstreambase ()
-{
-  init (rdbuf ());
-}
-
-
-
-zfstreambase::zfstreambase (const char *name, int mode, int level, int prot)
-{
-  init (rdbuf ());
-  if (!rdbuf()->open (name, mode, level, prot))
-    setstate(ios::badbit);
-}
-
-
-
-zfstreambase::zfstreambase (int fd)
-{
-  init (rdbuf ());
-  rdbuf ()->attach (fd);
-}
-
-
-
-void
-zfstreambase::open (const char *name, int mode, int level, int prot)
-{
-  clear ();
-  if (!rdbuf ()->open (name, mode, level, prot))
-    setstate(ios::badbit);
-}
-
-
-void
-zfstreambase::attach (int fd)
-{
-  if (!rdbuf ()->attach (fd))
-    setstate(ios::failbit);
-}
-
-
-
-void
-zfstreambase::close ()
-{
-  if (!rdbuf ()->close ())
-    setstate(ios::failbit);
-}

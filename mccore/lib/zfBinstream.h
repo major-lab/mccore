@@ -17,7 +17,7 @@
 #include <zlib.h>
 
 #include "Binstream.h"
-#include "zfstreambase.h"
+#include "zfilebuf.h"
 
 
 
@@ -36,9 +36,14 @@
  *
  * @author Martin Larose <larosem@IRO.UMontreal.CA>
  */
-class izfBinstream : public zfstreambase, public iBinstream
+class izfBinstream : public iBinstream
 {
-  
+  /**
+   * The compressed stream buffer.
+   */
+  mutable zfilebuf buf;
+
+
 public:
 
   // LIFECYCLE ------------------------------------------------------------
@@ -46,13 +51,16 @@ public:
   /**
    * Initializes the stream.
    */
-  izfBinstream () : zfstreambase (), iBinstream () { }
+  izfBinstream () : iBinstream () { init (rdbuf ()); }
 
   /**
    * Initializes the objet with a file descriptor.
    * @param fd the input file descriptor.
    */
-  izfBinstream (int fd) : zfstreambase (fd), iBinstream () { }
+  izfBinstream (int fd) : iBinstream () {
+    init (rdbuf ());
+    rdbuf ()->attach (fd);
+  }
   
   /**
    * Initializes the stream with file name and parameters.
@@ -61,7 +69,11 @@ public:
    * @param prot the protection (default 0644).
    */
   izfBinstream(const char *name, int mode = ios::in, int prot = 0664)
-    : zfstreambase(name, mode, Z_BEST_SPEED, prot), iBinstream () { }
+    : iBinstream () { 
+    init (rdbuf ());
+    if (!rdbuf()->open (name, mode, Z_BEST_SPEED, prot))
+      setstate(ios::badbit);
+  }
 
   // OPERATORS ------------------------------------------------------------
 
@@ -77,15 +89,36 @@ public:
    */
   void open (const char *name, int mode=ios::in, int prot = 0664)
   {
-    zfstreambase::open (name, mode, Z_BEST_SPEED, prot);
+    clear ();
+    if (!rdbuf ()->open (name, mode, Z_BEST_SPEED, prot))
+      setstate(ios::badbit);
     iBinstream::open ();
   }
 
   /**
    * Closes the stream.
    */
-  void close () { iBinstream::close (); zfstreambase::close (); }
+  void close () { 
+    iBinstream::close (); 
+    if (!rdbuf ()->close ())
+      setstate(ios::failbit);
+  }
   
+  /**
+   * Gets the buffer.
+   * @return the compressed file buffer object.
+   */
+  zfilebuf* rdbuf () { return &buf; }
+
+  /**
+   * Attaches the stream with a file descriptor.
+   * @param fd the file descriptor.
+   */
+  void attach (int fd) {
+    if (!rdbuf ()->attach (fd))
+      setstate(ios::failbit);
+  }
+
   // I/O ------------------------------------------------------------------
 };
 
@@ -106,9 +139,14 @@ public:
  *
  * @author Martin Larose <larosem@IRO.UMontreal.CA>
  */
-class ozfBinstream : public zfstreambase, public oBinstream
+class ozfBinstream : public oBinstream
 {
-  
+  /**
+   * The compressed stream buffer.
+   */
+  mutable zfilebuf buf;
+
+
 public:
 
   // LIFECYCLE ------------------------------------------------------------
@@ -116,13 +154,16 @@ public:
   /**
    * Initializes the stream.
    */
-  ozfBinstream () : zfstreambase (), oBinstream () { }
+  ozfBinstream () : oBinstream () { init (rdbuf ()); }
 
   /**
    * Initializes the objet with a file descriptor.
    * @param fd the input file descriptor.
    */
-  ozfBinstream (int fd) : zfstreambase (fd), oBinstream () { }
+  ozfBinstream (int fd) : oBinstream () { 
+    init (rdbuf ());
+    rdbuf ()->attach (fd);
+  }
 
   /**
    * Initializes the stream with file name and parameters.
@@ -133,7 +174,11 @@ public:
    */
   ozfBinstream (const char *name, int level = Z_BEST_SPEED,
 		int mode = ios::out, int prot = 0664)
-    : zfstreambase (name, mode, level, prot), oBinstream () { }
+    : oBinstream () { 
+    init (rdbuf ());
+    if (!rdbuf()->open (name, mode, level, prot))
+      setstate(ios::badbit);
+  }
 
   // OPERATORS ------------------------------------------------------------
 
@@ -151,14 +196,37 @@ public:
   void open (const char *name, int level = Z_BEST_SPEED,
 	     int mode = ios::out, int prot = 0664)
   {
-    zfstreambase::open (name, mode, level, prot);
+    clear ();
+    if (!rdbuf ()->open (name, mode, level, prot))
+      setstate(ios::badbit);
     oBinstream::open ();
   }
 
   /**
    * Closes the stream.
    */
-  virtual void close () { oBinstream::close (); zfstreambase::close (); }
+  virtual void close () { 
+    oBinstream::close ();  
+    if (!rdbuf ()->close ())
+      setstate(ios::failbit);
+  }
+
+    
+  /**
+   * Gets the buffer.
+   * @return the compressed file buffer object.
+   */
+  zfilebuf* rdbuf () { return &buf; }
+
+  /**
+   * Attaches the stream with a file descriptor.
+   * @param fd the file descriptor.
+   */
+  void attach (int fd) {
+    if (!rdbuf ()->attach (fd))
+      setstate(ios::failbit);
+  }
+
 
   // I/O ------------------------------------------------------------------
 };
@@ -180,9 +248,14 @@ public:
  *
  * @author Martin Larose <larosem@IRO.UMontreal.CA>
  */
-class zfBinstream : public zfstreambase, public Binstream
+class zfBinstream : public Binstream
 {
-  
+  /**
+   * The compressed stream buffer.
+   */
+  mutable zfilebuf buf;
+
+
 public:
 
   // LIFECYCLE ------------------------------------------------------------
@@ -190,13 +263,16 @@ public:
   /**
    * Initializes the stream.
    */
-  zfBinstream () : zfstreambase (), Binstream () { }
+  zfBinstream () : Binstream () { init (rdbuf ()); }
 
   /**
    * Initializes the objet with a file descriptor.
    * @param fd the input file descriptor.
    */
-  zfBinstream (int fd) : zfstreambase (fd), Binstream () { }
+  zfBinstream (int fd) : Binstream () { 
+    init (rdbuf ());
+    rdbuf ()->attach (fd);
+  }
 
   /**
    * Initializes the stream with file name and parameters.
@@ -207,7 +283,11 @@ public:
    */
   zfBinstream (const char *name, int level = Z_BEST_SPEED,
 	       int mode = ios::in, int prot = 0664)
-    : zfstreambase (name, mode, level, prot), Binstream () { }
+    : Binstream () { 
+    init (rdbuf ());
+    if (!rdbuf()->open (name, mode, level, prot))
+      setstate(ios::badbit);
+  }
 
   // OPERATORS ------------------------------------------------------------
 
@@ -225,14 +305,35 @@ public:
   void open (const char *name, int level = Z_BEST_SPEED,
 	     int mode = ios::in, int prot = 0664)
   {
-    zfstreambase::open (name, mode, level, prot);
+    clear ();
+    if (!rdbuf ()->open (name, mode, level, prot))
+      setstate(ios::badbit);
     Binstream::open ();
   }
-
+  
   /**
    * Closes the stream.
    */
-  void close () { Binstream::close (); zfstreambase::close (); }
+  void close () { 
+    Binstream::close ();
+    if (!rdbuf ()->close ())
+      setstate(ios::failbit);
+  }
+
+  /**
+   * Gets the buffer.
+   * @return the compressed file buffer object.
+   */
+  zfilebuf* rdbuf () { return &buf; }
+
+  /**
+   * Attaches the stream with a file descriptor.
+   * @param fd the file descriptor.
+   */
+  void attach (int fd) {
+    if (!rdbuf ()->attach (fd))
+      setstate(ios::failbit);
+  }
 
   // I/O ------------------------------------------------------------------
 };

@@ -68,10 +68,12 @@ SOURCES = Algo.cc \
 	  McCore.cc \
 	  Pdbstream.cc \
           ResidueTypeImp.cc \
-          zfstreambase.cc
+          zfilebuf.cc \
+	  sockbuf.cc \
+	  ServerSocket.cc
 
 HEADERS = $(SOURCES:.cc=.h) AtomType.h CGraph.h ResidueType.h fBinstream.h \
-fPdbstream.h zfBinstream.h zfPdbstream.h zfstream.h
+fPdbstream.h zfBinstream.h zfPdbstream.h zfstream.h sBinstream.h
 
 OBJECTS = $(SOURCES:.cc=.o)
 

@@ -90,7 +90,7 @@ CResIdSet::_parse_and_insert (const char *str)
       char* upper = 0;
       
       strcpy (str_copy, str);
-      token = strsep (&str_copy, ",");
+      token = strsep (&str_copy, ", ");
       while (token)
 	{
 	  lower = strsep (&token, "-");
@@ -121,7 +121,7 @@ CResIdSet::_parse_and_insert (const char *str)
 		  throw exc;
 		}
 	    }
-	  token = strsep (&str_copy, ",");
+	  token = strsep (&str_copy, ", ");
 	}
       delete str_copy_ptr;
     }
