@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Thu Sep 28 16:59:32 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Nov  5 11:38:46 2001
-// Update Count     : 22
+// Last Modified On : Wed Nov 14 16:42:52 2001
+// Update Count     : 23
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -194,14 +194,14 @@ public:
    * @param k the atom type key.
    * @return the iterator to the element or end () if it is not found.
    */
-  iterator find (const t_Atom *k);
+  virtual iterator find (const t_Atom *k);
 
   /**
    * Finds an element whose key is k.
    * @param k the atom type key.
    * @return the iterator to the element or end () if it is not found.
    */
-  const_iterator find (const t_Atom *k) const;
+  virtual const_iterator find (const t_Atom *k) const;
 
   // METHODS --------------------------------------------------------------
 
