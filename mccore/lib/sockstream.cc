@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // sockstream.cc
-// Copyright © 2002-03 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2002-04 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Wed Jan 30 19:57:48 2002
-// $Revision: 1.3 $
-// $Id: sockstream.cc,v 1.3 2003-12-23 14:57:49 larosem Exp $
+// $Revision: 1.4 $
+// $Id: sockstream.cc,v 1.4 2004-03-31 20:20:35 larosem Exp $
 //
 // This file is part of mccore.
 //
@@ -328,7 +328,7 @@ sockstreambuf::sys_write (const char *buf, streamsize size)
 int
 sockstreambuf::sys_close ()
 {
-  return ::close (socket_id);
+  return shutdown (socket_id, SHUT_RDWR);
 }
 
 
