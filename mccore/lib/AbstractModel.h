@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 16:12:42 2004
-// $Revision: 1.1.2.2 $
+// $Revision: 1.1.2.3 $
 //
 // This file is part of mccore.
 // 
@@ -29,6 +29,8 @@
 #include <iostream>
 #include <vector>
 
+#include "Exception.h"
+
 using namespace std;
 
 
@@ -49,7 +51,7 @@ namespace mccore
    * Abstract class for Models.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: AbstractModel.h,v 1.1.2.2 2004-12-25 02:38:40 larosem Exp $
+   * @version $Id: AbstractModel.h,v 1.1.2.3 2004-12-27 01:31:37 larosem Exp $
    */
   class AbstractModel
   {
@@ -216,15 +218,17 @@ namespace mccore
      * Gets the model reference at nth position.
      * @param nth the position of the reference to get.
      * @return the nth reference.
+     * @exception ArrayIndexOutOfBoundsException
      */
-    virtual Residue& operator[] (size_type nth) = 0;
+    virtual Residue& operator[] (size_type nth) throw (ArrayIndexOutOfBoundsException) = 0;
 
     /**
      * Gets the model const_reference at nth position.
      * @param nth the position of the const_reference to get.
      * @return the nth const_reference.
+     * @exception ArrayIndexOutOfBoundsException
      */
-    virtual const Residue& operator[] (size_type nth) const = 0;
+    virtual const Residue& operator[] (size_type nth) const throw (ArrayIndexOutOfBoundsException) = 0;
 
     // ACCESS ---------------------------------------------------------------
 
@@ -280,7 +284,7 @@ namespace mccore
      * @param l the last iterator in the range.
      */
     template <class InputIterator>
-    void insert(InputIterator f, InputIterator l)
+    void insert (InputIterator f, InputIterator l)
     {
       while (f != l)
 	{
@@ -419,17 +423,6 @@ namespace mccore
 
   };
 
-
-  // NON-MEMBER FUNCTION -------------------------------------------------------
-
-  /**
-   * Outputs the model to an output stream.
-   * @param obs the output stream.
-   * @param obj the model to output.
-   * @return the output stream.
-   */
-  ostream& operator<< (ostream &obs, const AbstractModel &obj);
-
   /**
    * Inputs the model from a pdb stream.
    * @param ips the input pdb stream.
@@ -478,6 +471,21 @@ namespace mccore
    * @return wheter the residue pointed by left is less than right.
    */
   bool operator< (const AbstractModel::const_iterator &left, const AbstractModel::const_iterator &right);
+
+}
+
+
+
+namespace std
+{
+  
+  /**
+   * Outputs the model to an output stream.
+   * @param obs the output stream.
+   * @param obj the model to output.
+   * @return the output stream.
+   */
+  ostream& operator<< (ostream &obs, const mccore::AbstractModel &obj);
 
 }
 
