@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.13 $
+// $Revision: 1.14 $
 // 
 // This file is part of mccore.
 // 
@@ -47,7 +47,7 @@ namespace mccore
    * General property types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: PropertyType.h,v 1.13 2005-01-03 22:59:09 larosem Exp $
+   * @version $Id: PropertyType.h,v 1.14 2005-01-07 17:09:44 thibaup Exp $
    */
   class PropertyType
   {
@@ -195,6 +195,13 @@ namespace mccore
      * @return a property type for the string.
      */
     static const PropertyType* parseType (const string& str);
+
+    /**
+     * Gets the property corresponding to the inverted relation.
+     * @param t The property type for a relation.
+     * @return The property type corresponding to the inverted relation.
+     */
+    static const PropertyType* invert (const PropertyType* t);
     
     /**
      * General is method for use when both objects to compare are of
@@ -214,7 +221,7 @@ namespace mccore
     {
       return dynamic_cast< const PropertyType* > (t);
     }
-
+    
     /**
      * isNull?
      */
@@ -391,24 +398,24 @@ namespace mccore
     static const PropertyType* pStack;
 
     /**
-     * Global reverse type.
+     * Global straight upward type.
      */
-    static const PropertyType* pStraigth;
+    static const PropertyType* pStraightUpward;
 
     /**
-     * Global reverse type.
+     * Global straight downward type.
      */
-    static const PropertyType* pReverse;
+    static const PropertyType* pStraightDownward;
 
     /**
-     * Global reverse type.
+     * Global reverse Upward type.
      */
-    static const PropertyType* pUpward;
+    static const PropertyType* pReverseUpward;
 
     /**
-     * Global reverse type.
+     * Global reverse downward type.
      */
-    static const PropertyType* pDownward;
+    static const PropertyType* pReverseDownward;
     
     /**
      * Global cis type.
@@ -419,11 +426,31 @@ namespace mccore
      * Global trans type.
      */
     static const PropertyType* pTrans;
+
+    /**
+     * Global straigth type.
+     */
+    static const PropertyType* pStraight;
+
+    /**
+     * Global reverse type.
+     */
+    static const PropertyType* pReverse;
     
     /**
      * Global adjacent type.
      */
     static const PropertyType* pAdjacent;
+
+    /**
+     * Global 5' adjacent type.
+     */
+    static const PropertyType* pAdjacent5p;
+
+    /**
+     * Global 3' adjacent type.
+     */
+    static const PropertyType* pAdjacent3p;
     
     /**
      * Global type_A type.
@@ -499,21 +526,6 @@ namespace mccore
      * Global syn type.
      */
     static const PropertyType* pSyn;
-    
-    /**
-     * Global DIR_5p type.
-     */
-    static const PropertyType* pDIR_5p;
-    
-    /**
-     * Global DIR_3p type.
-     */
-    static const PropertyType* pDIR_3p;
-    
-    /**
-     * Global DIR_ANY type.
-     */
-    static const PropertyType* pDIR_ANY;
     
     /**
      * Global saenger type.
@@ -1279,7 +1291,7 @@ namespace mccore
      * Global Bh type.
      */
     static const PropertyType* pBh;
-    
+
   };
   
   /**

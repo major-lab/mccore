@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:42:25 2003
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 // 
 // This file is part of mccore.
 // 
@@ -42,7 +42,7 @@ namespace mccore
    *
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: PropertyTypeStore.h,v 1.8 2005-01-03 22:59:34 larosem Exp $
+   * @version $Id: PropertyTypeStore.h,v 1.9 2005-01-07 17:10:06 thibaup Exp $
    */
   class PropertyTypeStore
   {
@@ -185,6 +185,44 @@ namespace mccore
     };
 
     /**
+     * Public class for straight.
+     */
+    class Straight : public virtual BaseOrientation {
+    public:
+      Straight () {}
+      Straight (const string& ks) : PropertyType (ks) {}
+
+      virtual bool isStraight () const
+      {
+	return true;
+      }
+      
+      virtual bool describe (const PropertyType *t) const
+      {
+	return dynamic_cast< const Straight* > (t); 
+      }
+    };
+
+    /**
+     * Public class for reverse.
+     */
+    class Reverse : public virtual BaseOrientation {
+    public:
+      Reverse () {}
+      Reverse (const string& ks) : PropertyType (ks) {}
+
+      virtual bool isReverse () const
+      {
+	return true;
+      }
+      
+      virtual bool describe (const PropertyType *t) const
+      {
+	return dynamic_cast< const Reverse* > (t); 
+      }
+    };
+
+    /**
      * Public class for stacking.
      */
     class Stack : public virtual PropertyType {
@@ -203,18 +241,121 @@ namespace mccore
       }
     };
 
+
     /**
-     * Public class for reverse.
+     * Public class for upward stacking.
      */
-    class Reverse : public virtual Stack {
+    class Upward : public virtual Stack {
     public:
-      Reverse () {}
-      Reverse (const string& ks) : PropertyType (ks) {}
-      virtual bool describe (const PropertyType *t) const {
-	return dynamic_cast< const Reverse* > (t); 
+      Upward () {}
+      Upward (const string& ks) : PropertyType (ks) {}
+
+      virtual bool isUpward () const
+      {
+	return true;
+      }
+      
+      virtual bool describe (const PropertyType *t) const
+      {
+	return dynamic_cast< const Upward* > (t); 
       }
     };
 
+    /**
+     * Public class for downward stacking.
+     */
+    class Downward : public virtual Stack {
+    public:
+      Downward () {}
+      Downward (const string& ks) : PropertyType (ks) {}
+
+      virtual bool isDownward () const
+      {
+	return true;
+      }
+      
+      virtual bool describe (const PropertyType *t) const
+      {
+	return dynamic_cast< const Downward* > (t); 
+      }
+    };
+
+    /**
+     * Public class for a straight upward stacking.
+     */
+    class StraightUpward : public virtual Straight, public virtual Upward {
+    public:
+      StraightUpward () {}
+      StraightUpward (const string& ks) : PropertyType (ks) {}
+
+      virtual bool isStraightUpward () const
+      {
+	return true;
+      }
+      
+      virtual bool describe (const PropertyType *t) const
+      {
+	return dynamic_cast< const StraightUpward* > (t); 
+      }
+    };
+
+    /**
+     * Public class for a straight downward stacking.
+     */
+    class StraightDownward : public virtual Straight, public virtual Downward {
+    public:
+      StraightDownward () {}
+      StraightDownward (const string& ks) : PropertyType (ks) {}
+
+      virtual bool isStraightDownward () const
+      {
+	return true;
+      }
+      
+      virtual bool describe (const PropertyType *t) const
+      {
+	return dynamic_cast< const StraightDownward* > (t); 
+      }
+    };
+
+    /**
+     * Public class for a reverse upward stacking.
+     */
+    class ReverseUpward : public virtual Reverse, public virtual Upward {
+    public:
+      ReverseUpward () {}
+      ReverseUpward (const string& ks) : PropertyType (ks) {}
+
+      virtual bool isReverseUpward () const
+      {
+	return true;
+      }
+      
+      virtual bool describe (const PropertyType *t) const
+      {
+	return dynamic_cast< const ReverseUpward* > (t); 
+      }
+    };
+
+    /**
+     * Public class for a reverse downward stacking.
+     */
+    class ReverseDownward : public virtual Reverse, public virtual Downward {
+    public:
+      ReverseDownward () {}
+      ReverseDownward (const string& ks) : PropertyType (ks) {}
+
+      virtual bool isReverseDownward () const
+      {
+	return true;
+      }
+      
+      virtual bool describe (const PropertyType *t) const
+      {
+	return dynamic_cast< const ReverseDownward* > (t); 
+      }
+    };
+    
     /**
      * Public class for adjacent.
      */
@@ -234,7 +375,43 @@ namespace mccore
       }
     };
 
+    /**
+     * Public class for adjacent toward 5' direction.
+     */
+    class Adjacent5p : public virtual Adjacent {
+    public:
+      Adjacent5p () {}
+      Adjacent5p (const string& ks) : PropertyType (ks) {}
 
+      virtual bool isAdjacent5p () const
+      {
+	return true;
+      }
+      
+      virtual bool describe (const PropertyType *t) const
+      {
+	return dynamic_cast< const Adjacent5p* > (t); 
+      }
+    };
+
+    /**
+     * Public class for adjacent toward 3' direction.
+     */
+    class Adjacent3p : public virtual Adjacent {
+    public:
+      Adjacent3p () {}
+      Adjacent3p (const string& ks) : PropertyType (ks) {}
+
+      virtual bool isAdjacent3p () const
+      {
+	return true;
+      }
+      
+      virtual bool describe (const PropertyType *t) const
+      {
+	return dynamic_cast< const Adjacent3p* > (t); 
+      }
+    };
 
     /**
      * Public class for puckering modes.
@@ -416,42 +593,6 @@ namespace mccore
       Syn (const string& ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const Syn* > (t); 
-      }
-    };
-
-    /**
-     * Public class for DIR_5p.
-     */
-    class DIR_5p : public virtual Adjacent {
-    public:
-      DIR_5p () {}
-      DIR_5p (const string& ks) : PropertyType (ks) {}
-      virtual bool describe (const PropertyType *t) const {
-	return dynamic_cast< const DIR_5p* > (t); 
-      }
-    };
-
-    /**
-     * Public class for DIR_3p.
-     */
-    class DIR_3p : public virtual Adjacent {
-    public:
-      DIR_3p () {}
-      DIR_3p (const string& ks) : PropertyType (ks) {}
-      virtual bool describe (const PropertyType *t) const {
-	return dynamic_cast< const DIR_3p* > (t); 
-      }
-    };
-
-    /**
-     * Public class for DIR_ANY.
-     */
-    class DIR_ANY : public virtual PropertyType {
-    public:
-      DIR_ANY () {}
-      DIR_ANY (const string& ks) : PropertyType (ks) {}
-      virtual bool describe (const PropertyType *t) const {
-	return dynamic_cast< const DIR_ANY* > (t); 
       }
     };
 

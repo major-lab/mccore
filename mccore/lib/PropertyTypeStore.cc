@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:42:25 2003
-// $Revision: 1.11 $
-// $Id: PropertyTypeStore.cc,v 1.11 2005-01-03 22:59:26 larosem Exp $
+// $Revision: 1.12 $
+// $Id: PropertyTypeStore.cc,v 1.12 2005-01-07 17:09:59 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -39,13 +39,24 @@ namespace mccore
   {
     PropertyType::pNull = *this->repository.insert (new Null (string (""))).first;
     PropertyType::pUnknown = *this->repository.insert (new Unknown (string ("unknown"))).first;
+
+    PropertyType::pStack = *this->repository.insert (new Stack (string ("stack"))).first;
+    PropertyType::pStraightUpward = *this->repository.insert (new StraightUpward (string ("straight_upward"))).first;
+    PropertyType::pStraightDownward = *this->repository.insert (new StraightDownward (string ("straight_downward"))).first;
+    PropertyType::pReverseUpward = *this->repository.insert (new ReverseUpward (string ("reverse_upward"))).first;
+    PropertyType::pReverseDownward = *this->repository.insert (new ReverseDownward (string ("reverse_downward"))).first;
+    
+    PropertyType::pAdjacent = *this->repository.insert (new Adjacent (string ("adjacent"))).first;
+    PropertyType::pAdjacent5p = *this->repository.insert (new Adjacent5p (string ("adjacent_5p"))).first;
+    PropertyType::pAdjacent3p = *this->repository.insert (new Adjacent3p (string ("adjacent_3p"))).first;
+    
     PropertyType::pTheo = *this->repository.insert (new Theo (string ("theo"))).first;
     PropertyType::pPairing = *this->repository.insert (new Pairing (string ("pairing"))).first;
     PropertyType::pCis = *this->repository.insert (new Cis (string ("cis"))).first;
     PropertyType::pTrans = *this->repository.insert (new Trans (string ("trans"))).first;
-    PropertyType::pStack = *this->repository.insert (new Stack (string ("stack"))).first;
+    PropertyType::pStraight = *this->repository.insert (new Straight (string ("straight"))).first;
     PropertyType::pReverse = *this->repository.insert (new Reverse (string ("reverse"))).first;
-    PropertyType::pAdjacent = *this->repository.insert (new Adjacent (string ("adjacent"))).first;
+
     PropertyType::pType_A = *this->repository.insert (new Type_A (string ("type_A"))).first;
     PropertyType::pType_B = *this->repository.insert (new Type_B (string ("type_B"))).first;
     PropertyType::pHelix = *this->repository.insert (new Helix (string ("helix"))).first;
@@ -61,9 +72,6 @@ namespace mccore
     PropertyType::pO4p_exo = *this->repository.insert (new O4p_exo (string ("O4p_exo"))).first;
     PropertyType::pAnti = *this->repository.insert (new Anti (string ("anti"))).first;
     PropertyType::pSyn = *this->repository.insert (new Syn (string ("syn"))).first;
-    PropertyType::pDIR_5p = *this->repository.insert (new DIR_5p (string ("DIR_5p"))).first;
-    PropertyType::pDIR_3p = *this->repository.insert (new DIR_3p (string ("DIR_3p"))).first;
-    PropertyType::pDIR_ANY = *this->repository.insert (new DIR_ANY (string ("DIR_ANY"))).first;
     PropertyType::pSaenger = *this->repository.insert (new Saenger (string ("saenger"))).first;
     PropertyType::pWC = *this->repository.insert (new WC (string ("wc"))).first;
     PropertyType::pWobble = *this->repository.insert (new Wobble (string ("wobble"))).first;

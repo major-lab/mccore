@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.13 $
-// $Id: PropertyType.cc,v 1.13 2005-01-03 22:58:59 larosem Exp $
+// $Revision: 1.14 $
+// $Id: PropertyType.cc,v 1.14 2005-01-07 17:09:38 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -41,15 +41,27 @@ namespace mccore
   // STATIC MEMBERS ------------------------------------------------------------
 
   PropertyTypeStore PropertyType::ptstore;
+
   const PropertyType* PropertyType::pNull = 0;
   const PropertyType* PropertyType::pUnknown = 0;
   const PropertyType* PropertyType::pTheo = 0;
-  const PropertyType* PropertyType::pPairing = 0;
+
+  const PropertyType* PropertyType::pAdjacent = 0;
+  const PropertyType* PropertyType::pAdjacent5p = 0;
+  const PropertyType* PropertyType::pAdjacent3p = 0;
+  
   const PropertyType* PropertyType::pStack = 0;
+  const PropertyType* PropertyType::pStraightUpward = 0;
+  const PropertyType* PropertyType::pStraightDownward = 0;
+  const PropertyType* PropertyType::pReverseUpward = 0;
+  const PropertyType* PropertyType::pReverseDownward = 0;
+
+  const PropertyType* PropertyType::pPairing = 0;
   const PropertyType* PropertyType::pCis = 0;
   const PropertyType* PropertyType::pTrans = 0;
+  const PropertyType* PropertyType::pStraight = 0;
   const PropertyType* PropertyType::pReverse = 0;
-  const PropertyType* PropertyType::pAdjacent = 0;
+
   const PropertyType* PropertyType::pType_A = 0;
   const PropertyType* PropertyType::pType_B = 0;
   const PropertyType* PropertyType::pHelix = 0;
@@ -65,9 +77,7 @@ namespace mccore
   const PropertyType* PropertyType::pO4p_exo = 0;
   const PropertyType* PropertyType::pAnti = 0;
   const PropertyType* PropertyType::pSyn = 0;
-  const PropertyType* PropertyType::pDIR_5p = 0;
-  const PropertyType* PropertyType::pDIR_3p = 0;
-  const PropertyType* PropertyType::pDIR_ANY = 0;
+
   const PropertyType* PropertyType::pSaenger = 0;
   const PropertyType* PropertyType::pWC = 0;
   const PropertyType* PropertyType::pWobble = 0;
@@ -221,6 +231,7 @@ namespace mccore
   const PropertyType* PropertyType::pC8 = 0;
   const PropertyType* PropertyType::pBs = 0;
   const PropertyType* PropertyType::pBh = 0;
+
   
   // LIFECYCLE -----------------------------------------------------------------
 
@@ -253,7 +264,7 @@ namespace mccore
  
   // METHODS -------------------------------------------------------------------
 
-
+  
   const PropertyType* 
   PropertyType::parseType (const char* str) 
   {
@@ -266,6 +277,19 @@ namespace mccore
   PropertyType::parseType (const string& str) 
   {
     return ptstore.get (str);
+  }
+
+  
+  const PropertyType*
+  PropertyType::invert (const PropertyType* t)
+  {
+    if (PropertyType::pStraightUpward == t) return PropertyType::pStraightDownward;
+    if (PropertyType::pStraightDownward == t) return PropertyType::pStraightUpward;
+
+    if (PropertyType::pAdjacent5p == t) return PropertyType::pAdjacent3p;
+    if (PropertyType::pAdjacent3p == t) return PropertyType::pAdjacent5p;
+
+    return t;
   }
 
   
