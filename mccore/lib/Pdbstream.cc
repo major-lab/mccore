@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Aug 29 11:49:37 2001
-// Update Count     : 16
+// Last Modified On : Wed Sep  5 16:32:03 2001
+// Update Count     : 17
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -219,6 +219,8 @@ iPdbstream::GetAtomType (char *s, t_Residue *res_type)
     return a_PSZ;
   if (strcmp (tmpstr, "H3T") == 0)
     return a_H3T;
+  if (strcmp (tmpstr, "H5T") == 0)
+    return a_H5T;
   if (strcmp (tmpstr, "C") == 0)
     return a_C;
   if (strcmp (tmpstr, "CA") == 0)
@@ -677,236 +679,6 @@ iPdbstream::open ()
 
 
 
-const char*
-oPdbstream::GetAtomStr (const t_Atom *t)
-{
-  if (t->is_Misc ())
-    {
-      const at_Misc *t2 = dynamic_cast< const at_Misc* >(t);
-      return *t2;
-    }
-
-  if (t->is_Backbone ())
-    {
-      if (t->is_Carbon ())
-	{
-	  if (t->is_C1p ()) return " C1*";
-	  if (t->is_C2p ()) return " C2*";
-	  if (t->is_C3p ()) return " C3*";
-	  if (t->is_C4p ()) return " C4*";
-	  if (t->is_C5p ()) return " C5*";
-	  if (t->is_C   ()) return " C  ";
-	  if (t->is_CA  ()) return " CA ";
-	}
-      else if (t->is_Hydrogen ())
-	{
-	  if (t->is_H1p ()) return " H1*";
-	  if (t->is_H2p ()) return " H2*";
-	  if (t->is_H3p ()) return " H3*";
-	  if (t->is_H4p ()) return " H4*";
-	  if (t->is_H5p ()) return " H5*";
-	  if (t->is_1H2p ()) return "1H2*";
-	  if (t->is_1H5p ()) return "1H5*";
-	  if (t->is_2H2p ()) return "2H2*";
-	  if (t->is_2H5p ()) return "2H5*";
-	  if (t->is_HO2p ()) return "HO2*";
-	  if (t->is_HO3p ()) return "HO3*";
-	  if (t->is_H3T ()) return " H3T";
-	  if (t->is_HXT ()) return " HXT";
-          if (t->is_H ())   return " H  ";
-	  if (t->is_1H ())  return "1H  ";
-	  if (t->is_2H ())  return "2H  ";
-	  if (t->is_3H ())  return "3H  ";
-	}
-      else if (t->is_Oxygen ())
-	{
-	  if (t->is_O1P ()) return " O1P";
-	  if (t->is_O2p ()) return " O2*";
-	  if (t->is_O2P ()) return " O2P";
-	  if (t->is_O3p ()) return " O3*";
-	  if (t->is_O3P ()) return " O3P";
-	  if (t->is_O4p ()) return " O4*";
-	  if (t->is_O5p ()) return " O5*";
-	  if (t->is_OXT ()) return " OXT";
-	  if (t->is_O   ()) return " O  ";
-	}
-      else if (t->is_N ()) return " N  ";
-      else if (t->is_P ()) return " P  ";
-      else if (t->is_PSAZ ()) return "PSAZ";
-    }
-  else if (t->is_SideChain ())
-    {
-      if (t->is_Carbon ())
-	{
-	  if (t->is_C2 ()) return " C2 ";
-	  if (t->is_C4 ()) return " C4 ";
-	  if (t->is_C5 ()) return " C5 ";
-	  if (t->is_C5M ()) return " C5M";
-	  if (t->is_C6 ()) return " C6 ";
-	  if (t->is_C8 ()) return " C8 ";
-	  if (t->is_CB ()) return " CB ";
-	  if (t->is_CD ()) return " CD ";
-	  if (t->is_CD1 ()) return " CD1";
-	  if (t->is_CD2 ()) return " CD2";
-	  if (t->is_CE ()) return " CE ";
-	  if (t->is_CE1 ()) return " CE1";
-	  if (t->is_CE2 ()) return " CE2";
-	  if (t->is_CE3 ()) return " CE3";
-	  if (t->is_CG ()) return " CG ";
-	  if (t->is_CG1 ()) return " CG1";
-	  if (t->is_CG2 ()) return " CG2";
-	  if (t->is_CH2 ()) return " CH2";
-	  if (t->is_CZ ()) return " CZ ";
-	  if (t->is_CZ2 ()) return " CZ2";
-	  if (t->is_CZ3 ()) return " CZ3";
-	}
-      else if (t->is_Hydrogen ())
-	{
-	  if (t->is_H1 ()) return " H1 ";
-	  if (t->is_H2 ()) return " H2 ";
-	  if (t->is_H3 ()) return " H3 ";
-	  if (t->is_H5 ()) return " H5 ";
-	  if (t->is_H6 ()) return " H6 ";
-	  if (t->is_H7 ()) return " H7 ";
-	  if (t->is_H8 ()) return " H8 ";
-	  if (t->is_1H2 ()) return "1H2 ";
-	  if (t->is_1H4 ()) return "1H4 ";
-	  if (t->is_1H5M ()) return "1H5M";
-	  if (t->is_1H6 ()) return "1H6 ";
-	  if (t->is_2H2 ()) return "2H2 ";
-	  if (t->is_2H4 ()) return "2H4 ";
-	  if (t->is_2H5M ()) return "2H5M";
-	  if (t->is_2H6 ()) return "2H6 ";
-	  if (t->is_3H5M ()) return "3H5M";
-          if (t->is_HA ()) return " HA ";
-          if (t->is_HA1 ()) return "1HA ";
-          if (t->is_HA2 ()) return "2HA ";
-          if (t->is_HB ()) return " HB ";
-          if (t->is_HB1 ()) return "1HB ";
-          if (t->is_HB2 ()) return "2HB ";
-          if (t->is_HB3 ()) return "3HB ";
-          if (t->is_HD1 ()) return "1HD ";
-          if (t->is_HD2 ()) return "2HD ";
-          if (t->is_HE ()) return " HE ";
-          if (t->is_HE1 ()) return "1HE ";
-          if (t->is_HE2 ()) return "2HE ";
-          if (t->is_HE3 ()) return "3HE ";
-          if (t->is_HG ()) return " HG ";
-          if (t->is_HG1 ()) return "1HG ";
-          if (t->is_HG2 ()) return "2HG ";
-          if (t->is_HH ()) return " HH ";
-          if (t->is_HH2 ()) return " HH2";
-          if (t->is_HZ ()) return " HZ ";
-          if (t->is_HZ1 ()) return "1HZ ";
-          if (t->is_HZ2 ()) return "2HZ ";
-          if (t->is_HZ3 ()) return "3HZ ";
-          if (t->is_1HD1 ()) return "1HD1";
-          if (t->is_1HD2 ()) return "1HD2";
-          if (t->is_1HE2 ()) return "1HE2";
-          if (t->is_1HG1 ()) return "1HG1";
-          if (t->is_1HG2 ()) return "1HG2";
-          if (t->is_1HH1 ()) return "1HH1";
-          if (t->is_1HH2 ()) return "1HH2";
-          if (t->is_2HD1 ()) return "2HD1";
-          if (t->is_2HD2 ()) return "2HD2";
-          if (t->is_2HE2 ()) return "2HE2";
-          if (t->is_2HG1 ()) return "2HG1";
-          if (t->is_2HG2 ()) return "2HG2";
-          if (t->is_2HH1 ()) return "2HH1";
-          if (t->is_2HH2 ()) return "2HH2";
-          if (t->is_3HD1 ()) return "3HD1";
-          if (t->is_3HD2 ()) return "3HD2";
-          if (t->is_3HG1 ()) return "3HG1";
-          if (t->is_3HG2 ()) return "3HG2";
-	}
-      else if (t->is_Nitrogen ())
-	{
-	  if (t->is_N1 ()) return " N1 ";
-	  if (t->is_N2 ()) return " N2 ";
-	  if (t->is_N3 ()) return " N3 ";
-	  if (t->is_N4 ()) return " N4 ";
-	  if (t->is_N6 ()) return " N6 ";
-	  if (t->is_N7 ()) return " N7 ";
-	  if (t->is_N9 ()) return " N9 ";
-          if (t->is_ND1 ()) return " ND1";
-          if (t->is_ND2 ()) return " ND2";
-          if (t->is_NE ()) return " NE ";
-          if (t->is_NE1 ()) return " NE1";
-          if (t->is_NE2 ()) return " NE2";
-          if (t->is_NH1 ()) return " NH1";
-          if (t->is_NH2 ()) return " NH2";
-          if (t->is_NZ ()) return " NZ ";
-	}
-      else if (t->is_Oxygen ())
-	{
-	  if (t->is_O2 ()) return " O2 ";
-	  if (t->is_O4 ()) return " O4 ";
-	  if (t->is_O6 ()) return " O6 ";
-          if (t->is_OD1 ()) return " OD1";
-          if (t->is_OD2 ()) return " OD2";
-          if (t->is_OE1 ()) return " OE1";
-          if (t->is_OE2 ()) return " OE2";
-          if (t->is_OG ()) return " OG ";
-          if (t->is_OG1 ()) return " OG1";
-          if (t->is_OH ()) return " OH ";
-	}
-      else
-	{
-	  if (t->is_PSY ()) return " PSY";
-	  if (t->is_PSZ ()) return " PSZ";
-	  if (t->is_2LP6 ()) return "2LP6";
-	  if (t->is_1LP6 ()) return "1LP6";
-	  if (t->is_LP7 ()) return " LP7";
-	  if (t->is_LP3 ()) return " LP3";
-	  if (t->is_LP1 ()) return " LP1";
-	  if (t->is_2LP2 ()) return "2LP2";
-	  if (t->is_1LP2 ()) return "1LP2";
-	  if (t->is_2LP4 ()) return "2LP4";
-	  if (t->is_1LP4 ()) return "1LP4";
-          if (t->is_SD ()) return " SD ";
-          if (t->is_SG ()) return " SG ";
-	  if (t->is_MG ()) return "MG  ";
-	}
-    }
-  return "????";
-}
-
-
-
-const char*
-oPdbstream::GetResidueStr (const t_Residue *t)
-{
-  if (t->is_A ()) return "  A";
-  if (t->is_C ()) return "  C";
-  if (t->is_G ()) return "  G";
-  if (t->is_U ()) return "  U";
-  if (t->is_T ()) return "  T";
-  if (t->is_Phosphate ()) return "PO4";
-  if (t->is_ALA ()) return "ALA";
-  if (t->is_ARG ()) return "ARG";
-  if (t->is_ASN ()) return "ASN";
-  if (t->is_ASP ()) return "ASP";
-  if (t->is_CYS ()) return "CYS";
-  if (t->is_GLN ()) return "GLN";
-  if (t->is_GLU ()) return "GLU";
-  if (t->is_GLY ()) return "GLY";
-  if (t->is_HIS ()) return "HIS";
-  if (t->is_ILE ()) return "ILE";
-  if (t->is_LEU ()) return "LEU";
-  if (t->is_LYS ()) return "LYS";
-  if (t->is_MET ()) return "MET";
-  if (t->is_PHE ()) return "PHE";
-  if (t->is_PRO ()) return "PRO";
-  if (t->is_SER ()) return "SER";
-  if (t->is_THR ()) return "THR";
-  if (t->is_TRP ()) return "TRP";
-  if (t->is_TYR ()) return "TYR";
-  if (t->is_VAL ()) return "VAL";
-  return *t;
-}
-
-
-
 void
 oPdbstream::SetResId (const CResId &resid)
 {
@@ -981,9 +753,9 @@ oPdbstream::putatom (const CAtom &atom)
       precision (3);
       *this << setw (5) << mCurrentAtomNo
 	    << ' '
-	    << setw (4) << GetAtomStr (atom.GetType ())
+	    << atom.GetType ()->getPDBRep ()
 	    << atom.GetAltLocId ()
-	    << setw (3) << GetResidueStr (restype)
+	    << restype->getPDBRep ()
 	    << ' '
 	    << chainid
 	    << setw (4) << resno
@@ -1058,11 +830,11 @@ oPdbstream::TER ()
   *this << setw (6) << "TER";
   setf (ios::right, ios::adjustfield);
   *this << setw (5) << mCurrentAtomNo
-	<< "      ";
-  *this	<< setw (3) << GetResidueStr (restype)
+	<< "      "
+	<< restype->getPDBRep ()
 	<< ' '
-	<< chainid;
-  *this << setw (4) << resno
+	<< chainid
+	<< setw (4) << resno
 	<< ' ' << endl;
   ++mCurrentAtomNo;
 }

@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Fri Aug 24 17:35:58 2001
-// Update Count     : 11
+// Last Modified On : Wed Sep  5 16:32:05 2001
+// Update Count     : 12
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -361,22 +361,6 @@ class oPdbstream : public ostream
    * Line buffer.
    */
   char line[81];
-
-  
-  /**
-   * Converts the atom type to a 4 letter string.  If 0 is returned you
-   * cannot print the atom type, if the atom is unknown '????' is returned.
-   * @param t the atom type.
-   * @return the string conversion.
-   */
-  static const char* GetAtomStr (const t_Atom *t);
-
-  /**
-   * Converts the residue type to a 3 letter string.
-   * @param t the residue type.
-   * @return the string conversion.
-   */
-  static const char* GetResidueStr (const t_Residue *t);
 
 public:
 

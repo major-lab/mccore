@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Aug 27 16:17:15 2001
-// Update Count     : 40
+// Last Modified On : Wed Sep  5 16:32:01 2001
+// Update Count     : 41
 // Status           : 
 // 
 //  This file is part of mccore.
@@ -339,8 +339,8 @@ CHBond::DumpAmberRestraint (ostream &os)
   os << " &rst iresid=1," << endl;
   os << "      iat(1)=" << mResidueA->GetResNo()
      << ", iat(2)=" << mResidueB->GetResNo() << "," << endl;
-  os << "      atnam(1)= '" << donor->AmberRep () << "', "
-     << "atnam(2)= '" << acceptor->AmberRep () << "'," << endl;
+  os << "      atnam(1)= '" << donor->getAmberRep () << "', "
+     << "atnam(2)= '" << acceptor->getAmberRep () << "'," << endl;
   os << "      r1= 1.0, r2= 1.5, r3= 3.0, r4= 5.0," << endl;
   os << "      rk2=0.0, rk3=32.0" << endl;
   os << " &end" << endl;
@@ -348,9 +348,9 @@ CHBond::DumpAmberRestraint (ostream &os)
   os << "      iat(1)=" << mResidueA->GetResNo()
      << ", iat(2)=" << mResidueA->GetResNo()
      << ", iat(3)=" << mResidueB->GetResNo() << "," << endl;
-  os << "      atnam(1)= '" << donor->AmberRep () << "', "
-     << "atnam(2)= '" << hydro->AmberRep () << "', "
-     << "atnam(3)= '" << acceptor->AmberRep () << "'," << endl;
+  os << "      atnam(1)= '" << donor->getAmberRep () << "', "
+     << "atnam(2)= '" << hydro->getAmberRep () << "', "
+     << "atnam(3)= '" << acceptor->getAmberRep () << "'," << endl;
   os << "      r1= 150, r2= 170, r3= 190, r4= 210," << endl;
   os << "      rk2=20.0, rk3=20.0" << endl;
   os << " &end" << endl;

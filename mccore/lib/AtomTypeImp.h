@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Sep  5 13:53:40 2001
-// Update Count     : 5
+// Last Modified On : Wed Sep  5 16:31:59 2001
+// Update Count     : 6
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -107,10 +107,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return the PDB string representation of the atom.
+   */
+  virtual const char* getPDBRep () const { return mName; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return the name of the atom.
    */
-  virtual const char* AmberRep () const { return mName; }
+  virtual const char* getAmberRep () const { return mName; }
   
   /**
    * Tells if the atom is an unknown atom.
@@ -246,10 +252,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return the PDB string representation of the atom.
+   */
+  virtual const char* getPDBRep () const { return "NucleicAcid"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "NucleicAcid".
    */
-  virtual const char* AmberRep () const { return "NucleicAcid"; }
+  virtual const char* getAmberRep () const { return "NucleicAcid"; }
   
   /**
    * Tells if the atom is a nucleic acid.
@@ -337,10 +349,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return the PDB string representation of the atom.
+   */
+  virtual const char* getPDBRep () const { return "AminoAcid"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "AminoAcid".
    */
-  virtual const char* AmberRep () const { return "AminoAcid"; }
+  virtual const char* getAmberRep () const { return "AminoAcid"; }
 
   /**
    * Tells if the atom is a protein.
@@ -428,10 +446,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return the PDB string representation of the atom.
+   */
+  virtual const char* getPDBRep () const { return "Backbone"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "Backbone".
    */
-  virtual const char* AmberRep () const { return "Backbone"; }
+  virtual const char* getAmberRep () const { return "Backbone"; }
 
   /**
    * Tells if the atom is part of the backbone.
@@ -519,10 +543,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return the PDB string representation of the atom.
+   */
+  virtual const char* getPDBRep () const { return "SideChain"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "SideChain".
    */
-  virtual const char* AmberRep () const { return "SideChain"; }
+  virtual const char* getAmberRep () const { return "SideChain"; }
 
   /**
    * Tells if the atom is part of the side chain.
@@ -610,10 +640,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "C".
+   * Converts the atom type to an PDB string representation.
+   * @return " C  ".
    */
-  virtual const char* AmberRep () const { return "C"; }
+  virtual const char* getPDBRep () const { return " C  "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " C  ".
+   */
+  virtual const char* getAmberRep () const { return "C"; }
 
   /**
    * Tells if the atom is a carbon.
@@ -701,10 +737,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H".
+   * Converts the atom type to an PDB string representation.
+   * @return " H  ".
    */
-  virtual const char* AmberRep () const { return "H"; }
+  virtual const char* getPDBRep () const { return " H  "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H  ".
+   */
+  virtual const char* getAmberRep () const { return "H"; }
 
   /**
    * Tells if the atom is a hydrogen.
@@ -792,10 +834,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "N".
+   * Converts the atom type to an PDB string representation.
+   * @return " N  ".
    */
-  virtual const char* AmberRep () const { return "N"; }
+  virtual const char* getPDBRep () const { return " N  "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " N  ".
+   */
+  virtual const char* getAmberRep () const { return "N"; }
 
   /**
    * Tells if the atom is a nitrogen.
@@ -883,10 +931,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "P".
+   * Converts the atom type to an PDB string representation.
+   * @return " P  ".
    */
-  virtual const char* AmberRep () const { return "P"; }
+  virtual const char* getPDBRep () const { return " P  "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " P  ".
+   */
+  virtual const char* getAmberRep () const { return "P"; }
 
   /**
    * Tells if the atom is a phosphate.
@@ -974,10 +1028,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "O".
+   * Converts the atom type to an PDB string representation.
+   * @return " O  ".
    */
-  virtual const char* AmberRep () const { return "O"; }
+  virtual const char* getPDBRep () const { return " O  "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " O  ".
+   */
+  virtual const char* getAmberRep () const { return "O"; }
 
   /**
    * Tells if the atom is an oxygen.
@@ -1065,10 +1125,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "S".
+   * Converts the atom type to an PDB string representation.
+   * @return " S  ".
    */
-  virtual const char* AmberRep () const { return "S"; }
+  virtual const char* getPDBRep () const { return " S  "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " S  ".
+   */
+  virtual const char* getAmberRep () const { return "S"; }
 
   /**
    * Tells if the atom is a carbon.
@@ -1156,10 +1222,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "MG".
+   * Converts the atom type to an PDB string representation.
+   * @return " MG ".
    */
-  virtual const char* AmberRep () const { return "MG"; }
+  virtual const char* getPDBRep () const { return " MG "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " MG ".
+   */
+  virtual const char* getAmberRep () const { return "MG"; }
 
   /**
    * Tells if the atom is a magnesium.
@@ -1247,10 +1319,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "LonePair".
+   */
+  virtual const char* getPDBRep () const { return "LonePair"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "LonePair".
    */
-  virtual const char* AmberRep () const { return "LonePair"; }
+  virtual const char* getAmberRep () const { return "LonePair"; }
 
   /**
    * Tells if the atom is a lone pair.
@@ -1338,10 +1416,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "Pseudo".
+   */
+  virtual const char* getPDBRep () const { return "Pseudo"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "Pseudo".
    */
-  virtual const char* AmberRep () const { return "Pseudo"; }
+  virtual const char* getAmberRep () const { return "Pseudo"; }
 
   /**
    * Tells if the atom is a pseudo atom.
@@ -1432,10 +1516,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "C1'".
+   * Converts the atom type to an PDB string representation.
+   * @return " C1*".
    */
-  virtual const char* AmberRep () const { return "C1'"; }
+  virtual const char* getPDBRep () const { return " C1*"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " C1'".
+   */
+  virtual const char* getAmberRep () const { return "C1'"; }
 
   /**
    * Tells if the atom is a C1p.
@@ -1534,10 +1624,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "C2'".
+   * Converts the atom type to an PDB string representation.
+   * @return " C2*".
    */
-  virtual const char* AmberRep () const { return "C2'"; }
+  virtual const char* getPDBRep () const { return " C2*"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " C2'".
+   */
+  virtual const char* getAmberRep () const { return "C2'"; }
 
   /**
    * Tells if the atom is a C2p.
@@ -1636,10 +1732,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "C3'".
+   * Converts the atom type to an PDB string representation.
+   * @return " C3*".
    */
-  virtual const char* AmberRep () const { return "C3'"; }
+  virtual const char* getPDBRep () const { return " C3*"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " C3'".
+   */
+  virtual const char* getAmberRep () const { return "C3'"; }
 
   /**
    * Tells if the atom is a C3p.
@@ -1738,10 +1840,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "C4'".
+   * Converts the atom type to an PDB string representation.
+   * @return " C4*".
    */
-  virtual const char* AmberRep () const { return "C4'"; }
+  virtual const char* getPDBRep () const { return " C4*"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " C4'".
+   */
+  virtual const char* getAmberRep () const { return "C4'"; }
 
   /**
    * Tells if the atom is a C4p.
@@ -1840,10 +1948,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "C5'".
+   * Converts the atom type to an PDB string representation.
+   * @return " C5*".
    */
-  virtual const char* AmberRep () const { return "C5'"; }
+  virtual const char* getPDBRep () const { return " C5*"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " C5'".
+   */
+  virtual const char* getAmberRep () const { return "C5'"; }
 
   /**
    * Tells if the atom is a C5p.
@@ -1942,10 +2056,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H1'".
+   * Converts the atom type to an PDB string representation.
+   * @return " H1*".
    */
-  virtual const char* AmberRep () const { return "H1'"; }
+  virtual const char* getPDBRep () const { return " H1*"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H1'".
+   */
+  virtual const char* getAmberRep () const { return "H1'"; }
 
   /**
    * Tells if the atom is a H1p.
@@ -2044,10 +2164,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H2'".
+   * Converts the atom type to an PDB string representation.
+   * @return " H2*".
    */
-  virtual const char* AmberRep () const { return "H2'"; }
+  virtual const char* getPDBRep () const { return " H2*"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H2'".
+   */
+  virtual const char* getAmberRep () const { return "H2'"; }
 
   /**
    * Tells if the atom is a H2p.
@@ -2146,10 +2272,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H3'".
+   * Converts the atom type to an PDB string representation.
+   * @return " H3*".
    */
-  virtual const char* AmberRep () const { return "H3'"; }
+  virtual const char* getPDBRep () const { return " H3*"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H3'".
+   */
+  virtual const char* getAmberRep () const { return "H3'"; }
 
   /**
    * Tells if the atom is a H3p.
@@ -2248,10 +2380,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H4'".
+   * Converts the atom type to an PDB string representation.
+   * @return " H4*".
    */
-  virtual const char* AmberRep () const { return "H4'"; }
+  virtual const char* getPDBRep () const { return " H4*"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H4'".
+   */
+  virtual const char* getAmberRep () const { return "H4'"; }
 
   /**
    * Tells if the atom is a H4p.
@@ -2350,10 +2488,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H5'".
+   * Converts the atom type to an PDB string representation.
+   * @return " H5*".
    */
-  virtual const char* AmberRep () const { return "H5'"; }
+  virtual const char* getPDBRep () const { return " H5*"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H5'".
+   */
+  virtual const char* getAmberRep () const { return "H5'"; }
 
   /**
    * Tells if the atom is a H5p.
@@ -2452,10 +2596,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "O1P".
+   * Converts the atom type to an PDB string representation.
+   * @return " O1P".
    */
-  virtual const char* AmberRep () const { return "O1P"; }
+  virtual const char* getPDBRep () const { return " O1P"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " O1P".
+   */
+  virtual const char* getAmberRep () const { return "O1P"; }
 
   /**
    * Tells if the atom is a O1P.
@@ -2554,10 +2704,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "O2'".
+   * Converts the atom type to an PDB string representation.
+   * @return " O2*".
    */
-  virtual const char* AmberRep () const { return "O2'"; }
+  virtual const char* getPDBRep () const { return " O2*"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " O2'".
+   */
+  virtual const char* getAmberRep () const { return "O2'"; }
 
   /**
    * Tells if the atom is a O2p.
@@ -2656,10 +2812,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "O2P".
+   * Converts the atom type to an PDB string representation.
+   * @return " O2P".
    */
-  virtual const char* AmberRep () const { return "O2P"; }
+  virtual const char* getPDBRep () const { return " O2P"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " O2P".
+   */
+  virtual const char* getAmberRep () const { return "O2P"; }
 
   /**
    * Tells if the atom is a O2P.
@@ -2758,10 +2920,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "O3'".
+   * Converts the atom type to an PDB string representation.
+   * @return " O3*".
    */
-  virtual const char* AmberRep () const { return "O3'"; }
+  virtual const char* getPDBRep () const { return " O3*"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " O3'".
+   */
+  virtual const char* getAmberRep () const { return "O3'"; }
 
   /**
    * Tells if the atom is a O3p.
@@ -2860,10 +3028,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "O3P".
+   * Converts the atom type to an PDB string representation.
+   * @return " O3P".
    */
-  virtual const char* AmberRep () const { return "O3P"; }
+  virtual const char* getPDBRep () const { return " O3P"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " O3P".
+   */
+  virtual const char* getAmberRep () const { return "O3P"; }
 
   /**
    * Tells if the atom is a O3P.
@@ -2962,10 +3136,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "O4'".
+   * Converts the atom type to an PDB string representation.
+   * @return " O4*".
    */
-  virtual const char* AmberRep () const { return "O4'"; }
+  virtual const char* getPDBRep () const { return " O4*"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " O4'".
+   */
+  virtual const char* getAmberRep () const { return "O4'"; }
 
   /**
    * Tells if the atom is a O4p.
@@ -3064,10 +3244,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "O5'".
+   * Converts the atom type to an PDB string representation.
+   * @return " O5*".
    */
-  virtual const char* AmberRep () const { return "O5'"; }
+  virtual const char* getPDBRep () const { return " O5*"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " O5'".
+   */
+  virtual const char* getAmberRep () const { return "O5'"; }
 
   /**
    * Tells if the atom is a O5p.
@@ -3166,10 +3352,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "P".
+   * Converts the atom type to an PDB string representation.
+   * @return " P  ".
    */
-  virtual const char* AmberRep () const { return "P"; }
+  virtual const char* getPDBRep () const { return " P  "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " P  ".
+   */
+  virtual const char* getAmberRep () const { return "P"; }
 
   /**
    * Tells if the atom is a P.
@@ -3268,10 +3460,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "1H2*".
+   */
+  virtual const char* getPDBRep () const { return "1H2*"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "H2'1".
    */
-  virtual const char* AmberRep () const { return "H2'1"; }
+  virtual const char* getAmberRep () const { return "H2'1"; }
 
   /**
    * Tells if the atom is a 1H2p.
@@ -3370,10 +3568,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "1H5*".
+   */
+  virtual const char* getPDBRep () const { return "1H5*"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "H5'1".
    */
-  virtual const char* AmberRep () const { return "H5'1"; }
+  virtual const char* getAmberRep () const { return "H5'1"; }
 
   /**
    * Tells if the atom is a 1H5p.
@@ -3472,10 +3676,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "2H2*".
+   */
+  virtual const char* getPDBRep () const { return "2H2*"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "H2'2".
    */
-  virtual const char* AmberRep () const { return "H2'2"; }
+  virtual const char* getAmberRep () const { return "H2'2"; }
 
   /**
    * Tells if the atom is a 2H2p.
@@ -3574,10 +3784,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "2H5*".
+   */
+  virtual const char* getPDBRep () const { return "2H5*"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "H5'2".
    */
-  virtual const char* AmberRep () const { return "H5'2"; }
+  virtual const char* getAmberRep () const { return "H5'2"; }
 
   /**
    * Tells if the atom is a 2H5p.
@@ -3676,10 +3892,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "HO2*".
+   */
+  virtual const char* getPDBRep () const { return "HO2*"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "HO'2.
    */
-  virtual const char* AmberRep () const { return "HO'2"; }
+  virtual const char* getAmberRep () const { return "HO'2"; }
 
   /**
    * Tells if the atom is a HO2p.
@@ -3780,10 +4002,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "HO3*".
+   */
+  virtual const char* getPDBRep () const { return "HO3*"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "HO'3".
    */
-  virtual const char* AmberRep () const { return "HO'3"; }
+  virtual const char* getAmberRep () const { return "HO'3"; }
 
   /**
    * Tells if the atom is a HO3p.
@@ -3885,10 +4113,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "C2".
+   * Converts the atom type to an PDB string representation.
+   * @return " C2 ".
    */
-  virtual const char* AmberRep () const { return "C2"; }
+  virtual const char* getPDBRep () const { return " C2 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " C2 ".
+   */
+  virtual const char* getAmberRep () const { return "C2"; }
 
   /**
    * Tells if the atom is a C2.
@@ -3987,10 +4221,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "C4".
+   * Converts the atom type to an PDB string representation.
+   * @return " C4 ".
    */
-  virtual const char* AmberRep () const { return "C4"; }
+  virtual const char* getPDBRep () const { return " C4 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " C4 ".
+   */
+  virtual const char* getAmberRep () const { return "C4"; }
 
   /**
    * Tells if the atom is a C4.
@@ -4089,10 +4329,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "C5".
+   * Converts the atom type to an PDB string representation.
+   * @return " C5 ".
    */
-  virtual const char* AmberRep () const { return "C5"; }
+  virtual const char* getPDBRep () const { return " C5 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " C5 ".
+   */
+  virtual const char* getAmberRep () const { return "C5"; }
 
   /**
    * Tells if the atom is a C5.
@@ -4191,10 +4437,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "C7".
+   * Converts the atom type to an PDB string representation.
+   * @return " C5M".
    */
-  virtual const char* AmberRep () const { return "C7"; }
+  virtual const char* getPDBRep () const { return " C5M"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " C7 ".
+   */
+  virtual const char* getAmberRep () const { return "C7"; }
 
   /**
    * Tells if the atom is a C5M.
@@ -4293,10 +4545,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "C6".
+   * Converts the atom type to an PDB string representation.
+   * @return " C6 ".
    */
-  virtual const char* AmberRep () const { return "C6"; }
+  virtual const char* getPDBRep () const { return " C6 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " C6 ".
+   */
+  virtual const char* getAmberRep () const { return "C6"; }
 
   /**
    * Tells if the atom is a C6.
@@ -4395,10 +4653,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "C8".
+   * Converts the atom type to an PDB string representation.
+   * @return " C8 ".
    */
-  virtual const char* AmberRep () const { return "C8"; }
+  virtual const char* getPDBRep () const { return " C8 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " C8 ".
+   */
+  virtual const char* getAmberRep () const { return "C8"; }
 
   /**
    * Tells if the atom is a C8.
@@ -4497,10 +4761,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H1".
+   * Converts the atom type to an PDB string representation.
+   * @return " H1 ".
    */
-  virtual const char* AmberRep () const { return "H1"; }
+  virtual const char* getPDBRep () const { return " H1 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H1 ".
+   */
+  virtual const char* getAmberRep () const { return "H1"; }
 
   /**
    * Tells if the atom is a H1.
@@ -4599,10 +4869,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H2".
+   * Converts the atom type to an PDB string representation.
+   * @return " H2 ".
    */
-  virtual const char* AmberRep () const { return "H2"; }
+  virtual const char* getPDBRep () const { return " H2 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H2 ".
+   */
+  virtual const char* getAmberRep () const { return "H2"; }
 
   /**
    * Tells if the atom is a H2.
@@ -4701,10 +4977,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H3".
+   * Converts the atom type to an PDB string representation.
+   * @return " H3 ".
    */
-  virtual const char* AmberRep () const { return "H3"; }
+  virtual const char* getPDBRep () const { return " H3 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H3 ".
+   */
+  virtual const char* getAmberRep () const { return "H3"; }
 
   /**
    * Tells if the atom is a H3.
@@ -4803,10 +5085,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H5".
+   * Converts the atom type to an PDB string representation.
+   * @return " H5 ".
    */
-  virtual const char* AmberRep () const { return "H5"; }
+  virtual const char* getPDBRep () const { return " H5 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H5 ".
+   */
+  virtual const char* getAmberRep () const { return "H5"; }
 
   /**
    * Tells if the atom is a H5.
@@ -4905,10 +5193,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H6".
+   * Converts the atom type to an PDB string representation.
+   * @return " H6 ".
    */
-  virtual const char* AmberRep () const { return "H6"; }
+  virtual const char* getPDBRep () const { return " H6 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H6 ".
+   */
+  virtual const char* getAmberRep () const { return "H6"; }
 
   /**
    * Tells if the atom is a H6.
@@ -5007,10 +5301,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H7".
+   * Converts the atom type to an PDB string representation.
+   * @return " H7 ".
    */
-  virtual const char* AmberRep () const { return "H7"; }
+  virtual const char* getPDBRep () const { return " H7 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H7 ".
+   */
+  virtual const char* getAmberRep () const { return "H7"; }
 
   /**
    * Tells if the atom is a H7.
@@ -5109,10 +5409,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H8".
+   * Converts the atom type to an PDB string representation.
+   * @return " H8 ".
    */
-  virtual const char* AmberRep () const { return "H8"; }
+  virtual const char* getPDBRep () const { return " H8 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H8 ".
+   */
+  virtual const char* getAmberRep () const { return "H8"; }
 
   /**
    * Tells if the atom is a H8.
@@ -5211,10 +5517,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "N1".
+   * Converts the atom type to an PDB string representation.
+   * @return " N1 ".
    */
-  virtual const char* AmberRep () const { return "N1"; }
+  virtual const char* getPDBRep () const { return " N1 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " N1 ".
+   */
+  virtual const char* getAmberRep () const { return "N1"; }
 
   /**
    * Tells if the atom is a N1.
@@ -5313,10 +5625,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "N2".
+   * Converts the atom type to an PDB string representation.
+   * @return " N2 ".
    */
-  virtual const char* AmberRep () const { return "N2"; }
+  virtual const char* getPDBRep () const { return " N2 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " N2 ".
+   */
+  virtual const char* getAmberRep () const { return "N2"; }
 
   /**
    * Tells if the atom is a N2.
@@ -5415,10 +5733,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "N3".
+   * Converts the atom type to an PDB string representation.
+   * @return " N3 ".
    */
-  virtual const char* AmberRep () const { return "N3"; }
+  virtual const char* getPDBRep () const { return " N3 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " N3 ".
+   */
+  virtual const char* getAmberRep () const { return "N3"; }
 
   /**
    * Tells if the atom is a N3.
@@ -5517,10 +5841,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "N4".
+   * Converts the atom type to an PDB string representation.
+   * @return " N4 ".
    */
-  virtual const char* AmberRep () const { return "N4"; }
+  virtual const char* getPDBRep () const { return " N4 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " N4 ".
+   */
+  virtual const char* getAmberRep () const { return "N4"; }
 
   /**
    * Tells if the atom is a N4.
@@ -5619,10 +5949,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "N6".
+   * Converts the atom type to an PDB string representation.
+   * @return " N6 ".
    */
-  virtual const char* AmberRep () const { return "N6"; }
+  virtual const char* getPDBRep () const { return " N6 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " N6 ".
+   */
+  virtual const char* getAmberRep () const { return "N6"; }
 
   /**
    * Tells if the atom is a N6.
@@ -5721,10 +6057,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "N7".
+   * Converts the atom type to an PDB string representation.
+   * @return " N7 ".
    */
-  virtual const char* AmberRep () const { return "N7"; }
+  virtual const char* getPDBRep () const { return " N7 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " N7 ".
+   */
+  virtual const char* getAmberRep () const { return "N7"; }
 
   /**
    * Tells if the atom is a N7.
@@ -5823,10 +6165,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "N9".
+   * Converts the atom type to an PDB string representation.
+   * @return " N9 ".
    */
-  virtual const char* AmberRep () const { return "N9"; }
+  virtual const char* getPDBRep () const { return " N9 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " N9 ".
+   */
+  virtual const char* getAmberRep () const { return "N9"; }
 
   /**
    * Tells if the atom is a N9.
@@ -5923,10 +6271,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "O2".
+   * Converts the atom type to an PDB string representation.
+   * @return " O2 ".
    */
-  virtual const char* AmberRep () const { return "O2"; }
+  virtual const char* getPDBRep () const { return " O2 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " O2 ".
+   */
+  virtual const char* getAmberRep () const { return "O2"; }
 
   /**
    * Tells if the atom is a O2.
@@ -6025,10 +6379,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "O4".
+   * Converts the atom type to an PDB string representation.
+   * @return " O4 ".
    */
-  virtual const char* AmberRep () const { return "O4"; }
+  virtual const char* getPDBRep () const { return " O4 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " O4 ".
+   */
+  virtual const char* getAmberRep () const { return "O4"; }
 
   /**
    * Tells if the atom is a O4.
@@ -6127,10 +6487,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "O6".
+   * Converts the atom type to an PDB string representation.
+   * @return " O6 ".
    */
-  virtual const char* AmberRep () const { return "O6"; }
+  virtual const char* getPDBRep () const { return " O6 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " O6 ".
+   */
+  virtual const char* getAmberRep () const { return "O6"; }
 
   /**
    * Tells if the atom is a O6.
@@ -6229,10 +6595,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H21".
+   * Converts the atom type to an PDB string representation.
+   * @return "1H2 ".
    */
-  virtual const char* AmberRep () const { return "H21"; }
+  virtual const char* getPDBRep () const { return "1H2 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H21".
+   */
+  virtual const char* getAmberRep () const { return "H21"; }
 
   /**
    * Tells if the atom is a 1H2.
@@ -6331,10 +6703,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H41".
+   * Converts the atom type to an PDB string representation.
+   * @return "1H4 ".
    */
-  virtual const char* AmberRep () const { return "H41"; }
+  virtual const char* getPDBRep () const { return "1H4 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H41".
+   */
+  virtual const char* getAmberRep () const { return "H41"; }
 
   /**
    * Tells if the atom is a 1H4.
@@ -6433,10 +6811,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H71".
+   * Converts the atom type to an PDB string representation.
+   * @return "1H5M".
    */
-  virtual const char* AmberRep () const { return "H71"; }
+  virtual const char* getPDBRep () const { return "1H5M"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H71".
+   */
+  virtual const char* getAmberRep () const { return "H71"; }
 
   /**
    * Tells if the atom is a 1H5M.
@@ -6535,10 +6919,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H61".
+   * Converts the atom type to an PDB string representation.
+   * @return "1H6 ".
    */
-  virtual const char* AmberRep () const { return "H61"; }
+  virtual const char* getPDBRep () const { return "1H6 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H61".
+   */
+  virtual const char* getAmberRep () const { return "H61"; }
 
   /**
    * Tells if the atom is a 1H6.
@@ -6637,10 +7027,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H22".
+   * Converts the atom type to an PDB string representation.
+   * @return "2H2 ".
    */
-  virtual const char* AmberRep () const { return "H22"; }
+  virtual const char* getPDBRep () const { return "2H2 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H22".
+   */
+  virtual const char* getAmberRep () const { return "H22"; }
 
   /**
    * Tells if the atom is a 2H2.
@@ -6739,10 +7135,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H42".
+   * Converts the atom type to an PDB string representation.
+   * @return "2H4 ".
    */
-  virtual const char* AmberRep () const { return "H42"; }
+  virtual const char* getPDBRep () const { return "2H4 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H42".
+   */
+  virtual const char* getAmberRep () const { return "H42"; }
 
   /**
    * Tells if the atom is a 2H4.
@@ -6841,10 +7243,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H72".
+   * Converts the atom type to an PDB string representation.
+   * @return "2H5M".
    */
-  virtual const char* AmberRep () const { return "H72"; }
+  virtual const char* getPDBRep () const { return "2H5M"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H72".
+   */
+  virtual const char* getAmberRep () const { return "H72"; }
 
   /**
    * Tells if the atom is a 2H5M.
@@ -6943,10 +7351,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H62".
+   * Converts the atom type to an PDB string representation.
+   * @return "2H6 ".
    */
-  virtual const char* AmberRep () const { return "H62"; }
+  virtual const char* getPDBRep () const { return "2H6 "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H62".
+   */
+  virtual const char* getAmberRep () const { return "H62"; }
 
   /**
    * Tells if the atom is a 2H6.
@@ -7045,10 +7459,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H73".
+   * Converts the atom type to an PDB string representation.
+   * @return "3H5M".
    */
-  virtual const char* AmberRep () const { return "H73"; }
+  virtual const char* getPDBRep () const { return "3H5M"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H73".
+   */
+  virtual const char* getAmberRep () const { return "H73"; }
 
   /**
    * Tells if the atom is a 3H5M.
@@ -7147,10 +7567,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "PSY".
+   * Converts the atom type to an PDB string representation.
+   * @return " PSY".
    */
-  virtual const char* AmberRep () const { return "PSY"; }
+  virtual const char* getPDBRep () const { return " PSY"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " PSY".
+   */
+  virtual const char* getAmberRep () const { return "PSY"; }
 
   /**
    * Tells if the atom is a PSY.
@@ -7252,10 +7678,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "PSZ".
+   * Converts the atom type to an PDB string representation.
+   * @return " PSZ".
    */
-  virtual const char* AmberRep () const { return "PSZ"; }
+  virtual const char* getPDBRep () const { return " PSZ"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " PSZ".
+   */
+  virtual const char* getAmberRep () const { return "PSZ"; }
 
   /**
    * Tells if the atom is a PSZ.
@@ -7357,10 +7789,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "LP1".
+   * Converts the atom type to an PDB string representation.
+   * @return " LP1".
    */
-  virtual const char* AmberRep () const { return "LP1"; }
+  virtual const char* getPDBRep () const { return " LP1"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " LP1".
+   */
+  virtual const char* getAmberRep () const { return "LP1"; }
 
   /**
    * Tells if the atom is a LP1.
@@ -7462,10 +7900,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "LP3".
+   * Converts the atom type to an PDB string representation.
+   * @return " LP3".
    */
-  virtual const char* AmberRep () const { return "LP3"; }
+  virtual const char* getPDBRep () const { return " LP3"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " LP3".
+   */
+  virtual const char* getAmberRep () const { return "LP3"; }
 
   /**
    * Tells if the atom is a LP3.
@@ -7567,10 +8011,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "LP7".
+   * Converts the atom type to an PDB string representation.
+   * @return " LP7".
    */
-  virtual const char* AmberRep () const { return "LP7"; }
+  virtual const char* getPDBRep () const { return " LP7"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " LP7".
+   */
+  virtual const char* getAmberRep () const { return "LP7"; }
 
   /**
    * Tells if the atom is a LP7.
@@ -7672,10 +8122,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "1LP2".
+   */
+  virtual const char* getPDBRep () const { return "1LP2"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "1LP2".
    */
-  virtual const char* AmberRep () const { return "1LP2"; }
+  virtual const char* getAmberRep () const { return "1LP2"; }
 
   /**
    * Tells if the atom is a 1LP2.
@@ -7777,10 +8233,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "1LP4".
+   */
+  virtual const char* getPDBRep () const { return "1LP4"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "1LP4".
    */
-  virtual const char* AmberRep () const { return "1LP4"; }
+  virtual const char* getAmberRep () const { return "1LP4"; }
 
   /**
    * Tells if the atom is a 1LP4.
@@ -7882,10 +8344,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "1LP6".
+   */
+  virtual const char* getPDBRep () const { return "1LP6"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "1LP6".
    */
-  virtual const char* AmberRep () const { return "1LP6"; }
+  virtual const char* getAmberRep () const { return "1LP6"; }
 
   /**
    * Tells if the atom is a 1LP6.
@@ -7987,10 +8455,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "2LP2".
+   */
+  virtual const char* getPDBRep () const { return "2LP2"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "2LP2".
    */
-  virtual const char* AmberRep () const { return "2LP2"; }
+  virtual const char* getAmberRep () const { return "2LP2"; }
 
   /**
    * Tells if the atom is a 2LP2.
@@ -8092,10 +8566,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "2LP4".
+   */
+  virtual const char* getPDBRep () const { return "2LP4"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "2LP4".
    */
-  virtual const char* AmberRep () const { return "2LP4"; }
+  virtual const char* getAmberRep () const { return "2LP4"; }
 
   /**
    * Tells if the atom is a 2LP4.
@@ -8197,10 +8677,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "2LP6".
+   */
+  virtual const char* getPDBRep () const { return "2LP6"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "2LP6".
    */
-  virtual const char* AmberRep () const { return "2LP6"; }
+  virtual const char* getAmberRep () const { return "2LP6"; }
 
   /**
    * Tells if the atom is a 2LP6.
@@ -8302,10 +8788,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H3T".
+   * Converts the atom type to an PDB string representation.
+   * @return " H3T".
    */
-  virtual const char* AmberRep () const { return "H3T"; }
+  virtual const char* getPDBRep () const { return " H3T"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H3T".
+   */
+  virtual const char* getAmberRep () const { return "H3T"; }
 
   /**
    * Tells if the atom is a H3T.
@@ -8404,10 +8896,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H5T".
+   * Converts the atom type to an PDB string representation.
+   * @return " H5T".
    */
-  virtual const char* AmberRep () const { return "H5T"; }
+  virtual const char* getPDBRep () const { return " H5T"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H5T".
+   */
+  virtual const char* getAmberRep () const { return "H5T"; }
 
   /**
    * Tells if the atom is a H5T.
@@ -8506,10 +9004,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "C".
+   * Converts the atom type to an PDB string representation.
+   * @return " C  ".
    */
-  virtual const char* AmberRep () const { return "C"; }
+  virtual const char* getPDBRep () const { return " C  "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " C  ".
+   */
+  virtual const char* getAmberRep () const { return "C"; }
 
   /**
    * Tells if the atom is a C.
@@ -8608,10 +9112,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "CA".
+   * Converts the atom type to an PDB string representation.
+   * @return " CA ".
    */
-  virtual const char* AmberRep () const { return "CA"; }
+  virtual const char* getPDBRep () const { return " CA "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " CA ".
+   */
+  virtual const char* getAmberRep () const { return "CA"; }
 
   /**
    * Tells if the atom is a CA.
@@ -8710,10 +9220,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "CB".
+   * Converts the atom type to an PDB string representation.
+   * @return " CB ".
    */
-  virtual const char* AmberRep () const { return "CB"; }
+  virtual const char* getPDBRep () const { return " CB "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " CB ".
+   */
+  virtual const char* getAmberRep () const { return "CB"; }
 
   /**
    * Tells if the atom is a CB.
@@ -8812,10 +9328,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "CD".
+   * Converts the atom type to an PDB string representation.
+   * @return " CD ".
    */
-  virtual const char* AmberRep () const { return "CD"; }
+  virtual const char* getPDBRep () const { return " CD "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " CD ".
+   */
+  virtual const char* getAmberRep () const { return "CD"; }
 
   /**
    * Tells if the atom is a CD.
@@ -8914,10 +9436,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "CD1".
+   * Converts the atom type to an PDB string representation.
+   * @return " CD1".
    */
-  virtual const char* AmberRep () const { return "CD1"; }
+  virtual const char* getPDBRep () const { return " CD1"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " CD1".
+   */
+  virtual const char* getAmberRep () const { return "CD1"; }
 
   /**
    * Tells if the atom is a CD1.
@@ -9016,10 +9544,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "CD2".
+   * Converts the atom type to an PDB string representation.
+   * @return " CD2".
    */
-  virtual const char* AmberRep () const { return "CD2"; }
+  virtual const char* getPDBRep () const { return " CD2"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " CD2".
+   */
+  virtual const char* getAmberRep () const { return "CD2"; }
 
   /**
    * Tells if the atom is a CD2.
@@ -9118,10 +9652,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "CE".
+   * Converts the atom type to an PDB string representation.
+   * @return " CE ".
    */
-  virtual const char* AmberRep () const { return "CD"; }
+  virtual const char* getPDBRep () const { return " CE "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " CE ".
+   */
+  virtual const char* getAmberRep () const { return "CE"; }
 
   /**
    * Tells if the atom is a CE.
@@ -9220,10 +9760,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "CE1".
+   * Converts the atom type to an PDB string representation.
+   * @return " CE1".
    */
-  virtual const char* AmberRep () const { return "CE1"; }
+  virtual const char* getPDBRep () const { return " CE1"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " CE1".
+   */
+  virtual const char* getAmberRep () const { return "CE1"; }
 
   /**
    * Tells if the atom is a CE1.
@@ -9322,10 +9868,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "CE2".
+   * Converts the atom type to an PDB string representation.
+   * @return " CE2".
    */
-  virtual const char* AmberRep () const { return "CE2"; }
+  virtual const char* getPDBRep () const { return " CE2"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " CE2".
+   */
+  virtual const char* getAmberRep () const { return "CE2"; }
 
   /**
    * Tells if the atom is a CE2.
@@ -9424,10 +9976,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "CE3".
+   * Converts the atom type to an PDB string representation.
+   * @return " CE3".
    */
-  virtual const char* AmberRep () const { return "CE3"; }
+  virtual const char* getPDBRep () const { return " CE3"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " CE3".
+   */
+  virtual const char* getAmberRep () const { return "CE3"; }
 
   /**
    * Tells if the atom is a CE3.
@@ -9526,10 +10084,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "CG".
+   * Converts the atom type to an PDB string representation.
+   * @return " CG ".
    */
-  virtual const char* AmberRep () const { return "CG"; }
+  virtual const char* getPDBRep () const { return " CG "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " CG ".
+   */
+  virtual const char* getAmberRep () const { return "CG"; }
 
   /**
    * Tells if the atom is a CG.
@@ -9628,10 +10192,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "CG1".
+   * Converts the atom type to an PDB string representation.
+   * @return " CG1".
    */
-  virtual const char* AmberRep () const { return "CG1"; }
+  virtual const char* getPDBRep () const { return " CG1"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " CG1".
+   */
+  virtual const char* getAmberRep () const { return "CG1"; }
 
   /**
    * Tells if the atom is a CG1.
@@ -9730,10 +10300,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "CG2".
+   * Converts the atom type to an PDB string representation.
+   * @return " CG2".
    */
-  virtual const char* AmberRep () const { return "CG2"; }
+  virtual const char* getPDBRep () const { return " CG2"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " CG2".
+   */
+  virtual const char* getAmberRep () const { return "CG2"; }
 
   /**
    * Tells if the atom is a CG2.
@@ -9832,10 +10408,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "CH2".
+   * Converts the atom type to an PDB string representation.
+   * @return " CH2".
    */
-  virtual const char* AmberRep () const { return "CH2"; }
+  virtual const char* getPDBRep () const { return " CH2"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " CH2".
+   */
+  virtual const char* getAmberRep () const { return "CH2"; }
 
   /**
    * Tells if the atom is a CH2.
@@ -9934,10 +10516,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "CZ".
+   * Converts the atom type to an PDB string representation.
+   * @return " CZ ".
    */
-  virtual const char* AmberRep () const { return "CZ"; }
+  virtual const char* getPDBRep () const { return " CZ "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " CZ ".
+   */
+  virtual const char* getAmberRep () const { return "CZ"; }
 
   /**
    * Tells if the atom is a CZ.
@@ -10036,10 +10624,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "CZ2".
+   * Converts the atom type to an PDB string representation.
+   * @return " CZ2".
    */
-  virtual const char* AmberRep () const { return "CZ2"; }
+  virtual const char* getPDBRep () const { return " CZ2"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " CZ2".
+   */
+  virtual const char* getAmberRep () const { return "CZ2"; }
 
   /**
    * Tells if the atom is a CZ2.
@@ -10138,10 +10732,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "CZ3".
+   * Converts the atom type to an PDB string representation.
+   * @return " CZ3".
    */
-  virtual const char* AmberRep () const { return "CZ3"; }
+  virtual const char* getPDBRep () const { return " CZ3"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " CZ3".
+   */
+  virtual const char* getAmberRep () const { return "CZ3"; }
 
   /**
    * Tells if the atom is a CZ3.
@@ -10240,10 +10840,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "H".
+   * Converts the atom type to an PDB string representation.
+   * @return " H  ".
    */
-  virtual const char* AmberRep () const { return "H"; }
+  virtual const char* getPDBRep () const { return " H  "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " H  ".
+   */
+  virtual const char* getAmberRep () const { return "H"; }
 
   /**
    * Tells if the atom is a H.
@@ -10342,10 +10948,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "1H".
+   * Converts the atom type to an PDB string representation.
+   * @return "1H  ".
    */
-  virtual const char* AmberRep () const { return "1H"; }
+  virtual const char* getPDBRep () const { return "1H  "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "1H  ".
+   */
+  virtual const char* getAmberRep () const { return "1H"; }
 
   /**
    * Tells if the atom is a 1H.
@@ -10444,10 +11056,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "2H".
+   * Converts the atom type to an PDB string representation.
+   * @return "2H  ".
    */
-  virtual const char* AmberRep () const { return "2H"; }
+  virtual const char* getPDBRep () const { return "2H  "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "2H  ".
+   */
+  virtual const char* getAmberRep () const { return "2H"; }
 
   /**
    * Tells if the atom is a 2H.
@@ -10546,10 +11164,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "3H".
+   * Converts the atom type to an PDB string representation.
+   * @return "3H  ".
    */
-  virtual const char* AmberRep () const { return "3H"; }
+  virtual const char* getPDBRep () const { return "3H  "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "3H  ".
+   */
+  virtual const char* getAmberRep () const { return "3H"; }
 
   /**
    * Tells if the atom is a 3H.
@@ -10648,10 +11272,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "HA".
+   * Converts the atom type to an PDB string representation.
+   * @return " HA ".
    */
-  virtual const char* AmberRep () const { return "HA"; }
+  virtual const char* getPDBRep () const { return " HA "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " HA ".
+   */
+  virtual const char* getAmberRep () const { return "HA"; }
 
   /**
    * Tells if the atom is a HA.
@@ -10750,10 +11380,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "HA".
+   * Converts the atom type to an PDB string representation.
+   * @return "1HA ".
    */
-  virtual const char* AmberRep () const { return "HA2"; }
+  virtual const char* getPDBRep () const { return "1HA "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " HA2".
+   */
+  virtual const char* getAmberRep () const { return "HA2"; }
 
   /**
    * Tells if the atom is a HA1.
@@ -10852,10 +11488,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "HA2".
+   * Converts the atom type to an PDB string representation.
+   * @return "2HA ".
    */
-  virtual const char* AmberRep () const { return "HA3"; }
+  virtual const char* getPDBRep () const { return "2HA "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " HA3".
+   */
+  virtual const char* getAmberRep () const { return "HA3"; }
 
   /**
    * Tells if the atom is a HA2.
@@ -10954,10 +11596,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "HB".
+   * Converts the atom type to an PDB string representation.
+   * @return " HB ".
    */
-  virtual const char* AmberRep () const { return "HB"; }
+  virtual const char* getPDBRep () const { return " HB "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " HB ".
+   */
+  virtual const char* getAmberRep () const { return "HB"; }
 
   /**
    * Tells if the atom is a HB.
@@ -11056,10 +11704,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "HB1".
+   * Converts the atom type to an PDB string representation.
+   * @return "1HB ".
    */
-  virtual const char* AmberRep () const { return "HB1"; }
+  virtual const char* getPDBRep () const { return "1HB "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " HB1".
+   */
+  virtual const char* getAmberRep () const { return "HB1"; }
 
   /**
    * Tells if the atom is a HB1.
@@ -11158,10 +11812,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "HB2".
+   * Converts the atom type to an PDB string representation.
+   * @return "2HB ".
    */
-  virtual const char* AmberRep () const { return "HB2"; }
+  virtual const char* getPDBRep () const { return "2HB "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " HB2".
+   */
+  virtual const char* getAmberRep () const { return "HB2"; }
 
   /**
    * Tells if the atom is a HB2.
@@ -11260,10 +11920,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "HB3".
+   * Converts the atom type to an PDB string representation.
+   * @return "3HB ".
    */
-  virtual const char* AmberRep () const { return "HB3"; }
+  virtual const char* getPDBRep () const { return "3HB "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " HB3".
+   */
+  virtual const char* getAmberRep () const { return "HB3"; }
 
   /**
    * Tells if the atom is a HB3.
@@ -11362,10 +12028,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "HD1".
+   * Converts the atom type to an PDB string representation.
+   * @return "1HD ".
    */
-  virtual const char* AmberRep () const { return "HD1"; }
+  virtual const char* getPDBRep () const { return "1HD "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " HD1".
+   */
+  virtual const char* getAmberRep () const { return "HD1"; }
 
   /**
    * Tells if the atom is a HD1.
@@ -11464,10 +12136,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "HD2".
+   * Converts the atom type to an PDB string representation.
+   * @return "2HD ".
    */
-  virtual const char* AmberRep () const { return "HD2"; }
+  virtual const char* getPDBRep () const { return "2HD "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " HD2".
+   */
+  virtual const char* getAmberRep () const { return "HD2"; }
 
   /**
    * Tells if the atom is a HD2.
@@ -11566,10 +12244,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "HE".
+   * Converts the atom type to an PDB string representation.
+   * @return " HE ".
    */
-  virtual const char* AmberRep () const { return "HE"; }
+  virtual const char* getPDBRep () const { return " HE "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " HE ".
+   */
+  virtual const char* getAmberRep () const { return "HE"; }
 
   /**
    * Tells if the atom is a HE.
@@ -11668,10 +12352,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "HE1".
+   * Converts the atom type to an PDB string representation.
+   * @return "1HE ".
    */
-  virtual const char* AmberRep () const { return "HE1"; }
+  virtual const char* getPDBRep () const { return "1HE "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " HE1".
+   */
+  virtual const char* getAmberRep () const { return "HE1"; }
 
   /**
    * Tells if the atom is a HE1.
@@ -11770,10 +12460,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "HE2".
+   * Converts the atom type to an PDB string representation.
+   * @return "2HE ".
    */
-  virtual const char* AmberRep () const { return "HE2"; }
+  virtual const char* getPDBRep () const { return "2HE "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " HE2".
+   */
+  virtual const char* getAmberRep () const { return "HE2"; }
 
   /**
    * Tells if the atom is a HE2.
@@ -11872,10 +12568,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "HE3".
+   * Converts the atom type to an PDB string representation.
+   * @return "3HE ".
    */
-  virtual const char* AmberRep () const { return "HE3"; }
+  virtual const char* getPDBRep () const { return "3HE "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " HE3".
+   */
+  virtual const char* getAmberRep () const { return "HE3"; }
 
   /**
    * Tells if the atom is a HE3.
@@ -11974,10 +12676,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "HG".
+   * Converts the atom type to an PDB string representation.
+   * @return " HG ".
    */
-  virtual const char* AmberRep () const { return "HG"; }
+  virtual const char* getPDBRep () const { return " HG "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " HG ".
+   */
+  virtual const char* getAmberRep () const { return "HG"; }
 
   /**
    * Tells if the atom is a HG.
@@ -12076,10 +12784,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "HG1".
+   * Converts the atom type to an PDB string representation.
+   * @return "1HG ".
    */
-  virtual const char* AmberRep () const { return "HG1"; }
+  virtual const char* getPDBRep () const { return "1HG "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " HG1".
+   */
+  virtual const char* getAmberRep () const { return "HG1"; }
 
   /**
    * Tells if the atom is a HG1.
@@ -12178,10 +12892,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "HG2".
+   * Converts the atom type to an PDB string representation.
+   * @return "2HG ".
    */
-  virtual const char* AmberRep () const { return "HG2"; }
+  virtual const char* getPDBRep () const { return "2HG "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " HG2".
+   */
+  virtual const char* getAmberRep () const { return "HG2"; }
 
   /**
    * Tells if the atom is a HG2.
@@ -12280,10 +13000,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "HH".
+   * Converts the atom type to an PDB string representation.
+   * @return " HH ".
    */
-  virtual const char* AmberRep () const { return "HH"; }
+  virtual const char* getPDBRep () const { return " HH "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " HH ".
+   */
+  virtual const char* getAmberRep () const { return "HH"; }
 
   /**
    * Tells if the atom is a HH.
@@ -12382,10 +13108,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "HH2".
+   * Converts the atom type to an PDB string representation.
+   * @return " HH2".
    */
-  virtual const char* AmberRep () const { return "HH2"; }
+  virtual const char* getPDBRep () const { return " HH2"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " HH2".
+   */
+  virtual const char* getAmberRep () const { return "HH2"; }
 
   /**
    * Tells if the atom is a HH2.
@@ -12484,10 +13216,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "HXT".
+   * Converts the atom type to an PDB string representation.
+   * @return " HXT".
    */
-  virtual const char* AmberRep () const { return "HXT"; }
+  virtual const char* getPDBRep () const { return " HXT"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " HXT".
+   */
+  virtual const char* getAmberRep () const { return "HXT"; }
 
   /**
    * Tells if the atom is a HXT.
@@ -12586,10 +13324,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "HZ".
+   * Converts the atom type to an PDB string representation.
+   * @return " HZ ".
    */
-  virtual const char* AmberRep () const { return "HZ"; }
+  virtual const char* getPDBRep () const { return " HZ "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " HZ ".
+   */
+  virtual const char* getAmberRep () const { return "HZ"; }
 
   /**
    * Tells if the atom is a HZ.
@@ -12688,10 +13432,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "HZ1".
+   * Converts the atom type to an PDB string representation.
+   * @return "1HZ ".
    */
-  virtual const char* AmberRep () const { return "HZ1"; }
+  virtual const char* getPDBRep () const { return "1HZ "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " HZ1".
+   */
+  virtual const char* getAmberRep () const { return "HZ1"; }
 
   /**
    * Tells if the atom is a HZ1.
@@ -12790,10 +13540,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "HZ2".
+   * Converts the atom type to an PDB string representation.
+   * @return "2HZ ".
    */
-  virtual const char* AmberRep () const { return "HZ2"; }
+  virtual const char* getPDBRep () const { return "2HZ "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " HZ2".
+   */
+  virtual const char* getAmberRep () const { return "HZ2"; }
 
   /**
    * Tells if the atom is a HZ2.
@@ -12892,10 +13648,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "HZ3".
+   * Converts the atom type to an PDB string representation.
+   * @return "3HZ ".
    */
-  virtual const char* AmberRep () const { return "HZ3"; }
+  virtual const char* getPDBRep () const { return "3HZ "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " HZ3".
+   */
+  virtual const char* getAmberRep () const { return "HZ3"; }
 
   /**
    * Tells if the atom is a HZ3.
@@ -12994,10 +13756,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "N".
+   * Converts the atom type to an PDB string representation.
+   * @return " N  ".
    */
-  virtual const char* AmberRep () const { return "N"; }
+  virtual const char* getPDBRep () const { return " N  "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " N  ".
+   */
+  virtual const char* getAmberRep () const { return "N"; }
 
   /**
    * Tells if the atom is a N.
@@ -13096,10 +13864,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "ND1".
+   * Converts the atom type to an PDB string representation.
+   * @return " ND1".
    */
-  virtual const char* AmberRep () const { return "ND1"; }
+  virtual const char* getPDBRep () const { return " ND1"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " ND1".
+   */
+  virtual const char* getAmberRep () const { return "ND1"; }
 
   /**
    * Tells if the atom is a ND1.
@@ -13198,10 +13972,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "ND2".
+   * Converts the atom type to an PDB string representation.
+   * @return " ND2".
    */
-  virtual const char* AmberRep () const { return "ND2"; }
+  virtual const char* getPDBRep () const { return " ND2"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " ND2".
+   */
+  virtual const char* getAmberRep () const { return "ND2"; }
 
   /**
    * Tells if the atom is a ND2.
@@ -13300,10 +14080,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "NE".
+   * Converts the atom type to an PDB string representation.
+   * @return " NE ".
    */
-  virtual const char* AmberRep () const { return "NE"; }
+  virtual const char* getPDBRep () const { return " NE "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " NE ".
+   */
+  virtual const char* getAmberRep () const { return "NE"; }
 
   /**
    * Tells if the atom is a NE.
@@ -13402,10 +14188,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "NE1".
+   * Converts the atom type to an PDB string representation.
+   * @return " NE1".
    */
-  virtual const char* AmberRep () const { return "NE1"; }
+  virtual const char* getPDBRep () const { return " NE1"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " NE1".
+   */
+  virtual const char* getAmberRep () const { return "NE1"; }
 
   /**
    * Tells if the atom is a NE1.
@@ -13504,10 +14296,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "NE2".
+   * Converts the atom type to an PDB string representation.
+   * @return " NE2".
    */
-  virtual const char* AmberRep () const { return "NE2"; }
+  virtual const char* getPDBRep () const { return " NE2"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " NE2".
+   */
+  virtual const char* getAmberRep () const { return "NE2"; }
 
   /**
    * Tells if the atom is a NE2.
@@ -13606,10 +14404,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "NH1".
+   * Converts the atom type to an PDB string representation.
+   * @return " NH1".
    */
-  virtual const char* AmberRep () const { return "NH1"; }
+  virtual const char* getPDBRep () const { return " NH1"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " NH1".
+   */
+  virtual const char* getAmberRep () const { return "NH1"; }
 
   /**
    * Tells if the atom is a NH1.
@@ -13708,10 +14512,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "NH2".
+   * Converts the atom type to an PDB string representation.
+   * @return " NH2".
    */
-  virtual const char* AmberRep () const { return "NH2"; }
+  virtual const char* getPDBRep () const { return " NH2"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " NH2".
+   */
+  virtual const char* getAmberRep () const { return "NH2"; }
 
   /**
    * Tells if the atom is a NH2.
@@ -13810,10 +14620,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "NZ".
+   * Converts the atom type to an PDB string representation.
+   * @return " NZ ".
    */
-  virtual const char* AmberRep () const { return "NZ"; }
+  virtual const char* getPDBRep () const { return " NZ "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " NZ ".
+   */
+  virtual const char* getAmberRep () const { return "NZ"; }
 
   /**
    * Tells if the atom is a NZ.
@@ -13912,10 +14728,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "O".
+   * Converts the atom type to an PDB string representation.
+   * @return " O  ".
    */
-  virtual const char* AmberRep () const { return "O"; }
+  virtual const char* getPDBRep () const { return " O  "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " O  ".
+   */
+  virtual const char* getAmberRep () const { return "O"; }
 
   /**
    * Tells if the atom is a O.
@@ -14014,10 +14836,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "OD1".
+   * Converts the atom type to an PDB string representation.
+   * @return " OD1".
    */
-  virtual const char* AmberRep () const { return "OD1"; }
+  virtual const char* getPDBRep () const { return " OD1"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " OD1".
+   */
+  virtual const char* getAmberRep () const { return "OD1"; }
 
   /**
    * Tells if the atom is a OD1.
@@ -14116,10 +14944,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "OD2".
+   * Converts the atom type to an PDB string representation.
+   * @return " OD2".
    */
-  virtual const char* AmberRep () const { return "OD2"; }
+  virtual const char* getPDBRep () const { return " OD2"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " OD2".
+   */
+  virtual const char* getAmberRep () const { return "OD2"; }
 
   /**
    * Tells if the atom is a OD2.
@@ -14218,10 +15052,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "OE1".
+   * Converts the atom type to an PDB string representation.
+   * @return " OE1".
    */
-  virtual const char* AmberRep () const { return "OE1"; }
+  virtual const char* getPDBRep () const { return " OE1"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " OE1".
+   */
+  virtual const char* getAmberRep () const { return "OE1"; }
 
   /**
    * Tells if the atom is a OE1.
@@ -14320,10 +15160,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "OE2".
+   * Converts the atom type to an PDB string representation.
+   * @return " OE2".
    */
-  virtual const char* AmberRep () const { return "OE2"; }
+  virtual const char* getPDBRep () const { return " OE2"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " OE2".
+   */
+  virtual const char* getAmberRep () const { return "OE2"; }
 
   /**
    * Tells if the atom is a OE2.
@@ -14422,10 +15268,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "OG".
+   * Converts the atom type to an PDB string representation.
+   * @return " OG ".
    */
-  virtual const char* AmberRep () const { return "OG"; }
+  virtual const char* getPDBRep () const { return " OG "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " OG ".
+   */
+  virtual const char* getAmberRep () const { return "OG"; }
 
   /**
    * Tells if the atom is a OG.
@@ -14524,10 +15376,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "OG1".
+   * Converts the atom type to an PDB string representation.
+   * @return " OG1".
    */
-  virtual const char* AmberRep () const { return "OG1"; }
+  virtual const char* getPDBRep () const { return " OG1"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " OG1".
+   */
+  virtual const char* getAmberRep () const { return "OG1"; }
 
   /**
    * Tells if the atom is a OG1.
@@ -14626,10 +15484,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "OH".
+   * Converts the atom type to an PDB string representation.
+   * @return " OH ".
    */
-  virtual const char* AmberRep () const { return "OH"; }
+  virtual const char* getPDBRep () const { return " OH "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " OH ".
+   */
+  virtual const char* getAmberRep () const { return "OH"; }
 
   /**
    * Tells if the atom is a OH.
@@ -14728,10 +15592,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "OXT".
+   * Converts the atom type to an PDB string representation.
+   * @return " OXT".
    */
-  virtual const char* AmberRep () const { return "OXT"; }
+  virtual const char* getPDBRep () const { return " OXT"; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " OXT".
+   */
+  virtual const char* getAmberRep () const { return "OXT"; }
 
   /**
    * Tells if the atom is a OXT.
@@ -14830,10 +15700,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "SD".
+   * Converts the atom type to an PDB string representation.
+   * @return " SD ".
    */
-  virtual const char* AmberRep () const { return "SD"; }
+  virtual const char* getPDBRep () const { return " SD "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " SD ".
+   */
+  virtual const char* getAmberRep () const { return "SD"; }
 
   /**
    * Tells if the atom is a SD.
@@ -14932,10 +15808,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "SG".
+   * Converts the atom type to an PDB string representation.
+   * @return " SG ".
    */
-  virtual const char* AmberRep () const { return "SG"; }
+  virtual const char* getPDBRep () const { return " SG "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " SG ".
+   */
+  virtual const char* getAmberRep () const { return "SG"; }
 
   /**
    * Tells if the atom is a SG.
@@ -15034,10 +15916,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "1HD1".
+   */
+  virtual const char* getPDBRep () const { return "1HD1"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "HD11".
    */
-  virtual const char* AmberRep () const { return "HD11"; }
+  virtual const char* getAmberRep () const { return "HD11"; }
 
   /**
    * Tells if the atom is a 1HD1.
@@ -15136,10 +16024,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "1HD2".
+   */
+  virtual const char* getPDBRep () const { return "1HD2"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "HD21".
    */
-  virtual const char* AmberRep () const { return "HD21"; }
+  virtual const char* getAmberRep () const { return "HD21"; }
 
   /**
    * Tells if the atom is a 1HD2.
@@ -15238,10 +16132,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "1HE2".
+   */
+  virtual const char* getPDBRep () const { return "1HE2"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "HE21".
    */
-  virtual const char* AmberRep () const { return "HE21"; }
+  virtual const char* getAmberRep () const { return "HE21"; }
 
   /**
    * Tells if the atom is a 1HE2.
@@ -15340,10 +16240,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "1HG1".
+   */
+  virtual const char* getPDBRep () const { return "1HG1"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "HG11".
    */
-  virtual const char* AmberRep () const { return "HG11"; }
+  virtual const char* getAmberRep () const { return "HG11"; }
 
   /**
    * Tells if the atom is a 1HG1.
@@ -15442,10 +16348,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "1HG2".
+   */
+  virtual const char* getPDBRep () const { return "1HG2"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "HG21".
    */
-  virtual const char* AmberRep () const { return "HG21"; }
+  virtual const char* getAmberRep () const { return "HG21"; }
 
   /**
    * Tells if the atom is a 1HG2.
@@ -15544,10 +16456,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "1HH1".
+   */
+  virtual const char* getPDBRep () const { return "1HH1"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "HH11".
    */
-  virtual const char* AmberRep () const { return "HH11"; }
+  virtual const char* getAmberRep () const { return "HH11"; }
 
   /**
    * Tells if the atom is a 1HH1.
@@ -15646,10 +16564,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "1HH2".
+   */
+  virtual const char* getPDBRep () const { return "1HH2"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "HH21".
    */
-  virtual const char* AmberRep () const { return "HH21"; }
+  virtual const char* getAmberRep () const { return "HH21"; }
 
   /**
    * Tells if the atom is a 1HH2.
@@ -15748,10 +16672,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "2HD1".
+   */
+  virtual const char* getPDBRep () const { return "2HD1"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "HD12".
    */
-  virtual const char* AmberRep () const { return "HD12"; }
+  virtual const char* getAmberRep () const { return "HD12"; }
 
   /**
    * Tells if the atom is a 2HD1.
@@ -15850,10 +16780,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "2HD2".
+   */
+  virtual const char* getPDBRep () const { return "2HD2"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "HD22".
    */
-  virtual const char* AmberRep () const { return "HD22"; }
+  virtual const char* getAmberRep () const { return "HD22"; }
 
   /**
    * Tells if the atom is a 2HD2.
@@ -15952,10 +16888,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "2HE2".
+   */
+  virtual const char* getPDBRep () const { return "2HE2"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "HE22".
    */
-  virtual const char* AmberRep () const { return "HE22"; }
+  virtual const char* getAmberRep () const { return "HE22"; }
 
   /**
    * Tells if the atom is a 2HE2.
@@ -16054,10 +16996,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "2HG1".
+   */
+  virtual const char* getPDBRep () const { return "2HG1"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "HG12".
    */
-  virtual const char* AmberRep () const { return "HG12"; }
+  virtual const char* getAmberRep () const { return "HG12"; }
 
   /**
    * Tells if the atom is a 2HG1.
@@ -16156,10 +17104,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "2HG2".
+   */
+  virtual const char* getPDBRep () const { return "2HG2"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "HG22".
    */
-  virtual const char* AmberRep () const { return "HG22"; }
+  virtual const char* getAmberRep () const { return "HG22"; }
 
   /**
    * Tells if the atom is a 2HG2.
@@ -16258,10 +17212,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "2HH1".
+   */
+  virtual const char* getPDBRep () const { return "2HH1"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "HH12".
    */
-  virtual const char* AmberRep () const { return "HH12"; }
+  virtual const char* getAmberRep () const { return "HH12"; }
 
   /**
    * Tells if the atom is a 2HH1.
@@ -16360,10 +17320,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "2HH2".
+   */
+  virtual const char* getPDBRep () const { return "2HH2"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "HH22".
    */
-  virtual const char* AmberRep () const { return "HH22"; }
+  virtual const char* getAmberRep () const { return "HH22"; }
 
   /**
    * Tells if the atom is a 2HH2.
@@ -16462,10 +17428,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "3HD1".
+   */
+  virtual const char* getPDBRep () const { return "3HD1"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "HD13".
    */
-  virtual const char* AmberRep () const { return "HD13"; }
+  virtual const char* getAmberRep () const { return "HD13"; }
 
   /**
    * Tells if the atom is a 3HD1.
@@ -16564,10 +17536,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "3HD2".
+   */
+  virtual const char* getPDBRep () const { return "3HD2"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "HD23".
    */
-  virtual const char* AmberRep () const { return "HD23"; }
+  virtual const char* getAmberRep () const { return "HD23"; }
 
   /**
    * Tells if the atom is a 3HD2.
@@ -16666,10 +17644,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "3HG1".
+   */
+  virtual const char* getPDBRep () const { return "3HG1"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "HG13".
    */
-  virtual const char* AmberRep () const { return "HG13"; }
+  virtual const char* getAmberRep () const { return "HG13"; }
 
   /**
    * Tells if the atom is a 3HG1.
@@ -16768,10 +17752,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "3HG2".
+   */
+  virtual const char* getPDBRep () const { return "3HG2"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "HG23".
    */
-  virtual const char* AmberRep () const { return "HG23"; }
+  virtual const char* getAmberRep () const { return "HG23"; }
 
   /**
    * Tells if the atom is a 3HG2.
@@ -16868,10 +17858,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "MG".
+   * Converts the atom type to an PDB string representation.
+   * @return " MG ".
    */
-  virtual const char* AmberRep () const { return "MG"; }
+  virtual const char* getPDBRep () const { return " MG "; }
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return " MG ".
+   */
+  virtual const char* getAmberRep () const { return "MG"; }
 
   /**
    * Tells if the atom is a MG.
@@ -16971,10 +17967,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Converts the atom type to an PDB string representation.
+   * @return "PSAZ".
+   */
+  virtual const char* getPDBRep () const { return "PSAZ"; }
+  
+  /**
    * Converts the atom type to an Amber string representation.
    * @return "PSAZ".
    */
-  virtual const char* AmberRep () const { return "PSAZ"; }
+  virtual const char* getAmberRep () const { return "PSAZ"; }
 
   /**
    * Tells if the atom is a PSAZ.

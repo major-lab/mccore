@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Sep  5 13:53:35 2001
-// Update Count     : 9
+// Last Modified On : Wed Sep  5 16:31:57 2001
+// Update Count     : 10
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -87,10 +87,16 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Converts the atom type to an Amber string representation.
-   * @return "ATOM".
+   * Converts the atom type to an PDB string representation.
+   * @return the PDB string representation of the atom.
    */
-  virtual const char* AmberRep () const { return "ATOM"; }
+  virtual const char* getPDBRep () const = 0;
+  
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return the Amber string representation of the atom.
+   */
+  virtual const char* getAmberRep () const = 0;
   
   /**
    * Tells if the atom is unknown.

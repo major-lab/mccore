@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:34:49 2001
-// Update Count     : 5
+// Last Modified On : Wed Sep  5 16:32:07 2001
+// Update Count     : 6
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -87,6 +87,12 @@ public:
 
   // METHODS --------------------------------------------------------------
 
+  /**
+   * Gets the residue type representation in PDB format.
+   * @return the string representing the residue type.
+   */
+  virtual const char* getPDBRep () const = 0;
+  
   /**
    * Tells if the residue is unknown.
    * @return false.

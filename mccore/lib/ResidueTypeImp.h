@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Mar  6 12:24:34 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:34:56 2001
-// Update Count     : 3
+// Last Modified On : Wed Sep  5 16:32:10 2001
+// Update Count     : 4
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -98,6 +98,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Gets the residue type representation in PDB format.
+   * @return the string representing the residue type.
+   */
+  virtual const char* getPDBRep () const { return mName; }
+  
+  /**
    * Tells if the residue is a misc type.
    * @return true.
    */
@@ -169,6 +175,12 @@ public:
 
   // METHODS --------------------------------------------------------------
 
+  /**
+   * Gets the residue type representation in PDB format.
+   * @return the string representing the residue type.
+   */
+  virtual const char* getPDBRep () const { return "Nucleic acid"; }
+  
   /**
    * Tells if the residue is a NucleicAcid type.
    * @return true.
@@ -242,6 +254,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Gets the residue type representation in PDB format.
+   * @return the string representing the residue type.
+   */
+  virtual const char* getPDBRep () const { return "Amino acid"; }
+  
+  /**
    * Tells if the residue is a AminoAcid type.
    * @return true.
    */
@@ -313,6 +331,12 @@ public:
 
   // METHODS --------------------------------------------------------------
 
+  /**
+   * Gets the residue type representation in PDB format.
+   * @return "Phosphate".
+   */
+  virtual const char* getPDBRep () const { return "Phosphate"; }
+  
   /**
    * Tells if the residue is a Phosphate type.
    * @return true.
@@ -386,6 +410,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Gets the residue type representation in PDB format.
+   * @return "Purine".
+   */
+  virtual const char* getPDBRep () const { return "Purine"; }
+  
+  /**
    * Tells if the residue is a Purine type.
    * @return true.
    */
@@ -457,6 +487,12 @@ public:
 
   // METHODS --------------------------------------------------------------
 
+  /**
+   * Gets the residue type representation in PDB format.
+   * @return "Pyrimidine".
+   */
+  virtual const char* getPDBRep () const { return "Pyrimidine"; }
+  
   /**
    * Tells if the residue is a Pyrimidine type.
    * @return true.
@@ -530,6 +566,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Gets the residue type representation in PDB format.
+   * @return "DNA".
+   */
+  virtual const char* getPDBRep () const { return "DNA"; }
+  
+  /**
    * Tells if the residue is a DNA type.
    * @return true.
    */
@@ -601,6 +643,12 @@ public:
 
   // METHODS --------------------------------------------------------------
 
+  /**
+   * Gets the residue type representation in PDB format.
+   * @return "RNA".
+   */
+  virtual const char* getPDBRep () const { return "RNA"; }
+  
   /**
    * Tells if the residue is a RNA type.
    * @return true.
@@ -674,6 +722,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Gets the residue type representation in PDB format.
+   * @return "  A".
+   */
+  virtual const char* getPDBRep () const { return "  A"; }
+  
+  /**
    * Tells if the residue is a A type.
    * @return true.
    */
@@ -745,6 +799,12 @@ public:
 
   // METHODS --------------------------------------------------------------
 
+  /**
+   * Gets the residue type representation in PDB format.
+   * @return "  C".
+   */
+  virtual const char* getPDBRep () const { return "  C"; }
+  
   /**
    * Tells if the residue is a C type.
    * @return true.
@@ -818,6 +878,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Gets the residue type representation in PDB format.
+   * @return "  G".
+   */
+  virtual const char* getPDBRep () const { return "  G"; }
+  
+  /**
    * Tells if the residue is a G type.
    * @return true.
    */
@@ -889,6 +955,12 @@ public:
 
   // METHODS --------------------------------------------------------------
 
+  /**
+   * Gets the residue type representation in PDB format.
+   * @return "  U".
+   */
+  virtual const char* getPDBRep () const { return "  U"; }
+  
   /**
    * Tells if the residue is a U type.
    * @return true.
@@ -962,6 +1034,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Gets the residue type representation in PDB format.
+   * @return "  T".
+   */
+  virtual const char* getPDBRep () const { return "  T"; }
+  
+  /**
    * Tells if the residue is a T type.
    * @return true.
    */
@@ -1033,6 +1111,12 @@ public:
 
   // METHODS --------------------------------------------------------------
 
+  /**
+   * Gets the residue type representation in PDB format.
+   * @return "  A"
+   */
+  virtual const char* getPDBRep () const { return rt_A::getPDBRep (); }
+  
   /**
    * Tells if the residue is a rA type.
    * @return true.
@@ -1106,6 +1190,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Gets the residue type representation in PDB format.
+   * @return "  C"
+   */
+  virtual const char* getPDBRep () const { return rt_C::getPDBRep (); }
+  
+  /**
    * Tells if the residue is a rC type.
    * @return true.
    */
@@ -1177,6 +1267,12 @@ public:
 
   // METHODS --------------------------------------------------------------
 
+  /**
+   * Gets the residue type representation in PDB format.
+   * @return "  G"
+   */
+  virtual const char* getPDBRep () const { return rt_G::getPDBRep (); }
+  
   /**
    * Tells if the residue is a rG type.
    * @return true.
@@ -1250,6 +1346,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Gets the residue type representation in PDB format.
+   * @return "  U"
+   */
+  virtual const char* getPDBRep () const { return rt_U::getPDBRep (); }
+  
+  /**
    * Tells if the residue is a rU type.
    * @return true.
    */
@@ -1321,6 +1423,12 @@ public:
 
   // METHODS --------------------------------------------------------------
 
+  /**
+   * Gets the residue type representation in PDB format.
+   * @return "  A"
+   */
+  virtual const char* getPDBRep () const { return rt_A::getPDBRep (); }
+  
   /**
    * Tells if the residue is a dA type.
    * @return true.
@@ -1394,6 +1502,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Gets the residue type representation in PDB format.
+   * @return "  C"
+   */
+  virtual const char* getPDBRep () const { return rt_C::getPDBRep (); }
+  
+  /**
    * Tells if the residue is a dC type.
    * @return true.
    */
@@ -1465,6 +1579,12 @@ public:
 
   // METHODS --------------------------------------------------------------
 
+  /**
+   * Gets the residue type representation in PDB format.
+   * @return "  G".
+   */
+  virtual const char* getPDBRep () const { return rt_G::getPDBRep (); }
+  
   /**
    * Tells if the residue is a dG type.
    * @return true.
@@ -1538,6 +1658,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Gets the residue type representation in PDB format.
+   * @return "  T".
+   */
+  virtual const char* getPDBRep () const { return rt_T::getPDBRep (); }
+  
+  /**
    * Tells if the residue is a dT type.
    * @return true.
    */
@@ -1609,6 +1735,12 @@ public:
 
   // METHODS --------------------------------------------------------------
 
+  /**
+   * Gets the residue type representation in PDB format.
+   * @return "ALA".
+   */
+  virtual const char* getPDBRep () const { return "ALA"; }
+  
   /**
    * Tells if the residue is a alanine type.
    * @return true.
@@ -1682,6 +1814,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Gets the residue type representation in PDB format.
+   * @return "ARG".
+   */
+  virtual const char* getPDBRep () const { return "ARG"; }
+  
+  /**
    * Tells if the residue is a arginine type.
    * @return true.
    */
@@ -1753,6 +1891,12 @@ public:
 
   // METHODS --------------------------------------------------------------
 
+  /**
+   * Gets the residue type representation in PDB format.
+   * @return "ASN".
+   */
+  virtual const char* getPDBRep () const { return "ASN"; }
+  
   /**
    * Tells if the residue is a asparagine type.
    * @return true.
@@ -1826,6 +1970,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Gets the residue type representation in PDB format.
+   * @return "ASP".
+   */
+  virtual const char* getPDBRep () const { return "ASP"; }
+  
+  /**
    * Tells if the residue is a asparticacid type.
    * @return true.
    */
@@ -1897,6 +2047,12 @@ public:
 
   // METHODS --------------------------------------------------------------
 
+  /**
+   * Gets the residue type representation in PDB format.
+   * @return "CYS".
+   */
+  virtual const char* getPDBRep () const { return "CYS"; }
+  
   /**
    * Tells if the residue is a cysteine type.
    * @return true.
@@ -1970,6 +2126,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Gets the residue type representation in PDB format.
+   * @return "GLN".
+   */
+  virtual const char* getPDBRep () const { return "GLN"; }
+  
+  /**
    * Tells if the residue is a glutamine type.
    * @return true.
    */
@@ -2041,6 +2203,12 @@ public:
 
   // METHODS --------------------------------------------------------------
 
+  /**
+   * Gets the residue type representation in PDB format.
+   * @return "GLU".
+   */
+  virtual const char* getPDBRep () const { return "GLU"; }
+  
   /**
    * Tells if the residue is a glutamicacid type.
    * @return true.
@@ -2114,6 +2282,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Gets the residue type representation in PDB format.
+   * @return "GLY".
+   */
+  virtual const char* getPDBRep () const { return "GLY"; }
+  
+  /**
    * Tells if the residue is a glycine type.
    * @return true.
    */
@@ -2185,6 +2359,12 @@ public:
 
   // METHODS --------------------------------------------------------------
 
+  /**
+   * Gets the residue type representation in PDB format.
+   * @return "HIS".
+   */
+  virtual const char* getPDBRep () const { return "HIS"; }
+  
   /**
    * Tells if the residue is a histidine type.
    * @return true.
@@ -2258,6 +2438,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Gets the residue type representation in PDB format.
+   * @return "ILE".
+   */
+  virtual const char* getPDBRep () const { return "ILE"; }
+  
+  /**
    * Tells if the residue is a isoleucine type.
    * @return true.
    */
@@ -2329,6 +2515,12 @@ public:
 
   // METHODS --------------------------------------------------------------
 
+  /**
+   * Gets the residue type representation in PDB format.
+   * @return "LEU".
+   */
+  virtual const char* getPDBRep () const { return "LEU"; }
+  
   /**
    * Tells if the residue is a leucine type.
    * @return true.
@@ -2402,6 +2594,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Gets the residue type representation in PDB format.
+   * @return "LYS".
+   */
+  virtual const char* getPDBRep () const { return "LYS"; }
+  
+  /**
    * Tells if the residue is a lysine type.
    * @return true.
    */
@@ -2473,6 +2671,12 @@ public:
 
   // METHODS --------------------------------------------------------------
 
+  /**
+   * Gets the residue type representation in PDB format.
+   * @return "MET".
+   */
+  virtual const char* getPDBRep () const { return "MET"; }
+  
   /**
    * Tells if the residue is a methionine type.
    * @return true.
@@ -2546,6 +2750,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Gets the residue type representation in PDB format.
+   * @return "PHE".
+   */
+  virtual const char* getPDBRep () const { return "PHE"; }
+  
+  /**
    * Tells if the residue is a phenylalanine type.
    * @return true.
    */
@@ -2617,6 +2827,12 @@ public:
 
   // METHODS --------------------------------------------------------------
 
+  /**
+   * Gets the residue type representation in PDB format.
+   * @return "PRO".
+   */
+  virtual const char* getPDBRep () const { return "PRO"; }
+  
   /**
    * Tells if the residue is a proline type.
    * @return true.
@@ -2690,6 +2906,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Gets the residue type representation in PDB format.
+   * @return "SER".
+   */
+  virtual const char* getPDBRep () const { return "SER"; }
+  
+  /**
    * Tells if the residue is a serine type.
    * @return true.
    */
@@ -2761,6 +2983,12 @@ public:
 
   // METHODS --------------------------------------------------------------
 
+  /**
+   * Gets the residue type representation in PDB format.
+   * @return "THR".
+   */
+  virtual const char* getPDBRep () const { return "THR"; }
+  
   /**
    * Tells if the residue is a threonine type.
    * @return true.
@@ -2834,6 +3062,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Gets the residue type representation in PDB format.
+   * @return "TRP".
+   */
+  virtual const char* getPDBRep () const { return "TRP"; }
+  
+  /**
    * Tells if the residue is a tryptophan type.
    * @return true.
    */
@@ -2906,6 +3140,12 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
+   * Gets the residue type representation in PDB format.
+   * @return "TYR".
+   */
+  virtual const char* getPDBRep () const { return "TYR"; }
+  
+  /**
    * Tells if the residue is a tyrosine type.
    * @return true.
    */
@@ -2977,6 +3217,12 @@ public:
 
   // METHODS --------------------------------------------------------------
 
+  /**
+   * Gets the residue type representation in PDB format.
+   * @return "VAL".
+   */
+  virtual const char* getPDBRep () const { return "VAL"; }
+  
   /**
    * Tells if the residue is a valine type.
    * @return true.
