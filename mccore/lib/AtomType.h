@@ -3,7 +3,7 @@
 // Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
-// $Revision: 1.29 $
+// $Revision: 1.30 $
 // 
 //  This file is part of mccore.
 //  
@@ -34,12 +34,12 @@
 using namespace std;
 
 
+
 namespace mccore
 {
-  
   class AtomTypeStore;
-  class Residue;
   class Exception;
+  class Residue;
   class iBinstream;
   class oBinstream;
   
@@ -56,14 +56,14 @@ namespace mccore
    *   - The charge and van der Waals radius<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: AtomType.h,v 1.29 2004-10-15 20:34:27 thibaup Exp $ 
+   * @version $Id: AtomType.h,v 1.30 2004-12-02 20:14:30 larosem Exp $ 
    */
   class AtomType 
   {
     /**
      * Container for string to type associations.
      */
-    static AtomTypeStore atstore;
+    static AtomTypeStore *atstore;
 
     /**
      * The type key string.
@@ -77,13 +77,13 @@ namespace mccore
     /**
      * Initializes the object.
      */
-    AtomType ();
+    AtomType () { }
 
     /**
      * Initializes the object.
      * @param ks the string representation of the type key.
      */
-    AtomType (const string& ks);
+    AtomType (const string& ks) : key (ks) { }
     
     /**
      * (Disallow copy constructor) Initializes the object with another atom type.
@@ -94,7 +94,7 @@ namespace mccore
     /**
      * Destroys the object.
      */
-    virtual ~AtomType ();
+    virtual ~AtomType () { }
     
     /**
      * AtomTypeStore is a friend since the destructor is private.
@@ -102,8 +102,6 @@ namespace mccore
     friend class AtomTypeStore;
 
   public:
-
-    // FUNCTION OBJECTS --------------------------------------------------------
 
     /**
      * @short less comparator on derefenced type pointers
