@@ -33,6 +33,7 @@
 #include "AtomType.h"
 #include "Residue.h"
 #include "Atom.h"
+#include "fPdbstream.h"
 
 namespace mccore {
 
@@ -238,16 +239,34 @@ HBond::evalStatistically (const Residue &ra, const Residue &rb)
   float x[3];
   float p_x = 0;
   float p_h = 0;
-  
+
   resD = &ra;
   resA = &rb;
-  
-  x[0] = log (pow (getHydrogen ().distance (getLonePair ()), 3));       
-  x[1] = atanh (cos (getDonor ().angle (getHydrogen (), getAcceptor ())));
-  x[2] = atanh (cos (getAcceptor ().angle (getDonor (), getLonePair ())));
-  
-//   cout << *this << " " << getHydrogen () << " " << getLonePair () 
-//        << " " << x[0] << endl;
+
+  // PreCheck on the donor/acceptor distance
+  if (getDonor ().distance (getAcceptor ()) > 3) return 0;
+
+  if (donor == AtomType::aC5M) {
+    Vector3D px, py, pz, up, pv;
+    float tan70 = 2.7474774;
+    float C_H_dist = 1.08;
+    
+    px = (getLonePair () - *resD->find (AtomType::aC5)).normalize ();
+    py = (getDonor () - *resD->find (AtomType::aC5)).normalize ();
+    up = px.cross (py).normalize ();
+    pz = py.cross (up);
+    pv = getDonor () + (py + pz * tan70).normalize () * C_H_dist;
+
+    Atom at (pv, hydrogen);
+
+    x[0] = log (pow (at.distance (getLonePair ()), 3));       
+    x[1] = atanh (cos (getDonor ().angle (at, getAcceptor ())));
+    x[2] = atanh (cos (getAcceptor ().angle (getDonor (), getLonePair ())));
+  } else {
+    x[0] = log (pow (getHydrogen ().distance (getLonePair ()), 3));       
+    x[1] = atanh (cos (getDonor ().angle (getHydrogen (), getAcceptor ())));
+    x[2] = atanh (cos (getAcceptor ().angle (getDonor (), getLonePair ())));
+  }
 
   for (int i=0; i<sNbGauss; ++i) {
     float diff[3];

@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Patrick Gendron
-// Last Modified On : Wed Aug  6 17:10:07 2003
-// Update Count     : 294
+// Last Modified On : Thu Aug  7 11:22:10 2003
+// Update Count     : 295
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -578,7 +578,8 @@ namespace mccore {
     setResidueType (r.getType ());
     setResId (r.getResId ());
     
-    for (Residue::const_iterator i=r.begin (atomset->clone ()); i!=r.end (); ++i) {
+    //    for (Residue::const_iterator i=r.begin (atomset->clone ()); i!=r.end (); ++i) {
+    for (Residue::const_iterator i=r.begin (); i!=r.end (); ++i) {
       *this << *i << endl;
     }
 

@@ -409,6 +409,8 @@ namespace mccore {
 //     }
 
     AtomSet* hl = new AtomSetOr (new AtomSetHydrogen (), new AtomSetLP ());
+    hl = new AtomSetAnd (hl, new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M), 
+ 							   new AtomSetAtom (AtomType::a3H5M))));
     AtomSet* da = new AtomSetNot (hl->clone ());
 
     for (i=ra->begin (hl->clone ()); i!=ra->end (); ++i) {
@@ -480,7 +482,7 @@ namespace mccore {
 // 	cout << m->second << " : " << *m->first << endl;
 //       }
 //     }
-//    graph.output (cout);
+//     graph.output (cout);
     
     graph.preFlowPush (0, 1);
     
@@ -496,7 +498,7 @@ namespace mccore {
       }
     }
     
-// //     cout << "Sum flow = " << sum_flow << endl;
+//     cout << "Sum flow = " << sum_flow << endl;
 
     if (sum_flow >= PAIRING_CUTOFF) {
       ts.insert (PropertyType::pPairing);
