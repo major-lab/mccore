@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.3.2.2 $
-// $Id: Exception.cc,v 1.3.2.2 2004-12-23 15:51:44 larosem Exp $
+// $Revision: 1.3.2.3 $
+// $Id: Exception.cc,v 1.3.2.3 2004-12-23 22:42:33 larosem Exp $
 //
 // This file is part of mccore.
 //
@@ -69,8 +69,8 @@ namespace mccore
   {
     ostringstream oss;
 
-    oss << mMessage << integer;
-    mMessage = oss.str ();
+    oss << integer;
+    mMessage += oss.str ();
     return *this;
   }
 
@@ -81,8 +81,8 @@ namespace mccore
   {
     ostringstream oss;
 
-    oss << mMessage << integer;
-    mMessage = oss.str ();
+    oss << integer;
+    mMessage += oss.str ();
     return *this;
   }
 
@@ -93,8 +93,8 @@ namespace mccore
   {
     ostringstream oss;
 
-    oss << mMessage << integer;
-    mMessage = oss.str ();
+    oss << integer;
+    mMessage += oss.str ();
     return *this;
   }
 
@@ -105,8 +105,8 @@ namespace mccore
   {
     ostringstream oss;
 
-    oss << mMessage << integer;
-    mMessage = oss.str ();
+    oss << integer;
+    mMessage += oss.str ();
     return *this;
   }
 
@@ -117,8 +117,8 @@ namespace mccore
   {
     ostringstream oss;
 
-    oss << mMessage << float_val;
-    mMessage = oss.str ();
+    oss << float_val;
+    mMessage += oss.str ();
     return *this;
   }
 
@@ -129,8 +129,8 @@ namespace mccore
   {
     ostringstream oss;
 
-    oss << mMessage << theChar;
-    mMessage = oss.str ();
+    oss << theChar;
+    mMessage += oss.str ();
     return *this;
   }
 
@@ -138,7 +138,7 @@ namespace mccore
   ostream& 
   Exception::output (ostream &os) const
   {
-    return os << this->what ();
+    return os << mMessage;
   }
 
   

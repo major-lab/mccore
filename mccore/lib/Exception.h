@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 16:27:35 1999
-// $Revision: 1.4.2.2 $
-// $Id: Exception.h,v 1.4.2.2 2004-12-23 15:51:49 larosem Exp $
+// $Revision: 1.4.2.3 $
+// $Id: Exception.h,v 1.4.2.3 2004-12-23 22:42:37 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -24,8 +24,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _Exception_h_
-#define _Exception_h_
+#ifndef _mccore_Exception_h_
+#define _mccore_Exception_h_
 
 
 #include <iostream>
@@ -62,6 +62,12 @@ namespace mccore
      * Initializes the exeption.  mMessage contains "".
      */
     Exception () { }
+
+    /**
+     * Initializes the exeption with a message.
+     * @param message the message string.
+     */
+    Exception (const string &message) : mMessage (message) { }
 
     /**
      * Initializes the exeption with a message.
