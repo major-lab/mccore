@@ -4,8 +4,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct  6 08:21:55 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Fri May 11 18:03:02 2001
-// Update Count     : 6
+// Last Modified On : Mon May 28 14:31:45 2001
+// Update Count     : 7
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -110,12 +110,6 @@ public:
    * @return the new model.
    */
   CModel RemoveOptionals () const;
-
-  /**
-   * Creates a new model with atoms sorted in residues.
-   * @return the new model.
-   */
-  CModel SortAtoms () const;
 
   /**
    * Finds an atom given it's text representation of the form residue:atom.

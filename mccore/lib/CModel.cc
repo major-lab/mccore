@@ -4,8 +4,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct  6 08:21:55 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Fri May 11 18:02:58 2001
-// Update Count     : 9
+// Last Modified On : Mon May 28 14:31:43 2001
+// Update Count     : 10
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -107,19 +107,6 @@ CModel::RemoveOptionals () const
 
   for (it = begin (); it != end (); ++it)
     model.push_back (it->RemoveOptionals ());
-  return model;
-}
-
-
-
-CModel
-CModel::SortAtoms () const
-{
-  const_iterator cit;
-  CModel model;
-
-  for (cit = begin (); cit != end (); ++cit)
-    model.push_back (cit->sort ());
   return model;
 }
 
