@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
-# $Revision: 1.28 $
-# $Id: configure.in,v 1.28 2004-09-03 15:43:28 boisgona Exp $
+# $Revision: 1.29 $
+# $Id: configure.in,v 1.29 2004-09-03 18:22:41 boisgona Exp $
 # 
 # This file is part of mccore.
 # 
@@ -90,8 +90,8 @@ if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
 	)
 	AC_ARG_WITH(mysql,
 	    [  --with-mysql            include mysql classes],
-            AC_CHECK_LIB(mysqlclient,main)
-            AC_CHECK_LIB(sqlplus,main)
+            AC_CHECK_LIB(mysqlclient,mysql_init)
+            AC_CHECK_LIB(sqlplus,info)
 	    HAVE_LIBMYSQL=1,
 	)
 	LIBALLFLAGSTART="-all"
@@ -123,8 +123,8 @@ if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
 	)
 	AC_ARG_WITH(mysql,
 	    [  --with-mysql            include mysql classes],
-            AC_CHECK_LIB(mysqlclient,main)
-            AC_CHECK_LIB(sqlplus,main)
+            AC_CHECK_LIB(mysqlclient,mysql_init)
+            AC_CHECK_LIB(sqlplus,info)
 	    HAVE_LIBMYSQL=1,
 	)
 	LIBALLFLAGSTART="-z allextract"
