@@ -4,9 +4,9 @@
 //                           Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Oct 25 11:17:20 2001
-// Update Count     : 10
+// Last Modified By : Patrick Gendron
+// Last Modified On : Tue Jun 11 16:07:17 2002
+// Update Count     : 11
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -46,9 +46,8 @@ class oPdbstream;
 /**
  * @short Atom implementation.
  *
- * Derived from CPoint3D, this class adds the type and a serial number to
+ * Derived from CPoint3D, thisclass adds the type and a serial number to
  * the point.
- *
  * @author Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
  */
 class CAtom : public CPoint3D

@@ -4,8 +4,8 @@
 // Author           : Patrick Gendron
 // Created On       : Mon Feb 18 16:07:09 2002
 // Last Modified By : Patrick Gendron
-// Last Modified On : Tue May  7 11:26:01 2002
-// Update Count     : 3
+// Last Modified On : Tue Jun 11 16:07:30 2002
+// Update Count     : 4
 // Status           : Unknown.
 // 
 
@@ -16,16 +16,16 @@
 #include <iostream.h>
 
 #include <vector.h>
-#include <map.h>
-#include <vector.h>
+#include <hash_map.h>
+
+#include "mccore/Binstream.h"
 
 /**
  * @short A class for a path in a graph.
  *
  * @author Patrick Gendron
  */
-template< class Node >
-class Path : public vector< Node >
+class Path : public vector< int >
 {
   int mValue;
   
@@ -35,13 +35,13 @@ public:
   /**
    * Initializes the object.
    */
-  Path () : vector< Node >() { mValue = 0; }
+  Path () : vector< int >() { mValue = 0; }
 
   /**
    * Initializes the object with the other's content.
    * @param other the object to copy.
    */
-  Path (const Path &other) : vector< Node > (other) { mValue = other.mValue; }
+  Path (const Path &other) : vector< int> (other) { mValue = other.mValue; }
 
   /**
    * Destroys the object.
@@ -57,9 +57,9 @@ public:
    */
   Path& operator= (const Path &other)
   {
-    if  (this != &path) {
-      vector< Node >::operator= (path);
-      mValue = path.mValue;
+    if  (this != &other) {
+      vector< int >::operator= (other);
+      mValue = other.mValue;
     } 
     return *this;
   }
@@ -68,26 +68,68 @@ public:
     return  (size () < path.size ());
   }
 
-  void setValue (int value) { mValue = value; }
-  int getValue (void) const { return mValue; }
-
   // ACCESS ---------------------------------------------------------------
 
+  void setValue (int value) { mValue = value; }
+  int getValue (void) const { return mValue; }
+  
   // METHODS --------------------------------------------------------------
+
+  void rotate ()
+  {
+    int tmp = (*this)[0];
+    for (int i=0;i<(int)size ()-1; ++i)
+      {
+	(*this)[i] = (*this)[i+1];
+      }
+    (*this)[size ()-1]=tmp;
+  }
 
   // I/O  -----------------------------------------------------------------
 
-};
+  ostream &output (ostream &out) const {
+    out << "[ " << flush;
+    for  (int i=0; i<(int)size(); i++) 
+      out << (*this)[i] << " ";
+    out << "] = " << mValue << flush;
+    return out;
+  }
+  
+  oBinstream &output (oBinstream &out) const {
+    out << mValue;
+    out << size();
+    for  (int i=0; i<(int)size(); i++) 
+      out << (*this)[i];
+    return out;
+  }
+  
+  iBinstream &input (iBinstream &ibn) {
+    int size;
+    ibn >> mValue;
+    ibn >> size;
+    for  (int i=0; i<size; i++) {
+      int x;
+      ibn >> x;
+      push_back (x);
+    }
+    return ibn;
+  }
+  
+  friend ostream &operator<< (ostream &out, const Path &path)
+  {
+    return path.output (out);
+  }
 
-template< class Node >
-ostream &operator<< (ostream &out, const Path< Node > &path) 
-{
-  out << "[ " << flush;
-  for  (unsigned int i=0; i<path.size(); i++) 
-    out << path[ i ] << " ";
-  out << "] = " << path.mValue << flush;
-  return out;
-}
+  friend oBinstream &operator<< (oBinstream &out, const Path &path)
+  {
+    return path.output (out);
+  }
+
+  friend iBinstream &operator>> (iBinstream &ibn, Path &path)
+  {
+    return path.input (ibn);
+  }
+};
 
 
 /**
@@ -103,17 +145,23 @@ class Graph : public map< int, map< int, int > >
 {
 public:
 
-typedef map< int, int > adjlist;    // Adjacency List
-typedef map< int, adjlist > adjgraph;  // Adjacency Graph  
+  typedef map< int, int > adjlist;    // Adjacency List
+  typedef map< int, adjlist > adjgraph;  // Adjacency Graph  
 
 protected:
 
   vector< Node > mNodes;
   vector< int > mNodeValues;
-  
+
+  // A mark on a node indicates that it is active in the graph. 
+  vector< bool > mNodeMarks;
+
   vector< Edge > mEdges;
   vector< int >  mEdgeValues;
   vector< pair< int, int > > mEdgeNodes;
+
+  // A mark on an edge indicates that it is active in the graph. 
+  vector< bool > mEdgeMarks;
 
 public:
 
@@ -143,12 +191,22 @@ public:
    * @return itself.
    */
   Graph& operator= (const Graph &other);
-
+  
+  /**
+   * Returns the Node it position id in the graph
+   * @param id the id of the node in the graph
+   * @return the Node corresponding to the id.
+   */
+  const Node& operator() (int id) {
+    assert (id>=0 && id<size ());
+    return getNode (id);
+  }
+  
   // ACCESS ---------------------------------------------------------------
 
   size_t size () const { return mNodes.size (); }
 
-  // METHODS --------------------------------------------------------------
+  // Node related functions -----------------------------------------------
 
   const vector< Node > &getNodes (void) const { return mNodes; }
   vector< Node > &getNodes (void) { return mNodes; }
@@ -161,11 +219,23 @@ public:
   
   int getNodeIndex (const Node &n) const;
   
+  const adjlist& getNeighborIds (int id) const
+  {
+    static const adjlist empty;
+    
+    adjgraph::const_iterator i = find (id);
+    if (i!=end ()) {
+      return i->second;
+    } 
+    return empty;
+  }
+  
+  // Edges related functions -----------------------------------------------
+
   const vector< Edge > &getEdges (void) const { return mEdges; }
   vector< Edge > &getEdges (void) { return mEdges; }
 
-  const vector< pair< int, int > > &getEdgeNodes (void) const 
-  { return mEdgeNodes; }
+  const vector< pair< int, int > > &getEdgeNodes (void) const { return mEdgeNodes; }
 
   const Edge &getEdge (int index) const;
   Edge &getEdge (int index);
@@ -185,20 +255,41 @@ public:
   // Returns false even if there is a directed edge between b and a
   bool isConnected (int a, int b) const; // a=origin, b=destination
   
+  // Building methods ------------------------------------------------------
+
   int addNode (const Node &n, const int v = 0);
+
   int addEdgeById (int a, int b, const Edge &e, 
 		   bool oriented = true, const int v = 0);
   
   int addEdge (const Node &a, const Node &b, const Edge &e, 
 	       bool oriented = true, const int v = 0);
-
     
-  vector< Path< int > > shortest_path (int root) const;
-  
+  // Algorithms on the graph ----------------------------------------------
+
+  void markNode (int index);
+  void unmarkNode (int index);
+
+  void markEdge (int index );
+  void unmarkEdge (int index);
+
+  void markEdge (int a, int b);
+  void unmarkEdge (int a, int b);
+
+  vector< Path > shortest_path (int root) const;
+  Path shortest_path (int a, int b) const;
+
   vector< Edge > minimum_spanning_tree (void) const;
 
+  vector< Path > cycle_base ();
+  void build_tree (int index = -1, int depth = 0);
+
   // I/O  -----------------------------------------------------------------
+
   ostream &output (ostream &out) const;
+
+  iBinstream& input (iBinstream& ibs);
+  oBinstream& output (oBinstream& obs) const;
 
 };
 
@@ -206,6 +297,18 @@ template< class Node, class Edge >
 ostream &operator<< (ostream &out, const Graph< Node, Edge > &gr)
 {
   return gr.output (out);
+}
+
+template< class Node, class Edge >
+iBinstream &operator>> (iBinstream ibs, Graph< Node, Edge > &gr)
+{
+  return gr.input (ibs);
+}
+
+template< class Node, class Edge >
+oBinstream &operator<< (oBinstream &obs, const Graph< Node, Edge > &gr)
+{
+  return gr.output (obs);
 }
 
 #include "Graph.cc"

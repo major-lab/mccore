@@ -4,9 +4,9 @@
 //                  Université de Montréal.
 // Author           : Sebastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Wed Feb 14 15:33:58 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Wed Dec 19 10:01:11 2001
-// Update Count     : 45
+// Last Modified By : Patrick Gendron
+// Last Modified On : Tue Jun 11 16:07:06 2002
+// Update Count     : 46
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -145,7 +145,7 @@ public:
     std::sort (X_range.begin (), X_range.end ());
     std::sort (Y_range.begin (), Y_range.end ());
     std::sort (Z_range.begin (), Z_range.end ());
-    
+
     map< pair< iterator, iterator >, int > contact;
     
     ExtractContact_OneDim (X_range, contact, cutoff);
@@ -155,7 +155,7 @@ public:
     for (cont_i = contact.begin (); cont_i != contact.end (); ++cont_i)
       {
 	map< pair< iterator, iterator >, int >::iterator tmp = cont_i;
-
+	
 	tmp++;
 	if (cont_i->second < 2)
 	  contact.erase (cont_i);
@@ -170,8 +170,9 @@ public:
     ExtractContact_OneDim (Z_range, contact, cutoff);
     
     for (cont_i = contact.begin (); cont_i != contact.end (); ++cont_i)
-      if (cont_i->second == 3)
+      if (cont_i->second == 3) {
 	result.push_back (cont_i->first);
+      }
     return result;
   }
 };
