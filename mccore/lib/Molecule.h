@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:36 2003
-// $Revision: 1.1 $
+// $Revision: 1.1.4.1 $
 // 
 // This file is part of mccore.
 // 
@@ -27,11 +27,8 @@
 #define _mccore_Molecule_h_
 
 
-#include <list>
-
-#include "PdbFileHeader.h"
-
-using namespace std;
+#include <list.h>
+#include <map.h>
 
 
 
@@ -46,18 +43,17 @@ namespace mccore
   /**
    * @short Container for a collection of Models.
    *
-   * This is a collection of mccore Models in a simple STL list.  It also
-   * provides the PDB header.
+   * This is a collection of mccore Models in a simple STL list.
    *
    * @author Martin Larose (<larosem@iro.umontreal.ca>)
-   * @version $Id: Molecule.h,v 1.1 2003-07-08 21:12:51 larosem Exp $
+   * @version $Id: Molecule.h,v 1.1.4.1 2003-10-28 01:54:06 larosem Exp $
    */
   class Molecule : public list< Model* >
   {
     /**
-     * Pdb file header.
+     * Properties for the molecule class.
      */
-    PdbFileHeader header;
+    map< char*, char* > properties;
     
   public:
     
@@ -97,23 +93,19 @@ namespace mccore
     // ACCESS ---------------------------------------------------------------
 
     /**
-     * Gets the Pdb file header.
-     * @return the Pdb file header.
+     * Gets the property value of the key.
+     * @param key the key.
+     * @return the value of the key.
      */
-    PdbFileHeader& getPdbFileHeader () { return header; }
+    char* getProperty (const char *key) const;
 
     /**
-     * Gets the Pdb file header.
-     * @return the Pdb file header.
+     * Sets the key value pair.
+     * @param key the key.
+     * @param value the value.
      */
-    const PdbFileHeader& getPdbFileHeader () const { return header; }
+    void setProperty (char *key, char *value);
 
-    /**
-     * Sets the pdb file header.
-     * @param header the new header.
-     */
-    void setPdbFileHeader (const PdbFileHeader &header) { this->header = header; }
-    
     // METHODS --------------------------------------------------------------
     
     // I/O  -----------------------------------------------------------------

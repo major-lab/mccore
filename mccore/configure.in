@@ -1,29 +1,27 @@
 #                              -*- Mode: Sh -*- 
 # configure.in
-# Copyright © 2000-02 Laboratoire de Biologie Informatique et Théorique.
+# Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
-# Last Modified By : Martin Larose
-# Last Modified On : Tue Oct 22 11:06:57 2002
-# Update Count     : 11
-# Status           : Ok.
+# $Revision: 1.14.8.1 $
+# $Id: configure.in,v 1.14.8.1 2003-10-28 01:53:55 larosem Exp $
 # 
-#  This file is part of mccore.
-#  
-#  mccore is free software; you can redistribute it and/or
-#  modify it under the terms of the GNU Lesser General Public
-#  License as published by the Free Software Foundation; either
-#  version 2.1 of the License, or (at your option) any later version.
-#  
-#  mccore is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-#  Lesser General Public License for more details.
-#  
-#  You should have received a copy of the GNU Lesser General Public
-#  License along with mccore; if not, write to the Free Software
-#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+# This file is part of mccore.
+# 
+# mccore is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+# 
+# mccore is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+# 
+# You should have received a copy of the GNU Lesser General Public
+# License along with mccore; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 dnl Process this file with autoconf to produce a configure script.
@@ -46,6 +44,7 @@ AC_CANONICAL_HOST
 
 AC_PROG_INSTALL
 AC_PATH_PROG(AR,ar)
+AC_CHECK_LIB(rnamlc++,main)
 AC_CHECK_FUNCS(strsep)
 AC_CHECK_FUNCS(isfdtype)
 AC_CHECK_FUNCS(acosf)
