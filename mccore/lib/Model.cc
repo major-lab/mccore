@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Model.cc
-// Copyright © 2001-04 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-05 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.27 $
-// $Id: Model.cc,v 1.27 2005-01-03 22:56:43 larosem Exp $
+// $Revision: 1.28 $
+// $Id: Model.cc,v 1.28 2005-01-05 01:46:20 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -29,7 +29,6 @@
 #endif
 
 #include <algorithm>
-#include <cstring>
 
 #include "Algo.h"
 #include "Binstream.h"
@@ -37,6 +36,7 @@
 #include "ExtendedResidue.h"
 #include "Model.h"
 #include "Pdbstream.h"
+#include "ResId.h"
 #include "Residue.h"
 #include "ResidueFactoryMethod.h"
 
@@ -68,7 +68,13 @@ namespace mccore
   {
     if (this != &right)
       {
-	clear ();	
+	vector< Residue* >::iterator it;
+	
+	for (it = residues.begin (); it != residues.end (); ++it)
+	  {
+	    delete *it;
+	  }
+	residues.clear ();
 	AbstractModel::operator= (right);
 	AbstractModel::insert (right.begin (), right.end ());
       }
@@ -102,7 +108,7 @@ namespace mccore
   Model::iterator 
   Model::insert (const Residue &res)
   { 
-    return (Model::iterator) residues.insert (residues.end (), res.clone ());
+    return iterator (residues.insert (residues.end (), res.clone ()));
   }
   
   
@@ -110,7 +116,7 @@ namespace mccore
   Model::erase (iterator pos)
   {
     delete &*pos;
-    return residues.erase (pos);
+    return iterator (residues.erase (pos));
   }
   
     
@@ -122,12 +128,14 @@ namespace mccore
   
   
   void 
-  Model::clear()
+  Model::clear ()
   {
     vector< Residue* >::iterator it;
     
-    for (it = residues.begin (); it != residues.end (); ++it) 
-      delete *it;      
+    for (it = residues.begin (); it != residues.end (); ++it)
+      {
+	delete *it;
+      }
     residues.clear ();    
   }
   
@@ -137,9 +145,11 @@ namespace mccore
   {
     const_iterator cit;
     
-    os << "MODEL (size=" << flush << residues.size() << ") :" << flush;
+    os << "MODEL (size=" << flush << size () << ") :" << flush;
     for (cit = begin (); cit != end (); ++cit)
-      os << cit->getResId ()  << " ";
+      {
+	os << cit->getResId ()  << " ";
+      }
     return os;
   }
   
@@ -156,11 +166,15 @@ namespace mccore
 	
 	ips >> *res;
 	
- 	if (res->size () != 0) {
-	  // Optimized insertion that bypasses the copy: 
- 	  residues.push_back (res); 
-	} else
-	  delete res;
+ 	if (res->size () != 0)
+	  {
+	    // Optimized insertion that bypasses the copy: 
+	    residues.push_back (res); 
+	  }
+	else
+	  {
+	    delete res;
+	  }
       }    
     return ips;
   }
@@ -173,7 +187,9 @@ namespace mccore
     
     obs << size ();
     for (cit = begin (); cit != end (); ++cit)
-      obs << *cit;
+      {
+	obs << *cit;
+      }
     return obs;
   }
   
@@ -181,10 +197,9 @@ namespace mccore
   iBinstream& 
   Model::input (iBinstream &ibs)
   {
-    clear ();
-    
     Model::size_type sz;
     
+    clear ();
     ibs >> sz;
     for (; sz > 0; --sz)
       {
@@ -196,4 +211,5 @@ namespace mccore
       }
     return ibs;
   }
+  
 }

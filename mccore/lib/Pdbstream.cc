@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Pdbstream.cc
-// Copyright © 1999, 2000-04 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-05 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.49 $
-// $Id: Pdbstream.cc,v 1.49 2004-12-09 19:55:52 thibaup Exp $
+// $Revision: 1.50 $
+// $Id: Pdbstream.cc,v 1.50 2005-01-05 01:49:18 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -461,14 +461,16 @@ namespace mccore
     : ostream (cout.rdbuf ()),
       header (),
       headerdone (false),
-      atomset (new AtomSetNot (new AtomSetOr (new AtomSetLP (), new AtomSetPSE ()))),
-      rtype (ResidueType::parseType ("UNK")),
+      atomset (0),
+      rtype (0),
       rid (new ResId ()),
       modelnb (1),
       atomCounter (1),
       pdbType (Pdbstream::PDB)
   {
     Pdbstream::init ();
+    atomset = new AtomSetNot (new AtomSetOr (new AtomSetLP (), new AtomSetPSE ()));
+    rtype = ResidueType::parseType ("UNK");
     atomTypeParseTable = Pdbstream::pdbAtomTypeParseTable;
     residueTypeParseTable = Pdbstream::pdbResidueTypeParseTable;
   }
@@ -479,8 +481,8 @@ namespace mccore
     : ostream (sb),
       header (),
       headerdone (false),
-      atomset (new AtomSetNot (new AtomSetOr (new AtomSetLP (), new AtomSetPSE ()))),
-      rtype (ResidueType::parseType ("UNK")),
+      atomset (0),
+      rtype (0),
       rid (new ResId ()),
       modelnb (1),
       atomCounter (1),
@@ -489,6 +491,8 @@ namespace mccore
     Pdbstream::init ();
     atomTypeParseTable = Pdbstream::pdbAtomTypeParseTable;
     residueTypeParseTable = Pdbstream::pdbResidueTypeParseTable;
+    atomset = new AtomSetNot (new AtomSetOr (new AtomSetLP (), new AtomSetPSE ()));
+    rtype = ResidueType::parseType ("UNK");
   }
 
 
@@ -496,15 +500,19 @@ namespace mccore
     : ostream (os.rdbuf ()),
       header (),
       headerdone (false),
-      atomset (new AtomSetNot (new AtomSetOr (new AtomSetLP (), new AtomSetPSE ()))),
-      rtype (ResidueType::parseType ("UNK")),
+      atomset (0),
+      rtype (0),
       rid (new ResId ()),
       modelnb (1),
       atomCounter (1),
-      pdbType (Pdbstream::PDB),
-      atomTypeParseTable (Pdbstream::pdbAtomTypeParseTable),
-      residueTypeParseTable (Pdbstream::pdbResidueTypeParseTable)
-  { }
+      pdbType (Pdbstream::PDB)
+  {
+    Pdbstream::init ();
+    atomTypeParseTable = Pdbstream::pdbAtomTypeParseTable;
+    residueTypeParseTable = Pdbstream::pdbResidueTypeParseTable;
+    atomset = new AtomSetNot (new AtomSetOr (new AtomSetLP (), new AtomSetPSE ()));
+    rtype = ResidueType::parseType ("UNK");
+  }
 
 
   oPdbstream::~oPdbstream () 
@@ -804,8 +812,11 @@ namespace mccore
 
     setResidueType (r.getType ());
     setResId (r.getResId ());
-    
+
     for (it = r.begin (*atomset); it != r.end (); ++it)
-      *this << *it << endl;
+      {
+	*this << *it << endl;
+      }
   }
+  
 }
