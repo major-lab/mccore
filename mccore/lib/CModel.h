@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CModel.h
-// Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : Fri Oct  6 08:21:55 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Dec  4 15:38:55 2000
-// Update Count     : 3
+// Last Modified On : Mon Jan 22 15:13:41 2001
+// Update Count     : 4
 // Status           : Unknown.
 // 
 
@@ -14,13 +14,15 @@
 #define _CModel_h_
 
 
-#include <vector.h>
+#include <list.h>
 
 #include "CResidue.h"
 
 
 class iPdbstream;
 class oPdbstream;
+class iBinstream;
+class oBinstream;
 
 
 
@@ -31,7 +33,7 @@ class oPdbstream;
  *
  * @author Martin Larose
  */
-class CModel : public vector< CResidue >
+class CModel : public list< CResidue >
 {
 public:
 
@@ -40,13 +42,13 @@ public:
   /**
    * Initializes the object.
    */
-  CModel () : vector< CResidue > () { }
+  CModel () : list< CResidue > () { }
 
   /**
    * Initializes the object with the right's content.
    * @param right the object to copy.
    */
-  CModel (const CModel &right) : vector< CResidue > (right) { }
+  CModel (const CModel &right) : list< CResidue > (right) { }
 
   /**
    * Destructs the object.
@@ -61,6 +63,20 @@ public:
    * @return itself.
    */
   CModel& operator= (const CModel &right);
+
+  /**
+   * Gets the model reference at nth position.
+   * @param nth the position of the reference to get.
+   * @return the nth reference.
+   */
+  reference operator[] (unsigned int nth);
+
+  /**
+   * Gets the model const_reference at nth position.
+   * @param nth the position of the const_reference to get.
+   * @return the nth const_reference.
+   */
+  const_reference operator[] (unsigned int nth) const;
 
   // ACCESS ---------------------------------------------------------------
 
@@ -123,7 +139,12 @@ public:
 
 
 
+bool operator< (const CModel::iterator &left, const CModel::iterator &right);
+
 iPdbstream& operator>> (iPdbstream &ips, CModel &obj);
 oPdbstream& operator<< (oPdbstream &ops, const CModel &obj);
+
+iBinstream& operator>> (iBinstream &ibs, CModel &obj);
+oBinstream& operator<< (oBinstream &obs, const CModel &obj);
 
 #endif

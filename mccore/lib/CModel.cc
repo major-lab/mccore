@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CModel.cc
-// Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : Fri Oct  6 08:21:55 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Dec  4 15:38:53 2000
-// Update Count     : 3
+// Last Modified On : Mon Jan 22 15:13:39 2001
+// Update Count     : 4
 // Status           : Unknown.
 // 
 
@@ -14,6 +14,7 @@
 
 #include "CModel.h"
 
+#include "Binstream.h"
 #include "Pdbstream.h"
 
 
@@ -23,9 +24,41 @@ CModel::operator= (const CModel &right)
 {
   if (this != &right)
     {
-      vector< CResidue >::operator= (right);
+      list< CResidue >::operator= (right);
     }
   return *this;
+}
+
+
+
+CModel::reference
+CModel::operator[] (size_type nth)
+{
+  if (nth > size ())
+    return *(end ());
+  else
+    {
+      iterator it;
+      
+      for (it = begin (); nth >= 0; --nth, ++it);
+      return *it;
+    }
+}
+
+
+
+CModel::const_reference
+CModel::operator[] (size_type nth) const
+{
+  if (nth > size ())
+    return *(end ());
+  else
+    {
+      const_iterator cit;
+      
+      for (cit = begin (); nth >= 0; --nth, ++cit);
+      return *cit;
+    }
 }
 
 
@@ -158,6 +191,14 @@ CModel::find (const CResId &id) const
 
 
 
+bool
+operator< (const CModel::iterator &left, const CModel::iterator &right)
+{
+  return *left < *right;
+}
+
+
+
 iPdbstream&
 operator>> (iPdbstream &ips, CModel &obj)
 {
@@ -197,4 +238,35 @@ operator<< (oPdbstream &ops, const CModel &obj)
       ops.TER ();
     }
   return ops;
+}
+
+
+
+iBinstream&
+operator>> (iBinstream &ibs, CModel &obj)
+{
+  CModel::size_type sz;
+  
+  ibs >> sz;
+  for (; sz > 0; --sz)
+    {
+      obj.push_back (CResidue ());
+      CResidue &tmp = obj.back ();
+
+      ibs >> tmp;
+    }
+  return ibs;
+}
+
+
+
+oBinstream&
+operator<< (oBinstream &obs, const CModel &obj)
+{
+  CModel::const_iterator cit;
+  
+  obs << obj.size ();
+  for (cit = obj.begin (); cit != obj.end (); ++cit)
+    obs << *cit;
+  return obs;
 }
