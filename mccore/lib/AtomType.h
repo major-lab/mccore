@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:33:23 2001
-// Update Count     : 7
+// Last Modified On : Wed Aug 29 11:49:18 2001
+// Update Count     : 8
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -1097,6 +1097,12 @@ public:
    * @return if the atom is a MG.
    */
   virtual bool is_MG () const { return false; }
+
+  /**
+   * Tells if the atom is a PSAZ.
+   * @return if the atom is a PSAZ.
+   */
+  virtual bool is_PSAZ () const { return false; }
 
   /**
    * Tells if the atom is connected to the type in the residue.

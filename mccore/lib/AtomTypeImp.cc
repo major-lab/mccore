@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:09:22 2001
-// Update Count     : 10
+// Last Modified On : Wed Aug 29 11:49:27 2001
+// Update Count     : 11
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -208,6 +208,7 @@
 #define AT_2H_BIN          168
 #define AT_3H_BIN          169
 #define AT_H5T_BIN         170
+#define AT_PSAZ_BIN        171
 
 
 
@@ -752,6 +753,9 @@ operator>> (iBinstream &ibs, t_Atom *&t)
       break;
     case AT_H5T_BIN:
       t = a_H5T;
+      break;
+    case AT_PSAZ_BIN:
+      t = a_PSAZ;
       break;
     default:
       t = 0;
@@ -4350,7 +4354,7 @@ at_HE2::operator= (const at_HE2 &right)
 bool
 at_HE2::is_connected (const t_Atom *type, const t_Residue *res) const
 {
-  return type->is_CE () || type->is_CE2 ();
+  return type->is_CE () || type->is_CE2 () || type->is_NE2 ();
 }
 
 
@@ -5840,4 +5844,34 @@ void
 at_MG::Binoutput (oBinstream &obs) const
 {
   obs << (int) AT_MG_BIN;
+}
+
+
+
+const at_PSAZ&
+at_PSAZ::operator= (const at_PSAZ &right)
+{
+  if (this != &right)
+    {
+      at_AminoAcid::operator= (right);
+      at_Pseudo::operator= (right);
+      at_Backbone::operator= (right);
+    }
+  return *this;
+}
+
+
+
+bool
+at_PSAZ::is_connected (const t_Atom *type, const t_Residue *res) const
+{
+  return false;
+}
+
+
+
+void
+at_PSAZ::Binoutput (oBinstream &obs) const
+{
+  obs << (int) AT_PSAZ_BIN;
 }

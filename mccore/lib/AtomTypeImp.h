@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:33:41 2001
-// Update Count     : 3
+// Last Modified On : Wed Aug 29 11:49:30 2001
+// Update Count     : 4
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -14633,6 +14633,87 @@ public:
    * @return 0.
    */
   virtual float GetVDWR () const { return 0; }
+
+  // I/O  -----------------------------------------------------------------
+
+  /**
+   * Outputs the type value in the binary stream.
+   * @param obs the binary output stream.
+   */
+  virtual void Binoutput (oBinstream &obs) const;
+};
+
+
+
+/**
+ * @short The PSAZ atom type.
+ *
+ * @author Martin Larose <larosem@iro.umontreal.ca>
+ */
+class at_PSAZ : public virtual at_AminoAcid,
+		public virtual at_Pseudo, 
+		public virtual at_Backbone
+{
+
+public:
+
+  // LIFECYCLE ------------------------------------------------------------
+
+  /**
+   * Initializes the objet.
+   */
+  at_PSAZ () : at_AminoAcid (), at_Pseudo (), at_Backbone () { }
+
+  /**
+   * Initializes the objet with the right's content.
+   * @param right the object to copy.
+   */
+  at_PSAZ (const at_PSAZ &right)
+    : at_AminoAcid (right), at_Pseudo (right), at_Backbone (right) { }
+  
+  /**
+   * Destructs the object.  Nothing to do.
+   */
+  ~at_PSAZ () { }
+
+  // OPERATORS ------------------------------------------------------------
+
+  /**
+   * Assigns the right's content to the object.
+   * @param right the object to copy.
+   * @return itself.
+   */
+  virtual const at_PSAZ& operator= (const at_PSAZ &right);
+
+  /**
+   * Converts the atom type to a string.
+   * @return "PSAZ".
+   */
+  virtual operator const char* () const { return "PSAZ"; }
+
+  // ACCESS ---------------------------------------------------------------
+
+  // METHODS --------------------------------------------------------------
+
+  /**
+   * Converts the atom type to an Amber string representation.
+   * @return "PSAZ".
+   */
+  virtual const char* AmberRep () const { return "PSAZ"; }
+
+  /**
+   * Tells if the atom is a PSAZ.
+   * @return true.
+   */
+  virtual bool is_PSAZ () const { return true; }
+
+  /**
+   * Tells if the atom is connected to type in res.
+   * @param type the second atom in the connection.
+   * @param res the residue.
+   * @return true if the 2 atoms are connected.
+   */
+  virtual bool is_connected (const t_Atom *type, const t_Residue *res) const;
 
   // I/O  -----------------------------------------------------------------
 

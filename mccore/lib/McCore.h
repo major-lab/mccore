@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:34:40 2001
-// Update Count     : 11
+// Last Modified On : Wed Aug 29 11:49:35 2001
+// Update Count     : 12
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -1256,6 +1256,13 @@ extern t_Atom *a_MG;
 
 
 /**
+ * Global amino acid pseudo atom type.
+ */
+extern t_Atom *a_PSAZ;
+
+
+
+/**
  * Global nucleic acid residue type.
  */
 extern t_Residue *r_NucleicAcid;
@@ -1592,6 +1599,146 @@ extern set< t_Atom* > grUOblAtomSet;
 
 
 /**
+ * Set of obligatory atoms types in a ALA.
+ */
+extern set< t_Atom* > gALAOblAtomSet;
+
+
+
+/**
+ * Set of obligatory atoms types in a ARG.
+ */
+extern set< t_Atom* > gARGOblAtomSet;
+
+
+
+/**
+ * Set of obligatory atoms types in a ASN.
+ */
+extern set< t_Atom* > gASNOblAtomSet;
+
+
+
+/**
+ * Set of obligatory atoms types in a ASP.
+ */
+extern set< t_Atom* > gASPOblAtomSet;
+
+
+
+/**
+ * Set of obligatory atoms types in a CYS.
+ */
+extern set< t_Atom* > gCYSOblAtomSet;
+
+
+
+/**
+ * Set of obligatory atoms types in a GLN.
+ */
+extern set< t_Atom* > gGLNOblAtomSet;
+
+
+
+/**
+ * Set of obligatory atoms types in a GLU.
+ */
+extern set< t_Atom* > gGLUOblAtomSet;
+
+
+
+/**
+ * Set of obligatory atoms types in a GLY.
+ */
+extern set< t_Atom* > gGLYOblAtomSet;
+
+
+
+/**
+ * Set of obligatory atoms types in a HIS.
+ */
+extern set< t_Atom* > gHISOblAtomSet;
+
+
+
+/**
+ * Set of obligatory atoms types in a ILE.
+ */
+extern set< t_Atom* > gILEOblAtomSet;
+
+
+
+/**
+ * Set of obligatory atoms types in a LEU.
+ */
+extern set< t_Atom* > gLEUOblAtomSet;
+
+
+
+/**
+ * Set of obligatory atoms types in a LYS.
+ */
+extern set< t_Atom* > gLYSOblAtomSet;
+
+
+
+/**
+ * Set of obligatory atoms types in a MET.
+ */
+extern set< t_Atom* > gMETOblAtomSet;
+
+
+
+/**
+ * Set of obligatory atoms types in a PHE.
+ */
+extern set< t_Atom* > gPHEOblAtomSet;
+
+
+
+/**
+ * Set of obligatory atoms types in a PRO.
+ */
+extern set< t_Atom* > gPROOblAtomSet;
+
+
+
+/**
+ * Set of obligatory atoms types in a SER.
+ */
+extern set< t_Atom* > gSEROblAtomSet;
+
+
+
+/**
+ * Set of obligatory atoms types in a THR.
+ */
+extern set< t_Atom* > gTHROblAtomSet;
+
+
+
+/**
+ * Set of obligatory atoms types in a TRP.
+ */
+extern set< t_Atom* > gTRPOblAtomSet;
+
+
+
+/**
+ * Set of obligatory atoms types in a TYR.
+ */
+extern set< t_Atom* > gTYROblAtomSet;
+
+
+
+/**
+ * Set of obligatory atoms types in a VAL.
+ */
+extern set< t_Atom* > gVALOblAtomSet;
+
+
+
+/**
  * Set of optional atoms types in a dA.
  */
 extern set< t_Atom* > gdAOptAtomSet;
@@ -1644,6 +1791,146 @@ extern set< t_Atom* > gdTOptAtomSet;
  * Set of optional atoms types in a rU.
  */
 extern set< t_Atom* > grUOptAtomSet;
+
+
+
+/**
+ * Set of optional atoms types in a ALA.
+ */
+extern set< t_Atom* > gALAOptAtomSet;
+
+
+
+/**
+ * Set of optional atoms types in a ARG.
+ */
+extern set< t_Atom* > gARGOptAtomSet;
+
+
+
+/**
+ * Set of optional atoms types in a ASN.
+ */
+extern set< t_Atom* > gASNOptAtomSet;
+
+
+
+/**
+ * Set of optional atoms types in a ASP.
+ */
+extern set< t_Atom* > gASPOptAtomSet;
+
+
+
+/**
+ * Set of optional atoms types in a CYS.
+ */
+extern set< t_Atom* > gCYSOptAtomSet;
+
+
+
+/**
+ * Set of optional atoms types in a GLN.
+ */
+extern set< t_Atom* > gGLNOptAtomSet;
+
+
+
+/**
+ * Set of optional atoms types in a GLU.
+ */
+extern set< t_Atom* > gGLUOptAtomSet;
+
+
+
+/**
+ * Set of optional atoms types in a GLY.
+ */
+extern set< t_Atom* > gGLYOptAtomSet;
+
+
+
+/**
+ * Set of optional atoms types in a HIS.
+ */
+extern set< t_Atom* > gHISOptAtomSet;
+
+
+
+/**
+ * Set of optional atoms types in a ILE.
+ */
+extern set< t_Atom* > gILEOptAtomSet;
+
+
+
+/**
+ * Set of optional atoms types in a LEU.
+ */
+extern set< t_Atom* > gLEUOptAtomSet;
+
+
+
+/**
+ * Set of optional atoms types in a LYS.
+ */
+extern set< t_Atom* > gLYSOptAtomSet;
+
+
+
+/**
+ * Set of optional atoms types in a MET.
+ */
+extern set< t_Atom* > gMETOptAtomSet;
+
+
+
+/**
+ * Set of optional atoms types in a PHE.
+ */
+extern set< t_Atom* > gPHEOptAtomSet;
+
+
+
+/**
+ * Set of optional atoms types in a PRO.
+ */
+extern set< t_Atom* > gPROOptAtomSet;
+
+
+
+/**
+ * Set of optional atoms types in a SER.
+ */
+extern set< t_Atom* > gSEROptAtomSet;
+
+
+
+/**
+ * Set of optional atoms types in a THR.
+ */
+extern set< t_Atom* > gTHROptAtomSet;
+
+
+
+/**
+ * Set of optional atoms types in a TRP.
+ */
+extern set< t_Atom* > gTRPOptAtomSet;
+
+
+
+/**
+ * Set of optional atoms types in a TYR.
+ */
+extern set< t_Atom* > gTYROptAtomSet;
+
+
+
+/**
+ * Set of optional atoms types in a VAL.
+ */
+extern set< t_Atom* > gVALOptAtomSet;
 
 
 

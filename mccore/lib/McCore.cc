@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:10:08 2001
-// Update Count     : 13
+// Last Modified On : Wed Aug 29 11:49:33 2001
+// Update Count     : 14
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -215,6 +215,7 @@ t_Atom *a_3HD2 = 0;
 t_Atom *a_3HG1 = 0;
 t_Atom *a_3HG2 = 0;
 t_Atom *a_MG = 0;
+t_Atom *a_PSAZ = 0;
 
 
 
@@ -260,6 +261,7 @@ t_Residue *r_TYR = 0;
 t_Residue *r_VAL = 0;
 
 
+
 set< t_Atom* > gdAOblAtomSet;
 set< t_Atom* > grAOblAtomSet;
 set< t_Atom* > gdCOblAtomSet;
@@ -268,6 +270,29 @@ set< t_Atom* > gdGOblAtomSet;
 set< t_Atom* > grGOblAtomSet;
 set< t_Atom* > gdTOblAtomSet;
 set< t_Atom* > grUOblAtomSet;
+set< t_Atom* > gALAOblAtomSet;
+set< t_Atom* > gARGOblAtomSet;
+set< t_Atom* > gASNOblAtomSet;
+set< t_Atom* > gASPOblAtomSet;
+set< t_Atom* > gCYSOblAtomSet;
+set< t_Atom* > gGLNOblAtomSet;
+set< t_Atom* > gGLUOblAtomSet;
+set< t_Atom* > gGLYOblAtomSet;
+set< t_Atom* > gHISOblAtomSet;
+set< t_Atom* > gILEOblAtomSet;
+set< t_Atom* > gLEUOblAtomSet;
+set< t_Atom* > gLYSOblAtomSet;
+set< t_Atom* > gMETOblAtomSet;
+set< t_Atom* > gPHEOblAtomSet;
+set< t_Atom* > gPROOblAtomSet;
+set< t_Atom* > gSEROblAtomSet;
+set< t_Atom* > gTHROblAtomSet;
+set< t_Atom* > gTRPOblAtomSet;
+set< t_Atom* > gTYROblAtomSet;
+set< t_Atom* > gVALOblAtomSet;
+
+
+
 set< t_Atom* > gdAOptAtomSet;
 set< t_Atom* > grAOptAtomSet;
 set< t_Atom* > gdCOptAtomSet;
@@ -276,9 +301,31 @@ set< t_Atom* > gdGOptAtomSet;
 set< t_Atom* > grGOptAtomSet;
 set< t_Atom* > gdTOptAtomSet;
 set< t_Atom* > grUOptAtomSet;
+set< t_Atom* > gALAOptAtomSet;
+set< t_Atom* > gARGOptAtomSet;
+set< t_Atom* > gASNOptAtomSet;
+set< t_Atom* > gASPOptAtomSet;
+set< t_Atom* > gCYSOptAtomSet;
+set< t_Atom* > gGLNOptAtomSet;
+set< t_Atom* > gGLUOptAtomSet;
+set< t_Atom* > gGLYOptAtomSet;
+set< t_Atom* > gHISOptAtomSet;
+set< t_Atom* > gILEOptAtomSet;
+set< t_Atom* > gLEUOptAtomSet;
+set< t_Atom* > gLYSOptAtomSet;
+set< t_Atom* > gMETOptAtomSet;
+set< t_Atom* > gPHEOptAtomSet;
+set< t_Atom* > gPROOptAtomSet;
+set< t_Atom* > gSEROptAtomSet;
+set< t_Atom* > gTHROptAtomSet;
+set< t_Atom* > gTRPOptAtomSet;
+set< t_Atom* > gTYROptAtomSet;
+set< t_Atom* > gVALOptAtomSet;
+
 
 
 CMessageQueue gOut (cerr, 2);
+
 
 
 void
@@ -317,6 +364,43 @@ SetOblAtomSets ()
 		      &a_C5,  &a_C5p, &a_C6,  &a_N1,  &a_N3,  &a_O1P,
 		      &a_O2,  &a_O2p, &a_O2P, &a_O3p, &a_O4,  &a_O4p,
 		      &a_O5p, &a_P,   &a_PSY, &a_PSZ };
+  t_Atom** ALA[5]  = { &a_N,    &a_C,    &a_O,    &a_CA,   &a_CB};
+  t_Atom** ARG[11] = { &a_N,    &a_C,    &a_O,    &a_CA,   &a_CB,   &a_CG,
+		       &a_CD,   &a_NE,   &a_CZ,   &a_NH1,  &a_NH2 };
+  t_Atom** ASN[8]  = { &a_N,    &a_C,    &a_O,    &a_CA,   &a_CB,   &a_CG,
+		       &a_OD1,  &a_ND2 };
+  t_Atom** ASP[8]  = { &a_N,    &a_C,    &a_O,    &a_CA,   &a_CB,   &a_CG,
+		       &a_OD1,  &a_OD2 };
+  t_Atom** CYS[6]  = { &a_N,    &a_C,    &a_O,    &a_CA,   &a_CB,   &a_SG };
+  t_Atom** GLN[9]  = { &a_N,    &a_C,    &a_O,    &a_CA,   &a_CB,   &a_CG,
+		       &a_CD,   &a_OE1,  &a_NE2 };
+  t_Atom** GLU[9]  = { &a_N,    &a_C,    &a_O,    &a_CA,   &a_CB,   &a_CG,
+		       &a_CD,   &a_OE1,  &a_OE2 };
+  t_Atom** GLY[4]  = { &a_N,    &a_C,    &a_O,    &a_CA };
+  t_Atom** HIS[10] = { &a_N,    &a_C,    &a_O,    &a_CA,   &a_CB,   &a_CG,
+		       &a_ND1,  &a_CD2,  &a_CE1,  &a_NE2 };
+  t_Atom** ILE[8]  = { &a_N,    &a_C,    &a_O,    &a_CA,   &a_CB,   &a_CG1,
+		       &a_CG2,  &a_CD1 };
+  t_Atom** LEU[8]  = { &a_N,    &a_C,    &a_O,    &a_CA,   &a_CB,   &a_CG,
+		       &a_CD1,  &a_CD2 };
+  t_Atom** LYS[9]  = { &a_N,    &a_C,    &a_O,    &a_CA,   &a_CB,   &a_CG,
+		       &a_CD,   &a_CE,   &a_NZ };
+  t_Atom** MET[8]  = { &a_N,    &a_C,    &a_O,    &a_CA,   &a_CB,   &a_CG,
+		       &a_SD,   &a_CE };
+  t_Atom** PHE[11] = { &a_N,    &a_C,    &a_O,    &a_CA,   &a_CB,   &a_CG,
+		       &a_CD1,  &a_CD2,  &a_CE1,  &a_CE2,  &a_CZ };
+  t_Atom** PRO[7]  = { &a_N,    &a_C,    &a_O,    &a_CA,   &a_CB,   &a_CG,
+		       &a_CD };
+  t_Atom** SER[6]  = { &a_N,    &a_C,    &a_O,    &a_CA,   &a_CB,   &a_OG };
+  t_Atom** THR[7]  = { &a_N,    &a_C,    &a_O,    &a_CA,   &a_CB,   &a_OG1,
+		       &a_CG2 };
+  t_Atom** TRP[14] = { &a_N,    &a_C,    &a_O,    &a_CA,   &a_CB,   &a_CG,
+		       &a_CD1,  &a_CD2,  &a_NE1,  &a_CE2,  &a_CE3,  &a_CZ2,
+		       &a_CZ3,  &a_CH2 };
+  t_Atom** TYR[12] = { &a_N,    &a_C,    &a_O,    &a_CA,   &a_CB,   &a_CG,
+		       &a_CD1,  &a_CD2,  &a_CE1,  &a_CE2,  &a_CZ,   &a_OH };
+  t_Atom** VAL[7]  = { &a_N,    &a_C,    &a_O,    &a_CA,   &a_CB,   &a_CG1,
+		       &a_CG2 };
   t_Atom** odA[17] = { &a_H2,   &a_H8,   &a_1H6,  &a_2H6,  &a_LP1,  &a_LP3,
 		       &a_LP7,  &a_H1p,  &a_H2p,  &a_H3p,  &a_H4p,  &a_1H5p,
 		       &a_2H5p, &a_HO2p, &a_HO3p, &a_1H2p, &a_H5p };
@@ -342,7 +426,43 @@ SetOblAtomSets ()
   t_Atom** orU[17] = { &a_H3,   &a_H5,   &a_H6,   &a_1LP2, &a_2LP2, &a_1LP4,
 		       &a_2LP4, &a_H1p,  &a_H2p,  &a_H3p,  &a_H4p,  &a_1H5p,
 		       &a_2H5p, &a_HO2p, &a_HO3p, &a_1H2p, &a_H5p };
-
+  t_Atom** oALA[6]  = { &a_H1,   &a_H2,   &a_HA,   &a_HB1,  &a_HB2,  &a_HB3 };
+  t_Atom** oARG[14] = { &a_H1,   &a_H2,   &a_HA,   &a_HB1,  &a_HB2,  &a_HG1,
+			&a_HG2,  &a_HD1,  &a_HD2,  &a_HE,   &a_1HH1, &a_2HH1,
+			&a_1HH2, &a_2HH2 };
+  t_Atom** oASN[7]  = { &a_H1,   &a_H2,   &a_HA,   &a_HB1,  &a_HB2,  &a_1HD2,
+			&a_2HD2 };
+  t_Atom** oASP[5]  = { &a_H1,   &a_H2,   &a_HA,   &a_HB1,  &a_HB2 };
+  t_Atom** oCYS[6]  = { &a_H1,   &a_H2,   &a_HA,   &a_HB1,  &a_HB2,  &a_HG };
+  t_Atom** oGLN[9]  = { &a_H1,   &a_H2,   &a_HA,   &a_HB1,  &a_HB2,  &a_HG1,
+			&a_HG2,  &a_1HE2, &a_2HE2 };
+  t_Atom** oGLU[7]  = { &a_H1,   &a_H2,   &a_HA,   &a_HB1,  &a_HB2,  &a_HG1,
+			&a_HG2 };
+  t_Atom** oGLY[4]  = { &a_H1,   &a_H2,   &a_HA1,  &a_HA2 };
+  t_Atom** oHIS[8]  = { &a_H1,   &a_H2,   &a_HA,   &a_HB1,  &a_HB2,  &a_HD1,
+			&a_HD2,  &a_HE1 };
+  t_Atom** oILE[12] = { &a_H1,   &a_H2,   &a_HA,   &a_HB,   &a_1HG1, &a_2HG1,
+			&a_1HG2, &a_2HG2, &a_3HG2, &a_1HD1, &a_2HD1, &a_3HD1 };
+  t_Atom** oLEU[12] = { &a_H1,   &a_H2,   &a_HA,   &a_HB1,  &a_HB2,  &a_HG,
+			&a_1HD1, &a_2HD1, &a_3HD1, &a_1HD2, &a_2HD2, &a_3HD2 };
+  t_Atom** oLYS[14] = { &a_H1,   &a_H2,   &a_HA,   &a_HB1,  &a_HB2,  &a_HG1,
+			&a_HG2,  &a_HD1,  &a_HD2,  &a_HE1,  &a_HE2,  &a_HZ1,
+			&a_HZ2,  &a_HZ3 };
+  t_Atom** oMET[10] = { &a_H1,   &a_H2,   &a_HA,   &a_HB1,  &a_HB2,  &a_HG1,
+			&a_HG2,  &a_HE1,  &a_HE2,  &a_HE3 };
+  t_Atom** oPHE[10] = { &a_H1,   &a_H2,   &a_HA,   &a_HB1,  &a_HB2,  &a_HD1,
+			&a_HD2,  &a_HE1,  &a_HE2,  &a_HZ };
+  t_Atom** oPRO[8]  = { &a_H,    &a_HA,   &a_HB1,  &a_HB2,  &a_HG1,  &a_HG2,
+			&a_HD1,  &a_HD2 };
+  t_Atom** oSER[6]  = { &a_H1,   &a_H2,   &a_HA,   &a_HB1,  &a_HB2,  &a_HG };
+  t_Atom** oTHR[8]  = { &a_H1,   &a_H2,   &a_HA,   &a_HB,   &a_HG1,  &a_1HG2,
+			&a_2HG2, &a_3HG2 };
+  t_Atom** oTRP[11] = { &a_H1,   &a_H2,   &a_HA,   &a_HB1,  &a_HB2,  &a_HD1,
+			&a_HE1,  &a_HE3,  &a_HZ2,  &a_HZ3,  &a_HH2 };
+  t_Atom** oTYR[10] = { &a_H1,   &a_H2,   &a_HA,   &a_HB1,  &a_HB2,  &a_HD1,
+			&a_HD2,  &a_HE1,  &a_HE2,  &a_HH };
+  t_Atom** oVAL[10] = { &a_H1,   &a_H2,   &a_HA,   &a_HB,   &a_1HG1, &a_2HG1,
+			&a_3HG1, &a_1HG2, &a_2HG2, &a_3HG2 };
   int i;
 
   for (i = 0; i < 23; ++i)
@@ -361,6 +481,46 @@ SetOblAtomSets ()
     gdTOblAtomSet.insert (*(dT[i]));
   for (i = 0; i < 22; ++i)
     grUOblAtomSet.insert (*(rU[i]));
+  for (i = 0; i < 5; ++i)
+    gALAOblAtomSet.insert (*(ALA[i]));
+  for (i = 0; i < 11; ++i)
+    gARGOblAtomSet.insert (*(ARG[i]));
+  for (i = 0; i < 8; ++i)
+    gASNOblAtomSet.insert (*(ASN[i]));
+  for (i = 0; i < 8; ++i)
+    gASPOblAtomSet.insert (*(ASP[i]));
+  for (i = 0; i < 6; ++i)
+    gCYSOblAtomSet.insert (*(CYS[i]));
+  for (i = 0; i < 9; ++i)
+    gGLNOblAtomSet.insert (*(GLN[i]));
+  for (i = 0; i < 9; ++i)
+    gGLUOblAtomSet.insert (*(GLU[i]));
+  for (i = 0; i < 4; ++i)
+    gGLYOblAtomSet.insert (*(GLY[i]));
+  for (i = 0; i < 10; ++i)
+    gHISOblAtomSet.insert (*(HIS[i]));
+  for (i = 0; i < 8; ++i)
+    gILEOblAtomSet.insert (*(ILE[i]));
+  for (i = 0; i < 8; ++i)
+    gLEUOblAtomSet.insert (*(LEU[i]));
+  for (i = 0; i < 9; ++i)
+    gLYSOblAtomSet.insert (*(LYS[i]));
+  for (i = 0; i < 8; ++i)
+    gMETOblAtomSet.insert (*(MET[i]));
+  for (i = 0; i < 11; ++i)
+    gPHEOblAtomSet.insert (*(PHE[i]));
+  for (i = 0; i < 7; ++i)
+    gPROOblAtomSet.insert (*(PRO[i]));
+  for (i = 0; i < 6; ++i)
+    gSEROblAtomSet.insert (*(SER[i]));
+  for (i = 0; i < 7; ++i)
+    gTHROblAtomSet.insert (*(THR[i]));
+  for (i = 0; i < 14; ++i)
+    gTRPOblAtomSet.insert (*(TRP[i]));
+  for (i = 0; i < 12; ++i)
+    gTYROblAtomSet.insert (*(TYR[i]));
+  for (i = 0; i < 7; ++i)
+    gVALOblAtomSet.insert (*(VAL[i]));
 
   for (i = 0; i < 17; ++i)
     gdAOptAtomSet.insert (*(odA[i]));
@@ -378,6 +538,46 @@ SetOblAtomSets ()
     gdTOptAtomSet.insert (*(odT[i]));
   for (i = 0; i < 17; ++i)
     grUOptAtomSet.insert (*(orU[i]));
+  for (i = 0; i < 6; ++i)
+    gALAOptAtomSet.insert (*(oALA[i]));
+  for (i = 0; i < 14; ++i)
+    gARGOptAtomSet.insert (*(oARG[i]));
+  for (i = 0; i < 7; ++i)
+    gASNOptAtomSet.insert (*(oASN[i]));
+  for (i = 0; i < 5; ++i)
+    gASPOptAtomSet.insert (*(oASP[i]));
+  for (i = 0; i < 6; ++i)
+    gCYSOptAtomSet.insert (*(oCYS[i]));
+  for (i = 0; i < 9; ++i)
+    gGLNOptAtomSet.insert (*(oGLN[i]));
+  for (i = 0; i < 7; ++i)
+    gGLUOptAtomSet.insert (*(oGLU[i]));
+  for (i = 0; i < 4; ++i)
+    gGLYOptAtomSet.insert (*(oGLY[i]));
+  for (i = 0; i < 8; ++i)
+    gHISOptAtomSet.insert (*(oHIS[i]));
+  for (i = 0; i < 12; ++i)
+    gILEOptAtomSet.insert (*(oILE[i]));
+  for (i = 0; i < 12; ++i)
+    gLEUOptAtomSet.insert (*(oLEU[i]));
+  for (i = 0; i < 14; ++i)
+    gLYSOptAtomSet.insert (*(oLYS[i]));
+  for (i = 0; i < 10; ++i)
+    gMETOptAtomSet.insert (*(oMET[i]));
+  for (i = 0; i < 10; ++i)
+    gPHEOptAtomSet.insert (*(oPHE[i]));
+  for (i = 0; i < 8; ++i)
+    gPROOptAtomSet.insert (*(oPRO[i]));
+  for (i = 0; i < 6; ++i)
+    gSEROptAtomSet.insert (*(oSER[i]));
+  for (i = 0; i < 8; ++i)
+    gTHROptAtomSet.insert (*(oTHR[i]));
+  for (i = 0; i < 11; ++i)
+    gTRPOptAtomSet.insert (*(oTRP[i]));
+  for (i = 0; i < 10; ++i)
+    gTYROptAtomSet.insert (*(oTYR[i]));
+  for (i = 0; i < 10; ++i)
+    gVALOptAtomSet.insert (*(oVAL[i]));
 }
 
 
@@ -916,6 +1116,7 @@ McCoreInit ()
   a_3HG1 = new at_3HG1;
   a_3HG2 = new at_3HG2;
   a_MG = new at_MG;
+  a_PSAZ = new at_PSAZ;
 
   // Initializing residue globals ------------------------------------
 
@@ -971,7 +1172,8 @@ void
 McCore_version ()
 {
   cout << PACKAGE << " " << VERSION << endl
-       << "Copyright © 2001 Université de Montréal" << endl;
+       << "Copyright © 2001 Université de Montréal" << endl
+       << "www-lbit.iro.umontreal.ca" << endl;
 }
 
 

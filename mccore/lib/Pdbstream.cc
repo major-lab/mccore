@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Fri Aug 24 17:35:55 2001
-// Update Count     : 15
+// Last Modified On : Wed Aug 29 11:49:37 2001
+// Update Count     : 16
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -383,6 +383,8 @@ iPdbstream::GetAtomType (char *s, t_Residue *res_type)
     return a_3HG2;
   if (strcmp (tmpstr, "MG") == 0)
     return a_MG;
+  if (strcmp (tmpstr, "PSAZ") == 0)
+    return a_PSAZ;
   
   // This is an unknown type...
   map< const char *, t_Atom*, less_string >::iterator pos
@@ -730,6 +732,7 @@ oPdbstream::GetAtomStr (const t_Atom *t)
 	}
       else if (t->is_N ()) return " N  ";
       else if (t->is_P ()) return " P  ";
+      else if (t->is_PSAZ ()) return "PSAZ";
     }
   else if (t->is_SideChain ())
     {
