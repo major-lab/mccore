@@ -1,0 +1,65 @@
+//                              -*- Mode: C++ -*- 
+// Path.h
+// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+//                  Université de Montréal.
+// Author           : Patrick Gendron
+// Created On       : Mon Mar 24 21:31:52 2003
+// Last Modified By : Patrick Gendron
+// Last Modified On : Mon Mar 24 21:33:18 2003
+// Update Count     : 1
+// Status           : Unknown.
+// 
+
+
+#ifndef _Path_h_
+#define _Path_h_
+
+#include <iostream.h>
+
+
+/**
+ * @short A path in a graph.
+ *
+ * @author Patrick Gendron
+ */
+class Path
+{
+
+public:
+
+  // LIFECYCLE ------------------------------------------------------------
+
+  /**
+   * Initializes the object.
+   */
+  Path ();
+
+  /**
+   * Initializes the object with the other's content.
+   * @param other the object to copy.
+   */
+  Path (const Path &other);
+
+  /**
+   * Destroys the object.
+   */
+  ~Path ();
+
+  // OPERATORS ------------------------------------------------------------
+
+  /**
+   * Assigns the object with the other's content.
+   * @param other the object to copy.
+   * @return itself.
+   */
+  Path& operator= (const Path &other);
+
+  // ACCESS ---------------------------------------------------------------
+
+  // METHODS --------------------------------------------------------------
+
+  // I/O  -----------------------------------------------------------------
+
+};
+
+#endif
