@@ -1,12 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // McCore.h
-// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Aug 29 11:49:35 2001
-// Update Count     : 12
+// Last Modified On : Thu Sep  6 17:24:46 2001
+// Update Count     : 13
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -40,7 +40,7 @@
 
 class t_Atom;
 class t_Residue;
-class CMessageQueue;
+class Messagestream;
 class CAtom;
 class CTransfo;
 
@@ -1935,9 +1935,9 @@ extern set< t_Atom* > gVALOptAtomSet;
 
 
 /**
- * Global message queue.
+ * Global message system.
  */
-extern CMessageQueue gOut;
+extern Messagestream &gOut;
 
 
 

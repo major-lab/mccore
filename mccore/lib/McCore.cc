@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Aug 29 14:08:02 2001
-// Update Count     : 15
+// Last Modified On : Thu Sep  6 17:24:42 2001
+// Update Count     : 16
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -30,6 +30,7 @@
 #include <config.h>
 #endif
 
+#include <iostream.h>
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
@@ -39,7 +40,7 @@
 
 #include "AtomTypeImp.h"
 #include "CAtom.h"
-#include "CMessageQueue.h"
+#include "oMessagestream.h"
 #include "CResidue.h"
 #include "CTransfo.h"
 #include "ResidueTypeImp.h"
@@ -324,7 +325,8 @@ set< t_Atom* > gVALOptAtomSet;
 
 
 
-CMessageQueue gOut (cerr, 2);
+oMessagestream out (cerr, 2);
+Messagestream &gOut = out;
 
 
 

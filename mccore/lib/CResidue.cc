@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Aug 29 12:02:15 2001
-// Update Count     : 23
+// Last Modified On : Thu Sep  6 17:24:36 2001
+// Update Count     : 24
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -38,13 +38,12 @@
 
 #include "CResidue.h"
 
-#include "McCore.h"
-
 #include "AtomType.h"
 #include "Binstream.h"
 #include "CException.h"
-#include "CMessageQueue.h"
+#include "Messagestream.h"
 #include "CPoint3D.h"
+#include "McCore.h"
 #include "Pdbstream.h"
 #include "ResidueTypeImp.h"
 

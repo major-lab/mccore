@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Thu Sep 28 15:55:29 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Fri Aug 24 17:35:48 2001
-// Update Count     : 9
+// Last Modified On : Thu Sep  6 17:24:31 2001
+// Update Count     : 10
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -37,9 +37,9 @@
 #include <string.h>
 
 #include "Binstream.h"
-#include "CMessageQueue.h"
 #include "CResId.h"
 #include "McCore.h"
+#include "Messagestream.h"
 
 
   
