@@ -3,7 +3,7 @@
 // Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
-// $Revision: 1.27 $
+// $Revision: 1.28 $
 // 
 //  This file is part of mccore.
 //  
@@ -57,7 +57,7 @@ namespace mccore
    *   - The charge and van der Waals radius<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: AtomType.h,v 1.27 2004-10-04 22:14:07 larosem Exp $ 
+   * @version $Id: AtomType.h,v 1.28 2004-10-07 20:40:46 thibaup Exp $ 
    */
   class AtomType 
   {
@@ -121,7 +121,11 @@ namespace mccore
        * @return the result of the test.
        */
       bool operator() (const AtomType* t1, const AtomType* t2) const
-      { return *t1 < *t2; }
+      {
+	return
+	  *(0 == t1 ? AtomType::aNull : t1) <
+	  *(0 == t2 ? AtomType::aNull : t2);
+      }
     };
     
     // OPERATORS ---------------------------------------------------------------
