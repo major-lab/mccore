@@ -215,9 +215,13 @@ namespace mccore {
       type = other.type;
       resId = other.resId;
       clear ();
+      
       for (cit = other.atomGlobal.begin (); cit != other.atomGlobal.end (); ++cit)
 	atomGlobal.push_back ((*cit)->clone ());
+
+      atomIndex = other.atomIndex;
     }
+   
     return *this;
   }
 
