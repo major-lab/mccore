@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Oct 25 11:21:16 2001
-// Update Count     : 2
+// Last Modified On : Mon Nov  5 11:39:06 2001
+// Update Count     : 3
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -121,7 +121,7 @@ Residue::operator= (const Residue &right)
 
 
 
-Residue&
+AbstractResidue&
 Residue::operator= (const CTransfo &tfo)
 {
   mTfo = tfo; 
@@ -532,6 +532,7 @@ Residue::select (t_Atom *at ...) const
   va_list ap;
   vector< CAtom > atom_vec;
   const CAtom *atom;
+  AbstractResidue *res;
 
   atom = ref (at);
   if (atom)
@@ -547,7 +548,8 @@ Residue::select (t_Atom *at ...) const
       if (atom)
 	atom_vec.push_back (*atom);
     }
-  return new Residue (mType, atom_vec, resId);
+  res = new Residue (mType, atom_vec, resId);
+  return res;
 }
 
 

@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Oct 25 11:18:10 2001
-// Update Count     : 29
+// Last Modified On : Mon Nov  5 11:38:36 2001
+// Update Count     : 30
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -89,7 +89,7 @@ CResidue::operator= (const CResidue &right)
 
 
 
-CResidue&
+AbstractResidue&
 CResidue::operator= (const CTransfo &tfo)
 {
   mTfo = tfo; 
@@ -475,6 +475,7 @@ CResidue::select (t_Atom *at ...) const
   va_list ap;
   vector< CAtom > atom_vec;
   const CAtom *atom;
+  AbstractResidue *res;
   
   atom = ref (at);
   if (atom)
@@ -490,7 +491,8 @@ CResidue::select (t_Atom *at ...) const
       if (atom)
 	atom_vec.push_back (*atom);
     }
-  return new CResidue (mType, atom_vec, resId);
+  res = new CResidue (mType, atom_vec, resId);
+  return res;
 }
 
 

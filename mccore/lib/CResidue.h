@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Thu Sep 28 16:59:32 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Oct 25 11:18:17 2001
-// Update Count     : 21
+// Last Modified On : Mon Nov  5 11:38:46 2001
+// Update Count     : 22
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -140,7 +140,7 @@ public:
    * Assigns the transfo.  Only the internal transfo is modified.
    * @param tfo the new transfo.
    */
-  virtual CResidue& operator= (const CTransfo &tfo);
+  virtual AbstractResidue& operator= (const CTransfo &tfo);
 
   /**
    * Returns a reference to the atom associated with the type.  The returned

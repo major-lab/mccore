@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct 12 18:21:13 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Oct 25 11:27:27 2001
-// Update Count     : 3
+// Last Modified On : Mon Nov  5 11:38:27 2001
+// Update Count     : 4
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -473,6 +473,12 @@ public:
     resId = id;
     return *this;
   }
+
+  /**
+   * Assigns the transfo.
+   * @param tfo the new transfo.
+   */
+  virtual AbstractResidue& operator= (const CTransfo &tfo) = 0;
 
   /**
    * Tests if the residues are equals.
