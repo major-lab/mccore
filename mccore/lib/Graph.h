@@ -4,7 +4,7 @@
 //                  Université de Montréal
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 00:05:15 2004
-// $Revision: 1.23.4.5 $
+// $Revision: 1.23.4.6 $
 // 
 // This file is part of mccore.
 // 
@@ -61,7 +61,7 @@ namespace mccore
    * costly.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Graph.h,v 1.23.4.5 2004-12-13 07:13:22 larosem Exp $
+   * @version $Id: Graph.h,v 1.23.4.6 2004-12-13 07:44:43 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -614,38 +614,8 @@ namespace mccore
      * @param v a vertex in the graph.
      * @return the list of neighbors.
      */
-    list< V > getNeighbors (const V &v)
-    {
-      list< V > res;
-      V2VLabel::const_iterator it;
-
-      if (v2vlabel.end () != (it = v2vlabel.find (&v)))
-	{
-	  set< Graph::label > nLabels;
-	  set< Graph::label >::iterator sit;
-	  EV2ELabel::const_iterator evit;
-	  Graph::label l;
-
-	  l = it->second;
-	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
-	    {
-	      if (evit->first.getHeadLabel () == l)
-		{
-		  nLabels.insert (evit->first.getTailLabel ());
-		}
-	      else if (evit->first.getTailLabel () == l)
-		{
-		  nLabels.insert (evit->first.getHeadLabel ());
-		}
-	    }
-	  for (sit = nLabels.begin (); nLabels.end () != sit; ++sit)
-	    {
-	      res.push_back (vertices[*sit]);
-	    }
-	}
-      return res;
-    }	  
-
+    virtual list< V > getNeighbors (const V &v) = 0;
+    
     /**
      * Gets a vertex given its label.
      * @param l the vertex label.
@@ -891,32 +861,8 @@ namespace mccore
      * @param l the vertex label.
      * @return the list of neighbors.
      */
-    list< Graph::label > internalGetNeighbors (Graph::label l) const
-    {
-      list< Graph::label > res;
-      V2VLabel::const_iterator it;
-
-      if (vertices.size () > v)
-	{
-	  set< Graph::label > nLabels;
-	  EV2ELabel::const_iterator evit;
-
-	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
-	    {
-	      if (evit->first.getHeadLabel () == l)
-		{
-		  nLabels.insert (evit->first.getTailLabel ());
-		}
-	      else if (evit->first.getTailLabel () == l)
-		{
-		  nLabels.insert (evit->first.getHeadLabel ());
-		}
-	    }
-	  res.insert (res.end (), nLabels.begin (), nLabels.end ());
-	}
-      return res;
-    }	  
-
+    virtual list< Graph::label > internalGetNeighbors (Graph::label l) const = 0;
+    
     /**
      * Gets the iterator pointing to the beginning of the graph vertices.
      * @return the iterator.

@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Dec 10 19:09:13 2004
-// $Revision: 1.12.2.3 $
+// $Revision: 1.12.2.4 $
 // 
 // This file is part of mccore.
 // 
@@ -43,7 +43,7 @@ namespace mccore
    * Undirected graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: UndirectedGraph.h,v 1.12.2.3 2004-12-13 07:13:35 larosem Exp $
+   * @version $Id: UndirectedGraph.h,v 1.12.2.4 2004-12-13 07:44:47 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -99,6 +99,78 @@ namespace mccore
     }	  
 
     // ACCESS ---------------------------------------------------------------
+
+    /**
+     * Returns the neighbors of the given vertex sorted over their label. An
+     * empty list is returned if the vertex has no neighbors or if the graph
+     * does not contain the vertex.
+     * @param v a vertex in the graph.
+     * @return the list of neighbors.
+     */
+    virtual list< V > getNeighbors (const V &v)
+    {
+      list< V > res;
+      V2VLabel::const_iterator it;
+
+      if (v2vlabel.end () != (it = v2vlabel.find (&v)))
+	{
+	  set< Graph::label > nLabels;
+	  set< Graph::label >::iterator sit;
+	  EV2ELabel::const_iterator evit;
+	  Graph::label l;
+
+	  l = it->second;
+	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
+	    {
+	      if (evit->first.getHeadLabel () == l)
+		{
+		  nLabels.insert (evit->first.getTailLabel ());
+		}
+	      else if (evit->first.getTailLabel () == l)
+		{
+		  nLabels.insert (evit->first.getHeadLabel ());
+		}
+	    }
+	  for (sit = nLabels.begin (); nLabels.end () != sit; ++sit)
+	    {
+	      res.push_back (vertices[*sit]);
+	    }
+	}
+      return res;
+    }	  
+
+    /**
+     * Returns a increasing label list of the neighbors of the given vertex
+     * label.  An empty list is returned if the label has no neighbor or if
+     * it is not contained in the graph.
+     * @param l the vertex label.
+     * @return the list of neighbors.
+     */
+    virtual list< Graph::label > internalGetNeighbors (Graph::label l) const
+    {
+      list< Graph::label > res;
+      V2VLabel::const_iterator it;
+
+      if (vertices.size () > v)
+	{
+	  set< Graph::label > nLabels;
+	  EV2ELabel::const_iterator evit;
+
+	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
+	    {
+	      if (evit->first.getHeadLabel () == l)
+		{
+		  nLabels.insert (evit->first.getTailLabel ());
+		}
+	      else if (evit->first.getTailLabel () == l)
+		{
+		  nLabels.insert (evit->first.getHeadLabel ());
+		}
+	    }
+	  res.insert (res.end (), nLabels.begin (), nLabels.end ());
+	}
+      return res;
+    }	  
 
     // METHODS --------------------------------------------------------------
 
@@ -423,6 +495,17 @@ namespace mccore
     
     // I/O  -----------------------------------------------------------------
 
+    /**
+     * Writes the object to a stream.
+     * @param os the stream.
+     * @return the stream.
+     */
+    virtual ostream& write (ostream& os) const
+    {
+      os << "[UndirectedGraph]" << endl;
+      return Graph::write (os);
+    }
+    
   };
 
 }
