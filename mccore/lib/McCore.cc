@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Aug 29 11:49:33 2001
-// Update Count     : 14
+// Last Modified On : Wed Aug 29 14:08:02 2001
+// Update Count     : 15
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -329,7 +329,7 @@ CMessageQueue gOut (cerr, 2);
 
 
 void
-SetOblAtomSets ()
+setAtomSets ()
 {
   t_Atom** dA[23] = { &a_C1p, &a_C2,  &a_C2p, &a_C3p, &a_C4,  &a_C4p,
 		      &a_C5,  &a_C5p, &a_C6,  &a_C8,  &a_N1,  &a_N3,
@@ -1161,9 +1161,9 @@ McCoreInit ()
   r_TYR = new rt_TYR;
   r_VAL = new rt_VAL;
 
-  // Initializing obligatory atom sets -------------------------------
+  // Initializing atom sets -------------------------------
 
-  SetOblAtomSets ();
+  setAtomSets ();
 }
 
 
