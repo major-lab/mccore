@@ -15,6 +15,8 @@
 class iBinstream;
 class oBinstream;
 
+
+
 /**
  * @short Implementation for a nxn symetrical matrix.
  * 
@@ -87,7 +89,7 @@ public:
    * @param i the index.
    * @return the ith data.
    */
-  Type& operator[] (int i);
+  Type& operator[] (int i) const;
 
   /**
    * Access the two-dimensional matrix data at (i,j).
@@ -95,7 +97,17 @@ public:
    * @param j the column index.
    * @return the data at (i,j).
    */
-  //Type& operator[] (int i, int j) { return getij (i, j); }
+  Type& operator[] (pair< int, int > ij) const { return getij (ij.first, ij.second); }
+
+  /**
+   * Access the two-dimensional matrix data at (i,j).
+   * @param i the row index.
+   * @param j the column index.
+   * @return the data at (i,j).
+   */
+  Type& operator[] (int ij[2]) const { return getij (ij[0], ij[1]); }
+
+  Type& operator() (int i, int j) const { return getij (i, j); }
 
   // ACCESS ---------------------------------------------------------------
 

@@ -79,7 +79,7 @@ SymmetricalMatrix< Type >::operator= (const SymmetricalMatrix< Type >& right)
 
 template< class Type >
 Type&
-SymmetricalMatrix< Type >::operator[] (int i)
+SymmetricalMatrix< Type >::operator[] (int i) const
 {
   if (i < 0 || i >= oneSize)
     {
