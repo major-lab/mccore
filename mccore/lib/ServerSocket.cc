@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:56 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Oct  1 13:10:48 2001
-// Update Count     : 7
+// Last Modified On : Mon Oct  1 13:12:44 2001
+// Update Count     : 8
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -48,7 +48,9 @@
 
 #if defined(__sgi) || defined (__sun)
 #include <strings.h>
+#endif
 
+#if defined(__sgi)
 typedef int socklen_t;
 #endif
 

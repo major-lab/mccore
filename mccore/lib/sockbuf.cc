@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:34 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Oct  1 12:57:34 2001
-// Update Count     : 7
+// Last Modified On : Mon Oct  1 13:10:57 2001
+// Update Count     : 8
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -48,7 +48,7 @@
 #include "CException.h"
 #include "sockbuf.h"
 
-#if defined(__sgi)
+#if defined(__sgi) || defined (__sun)
 #include <strings.h>
 #endif
 
