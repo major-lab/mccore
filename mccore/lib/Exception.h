@@ -4,7 +4,7 @@
 //                           Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 16:27:35 1999
-// $Revision: 1.4.2.4 $
+// $Revision: 1.4.2.5 $
 //
 // This file is part of mccore.
 // 
@@ -44,7 +44,7 @@ namespace mccore
    * libraries.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Exception.h,v 1.4.2.4 2004-12-25 02:40:00 larosem Exp $
+   * @version $Id: Exception.h,v 1.4.2.5 2004-12-27 01:35:34 larosem Exp $
    */
   class Exception : public exception
   {
@@ -67,12 +67,6 @@ namespace mccore
      * @param message the message string.
      */
     Exception (const string &message) : mMessage (message) { }
-
-    /**
-     * Initializes the exeption with a message.
-     * @param message the message string.
-     */
-    Exception (const char *message) : mMessage (message) { }
 
     /**
      * Initializes the exeption with the right's content.
@@ -190,7 +184,11 @@ namespace mccore
      * @param os the output stream.
      * @return the used output stream.
      */
-    virtual ostream& output (ostream& os) const;
+    virtual ostream& output (ostream& os) const
+    {
+      return os << mMessage;
+    }
+    
   };  
 
 
@@ -238,6 +236,59 @@ namespace mccore
   };
 
 
+  
+  /**
+   * Exception for invalid access requests.
+   *
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: Exception.h,v 1.4.2.5 2004-12-27 01:35:34 larosem Exp $
+   */
+  class NoSuchElementException : public Exception
+  {
+  public:
+
+    // LIFECYCLE ------------------------------------------------------------
+
+    /**
+     * Initializes the exeption.  mMessage contains "".
+     */
+    NoSuchElementException () : Exception ("NoSuchElementException: ") { }
+
+    /**
+     * Initializes the exeption with a message.
+     * @param message the message string.
+     */
+    NoSuchElementException (const string &message)
+      : Exception ("NoSuchElementException: " + message) { }
+
+    /**
+     * Initializes the exeption with the right's content.
+     * @param right the exception to copy.
+     */
+    NoSuchElementException (const NoSuchElementException &right)
+      : Exception (right)
+    { }
+
+    /**
+     * Destructs the exception.
+     */
+    virtual ~NoSuchElementException () throw () { }
+
+    // OPERATORS ------------------------------------------------------------
+
+    /**
+     * Assigns the exception with the right's content.
+     * @param right the exception to copy.
+     * @return itself.
+     */
+    NoSuchElementException& operator= (const NoSuchElementException &right);
+  
+    // ACCESS ---------------------------------------------------------------
+
+    // I/O ------------------------------------------------------------------
+    
+  };
+
 
   /**
    * @short Exceptions produced by users.
@@ -264,7 +315,7 @@ namespace mccore
      * Initializes the exeption with a message.
      * @param theMessage the information message.
      */
-    LibException (const char *theMessage) : Exception (theMessage) { }
+    LibException (const string &theMessage) : Exception (theMessage) { }
   
     /**
      * Initializes the exeption with the right's content.
@@ -315,14 +366,15 @@ namespace mccore
      * Initializes the exeption with a message.
      * @param theMessage the information message.
      */
-    FatalLibException (const char *theMessage) : LibException (theMessage) { }
+    FatalLibException (const string &theMessage) : LibException (theMessage) { }
 
     /**
      * Initializes the exeption with the right's content.
      * @param right the exception to copy.
      */
     FatalLibException (const FatalLibException &right)
-      : LibException (right) { }
+      : LibException (right)
+    { }
   
     // OPERATORS ------------------------------------------------------------
 
@@ -359,7 +411,7 @@ namespace mccore
     /**
      * The file name.
      */
-    char *mFile;
+    string mFile;
 
     /**
      * The line number.
@@ -373,7 +425,7 @@ namespace mccore
     /**
      * Initializes the exeption.
      */
-    IntLibException ();
+    IntLibException () : Exception (), mLine (-1) { }
 
     /**
      * Initializes the exeption with a message and where it was produced.
@@ -381,20 +433,22 @@ namespace mccore
      * @param file the file where the exception occured (default = 0).
      * @param line the line number where the exception occured (default = -1).
      */
-    IntLibException (const char *theMessage,
-		      const char *file = 0,
-		      int line = -1);
+    IntLibException (const string &theMessage, const string &file = "", int line = -1)
+      : Exception (theMessage), mFile (file), mLine (line)
+    { }
 
     /**
      * Initializes the exeption with the right's content.
      * @param right the exception to copy.
      */
-    IntLibException (const IntLibException &right);
+    IntLibException (const IntLibException &right)
+      : Exception (right), mFile (right.mFile), mLine (right.mLine)
+    { }
 
     /**
-     * Destructs the exception.
+     * Destroys the exception.
      */
-    virtual ~IntLibException () throw () { delete[] mFile; }
+    virtual ~IntLibException () throw () { }
 
     // OPERATORS ------------------------------------------------------------
 
@@ -411,7 +465,7 @@ namespace mccore
      * Gets the file name where the exception occured.
      * @return the file name.
      */
-    const char* getFileName () const { return mFile; }
+    const string& getFileName () const { return mFile; }
 
     /**
      * Gets the line number where the exception occured.
@@ -452,23 +506,25 @@ namespace mccore
     /**
      * Initializes the exception.
      */
-    NoSuchAtomException ();
+    NoSuchAtomException () : IntLibException () { }
 
     /**
      * Initializes the exception with a message and where it was produced.
      * @param theMessage the information string.
-     * @param file the file where the exception occured (default = 0).
+     * @param file the file where the exception occured (default = "").
      * @param line the line number where the exception occured (default = -1).
      */
-    NoSuchAtomException (const char *theMessage,
-			 const char *file = 0,
-			 int line = -1);
+    NoSuchAtomException (const string &theMessage, const string &file = "", int line = -1)
+      : IntLibException (theMessage, file, line)
+    { }
 
     /**
      * Initializes the exception with the right's content.
      * @param right the exception to copy.
      */
-    NoSuchAtomException (const NoSuchAtomException &right);
+    NoSuchAtomException (const NoSuchAtomException &right)
+      : IntLibException (right)
+    { }
 
     /**
      * Destructs the exception.
@@ -490,14 +546,126 @@ namespace mccore
 
     // I/O ------------------------------------------------------------------
 
+  };
+
+
+  /**
+   * @short Specialized internal exceptions 
+   *
+   * To prevent null pointer dereferencing.
+   *
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   */
+  class NullPointerException : public IntLibException
+  {
+
+  public:
+
+    // LIFECYCLE ------------------------------------------------------------
+
     /**
-     * Outputs the NoSuchAtomException exception
-     * messages.  Prints the filename, the line number, the message and a bug
-     * notice.
-     * @param os the output stream.
-     * @return the used output stream.
+     * Initializes the exception.
      */
-    virtual ostream& output (ostream &os) const;
+    NullPointerException () : IntLibException () { }
+
+    /**
+     * Initializes the exception with a message and where it was produced.
+     * @param theMessage the information string.
+     * @param file the file where the exception occured (default = 0).
+     * @param line the line number where the exception occured (default = -1).
+     */
+    NullPointerException (const string &theMessage, const string &file = "", int line = -1)
+      : IntLibException (theMessage, file, line)
+    { }
+
+    /**
+     * Initializes the exception with the right's content.
+     * @param right the exception to copy.
+     */
+    NullPointerException (const NullPointerException &right)
+      : IntLibException (right)
+    { }
+
+    /**
+     * Destroys the exception.
+     */
+    virtual ~NullPointerException () throw () {  }
+
+    // OPERATORS ------------------------------------------------------------
+
+    /**
+     * Assigns the exception with the right's content.
+     * @param right the exception to copy.
+     * @return itself.
+     */
+    NullPointerException& operator= (const NullPointerException &right);
+
+    // ACCESS ---------------------------------------------------------------
+
+    // METHODS --------------------------------------------------------------
+
+    // I/O ------------------------------------------------------------------
+
+  };
+
+
+  /**
+   * @short Specialized internal exceptions 
+   *
+   * To prevent array, or vector, out of bound referencing.
+   *
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   */
+  class ArrayIndexOutOfBoundsException : public IntLibException
+  {
+
+  public:
+
+    // LIFECYCLE ------------------------------------------------------------
+
+    /**
+     * Initializes the exception.
+     */
+    ArrayIndexOutOfBoundsException () : IntLibException ("ArrayIndexOutOfBoundsException: ") { }
+
+    /**
+     * Initializes the exception with a message and where it was produced.
+     * @param theMessage the information string.
+     * @param file the file where the exception occured (default = 0).
+     * @param line the line number where the exception occured (default = -1).
+     */
+    ArrayIndexOutOfBoundsException (const string &theMessage, const string &file = "", int line = -1)
+      : IntLibException ("ArrayIndexOutOfBoundsException: " + theMessage, file, line)
+    { }
+
+    /**
+     * Initializes the exception with the right's content.
+     * @param right the exception to copy.
+     */
+    ArrayIndexOutOfBoundsException (const ArrayIndexOutOfBoundsException &right)
+      : IntLibException (right)
+    { }
+
+    /**
+     * Destroys the exception.
+     */
+    virtual ~ArrayIndexOutOfBoundsException () throw () {  }
+
+    // OPERATORS ------------------------------------------------------------
+
+    /**
+     * Assigns the exception with the right's content.
+     * @param right the exception to copy.
+     * @return itself.
+     */
+    ArrayIndexOutOfBoundsException& operator= (const ArrayIndexOutOfBoundsException &right);
+
+    // ACCESS ---------------------------------------------------------------
+
+    // METHODS --------------------------------------------------------------
+
+    // I/O ------------------------------------------------------------------
+
   };
 
 
@@ -525,20 +693,20 @@ namespace mccore
     /**
      * Initializes the exeption with a message and a file position.
      * @param theMessage the information string.
-     * @param file the file name where the exception occured (default = 0).
+     * @param file the file name where the exception occured (default = "").
      * @param line the line number where the exception occured (default = -1.
      */
-    FatalIntLibException (const char *theMessage,
-			  const char *file = 0,
-			  int line = -1)
-      : IntLibException (theMessage, file, line) { }
+    FatalIntLibException (const string &theMessage, const string &file = "", int line = -1)
+      : IntLibException (theMessage, file, line)
+    { }
 
     /**
      * Initializes the exeption with the right's content.
      * @param right the exception to copy.
      */
     FatalIntLibException (const IntLibException &right)
-      : IntLibException (right) { }
+      : IntLibException (right)
+    { }
 
     // OPERATORS ------------------------------------------------------------
 
@@ -580,10 +748,8 @@ namespace mccore
     /**
      * Initializes the exeption with a message and where it was produced.
      * @param theMessage the information string.
-     * @param file the file where the exception occured (default = 0).
-     * @param line the line number where the exception occured (default = -1).
      */
-    SocketException (const char *theMessage) : Exception (theMessage) { }
+    SocketException (const string &theMessage) : Exception (theMessage) { }
 
     /**
      * Initializes the exeption with the right's content.
@@ -624,7 +790,7 @@ namespace mccore
     /**
      * The file name.
      */
-    char *mFile;
+    string mFile;
 
     /**
      * The line number.
@@ -638,28 +804,30 @@ namespace mccore
     /**
      * Initializes the exeption.
      */
-    FatalSocketException ();
+    FatalSocketException () : Exception (), mLine (-1) { }
 
     /**
      * Initializes the exeption with a message and where it was produced.
      * @param theMessage the information string.
-     * @param file the file where the exception occured (default = 0).
+     * @param file the file where the exception occured (default = "").
      * @param line the line number where the exception occured (default = -1).
      */
-    FatalSocketException (const char *theMessage,
-			   const char *file = 0,
-			   int line = -1);
+    FatalSocketException (const string &theMessage, const string &file = "", int line = -1)
+      : Exception (theMessage), mFile (file), mLine (line)
+    { }
 
     /**
      * Initializes the exeption with the right's content.
      * @param right the exception to copy.
      */
-    FatalSocketException (const FatalSocketException &right);
+    FatalSocketException (const FatalSocketException &right)
+      : Exception (right), mFile (right.mFile), mLine (right.mLine)
+    { }
 
     /**
-     * Destructs the exception.
+     * Destroys the exception.
      */
-    ~FatalSocketException () throw () { delete[] mFile; }
+    virtual ~FatalSocketException () throw () { }
 
     // OPERATORS ------------------------------------------------------------
 
@@ -676,7 +844,7 @@ namespace mccore
      * Gets the file name where the exception occured.
      * @return the file name.
      */
-    const char* getFileName () const { return mFile; }
+    const string& getFileName () const { return mFile; }
 
     /**
      * Gets the line number where the exception occured.
@@ -695,6 +863,7 @@ namespace mccore
      * @return the used output stream.
      */
     virtual ostream& output (ostream &os) const;
+    
   };
 
 
@@ -723,10 +892,8 @@ namespace mccore
     /**
      * Initializes the exeption with a message and where it was produced.
      * @param theMessage the information string.
-     * @param file the file where the exception occured (default = 0).
-     * @param line the line number where the exception occured (default = -1).
      */
-    ConnectionException (const char *theMessage)
+    ConnectionException (const string &theMessage)
       : SocketException (theMessage)
     { }
     
@@ -754,8 +921,6 @@ namespace mccore
     ConnectionException& operator= (const ConnectionException &right);
 
     // ACCESS ---------------------------------------------------------------
-
- 
 
     // METHODS --------------------------------------------------------------
 

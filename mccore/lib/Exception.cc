@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.3.2.4 $
-// $Id: Exception.cc,v 1.3.2.4 2004-12-25 02:39:56 larosem Exp $
+// $Revision: 1.3.2.5 $
+// $Id: Exception.cc,v 1.3.2.5 2004-12-27 01:34:57 larosem Exp $
 //
 // This file is part of mccore.
 //
@@ -136,13 +136,6 @@ namespace mccore
   }
 
 
-  ostream& 
-  Exception::output (ostream &os) const
-  {
-    return os << mMessage;
-  }
-
-  
   InterruptException&
   InterruptException::operator= (const InterruptException &right)
   {
@@ -152,7 +145,17 @@ namespace mccore
   }	
 
 
+  NoSuchElementException&
+  NoSuchElementException::operator= (const NoSuchElementException &right)
+  {
+    if (this != &right)
+      {
+	Exception::operator= (right);
+      }
+    return *this;
+  }
 
+  
   LibException&
   LibException::operator= (const LibException &right)
   {
@@ -160,7 +163,6 @@ namespace mccore
       Exception::operator= (right);
     return *this;
   }
-
 
 
   FatalLibException&
@@ -172,56 +174,17 @@ namespace mccore
   }
 
 
-
-  IntLibException::IntLibException ()
-    : Exception (), mLine (0)
-  {
-    mFile = new char[1];
-    mFile[0] = '\0';
-  }
-
-
-
-  IntLibException::IntLibException (const char *theMessage,
-				      const char *file, int line)
-    : Exception (theMessage), mLine (line)
-  {
-    if (file)
-      {
-	mFile = new char[strlen (file) + 1];
-	strcpy (mFile, file);
-      }
-    else
-      {
-	mFile = new char[1];
-	mFile[0] = '\0';
-      }
-  }
-
-
-
-  IntLibException::IntLibException (const IntLibException &right)
-    : Exception (right), mLine (right.mLine)
-  {
-    mFile = new char[strlen (right.mFile) + 1];
-    strcpy (mFile, right.mFile);
-  }
-
-
-
   IntLibException&
   IntLibException::operator= (const IntLibException &right)
   {
     if (this != &right)
       {
 	Exception::operator= (right);
-	mFile = new char[strlen (right.mFile) + 1];
-	strcpy (mFile, right.mFile);
+	mFile = right.mFile;
 	mLine = right.mLine;
       }
     return *this;
   }
-
 
 
   ostream& 
@@ -229,30 +192,7 @@ namespace mccore
   {
     os << getFileName () << ":" << getLine () << ": ";
     Exception::output (os);
-    os << endl;
-    return os;
-  }
-
-  
-  NoSuchAtomException::NoSuchAtomException ()
-    : IntLibException ()
-  {
-
-  }
-
-
-  NoSuchAtomException::NoSuchAtomException (const char *theMessage,
-					    const char *file, int line)
-    : IntLibException (theMessage, file, line)
-  {
-
-  }
-
-
-  NoSuchAtomException::NoSuchAtomException (const NoSuchAtomException &right)
-    : IntLibException (right)
-  {
-
+    return os << endl;
   }
 
   
@@ -260,72 +200,55 @@ namespace mccore
   NoSuchAtomException::operator= (const NoSuchAtomException &right)
   {
     if (this != &right)
-      this->IntLibException::operator= (right);
+      {
+	IntLibException::operator= (right);
+      }
     return *this;
   }
 
 
-  ostream& 
-  NoSuchAtomException::output (ostream &os) const
+  NullPointerException&
+  NullPointerException::operator= (const NullPointerException &right)
   {
-    return this->IntLibException::output (os);
+    if (this != &right)
+      {
+	IntLibException::operator= (right);
+      }
+    return *this;
   }
 
+
+  ArrayIndexOutOfBoundsException&
+  ArrayIndexOutOfBoundsException::operator= (const ArrayIndexOutOfBoundsException &right)
+  {
+    if (this != &right)
+      {
+	IntLibException::operator= (right);
+      }
+    return *this;
+  }
   
+	
   FatalIntLibException&
   FatalIntLibException::operator= (const FatalIntLibException &right)
   {
     if (this != &right)
-      this->IntLibException::operator= (right);
+      {
+	IntLibException::operator= (right);
+      }
     return *this;
   }
-
 
 
   SocketException&
   SocketException::operator= (const SocketException &right)
   {
     if (this != &right)
-      Exception::operator= (right);
+      {
+	Exception::operator= (right);
+      }
     return *this;
   }
-
-
-
-  FatalSocketException::FatalSocketException ()
-    : Exception (), mLine (0)
-  {
-    mFile = new char[1];
-    mFile[0] = '\0';
-  }
-
-
-
-  FatalSocketException::FatalSocketException (const char *theMessage,
-						const char *file, int line)
-    : Exception (theMessage), mLine (line)
-  {
-    if (file)
-      {
-	mFile = new char[strlen (file) + 1];
-	strcpy (mFile, file);
-      }
-    else
-      {
-	mFile = new char[1];
-	mFile[0] = '\0';
-      }
-  }
-
-
-
-  FatalSocketException::FatalSocketException (const FatalSocketException &right)
-    : Exception (right), mLine (right.mLine)
-  {
-    mFile = new char[strlen (right.mFile) + 1];
-    strcpy (mFile, right.mFile);
-  }
-
 
 
   FatalSocketException&
@@ -334,13 +257,11 @@ namespace mccore
     if (this != &right)
       {
 	Exception::operator= (right);
-	mFile = new char[strlen (right.mFile) + 1];
-	strcpy (mFile, right.mFile);
+	mFile = right.mFile;
 	mLine = right.mLine;
       }
     return *this;
   }
-
 
 
   ostream& 
@@ -352,23 +273,27 @@ namespace mccore
   }
 
 
-
   ConnectionException&
   ConnectionException::operator= (const ConnectionException &right)
   {
     if (this != &right)
-      SocketException::operator= (right);
+      {
+	SocketException::operator= (right);
+      }
     return *this;
   }	
 
-
 }
+
+
 
 namespace std
 {
+  
   ostream&
   operator<< (ostream &os, const mccore::Exception &exc)
   {
     return exc.output (os);
   }
+  
 }
