@@ -4,9 +4,9 @@
 //                           Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Patrick Gendron
-// Last Modified On : Tue Jun 11 16:07:17 2002
-// Update Count     : 11
+// Last Modified By : Martin Larose
+// Last Modified On : Tue Oct 22 11:05:26 2002
+// Update Count     : 12
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -36,9 +36,6 @@
 #include "CPoint3D.h"
 #include "AtomType.h"
 
-// extern "C"{
-// #include "xmlcpg/xmlcpg.h"
-// }
 class ostream;
 class iBinstream;
 class oBinstream;
