@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CResidue.h
-// Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Thu Sep 28 16:59:32 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Jan 22 15:16:51 2001
-// Update Count     : 9
+// Last Modified On : Tue Jan 23 15:02:03 2001
+// Update Count     : 10
 // Status           : Ok.
 // 
 

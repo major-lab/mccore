@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*-
 // AtomType.cc
-// Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Jan 22 15:08:14 2001
-// Update Count     : 3
+// Last Modified On : Tue Jan 23 15:00:51 2001
+// Update Count     : 4
 // Status           : Ok.
 // 
 

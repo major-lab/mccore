@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Pdbstream.cc
-// Copyright © 1999, 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Jan 22 15:19:29 2001
-// Update Count     : 5
+// Last Modified On : Tue Jan 23 15:02:18 2001
+// Update Count     : 6
 // Status           : Ok.
 // 
 

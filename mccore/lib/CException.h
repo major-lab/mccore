@@ -1,17 +1,17 @@
 //                              -*- Mode: C++ -*- 
 // CException.h
-// Copyright © 1999, 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 16:27:35 1999
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:14:34 2000
-// Update Count     : 9
+// Last Modified On : Tue Jan 23 15:01:34 2001
+// Update Count     : 10
 // Status           : Unknown.
 // 
 
 
-#ifndef __CException_h_
-#define __CException_h_
+#ifndef _CException_h_
+#define _CException_h_
 
 
 class ostream;

@@ -1,12 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // CResIdSet.h
-// Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : Thu Oct 26 10:24:02 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Nov  9 10:45:08 2000
-// Update Count     : 2
-// Status           : Unknown.
+// Last Modified On : Tue Jan 23 15:01:55 2001
+// Update Count     : 3
+// Status           : Ok.
 // 
 
 
@@ -25,7 +25,7 @@ class ostream;
 /**
  * @short Set of sorted CResId
  * 
- * Long Description
+ * This class represents the idea of a range of residue id.
  *
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
@@ -180,6 +180,14 @@ public:
 
 };
 
+
+
+/**
+ * Outputs the set to an output stream.
+ * @param os the output stream.
+ * @param residset the set to display.
+ * @return the output stream.
+ */
 ostream& operator<< (ostream &os, const CResIdSet &residset);
 
 #endif

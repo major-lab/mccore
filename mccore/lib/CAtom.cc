@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CAtom.cc
-// Copyright © 1999, 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
-// Author           : 
+// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Jan 22 15:12:03 2001
-// Update Count     : 42
+// Last Modified On : Tue Jan 23 15:01:29 2001
+// Update Count     : 43
 // Status           : Ok.
 // 
 
@@ -21,7 +21,6 @@
 
 
 
-#define AS_NONE         1
 #define AS_AND          2
 #define AS_ALL          3
 #define AS_BASE         4
@@ -154,14 +153,6 @@ operator<< (oPdbstream &ops, const CAtom &atom)
 
 
 
-void
-AtomSet::BinOutput (oBinstream &obs) const
-{
-  obs << (unsigned char) AS_NONE;
-}
-
-
-
 iBinstream&
 operator>> (iBinstream &ibs, AtomSet *&as)
 {
@@ -170,9 +161,6 @@ operator>> (iBinstream &ibs, AtomSet *&as)
   ibs >> val;
   switch (val)
     {
-    case AS_NONE:
-      as = new AtomSet ();
-      break;
     case AS_AND:
       {
 	AtomSet *op1;
@@ -196,7 +184,7 @@ operator>> (iBinstream &ibs, AtomSet *&as)
       as = new pse_atom_set ();
       break;
     case AS_NO_HYDROGEN:
-      as = new no_hydrogen_opt ();
+      as = new no_hydrogen_set ();
       break;
     case AS_NO_PSE_LP:
       as = new no_pse_lp_atom_set ();
@@ -214,6 +202,35 @@ operator<< (oBinstream &obs, const AtomSet *as)
 {
   as->BinOutput (obs);
   return obs;
+}
+
+
+
+atomset_and&
+atomset_and::operator= (const atomset_and &right)
+{
+  if (this != &right)
+    {
+      AtomSet::operator= (right);
+      delete op1;
+      delete op2;
+      op1 = right.op1->clone ();
+      op2 = right.op2->clone ();
+    }
+  return *this;
+}
+
+
+
+atomset_and::operator const char* () const
+{
+  char str[256];
+  
+  sprintf (str,
+	   "%s %s",
+	   op1->operator const char* (),
+	   op2->operator const char* ());
+  return str;
 }
 
 
@@ -259,7 +276,7 @@ pse_atom_set::BinOutput (oBinstream &obs) const
 
 
 void
-no_hydrogen_opt::BinOutput (oBinstream &obs) const
+no_hydrogen_set::BinOutput (oBinstream &obs) const
 {
   obs << (unsigned char) AS_NO_HYDROGEN;
 }

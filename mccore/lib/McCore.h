@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // McCore.h
-// Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Jan 22 15:18:54 2001
-// Update Count     : 7
+// Last Modified On : Tue Jan 23 15:02:15 2001
+// Update Count     : 8
 // Status           : Ok.
 // 
 
@@ -47,15 +47,6 @@ struct less_string
   bool operator() (const char* s1, const char* s2) const
   { return strcmp (s1, s2) < 0; }
 };
-
-
-
-/**
- * The license file directory.  Basically
- * $(datadir)/$(PACKAGE)/$(VERSION)/license  but may be overrided by
- * the environment variable MCLICENSE_DIR.
- */
-extern char gMcLicenseDir[];
 
 
 

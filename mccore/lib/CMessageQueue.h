@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CMessageQueue.h
-// Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Jan 22 15:12:46 2001
-// Update Count     : 2
+// Last Modified On : Tue Jan 23 15:01:38 2001
+// Update Count     : 3
 // Status           : Ok.
 // 
 
@@ -20,7 +20,7 @@
 
 
 /**
- * @short 
+ * @short Console output facility.
  *
  * Version plus flexible de 'cout' pour gérer le niveau de verbose.
  * Un objet global est créé dans McCore (gOut) et est utilisé de la
@@ -34,45 +34,106 @@
  *       potentielles. (debug)
  *   3 : Toute traces disponibles.  (verbose)
  * </pre>
+ *
  * @author Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
  */
 class CMessageQueue 
 {
+  /**
+   * The stream where the ouput is displayed.
+   */
   ostream *mStream;
+
+  /**
+   * Verbose level of the message queue.
+   */
   int mVerbose;
+
+  /**
+   * Verbose level of the last entered message.
+   */
   int mCurrentVerbose;
+
+  /**
+   * String stream where the messages are kept for further display.
+   */
   ostrstream *mOst;
+
+  /**
+   * Internal buffer.
+   */
   char mBuf[262144];
 
 public:
 
   // LIFECYCLE ------------------------------------------------------------
 
+  /**
+   * Initializes the message queue.
+   * @param nStream the stream where the messages are displayed.
+   * @param nVerbose the initial verbose level of the message queue.
+   */
   CMessageQueue (ostream &nStream, int nVerbose) 
-    : mStream (&nStream), mVerbose (nVerbose) { mOst = 0; }
+    : mStream (&nStream), mVerbose (nVerbose), mOst (0) { }
 
   // OPERATORS ------------------------------------------------------------
 
+  /**
+   * Changes the verbose level of the future entered messages.
+   * @param nNewLevel the level.
+   * @return itself.
+   */
   CMessageQueue& operator() (int nNewLevel)
   { mCurrentVerbose = nNewLevel; return *this; }
 
+  /**
+   * Outputs the messages.
+   * @param o the object or type to display.
+   * @return itself.
+   */
   template< class T >
-  CMessageQueue& operator<< (const T &o)
-  { return output (o); }
+  CMessageQueue& operator<< (const T &o) { output (o); return *this; }
 
   // ACCESS ---------------------------------------------------------------
 
+  /**
+   * Sets the verbose level of the message queue.
+   * @param nVerbose the new verbose level.
+   */
   void SetVerbose (int nVerbose) { mVerbose = nVerbose; }
+
+  /**
+   * Gets the messages stored in the stream.
+   * @return the message string.
+   */
   const char* GetStr ();
-  void Record () { if (mOst) delete mOst;  mOst = new ostrstream; }
-  void Stop () { if (mOst) delete mOst;  mOst = 0; }
 
   // METHODS --------------------------------------------------------------
 
-  CMessageQueue& output (const char *s);
+  /**
+   * Starts recording the messages in the message buffer.
+   */
+  void Record () { if (mOst) delete mOst;  mOst = new ostrstream; }
 
+  /**
+   * Stops recording the messages in the message buffer.
+   */
+  void Stop () { if (mOst) delete mOst;  mOst = 0; }
+
+  // I/O ------------------------------------------------------------------
+  
+  /**
+   * Outputs a character string to the message queue.
+   * @param s the string to display.
+   */
+  void output (const char *s);
+
+  /**
+   * Outputs an object or a type to the message queue.
+   * @param o the object to display.
+   */
   template< class T >
-  CMessageQueue& output (const T &o)
+  void output (const T &o)
   {
     if (mCurrentVerbose <= mVerbose)
       {
@@ -80,7 +141,6 @@ public:
 	  *mOst << o;
 	*mStream << o;
       }
-    return *this;
   }
 };
 

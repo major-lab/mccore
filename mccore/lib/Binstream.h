@@ -4,7 +4,7 @@
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:11:41 EDT
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Jan 22 16:53:42 2001
+// Last Modified On : Tue Jan 23 15:01:22 2001
 // Update count     : 0
 // Status           : Ok.
 //
@@ -39,6 +39,10 @@ void swap_endian (long* obj);
  * saved in binary format must define operators << and >> on iBinstream and
  * oBinstream in their class implementation.
  *
+ * Binary streams saves the types according to the little endianness.  Types
+ * are converted from big endianness to little on read and write on system
+ * that uses this encoding.
+ *
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class iBinstream : public istream
@@ -56,17 +60,15 @@ public:
   // OPERATORS ------------------------------------------------------------
   
   /**
-   * Inputs character from binary stream.  It is not handled by the
-   * template, it is not needed to be translated to host endian.
-   * @param c the character to output.
+   * Inputs character from binary stream.
+   * @param c the character to input.
    * @return itself.
    */
   iBinstream& operator>> (char &c);
 
   /**
-   * Inputs unsigned character from binary stream.  It is not handled by the
-   * template, it is not needed to be translated to host endian.
-   * @param c the character to output.
+   * Inputs unsigned character from binary stream.
+   * @param c the character to intput.
    * @return itself.
    */
   iBinstream& operator>> (unsigned char &c) { return operator>> ((char&)c); }
@@ -78,7 +80,7 @@ public:
    * @param str the string to put the characters in.
    * @return itself.
    */
-  iBinstream& operator>> (char* str);
+  iBinstream& operator>> (char *str);
   
   /**
    * Inputs known size unsigned strings from the binary stream.  To use with
@@ -87,7 +89,7 @@ public:
    * @param str the string to put the characters in.
    * @return itself.
    */
-  iBinstream& operator>> (unsigned char* str)
+  iBinstream& operator>> (unsigned char *str)
   { return operator>> ((char*)str); }
   
   /**
@@ -97,7 +99,7 @@ public:
    * @param str the string address where the new string will placed.
    * @return itself.
    */
-  iBinstream& operator>> (char** str);
+  iBinstream& operator>> (char **str);
 
   /**
    * Inputs unknown size unsigned strings from the binary stream.  This
@@ -106,7 +108,7 @@ public:
    * @param str the string address where the new string will placed.
    * @return itself.
    */
-  iBinstream& operator>> (unsigned char** str)
+  iBinstream& operator>> (unsigned char **str)
   { return operator>> ((char**)str); }
 
   /**
@@ -117,24 +119,21 @@ public:
   iBinstream& operator>> (bool &b) { return operator>> ((char&)b); }
 
   /**
-   * Inputs integers from the binary stream.  Reads the integer with read
-   * and converts it with ntohl.
+   * Inputs integers from the binary stream.
    * @param n the integer to read.
    * @return itself.
    */
   iBinstream& operator>> (int &n);
 
   /**
-   * Inputs unsigned integers from the binary stream.  Reads the integer
-   * with read and converts it with ntohl.
+   * Inputs unsigned integers from the binary stream.
    * @param n the integer to read.
    * @return itself.
    */
   iBinstream& operator>> (unsigned int &n) { return operator>> ((int&)n); }
 
   /**
-   * Inputs floats from the binary stream.  Reads the float with read
-   * and converts it with ntohl.
+   * Inputs floats from the binary stream.
    * @param x the float to read.
    * @return itself.
    */
@@ -184,6 +183,10 @@ public:
  * saved in binary format must define operators << and >> on iBinstream and
  * oBinstream in their class implementation.
  *
+ * Binary streams saves the types according to the little endianness.  Types
+ * are converted from big endianness to little on read and write on system
+ * that uses this encoding.
+ *
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
 class oBinstream : public ostream
@@ -201,15 +204,14 @@ public:
   // OPERATORS ------------------------------------------------------------
   
   /**
-   * Outputs characters.  Is not needed to be translated to network endian.
+   * Outputs characters.
    * @param c the character to output.
    * @return itself.
    */
   oBinstream& operator<< (char c);
   
   /**
-   * Outputs unsigned characters.  It is not needed to be translated to
-   * network endian.
+   * Outputs unsigned characters.
    * @param c the character to output.
    * @return itself.
    */
@@ -220,14 +222,14 @@ public:
    * @param str the string to output.
    * @return itself.
    */
-  oBinstream& operator<< (const char* str);
+  oBinstream& operator<< (const char *str);
 
   /**
    * Outputs unsigned strings.
    * @param str the string to output.
    * @return itself.
    */
-  oBinstream& operator<< (const unsigned char* str)
+  oBinstream& operator<< (const unsigned char *str)
   { return operator<< ((const char*)str); }
 
   /**
@@ -238,24 +240,21 @@ public:
   oBinstream& operator<< (bool b) { return operator<< ((char)b); }
 
   /**
-   * Outputs integers to binary stream.  We convert the integer to network
-   * endian before writing it.
+   * Outputs integers to binary stream.
    * @param n the integer to ouput.
    * @return itself.
    */
   oBinstream& operator<< (int n);
 
   /**
-   * Outputs unsigned integers to binary stream.  We convert the integer to
-   * network endian before writing it.
+   * Outputs unsigned integers to binary stream.
    * @param n the integer to ouput.
    * @return itself.
    */
   oBinstream& operator<< (unsigned int n) { return operator<< ((int)n); }
 
   /**
-   * Outputs floats to binary stream.  We convert the float to network
-   * endian before writing it. 
+   * Outputs floats to binary stream.
    * @param x the float to ouput.
    * @return itself.
    */
@@ -304,6 +303,10 @@ public:
  * write methods from istream and ostream.  Each new class that needs to be
  * saved in binary format must define operators << and >> on iBinstream and
  * oBinstream in their class implementation.
+ *
+ * Binary streams saves the types according to the little endianness.  Types
+ * are converted from big endianness to little on read and write on system
+ * that uses this encoding.
  *
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */

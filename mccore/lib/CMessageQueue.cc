@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CMessageQueue.cc
-// Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:14:44 2000
-// Update Count     : 1
+// Last Modified On : Tue Jan 23 15:01:36 2001
+// Update Count     : 2
 // Status           : Unknown.
 // 
 
@@ -32,7 +32,7 @@ CMessageQueue::GetStr ()
 
 
 
-CMessageQueue&
+void
 CMessageQueue::output (const char *s)
 {
   if (mCurrentVerbose <= mVerbose)
@@ -90,5 +90,4 @@ CMessageQueue::output (const char *s)
       *mStream << str;
       delete[] str;
     }
-  return *this;
 }

@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // AtomType.h
-// Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Jan 22 15:08:59 2001
-// Update Count     : 3
+// Last Modified On : Tue Jan 23 15:01:16 2001
+// Update Count     : 4
 // Status           : Ok.
 // 
 
@@ -1087,7 +1087,7 @@ public:
    * Tells if the atom is connected to the type in the residue.
    * @param type the second atom.
    * @param res the residue where the atoms are.
-   * @return if the atom is connected to type in res.
+   * @return wheter the atom is connected to type in res.
    */
   virtual bool is_connected (const t_Atom *type, const t_Residue *res) const
   { return false; }
@@ -1239,6 +1239,12 @@ public:
    * @return if the atom is an hydrogen.
    */
   virtual bool is_Hydrogen () const { return GetFirstAlpha () == 'H'; }
+
+  /**
+   * Tells if the atom is a magnesium by searching it's name.
+   * @return if the atom is a magnesium.
+   */
+  virtual bool is_Magnesium () const { return GetFirstAlpha () == 'M'; }
 
   /**
    * Tells if the atom is a nitrogen by searching it's name.

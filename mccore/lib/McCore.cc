@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // McCore.cc
-// Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Jan 22 15:18:52 2001
-// Update Count     : 7
+// Last Modified On : Tue Jan 23 15:02:11 2001
+// Update Count     : 8
 // Status           : Ok.
 // 
 
@@ -26,7 +26,6 @@
 
 
 
-char gMcLicenseDir[MAXPATHLEN];
 map< const char *, t_Atom*, less_string > gMiscAtomString;
 map< const char *, t_Residue*, less_string > gMiscResidueString;
 
@@ -1054,27 +1053,6 @@ McCoreInit ()
   // Initializing obligatory atom sets
 
   SetOblAtomSets ();
-
-  // Sets the license dir.
-
-  char *str = getenv ("MCLICENSE_DIR");
-
-  if (str != 0)
-    {
-      strcpy (gMcLicenseDir, str);
-      if (gMcLicenseDir[strlen (gMcLicenseDir) - 1] != '/')
-	strcat (gMcLicenseDir, "/");
-    }
-  else
-    {
-      strcpy (gMcLicenseDir, DATADIR);
-      if (gMcLicenseDir[strlen (gMcLicenseDir) - 1] != '/')
-	strcat (gMcLicenseDir, "/");
-      strcat (gMcLicenseDir, PACKAGE);
-      strcat (gMcLicenseDir, "/");
-      strcat (gMcLicenseDir, VERSION);
-      strcat (gMcLicenseDir, "/");
-    }
 }
 
 

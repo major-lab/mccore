@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CModel.cc
-// Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : Fri Oct  6 08:21:55 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Jan 22 15:13:39 2001
-// Update Count     : 4
+// Last Modified On : Tue Jan 23 15:01:41 2001
+// Update Count     : 5
 // Status           : Unknown.
 // 
 

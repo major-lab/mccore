@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CPoint3D.h
-// Copyright © 1999, 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
-// Author           : 
+// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Jan 22 15:14:33 2001
-// Update Count     : 2
+// Last Modified On : Tue Jan 23 15:01:48 2001
+// Update Count     : 3
 // Status           : Ok.
 // 
 

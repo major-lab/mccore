@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CResId.cc
-// Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : Thu Sep 28 15:55:29 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Jan 22 15:16:12 2001
-// Update Count     : 3
+// Last Modified On : Tue Jan 23 15:01:51 2001
+// Update Count     : 4
 // Status           : Ok.
 // 
 

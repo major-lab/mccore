@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CResidue.cc
-// Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Jan 22 15:17:41 2001
-// Update Count     : 10
+// Last Modified On : Tue Jan 23 15:01:58 2001
+// Update Count     : 11
 // Status           : Ok.
 // 
 
@@ -1343,7 +1343,7 @@ operator<< (oBinstream& obs, const CResidue& res)
   obs << (const CResId&)res << res.GetType ();
   
   for (cit = res.begin (new atomset_and (new no_pse_lp_atom_set (),
-					 new no_hydrogen_opt ()));
+					 new no_hydrogen_set ()));
        cit != res.end ();
        ++cit)
     if (!(res.GetType ()->is_NucleicAcid ()))

@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CTransfo.h
-// Copyright © 1999, 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron <gendrop@IRO.UMontreal.CA>
 // Created On       : Fri Oct  1 18:22:41 1999
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Jan 22 15:17:57 2001
-// Update Count     : 4
+// Last Modified On : Tue Jan 23 15:02:06 2001
+// Update Count     : 5
 // Status           : Ok.
 // 
 

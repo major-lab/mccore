@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CModel.h
-// Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : Fri Oct  6 08:21:55 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Jan 22 15:13:41 2001
-// Update Count     : 4
+// Last Modified On : Tue Jan 23 15:01:43 2001
+// Update Count     : 5
 // Status           : Unknown.
 // 
 
@@ -27,9 +27,11 @@ class oBinstream;
 
 
 /**
- * @short Description
+ * @short Container for residues.
  * 
- * Long Description
+ * This object is the container for residues.  It is an unsorted list of
+ * residues.  Random access is simulated with sequential access.  This class
+ * should be the replacement for nearly all CResidue*.
  *
  * @author Martin Larose
  */
@@ -139,12 +141,53 @@ public:
 
 
 
+/**
+ * Test the partial order (CResidue order) between model iterators.
+ * @param left the left operand.
+ * @param right the right operand.
+ * @return wheter the residue pointed by left is less than right.
+ */
 bool operator< (const CModel::iterator &left, const CModel::iterator &right);
 
+
+
+/**
+ * Inputs the model from a pdb stream.
+ * @param ips the input pdb stream.
+ * @param obj the model where to put the residues.
+ * @return the input pdb stream.
+ */
 iPdbstream& operator>> (iPdbstream &ips, CModel &obj);
+
+
+
+/**
+ * Outputs the model to a pdb stream.  PDB headers are not printed but
+ * termination between residue chains are made.
+ * @param ops the output pdb stream.
+ * @param obj the model to output.
+ * @return the output pdb stream.
+ */
 oPdbstream& operator<< (oPdbstream &ops, const CModel &obj);
 
+
+
+/**
+ * Inputs the model from a binary stream.
+ * @param ibs the input binary stream.
+ * @param obj the model where to put the residues.
+ * @return the input binary stream.
+ */
 iBinstream& operator>> (iBinstream &ibs, CModel &obj);
+
+
+
+/**
+ * Outputs the model to a binary stream.
+ * @param obs the output binary stream.
+ * @param obj the model to output.
+ * @return the output binary stream.
+ */
 oBinstream& operator<< (oBinstream &obs, const CModel &obj);
 
 #endif

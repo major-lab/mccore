@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CAtom.h
-// Copyright © 1999, 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Jan 22 15:12:05 2001
-// Update Count     : 4
+// Last Modified On : Tue Jan 23 15:01:32 2001
+// Update Count     : 5
 // Status           : Ok.
 // 
 
@@ -242,62 +242,153 @@ oPdbstream& operator<< (oPdbstream &ops, const CAtom &atom);
 /**
  * @short Base unary function for the atomset.
  *
+ * Abstract class for filtering atom sets.  These classes are used in the
+ * residues iterators.
+ *
  * @author Martin Larose <larosem@IRO.UMontreal.CA>
  */
-struct AtomSet : public unary_function< const CAtom&, bool >
+class AtomSet : public unary_function< const CAtom&, bool >
 {
+public:
+
+  // LIFECYCLE -----------------------------------------------------
+
+  // OPERATORS -----------------------------------------------------
+
   /**
    * Tests wheter the atom is within the set.
    * @param atom the atom.
-   * @return false.
+   * @return wheter the atom is within the set.
    */
-  typedef CAtom argument_type;
-  virtual bool operator() (const CAtom &atom) const { return false; }
-  virtual operator const char* () const { return ""; }
-  virtual AtomSet* clone () const { return new AtomSet (); }
-  virtual void BinOutput (oBinstream& obs) const;
+  virtual bool operator() (const CAtom &atom) const = 0;
+
+  /**
+   * Converts the function object to a character representation.
+   * @return a constant char string.
+   */
+  virtual operator const char* () const = 0;
+
+  // ACCESS --------------------------------------------------------
+
+  // METHODS -------------------------------------------------------
+
+  /**
+   * Copies the function object.
+   * @return a copy of itself.
+   */
+  virtual AtomSet* clone () const = 0;
+
+  // I/O -----------------------------------------------------------
+  
+  /**
+   * Outputs the function object to a binary stream.
+   * @param obs the output binary stream.
+   */
+  virtual void BinOutput (oBinstream& obs) const = 0;
 };
 
 
 
+/**
+ * Inputs a function object from a binary stream.
+ * @param ibs the input binary stream.
+ * @param as the inputted function object.
+ * @return the input binary stream.
+ */
 iBinstream& operator>> (iBinstream &ibs, AtomSet *&as);
+
+
+
+/**
+ * Outputs a function object through a binary stream.
+ * @param obs the output binary stream.
+ * @param as the function object to output.
+ * @return the output binary stream.
+ */
 oBinstream& operator<< (oBinstream &obs, const AtomSet *as);
 
 
-struct atomset_and : public AtomSet
+
+/**
+ * @short And operator over atomset function objects.
+ *
+ * Function object that creates a and operation over two other functions.
+ *
+ * @author Martin Larose <larosem@IRO.UMontreal.CA>
+ */
+class atomset_and : public AtomSet
 {
-protected:
+  /**
+   * The left atomset function object.
+   */
   AtomSet *op1;
+
+  /**
+   * The right atomset function object.
+   */
   AtomSet *op2;
+
+  // LIFECYCLE -----------------------------------------------------
+
+  /**
+   * Initializes the object.  It must not be used.
+   */
+  atomset_and () { }
+  
 public:
+
+  /**
+   * Initializes the object with two functions.
+   * @param x the left function object.
+   * @param y the right function object.
+   */
   atomset_and (AtomSet *x, AtomSet *y) : op1(x), op2(y) { }
+
+  /**
+   * Destructs the operands.
+   */
   virtual ~atomset_and () { delete op1; delete op2; }
-  virtual atomset_and& operator= (const atomset_and &right)
-  {
-    if (this != &right)
-      {
-	AtomSet::operator= (right);
-	delete op1;
-	delete op2;
-	op1 = right.op1->clone ();
-	op2 = right.op2->clone ();
-      }
-    return *this;
-  }
+
+  // OPERATORS -----------------------------------------------------
+
+  /**
+   * Assigns the right's content to the object.
+   * @param right the object to copy.
+   * @return itself.
+   */
+  virtual atomset_and& operator= (const atomset_and &right);
+
+  /**
+   * Tests wheter the atom is within the set.
+   * @param x the atom.
+   * @return wheter the atom is within the set.
+   */
   virtual bool operator() (const CAtom& x) const
   { return op1->operator() (x) && op2->operator() (x); }
-  virtual operator const char* () const
-  {
-    char str[256];
 
-    sprintf (str,
-	     "%s %s",
-	     op1->operator const char* (),
-	     op2->operator const char* ());
-    return str;
-  }
+  /**
+   * Converts the function object to a character representation.
+   * @return a constant char string.
+   */
+  virtual operator const char* () const;
+
+  // ACCESS --------------------------------------------------------
+
+  // METHODS -------------------------------------------------------
+
+  /**
+   * Copies the function object.
+   * @return a copy of itself.
+   */
   virtual AtomSet* clone () const
   { return new atomset_and (op1->clone (), op2->clone ()); }
+
+  // I/O -----------------------------------------------------------
+  
+  /**
+   * Outputs the function object to a binary stream.
+   * @param obs the output binary stream.
+   */
   virtual void BinOutput (oBinstream& obs) const;
 };
 
@@ -306,18 +397,47 @@ public:
 /**
  * @short All atom set unary function.
  *
+ * No atoms are filtered.
+ *
  * @author Martin Larose <larosem@IRO.UMontreal.CA>
  */
-struct all_atom_set : public AtomSet
+class all_atom_set : public AtomSet
 {
+public:
+
+  // LIFECYCLE -----------------------------------------------------
+
+  // OPERATORS -----------------------------------------------------
+
   /**
    * Tests wheter the atom is within the set.
    * @param atom the atom.
    * @return true.
    */
   virtual bool operator() (const CAtom &atom) const { return true; }
+
+  /**
+   * Converts the function object to a character representation.
+   * @return a constant char string.
+   */
   virtual operator const char* () const { return "all"; }
+
+  // ACCESS --------------------------------------------------------
+
+  // METHODS -------------------------------------------------------
+
+  /**
+   * Copies the function object.
+   * @return a copy of itself.
+   */
   virtual AtomSet* clone () const { return new all_atom_set (); }
+  
+  // I/O -----------------------------------------------------------
+  
+  /**
+   * Outputs the function object to a binary stream.
+   * @param obs the output binary stream.
+   */
   virtual void BinOutput (oBinstream& obs) const;
 };
 
@@ -326,10 +446,18 @@ struct all_atom_set : public AtomSet
 /**
  * @short Base atom set unary function.
  *
+ * Filters the atoms that are located on the side chain.
+ *
  * @author Martin Larose <larosem@IRO.UMontreal.CA>
  */
-struct base_atom_set : public AtomSet
+class base_atom_set : public AtomSet
 {
+public:
+
+  // LIFECYCLE -----------------------------------------------------
+
+  // OPERATORS -----------------------------------------------------
+
   /**
    * Tests wheter the atom is part of the base.
    * @param atom the atom.
@@ -337,8 +465,29 @@ struct base_atom_set : public AtomSet
    */
   virtual bool operator() (const CAtom &atom) const
   { return atom.GetType ()->is_SideChain (); }
+
+  /**
+   * Converts the function object to a character representation.
+   * @return a constant char string.
+   */
   virtual operator const char* () const { return "base_only"; }
+
+  // ACCESS --------------------------------------------------------
+
+  // METHODS -------------------------------------------------------
+
+  /**
+   * Copies the function object.
+   * @return a copy of itself.
+   */
   virtual AtomSet* clone () const { return new base_atom_set (); }
+  
+  // I/O -----------------------------------------------------------
+  
+  /**
+   * Outputs the function object to a binary stream.
+   * @param obs the output binary stream.
+   */
   virtual void BinOutput (oBinstream& obs) const;
 };
 
@@ -347,10 +496,18 @@ struct base_atom_set : public AtomSet
 /**
  * @short Backbone atom set unary function.
  *
+ * Filters the atoms that are located on the backbone.
+ *
  * @author Martin Larose <larosem@IRO.UMontreal.CA>
  */
-struct backbone_atom_set : public AtomSet
+class backbone_atom_set : public AtomSet
 {
+public:
+
+  // LIFECYCLE -----------------------------------------------------
+
+  // OPERATORS -----------------------------------------------------
+
   /**
    * Tests wheter the atom is part of the backbone.
    * @param atom the atom.
@@ -358,8 +515,29 @@ struct backbone_atom_set : public AtomSet
    */
   virtual bool operator() (const CAtom &atom) const
   { return atom.GetType ()->is_Backbone (); }
+
+  /**
+   * Converts the function object to a character representation.
+   * @return a constant char string.
+   */
   virtual operator const char* () const { return "backbone_only"; }
+
+  // ACCESS --------------------------------------------------------
+
+  // METHODS -------------------------------------------------------
+
+  /**
+   * Copies the function object.
+   * @return a copy of itself.
+   */
   virtual AtomSet* clone () const { return new backbone_atom_set (); }
+  
+  // I/O -----------------------------------------------------------
+  
+  /**
+   * Outputs the function object to a binary stream.
+   * @param obs the output binary stream.
+   */
   virtual void BinOutput (oBinstream& obs) const;
 };
 
@@ -368,10 +546,18 @@ struct backbone_atom_set : public AtomSet
 /**
  * @short Pse atom set unary function.
  *
+ * Filters the atoms that are pseudo atoms (pivots).
+ *
  * @author Martin Larose <larosem@IRO.UMontreal.CA>
  */
-struct pse_atom_set : public AtomSet
+class pse_atom_set : public AtomSet
 {
+public:
+
+  // LIFECYCLE -----------------------------------------------------
+
+  // OPERATORS -----------------------------------------------------
+
   /**
    * Tests wheter the atom is C1p.
    * @param atom the atom.
@@ -380,8 +566,29 @@ struct pse_atom_set : public AtomSet
   virtual bool operator() (const CAtom &atom) const
   { return (atom.GetType ()->is_C1p () || atom.GetType ()->is_PSY ()
 	    || atom.GetType ()->is_PSZ ()); }
+
+  /**
+   * Converts the function object to a character representation.
+   * @return a constant char string.
+   */
   virtual operator const char* () const { return "pse_only"; }
+
+  // ACCESS --------------------------------------------------------
+
+  // METHODS -------------------------------------------------------
+
+  /**
+   * Copies the function object.
+   * @return a copy of itself.
+   */
   virtual AtomSet* clone () const { return new pse_atom_set (); }
+  
+  // I/O -----------------------------------------------------------
+  
+  /**
+   * Outputs the function object to a binary stream.
+   * @param obs the output binary stream.
+   */
   virtual void BinOutput (oBinstream& obs) const;
 };
 
@@ -390,10 +597,18 @@ struct pse_atom_set : public AtomSet
 /**
  * @short No hydrogen option unary function.
  *
+ * Filters out the hydrogen atoms.
+ *
  * @author Martin Larose <larosem@IRO.UMontreal.CA>
  */
-struct no_hydrogen_opt : public AtomSet
+class no_hydrogen_set : public AtomSet
 {
+public:
+
+  // LIFECYCLE -----------------------------------------------------
+
+  // OPERATORS -----------------------------------------------------
+
   /**
    * Tests wheter the atom is an hydrogen.
    * @param atom the atom.
@@ -401,8 +616,29 @@ struct no_hydrogen_opt : public AtomSet
    */
   virtual bool operator() (const CAtom &atom) const
   { return ! atom.GetType ()->is_Hydrogen (); }
+
+  /**
+   * Converts the function object to a character representation.
+   * @return a constant char string.
+   */
   virtual operator const char* () const { return "no_hydrogen"; }
-  virtual AtomSet* clone () const { return new no_hydrogen_opt (); }
+
+  // ACCESS --------------------------------------------------------
+
+  // METHODS -------------------------------------------------------
+
+  /**
+   * Copies the function object.
+   * @return a copy of itself.
+   */
+  virtual AtomSet* clone () const { return new no_hydrogen_set (); }
+  
+  // I/O -----------------------------------------------------------
+  
+  /**
+   * Outputs the function object to a binary stream.
+   * @param obs the output binary stream.
+   */
   virtual void BinOutput (oBinstream& obs) const;
 };
 
@@ -412,12 +648,18 @@ struct no_hydrogen_opt : public AtomSet
 /**
  * @short All atoms exept psedo and lone pair unary function.
  *
- * Tells whether the atom is part of the set.
+ * Filters out pseudo or lone pair atoms.
  *
  * @author Martin Larose <larosem@IRO.UMontreal.CA>
  */
-struct no_pse_lp_atom_set : public AtomSet
+class no_pse_lp_atom_set : public AtomSet
 {
+public:
+
+  // LIFECYCLE -----------------------------------------------------
+
+  // OPERATORS -----------------------------------------------------
+
   /**
    * Tests whether the atom is a pseudo or a lone pair atom.
    * @param atom the atom to test.
@@ -428,8 +670,29 @@ struct no_pse_lp_atom_set : public AtomSet
     return ! (atom.GetType ()->is_Pseudo ()
 	      || atom.GetType ()->is_LonePair ());
   }
+
+  /**
+   * Converts the function object to a character representation.
+   * @return a constant char string.
+   */
   virtual operator const char* () const { return "no_pse_lp"; }
+
+  // ACCESS --------------------------------------------------------
+
+  // METHODS -------------------------------------------------------
+
+  /**
+   * Copies the function object.
+   * @return a copy of itself.
+   */
   virtual AtomSet* clone () const { return new no_pse_lp_atom_set (); }
+  
+  // I/O -----------------------------------------------------------
+  
+  /**
+   * Outputs the function object to a binary stream.
+   * @param obs the output binary stream.
+   */
   virtual void BinOutput (oBinstream& obs) const;
 };
 
