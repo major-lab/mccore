@@ -4,9 +4,9 @@
 ##                     Université de Montréal.
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:57:11 2000
-## Last Modified By : Labo Lbit
-## Last Modified On : Tue Apr  2 14:34:07 2002
-## Update Count     : 24
+## Last Modified By : Philippe Thibault
+## Last Modified On : Thu Oct 17 08:45:22 2002
+## Update Count     : 25
 ## Status           : Ok.
 ###############################################################################
 #
@@ -101,7 +101,7 @@ SOURCES = zfstream.cc \
 HEADERS = $(SOURCES:.cc=.h) Algo.h AtomType.h Graph.h Graph.cc \
 Messagestream.h ResidueFactoryMethod.h ResidueType.h SocketCommand.h \
 fBinstream.h fPdbstream.h fstreambase.h oMessagestream.h sBinstream.h \
-zfBinstream.h zfPdbstream.h
+zfBinstream.h zfPdbstream.h SymmetricalMatrix.h SymmetricalMatrix.cc
 
 OBJECTS = $(SOURCES:.cc=.o)
 
