@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:45:21 2003
 // Last Modified By : Patrick Gendron
-// Last Modified On : Wed Jul  9 12:53:09 2003
-// Update Count     : 27
+// Last Modified On : Wed Jul 30 19:01:33 2003
+// Update Count     : 30
 // Status           : Unknown.
 // 
 
@@ -87,8 +87,8 @@ ResId::operator= (const ResId &other)
 {
   if (this != &other)
     {
-      no = other.no;
       chain = other.chain;
+      no = other.no;
       iCode = other.iCode;
     }
   return *this;

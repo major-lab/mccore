@@ -3,7 +3,7 @@
 // Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Oct 26 10:24:02 2000
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 // 
 //  This file is part of mccore.
 //  
@@ -26,10 +26,6 @@
 #include <config.h>
 #endif
 
-// #include <iostream.h>
-// #include <stdlib.h>
-// #include <string.h>
-// #include <ctype.h>
 
 #include "Binstream.h"
 #include "CException.h"
@@ -107,6 +103,7 @@ namespace mccore {
 
 	strcpy (str_copy, str);
 	token = strsep (&str_copy, ", ");
+
 	while (token)
 	  {
 	    lower = strsep (&token, "-");
@@ -145,7 +142,7 @@ namespace mccore {
   void
   ResIdSet::insert (int resno, char chainid)
   {
-    set< ResId >::insert (ResId (resno, chainid));
+    set< ResId >::insert (ResId (chainid, resno));
   }
 
 
