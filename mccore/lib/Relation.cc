@@ -1196,8 +1196,8 @@ namespace mccore
 
     for (i=PairingPattern::patternList().begin ();
 	 i!=PairingPattern::patternList().end (); ++i) {
-      if (size_hint >= (*i).size () && 
-	  (type = (*i).evaluate (ra, rb, hbf)) != 0) {
+      if (size_hint >= (*i).size ()
+	  && (type = (*i).evaluate (ra, rb, hbf)) != 0) {
 	if ((*i).size () > best_size) {
 	  best_size = (*i).size ();
 	  best_type = type;
