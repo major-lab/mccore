@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
-# $Revision: 1.14.8.8 $
-# $Id: configure.in,v 1.14.8.8 2003-12-05 19:58:44 larosem Exp $
+# $Revision: 1.14.8.9 $
+# $Id: configure.in,v 1.14.8.9 2003-12-08 18:25:49 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -82,8 +82,8 @@ if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
 	AC_CHECK_LIB(rnamlc++,xmlcpginit)
 	LIBALLFLAGSTART="-all"
 	LIBALLFLAGSTOP="-notall"
-	ARXX="$AR"
-	AROPTIONS="crs"
+	ARXX="$CXX"
+	AROPTIONS="-ar -o"
 	;;	
     *-sun-*)
 	CXXFLAGS="$CXXFLAGS -xO2"
