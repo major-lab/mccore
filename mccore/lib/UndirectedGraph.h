@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 24 21:30:26 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 // 
 //  This file is part of mccore.
 //  
@@ -39,17 +39,17 @@ namespace mccore {
  * a node ordering determined by the node_comparator function object.
  *
  * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
- * @version $Id: UndirectedGraph.h,v 1.1 2003-04-03 21:55:55 gendrop Exp $
+ * @version $Id: UndirectedGraph.h,v 1.2 2003-04-11 01:37:04 gendrop Exp $
  */
 template< class node_type, 
-	  class edge_type = int, 
+	  class edge_type = bool, 
 	  class node_comparator = less< node_type > >
 class UndirectedGraph : public Graph< node_type, edge_type, node_comparator >
 {
   
-public:
-
   // LIFECYCLE ------------------------------------------------------------
+
+public:
 
   /**
    * Initializes the object.
@@ -86,18 +86,22 @@ public:
 
   // ACCESS ---------------------------------------------------------------
 
-    /**
-     * Gets the weight of this edge.
-     * @param o the origin node.
-     * @param p the destination node.
-     * @return the weight.
-     */
-    float getWeight (const node_type& o, const node_type& p) {
-      assert (areConnected (o, p));
-      return edge_weights[o][p];
+  /**
+   * Gets the weight of this edge.
+   * @param o the origin node.
+   * @param p the destination node.
+   * @return the weight.
+   */
+  float getWeight (const node_type& o, const node_type& p) const {
+    assert (areConnected (o, p));
+    if (node_comparator () (o, p)) {
+      return edgeWeights.find(o)->second.find (p)->second;
+    } else {
+      return edgeWeights.find(p)->second.find (o)->second;
     }
-
-
+  }
+  
+  
   // METHODS --------------------------------------------------------------
 
   // GRAPH RELATED METHODS ------------------------------------------------
@@ -109,15 +113,17 @@ public:
    * @param w the weight of this edge (default=1).
    * @return true if the connect operation succeeded.
    */
-  virtual bool connect (const node_type &o, const node_type &p, const edge_type &e, float w=1) {
+  virtual bool connect (const node_type &o, const node_type &p, 
+			const edge_type &e = edge_type(), float w = 1) 
+  {
     if (!contains (o) || !contains (p)) return false;
     
     if (node_comparator () (o, p)) {
       graph[o][p] = e;
-      edge_weights[o][p] = w;
+      edgeWeights[o][p] = w;
     } else {
       graph[p][o] = e;
-      edge_weights[p][o] = w;
+      edgeWeights[p][o] = w;
     }
 
     return true;
@@ -129,15 +135,16 @@ public:
    * @param p another node.
    * @return true if the nodes were disconnected.
    */
-  virtual bool disconnect (const node_type &o, const node_type &p) {
+  virtual bool disconnect (const node_type &o, const node_type &p) 
+  {
     if (!contains (o) || !contains (p)) return false;
     
     if (node_comparator () (o, p)) {
       graph.find (o)->second.erase (p);
-      edge_weights.find (o)->second.erase (p);
+      edgeWeights.find (o)->second.erase (p);
     } else {
       graph.find (p)->second.erase (o);
-      edge_weights.find (p)->second.erase (o);
+      edgeWeights.find (p)->second.erase (o);
     }
 
     return true;
@@ -150,14 +157,31 @@ public:
    * @param p an extremity of the edge.
    * @return true if there exists an edge between o and p.
    */
-  virtual bool areConnected (const node_type &o, const node_type &p) const {
+  virtual bool areConnected (const node_type &o, const node_type &p) const 
+  {
     if (!contains (o) || !contains (p)) return false;
     
-    return graph.find (o)->second.find (p) != graph.find (o)->second.end () ||
-      graph.find (p)->second.find (o) != graph.find (p)->second.end ();
+    return (graph.find (o)->second.find (p) != graph.find (o)->second.end () ||
+	    graph.find (p)->second.find (o) != graph.find (p)->second.end ());
   }
   
-
+  
+  /**
+   * Returns the neighbors of the given node.
+   * @param o a node in the graph.
+   * @return the list of neighbors.
+   */
+  list< node_type > getNeighbors (const node_type& o) const
+  {
+    list< node_type > n;
+    if (!contains (o)) return n;
+    
+    for (const_iterator i=begin (); i!=end (); ++i) {
+      if (areConnected (o, *i))
+	n.push_back (*i);
+    }
+    return n;
+  }
 
   /**
    * Prim's algorithm for the minimum spanning tree.
@@ -219,6 +243,29 @@ public:
 
   // I/O  -----------------------------------------------------------------
 
+  virtual ostream& output (ostream& os) const
+  {
+    const_iterator ki, kj;
+    
+    for (ki=begin (); ki!=end (); ++ki) {      
+      os << *ki << " : ";      
+      for (kj=begin (); kj!=end (); ++kj) {
+    	if (areConnected (*ki, *kj)) os << *kj << " ";
+      }
+      os << endl;
+    }
+    
+    for (ki=begin (); ki!=end (); ++ki) {     
+      os << *ki << " ";      
+      for (kj=begin (); kj!=end (); ++kj) {
+    	if (areConnected (*ki, *kj)) os << "x ";
+    	else os << "- ";
+      }
+      os << endl;
+    }
+    
+    return os;
+  }
 };
 
 }

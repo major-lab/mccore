@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:26:33 2003
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 // 
 //  This file is part of mccore.
 //  
@@ -45,7 +45,7 @@ namespace mccore {
    *   - The nature of a type (nucleic acid (pur/pyr) or amino acid)<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueType.h,v 1.8 2003-04-03 21:43:38 gendrop Exp $
+   * @version $Id: ResidueType.h,v 1.9 2003-04-11 01:37:03 gendrop Exp $
    */
   class ResidueType
   {    
@@ -64,7 +64,7 @@ namespace mccore {
      */
     char* longtype;
 
-    protected: 
+  protected: 
 
     // LIFECYCLE ---------------------------------------------------------------
     
