@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.15 $
+// $Revision: 1.16 $
 // 
 //  This file is part of mccore.
 //  
@@ -433,11 +433,20 @@ namespace mccore {
   Model::output (oPdbstream &ops) const
   {
     const_iterator cit;
-    
-    ops.startModel ();
-    for (cit = begin (); cit != end (); ++cit)
-      ops << *cit;
-    ops.endModel ();
+    char chainId;
+
+    cit = begin ();
+    chainId = cit->getResId ().getChainId ();
+    for (; cit != end (); ++cit)
+      {
+	if (cit->getResId ().getChainId () != chainId)
+	  {
+	    ops.ter ();
+	    chainId = cit->getResId ().getChainId ();
+	  }
+	ops << *cit;
+      }
+    ops.ter ();
     return ops;
   }
   
