@@ -1,3 +1,94 @@
+2001-10-25  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/CModel.cc, lib/CModel.h: Files replaced by Model.
+
+	* configure, configure.in, NEWS: Version 1.2.
+
+	* lib/Model.cc, lib/AtomTypeImp.cc, lib/AbstractResidue.h: getType
+	changed back to GetType.
+
+	* lib/ResidueFactoryMethod.h, lib/ResidueFM.h, lib/ResidueFM.cc, lib/Residue.h, lib/Residue.cc, lib/Pdbstream.h, lib/Pdbstream.cc, lib/Model.h, lib/Model.cc, lib/McCore.h, lib/McCore.cc, lib/Makefile.in, lib/CResidueFM.h, lib/CResidueFM.cc, lib/CResidue.h, lib/CResidue.cc, lib/CHBond.h, lib/CHBond.cc, lib/CAtom.h, lib/CAtom.cc, lib/AtomTypeImp.h, lib/AtomTypeImp.cc, lib/AtomType.h, lib/AbstractResidue.h, lib/AbstractResidue.cc:
+	New Residue classes.  An abstract residue has been created to get
+	the possibility to use different kind of models.  The abstract
+	class contains a CResId, a residue type, a CTransfo and the
+	iterators.  To implement a new residue and use it in a model,
+	create an implementation of ResidueFactoryMethod and set it in the
+	model constructor.
+
+	New Model class.  It stores pointers over AbstractResidues.  Its methods
+	and iterators returns AbstractResidues pointers and references.
+
+	New ResidueFactoryMethod abstract class.  It defines an interface for
+	creating residues of a given type inside models.  It's only method,
+	createResidue returns a new residue pointer for the implemented residue
+	class.  It is mainly used in the Model read methods.
+
+2001-10-05  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/CResIdSet.h, lib/CResIdSet.cc: Data stream input output
+	added.
+
+2001-10-02  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/ServerSocket.cc: sun requires int has socklen_t.
+
+2001-10-01  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/CException.h, lib/CException.cc: Long integers added.
+
+	* lib/CModel.h: Using size_type is less error prone.
+
+	* lib/Binstream.h, lib/Binstream.cc: Long integers added in
+	Binstream.
+
+	* lib/sockbuf.cc: MSG_NOSIGNAL not defined in FreeBSD
+	architecture.
+
+	* lib/Binstream.cc: ntohs, ntohl, etc found in sys/param.h in
+	FreeBSD.
+
+	* lib/Makefile.in: etags is not a necessity...
+
+	* lib/sockbuf.cc: MSG_NOSIGNAL not defined in sun architecture.
+
+	* lib/ServerSocket.cc, lib/sockbuf.cc: bzero in strings.h in sun
+	architecture.
+
+	* lib/sockbuf.cc, lib/ServerSocket.cc: strerror used, it is the
+	standard way to get error message.
+
+2001-09-28  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/CModel.h, lib/CModel.cc: Methods keepAminoAcid
+	keepNucleicAcid added.  These methods, with removeAminoAcid and
+	removeNucleicAcid, modifies the model.
+
+2001-09-26  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Binstream.cc: Bug correction.  Transforming a int by ntohs
+	produces the wrong output in mips-irix.
+
+	* configure, configure.in: LDFLAGS must not be crunched by it's
+	new definition.
+
+	* Makefile.in: stamp-h added in distclean-local rule.
+
+2001-09-25  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* stamp-h.in, Makefile.in: stamp-h.in added for config.h making.
+
+2001-09-20  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/CResidue.h, lib/CResidue.cc: placeIt places all atoms, so no
+	parameter is required.
+
+	* lib/Algo.cc: Unneeded file.
+
+	* lib/zfilebuf.h, lib/sockbuf.h, lib/sockbuf.cc, lib/oMessagestream.h, lib/ServerSocket.cc, lib/Messagestream.h, lib/Makefile.in, lib/CPoint3D.cc, configure.in, configure, config.h.in, Makefile.in:
+	SGI compatibility updates.
+
+	* ChangeLog: Sourceforge CVS test.
+
 2001-09-14  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* lib/CResidue.cc: Bug corrected.  mAtomRes must be resized before
