@@ -526,7 +526,7 @@ fi
 
 
 PACKAGE=mccore
-VERSION=1.1.1
+VERSION=1.2
 cat >> confdefs.h <<EOF
 #define PACKAGE "$PACKAGE"
 EOF
@@ -628,7 +628,7 @@ else
 #line 629 "configure"
 #include "confdefs.h"
 #ifdef __cplusplus
-extern "C" void exit(int);
+extern "C" void exit(int) throw();
 #endif
 main () {
   /* Are we little or big endian?  From Harbison&Steele.  */
