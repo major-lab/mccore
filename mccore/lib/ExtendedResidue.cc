@@ -3,7 +3,7 @@
 // Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.20 $
+// $Revision: 1.21 $
 // 
 //  This file is part of mccore.
 //  
@@ -133,28 +133,6 @@ namespace mccore {
     return const_iterator (this, atomIndex.end ()); 
   }
   
-  
-  ExtendedResidue::iterator 
-  ExtendedResidue::find (const AtomType *k) 
-  {
-    AtomMap::iterator it = atomIndex.find (k);
-    if (it == atomIndex.end ())
-      return end ();
-    else
-      return iterator (this, it);
-  }
-
-
-  ExtendedResidue::const_iterator 
-  ExtendedResidue::find (const AtomType *k) const
-  {
-    AtomMap::const_iterator cit = atomIndex.find (k);
-    if (cit == atomIndex.end ())
-      return end ();
-    else
-      return const_iterator (this, cit);
-  }
-
   
   bool 
   ExtendedResidue::contains (const AtomType *k) const 
@@ -300,92 +278,8 @@ namespace mccore {
 	this->atomLocal[i]->transform (inv);
       }
   }
+
   
- //  void ExtendedResidue::finalize ()
-//   {
-//     unsigned int i;
-//     Vector3D *pivot[3];
-//     Vector3D *v1, *v2, *v3;
-
-//     if (!type || empty ()) return;
-
-//     if (!getType ()->isPhosphate ()) {
- 
-//       /* Compute the location of the pseudo atoms. */
-//       if (((v1 = _get (AtomType::aN9)) != 0 
-// 	   && (v2 = _get (AtomType::aC8)) != 0 
-// 	   && (v3 = _get (AtomType::aC4)) != 0)
-// 	  || ((v1 = _get (AtomType::aN1)) != 0 
-// 	      && (v2 = _get (AtomType::aC6)) != 0 
-// 	      && (v3 = _get (AtomType::aC2)) != 0)) {
-// 	Vector3D a, b, y, z;
-      
-// 	a = (*v2-*v1).normalize();
-// 	b = (*v3-*v1).normalize();
-// 	y = *v1 + (a + b).normalize();
-// 	z = *v1 + (b.cross(a)).normalize();
-      
-// 	insert (Atom (y, AtomType::aPSY));
-// 	insert (Atom (z, AtomType::aPSZ));
-
-//       } else if (type->isAminoAcid ()) {
-// 	if ((v1 = _get (AtomType::aCA)) != 0 &&
-// 	    (v2 = _get (AtomType::aN)) != 0 &&
-// 	    (v3 = _get (AtomType::aC)) != 0) {
-// 	  Vector3D a, b, z;
-// 	  a = (*v2 - *v1).normalize();
-// 	  b = (*v3 - *v1).normalize();
-// 	  z = *v1 + (b.cross(a)).normalize();
-	
-// 	  insert (Atom(z, AtomType::aPSAZ));
-// 	} else {
-// 	  gOut (4) << "Residue " << getResId () << "-" << *getType ()
-// 		   << " is missing one or more critical atoms." << endl;	
-// 	}	
-//       }
-
-//     }
-    
-//     /* Set the pivots */
-//     if ((_get (AtomType::aN9) != 0 || _get (AtomType::aN1) != 0) 
-// 	&& _get (AtomType::aPSY) != 0
-// 	&& _get (AtomType::aPSZ) != 0) {
-//       pivot[0] = _get (AtomType::aN9) != 0 ? _get (AtomType::aN9) : _get (AtomType::aN1);
-//       pivot[1] = _get (AtomType::aPSY);
-//       pivot[2] = _get (AtomType::aPSZ);	   
-//     } else if (type->isAminoAcid ()) {
-//       pivot[0] = _get (AtomType::aCA);
-//       pivot[1] = _get (AtomType::aN);
-//       pivot[2] = _get (AtomType::aPSAZ);
-//     } else if (type->isPhosphate ()) {
-//       pivot[0] = _get (AtomType::aP);
-//       pivot[1] = _get (AtomType::aO3p);
-//       pivot[2] = _get (AtomType::aO5p);      
-//     } else if (size() >= 3) {
-//       pivot[0] = (Atom*) atomGlobal[0];
-//       pivot[1] = (Atom*) atomGlobal[1];
-//       pivot[2] = (Atom*) atomGlobal[2];
-//     } else {
-//       pivot[0] = 0;
-//       pivot[1] = 0;
-//       pivot[2] = 0;
-//       gOut (4) << "Residue " << *getType () << " " << getResId () 
-// 	       << " has less than 3 atoms and cannot be moved: " << endl;
-//     }
-    
-//     /* Align the residue to the origin. */
-//     if (pivot[0] != 0 && pivot[1] != 0 && pivot[2] != 0) {
-//       tfo = HomogeneousTransfo::align (*pivot[0], *pivot[1], *pivot[2]);
-//       HomogeneousTransfo inv = tfo.invert ();
-      
-//       for (i=0; i<atomLocal.size (); ++i) {
-// 	*atomLocal[i] = *atomGlobal[i];
-// 	atomLocal[i]->transform (inv);
-//       }
-//     }	
-//   }
-
-
   void ExtendedResidue::atomCopy (const Residue& other) 
   {
 

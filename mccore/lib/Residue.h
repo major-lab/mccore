@@ -3,8 +3,8 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.21 $
-// $Id: Residue.h,v 1.21 2004-06-30 18:16:08 thibaup Exp $
+// $Revision: 1.22 $
+// $Id: Residue.h,v 1.22 2004-07-12 19:34:23 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -63,7 +63,7 @@ namespace mccore
    * the atom types.
    *
    * @author Patrick Gendron <gendrop@iro.umontreal.ca>
-   * @version $Id: Residue.h,v 1.21 2004-06-30 18:16:08 thibaup Exp $
+   * @version $Id: Residue.h,v 1.22 2004-07-12 19:34:23 thibaup Exp $
    */
   class Residue
   {
@@ -671,14 +671,30 @@ namespace mccore
      * @param k the atom type key.
      * @return the iterator to the element or end () if it is not found.
      */
-    virtual iterator find (const AtomType *k);
+    iterator find (const AtomType *k);
     
     /**
      * Finds an element whose key is k.
      * @param k the atom type key.
      * @return the iterator to the element or end () if it is not found.
      */
-    virtual const_iterator find (const AtomType *k) const;
+    const_iterator find (const AtomType *k) const;
+
+    /**
+     * Finds an element whose key is k.
+     * @param k the atom type key.
+     * @return the iterator to the element (always valid).
+     * @exception NoSuchAtomException is thrown is atom is not found.
+     */
+    iterator safeFind (const AtomType *k);
+    
+    /**
+     * Finds an element whose key is k.
+     * @param k the atom type key.
+     * @return the iterator to the element (always valid).
+     * @exception NoSuchAtomException is thrown is atom is not found.
+     */
+    const_iterator safeFind (const AtomType *k) const;
     
     /**
      * Check if an element with key k exists in this residue.

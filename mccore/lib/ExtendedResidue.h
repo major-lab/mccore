@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 // 
 //  This file is part of mccore.
 //  
@@ -56,7 +56,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: ExtendedResidue.h,v 1.9 2004-05-27 15:35:31 thibaup Exp $
+   * @version $Id: ExtendedResidue.h,v 1.10 2004-07-12 19:34:14 thibaup Exp $
    */
   class ExtendedResidue : public Residue
   {
@@ -158,20 +158,6 @@ namespace mccore {
      */
     virtual const_iterator end () const;
 
-    /**
-     * Finds an element whose key is k.
-     * @param k the atom type key.
-     * @return the iterator to the element or end () if it is not found.
-     */
-    virtual iterator find (const AtomType *k);
-    
-    /**
-     * Finds an element whose key is k.
-     * @param k the atom type key.
-     * @return the iterator to the element or end () if it is not found.
-     */
-    virtual const_iterator find (const AtomType *k) const;
-    
     /**
      * Check if an element with key k exists in this residue.
      * @param k the atom type key.

@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.41 $
-// $Id: Residue.cc,v 1.41 2004-07-05 18:35:50 thibaup Exp $
+// $Revision: 1.42 $
+// $Id: Residue.cc,v 1.42 2004-07-12 19:34:18 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -135,7 +135,8 @@ namespace mccore {
 
     type = other.type;
     resId = other.resId;
-    for (cit = other.atomGlobal.begin (); cit != other.atomGlobal.end (); ++cit) {
+    for (cit = other.atomGlobal.begin (); cit != other.atomGlobal.end (); ++cit)
+    {
       Atom* cl = (*cit)->clone ();
       atomGlobal.push_back (cl);
     }    
@@ -252,8 +253,9 @@ namespace mccore {
       }
     else
       {
-	IntLibException ex;
-	throw ex << "cannot create a theoretical residue for " << *this;
+	IntLibException ex ("", __FILE__, __LINE__);
+	ex << "cannot create a theoretical residue for " << *this;
+	throw ex;
       }
 
     this->finalize ();
@@ -271,8 +273,9 @@ namespace mccore {
       }
     else
       {
-	IntLibException ex;
-	throw ex << "cannot create a full theoretical residue for " << *this;
+	IntLibException ex ("", __FILE__, __LINE__);
+	ex << "cannot create a full theoretical residue for " << *this;
+	throw ex;
       }
     
     // create a C3' endo anti ribose
@@ -411,6 +414,34 @@ namespace mccore {
       return end ();
     else
       return const_iterator (this, cit);
+  }
+
+  
+  Residue::iterator 
+  Residue::safeFind (const AtomType *k) 
+  {
+    AtomMap::iterator it = atomIndex.find (k);
+    if (it == atomIndex.end ())
+    {
+      NoSuchAtomException ex ("", __FILE__, __LINE__);
+      ex << "residue " << *this << " is missing atom " << k;
+      throw ex;
+    }
+    return iterator (this, it);
+  }
+
+
+  Residue::const_iterator 
+  Residue::safeFind (const AtomType *k) const
+  {
+    AtomMap::const_iterator cit = atomIndex.find (k);
+    if (cit == atomIndex.end ())
+    {
+      NoSuchAtomException ex ("", __FILE__, __LINE__);
+      ex << "residue " << *this << " is missing atom " << k;
+      throw ex;
+    }
+    return const_iterator (this, cit);
   }
 
   
@@ -708,581 +739,641 @@ namespace mccore {
 
   void Residue::addHydrogens () 
   { 
-    Vector3D x, y, z, up, a, b;
+    Vector3D x, y, z, up, a, b, v;
 
-    if (type->isA ()) 
-	{
-	    Vector3D h2;
-	    Vector3D h8;
-	    Vector3D h61;
-	    Vector3D h62;
-	    
-	    if (0 == _get (AtomType::aC2) || 0 == _get (AtomType::aN1)
-		|| 0 == _get (AtomType::aN3) || 0 == _get (AtomType::aC8)
-		|| 0 == _get (AtomType::aN7) || 0 == _get (AtomType::aN9)
-		|| 0 == _get (AtomType::aC6) || 0 == _get (AtomType::aC5)
-		|| 0 == _get (AtomType::aN6) || 0 == _get (AtomType::aC4)) {
-	      gOut (2) << "Residue " << *getType () << " " << getResId ()
-		       << " is missing one or more critical atoms." << endl;
-	      type = type->invalidate ();
-	      return;
-	    }
-	    
-	    // H2
-	    x = (*this->_get (AtomType::aC2) - *this->_get (AtomType::aN1)).normalize ();
-	    y = (*this->_get (AtomType::aC2) - *this->_get (AtomType::aN3)).normalize ();
-	    z = (x + y).normalize ();
-	    h2 = *this->_get (AtomType::aC2) + z * Residue::C_H_DIST_CYC;
-	    
-	    x = (*this->_get (AtomType::aC8) - *this->_get (AtomType::aN7)).normalize ();
-	    y = (*this->_get (AtomType::aC8) - *this->_get (AtomType::aN9)).normalize ();
-	    z = (x + y).normalize ();
-	    h8 = *this->_get (AtomType::aC8) + z * Residue::C_H_DIST_CYC;
-	    
-	    x = (*this->_get (AtomType::aC6) - *this->_get (AtomType::aN1)).normalize ();
-	    y = (*this->_get (AtomType::aC6) - *this->_get (AtomType::aC5)).normalize ();
-	    z = (*this->_get (AtomType::aN6) - *this->_get (AtomType::aC6)).normalize ();  // axe N6-C6     
-	    up = x.cross (y).normalize ();
-	    a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
-	    b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();	    
-	    h61 = *this->_get (AtomType::aN6) + a * Residue::N_H_DIST;
-	    h62 = *this->_get (AtomType::aN6) + b * Residue::N_H_DIST;
-	    
-	    insert (Atom (h2, AtomType::aH2));
-	    insert (Atom (h8, AtomType::aH8));
-	    insert (Atom (h61, AtomType::a1H6));
-	    insert (Atom (h62, AtomType::a2H6));
-	}
-    else if (type->isG ()) 
-	{
-	    Vector3D h1;
-	    Vector3D h8;
-	    Vector3D h21;
-	    Vector3D h22;
-	    
-	    if (0 == _get (AtomType::aN1) || 0 == _get (AtomType::aC2)
-		|| 0 == _get (AtomType::aC6) || 0 == _get (AtomType::aC8)
-		|| 0 == _get (AtomType::aN7) || 0 == _get (AtomType::aN9)
-		|| 0 == _get (AtomType::aN3) || 0 == _get (AtomType::aN2)
-		|| 0 == _get (AtomType::aC4) || 0 == _get (AtomType::aC5)
-		|| 0 == _get (AtomType::aO6)) {
-	      gOut (2) << "Residue " << *getType () << " " << getResId ()
-		       << " is missing one or more critical atoms." << endl;
-	      type = type->invalidate ();
-	      return;
-	    }
-	    
-	    // H1
-	    x = (*this->_get (AtomType::aN1) - *this->_get (AtomType::aC2)).normalize ();
-	    y = (*this->_get (AtomType::aN1) - *this->_get (AtomType::aC6)).normalize ();
-	    z = (x + y).normalize ();
-	    h1 = *this->_get (AtomType::aN1) + z * Residue::N_H_DIST;
-	    
-	    // H8
-	    x = (*this->_get (AtomType::aC8) - *this->_get (AtomType::aN7)).normalize ();
-	    y = (*this->_get (AtomType::aC8) - *this->_get (AtomType::aN9)).normalize ();
-	    z = (x + y).normalize ();
-	    h8 = *this->_get (AtomType::aC8) + z * Residue::C_H_DIST_CYC;
-	    
-	    // 1H2 and 2H2
-	    x = (*this->_get (AtomType::aC2) - *this->_get (AtomType::aN1)).normalize ();
-	    y = (*this->_get (AtomType::aC2) - *this->_get (AtomType::aN3)).normalize ();
-	    z = (*this->_get (AtomType::aN2) - *this->_get (AtomType::aC2)).normalize ();  // axe N2-C2	    
-	    up = x.cross (y).normalize ();
-	    a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
-	    b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();	    
-	    h21 = *this->_get (AtomType::aN2) + b * Residue::N_H_DIST;
-	    h22 = *this->_get (AtomType::aN2) + a * Residue::N_H_DIST;
+    if (this->type->isA ()) 
+    {
+      try // H2
+      {
+	x = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN1)).normalize ();
+	y = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN3)).normalize ();
+	z = (x + y).normalize ();
+	v = *this->_safe_get (AtomType::aC2) + z * Residue::C_H_DIST_CYC;
+	this->insert (Atom (v, AtomType::aH2));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add hydrogen " << AtomType::aH2 << " in "
+		 << *this << ": " << ex << endl;
+      }
+      try // H8
+      {
+	x = (*this->_safe_get (AtomType::aC8) - *this->_safe_get (AtomType::aN7)).normalize ();
+	y = (*this->_safe_get (AtomType::aC8) - *this->_safe_get (AtomType::aN9)).normalize ();
+	z = (x + y).normalize ();
+	v = *this->_safe_get (AtomType::aC8) + z * Residue::C_H_DIST_CYC;	
+	this->insert (Atom (v, AtomType::aH8));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add hydrogen " << AtomType::aH8 << " in "
+		 << *this << ": " << ex << endl;
+      }
+      try // H61 and H62
+      {
+	x = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aN1)).normalize ();
+	y = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aC5)).normalize ();
+	z = (*this->_safe_get (AtomType::aN6) - *this->_safe_get (AtomType::aC6)).normalize ();  // axe N6-C6     
+	up = x.cross (y).normalize ();
 
-	    insert (Atom (h1, AtomType::aH1));
-	    insert (Atom (h8, AtomType::aH8));
-	    insert (Atom (h21, AtomType::a1H2));
-	    insert (Atom (h22, AtomType::a2H2));	    
-	}
-    else if (type->isC ())
-	{
-	    Vector3D h5;
-	    Vector3D h6;
-	    Vector3D h41;
-	    Vector3D h42;
-	    
-	    if (0 == _get (AtomType::aC5) || 0 == _get (AtomType::aC4)
-		|| 0 == _get (AtomType::aC6) || 0 == _get (AtomType::aN1)
- 		|| 0 == _get (AtomType::aN3) || 0 == _get (AtomType::aN4)
-		|| 0 == _get (AtomType::aC6) || 0 == _get (AtomType::aC5)
-		|| 0 == _get (AtomType::aC2) || 0 == _get (AtomType::aO2)) {
-	      gOut (2) << "Residue " << *getType () << " " << getResId ()
-		       << " is missing one or more critical atoms." << endl;
-	      type = type->invalidate ();
-	      return;
-	    }
+	a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
+	v = *this->_safe_get (AtomType::aN6) + a * Residue::N_H_DIST;
+	this->insert (Atom (v, AtomType::a1H6));
+	
+	b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();	    
+	v = *this->_safe_get (AtomType::aN6) + b * Residue::N_H_DIST;
+	this->insert (Atom (v, AtomType::a2H6));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add hydrogens " << AtomType::a1H6 << " and "
+		 << AtomType::a2H6 << " in " << *this << ": " << ex << endl;
+      }
+    }
+    else if (this->type->isG ()) 
+    {
+      try // H1
+      {
+	x = (*this->_safe_get (AtomType::aN1) - *this->_safe_get (AtomType::aC2)).normalize ();
+	y = (*this->_safe_get (AtomType::aN1) - *this->_safe_get (AtomType::aC6)).normalize ();
+	z = (x + y).normalize ();
+	v = *this->_safe_get (AtomType::aN1) + z * Residue::N_H_DIST;
+	this->insert (Atom (v, AtomType::aH1));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add hydrogen " << AtomType::aH1 << " in "
+		 << *this << ": " << ex << endl;
+      }
+      try // H8
+      {
+	x = (*this->_safe_get (AtomType::aC8) - *this->_safe_get (AtomType::aN7)).normalize ();
+	y = (*this->_safe_get (AtomType::aC8) - *this->_safe_get (AtomType::aN9)).normalize ();
+	z = (x + y).normalize ();
+	v = *this->_safe_get (AtomType::aC8) + z * Residue::C_H_DIST_CYC;
+	this->insert (Atom (v, AtomType::aH8));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add hydrogen " << AtomType::aH8 << " in "
+		 << *this << ": " << ex << endl;
+      }    
+      try // 1H2 and 2H2
+      {
+	x = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN1)).normalize ();
+	y = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN3)).normalize ();
+	z = (*this->_safe_get (AtomType::aN2) - *this->_safe_get (AtomType::aC2)).normalize ();  // axe N2-C2	    
+	up = x.cross (y).normalize ();
+		
+	b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();
+	v = *this->_safe_get (AtomType::aN2) + b * Residue::N_H_DIST;
+	this->insert (Atom (v, AtomType::a1H2));
+	
+	a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
+	v = *this->_safe_get (AtomType::aN2) + a * Residue::N_H_DIST;
+	this->insert (Atom (v, AtomType::a2H2));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add hydrogens " << AtomType::a1H2 << " and "
+		 << AtomType::a2H2 << " in " << *this << ": " << ex << endl;
+      }
+    }
+    else if (this->type->isC ())
+    {
+      try // H5
+      {
+	x = (*this->_safe_get (AtomType::aC5) - *this->_safe_get (AtomType::aC4)).normalize ();
+	y = (*this->_safe_get (AtomType::aC5) - *this->_safe_get (AtomType::aC6)).normalize ();
+	z = (x + y).normalize ();
+	v = *this->_safe_get (AtomType::aC5) + z * Residue::C_H_DIST; // Exceptionnal distance!
+	this->insert (Atom (v, AtomType::aH5));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add hydrogen " << AtomType::aH5 << " in "
+		 << *this << ": " << ex << endl;
+      }          
+      try // H6
+      {
+	x = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aC5)).normalize ();
+	y = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aN1)).normalize ();
+	z = (x + y).normalize ();
+	v = *this->_safe_get (AtomType::aC6) + z * Residue::C_H_DIST_CYC;
+	this->insert (Atom (v, AtomType::aH6));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add hydrogen " << AtomType::aH6 << " in "
+		 << *this << ": " << ex << endl;
+      }	    
+      try // 1H4 and 2H4
+      {
+	x = (*this->_safe_get (AtomType::aC4) - *this->_safe_get (AtomType::aN3)).normalize ();
+	y = (*this->_safe_get (AtomType::aC4) - *this->_safe_get (AtomType::aC5)).normalize ();
+	z = (*this->_safe_get (AtomType::aN4) - *this->_safe_get (AtomType::aC4)).normalize ();	    
+	up = x.cross (y).normalize ();
 
-	    // H5
-	    x = (*this->_get (AtomType::aC5) - *this->_get (AtomType::aC4)).normalize ();
-	    y = (*this->_get (AtomType::aC5) - *this->_get (AtomType::aC6)).normalize ();
-	    z = (x + y).normalize ();
-	    h5 = *this->_get (AtomType::aC5) + z * Residue::C_H_DIST; // Exceptionnal distance!
-	          
-	    // H6
-	    x = (*this->_get (AtomType::aC6) - *this->_get (AtomType::aC5)).normalize ();
-	    y = (*this->_get (AtomType::aC6) - *this->_get (AtomType::aN1)).normalize ();
-	    z = (x + y).normalize ();
-	    h6 = *this->_get (AtomType::aC6) + z * Residue::C_H_DIST_CYC;
-	    
-	    // 1H4 and 2H4
-	    x = (*this->_get (AtomType::aC4) - *this->_get (AtomType::aN3)).normalize ();
-	    y = (*this->_get (AtomType::aC4) - *this->_get (AtomType::aC5)).normalize ();
-	    z = (*this->_get (AtomType::aN4) - *this->_get (AtomType::aC4)).normalize ();	    
-	    up = x.cross (y).normalize ();
-	    a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
-	    b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();	    
-	    h41 = *this->_get (AtomType::aN4) + b * Residue::N_H_DIST;
-	    h42 = *this->_get (AtomType::aN4) + a * Residue::N_H_DIST;
+	b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();	    
+	v = *this->_safe_get (AtomType::aN4) + b * Residue::N_H_DIST;
+	this->insert (Atom (v, AtomType::a1H4));
 
-	    insert (Atom (h5, AtomType::aH5));
-	    insert (Atom (h6, AtomType::aH6));
-	    insert (Atom (h41, AtomType::a1H4));
-	    insert (Atom (h42, AtomType::a2H4));
-	}
-    else if (type->isU ()) 
-	{
-	    Vector3D h3;
-	    Vector3D h5;
-	    Vector3D h6;
+	a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
+	v = *this->_safe_get (AtomType::aN4) + a * Residue::N_H_DIST;
+	this->insert (Atom (v, AtomType::a2H4));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add hydrogens " << AtomType::a1H4 << " and "
+		 << AtomType::a2H4 << " in " << *this << ": " << ex << endl;
+      }	
+    }
+    else if (this->type->isU ()) 
+    {
+      try // H3
+      {
+	x = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC2)).normalize ();
+	y = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC4)).normalize ();
+	z = (x + y).normalize ();
+	v = *this->_safe_get (AtomType::aN3) + z * Residue::C_H_DIST; // Exceptionnal distance!
+	this->insert (Atom (v, AtomType::aH3));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add hydrogen " << AtomType::aH3 << " in "
+		 << *this << ": " << ex << endl;
+      }	 	    
+      try // H5
+      {
+	x = (*this->_safe_get (AtomType::aC5) - *this->_safe_get (AtomType::aC4)).normalize ();
+	y = (*this->_safe_get (AtomType::aC5) - *this->_safe_get (AtomType::aC6)).normalize ();
+	z = (x + y).normalize ();
+	v = *this->_safe_get (AtomType::aC5) + z * Residue::C_H_DIST; // Exceptionnal distance!	    
+	this->insert (Atom (v, AtomType::aH5));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add hydrogen " << AtomType::aH5 << " in "
+		 << *this << ": " << ex << endl;
+      }		    
+      try // H6
+      {
+	x = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aC5)).normalize ();
+	y = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aN1)).normalize ();
+	z = (x + y).normalize ();
+	v = *this->_safe_get (AtomType::aC6) + z * Residue::C_H_DIST_CYC; 
+	this->insert (Atom (v, AtomType::aH6));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add hydrogen " << AtomType::aH6 << " in "
+		 << *this << ": " << ex << endl;
+      }	
+    }
+    else if (this->type->isT ())
+    {
+      try // H3
+      {
+	x = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC2)).normalize ();
+	y = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC4)).normalize ();
+	z = (x + y).normalize ();
+	v = *this->_safe_get (AtomType::aN3) + z * Residue::C_H_DIST; // Exceptionnal distance! 
+	this->insert (Atom (v, AtomType::aH3));	    
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add hydrogen " << AtomType::aH3 << " in "
+		 << *this << ": " << ex << endl;
+      }		    
+      try // H6
+      {
+	x = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aC5)).normalize ();
+	y = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aN1)).normalize ();
+	z = (x + y).normalize ();
+	v = *this->_safe_get (AtomType::aC6) + z * Residue::C_H_DIST_CYC;
+	this->insert (Atom (v, AtomType::aH6));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add hydrogen " << AtomType::aH6 << " in "
+		 << *this << ": " << ex << endl;
+      }	
+      try // 1H5M, 2H5M, 3H5M (arbitrarily placed)
+      {
+	x = (*this->_safe_get (AtomType::aC5M) - *this->_safe_get (AtomType::aC5)).normalize ();
+	y = (*this->_safe_get (AtomType::aC5) - *this->_safe_get (AtomType::aC4)).normalize ();
+	up = x.cross (y).normalize ();
+	z = x.cross (up);
+	
+	v = *this->_safe_get (AtomType::aC5M) + (x + z * Residue::TAN70).normalize () * Residue::C_H_DIST;
+	this->insert (Atom (v, AtomType::a1H5M));
+	
+	a = (up - z*Residue::TAN30).normalize ();
+	v = *this->_safe_get (AtomType::aC5M) + (x + a * Residue::TAN70).normalize () * Residue::C_H_DIST;
+	this->insert (Atom (v, AtomType::a2H5M));
 	    
-	    if (0 == _get (AtomType::aN3) || 0 == _get (AtomType::aC2)
-		|| 0 == _get (AtomType::aC4) || 0 == _get (AtomType::aC5)
-		|| 0 == _get (AtomType::aC6) || 0 == _get (AtomType::aN1)
-		|| 0 == _get (AtomType::aO2) || 0 == _get (AtomType::aO4)) {
-	      gOut (2) << "Residue " << *getType () << " " << getResId ()
-		       << " is missing one or more critical atoms." << endl;
-	      type = type->invalidate ();
-	      return;
-  	    }
+	b = (-up - z*Residue::TAN30).normalize ();
+	v = *this->_safe_get (AtomType::aC5M) + (x + b * Residue::TAN70).normalize () * Residue::C_H_DIST;
+	this->insert (Atom (v, AtomType::a3H5M));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add hydrogens " << AtomType::a1H5M << ", "
+		 << AtomType::a2H5M << " and " << AtomType::a3H5M << " in "
+		 << *this << ": " << ex << endl;
+      }	      
+    }
 
-	    // H3
-	    x = (*this->_get (AtomType::aN3) - *this->_get (AtomType::aC2)).normalize ();
-	    y = (*this->_get (AtomType::aN3) - *this->_get (AtomType::aC4)).normalize ();
-	    z = (x + y).normalize ();
-	    h3 = *this->_get (AtomType::aN3) + z * Residue::C_H_DIST; // Exceptionnal distance!
-	    
-	    
-	    // H5
-	    x = (*this->_get (AtomType::aC5) - *this->_get (AtomType::aC4)).normalize ();
-	    y = (*this->_get (AtomType::aC5) - *this->_get (AtomType::aC6)).normalize ();
-	    z = (x + y).normalize ();
-	    h5 = *this->_get (AtomType::aC5) + z * Residue::C_H_DIST; // Exceptionnal distance!	    
-	    
-	    // H6
-	    x = (*this->_get (AtomType::aC6) - *this->_get (AtomType::aC5)).normalize ();
-	    y = (*this->_get (AtomType::aC6) - *this->_get (AtomType::aN1)).normalize ();
-	    z = (x + y).normalize ();
-	    h6 = *this->_get (AtomType::aC6) + z * Residue::C_H_DIST_CYC;
-
-	    insert (Atom (h3, AtomType::aH3));
-	    insert (Atom (h5, AtomType::aH5));
-	    insert (Atom (h6, AtomType::aH6));
-
-	}
-    else if (type->isT ())
-	{
-	    Vector3D h3;
-	    Vector3D h6, h51m, h52m, h53m;
-	    
-	    if (0 == _get (AtomType::aN3) || 0 == _get (AtomType::aC2)
-		|| 0 == _get (AtomType::aC4) || 0 == _get (AtomType::aC5)
-		|| 0 == _get (AtomType::aC6) || 0 == _get (AtomType::aN1)
-		|| 0 == _get (AtomType::aO2) || 0 == _get (AtomType::aO4)
-		|| 0 == _get (AtomType::aC5M)) {
-	      gOut (2) << "Residue " << *getType () << " " << getResId ()
-		       << " is missing one or more critical atoms." << endl;
-	      type = type->invalidate ();
-	      return;
-  	    }
-
-	    // H3
-	    x = (*this->_get (AtomType::aN3) - *this->_get (AtomType::aC2)).normalize ();
-	    y = (*this->_get (AtomType::aN3) - *this->_get (AtomType::aC4)).normalize ();
-	    z = (x + y).normalize ();
-	    h3 = *this->_get (AtomType::aN3) + z * Residue::C_H_DIST; // Exceptionnal distance!	    
-	    
-	    // H6
-	    x = (*this->_get (AtomType::aC6) - *this->_get (AtomType::aC5)).normalize ();
-	    y = (*this->_get (AtomType::aC6) - *this->_get (AtomType::aN1)).normalize ();
-	    z = (x + y).normalize ();
-	    h6 = *this->_get (AtomType::aC6) + z * Residue::C_H_DIST_CYC;
-
-	    // 1H5M, 2H5M, 3H5M (arbitrarily placed)	    
-	    x = (*this->_get (AtomType::aC5M) - *this->_get (AtomType::aC5)).normalize ();
-	    y = (*this->_get (AtomType::aC5) - *this->_get (AtomType::aC4)).normalize ();
-	    up = x.cross (y).normalize ();
-	    z = x.cross (up);
-	    
-	    h51m = *this->_get (AtomType::aC5M) + (x + z * Residue::TAN70).normalize () * Residue::C_H_DIST;
-	    
-	    a = (up - z*Residue::TAN30).normalize ();
-	    h52m = *this->_get (AtomType::aC5M) + (x + a * Residue::TAN70).normalize () * Residue::C_H_DIST;
-	    
-	    b = (-up - z*Residue::TAN30).normalize ();
-	    h53m = *this->_get (AtomType::aC5M) + (x + b * Residue::TAN70).normalize () * Residue::C_H_DIST;
-
-	    insert (Atom (h3, AtomType::aH3));
-	    insert (Atom (h6, AtomType::aH6));
-	    insert (Atom (h51m, AtomType::a1H5M));
-	    insert (Atom (h52m, AtomType::a2H5M));
-	    insert (Atom (h53m, AtomType::a3H5M));
-	}
-
-    _add_ribose_hydrogens ();
+    this->_add_ribose_hydrogens ();
   }
 
 
   void
   Residue::_add_ribose_hydrogens ()
   {
-    if (type->isNucleicAcid ()) 
+    Vector3D x, y, z, up, v;
+	  
+    const Vector3D *r1;
+    const Vector3D *r2;
+    const Vector3D *r3;
+    const Vector3D *r4;
+	    
+    if (0 == this->_get (AtomType::aH1p))
+    {
+      try
       {
-	Vector3D x, y, z, up;
+	r1 = this->_safe_get (AtomType::aC1p);
+	r2 = this->_safe_get (AtomType::aC2p);
+	r3 = (type->isPurine ()) ? this->_safe_get (AtomType::aN9) : this->_safe_get (AtomType::aN1);
+	r4 = this->_safe_get (AtomType::aO4p);
 	  
-	const Vector3D *r1;
-	const Vector3D *r2;
-	const Vector3D *r3;
-	const Vector3D *r4;
-	    
-	//  H1p
-	if (!contains (AtomType::aH1p)) {
-	  r1 = this->_get (AtomType::aC1p);
-	  r2 = this->_get (AtomType::aC2p);
-	  r3 = (type->isPurine ()) ? this->_get (AtomType::aN9) : this->_get (AtomType::aN1);
-	  r4 = this->_get (AtomType::aO4p);
-	  if (0 != r1 && 0 != r2 && 0 != r3 && 0 != r4) {
-	    Vector3D h1p;
+	x = (*r1 - *r2).normalize ();
+	y = (*r1 - *r3).normalize ();
+	z = (*r1 - *r4).normalize ();
+	
+	v = *r1 + (x + y + z).normalize () * Residue::C_H_DIST;
+	this->insert (Atom (v, AtomType::aH1p));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add hydrogen " << AtomType::aH1p << " in "
+		 << *this << ": " << ex << endl;
+      }
+    }
+    if (0 == this->_get (AtomType::aH3p))
+    {
+      try
+      {
+	r1 = this->_safe_get (AtomType::aC3p);
+	r2 = this->_safe_get (AtomType::aC2p);
+	r3 = this->_safe_get (AtomType::aO3p);
+	r4 = this->_safe_get (AtomType::aC4p);
 		    
-	    x = (*r1 - *r2).normalize ();
-	    y = (*r1 - *r3).normalize ();
-	    z = (*r1 - *r4).normalize ();
-		    
-	    h1p = *r1 + (x + y + z).normalize () * Residue::C_H_DIST;
-	    insert (Atom (h1p, AtomType::aH1p));
-	  }
-	}
-	    
-	//  H3p
-	if (!contains (AtomType::aH3p)) {
-	  r1 = this->_get (AtomType::aC3p);
-	  r2 = this->_get (AtomType::aC2p);
-	  r3 = this->_get (AtomType::aO3p);
-	  r4 = this->_get (AtomType::aC4p);
-	  if (0 != r1 && 0 != r2 && 0 != r3 && 0 != r4) {
-	    Vector3D h3p;
-		    
-	    x = (*r1 - *r2).normalize ();
-	    y = (*r1 - *r3).normalize ();
-	    z = (*r1 - *r4).normalize ();
+	x = (*r1 - *r2).normalize ();
+	y = (*r1 - *r3).normalize ();
+	z = (*r1 - *r4).normalize ();
 		    		    
-	    h3p = *r1 + (x + y + z).normalize () * Residue::C_H_DIST;
-	    insert (Atom (h3p, AtomType::aH3p));
-	  }
-	}
-
-	//  H4p
-	if (!contains (AtomType::aH4p)) {
-	  r1 = this->_get (AtomType::aC4p);
-	  r2 = this->_get (AtomType::aC3p);
-	  r3 = this->_get (AtomType::aO4p);
-	  r4 = this->_get (AtomType::aC5p);
-	  if (0 != r1 && 0 != r2 && 0 != r3 && 0 != r4) {
-	    Vector3D h4p;
+	v = *r1 + (x + y + z).normalize () * Residue::C_H_DIST;
+	this->insert (Atom (v, AtomType::aH3p));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add hydrogen " << AtomType::aH3p << " in "
+		 << *this << ": " << ex << endl;
+      }
+    }
+    if (0 == this->_get (AtomType::aH4p))
+    {
+      try
+      {
+	r1 = this->_safe_get (AtomType::aC4p);
+	r2 = this->_safe_get (AtomType::aC3p);
+	r3 = this->_safe_get (AtomType::aO4p);
+	r4 = this->_safe_get (AtomType::aC5p);
 		    
-	    x = (*r1 - *r2).normalize ();
-	    y = (*r1 - *r3).normalize ();
-	    z = (*r1 - *r4).normalize ();
+	x = (*r1 - *r2).normalize ();
+	y = (*r1 - *r3).normalize ();
+	z = (*r1 - *r4).normalize ();
 	  
-	    h4p = *r1 + (x + y + z).normalize () * Residue::C_H_DIST;
-	    insert (Atom (h4p, AtomType::aH4p));
-	  }
-	}
-	    
-	    
-	//  1H5p  2H5p
-	if (!contains (AtomType::a1H5p) || !contains (AtomType::a1H5p)) {
-	  r1 = this->_get (AtomType::aC5p);
-	  r2 = this->_get (AtomType::aC4p);
-	  r3 = this->_get (AtomType::aO5p);
-	  if (0 != r1 && 0 != r2 && 0 != r3) {
-	    Vector3D h51p;
-	    Vector3D h52p;
+	v = *r1 + (x + y + z).normalize () * Residue::C_H_DIST;
+	this->insert (Atom (v, AtomType::aH4p));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add hydrogen " << AtomType::aH4p << " in "
+		 << *this << ": " << ex << endl;
+      }
+    }
+    if (0 == this->_get (AtomType::a1H5p) || 0 == this->_get (AtomType::a1H5p))
+    {
+      try
+      {
+	r1 = this->_safe_get (AtomType::aC5p);
+	r2 = this->_safe_get (AtomType::aC4p);
+	r3 = this->_safe_get (AtomType::aO5p);
 		    
-	    x = (*r1 - *r2).normalize ();
-	    y = (*r1 - *r3).normalize ();
-	    z = (x + y).normalize ();
-	    up = x.cross (y).normalize ();
+	x = (*r1 - *r2).normalize ();
+	y = (*r1 - *r3).normalize ();
+	z = (x + y).normalize ();
+	up = x.cross (y).normalize ();
 
-	    h51p = *r1 + (up * Residue::TAN54 + z).normalize () * Residue::C_H_DIST;
-	    h52p = *r1 + (-up * Residue::TAN54 + z).normalize () * Residue::C_H_DIST;
-	    insert (Atom (h51p, AtomType::a1H5p));
-	    insert (Atom (h52p, AtomType::a2H5p));
-	  }
+	v = *r1 + (up * Residue::TAN54 + z).normalize () * Residue::C_H_DIST;
+	this->insert (Atom (v, AtomType::a1H5p));
+	
+	v = *r1 + (-up * Residue::TAN54 + z).normalize () * Residue::C_H_DIST;
+	this->insert (Atom (v, AtomType::a2H5p));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add hydrogens " << AtomType::a1H5p << " and "
+		 << AtomType::a2H5p << " in " << *this << ": " << ex << endl;
+      }	
+    }
+
+    // check for O2'
+    //   yes -> RNA ribose: H2p and HO2p
+    //   no  -> DNA ribose: 1H2p and 2H2p
+    
+    if (0 == this->_get (AtomType::aO2p))
+    {
+      if (0 == this->_get (AtomType::a1H2p) || 0 == this->_get (AtomType::a2H2p))
+      {
+	try
+	{
+	  r1 = this->_safe_get (AtomType::aC2p);
+	  r2 = this->_safe_get (AtomType::aC1p);
+	  r3 = this->_safe_get (AtomType::aC3p);
+			
+	  x = (*r1 - *r2).normalize ();
+	  y = (*r1 - *r3).normalize ();
+	  z = (x + y).normalize ();
+	  up = x.cross (y).normalize ();
+			
+	  v = *r1 + (up * Residue::TAN54 + z).normalize () * Residue::C_H_DIST;
+	  this->insert (Atom (v, AtomType::a1H2p));
+	  
+	  v = *r1 + (-up * Residue::TAN54 + z).normalize () * Residue::C_H_DIST;
+	  this->insert (Atom (v, AtomType::a2H2p));
 	}
-	    
-	    
-	    
-	if (contains (AtomType::aO2p)) {
-	  //  H2p
-	  if (!contains (AtomType::aH2p)) {
-	    r1 = this->_get (AtomType::aC2p);
-	    r2 = this->_get (AtomType::aC1p);
-	    r3 = this->_get (AtomType::aC3p);
-	    r4 = this->_get (AtomType::aO2p);
-	    if (0 != r1 && 0 != r2 && 0 != r3 && 0 != r4) {
-	      Vector3D h2p;
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (5) << "Failed to add hydrogens " << AtomType::a1H2p << " and "
+		   << AtomType::a2H2p << " in " << *this << ": " << ex << endl;
+	}	
+      }
+    }
+    else
+    {
+      if (0 == this->_get (AtomType::aH2p))
+      {
+	try
+	{
+	  r1 = this->_safe_get (AtomType::aC2p);
+	  r2 = this->_safe_get (AtomType::aC1p);
+	  r3 = this->_safe_get (AtomType::aC3p);
+	  r4 = this->_safe_get (AtomType::aO2p);
 			
-	      x = (*r1 - *r2).normalize ();
-	      y = (*r1 - *r3).normalize ();
-	      z = (*r1 - *r4).normalize ();
+	  x = (*r1 - *r2).normalize ();
+	  y = (*r1 - *r3).normalize ();
+	  z = (*r1 - *r4).normalize ();
 			
-	      h2p = *r1 + (x + y + z).normalize () * Residue::C_H_DIST;
-	      insert (Atom (h2p, AtomType::aH2p));
-	    }
-	  }
-		
-	  // HO2p
-	  if (!contains (AtomType::aHO2p)) {
-	    r1 = this->_get (AtomType::aO2p);
-	    r2 = this->_get (AtomType::aC2p);
-	    r3 = this->_get (AtomType::aC1p);
-	    if (0 != r1 && 0 != r2 && 0 != r3) {
-	      Vector3D hO2p;
+	  v = *r1 + (x + y + z).normalize () * Residue::C_H_DIST;
+	  this->insert (Atom (v, AtomType::aH2p));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (5) << "Failed to add hydrogen " << AtomType::aH2p << " in "
+		   << *this << ": " << ex << endl;
+	}
+      }
+      if (0 == this->_get (AtomType::aHO2p))
+      {
+	try
+	{
+	  r1 = this->_safe_get (AtomType::aO2p);
+	  r2 = this->_safe_get (AtomType::aC2p);
+	  r3 = this->_safe_get (AtomType::aC1p);
 			
-	      x = (*r2 - *r3).normalize ();
-	      y = (*r1 - *r2).normalize ();
-	      z = x.cross (y).cross (y).normalize ();			
-	      hO2p = *r1 + (y * Residue::TAN19 - z).normalize () * Residue::O_H_DIST;
-	      insert (Atom (hO2p, AtomType::aHO2p));
-	    }
-	  }
-	} else {
-	  // 1H2p 2H2p
-	  if (!contains (AtomType::a1H2p) || !contains (AtomType::a2H2p)) {
-	    r1 = this->_get (AtomType::aC2p);
-	    r2 = this->_get (AtomType::aC1p);
-	    r3 = this->_get (AtomType::aC3p);
-	    if (0 != r1 && 0 != r2 && 0 != r3) {
-	      Vector3D h21p;
-	      Vector3D h22p;
-			
-	      x = (*r1 - *r2).normalize ();
-	      y = (*r1 - *r3).normalize ();
-	      z = (x + y).normalize ();
-	      up = x.cross (y).normalize ();
-			
-	      h21p = *r1 + (up * Residue::TAN54 + z).normalize () * Residue::C_H_DIST;
-	      h22p = *r1 + (-up * Residue::TAN54 + z).normalize () * Residue::C_H_DIST;
-	      insert (Atom (h21p, AtomType::a1H2p));
-	      insert (Atom (h22p, AtomType::a2H2p));
-	    }
-	  }
-	}	  	    
-      }    
+	  x = (*r2 - *r3).normalize ();
+	  y = (*r1 - *r2).normalize ();
+	  z = x.cross (y).cross (y).normalize ();
+	  
+	  v = *r1 + (y * Residue::TAN19 - z).normalize () * Residue::O_H_DIST;
+	  this->insert (Atom (v, AtomType::aHO2p));
+	}
+	catch (NoSuchAtomException& ex)
+	{
+	  gOut (5) << "Failed to add hydrogen " << AtomType::aHO2p << " in "
+		   << *this << ": " << ex << endl;
+	}
+      }
+    }
+    
   }
 
 
   void
   Residue::addHO3p ()
   {
-    if (type->isNucleicAcid () && !contains (AtomType::aHO3p))
+    if (0 == this->_get (AtomType::aHO3p))
+    {
+      try
       {
-	const Vector3D *r1 = this->_get (AtomType::aO3p);
-	const Vector3D *r2 = this->_get (AtomType::aC3p);
-	const Vector3D *r3 = this->_get (AtomType::aC4p);
-		
-	if (0 != r1 && 0 != r2 && 0 != r3)
-	  {
-	    Vector3D hO3p;
-	    Vector3D x = (*r2 - *r3).normalize ();
-	    Vector3D y = (*r1 - *r2).normalize ();
-	    Vector3D z = x.cross (y).cross (y).normalize ();
+	const Vector3D *r1 = this->_safe_get (AtomType::aO3p);
+	const Vector3D *r2 = this->_safe_get (AtomType::aC3p);
+	const Vector3D *r3 = this->_safe_get (AtomType::aC4p);
+
+	Vector3D x = (*r2 - *r3).normalize ();
+	Vector3D y = (*r1 - *r2).normalize ();
+	Vector3D z = x.cross (y).cross (y).normalize ();
 		    
-	    hO3p = *r1 + (y*Residue::TAN19+z).normalize () * Residue::O_H_DIST;
-	    insert (Atom (hO3p, AtomType::aHO3p));
-	  }
+	Vector3D v = *r1 + (y*Residue::TAN19+z).normalize () * Residue::O_H_DIST;
+	this->insert (Atom (v, AtomType::aHO3p));
       }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add hydrogen " << AtomType::aHO3p << " in "
+		 << *this << ": " << ex << endl;
+      }
+    }
   }
 
   
   void 
   Residue::addLonePairs () 
   {
-    Vector3D x, y, z, up, a, b;
+    Vector3D x, y, z, up, a, b, v;
     
-    if (type->isA ()) 
-      {	
-	if (0 == this->_get (AtomType::aC2) || 0 == this->_get (AtomType::aN1)
-	    || 0 == this->_get (AtomType::aN3) || 0 == this->_get (AtomType::aC8)
-	    || 0 == this->_get (AtomType::aN7) || 0 == this->_get (AtomType::aN9)
-	    || 0 == this->_get (AtomType::aC6) || 0 == this->_get (AtomType::aC5)
-	    || 0 == this->_get (AtomType::aN6) || 0 == this->_get (AtomType::aC4)) {
-	  gOut (2) << "Residue " << *getType () << " " << getResId ()
-		   << " is missing one or more critical atoms." << endl;
-	  type = type->invalidate();
-	  return;
-	}
-      
-	Vector3D lp1;
-	Vector3D lp3;
-	Vector3D lp7;
-	
-	// LP1
-	x = (*this->_get (AtomType::aN1) - *this->_get (AtomType::aC2)).normalize ();
-	y = (*this->_get (AtomType::aN1) - *this->_get (AtomType::aC6)).normalize ();
-	z = (x + y).normalize ();
-	lp1 = *this->_get (AtomType::aN1) + z * Residue::N_LP_DIST;
-	
-	// LP3
-	x = (*this->_get (AtomType::aN3) - *this->_get (AtomType::aC2)).normalize ();
-	y = (*this->_get (AtomType::aN3) - *this->_get (AtomType::aC4)).normalize ();
-	z = (x + y).normalize ();
-	lp3 =*this->_get (AtomType::aN3) + z * Residue::N_LP_DIST;
-      
-	// LP7
-	x = (*this->_get (AtomType::aN7) - *this->_get (AtomType::aC5)).normalize ();
-	y = (*this->_get (AtomType::aN7) - *this->_get (AtomType::aC8)).normalize ();
-	z = (x + y).normalize ();
-	lp7 = *this->_get (AtomType::aN7) + z * Residue::N_LP_DIST;
-	
-	insert (Atom (lp1, AtomType::aLP1));
-	insert (Atom (lp3, AtomType::aLP3));
-	insert (Atom (lp7, AtomType::aLP7));
-      } 
-    else if (type->isG ()) 
-      {	
-	if (0 == this->_get (AtomType::aN1) || 0 == this->_get (AtomType::aC2)
-	    || 0 == this->_get (AtomType::aC6) || 0 == this->_get (AtomType::aC8)
-	    || 0 == this->_get (AtomType::aN7) || 0 == this->_get (AtomType::aN9)
-	    || 0 == this->_get (AtomType::aN3) || 0 == this->_get (AtomType::aN2)
-	    || 0 == this->_get (AtomType::aC4) || 0 == this->_get (AtomType::aC5)
-	    || 0 == this->_get (AtomType::aO6)) {
-	  gOut (2) << "Residue " << *getType () << " " << getResId ()
-		   << " is missing one or more critical atoms." << endl;
-	  type = type->invalidate();	      
-	  return;
-	}
-	
-	Vector3D lp3;
-	Vector3D lp7;
-	Vector3D lp61;
-	Vector3D lp62;
-	
-	// LP3
-	x = (*this->_get (AtomType::aN3) - *this->_get (AtomType::aC2)).normalize ();
-	y = (*this->_get (AtomType::aN3) - *this->_get (AtomType::aC4)).normalize ();
-	z = (x + y).normalize ();
-	lp3 = *this->_get (AtomType::aN3) + z * Residue::N_LP_DIST;
-	
-	// LP7
-	x = (*this->_get (AtomType::aN7) - *this->_get (AtomType::aC5)).normalize ();
-	y = (*this->_get (AtomType::aN7) - *this->_get (AtomType::aC8)).normalize ();
-	z = (x + y).normalize ();
-	lp7 = *this->_get (AtomType::aN7) + z * Residue::N_LP_DIST;
-	
-	// 1LP6 and 2LP6
-	x = (*this->_get (AtomType::aC6) - *this->_get (AtomType::aN1)).normalize ();
-	y = (*this->_get (AtomType::aC6) - *this->_get (AtomType::aC5)).normalize ();
-	z = (*this->_get (AtomType::aO6) - *this->_get (AtomType::aC6)).normalize ();
-	
-	up = x.cross (y).normalize ();
-	a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
-	b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();	
-	lp61 = *this->_get (AtomType::aO6) + b * Residue::O_LP_DIST;
-	lp62 = *this->_get (AtomType::aO6) + a * Residue::O_LP_DIST;
-	
-	insert (Atom (lp3, AtomType::aLP3));
-	insert (Atom (lp7, AtomType::aLP7));
-	insert (Atom (lp61, AtomType::a1LP6));
-	insert (Atom (lp62, AtomType::a2LP6));
-      } 
-    else if (type->isC ()) 
+    if (this->type->isA ()) 
+    {	
+      try // LP1
       {
-	if (0 == this->_get (AtomType::aC5) || 0 == this->_get (AtomType::aC4)
-	    || 0 == this->_get (AtomType::aC6) || 0 == this->_get (AtomType::aN1)
-	    || 0 == this->_get (AtomType::aN3) || 0 == this->_get (AtomType::aN4)
-	    || 0 == this->_get (AtomType::aC6) || 0 == this->_get (AtomType::aC5)
-	    || 0 == this->_get (AtomType::aC2) || 0 == this->_get (AtomType::aO2)) {
-	  gOut (2) << "Residue " << *getType () << " " << getResId ()
-		   << " is missing one or more critical atoms." << endl;
-	  type = type->invalidate();	      
-	  return;
-	}
-	
-	Vector3D lp3;
-	Vector3D lp21;
-	Vector3D lp22;
-	
-	// LP3
-	x = (*this->_get (AtomType::aN3) - *this->_get (AtomType::aC2)).normalize ();
-	y = (*this->_get (AtomType::aN3) - *this->_get (AtomType::aC4)).normalize ();
+	x = (*this->_safe_get (AtomType::aN1) - *this->_safe_get (AtomType::aC2)).normalize ();
+	y = (*this->_safe_get (AtomType::aN1) - *this->_safe_get (AtomType::aC6)).normalize ();
 	z = (x + y).normalize ();
-	lp3 = *this->_get (AtomType::aN3) + z * Residue::N_LP_DIST;
-	
-	// 1LP2 and 2LP2
-	x = (*this->_get (AtomType::aC2) - *this->_get (AtomType::aN1)).normalize ();
-	y = (*this->_get (AtomType::aC2) - *this->_get (AtomType::aN3)).normalize ();
-	z = (*this->_get (AtomType::aO2) - *this->_get (AtomType::aC2)).normalize ();
-	
-	up = x.cross (y).normalize ();
-	a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
-	b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();
-	
-	lp21 = *this->_get (AtomType::aO2) + a * Residue::O_LP_DIST;
-	lp22 = *this->_get (AtomType::aO2) + b * Residue::O_LP_DIST;
-	
-	insert (Atom (lp3, AtomType::aLP3));
-	insert (Atom (lp21, AtomType::a1LP2));
-	insert (Atom (lp22, AtomType::a2LP2));
-      } 
-    else if (type->isU () || type->isT ()) 
-      {	    
-	if (0 == this->_get (AtomType::aN3) || 0 == this->_get (AtomType::aC2)
-	    || 0 == this->_get (AtomType::aC4) || 0 == this->_get (AtomType::aC5)
-	    || 0 == this->_get (AtomType::aC6) || 0 == this->_get (AtomType::aN1)
-	    || 0 == this->_get (AtomType::aO2) || 0 == this->_get (AtomType::aO4)) {
-	  gOut (2) << "Residue " << *getType () << " " << getResId ()
-		   << " is missing one or more critical atoms." << endl;
-	  type = type->invalidate();	      
-	  return;
-	}
-	
-	Vector3D lp21;
-	Vector3D lp22;
-	Vector3D lp41;
-	Vector3D lp42;
-	
-	// 1LP2 and 2LP2
-	x = (*this->_get (AtomType::aC2) - *this->_get (AtomType::aN1)).normalize ();
-	y = (*this->_get (AtomType::aC2) - *this->_get (AtomType::aN3)).normalize ();
-	z = (*this->_get (AtomType::aO2) - *this->_get (AtomType::aC2)).normalize ();
-	up = x.cross (y).normalize ();
-	a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
-	b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();
-	lp21 = *this->_get (AtomType::aO2) + a * Residue::O_LP_DIST;
-	lp22 = *this->_get (AtomType::aO2) + b * Residue::O_LP_DIST;
-	
-	// 1LP4 and 2LP4
-	x = (*this->_get (AtomType::aC4) - *this->_get (AtomType::aN3)).normalize ();
-	y = (*this->_get (AtomType::aC4) - *this->_get (AtomType::aC5)).normalize ();
-	z = (*this->_get (AtomType::aO4) - *this->_get (AtomType::aC4)).normalize ();	
-	up = x.cross (y).normalize ();
-	a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
-	b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();
-	
-	lp41 = *this->_get (AtomType::aO4) + b * Residue::O_LP_DIST;
-	lp42 = *this->_get (AtomType::aO4) + a * Residue::O_LP_DIST;
-      
-	insert (Atom (lp21, AtomType::a1LP2));
-	insert (Atom (lp22, AtomType::a2LP2));
-	insert (Atom (lp41, AtomType::a1LP4));
-	insert (Atom (lp42, AtomType::a2LP4));
+	v = *this->_safe_get (AtomType::aN1) + z * Residue::N_LP_DIST;
+	this->insert (Atom (v, AtomType::aLP1));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add lone pair " << AtomType::aLP1 << " in "
+		 << *this << ": " << ex << endl;
+      }
+      try // LP3
+      {
+	x = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC2)).normalize ();
+	y = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC4)).normalize ();
+	z = (x + y).normalize ();
+	v =*this->_safe_get (AtomType::aN3) + z * Residue::N_LP_DIST;
+	this->insert (Atom (v, AtomType::aLP3));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add lone pair " << AtomType::aLP3 << " in "
+		 << *this << ": " << ex << endl;
       }      
+      try // LP7
+      {
+	x = (*this->_safe_get (AtomType::aN7) - *this->_safe_get (AtomType::aC5)).normalize ();
+	y = (*this->_safe_get (AtomType::aN7) - *this->_safe_get (AtomType::aC8)).normalize ();
+	z = (x + y).normalize ();
+	v = *this->_safe_get (AtomType::aN7) + z * Residue::N_LP_DIST;
+	this->insert (Atom (v, AtomType::aLP7));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add lone pair " << AtomType::aLP7 << " in "
+		 << *this << ": " << ex << endl;
+      }  	
+    } 
+    else if (this->type->isG ()) 
+    {	
+      try // LP3
+      {
+	x = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC2)).normalize ();
+	y = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC4)).normalize ();
+	z = (x + y).normalize ();
+	v = *this->_safe_get (AtomType::aN3) + z * Residue::N_LP_DIST;
+	this->insert (Atom (v, AtomType::aLP3));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add lone pair " << AtomType::aLP3 << " in "
+		 << *this << ": " << ex << endl;
+      }	
+      try // LP7
+      {
+	x = (*this->_safe_get (AtomType::aN7) - *this->_safe_get (AtomType::aC5)).normalize ();
+	y = (*this->_safe_get (AtomType::aN7) - *this->_safe_get (AtomType::aC8)).normalize ();
+	z = (x + y).normalize ();
+	v = *this->_safe_get (AtomType::aN7) + z * Residue::N_LP_DIST;
+	this->insert (Atom (v, AtomType::aLP7));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add lone pair " << AtomType::aLP7 << " in "
+		 << *this << ": " << ex << endl;
+      }	
+      try // 1LP6 and 2LP6
+      {
+	x = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aN1)).normalize ();
+	y = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aC5)).normalize ();
+	z = (*this->_safe_get (AtomType::aO6) - *this->_safe_get (AtomType::aC6)).normalize ();	
+	up = x.cross (y).normalize ();
+	
+	b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();	
+	v = *this->_safe_get (AtomType::aO6) + b * Residue::O_LP_DIST;
+	this->insert (Atom (v, AtomType::a1LP6));
+
+	a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
+	v = *this->_safe_get (AtomType::aO6) + a * Residue::O_LP_DIST;
+	this->insert (Atom (v, AtomType::a2LP6));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add lone pairs " << AtomType::a1LP6 << " and "
+		 << AtomType::a2LP6 << " in " << *this << ": " << ex << endl;
+      }	
+    } 
+    else if (this->type->isC ()) 
+    {
+      try // LP3
+      {
+	x = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC2)).normalize ();
+	y = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC4)).normalize ();
+	z = (x + y).normalize ();
+	v = *this->_safe_get (AtomType::aN3) + z * Residue::N_LP_DIST;
+	this->insert (Atom (v, AtomType::aLP3));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add lone pair " << AtomType::aLP3 << " in "
+		 << *this << ": " << ex << endl;
+      }			
+      try // 1LP2 and 2LP2
+      {
+	x = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN1)).normalize ();
+	y = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN3)).normalize ();
+	z = (*this->_safe_get (AtomType::aO2) - *this->_safe_get (AtomType::aC2)).normalize ();
+	up = x.cross (y).normalize ();
+
+	a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
+	v = *this->_safe_get (AtomType::aO2) + a * Residue::O_LP_DIST;
+	this->insert (Atom (v, AtomType::a1LP2));
+
+	b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();	
+	v = *this->_safe_get (AtomType::aO2) + b * Residue::O_LP_DIST;
+	this->insert (Atom (v, AtomType::a2LP2));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add lone pairs " << AtomType::a1LP2 << " and "
+		 << AtomType::a2LP2 << " in " << *this << ": " << ex << endl;
+      }	      
+    } 
+    else if (this->type->isU () || this->type->isT ()) 
+    {	    
+      try // 1LP2 and 2LP2
+      {
+	x = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN1)).normalize ();
+	y = (*this->_safe_get (AtomType::aC2) - *this->_safe_get (AtomType::aN3)).normalize ();
+	z = (*this->_safe_get (AtomType::aO2) - *this->_safe_get (AtomType::aC2)).normalize ();
+	up = x.cross (y).normalize ();
+
+	a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
+	v = *this->_safe_get (AtomType::aO2) + a * Residue::O_LP_DIST;
+	this->insert (Atom (v, AtomType::a1LP2));
+	
+	b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();
+	v = *this->_safe_get (AtomType::aO2) + b * Residue::O_LP_DIST;
+	this->insert (Atom (v, AtomType::a2LP2));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add lone pairs " << AtomType::a1LP2 << " and "
+		 << AtomType::a2LP2 << " in " << *this << ": " << ex << endl;
+      }	        
+      try // 1LP4 and 2LP4
+      {
+	x = (*this->_safe_get (AtomType::aC4) - *this->_safe_get (AtomType::aN3)).normalize ();
+	y = (*this->_safe_get (AtomType::aC4) - *this->_safe_get (AtomType::aC5)).normalize ();
+	z = (*this->_safe_get (AtomType::aO4) - *this->_safe_get (AtomType::aC4)).normalize ();	
+	up = x.cross (y).normalize ();
+	
+	b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();
+	v = *this->_safe_get (AtomType::aO4) + b * Residue::O_LP_DIST;
+	this->insert (Atom (v, AtomType::a1LP4));
+	
+	a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
+	v = *this->_safe_get (AtomType::aO4) + a * Residue::O_LP_DIST;
+	this->insert (Atom (v, AtomType::a2LP4));
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (5) << "Failed to add lone pairs " << AtomType::a1LP4 << " and "
+		 << AtomType::a2LP4 << " in " << *this << ": " << ex << endl;
+      }	       
+    }      
   }
 
   
@@ -1323,9 +1414,9 @@ namespace mccore {
       {
 	rho = this->getRho ();
       }
-    catch (Exception& ex)
+    catch (IntLibException& ex)
       {
-	gOut (3) << "Failed to compute pseudorotation: " << ex << endl;
+	gOut (4) << "Failed to compute pseudorotation: " << ex << endl;
 	return PropertyType::parseType ("undefined");
       }
     return Residue::getPuckerType (rho);
@@ -1349,8 +1440,9 @@ namespace mccore {
       }
     else
       {
-	LibException ex;
-	throw ex << "cannot evaluate glycosyl torsion for " << *this;
+	IntLibException ex ("", __FILE__, __LINE__);
+	ex << "cannot evaluate glycosyl torsion for " << *this;
+	throw ex;
       }
 
     c1p = this->_safe_get (AtomType::aC1p);
@@ -1368,9 +1460,9 @@ namespace mccore {
       {
 	chi = this->getChi ();
       }
-    catch (Exception& ex)
+    catch (IntLibException& ex)
       {
-	gOut (3) << "Failed to compute glycosyl torsion: " << ex << endl;
+	gOut (4) << "Failed to compute glycosyl torsion: " << ex << endl;
 	return PropertyType::parseType ("undefined");
       }
     return Residue::getGlycosylType (chi);
@@ -1385,7 +1477,7 @@ namespace mccore {
 
     try
     {
-    if (this->type->isPurine ())
+      if (this->type->isPurine ())
       {
 	// fetch needed atoms
 	v1 = this->_safe_get (AtomType::aN9);
@@ -1400,7 +1492,7 @@ namespace mccore {
 	this->insert (Atom (y, AtomType::aPSY));
 	this->insert (Atom (z, AtomType::aPSZ));
       }
-    else if (this->type->isPyrimidine ())
+      else if (this->type->isPyrimidine ())
       {
 	// fetch needed atoms
 	v1 = this->_safe_get (AtomType::aN1);
@@ -1415,15 +1507,15 @@ namespace mccore {
 	this->insert (Atom (y, AtomType::aPSY));
 	this->insert (Atom (z, AtomType::aPSZ));
       }
-    else if (this->type->isPhosphate ())
+      else if (this->type->isPhosphate ())
       {
 	// no pseudo-atoms needed
       }
-    else if (this->type->isRibose ())
+      else if (this->type->isRibose ())
       {
 	// no pseudo-atoms needed
       }
-    else if (this->type->isAminoAcid ())
+      else if (this->type->isAminoAcid ())
       {
 	// fetch needed atoms
 	v1 = this->_safe_get (AtomType::aCA);
@@ -1436,54 +1528,16 @@ namespace mccore {
 	z = *v1 + (b.cross (a)).normalize ();
 	this->insert (Atom (z, AtomType::aPSAZ));
       }
-    else
+      else
       {
-	gOut (3) << "Unknown pseudo-atoms for residue type " << *this << endl;
+	gOut (5) << "Unknown pseudo-atoms for residue type " << *this << endl;
       }
     }
-    catch (Exception& ex)
+    catch (NoSuchAtomException& ex)
     {
-      gOut (3) << "Unknown pseudo-atoms for residue "<< *this << ": " << ex << endl;
+      gOut (5) << "Unknown pseudo-atoms for residue "<< *this << ": " << ex << endl;
     }
     
-    
-//     /* Compute the location of the pseudo atoms. */
-//     if (((v1 = this->_get (AtomType::aN9)) != 0 
-// 	 && (v2 = this->_get (AtomType::aC8)) != 0 
-// 	 && (v3 = this->_get (AtomType::aC4)) != 0)
-// 	|| ((v1 = this->_get (AtomType::aN1)) != 0 
-// 	    && (v2 = this->_get (AtomType::aC6)) != 0 
-// 	    && (v3 = this->_get (AtomType::aC2)) != 0))
-//       {
-// 	Vector3D a, b, y, z;
-	
-// 	a = (*v2-*v1).normalize();
-// 	b = (*v3-*v1).normalize();
-// 	y = *v1 + (a + b).normalize();
-// 	z = *v1 + (b.cross(a)).normalize();
-      
-// 	insert (Atom (y, AtomType::aPSY));
-// 	insert (Atom (z, AtomType::aPSZ));
-
-//       }
-//     else if (type->isAminoAcid ())
-//       {
-// 	if ((v1 = this->_get (AtomType::aCA)) != 0 &&
-// 	    (v2 = this->_get (AtomType::aN)) != 0 &&
-// 	    (v3 = this->_get (AtomType::aC)) != 0) {
-// 	  Vector3D a, b, z;
-// 	  a = (*v2 - *v1).normalize();
-// 	  b = (*v3 - *v1).normalize();
-// 	  z = *v1 + (b.cross(a)).normalize();
-	  
-// 	  insert (Atom(z, AtomType::aPSAZ));
-// 	}
-// 	else
-// 	  {
-// 	    gOut (2) << "Residue " << getResId () << "-" << *getType ()
-// 		     << " is missing one or more critical atoms." << endl;		
-// 	  }	
-//       }    
   }
 
 
@@ -1610,8 +1664,9 @@ namespace mccore {
 
     if (build5p && build3p)
       {
-	LibException ex;
-	throw ex << "needs at least one phosphate to build ribose for " << *this;
+	IntLibException ex ("", __FILE__, __LINE__);
+	ex << "needs at least one phosphate to build ribose for " << *this;
+	throw ex;
       }
     
     this->_build_ribose_preprocess (po4_5p, po4_3p,
@@ -1752,8 +1807,9 @@ namespace mccore {
 
     if (build5p && build3p)
       {
-	LibException ex;
-	throw ex << "needs at least one phosphate to build ribose for " << *this;
+	IntLibException ex ("", __FILE__, __LINE__);
+	ex << "needs at least one phosphate to build ribose for " << *this;
+	throw ex;
       }
     
     this->_build_ribose_preprocess (po4_5p, po4_3p,
@@ -1875,8 +1931,9 @@ namespace mccore {
     
     if (po4_3p == 0)
       {
-	LibException ex;
-	throw ex << "3' phosphate is mandatory to estimate ribose for " << *this;
+	IntLibException ex ("", __FILE__, __LINE__);
+	ex << "3' phosphate is mandatory to estimate ribose for " << *this;
+	throw ex;
       }
 
     /** preprocessing **/
@@ -2117,8 +2174,9 @@ namespace mccore {
       return RAD_324;
     else
       {
-	LibException ex;
-	throw ex << "unknown pucker type " << pucker;
+	IntLibException ex ("", __FILE__, __LINE__);
+	ex << "unknown pucker type " << pucker;
+	throw ex;
       }
   }
 
@@ -2148,8 +2206,9 @@ namespace mccore {
       return RAD_360;
     else
       {
-	LibException ex;
-	throw ex << "unknown pucker type " << pucker;
+	IntLibException ex ("", __FILE__, __LINE__);
+	ex << "unknown pucker type " << pucker;
+	throw ex;
       }
   }
 
@@ -2163,8 +2222,9 @@ namespace mccore {
       return RAD_90;
     else
       {
-	LibException ex;
-	throw ex << "unknown glycosyl torsion type " << glycosyl;
+	IntLibException ex ("", __FILE__, __LINE__);
+	ex << "unknown glycosyl torsion type " << glycosyl;
+	throw ex;
       }
   }
 
@@ -2178,8 +2238,9 @@ namespace mccore {
       return RAD_270;
     else
       {
-	LibException ex;
-	throw ex << "unknown glycosyl torsion type " << glycosyl;
+	IntLibException ex ("", __FILE__, __LINE__);
+	ex << "unknown glycosyl torsion type " << glycosyl;
+	throw ex;
       }
   }
     
@@ -2211,11 +2272,11 @@ namespace mccore {
     AtomMap::const_iterator it = atomIndex.find (aType);
     if (it == atomIndex.end ())
       {
-	IntLibException ex;
-	throw ex << "residue " << *this << " is missing atom " << aType;
+	NoSuchAtomException ex ("", __FILE__, __LINE__);
+	ex << "residue " << *this << " is missing atom " << aType;
+	throw ex;
       }
-    else
-      return atomGlobal[it->second];
+    return atomGlobal[it->second];
   }
 
   
@@ -2291,17 +2352,17 @@ namespace mccore {
 	pivot[0] = (Atom*)this->atomGlobal[0];
 	pivot[1] = (Atom*)this->atomGlobal[1];
 	pivot[2] = (Atom*)this->atomGlobal[2];
-	gOut (4) << "default referential with first three atoms for residue type " << *this << endl;	
+	gOut (5) << "default referential with first three atoms for residue type " << *this << endl;	
       }
       else
       {
-	gOut (3) << "no referential for residue type " << *this << endl;
+	gOut (5) << "no referential for residue type " << *this << endl;
 	return HomogeneousTransfo::identity;
       }
     }
-    catch (Exception& ex)
+    catch (NoSuchAtomException& ex)
     {
-      gOut (3) << "no referential for residue " << *this << ": " << ex << endl;
+      gOut (5) << "no referential for residue " << *this << ": " << ex << endl;
       return HomogeneousTransfo::identity;
     }
 
@@ -2334,8 +2395,9 @@ namespace mccore {
 	  }
 	else
 	  {
-	    LibException ex;
-	    throw ex << "cannot build ribose on residue " << *this;
+	    IntLibException ex ("", __FILE__, __LINE__);
+	    ex << "cannot build ribose on residue " << *this;
+	    throw ex;
 	  }
 
 	this->rib_C1p = _get_or_create (AtomType::aC1p);
@@ -2864,7 +2926,8 @@ namespace mccore {
   Exception&
   operator<< (Exception& ex, const Residue &r)
   {
-    return ex << '<' << r.getResId () << ':' << r.getType () << '>';
+    ex << '<' << r.getResId () << ':' << r.getType () << '>';
+    return ex;
   }
   
   
