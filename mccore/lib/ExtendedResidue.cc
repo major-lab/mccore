@@ -3,7 +3,7 @@
 // Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 // 
 //  This file is part of mccore.
 //  
@@ -29,7 +29,7 @@
 #include "ExtendedResidue.h"
 #include "Messagestream.h"
 #include "CException.h"
-
+#include "stlio.h"
 
 namespace mccore {
   
@@ -372,29 +372,49 @@ namespace mccore {
 
   void ExtendedResidue::atomCopy (const Residue& other) 
   {
+
+
     const ExtendedResidue *resp = dynamic_cast< const ExtendedResidue* > (&other);
 
     if (this != &other && resp) {
-      if (type != resp->type) {
+      if (type != resp->getType ()) {
 	CLibException exc ("Invalid residue type ");
 	
-	exc << *resp->type << ".";
+	exc << *resp->getType () << ".";
 	throw exc;
       }
-
-      AtomMap::const_iterator i, j;
-
-      for (i=atomIndex.begin (), j=resp->atomIndex.begin ();
-	   i!=atomIndex.end () && j!=resp->atomIndex.end ();
-	   ++i, ++j) {
-	*atomLocal[i->second] = *resp->atomLocal[j->second];
-	*atomGlobal[i->second] = *resp->atomGlobal[j->second];
+      
+      unsigned int i;
+      for (i=0; i<atomLocal.size (); ++i) {
+	*atomLocal[i] = *resp->atomLocal[i];
+	*atomGlobal[i] = *resp->atomGlobal[i];
       }
+
       placed = true;
       tfo = resp->tfo;      
+    } else {
+      if (this != &other) {
+	if (type != other.getType ()) {
+	  CLibException exc ("Invalid residue type ");
+	  
+	  exc << *other.getType () << ".";
+	  throw exc;
+	}
+	
+	tfo = other.getReferential ();
+	placed = true;
+
+	HomogeneousTransfo tfoi = tfo.invert ();
+	unsigned int i;
+	for (i=0; i<atomLocal.size (); ++i) {
+	  *atomGlobal[i] = *(other.atomGlobal[i]);
+	  *atomLocal[i] = *(other.atomGlobal[i]);
+	  atomLocal[i]->transform (tfoi);
+	}
+	
+      } 
     }
   }
-
 
   // PRIVATE METHODS------------------------------------------------------------
 
@@ -440,7 +460,6 @@ namespace mccore {
   void ExtendedResidue::displace () const
   {
     placed=false;
-    place ();
   }
 
 

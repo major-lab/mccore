@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 // 
 //  This file is part of mccore.
 //  
@@ -52,7 +52,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: ExtendedResidue.h,v 1.4 2003-08-28 14:29:08 gendrop Exp $
+   * @version $Id: ExtendedResidue.h,v 1.5 2003-10-28 16:02:06 gendrop Exp $
    */
   class ExtendedResidue : public virtual Residue
   {
@@ -290,12 +290,20 @@ namespace mccore {
     // I/O  -----------------------------------------------------------------
     
     /**
-     * Ouputs the set to the stream.
+     * Ouputs the residue to the stream.
      * @param os the output stream.
      * @return the used output stream.
      */
     virtual ostream& output (ostream &os) const;
     
+     /**
+     * Inputs the residue from the stream. All residues binary I/O
+     * should be compatible for all inherited classes.
+     * @param ibs the input stream.
+     * @return the used output stream.
+     */
+    //virtual iBinstream& input (iBinstream &ibs);
+
     /**
      * Ouputs the set to the stream.
      * @param os the output stream.
@@ -304,33 +312,6 @@ namespace mccore {
     //    oBinstream& output (oBinstream &obs) const;
 
   };
-
-  
-//   /**
-//    * Ouputs the residue to the stream.
-//    * @param os the output stream.
-//    * @param as the atomset.
-//    * @return the used output stream.
-//    */
-//   ostream& operator<< (ostream &os, const ExtendedResidue &r);
-  
-//   /**
-//    * Inputs the atom from the binary stream.
-//    * @param ibs the input binary stream.
-//    * @param atom the atom to fill.
-//    * @return the input binary stream used.
-//    */
-//   iBinstream& operator>> (iBinstream &ibs, Atom &atom);
-
-
-//   /**
-//    * Outputs the atom to the binary stream.
-//    * @param obs the output binary stream.
-//    * @param atom the atom.
-//    * @return the output binary stream used.
-//    */
-//   oBinstream& operator<< (oBinstream &obs, const ExtendedResidue &atom);
- 
 
 }
 
