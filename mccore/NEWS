@@ -4,12 +4,17 @@
 ;                  Université de Montréal.
 ; Author           : Martin Larose
 ; Created On       : Tue Sep 19 18:15:25 2000
-; $Revision: 1.7 $
-; $Id: NEWS,v 1.7 2004-12-07 14:21:47 thibaup Exp $
+; $Revision: 1.8 $
+; $Id: NEWS,v 1.8 2004-12-10 00:29:59 larosem Exp $
 
 * Version 1.5
 
-- Data structure updates:
+** Model
+
+Models are no longer lists.  The container is replaced with a vector to enable
+us to create GraphModels.
+
+** Data structure updates:
   o The Residue class contains only global coordinates and doesn't remember its referential.
   o The ExtendedResidue keeps its referential and its local coordinates.
   o New set of methods to build a ribose from a Residue.
@@ -19,26 +24,27 @@
   o The Molecule class is viewed as a list of Model& instead of Model*
     (follows Model class implementation).
 
-- Types updates (AtomType, ResidueType and PropertyType):  
+** Types updates (AtomType, ResidueType and PropertyType):  
   o Implementation now uses STL strings.
   o Improved hierarchy.
   o String representation is in an internal format.
   o Type table for Pdbstream representation in either PDB or Amber file format.
 
-- Revised HomogeneousTransfo distance metric:
+** Revised HomogeneousTransfo distance metric:
   Let M place m' on m (M: m -> m') and N place n' on n (N: n -> n').
   Then D(M,N) = S( M^(-1) * N ), where S(M), the strength of a matrix, is computed as in v1.4.
   The matrix M^(-1) * N is the transfo that align m' on n' in m' referential,
   when m and n are aligned.
   
-- Horton's minimal cycle base and base union implementation in Graph.
+** Horton's minimal cycle base and base union implementation in Graph.
 
-- New SQL reader and writer class using MySQL++ library (enable at configure).
+** New SQL reader and writer class using MySQL++ library (enable at configure).
 
-- Planning some revision of the annotation methods:
-  o Four different stack annotation to identify plane direction alignment (aligned or opposed)
-    and target base position relative to its reference (upward or downward), regardless of
-    strand direction in the case of adjacent stack.
+** Planning some revision of the annotation methods:
+  o Four different stack annotation to identify plane direction alignment
+    (aligned or opposed) and target base position relative to its reference
+    (upward or downward), regardless of strand direction in the case of adjacent
+    stack.
   o Identify base plane direction as straight or reversed in base pairing,
     deprecating cis and trans annotation.
     

@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.55 $
-# $Id: Makefile.in,v 1.55 2004-12-06 21:37:32 thibaup Exp $
+# $Revision: 1.56 $
+# $Id: Makefile.in,v 1.56 2004-12-10 00:30:04 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -92,6 +92,7 @@ endif
 
 SOURCES = $(RNAML_SOURCES) \
 	  $(MYSQL_SOURCES) \
+	  AbstractModel.cc \
 	  Binstream.cc \
 	  Exception.cc \
 	  Fastastream.cc \
