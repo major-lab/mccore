@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:31:01 2004
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 // 
 // This file is part of mccore.
 // 
@@ -46,7 +46,7 @@ namespace mccore
    * iterators.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.h,v 1.5 2005-01-14 20:23:05 larosem Exp $
+   * @version $Id: GraphModel.h,v 1.6 2005-01-15 02:17:12 larosem Exp $
    */
   class GraphModel : public AbstractModel, public OrientedGraph< Residue*, Relation*, int, int, less_deref< Residue > >
   {
@@ -245,9 +245,12 @@ namespace mccore
      */
     virtual iterator insert (const Residue &res, int w)
     {
+      Residue *r;
+
+      r = res.clone ();
       annotated = false;
-      graphsuper::insert (res.clone (), w);
-      return end ();
+      graphsuper::insert (r, w);
+      return iterator (graphsuper::find (r));
     }
       
     /**
