@@ -24,7 +24,7 @@
 #include <config.h>
 #endif
 
-#include <values.h>
+#include <limits>
 
 #include "Exception.h"
 #include "RiboseEstimator.h"
@@ -258,7 +258,7 @@ namespace mccore
     if (erho1 < -1.2 || erho1 > 1.2)
       {
 	solved_ok = false;
-	return MAXFLOAT;
+	return numeric_limits<float>::max ();
       }
     if (erho1 < -1)
       erho1 = -1;
