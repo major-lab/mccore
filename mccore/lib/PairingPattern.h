@@ -4,8 +4,8 @@
 // Author           : Patrick Gendron
 // Created On       : Thu May 31 08:17:56 2001
 // Last Modified By : Patrick Gendron
-// Last Modified On : Thu Jul 10 12:22:42 2003
-// $Revision: 1.3 $
+// Last Modified On : Thu Jul 31 14:07:49 2003
+// $Revision: 1.4 $
 // 
 //  This file is part of mccore.
 //  
@@ -82,7 +82,7 @@ namespace mccore {
       /**
        * The patterns.
        */
-      static list< PairingPattern* > patterns;
+      static list< PairingPattern > patterns;
 
       /**
        *
@@ -120,6 +120,8 @@ namespace mccore {
 
       // OPERATORS ------------------------------------------------------------
 
+    private:
+      
       /**
        * Assigns the object with the other's content.
        * @param other, the object to copy.
@@ -129,9 +131,11 @@ namespace mccore {
 
       // ACCESS ---------------------------------------------------------------
 
+    public:
+
       int size () const { return mSize; }
 
-      static list< PairingPattern* >& patternList () { 
+      static list< PairingPattern >& patternList () { 
 	if (!isInit) { init (); isInit = true; }
 	return patterns; 
       }
