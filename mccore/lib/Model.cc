@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.26 $
-// $Id: Model.cc,v 1.26 2004-12-10 00:30:09 larosem Exp $
+// $Revision: 1.26.2.1 $
+// $Id: Model.cc,v 1.26.2.1 2004-12-27 01:42:30 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -31,6 +31,7 @@
 #include <algorithm>
 #include <cstring>
 
+#include "Algo.h"
 #include "Binstream.h"
 #include "Messagestream.h"
 #include "ExtendedResidue.h"
@@ -44,20 +45,15 @@
 namespace mccore
 {
   
-  bool
-  less_deref (Residue* const &x, Residue* const &y)
-  {
-    return *x < *y;
-  }
-
-  
   Model::Model (const Model &right)
     : AbstractModel (right)
   {
     const_iterator cit;
     
     for (cit = right.begin (); cit != right.end (); ++cit)
-      this->insert (*cit);
+      {
+	this->insert ((*cit)->clone ());
+      }
   }
 
 
@@ -65,8 +61,10 @@ namespace mccore
   {
     vector< Residue* >::iterator it;
     
-    for (it = this->residues.begin (); it != this->residues.end (); ++it) 
-      delete *it;      
+    for (it = this->residues.begin (); it != this->residues.end (); ++it)
+      {
+	delete *it;
+      }
   }
 
 
@@ -80,24 +78,33 @@ namespace mccore
 	AbstractModel::operator= (right);
 	this->clear ();	
 	for (cit = right.begin (); cit != right.end (); ++cit)
-	  this->insert (*cit);
+	  {
+	    this->insert ((*cit)->clone ());
       }
     return *this;
   }
   
   
   Residue&
-  Model::operator[] (size_type nth)
+  Model::operator[] (size_type nth) throw (ArrayIndexOutOfBoundsException)
   {
-    return nth > size () ? *end () : *residues[nth];
+    if (nth < size ())
+      {
+	return *residues[nth];
+      }
+    throw ArrayIndexOutOfBoundsException ("", __FILE__, __LINE__);
   }
 
 
 
   const Residue&
-  Model::operator[] (size_type nth) const
+  Model::operator[] (size_type nth) const throw (ArrayIndexOutOfBoundsException)
   {
-    return nth > size () ? *end () : *residues[nth];
+    if (nth < size ())
+      {
+	return *residues[nth];
+      }
+    throw ArrayIndexOutOfBoundsException ("", __FILE__, __LINE__);
   }
 
 
@@ -111,7 +118,7 @@ namespace mccore
   void
   Model::sort ()
   {
-    std::sort (residues.begin (), residues.end (), &less_deref);
+    std::sort (residues.begin (), residues.end (), less_deref< Residue > ());
   }
   
   

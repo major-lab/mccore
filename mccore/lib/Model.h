@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.21.2.2 $
+// $Revision: 1.21.2.3 $
 //
 // This file is part of mccore.
 // 
@@ -30,6 +30,7 @@
 #include <vector>
 
 #include "AbstractModel.h"
+#include "Exception.h"
 
 using namespace std;
 
@@ -58,7 +59,7 @@ namespace mccore
    *   iterators yields object.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Model.h,v 1.21.2.2 2004-12-25 02:42:14 larosem Exp $
+   * @version $Id: Model.h,v 1.21.2.3 2004-12-27 01:42:33 larosem Exp $
    */
   class Model : public AbstractModel
   {
@@ -107,15 +108,17 @@ namespace mccore
      * Gets the model reference at nth position.
      * @param nth the position of the reference to get.
      * @return the nth reference.
+     * @exception ArrayIndexOutOfBoundsException
      */
-    virtual Residue& operator[] (size_type nth);
+    virtual Residue& operator[] (size_type nth) throw (ArrayIndexOutOfBoundsException);
 
     /**
      * Gets the model const_reference at nth position.
      * @param nth the position of the const_reference to get.
      * @return the nth const_reference.
+     * @exception ArrayIndexOutOfBoundsException
      */
-    virtual const Residue& operator[] (size_type nth) const;
+    virtual const Residue& operator[] (size_type nth) const throw (ArrayIndexOutOfBoundsException);
 
     // ACCESS ---------------------------------------------------------------
 
