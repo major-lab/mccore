@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Nov  1 10:07:32 2001
-// Update Count     : 4
+// Last Modified On : Mon Nov  5 11:40:13 2001
+// Update Count     : 5
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -37,16 +37,16 @@
 #ifndef HAVE_STRSEP
 #include "McCore.h"
 #endif
+#include "CResidueFM.h"
 #include "Model.h"
 #include "Pdbstream.h"
-#include "CResidueFM.h"
 #include "ResidueFM.h"
 #include "ResidueType.h"
 
 
 
 Model::model_iterator&
-Model::model_iterator::operator= (const Model::model_iterator &right)
+Model::model_iterator::operator= (const list< AbstractResidue* >::iterator &right)
 {
   if (this != &right)
     list< AbstractResidue* >::iterator::operator= (right);
@@ -72,7 +72,7 @@ Model::model_iterator::operator- (const Model::model_iterator &right) const
 
   
 Model::model_const_iterator&
-Model::model_const_iterator::operator= (const Model::model_const_iterator &right)
+Model::model_const_iterator::operator= (const list< AbstractResidue* >::const_iterator &right)
 {
   if (this != &right)
     list< AbstractResidue* >::const_iterator::operator= (right);

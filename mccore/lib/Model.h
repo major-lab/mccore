@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Nov  1 10:07:37 2001
-// Update Count     : 3
+// Last Modified On : Mon Nov  5 11:40:20 2001
+// Update Count     : 4
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -79,7 +79,7 @@ protected:
      * Initializes the iterator with the list iterator.
      * @param lIt the list iterator.
      */
-    model_iterator (list< AbstractResidue*>::iterator lIt)
+    model_iterator (const list< AbstractResidue* >::iterator &lIt)
       : list< AbstractResidue* >::iterator (lIt)
     { }
 
@@ -90,7 +90,7 @@ protected:
      * @param right the iterator to copy.
      * @return itself.
      */
-    model_iterator& operator= (const model_iterator &right);
+    model_iterator& operator= (const list< AbstractResidue* >::iterator &right);
 
     /**
      * Tests the equality between iterators.
@@ -147,7 +147,7 @@ protected:
      * Initializes the iterator with the list iterator.
      * @param lIt the list iterator.
      */
-    model_const_iterator (list< AbstractResidue*>::const_iterator lIt)
+    model_const_iterator (const list< AbstractResidue* >::const_iterator &lIt)
       : list< AbstractResidue* >::const_iterator (lIt)
     { }
 
@@ -158,7 +158,7 @@ protected:
      * @param right the iterator to copy.
      * @return itself.
      */
-    model_const_iterator& operator= (const model_const_iterator &right);
+    model_const_iterator& operator= (const list< AbstractResidue* >::const_iterator &right);
 
     /**
      * Tests the equality between iterators.
