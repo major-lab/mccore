@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Dec 10 19:09:13 2004
-// $Revision: 1.12.2.7 $
+// $Revision: 1.12.2.8 $
 // 
 // This file is part of mccore.
 // 
@@ -44,7 +44,7 @@ namespace mccore
    * Undirected graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: UndirectedGraph.h,v 1.12.2.7 2004-12-16 22:29:48 larosem Exp $
+   * @version $Id: UndirectedGraph.h,v 1.12.2.8 2004-12-21 07:10:57 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -108,6 +108,27 @@ namespace mccore
       return *this;
     }	  
 
+    /**
+     * Tests whether the graphs are equals.
+     * @param right a graph to compare with this.
+     * @return whether the graphs are equals.
+     */
+    bool operator== (const UndirectedGraph &right) const
+    {
+      return (this == &right
+	      || Graph< V, E, VW, EW, Vertex_Comparator>::operator== (right));
+    }
+    
+    /**
+     * Tests whether the graphs differs.
+     * @param right a graph to compare with this.
+     * @return whether the graphs differs.
+     */
+    bool operator!= (const UndirectedGraph &right) const
+    {
+      return ! operator== (right);
+    }
+    
     // ACCESS ---------------------------------------------------------------
 
     /**

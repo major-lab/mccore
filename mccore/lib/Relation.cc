@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.32.2.2 $
+// $Revision: 1.32.2.3 $
 // 
 // This file is part of mccore.
 // 
@@ -420,8 +420,8 @@ namespace mccore
 	HBondFlowGraph graph;
 
 	node = 0;
-	graph.insert (node++, 0); // Source
-	graph.insert (node++, 0); // Sink
+	graph.insert (node++, 1); // Source
+	graph.insert (node++, 1); // Sink
 
 	vector< Residue::const_iterator > ref_at;
 	vector< Residue::const_iterator > refn_at;
@@ -517,17 +517,17 @@ namespace mccore
 			    
 			if (atomToInt.find (i) == atomToInt.end ())
 			  {
-			    graph.insert (node, 0);
-			    graph.connect (0, node, hb, 0.0F);
+			    graph.insert (node, 1);
+			    graph.connect (0, node, hb, 0);
 			    atomToInt[i] = node++;
 			  }
 			if (atomToInt.find (k) == atomToInt.end ())
 			  {
-			    graph.insert (node);
-			    graph.connect (node, 1, hb, 0.0F);
+			    graph.insert (node, 1);
+			    graph.connect (node, 1, hb, 0);
 			    atomToInt[k] = node++;
 			  }
-			graph.connect (atomToInt[i], atomToInt[k], h, 0.0F);
+			graph.connect (atomToInt[i], atomToInt[k], h, 0);
 		      }
 		  }
 		else if (k->getType ()->isHydrogen ()
@@ -544,14 +544,14 @@ namespace mccore
 			
 			if (atomToInt.find (k) == atomToInt.end ())
 			  {
-			    graph.insert (node, 0);
-			    graph.connect (0, node, hb, 0.0F);
+			    graph.insert (node, 1);
+			    graph.connect (0, node, hb, 0);
 			    atomToInt[k] = node++;
 			  }
 			if (atomToInt.find (i) == atomToInt.end ())
 			  {
-			    graph.insert (node, 0);
-			    graph.connect (node, 1, hb, 0.0F);
+			    graph.insert (node, 1);
+			    graph.connect (node, 1, hb, 0);
 			    atomToInt[i] = node++;
 			  }
 			graph.connect (atomToInt[k], atomToInt[i], h, 0);
@@ -592,7 +592,7 @@ namespace mccore
 		  }
 	      }
 	
-	    gOut (5) << "Sum flow = " << sum_flow << endl;
+	    gOut (3) << "Sum flow = " << sum_flow << endl;
 	    
 	    if (sum_flow >= PAIRING_CUTOFF)
 	      {
@@ -695,6 +695,7 @@ namespace mccore
 	else
 	  {
 	    hbonds.clear ();
+	    gOut (3) << "MaximumFlowGraph.size () = " << graph.size () << endl;
 	  }
       }
     catch (NoSuchAtomException& ex)

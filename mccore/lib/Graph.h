@@ -4,7 +4,7 @@
 //                  Université de Montréal
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 00:05:15 2004
-// $Revision: 1.23.4.10 $
+// $Revision: 1.23.4.11 $
 // 
 // This file is part of mccore.
 // 
@@ -80,7 +80,7 @@ namespace mccore
    * costly.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Graph.h,v 1.23.4.10 2004-12-16 22:29:33 larosem Exp $
+   * @version $Id: Graph.h,v 1.23.4.11 2004-12-21 07:10:36 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -278,8 +278,6 @@ namespace mccore
       
       // I/O  -----------------------------------------------------------------
 
-      friend class Graph;
-      friend class OrientedGraph;
     };
 
   protected:
@@ -354,7 +352,7 @@ namespace mccore
 	  vertexWeights = right.vertexWeights;
 	  edges = right.edges;
 	  edgeWeights = right.edgeWeights;
-	  v2vlabel.clear;
+	  v2vlabel.clear ();
 	  for (l = 0; l < vertices.size (); ++l)
 	    {
 	      v2vlabel.insert (make_pair (&vertices[l], l));
@@ -362,6 +360,31 @@ namespace mccore
 	  ev2elabel = right.ev2elabel;
 	}
       return *this;
+    }
+
+    /**
+     * Tests whether the graphs are equals.
+     * @param right a graph to compare with this.
+     * @return whether the graphs are equals.
+     */
+    bool operator== (const Graph< V, E, VW, EW, Vertex_Comparator > &right) const
+    {
+      return (this == &right
+	      || (vertices == right.vertices
+		  && vertexWeights == right.vertexWeights
+		  && edges == right.edges
+		  && edgeWeights == right.edgeWeights
+		  && ev2elabel == right.ev2elabel));
+    }
+    
+    /**
+     * Tests whether the graphs differs.
+     * @param right a graph to compare with this.
+     * @return whether the graphs differs.
+     */
+    bool operator!= (const Graph< V, E, VW, EW, Vertex_Comparator > &right) const
+    {
+      return ! operator== (right);
     }
     
     // ACCESS ---------------------------------------------------------------
@@ -993,11 +1016,12 @@ namespace mccore
      * @param l the last iterator in the range.
      */
     template <class InputIterator>
-    void insert (InputIterator f, InputIterator l)
+    void insertRange (InputIterator f, InputIterator l)
     {
-      vertices.insert (vertices.end (), f, l);
-      vertexWeights.resize (vertices.size ());
-      rebuildV2VLabel ();
+      for (; l != f; ++f)
+	{
+	  insert (*f);
+	}
     }
 
   protected:
@@ -1255,18 +1279,22 @@ namespace mccore
 	{
 	  os << setw (5) << counter << "  " << *vit << "  " << *vwit << endl;
 	}
-      os << endl << "[Edges]" << endl;
+      os << "[Edges]" << endl;
       for (eit = edges.begin (), ewit = edgeWeights.begin (), counter = 0; edges.end () != eit; ++eit, ++ewit, ++counter)
 	{
 	  os << setw (5) << counter << "  " << *eit << "  " << *ewit << endl;
 	}
-      os << endl << "[Adjacency matrix]" << endl;
+      os << "[Adjacency matrix]" << endl;
+      os << "     ";
       for (counter = 0; vertices.size () > counter; ++counter)
 	{
 	  os << setw (5) << counter;
 	}
       linecounter = 0;
-      os << endl << setw (5) << linecounter;      
+      if (! empty ())
+	{
+	  os << endl << setw (5) << linecounter;
+	}
       for (counter = 0, evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit, ++counter)
 	{
 	  Graph::label evline;
@@ -1316,6 +1344,12 @@ namespace mccore
 
 namespace std
 {
+
+  ostream& operator<< (ostream &os, const mccore::NoSuchElementException &e)
+  {
+    return os << "NoSuchElementException";
+  }
+  
   template < class V, class E, class VW, class EW, class VC >
   ostream& operator<< (ostream &os, const mccore::Graph< V, E, VW, EW, VC > &obj)
   {

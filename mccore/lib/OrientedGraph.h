@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu May 10 14:49:18 2001
-// $Revision: 1.1.2.4 $
+// $Revision: 1.1.2.5 $
 // 
 // This file is part of mccore.
 // 
@@ -43,7 +43,7 @@ namespace mccore
    * Directed graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: OrientedGraph.h,v 1.1.2.4 2004-12-16 22:29:41 larosem Exp $
+   * @version $Id: OrientedGraph.h,v 1.1.2.5 2004-12-21 07:10:48 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -107,6 +107,27 @@ namespace mccore
       return *this;
     }	  
 
+    /**
+     * Tests whether the graphs are equals.
+     * @param right a graph to compare with this.
+     * @return whether the graphs are equals.
+     */
+    bool operator== (const OrientedGraph &right) const
+    {
+      return (this == &right
+	      || Graph< V, E, VW, EW, Vertex_Comparator>::operator== (right));
+    }
+    
+    /**
+     * Tests whether the graphs differs.
+     * @param right a graph to compare with this.
+     * @return whether the graphs differs.
+     */
+    bool operator!= (const OrientedGraph &right) const
+    {
+      return ! operator== (right);
+    }
+    
     // ACCESS ---------------------------------------------------------------
 
     /**

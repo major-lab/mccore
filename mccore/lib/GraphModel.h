@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:31:01 2004
-// $Revision: 1.1.2.2 $
+// $Revision: 1.1.2.3 $
 // 
 // This file is part of mccore.
 // 
@@ -41,7 +41,7 @@ namespace mccore
   
   /**
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.h,v 1.1.2.2 2004-12-14 02:51:34 larosem Exp $
+   * @version $Id: GraphModel.h,v 1.1.2.3 2004-12-21 07:10:45 larosem Exp $
    */
   class GraphModel : public AbstractModel, public UndirectedGraph < Residue*, Relation*, float, float, less_deref< Residue > >
   {
@@ -149,9 +149,9 @@ namespace mccore
      * @param l the last iterator in the range.
      */
     template <class InputIterator>
-    void insert(InputIterator f, InputIterator l)
+    void insert (InputIterator f, InputIterator l)
     {
-      UndirectedGraph< Residue*, Relation*, float, float, less_deref< Residue > >::insert (f, l);
+      UndirectedGraph< Residue*, Relation*, float, float, less_deref< Residue > >::insertRange (f, l);
     }
 
     /**
