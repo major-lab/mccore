@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // AtomTypeStore.h
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 12:30:39 2003
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 // 
 //  This file is part of mccore.
 //  
@@ -44,7 +44,7 @@ namespace mccore {
    * @short Repository of atomtypes.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: AtomTypeStore.h,v 1.4 2003-08-28 14:29:02 gendrop Exp $
+   * @version $Id: AtomTypeStore.h,v 1.5 2004-01-29 17:26:17 larosem Exp $
    */
   class AtomTypeStore
   {
@@ -110,6 +110,9 @@ namespace mccore {
       AminoAcid (const char* t) : AtomType (t) {}
 
       virtual bool isAminoAcid () const { return true; }
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AminoAcid* > (t);
+      }
     };
     
     /**
@@ -121,6 +124,9 @@ namespace mccore {
       NucleicAcid (const char* t) : AtomType (t) {}
 
       virtual bool isNucleicAcid () const { return true; }
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const NucleicAcid* > (t);
+      }
     };
 
     /**
@@ -132,6 +138,9 @@ namespace mccore {
       Backbone (const char* t) : AtomType (t) {}
 
       virtual bool isBackbone () const { return true; }
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const Backbone* > (t);
+      }
     };
 
     /**
@@ -143,6 +152,9 @@ namespace mccore {
       SideChain (const char* t) : AtomType (t) {}
 
       virtual bool isSideChain () const { return true; }
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const SideChain* > (t);
+      }
     };
 
     /**
@@ -154,6 +166,9 @@ namespace mccore {
       Carbon (const char* t) : AtomType (t) {}
 
       virtual bool isCarbon () const { return true; }
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const Carbon* > (t);
+      }
     };
 
     /**
@@ -165,6 +180,9 @@ namespace mccore {
       Hydrogen (const char* t) : AtomType (t) {}
 
       virtual bool isHydrogen () const { return true; }
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const Hydrogen* > (t);
+      }
     };
 
     /**
@@ -176,6 +194,9 @@ namespace mccore {
       LonePair (const char* t) : AtomType (t) {}
 
       virtual bool isLonePair () const { return true; }
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const LonePair* > (t);
+      }
     };
 
     /**
@@ -187,6 +208,9 @@ namespace mccore {
       Magnesium (const char* t) : AtomType (t) {}
 
       virtual bool isMagnesium () const { return true; }
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const Magnesium* > (t);
+      }
     };
 
     /**
@@ -198,6 +222,9 @@ namespace mccore {
       Nitrogen (const char* t) : AtomType (t) {}
 
       virtual bool isNitrogen () const { return true; }
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const Nitrogen* > (t);
+      }
     };
 
     /**
@@ -209,6 +236,9 @@ namespace mccore {
       Oxygen (const char* t) : AtomType (t) {}
 
       virtual bool isOxygen () const { return true; }
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const Oxygen* > (t);
+      }
     };
 
     /**
@@ -220,6 +250,9 @@ namespace mccore {
       Phosphate (const char* t) : AtomType (t) {}
 
       virtual bool isPhosphate () const { return true; }
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const Phosphate* > (t);
+      }
     };
 
     /**
@@ -231,6 +264,9 @@ namespace mccore {
       Pseudo (const char* t) : AtomType (t) {}
 
       virtual bool isPseudo () const { return true; }
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const Pseudo* > (t);
+      }
     };
 
     /**
@@ -242,6 +278,9 @@ namespace mccore {
       Sulfur (const char* t) : AtomType (t) {}
 
       virtual bool isSulfur () const { return true; }
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const Sulfur* > (t);
+      }
     };
 
     /**
@@ -252,6 +291,10 @@ namespace mccore {
     public:
       AC1p () {}
       AC1p (const char* t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AC1p* > (t);
+      }
       
       /**
        * Gets the Van Der Waals radius value for the atom.
@@ -284,6 +327,10 @@ namespace mccore {
       AC2p () {}
       AC2p (const char*  t) : AtomType (t) {}
 
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AC2p* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -315,6 +362,11 @@ namespace mccore {
     public:
       AC3p () {}
       AC3p (const char*  t) : AtomType (t) {}
+
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AC3p* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -346,6 +398,10 @@ namespace mccore {
       AC4p () {}
       AC4p (const char*  t) : AtomType (t) {}
  
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AC4p* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -377,6 +433,10 @@ namespace mccore {
       AC5p () {}
       AC5p (const char*  t) : AtomType (t) {}
  
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AC5p* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -408,6 +468,10 @@ namespace mccore {
       AH1p () {}
       AH1p (const char*  t) : AtomType (t) {}
 
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AH1p* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -439,6 +503,10 @@ namespace mccore {
       AH2p () {}
       AH2p (const char*  t) : AtomType (t) {}
   
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AH2p* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -470,6 +538,10 @@ namespace mccore {
       AH3p () {}
       AH3p (const char*  t) : AtomType (t) {}
 
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AH3p* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -501,6 +573,10 @@ namespace mccore {
       AH4p () {}
       AH4p (const char*  t) : AtomType (t) {}
 
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AH4p* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -532,6 +608,10 @@ namespace mccore {
       AH5p () {}
       AH5p (const char*  t) : AtomType (t) {}
 
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AH5p* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -563,6 +643,10 @@ namespace mccore {
       AO1P () {}
       AO1P (const char*  t) : AtomType (t) {}
 
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AO1P* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -594,6 +678,10 @@ namespace mccore {
       AO2p () {}
       AO2p (const char*  t) : AtomType (t) {}
 
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AO2p* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -625,6 +713,10 @@ namespace mccore {
       AO2P () {}
       AO2P (const char*  t) : AtomType (t) {}
 
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AO2P* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -656,6 +748,10 @@ namespace mccore {
       AO3p () {}
       AO3p (const char*  t) : AtomType (t) {}
 
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AO3p* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -687,6 +783,10 @@ namespace mccore {
       AO3P () {}
       AO3P (const char*  t) : AtomType (t) {}
 
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AO3P* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -718,6 +818,10 @@ namespace mccore {
       AO4p () {}
       AO4p (const char*  t) : AtomType (t) {}
 
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AO4p* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -749,6 +853,10 @@ namespace mccore {
       AO5p () {}
       AO5p (const char*  t) : AtomType (t) {}
 
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AO5p* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -780,6 +888,10 @@ namespace mccore {
       AP () {}
       AP (const char*  t) : AtomType (t) {}
 
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AP* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -812,6 +924,10 @@ namespace mccore {
       A1H2p () {}
       A1H2p (const char*  t) : AtomType (t) {}
 
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A1H2p* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -843,6 +959,10 @@ namespace mccore {
       A1H5p () {}
       A1H5p (const char*  t) : AtomType (t) {}
  
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A1H5p* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -874,6 +994,10 @@ namespace mccore {
       A2H2p () {}
       A2H2p (const char*  t) : AtomType (t) {}
 
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A2H2p* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -905,6 +1029,10 @@ namespace mccore {
       A2H5p () {}
       A2H5p (const char*  t) : AtomType (t) {}
 
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A2H5p* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -935,6 +1063,10 @@ namespace mccore {
     public:
       AHO2p () {}
       AHO2p (const char*  t) : AtomType (t) {}
+
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHO2p* > (t);
+      }
 
       /**
        * Gets the Van Der Waals radius value for the atom.  The value is not defined
@@ -968,7 +1100,11 @@ namespace mccore {
     public:
       AHO3p () {}
       AHO3p (const char*  t) : AtomType (t) {}
-
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHO3p* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.  The value is not defined
        * in Amber.
@@ -1003,6 +1139,10 @@ namespace mccore {
       AC2 () {}
       AC2 (const char*  t) : AtomType (t) {}
 
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AC2* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1034,6 +1174,10 @@ namespace mccore {
       AC4 () {}
       AC4 (const char*  t) : AtomType (t) {}
 
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AC4* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1065,6 +1209,10 @@ namespace mccore {
       AC5 () {}
       AC5 (const char*  t) : AtomType (t) {}
 
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AC5* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1096,6 +1244,10 @@ namespace mccore {
       AC5M () {}
       AC5M (const char*  t) : AtomType (t) {}
 
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AC5M* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1127,6 +1279,10 @@ namespace mccore {
       AC6 () {}
       AC6 (const char*  t) : AtomType (t) {}
 
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AC6* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1158,6 +1314,10 @@ namespace mccore {
       AC8 () {}
       AC8 (const char*  t) : AtomType (t) {}
 
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AC8* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1189,6 +1349,10 @@ namespace mccore {
       AH1 () {}
       AH1 (const char*  t) : AtomType (t) {}
 
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AH1* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1219,6 +1383,11 @@ namespace mccore {
     public:
       AH2 () {}
       AH2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AH2* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1249,6 +1418,11 @@ namespace mccore {
     public:
       AH3 () {}
       AH3 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AH3* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1279,6 +1453,11 @@ namespace mccore {
     public:
       AH5 () {}
       AH5 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AH5* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1309,6 +1488,11 @@ namespace mccore {
     public:
       AH6 () {}
       AH6 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AH6* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1339,6 +1523,11 @@ namespace mccore {
     public:
       AH7 () {}
       AH7 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AH7* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1369,6 +1558,11 @@ namespace mccore {
     public:
       AH8 () {}
       AH8 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AH8* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1399,6 +1593,11 @@ namespace mccore {
     public:
       AN1 () {}
       AN1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AN1* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1429,6 +1628,11 @@ namespace mccore {
     public:
       AN2 () {}
       AN2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AN2* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1459,6 +1663,11 @@ namespace mccore {
     public:
       AN3 () {}
       AN3 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AN3* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1489,6 +1698,11 @@ namespace mccore {
     public:
       AN4 () {}
       AN4 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AN4* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1519,6 +1733,11 @@ namespace mccore {
     public:
       AN6 () {}
       AN6 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AN6* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1549,6 +1768,11 @@ namespace mccore {
     public:
       AN7 () {}
       AN7 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AN7* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1579,6 +1803,11 @@ namespace mccore {
     public:
       AN9 () {}
       AN9 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AN9* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1609,6 +1838,11 @@ namespace mccore {
     public:
       AO2 () {}
       AO2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AO2* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1639,6 +1873,11 @@ namespace mccore {
     public:
       AO4 () {}
       AO4 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AO4* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1669,6 +1908,11 @@ namespace mccore {
     public:
       AO6 () {}
       AO6 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AO6* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1699,6 +1943,11 @@ namespace mccore {
     public:
       A1H2 () {}
       A1H2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A1H2* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1729,6 +1978,11 @@ namespace mccore {
     public:
       A1H4 () {}
       A1H4 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A1H4* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1759,6 +2013,11 @@ namespace mccore {
     public:
       A1H5M () {}
       A1H5M (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A1H5M* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1789,6 +2048,11 @@ namespace mccore {
     public:
       A1H6 () {}
       A1H6 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A1H6* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1819,6 +2083,11 @@ namespace mccore {
     public:
       A2H2 () {}
       A2H2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A2H2* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1849,6 +2118,11 @@ namespace mccore {
     public:
       A2H4 () {}
       A2H4 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A2H4* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1879,6 +2153,11 @@ namespace mccore {
     public:
       A2H5M () {}
       A2H5M (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A2H5M* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1909,6 +2188,11 @@ namespace mccore {
     public:
       A2H6 () {}
       A2H6 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A2H6* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1939,6 +2223,11 @@ namespace mccore {
     public:
       A3H5M () {}
       A3H5M (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A3H5M* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -1969,8 +2258,13 @@ namespace mccore {
     public:
       APSY () {}
       APSY (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const APSY* > (t);
+      }
+
       /**
-       * Gets the Van Der Waals radius value for the atom.
+       * Gets the Van Waals radius value for the atom.
        * @param res the residue that contains the atom.
        * @return the Pseudo atom value.
        */
@@ -2002,6 +2296,11 @@ namespace mccore {
     public:
       APSZ () {}
       APSZ (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const APSZ* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2035,6 +2334,11 @@ namespace mccore {
     public:
       ALP1 () {}
       ALP1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ALP1* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2068,6 +2372,11 @@ namespace mccore {
     public:
       ALP3 () {}
       ALP3 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ALP3* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2101,6 +2410,11 @@ namespace mccore {
     public:
       ALP7 () {}
       ALP7 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ALP7* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2134,6 +2448,11 @@ namespace mccore {
     public:
       A1LP2 () {}
       A1LP2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A1LP2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2167,6 +2486,11 @@ namespace mccore {
     public:
       A1LP4 () {}
       A1LP4 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A1LP4* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2200,6 +2524,11 @@ namespace mccore {
     public:
       A1LP6 () {}
       A1LP6 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A1LP6* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2233,6 +2562,11 @@ namespace mccore {
     public:
       A2LP2 () {}
       A2LP2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A2LP2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2266,6 +2600,11 @@ namespace mccore {
     public:
       A2LP4 () {}
       A2LP4 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A2LP4* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2299,6 +2638,11 @@ namespace mccore {
     public:
       A2LP6 () {}
       A2LP6 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A2LP6* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2332,6 +2676,11 @@ namespace mccore {
     public:
       AH3T () {}
       AH3T (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AH3T* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2362,6 +2711,11 @@ namespace mccore {
     public:
       AH5T () {}
       AH5T (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AH5T* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2392,6 +2746,11 @@ namespace mccore {
     public:
       AC () {}
       AC (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AC* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2422,6 +2781,11 @@ namespace mccore {
     public:
       ACA () {}
       ACA (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ACA* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2452,6 +2816,11 @@ namespace mccore {
     public:
       ACB () {}
       ACB (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ACB* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2482,6 +2851,11 @@ namespace mccore {
     public:
       ACD () {}
       ACD (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ACD* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2512,6 +2886,11 @@ namespace mccore {
     public:
       ACD1 () {}
       ACD1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ACD1* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2542,6 +2921,11 @@ namespace mccore {
     public:
       ACD2 () {}
       ACD2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ACD2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2572,6 +2956,11 @@ namespace mccore {
     public:
       ACE () {}
       ACE (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ACE* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2602,6 +2991,11 @@ namespace mccore {
     public:
       ACE1 () {}
       ACE1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ACE1* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2632,6 +3026,11 @@ namespace mccore {
     public:
       ACE2 () {}
       ACE2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ACE2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2662,6 +3061,11 @@ namespace mccore {
     public:
       ACE3 () {}
       ACE3 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ACE3* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2692,6 +3096,11 @@ namespace mccore {
     public:
       ACG () {}
       ACG (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ACG* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2722,6 +3131,11 @@ namespace mccore {
     public:
       ACG1 () {}
       ACG1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ACG1* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2752,6 +3166,11 @@ namespace mccore {
     public:
       ACG2 () {}
       ACG2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ACG2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2782,6 +3201,11 @@ namespace mccore {
     public:
       ACH2 () {}
       ACH2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ACH2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2812,6 +3236,11 @@ namespace mccore {
     public:
       ACZ () {}
       ACZ (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ACZ* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2842,6 +3271,11 @@ namespace mccore {
     public:
       ACZ2 () {}
       ACZ2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ACZ2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2872,6 +3306,11 @@ namespace mccore {
     public:
       ACZ3 () {}
       ACZ3 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ACZ3* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2902,6 +3341,11 @@ namespace mccore {
     public:
       AH () {}
       AH (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AH* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2932,6 +3376,11 @@ namespace mccore {
     public:
       A1H () {}
       A1H (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A1H* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2962,6 +3411,11 @@ namespace mccore {
     public:
       A2H () {}
       A2H (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A2H* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -2992,6 +3446,11 @@ namespace mccore {
     public:
       A3H () {}
       A3H (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A3H* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3022,6 +3481,11 @@ namespace mccore {
     public:
       AHA () {}
       AHA (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHA* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3052,6 +3516,11 @@ namespace mccore {
     public:
       AHA1 () {}
       AHA1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHA1* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3082,6 +3551,11 @@ namespace mccore {
     public:
       AHA2 () {}
       AHA2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHA2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3112,6 +3586,11 @@ namespace mccore {
     public:
       AHB () {}
       AHB (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHB* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3142,6 +3621,11 @@ namespace mccore {
     public:
       AHB1 () {}
       AHB1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHB1* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3172,6 +3656,11 @@ namespace mccore {
     public:
       AHB2 () {}
       AHB2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHB2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3202,6 +3691,11 @@ namespace mccore {
     public:
       AHB3 () {}
       AHB3 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHB3* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3232,6 +3726,11 @@ namespace mccore {
     public:
       AHD1 () {}
       AHD1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHD1* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3262,6 +3761,11 @@ namespace mccore {
     public:
       AHD2 () {}
       AHD2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHD2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3292,6 +3796,11 @@ namespace mccore {
     public:
       AHE () {}
       AHE (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHE* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3322,6 +3831,11 @@ namespace mccore {
     public:
       AHE1 () {}
       AHE1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHE1* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3352,6 +3866,11 @@ namespace mccore {
     public:
       AHE2 () {}
       AHE2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHE2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3382,6 +3901,11 @@ namespace mccore {
     public:
       AHE3 () {}
       AHE3 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHE3* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3412,6 +3936,11 @@ namespace mccore {
     public:
       AHG () {}
       AHG (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHG* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3442,6 +3971,11 @@ namespace mccore {
     public:
       AHG1 () {}
       AHG1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHG1* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3472,6 +4006,11 @@ namespace mccore {
     public:
       AHG2 () {}
       AHG2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHG2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3502,6 +4041,11 @@ namespace mccore {
     public:
       AHH () {}
       AHH (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHH* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3532,6 +4076,11 @@ namespace mccore {
     public:
       AHH2 () {}
       AHH2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHH2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3562,6 +4111,11 @@ namespace mccore {
     public:
       AHXT () {}
       AHXT (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHXT* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3592,6 +4146,11 @@ namespace mccore {
     public:
       AHZ () {}
       AHZ (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHZ* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3622,6 +4181,11 @@ namespace mccore {
     public:
       AHZ1 () {}
       AHZ1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHZ1* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3652,6 +4216,11 @@ namespace mccore {
     public:
       AHZ2 () {}
       AHZ2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHZ2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3682,6 +4251,11 @@ namespace mccore {
     public:
       AHZ3 () {}
       AHZ3 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AHZ3* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3712,6 +4286,11 @@ namespace mccore {
     public:
       AN () {}
       AN (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AN* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3742,6 +4321,11 @@ namespace mccore {
     public:
       AND1 () {}
       AND1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AND1* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3772,6 +4356,11 @@ namespace mccore {
     public:
       AND2 () {}
       AND2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AND2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3802,6 +4391,11 @@ namespace mccore {
     public:
       ANE () {}
       ANE (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ANE* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3832,6 +4426,11 @@ namespace mccore {
     public:
       ANE1 () {}
       ANE1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ANE1* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3862,6 +4461,11 @@ namespace mccore {
     public:
       ANE2 () {}
       ANE2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ANE2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3892,6 +4496,11 @@ namespace mccore {
     public:
       ANH1 () {}
       ANH1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ANH1* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3922,6 +4531,11 @@ namespace mccore {
     public:
       ANH2 () {}
       ANH2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ANH2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3952,6 +4566,11 @@ namespace mccore {
     public:
       ANZ () {}
       ANZ (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ANZ* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -3982,6 +4601,11 @@ namespace mccore {
     public:
       AO () {}
       AO (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AO* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4012,6 +4636,11 @@ namespace mccore {
     public:
       AOD1 () {}
       AOD1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AOD1* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4042,6 +4671,11 @@ namespace mccore {
     public:
       AOD2 () {}
       AOD2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AOD2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4072,6 +4706,11 @@ namespace mccore {
     public:
       AOE1 () {}
       AOE1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AOE1* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4102,6 +4741,11 @@ namespace mccore {
     public:
       AOE2 () {}
       AOE2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AOE2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4132,6 +4776,11 @@ namespace mccore {
     public:
       AOG () {}
       AOG (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AOG* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4162,6 +4811,11 @@ namespace mccore {
     public:
       AOG1 () {}
       AOG1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AOG1* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4192,6 +4846,11 @@ namespace mccore {
     public:
       AOH () {}
       AOH (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AOH* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4222,6 +4881,11 @@ namespace mccore {
     public:
       AOXT () {}
       AOXT (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AOXT* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4252,6 +4916,11 @@ namespace mccore {
     public:
       ASD () {}
       ASD (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ASD* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4282,6 +4951,11 @@ namespace mccore {
     public:
       ASG () {}
       ASG (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const ASG* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4312,6 +4986,11 @@ namespace mccore {
     public:
       A1HD1 () {}
       A1HD1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A1HD1* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4342,6 +5021,11 @@ namespace mccore {
     public:
       A1HD2 () {}
       A1HD2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A1HD2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4372,6 +5056,11 @@ namespace mccore {
     public:
       A1HE2 () {}
       A1HE2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A1HE2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4402,6 +5091,11 @@ namespace mccore {
     public:
       A1HG1 () {}
       A1HG1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A1HG1* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4432,6 +5126,11 @@ namespace mccore {
     public:
       A1HG2 () {}
       A1HG2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A1HG2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4462,6 +5161,11 @@ namespace mccore {
     public:
       A1HH1 () {}
       A1HH1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A1HH1* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4492,6 +5196,11 @@ namespace mccore {
     public:
       A1HH2 () {}
       A1HH2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A1HH2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4522,6 +5231,11 @@ namespace mccore {
     public:
       A2HD1 () {}
       A2HD1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A2HD1* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4552,6 +5266,11 @@ namespace mccore {
     public:
       A2HD2 () {}
       A2HD2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A2HD2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4582,6 +5301,11 @@ namespace mccore {
     public:
       A2HE2 () {}
       A2HE2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A2HE2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4612,6 +5336,11 @@ namespace mccore {
     public:
       A2HG1 () {}
       A2HG1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A2HG1* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4642,6 +5371,11 @@ namespace mccore {
     public:
       A2HG2 () {}
       A2HG2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A2HG2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4672,6 +5406,11 @@ namespace mccore {
     public:
       A2HH1 () {}
       A2HH1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A2HH1* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4702,6 +5441,11 @@ namespace mccore {
     public:
       A2HH2 () {}
       A2HH2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A2HH2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4732,6 +5476,11 @@ namespace mccore {
     public:
       A3HD1 () {}
       A3HD1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A3HD1* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4762,6 +5511,11 @@ namespace mccore {
     public:
       A3HD2 () {}
       A3HD2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A3HD2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4792,6 +5546,11 @@ namespace mccore {
     public:
       A3HG1 () {}
       A3HG1 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A3HG1* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4822,6 +5581,11 @@ namespace mccore {
     public:
       A3HG2 () {}
       A3HG2 (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const A3HG2* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4852,6 +5616,11 @@ namespace mccore {
     public:
       AMG () {}
       AMG (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const AMG* > (t);
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -4882,6 +5651,11 @@ namespace mccore {
     public:
       APSAZ () {}
       APSAZ (const char*  t) : AtomType (t) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const APSAZ* > (t);
+      }
+      
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
