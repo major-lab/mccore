@@ -4,14 +4,16 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Nov 14 18:02:10 2000
-// Update Count     : 5
+// Last Modified On : Wed Nov 22 14:39:41 2000
+// Update Count     : 6
 // Status           : Ok.
 // 
 
 
+#include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include <sys/param.h>
 
 #include "McCore.h"
 
@@ -24,6 +26,7 @@
 
 
 
+char gMcLicenseDir[MAXPATHLEN];
 map< const char *, t_Atom*, less_string > gMiscAtomString;
 map< const char *, t_Residue*, less_string > gMiscResidueString;
 
@@ -38,6 +41,7 @@ t_Atom *a_Nitrogen = 0;
 t_Atom *a_Phosphate = 0;
 t_Atom *a_Oxygen = 0;
 t_Atom *a_Sulfur = 0;
+t_Atom *a_Magnesium = 0;
 t_Atom *a_LonePair = 0;
 t_Atom *a_Pseudo = 0;
 t_Atom *a_C1p = 0;
@@ -126,6 +130,9 @@ t_Atom *a_CZ = 0;
 t_Atom *a_CZ2 = 0;
 t_Atom *a_CZ3 = 0;
 t_Atom *a_H = 0;
+t_Atom *a_1H = 0;
+t_Atom *a_2H = 0;
+t_Atom *a_3H = 0;
 t_Atom *a_HA = 0;
 t_Atom *a_HA1 = 0;
 t_Atom *a_HA2 = 0;
@@ -190,6 +197,7 @@ t_Atom *a_3HD1 = 0;
 t_Atom *a_3HD2 = 0;
 t_Atom *a_3HG1 = 0;
 t_Atom *a_3HG2 = 0;
+t_Atom *a_MG = 0;
 
 
 
@@ -838,7 +846,8 @@ McCoreInit ()
   a_Nitrogen = new at_Nitrogen;
   a_Phosphate = new at_Phosphate;
   a_Oxygen = new at_Oxygen;
-  a_Sulfur = new at_Sulfur;  
+  a_Sulfur = new at_Sulfur;
+  a_Magnesium = new at_Magnesium;
   a_LonePair = new at_LonePair;
   a_Pseudo = new at_Pseudo;
   a_C1p = new at_C1p;
@@ -927,6 +936,9 @@ McCoreInit ()
   a_CZ2 = new at_CZ2;
   a_CZ3 = new at_CZ3;
   a_H = new at_H;
+  a_1H = new at_1H;
+  a_2H = new at_2H;
+  a_3H = new at_3H;
   a_HA = new at_HA;
   a_HA1 = new at_HA1;
   a_HA2 = new at_HA2;
@@ -991,6 +1003,7 @@ McCoreInit ()
   a_3HD2 = new at_3HD2;
   a_3HG1 = new at_3HG1;
   a_3HG2 = new at_3HG2;
+  a_MG = new at_MG;
 
   // Initializing residue globals ------------------------------------
 
@@ -1042,6 +1055,27 @@ McCoreInit ()
   // Initializing obligatory atom sets
 
   SetOblAtomSets ();
+
+  // Sets the license dir.
+
+  char *str = getenv ("MCLICENSE_DIR");
+
+  if (str != 0)
+    {
+      strcpy (gMcLicenseDir, str);
+      if (gMcLicenseDir[strlen (gMcLicenseDir) - 1] != '/')
+	strcat (gMcLicenseDir, "/");
+    }
+  else
+    {
+      strcpy (gMcLicenseDir, DATADIR);
+      if (gMcLicenseDir[strlen (gMcLicenseDir) - 1] != '/')
+	strcat (gMcLicenseDir, "/");
+      strcat (gMcLicenseDir, PACKAGE);
+      strcat (gMcLicenseDir, "/");
+      strcat (gMcLicenseDir, VERSION);
+      strcat (gMcLicenseDir, "/");
+    }
 }
 
 

@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Nov 14 18:02:12 2000
-// Update Count     : 5
+// Last Modified On : Wed Nov 22 14:39:42 2000
+// Update Count     : 6
 // Status           : Ok.
 // 
 
@@ -47,6 +47,15 @@ struct less_string
   bool operator() (const char* s1, const char* s2) const
   { return strcmp (s1, s2) < 0; }
 };
+
+
+
+/**
+ * The license file directory.  Basically
+ * $(datadir)/$(PACKAGE)/$(VERSION)/license  but may be overrided by
+ * the environment variable MCLICENSE_DIR.
+ */
+extern char gMcLicenseDir[];
 
 
 
@@ -130,6 +139,13 @@ extern t_Atom *a_Oxygen;
  * Global sulfur atom type.
  */
 extern t_Atom *a_Sulfur;
+
+
+
+/**
+ * Global magnesium atom type.
+ */
+extern t_Atom *a_Magnesium;
 
 
 
@@ -750,6 +766,27 @@ extern t_Atom *a_H;
 
 
 /**
+ * Global 1H atom type.
+ */
+extern t_Atom *a_1H;
+
+
+
+/**
+ * Global 2H atom type.
+ */
+extern t_Atom *a_2H;
+
+
+
+/**
+ * Global 3H atom type.
+ */
+extern t_Atom *a_3H;
+
+
+
+/**
  * Global HA atom type.
  */
 extern t_Atom *a_HA;
@@ -1194,6 +1231,13 @@ extern t_Atom *a_3HG1;
  * Global 3HG2 atom type.
  */
 extern t_Atom *a_3HG2;
+
+
+
+/**
+ * Global magnesium atom type.
+ */
+extern t_Atom *a_MG;
 
 
 
