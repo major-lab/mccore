@@ -1,12 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // CAtom.cc
-// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Oct 25 11:17:14 2001
-// Update Count     : 48
+// Last Modified On : Wed Jan 16 16:42:41 2002
+// Update Count     : 49
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -177,7 +177,7 @@ operator<< (oPdbstream &ops, const CAtom &atom)
 iBinstream&
 operator>> (iBinstream &ibs, AtomSet *&as)
 {
-  int val;
+  unsigned char val;
 
   ibs >> val;
   switch (val)
