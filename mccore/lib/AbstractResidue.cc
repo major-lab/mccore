@@ -987,7 +987,7 @@ AbstractResidue::validate ()
 	    mType = new rt_Misc ((const char*)*mType);
 	  else
 	    mType = i->second;
-	  gOut (3) << 'm';
+	  gOut (4) << 'm';
 	  return;
 	}
       
@@ -1006,7 +1006,7 @@ AbstractResidue::validate ()
 	    mType = new rt_Misc ((const char*)*mType);
 	  else
 	    mType = i->second;
-	  gOut (3) << 'i';
+	  gOut (4) << 'i';
 	}
       else
 	{
@@ -1017,13 +1017,13 @@ AbstractResidue::validate ()
 	  for (cit = diffset.begin (); cit != diffset.end (); ++cit)
 	    erase (*cit);
 	  if (mType->is_AminoAcid ())
-	    gOut (3) << 'a';
+	    gOut (4) << 'a';
 	  else
-	    gOut (3) << 'n';
+	    gOut (4) << 'n';
 	}
     }
   else
-    gOut (3) << 'i';
+    gOut (4) << 'i';
 }
 
 

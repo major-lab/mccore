@@ -4,9 +4,9 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct 12 18:21:13 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Fri Nov 16 13:30:46 2001
-// Update Count     : 5
+// Last Modified By : Philippe Thibault
+// Last Modified On : Wed Mar 19 08:20:38 2003
+// Update Count     : 6
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -654,6 +654,12 @@ public:
    */
   void setType (t_Residue *type) { mType = type; }
 
+  /**
+   * Vraiment pas cool
+   */
+  virtual const vector< CAtom >& getAtomRef () const = 0;
+  virtual const vector< CAtom* >& getAtompRef () const = 0;
+  
   // METHODS --------------------------------------------------------------
 
 protected:
@@ -767,6 +773,13 @@ public:
    * @param right the residue to copy.
    */
   virtual void AtomCopy (const AbstractResidue &right) = 0;
+
+  /**
+   * Overwrite atoms in global referential and re-init the residue.
+   * @param newref New atoms referential.
+   */
+  virtual void AtomInit (const vector< CAtom >& newref) = 0;
+  virtual void AtomInit (const vector< CAtom* >& newref) = 0;
   
   /**
    * Creates a new residue with the atoms specified in the variable argument
