@@ -2836,6 +2836,7 @@ fi;
 if test "${with_optimization+set}" = set; then
   withval="$with_optimization"
   CXXFLAGS="-O2 $CXXFLAGS";
+CXXSHFLAGS="-O2 $CXXSHFLAGS";
 
 fi;
 

@@ -5,8 +5,8 @@
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
 # Last Modified By : Patrick Gendron
-# Last Modified On : Fri May 30 12:41:23 2003
-# Update Count     : 18
+# Last Modified On : Wed Jul 30 18:35:33 2003
+# Update Count     : 21
 # Status           : Ok.
 # 
 #  This file is part of mccore.
@@ -106,6 +106,7 @@ AC_DEFINE(__USE_MALLOC),
 AC_ARG_WITH(optimization,
 [  --with-optimization     Use optimization],
 CXXFLAGS="-O2 $CXXFLAGS";
+CXXSHFLAGS="-O2 $CXXSHFLAGS";
 )
 
 AC_SUBST(PACKAGE)
