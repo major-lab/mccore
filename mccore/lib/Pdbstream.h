@@ -4,8 +4,8 @@
 // Author           : Martin Larose
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Nov  9 10:45:38 2000
-// Update Count     : 2
+// Last Modified On : Mon Dec  4 15:44:18 2000
+// Update Count     : 3
 // Status           : Ok.
 // 
 
@@ -94,13 +94,6 @@ class iPdbstream : public istream
   static char* Strip (char *cp);
 
   /**
-   * Gets the atom type given it's string representation.
-   * @param s the atom type representation.
-   * @return the atom type.
-   */
-  static t_Atom* GetAtomType (char *s);
-
-  /**
    * Gets the residue type given it's string representation.
    * @param s the residue type representation.
    * @return the residue type.
@@ -108,6 +101,13 @@ class iPdbstream : public istream
   static t_Residue* GetResidueType (char *s);
 
 public:
+
+  /**
+   * Gets the atom type given it's string representation.
+   * @param s the atom type representation.
+   * @return the atom type.
+   */
+  static t_Atom* GetAtomType (char *s);
 
   // LIFECYCLE -----------------------------------------------------
 
