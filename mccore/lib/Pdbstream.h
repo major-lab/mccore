@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.23 $
-// $Id: Pdbstream.h,v 1.23 2004-01-09 21:15:28 larosem Exp $
+// $Revision: 1.24 $
+// $Id: Pdbstream.h,v 1.24 2004-05-13 21:49:22 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -35,6 +35,7 @@
 
 #include "PdbFileHeader.h"
 #include "ResId.h"
+#include "sockstream.h"
 #include "zstream.h"
 
 using namespace std;
@@ -81,11 +82,11 @@ namespace mccore {
    * </pre>
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Pdbstream.h,v 1.23 2004-01-09 21:15:28 larosem Exp $
+   * @version $Id: Pdbstream.h,v 1.24 2004-05-13 21:49:22 larosem Exp $
    */
   class iPdbstream : public istream
   {
-    static const int LINELENGTH;
+    static const unsigned int LINELENGTH;
 
     /**
      * The PDB header (only the part that we read!).
@@ -155,15 +156,6 @@ namespace mccore {
     // METHODS -------------------------------------------------------------
 
     /**
-     * Gets a text line.  Same as the inherited one except that the endline
-     * may be one of \n or \r.
-     * @param buffer the buffer where the characters are copied.
-     * @param sz the maximum reading number of characters.
-     * @return the input stream.
-     */
-    iPdbstream& getline (char*, unsigned int sz);
-
-    /**
      * Opens the stream and initializes the slots.
      */
     void open ();
@@ -190,10 +182,10 @@ namespace mccore {
 
     /**
      * Trims the whitespaces around the string.
-     * @param cp the string to trim.
-     * @return the stripped trim (actually a ptr on the original string with the end moved).
+     * @param str the string to trim.
+     * @return the stripped string;
      */
-    char* trim (char* cp);
+    string& iPdbstream::trim (string &str);
 
     // I/O -----------------------------------------------------------------
 
@@ -689,6 +681,297 @@ namespace mccore {
     void close ()
     {
       oPdbstream::close ();
+      if (! buf.close ())
+	this->setstate (ios::failbit);
+    }
+    
+    // I/O -----------------------------------------------------------
+  };
+
+
+  /**
+   * @short Input pdb socket stream.
+   *
+   * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   */
+  class isPdbstream : public iPdbstream
+  {
+    /**
+     * The stream buffer.
+     */
+    mutable sockstreambuf buf;
+    
+  public:
+    
+    // LIFECYCLE -----------------------------------------------------
+    
+    /**
+     * Initializes the stream.
+     */
+    isPdbstream ()
+      : iPdbstream (),
+	buf ()
+    {
+      this->init (&buf);
+    }
+    
+    /**
+     * Initializes the stream with host name and port number.
+     * @param host the host name.
+     * @param port the port number.
+     */
+    isPdbstream (const char *host, unsigned int port)
+      : iPdbstream (),
+	buf ()
+    {
+      this->init (&buf);
+      this->open (host, port);
+    }
+    
+    /**
+     * Initializes the stream with a socket descriptor.
+     * @param id the socket descriptor.
+     */
+    isPdbstream (int desc)
+      : iPdbstream (),
+	buf (desc)
+    {
+      this->init (&buf);
+      iPdbstream::open ();
+    }
+    
+    // OPERATORS -----------------------------------------------------
+    
+    // ACCESS --------------------------------------------------------
+    
+    // METHODS -------------------------------------------------------
+    
+    /**
+     * Gets the file buffer.
+     * @return the file buffer.
+     */
+    sockstreambuf* rdbuf () const { return &buf; }
+
+    /**
+     * Tells if the buf is open.
+     * @return whether buf is open.
+     */
+    bool is_open () const { return buf.is_open (); }
+
+    /**
+     * Initializes the stream with host name and port number.
+     * @param host the host name.
+     * @param port the port number.
+     */
+    void open (const char *host, unsigned int port)
+    {
+      if (! buf.open (host, port))
+	this->setstate (ios::failbit);
+      iPdbstream::open ();
+    }
+    
+    /**
+     * Closes the stream.
+     */
+    void close ()
+    {
+      iPdbstream::close ();
+      if (! buf.close ())
+	this->setstate (ios::failbit);
+    }
+    
+    // I/O -----------------------------------------------------------
+  };
+  
+  
+  /**
+   * @short Output pdb socket stream.
+   *
+   * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   */
+  class osPdbstream : public oPdbstream
+  {
+    /**
+     * The stream buffer.
+     */
+    mutable sockstreambuf buf;
+    
+  public:
+    
+    // LIFECYCLE -----------------------------------------------------
+    
+    /**
+     * Initializes the stream.
+     */
+    osPdbstream ()
+      : oPdbstream (),
+	buf ()
+    {
+      this->init (&buf);
+    }
+    
+    /**
+     * Initializes the stream with host name and port number.
+     * @param host the host name.
+     * @param port the port number.
+     */
+    osPdbstream (const char *host, unsigned int port)
+      : oPdbstream (),
+	buf ()
+    {
+      this->init (&buf);
+      this->open (host, port);
+    }
+    
+    /**
+     * Initializes the stream with a socket descriptor.
+     * @param id the socket descriptor.
+     */
+    osPdbstream (int desc)
+      : oPdbstream (),
+	buf (desc)
+    {
+      this->init (&buf);
+      oPdbstream::open ();
+    }
+    
+    // OPERATORS -----------------------------------------------------
+    
+    // ACCESS --------------------------------------------------------
+    
+    // METHODS -------------------------------------------------------
+    
+    /**
+     * Gets the file buffer.
+     * @return the file buffer.
+     */
+    sockstreambuf* rdbuf () const { return &buf; }
+
+    /**
+     * Tells if the buf is open.
+     * @return whether buf is open.
+     */
+    bool is_open () const { return buf.is_open (); }
+
+    /**
+     * Initializes the stream with host name and port number.
+     * @param host the host name.
+     * @param port the port number.
+     */
+    void open (const char *host, unsigned int port)
+    {
+      if (! buf.open (host, port))
+	this->setstate (ios::failbit);
+      oPdbstream::open ();
+    }
+    
+    /**
+     * Closes the stream.
+     */
+    void close ()
+    {
+      oPdbstream::close ();
+      if (! buf.close ())
+	this->setstate (ios::failbit);
+    }
+    
+    // I/O -----------------------------------------------------------
+  };
+
+
+  /**
+   * @short Pdb socket stream.
+   *
+   * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   */
+  class sPdbstream : public iPdbstream, public oPdbstream
+  {
+    /**
+     * The stream buffer.
+     */
+    mutable sockstreambuf buf;
+    
+  public:
+    
+    // LIFECYCLE -----------------------------------------------------
+    
+    /**
+     * Initializes the stream.
+     */
+    sPdbstream ()
+      : iPdbstream (),
+	oPdbstream (),
+	buf ()
+    {
+      this->init (&buf);
+    }
+    
+    /**
+     * Initializes the stream with host name and port number.
+     * @param host the host name.
+     * @param port the port number.
+     */
+    sPdbstream (const char *host, unsigned int port)
+      : iPdbstream (),
+	oPdbstream (),
+	buf ()
+    {
+      this->init (&buf);
+      this->open (host, port);
+    }
+    
+    /**
+     * Initializes the stream with a socket descriptor.
+     * @param id the socket descriptor.
+     */
+    sPdbstream (int desc)
+      : iPdbstream (),
+	oPdbstream (),
+	buf (desc)
+    {
+      this->init (&buf);
+      iPdbstream::open ();
+      oPdbstream::open ();
+    }
+    
+    // OPERATORS -----------------------------------------------------
+    
+    // ACCESS --------------------------------------------------------
+    
+    // METHODS -------------------------------------------------------
+    
+    /**
+     * Gets the file buffer.
+     * @return the file buffer.
+     */
+    sockstreambuf* rdbuf () const { return &buf; }
+
+    /**
+     * Tells if the buf is open.
+     * @return whether buf is open.
+     */
+    bool is_open () const { return buf.is_open (); }
+
+    /**
+     * Initializes the stream with host name and port number.
+     * @param host the host name.
+     * @param port the port number.
+     */
+    void open (const char *host, unsigned int port)
+    {
+      if (! buf.open (host, port))
+	this->setstate (ios::failbit);
+      iPdbstream::open ();
+      oPdbstream::open ();
+    }
+    
+    /**
+     * Closes the stream.
+     */
+    void close ()
+    {
+      oPdbstream::close ();
+      iPdbstream::close ();
       if (! buf.close ())
 	this->setstate (ios::failbit);
     }

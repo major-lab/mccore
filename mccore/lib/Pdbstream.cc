@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Pdbstream.cc
-// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-04 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.35 $
-// $Id: Pdbstream.cc,v 1.35 2003-12-23 14:57:49 larosem Exp $
+// $Revision: 1.36 $
+// $Id: Pdbstream.cc,v 1.36 2004-05-13 21:49:19 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -46,7 +46,7 @@
 
 namespace mccore {
 
-  const int iPdbstream::LINELENGTH = 80;
+  const unsigned int iPdbstream::LINELENGTH = 80;
   const int oPdbstream::LINELENGTH = 80;
 
   
@@ -59,8 +59,7 @@ namespace mccore {
       ratom (0),
       modelNb (1),
       eomFlag (false)
-  {
-  }
+  { }
   
   
   iPdbstream::iPdbstream (streambuf* sb)
@@ -70,8 +69,7 @@ namespace mccore {
       ratom (0),
       modelNb (1),
       eomFlag (false)
-  {
-  }
+  { }
   
   iPdbstream::~iPdbstream ()
   {
@@ -85,7 +83,8 @@ namespace mccore {
   // ACCESS --------------------------------------------------------------------
 
 
-  const PdbFileHeader& iPdbstream::getHeader () 
+  const PdbFileHeader&
+  iPdbstream::getHeader () 
   { 
     if (!ratom) cacheAtom ();
     return header; 
@@ -95,22 +94,8 @@ namespace mccore {
   // METHODS -------------------------------------------------------------------
   
 
-  iPdbstream&
-  iPdbstream::getline (char *buffer, unsigned int sz)
-  {
-    int c;
-    
-    while (sz > 1 && (c = get ()) != EOF && c != '\n' && c != '\r')
-      {
-	*buffer++ = c;
-	--sz;
-      }
-    *buffer = '\0';
-    return *this;
-  }
-  
-
-  void iPdbstream::open () 
+  void
+  iPdbstream::open () 
   { 
     header = PdbFileHeader ();
     rtype = 0;
@@ -123,7 +108,8 @@ namespace mccore {
   }
 
 
-  void iPdbstream::close () 
+  void
+  iPdbstream::close () 
   { 
     header = PdbFileHeader ();
     rtype = 0;
@@ -139,117 +125,109 @@ namespace mccore {
   Atom*
   iPdbstream::cacheAtom ()
   {    
-    char line[LINELENGTH+2];
-    char tag[7]; tag[6] = '\0';
-    int length;
-//     int taglength;
-    char field[LINELENGTH];
-    char* fieldp;
+    string line;
 
     // Cleanup any previous read:
     rtype = 0;
-    if (rid) delete rid;
+    if (rid)
+      delete rid;
     rid = 0;
-    if (ratom) delete ratom;
+    if (ratom)
+      delete ratom;
     ratom = 0;
 
-    while ((getline (line, LINELENGTH+2)) > 0) {
-      length = min ((int)strlen (line), LINELENGTH);
-//       taglength = min ((int)strlen (line), 6);
-      strncpy (tag, line, 6);
+    while (! eof ())
+      {
+	string tag;
+	string field;
+	string copy;
+	
+	while ((std::getline (*this, line), line.length ()) == 0 && ! eof ());
+	if (0 == line.length () && eof ())
+	  break;
 
-      if (length<LINELENGTH) {
-	int i;
-	for (i=length; i<LINELENGTH; ++i) { line[i] = ' '; }
+	if (LINELENGTH > line.length ())
+	  line.resize (LINELENGTH, ' ');
+
+	tag = line.substr (0, 6);
+	if ("HEADER" == tag)
+	  {
+	    header.setClassification (trim (copy = line.substr (10, 40)));
+	    header.setDate (trim (copy = line.substr (50, 9)));
+	    header.setPdbId (trim (copy = line.substr (62, 4)));
+	  }
+	else if ("TITLE" == tag)
+	  {
+	    header.setTitle (header.getTitle () + " " + trim (copy = line.substr (10, 60)));
+	  }
+	else if ("COMPND" == tag)
+	  {
+	  }
+	else if ("EXPDTA" == tag)
+	  {
+	    header.setMethod (header.getMethod () + " " + trim (copy = line.substr (10, 60)));
+	  }
+	else if ("REMARK" == tag
+		 && '2' == line[9]
+		 && 0 == line.compare (11, 11, "RESOLUTION.")
+		 && 0 != line.compare (11, 27, "RESOLUTION. NOT APPLICABLE."))
+	  {
+	    header.setResolution (atof (trim (copy = line.substr (22, 5)).c_str ()));
+	  }
+	else if ("MODEL" == tag)
+	  {
+	    // The eomFlag is reset to false o
+	  }
+	else if ("ENDMDL" == tag)
+	  {
+	    modelNb++;
+	    eomFlag = true;
+	  }
+	else if ("TER   " == tag)
+	  {
+	  }
+	else if ("END   " == tag)
+	  {
+	    eomFlag = true;
+	  }
+	else if ("ATOM  " == tag || "HETATM" == tag)
+	  {
+	    float x, y, z;
+	    const AtomType *at;
+
+	    x = atof (trim (copy = line.substr (30, 8)).c_str ());
+	    y = atof (trim (copy = line.substr (38, 8)).c_str ());	    
+	    z = atof (trim (copy = line.substr (46, 8)).c_str ());
+	    
+	    at = AtomType::parseType (trim (copy = line.substr (12, 4)).c_str ());
+
+	    rtype = ResidueType::parseType (trim (copy = line.substr (17, 3)).c_str ());
+	    
+	    rid = new ResId (line[21],
+			     atoi (trim (copy = line.substr (22, 4)).c_str ()),
+			     line[26]);
+	    
+	    ratom = new Atom (x, y, z, at);
+	    break;
+	  }
       }
-      
-      if (strcmp (tag, "HEADER") == 0) {
-	fieldp = trim (strncpy ((char*)memset (field, 0, LINELENGTH), line+10, 40));
-	header.setClassification (fieldp);
-	fieldp = trim (strncpy ((char*)memset (field, 0, LINELENGTH), line+50, 9));
-	header.setDate (fieldp);
-	fieldp = trim (strncpy ((char*)memset (field, 0, LINELENGTH), line+62, 4));
-	header.setPdbId (fieldp);
-      } 
-
-      if (strcmp (tag, "TITLE ") == 0) {
-	fieldp = trim (strncpy ((char*)memset (field, 0, LINELENGTH), line+10, 60));
-	header.setTitle (header.getTitle () + " " + string (fieldp));
-      }
-
-      if (strcmp (tag, "COMPND") == 0) {
-      }
-
-      if (strcmp (tag, "EXPDTA") == 0) {
-	fieldp = trim (strncpy ((char*)memset (field, 0, LINELENGTH), line+10, 60));
-	header.setMethod (header.getMethod () + " " + string (fieldp));
-
-      }
-      
-      if (strcmp (tag, "REMARK") == 0 && 
-	  line[9] == '2' &&
-	  strncmp (line+11, "RESOLUTION.", 11) == 0 &&
-	  !strncmp (line+11, "RESOLUTION. NOT APPLICABLE.", 27) == 0) {
-	fieldp = trim (strncpy ((char*)memset (field, 0, LINELENGTH), line+22, 5));
-	header.setResolution (atof (fieldp));	
-      }
-
-      if (strcmp (tag, "MODEL ") == 0) {
-	// The eomFlag is reset to false o
-      }
-
-      if (strcmp (tag, "ENDMDL") == 0) {
-	modelNb++;
-	eomFlag = true;
-      }
-
-      if (strcmp (tag, "TER   ") == 0) {
-      }
-
-      if (strcmp (tag, "END   ") == 0) {
-	eomFlag = true;
-      }
-
-      if (strcmp (tag, "ATOM  ") == 0 || strcmp (tag, "HETATM") == 0) {
-	float x, y, z;
-	const AtomType *at;
-
-	fieldp = trim (strncpy ((char*)memset (field, 0, LINELENGTH), line+30, 8));
-	x = atof (field);
-
-	fieldp = trim (strncpy ((char*)memset (field, 0, LINELENGTH), line+38, 8));
-	y = atof (fieldp);
-
-	fieldp = trim (strncpy ((char*)memset (field, 0, LINELENGTH), line+46, 8));
-	z = atof (fieldp);
-
-	fieldp = trim (strncpy ((char*)memset (field, 0, LINELENGTH), line+12, 4));
-	at = AtomType::parseType (fieldp);
-
-	fieldp = trim (strncpy ((char*)memset (field, 0, LINELENGTH), line+17, 3));
-	rtype = ResidueType::parseType (fieldp);
-
-	fieldp = trim (strncpy ((char*)memset (field, 0, LINELENGTH), line+22, 4));
-	rid = new ResId (line[21], atoi (fieldp), line[26]);
-
-	ratom = new Atom (x, y, z, at);
-
-	return ratom;
-      }
-    }
     return ratom;
   }
 
 
-  char* iPdbstream::trim (char* cp) 
+  string&
+  iPdbstream::trim (string &str)
   {
-    char *a = cp;
-    char *b = cp + strlen(cp)-1;
+    string::size_type pos;
+
+    pos = str.find_first_not_of (" ");
+    if (0 != pos)
+      str.erase (0, pos);
     
-    while (b!=a && *b == ' ') b--;
-    *(++b) = '\0';
-    while (a!=b && *a == ' ') a++;
-    return a;
+    pos = str.find_last_not_of (" ");
+    if (string::npos != pos)
+      str.erase (pos + 1, str.length () - pos);
+    return str;
   }
 
 
@@ -340,8 +318,7 @@ namespace mccore {
       rid (new ResId ()),
       modelnb (1),
       atomCounter (1)
-  { 
-  }
+  { }
   
 
 
@@ -354,8 +331,7 @@ namespace mccore {
       rid (new ResId ()),
       modelnb (1),
       atomCounter (1)
-  { 
-  }
+  { }
 
 
   oPdbstream::oPdbstream (ostream &os)
@@ -367,8 +343,7 @@ namespace mccore {
       rid (new ResId ()),
       modelnb (1),
       atomCounter (1)
-  { 
-  }
+  { }
 
 
   oPdbstream::~oPdbstream () 
@@ -389,7 +364,8 @@ namespace mccore {
   // METHODS -------------------------------------------------------------------
 
 
-  void oPdbstream::open () 
+  void
+  oPdbstream::open () 
   { 
     header = PdbFileHeader ();
     headerdone = false;
@@ -400,7 +376,9 @@ namespace mccore {
     atomCounter = 1;
   }
   
-  void oPdbstream::close () 
+
+  void
+  oPdbstream::close () 
   {
     end ();
 
@@ -413,7 +391,9 @@ namespace mccore {
     atomCounter = 1;
   }
 
-  void oPdbstream::writeHeader ()
+
+  void
+  oPdbstream::writeHeader ()
   {
     headerdone = true;
 
@@ -457,7 +437,9 @@ namespace mccore {
     writeRemark (10, line);
   }
 
-  void oPdbstream::writeRemark (int k, const char* rem)
+
+  void
+  oPdbstream::writeRemark (int k, const char* rem)
   {
     if (!headerdone) writeHeader ();
 
@@ -472,7 +454,9 @@ namespace mccore {
     *this << endl;
   }
 
-  void oPdbstream::startModel () 
+
+  void
+  oPdbstream::startModel () 
   {
     if (!headerdone) writeHeader ();
 
@@ -486,7 +470,8 @@ namespace mccore {
   }
 
   
-  void oPdbstream::endModel () 
+  void
+  oPdbstream::endModel () 
   {
     if (!headerdone) writeHeader ();
 
@@ -497,7 +482,8 @@ namespace mccore {
   }
 
 
-  void oPdbstream::ter () 
+  void
+  oPdbstream::ter () 
   {
     setf (ios::left, ios::adjustfield);
     *this << setw (6) << "TER";
@@ -516,7 +502,8 @@ namespace mccore {
   }
 
 
-  void oPdbstream::putconect (const Model &model)
+  void
+  oPdbstream::putconect (const Model &model)
   {
     Model::const_iterator cit1, cit2;
     
@@ -541,7 +528,9 @@ namespace mccore {
 	}
   }
 
-  void oPdbstream::end () 
+
+  void
+  oPdbstream::end () 
   {
     setf (ios::left, ios::adjustfield);
     *this << setw (6) << "END";
@@ -550,7 +539,8 @@ namespace mccore {
   }
 
   
-  void oPdbstream::pad (int i) 
+  void
+  oPdbstream::pad (int i) 
   {
     while (i-->0) {
       *this << ' ';
@@ -628,5 +618,4 @@ namespace mccore {
       *this << *i << endl;
     }
   }
-  
 }
