@@ -1,4 +1,15 @@
-//                         -*- Mode: C++ -*-
+//                              -*- Mode: C++ -*- 
+// sBinstream.h
+// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+// Author           : Patrick Gendron
+// Created On       : Tue Apr 24 15:24:41 2001
+// Last Modified By : 
+// Last Modified On : 
+// Update Count     : 0
+// Status           : Unknown.
+// 
+
+
 
 #ifndef _sBinstream_h_
 #define _sBinstream_h_

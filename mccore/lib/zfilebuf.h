@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // zfilebuf.h
-// Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : Fri Mar 10 15:24:55 2000
 // Last Modified By : Martin Larose

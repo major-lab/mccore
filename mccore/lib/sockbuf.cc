@@ -1,3 +1,14 @@
+//                              -*- Mode: C++ -*- 
+// sockbuf.cc
+// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+// Author           : Patrick Gendron
+// Created On       : Tue Apr 24 15:24:34 2001
+// Last Modified By : 
+// Last Modified On : 
+// Update Count     : 0
+// Status           : Unknown.
+// 
+
 #include "sockbuf.h"
 
 #include <iostream.h>
@@ -173,5 +184,4 @@ streamsize sockbuf::xsputn (const char* s, streamsize n)
 
   return w;
 }
-
 

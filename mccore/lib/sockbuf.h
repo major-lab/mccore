@@ -1,4 +1,15 @@
-//                         -*- Mode: C++ -*-
+//                              -*- Mode: C++ -*- 
+// sockbuf.h
+// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+// Author           : Patrick Gendron
+// Created On       : Tue Apr 24 15:24:26 2001
+// Last Modified By : 
+// Last Modified On : 
+// Update Count     : 0
+// Status           : Unknown.
+// 
+
+
 
 #ifndef _sockbuf_h_
 #define _sockbuf_h_

@@ -1,3 +1,14 @@
+//                              -*- Mode: C++ -*- 
+// ServerSocket.cc
+// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+// Author           : Patrick Gendron
+// Created On       : Tue Apr 24 15:24:56 2001
+// Last Modified By : 
+// Last Modified On : 
+// Update Count     : 0
+// Status           : Unknown.
+// 
+
 #include "ServerSocket.h"
 
 #include <iostream.h>

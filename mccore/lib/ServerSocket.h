@@ -1,4 +1,15 @@
-// SocketTools.h        -*- mode: c++ -*-
+//                              -*- Mode: C++ -*- 
+// ServerSocket.h
+// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+// Author           : Patrick Gendron
+// Created On       : Tue Apr 24 15:24:51 2001
+// Last Modified By : 
+// Last Modified On : 
+// Update Count     : 0
+// Status           : Unknown.
+// 
+
+
 
 #ifndef _ServerSocket_h_
 #define _ServerSocket_h_
@@ -14,7 +25,8 @@
  * wait for a connection from a client and returns a socket stream
  * (sBinstream).
  *
- * @author Patrick Gendron <gendrop@iro.umontreal.ca> */
+ * @author Patrick Gendron <gendrop@iro.umontreal.ca> 
+ */
 class ServerSocket
 {
   int socket_id;
