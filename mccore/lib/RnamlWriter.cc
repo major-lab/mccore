@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.9 $
-// $Id: RnamlWriter.cc,v 1.9 2005-03-22 01:10:25 larosem Exp $
+// $Revision: 1.10 $
+// $Id: RnamlWriter.cc,v 1.10 2005-03-30 19:01:30 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -118,8 +118,8 @@ namespace mccore
     a->setCoordinates (atom.getX (), atom.getY (), atom.getZ ());
     return a;
   }
-
-
+  
+  
   rnaml::BaseId*
   RnamlWriter::toBaseId (rnaml::MoleculeId *molId, rnaml::ModelId *mId, const ResId &id)
   {
@@ -177,8 +177,8 @@ namespace mccore
       base->addAtom (RnamlWriter::toRnaml (*it));
     return base;
   }
-
-
+  
+  
   rnaml::StrAnnotation*
   RnamlWriter::strAnnotate (const GraphModel &model)
   {
@@ -231,9 +231,9 @@ namespace mccore
 		bPair->setBondOrientation ((rel.is (PropertyType::pCis)
 					   ? PropertyType::pCis
 					   : PropertyType::pTrans)->toString ().c_str ());
-// 		bPair->setStrandOrientation ((rel.is (PropertyType::pParallel)
-// 					     ? PropertyType::pParallel
-// 					     : PropertyType::pAntiParallel)->toString ().c_str ());
+		bPair->setStrandOrientation ((rel.is (PropertyType::pStraight)
+					      ? "anti-parallel"
+					      : "parallel"));
 		annotation->addChild (bPair);
 	      }
 	  }
