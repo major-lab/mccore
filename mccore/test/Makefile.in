@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.1.2.4 $
-# $Id: Makefile.in,v 1.1.2.4 2004-12-23 22:43:24 larosem Exp $
+# $Revision: 1.1.2.5 $
+# $Id: Makefile.in,v 1.1.2.5 2004-12-29 21:16:55 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -77,11 +77,11 @@ HAVE_LIBMYSQL = @HAVE_LIBMYSQL@
 
 
 
-SOURCES = OrientedGraph.cc UndirectedGraph.cc
+SOURCES = GraphModel.cc OrientedGraph.cc UndirectedGraph.cc
 
 HEADERS = 
 
-OBJECTS = $(SOURCES:.cc=.o)
+OBJECTS = $(SOURCES:%.cc=%.o)
 
 PROGRAMS = $(SOURCES:%.cc=%)
 
@@ -91,10 +91,14 @@ DISTFILES = Makefile.in $(SOURCES) $(HEADERS)
 all static doc:
 
 test: $(PROGRAMS)
+	@ if test ! -f 1L8V.pdb.gz; then \
+	    $(RM) 1L8V.pdb.gz; \
+	    ln -s $(srcdir)/1L8V.pdb.gz; \
+	  fi
 	@ for program in $(PROGRAMS); do \
 	    echo "Testing " $$program; \
 	    ./$$program > $$program.out; \
-	    diff $(srcdir)/$$program.good $$program.out || echo "Errors in " $(PROGRAMS); \
+	    diff $(srcdir)/$$program.good $$program.out || echo "Errors in " $$program; \
 	  done
 
 install install-static uninstall:
@@ -105,6 +109,9 @@ mostlyclean:
 clean: mostlyclean
 	@ $(RM) $(OBJECTS) $(PROGRAMS)
 	@ $(RM) *.d *.out
+	@ if test -L 1L8V.pdb.gz; then \
+	    $(RM) 1L8V.pdb.gz; \
+	  fi
 
 distclean: clean
 	@ $(RM) Makefile
@@ -125,4 +132,4 @@ Makefile: $(srcdir)/Makefile.in ../config.status
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
 
--include $(SOURCES:.cc=.d)
+-include $(SOURCES:%.cc=%.d)
