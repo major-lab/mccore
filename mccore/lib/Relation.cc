@@ -102,8 +102,12 @@ namespace mccore {
     areAdjacent ();
     areStacked ();
     arePaired ();
-    if (! is (PropertyType::pPairing))
-      areHBonded ();
+
+//     TODO: fix areHBonded method
+//
+//     if (! is (PropertyType::pPairing))
+//       areHBonded ();
+    
     if (!is (PropertyType::pAdjacent)
 	&& (is (PropertyType::pPairing) || is (PropertyType::pStack)))
       {
