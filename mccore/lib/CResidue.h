@@ -98,6 +98,11 @@ private:
    */
   mutable bool isPlaced;
 
+  /**
+   * 
+   */
+  unsigned int mExternalIndex;
+
 public:
 
   /**
@@ -616,6 +621,19 @@ public:
    */
   void SetResName (const char* nName);
 
+  /**
+   * Gets the residue external index.
+   * @return the residue external index.
+   */
+  unsigned int GetIndex () const { return mExternalIndex; }
+
+  /**
+   * Sets the residue external index.
+   * @param nIndex the new residue external index.
+   */
+  void SetIndex (unsigned int nIndex) { mExternalIndex = nIndex; }
+
+
   // METHODS --------------------------------------------------------------
 
 private:
@@ -650,6 +668,18 @@ private:
    */
   const CAtom& ref (size_type pos) const
   { return isIdentity ? mAtomRef[pos] : place (pos); }
+
+  /**
+   * Adds the hydrogens to the residue.
+   */
+  void addHydrogens ();
+
+  /**
+   * Adds the lone pairs to the residue.
+   */
+  void addLP ();
+
+public:
 
   /**
    * Inserts an atom in the residue.  It crushes the existing atom if it
@@ -696,18 +726,6 @@ private:
     isPlaced = false;
   }
   
-  /**
-   * Adds the hydrogens to the residue.
-   */
-  void addHydrogens ();
-
-  /**
-   * Adds the lone pairs to the residue.
-   */
-  void addLP ();
-
-public:
-
   /**
    * Copies the atoms from the right residue.  This function preserves the validity of 
    * iterators on the original residue.  Only spatial positions of atoms are modified.
