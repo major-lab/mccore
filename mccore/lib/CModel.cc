@@ -3,9 +3,9 @@
 // Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : Fri Oct  6 08:21:55 2000
-// Last Modified By : Martin Larose
-// Last Modified On : Mon Feb  5 18:52:22 2001
-// Update Count     : 7
+// Last Modified By : Labo Lbit
+// Last Modified On : Mon Mar 26 16:48:42 2001
+// Update Count     : 8
 // Status           : Unknown.
 // 
 
@@ -17,7 +17,9 @@
 #include "Binstream.h"
 #include "Pdbstream.h"
 #include "ResidueType.h"
-
+#ifndef HAVE_STRSEP
+#include "McCore.h"
+#endif
 
 
 CModel&
