@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // AbstractModel.cc
-// Copyright © 2004 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
+// Copyright © 2004-05 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 16:46:03 2004
-// $Revision: 1.2 $
-// $Id: AbstractModel.cc,v 1.2 2005-01-03 22:48:44 larosem Exp $
+// $Revision: 1.3 $
+// $Id: AbstractModel.cc,v 1.3 2005-01-05 01:40:06 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -55,15 +55,18 @@ namespace mccore
 
   AbstractModel::~AbstractModel ()
   {
-    delete this->residueFM;
+    delete residueFM;
   }
 
 
   AbstractModel&
   AbstractModel::operator= (const AbstractModel &right)
   {
-    delete residueFM;
-    residueFM = right.residueFM->clone ();
+    if (this != &right)
+      {
+	delete residueFM;
+	residueFM = right.residueFM->clone ();
+      }
     return *this;
   }
 
@@ -71,8 +74,8 @@ namespace mccore
   void
   AbstractModel::setResidueFM (const ResidueFactoryMethod *fm)
   {
-    delete this->residueFM;
-    this->residueFM = 0 == fm ? new ExtendedResidueFM () : fm->clone ();
+    delete residueFM;
+    residueFM = 0 == fm ? new ExtendedResidueFM () : fm->clone ();
   }
 
 
@@ -83,7 +86,9 @@ namespace mccore
 
     for (it = begin (); it != end (); ++it)
       if (id == it->getResId ())
-	break;
+	{
+	  return it;
+	}
     return it;
   }
 
@@ -95,7 +100,9 @@ namespace mccore
 
     for (it = begin (); it != end (); ++it)
       if (id == it->getResId ())
-	break;
+	{
+	  return it;
+	}
     return it;
   }
   
@@ -108,9 +115,10 @@ namespace mccore
     while (it != end ())
       {
 	it->validate ();
-	if (it->getType ()->isNucleicAcid ()
-	    || it->getType ()->isAminoAcid ())
-	  ++it;
+	if (it->getType ()->isNucleicAcid () || it->getType ()->isAminoAcid ())
+	  {
+	    ++it;
+	  }
 	else
 	  {
 	    it = erase (it);
@@ -138,7 +146,9 @@ namespace mccore
     iterator it;
 
     for (it = begin (); it != end (); ++it)
-      it->removeOptionals ();
+      {
+	it->removeOptionals ();
+      }
   }
 
 
@@ -154,7 +164,9 @@ namespace mccore
 	    modelIt = erase (modelIt);
 	  }
 	else
-	  ++modelIt;
+	  {
+	    ++modelIt;
+	  }
       }
   }
 
@@ -173,7 +185,9 @@ namespace mccore
 	    modelIt = erase (modelIt);
 	  }
 	else
-	  ++modelIt;
+	  {
+	    ++modelIt;
+	  }
       }
   }
 
@@ -192,7 +206,9 @@ namespace mccore
 	    modelIt = erase (modelIt);
 	  }
 	else
-	  ++modelIt;
+	  {
+	    ++modelIt;
+	  }
       }
   }
 
@@ -205,7 +221,9 @@ namespace mccore
     for (modelIt = begin (); modelIt != end ();)
       {
 	if (modelIt->getType ()->isAminoAcid ())
-	  ++modelIt;
+	  {
+	    ++modelIt;
+	  }
 	else
 	  {
 	    modelIt = erase (modelIt);
@@ -222,7 +240,9 @@ namespace mccore
     for (modelIt = begin (); modelIt != end ();)
       {
 	if (modelIt->getType ()->isNucleicAcid ())
-	  ++modelIt;
+	  {
+	    ++modelIt;
+	  }
 	else
 	  {
 	    modelIt = erase (modelIt);
@@ -311,4 +331,3 @@ namespace std
   }
 
 }
-

@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // ExtendedResidue.h
-// Copyright © 2001-04 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-05 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.13 $
+// $Revision: 1.14 $
 // 
 // This file is part of mccore.
 // 
@@ -54,7 +54,7 @@ namespace mccore
    * the atom types.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ExtendedResidue.h,v 1.13 2005-01-03 22:52:52 larosem Exp $
+   * @version $Id: ExtendedResidue.h,v 1.14 2005-01-05 01:44:00 larosem Exp $
    */
   class ExtendedResidue : public Residue
   {
@@ -121,7 +121,7 @@ namespace mccore
      * Initializes the objet with the other's content.
      * @param other the objet to copy.
      */
-    virtual ~ExtendedResidue () { clear (); }
+    virtual ~ExtendedResidue ();
     
     // OPERATORS ------------------------------------------------------------
 
