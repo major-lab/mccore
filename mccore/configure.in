@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
-# $Revision: 1.32 $
-# $Id: configure.in,v 1.32 2004-11-22 20:58:32 larosem Exp $
+# $Revision: 1.33 $
+# $Id: configure.in,v 1.33 2004-12-06 19:22:13 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -145,7 +145,7 @@ elif eval "test \"`echo $GXX`\" = yes"; then     # gnu compiler
             AC_CHECK_LIB(mysqlpp,main)
 	    HAVE_LIBMYSQL=1,
 	)
-	CXXFLAGS="$CXXFLAGS -Wall -Wno-deprecated"
+	CXXFLAGS="$CXXFLAGS -Wall"
 	DEPFLAGS="-MM"
 	case "$host" in
 	    *-darwin*)
