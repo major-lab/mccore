@@ -1,11 +1,11 @@
 #                            -*- Mode: Makefile -*-
 # Makefile.in
-# Copyright © 2000-05 Laboratoire de Biologie Informatique et Théorique.
+# Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique.
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.4 $
-# $Id: Makefile.in,v 1.4 2005-01-10 18:38:28 larosem Exp $
+# $Revision: 1.5 $
+# $Id: Makefile.in,v 1.5 2005-01-11 19:51:22 thibaup Exp $
 # 
 # This file is part of mccore.
 # 
@@ -77,7 +77,7 @@ HAVE_LIBMYSQL = @HAVE_LIBMYSQL@
 
 
 
-SOURCES = GraphModel.cc OrientedGraph.cc UndirectedGraph.cc
+SOURCES = GraphModel.cc OrientedGraph.cc UndirectedGraph.cc HomogeneousTransfo.cc
 
 HEADERS = 
 
@@ -87,17 +87,17 @@ PROGRAMS = $(SOURCES:%.cc=%)
 
 DISTFILES = Makefile.in $(SOURCES) $(HEADERS)
 
+REFDATA = 1L8V.pdb.gz HomogeneousTransfo.bin.gz
 
 all static doc:
 
 test: $(PROGRAMS)
-	@ if test ! -f 1L8V.pdb.gz; then \
-	    $(RM) 1L8V.pdb.gz; \
-	    ln -s $(srcdir)/1L8V.pdb.gz; \
-	  fi
+	@ for refdata in $(REFDATA); do \
+            ln -svf $(srcdir)/$$refdata; \
+          done
 	@ for program in $(PROGRAMS); do \
 	    echo "Testing " $$program; \
-	    LD_LIBRARY_PATH=../lib:$$LD_LIBRARY_PATH ./$$program > $$program.out; \
+	    ./$$program > $$program.out; \
 	    diff $(srcdir)/$$program.good $$program.out || echo "Errors in " $$program; \
 	  done
 
@@ -107,11 +107,8 @@ mostlyclean:
 	@ $(RM) *~ core.*
 
 clean: mostlyclean
-	@ $(RM) $(OBJECTS) $(PROGRAMS)
+	@ $(RM) $(OBJECTS) $(PROGRAMS) $(REFDATA)
 	@ $(RM) *.d *.out
-	@ if test -L 1L8V.pdb.gz; then \
-	    $(RM) 1L8V.pdb.gz; \
-	  fi
 
 distclean: clean
 	@ $(RM) Makefile
