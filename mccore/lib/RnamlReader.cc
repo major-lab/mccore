@@ -4,8 +4,8 @@
 //                  UniversitÅÈ de MontrÅÈal.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
-// $Revision: 1.1.4.1 $
-// $Id: RnamlReader.cc,v 1.1.4.1 2003-12-10 14:19:45 larosem Exp $
+// $Revision: 1.1.4.2 $
+// $Id: RnamlReader.cc,v 1.1.4.2 2003-12-18 19:28:39 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -126,7 +126,7 @@ RnamlReader::toMccore (const rnaml::Base &base)
   vector< CAtom > atomVector;
   const char *str;
   char *type;
-  int c;
+  char c;
   const vector< rnaml::Atom* > &atoms = ((rnaml::Base&) base).getAtoms ();
   vector< rnaml::Atom* >::const_iterator cit;
   AbstractResidue *r;
@@ -138,7 +138,7 @@ RnamlReader::toMccore (const rnaml::Base &base)
   type = strdup (base.getBaseType ());
   t = iPdbstream::GetResidueType (type);
   c = base.getInsertion ();
-  if (EOF != c)
+  if ((char) EOF != c)
     id.setInsertionCode (c);
   for (cit = atoms.begin (); atoms.end () != cit; ++cit)
     {
