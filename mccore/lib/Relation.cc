@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // Relation.cc
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
 
@@ -13,20 +13,19 @@
 #include <stdio.h>
 #include <vector>
 
+#include "CException.h"
+#include "ExtendedResidue.h"
+#include "HBond.h"
+#include "MaximumFlowGraph.h"
+#include "PairingPattern.h"
+#include "PropertyType.h"
 #include "Relation.h"
 #include "Residue.h"
-#include "PropertyType.h"
-#include "UndirectedGraph.h"
-#include "MaximumFlowGraph.h"
 #include "ResidueTopology.h"
-#include "HBond.h"
-#include "ExtendedResidue.h"
-#include "PairingPattern.h"
-#include "CException.h"
-
-#include "zfPdbstream.h"
-
+#include "UndirectedGraph.h"
 #include "stlio.h"
+
+
 
 namespace mccore {
 

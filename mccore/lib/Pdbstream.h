@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Pdbstream.h
-// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-04 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.22 $
-// $Id: Pdbstream.h,v 1.22 2003-12-23 14:58:09 larosem Exp $
+// $Revision: 1.23 $
+// $Id: Pdbstream.h,v 1.23 2004-01-09 21:15:28 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -29,10 +29,13 @@
 
 #include <iostream>
 #include <algorithm>
+#include <fstream>
 #include <string>
+#include <zlib.h>
 
 #include "PdbFileHeader.h"
 #include "ResId.h"
+#include "zstream.h"
 
 using namespace std;
 
@@ -78,7 +81,7 @@ namespace mccore {
    * </pre>
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Pdbstream.h,v 1.22 2003-12-23 14:58:09 larosem Exp $
+   * @version $Id: Pdbstream.h,v 1.23 2004-01-09 21:15:28 larosem Exp $
    */
   class iPdbstream : public istream
   {
@@ -518,6 +521,362 @@ namespace mccore {
      */
     void write (const Residue &r);
 
+  };
+
+
+  /**
+   * @short Input pdb file stream.
+   *
+   * @author Martin Larose <larosem@iro.umontreal.ca>.
+   */
+  class ifPdbstream : public iPdbstream
+  {
+    /**
+     * The stream buffer.
+     */
+    mutable filebuf buf;
+    
+  public:
+    
+    // LIFECYCLE -----------------------------------------------------
+    
+    /**
+     * Initializes the stream.
+     */
+    ifPdbstream ()
+      : iPdbstream (),
+	buf ()
+    {
+      this->init (&buf);
+    }
+    
+    /**
+     * Initializes the stream with a file name and optional mode and
+     * protection.
+     * @param name the file name.
+     * @param mode the ios mode (default = ios_base::in).
+     */
+    ifPdbstream (const char *name, ios_base::openmode mode = ios_base::in)
+      : iPdbstream (),
+	buf ()
+    {
+      this->init (&buf);
+      this->open (name, mode);
+    }
+    
+    // OPERATORS -----------------------------------------------------
+    
+    // ACCESS --------------------------------------------------------
+    
+    // METHODS -------------------------------------------------------
+    
+    /**
+     * Gets the file buffer.
+     * @return the file buffer.
+     */
+    filebuf* rdbuf () const { return &buf; }
+
+    /**
+     * Tells if the buf is open.
+     * @return whether buf is open.
+     */
+    bool is_open () const { return buf.is_open (); }
+
+    /**
+     * Opens the file stream with a file name and optional mode and
+     * protection.
+     * @param name the file name.
+     * @param mode the ios mode (default = ios_base::in).
+     */
+    void open (const char *name, ios_base::openmode mode = ios_base::in)
+    {
+      if (! buf.open (name, mode | ios_base::in))
+	this->setstate (ios::failbit);
+      iPdbstream::open ();
+    }
+    
+    /**
+     * Closes the stream.
+     */
+    void close ()
+    {
+      iPdbstream::close ();
+      if (! buf.close ())
+	this->setstate (ios::failbit);
+    }
+    
+    // I/O -----------------------------------------------------------
+  };
+  
+  
+  /**
+   * @short Output pdb file stream.
+   *
+   * This stream can be used as a regular file stream (ofstream).  The output
+   * is formatted for pdb files.
+   *
+   * @author Martin Larose <larosem@iro.umontreal.ca>.
+   */
+  class ofPdbstream : public oPdbstream
+  {
+    /**
+     * The stream buffer.
+     */
+    mutable filebuf buf;
+    
+  public:
+    
+    // LIFECYCLE -----------------------------------------------------
+    
+    /**
+     * Initializes the stream.
+     */
+    ofPdbstream ()
+      : oPdbstream (),
+	buf ()
+    {
+      this->init (&buf);
+    }
+    
+    /**
+     * Initializes the stream with a file name and an optional mode and
+     * protection.
+     * @param name the file name.
+     * @param mode the ios mode (default = ios_base::out).
+     */
+    ofPdbstream (const char *name, ios_base::openmode mode = ios_base::out)
+      : oPdbstream (),
+	buf ()
+    {
+      this->init (&buf);
+      this->open (name, mode);
+    }
+    
+    // OPERATORS -----------------------------------------------------
+    
+    // ACCESS --------------------------------------------------------
+    
+    // METHODS -------------------------------------------------------
+    
+    /**
+     * Gets the file buffer.
+     * @return the file buffer.
+     */
+    filebuf* rdbuf () const { return &buf; }
+
+    /**
+     * Tells if the buf is open.
+     * @return whether buf is open.
+     */
+    bool is_open () const { return buf.is_open (); }
+
+    /**
+     * Opens the stream with a file name and an optional mode and
+     * protection.
+     * @param name the file name.
+     * @param mode the ios mode (default = ios_base::out | ios_base::trunc).
+     */
+    void open (const char *name, ios_base::openmode mode = ios_base::out | ios_base::trunc)
+    {
+      if (! buf.open (name, mode | ios_base::out))
+	this->setstate (ios::failbit);
+      oPdbstream::open ();
+    }
+    
+    /**
+     * Closes the stream.
+     */
+    void close ()
+    {
+      oPdbstream::close ();
+      if (! buf.close ())
+	this->setstate (ios::failbit);
+    }
+    
+    // I/O -----------------------------------------------------------
+  };
+
+
+  /**
+   * @short Compressed input pdb file stream.
+   *
+   * This stream can be used the same way as the ifPdbstream except that it
+   * can read compressed files.
+   *
+   * @author Martin Larose <larosem@iro.umontreal.ca>.
+   */
+  class izfPdbstream : public iPdbstream
+  {
+    /**
+     * The compressed stream buffer.
+     */
+    mutable zstreambuf buf;
+    
+  public:
+    
+    // LIFECYCLE -----------------------------------------------------
+    
+    /**
+     * Initializes the objet.
+     */
+    izfPdbstream ()
+      : iPdbstream (),
+	buf ()
+    {
+      this->init (&buf);
+    }
+    
+    /**
+     * Initializes the objet with a file name and optional mode and
+     * protection.  The zfstreambase is open with Z_BEST_SPEED compression
+     * flag.
+     * @param name the file name.
+     * @param mode the ios mode (default = ios_base::in).
+     */
+    izfPdbstream (const char *name, ios_base::openmode mode = ios_base::in)
+      : iPdbstream (),
+	buf ()
+    {
+      this->init (&buf);
+      this->open (name, mode);
+    }
+    
+    // OPERATORS -----------------------------------------------------
+    
+    // ACCESS --------------------------------------------------------
+    
+    // METHODS -------------------------------------------------------
+    
+    /**
+     * Gets the file buffer.
+     * @return the file buffer.
+     */
+    zstreambuf* rdbuf () const { return &buf; }
+
+    /**
+     * Tells if the buf is open.
+     * @return whether buf is open.
+     */
+    bool is_open () const { return buf.is_open (); }
+
+    /**
+     * Opens the file stream with a file name and optional mode and
+     * protection.  The zfstreambase is open with Z_BEST_SPEED compression
+     * flag.
+     * @param name the file name.
+     * @param mode the ios mode (default = ios_base::in).
+     */
+    void open (const char *name, ios_base::openmode mode = ios_base::in)
+    {
+      if (! buf.open (name, mode | ios_base::in))
+	this->setstate (ios::failbit);
+      iPdbstream::open ();
+    }
+    
+    /**
+     * Closes the stream.
+     */
+    void close ()
+    {
+      iPdbstream::close ();
+      if (! buf.close ())
+	this->setstate (ios::failbit);
+    }
+    
+    // I/O -----------------------------------------------------------
+  };
+  
+  
+  /**
+   * @short Output compressed pdb file stream.
+   *
+   * This stream can be used the same way as the ofPdbstream except that it
+   * produces compressed pdb files.  The compression level is defaulted to
+   * Z_BEST_SPEED but it can be modified on constructor and open operations.
+   * Please do not use Z_NO_COMPRESSION (level 0): it produces a gzip header
+   * and footer to the file (witch is often not desired).
+   *
+   * @author Martin Larose <larosem@iro.umontreal.ca>.
+   */
+  class ozfPdbstream : public oPdbstream
+  {
+    /**
+     * The compressed stream buffer.
+     */
+    mutable zstreambuf buf;
+    
+  public:
+    
+    // LIFECYCLE -----------------------------------------------------
+    
+    /**
+     * Initializes the pdb file stream.
+     */
+    ozfPdbstream ()
+      : oPdbstream (),
+	buf()
+    {
+      this->init (&buf);
+    }
+    
+    /**
+     * Initializes the pdb file stream with a file name and optional mode,
+     * compression level and protection.
+     * @param name the file name.
+     * @param mode the ios mode (default = ios_base::out).
+     * @param level the compression level (default = Z_BEST_SPEED).
+     */
+    ozfPdbstream (const char *name, ios_base::openmode mode = ios_base::out, int level = Z_BEST_SPEED)
+      : oPdbstream (),
+	buf()
+    {
+      this->init (&buf);
+      this->open (name, mode, level);
+    }
+    
+    // OPERATORS -----------------------------------------------------
+    
+    // ACCESS --------------------------------------------------------
+    
+    // METHODS -------------------------------------------------------
+    
+    /**
+     * Gets the file buffer.
+     * @return the file buffer.
+     */
+    zstreambuf* rdbuf () const { return &buf; }
+
+    /**
+     * Tells if the buf is open.
+     * @return whether buf is open.
+     */
+    bool is_open () const { return buf.is_open (); }
+
+    /**
+     * Opens the pdb file stream with a file name and optional mode,
+     * compression level and protection.
+     * @param name the file name.
+     * @param mode the ios mode (default = ios_base::out | ios_base::trunc).
+     * @param level the compression level (default = Z_BEST_SPEED).
+     */
+    void open (const char *name, ios_base::openmode mode = ios_base::out | ios_base::trunc, int level = Z_BEST_SPEED)
+    {
+      if (! buf.open (name, mode | ios_base::out, level))
+	this->setstate (ios::failbit);
+      oPdbstream::open ();
+    }
+    
+    /**
+     * Closes the compressed pdb file stream.
+     */
+    void close ()
+    {
+      oPdbstream::close ();
+      if (! buf.close ())
+	this->setstate (ios::failbit);
+    }
+    
+    // I/O -----------------------------------------------------------
   };
 }
   

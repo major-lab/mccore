@@ -1,36 +1,40 @@
 //                              -*- Mode: C++ -*- 
 // Genbankstream.h
-// Copyright © 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2002-04 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Tue Feb 12 14:40:55 2002
+// $Revision: 1.4 $
 //
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifndef _Genbankstream_h_
 #define _Genbankstream_h_
 
 #include <iostream>
-
 #include <fstream>
 #include <vector>
+#include <zlib.h>
 
-#include "fstreambase.h"
-#include "zfstream.h"
+#include "zstream.h"
+
+using namespace std;
+
+
 
 namespace mccore 
 {
@@ -40,6 +44,7 @@ namespace mccore
    * Long Description
    *
    * @author Patrick Gendron
+   * @version $Id: Genbankstream.h,v 1.4 2004-01-09 21:15:19 larosem Exp $
    */
   class iGenbankstream : public istream
   {
@@ -51,8 +56,7 @@ namespace mccore
     /**
      * Initializes the object.
      */
-    iGenbankstream ()
-      : istream (cin.rdbuf ()) {}
+    iGenbankstream () : istream (0) { }
   
     /**
      * Initializes the stream with a predefined stream buffer.
@@ -91,43 +95,69 @@ namespace mccore
    * 
    * @author Patrick Gendron 
    */
-  class ifGenbankstream : public fstreambase, public iGenbankstream
+  class ifGenbankstream : public iGenbankstream
   {
+    /**
+     * The stream buffer.
+     */
+    mutable filebuf buf;
+    
   public:
 
     /**
      * Initializes the object.
      */
     ifGenbankstream ()
-      : fstreambase (),
-	iGenbankstream (rdbuf ())
-    { }
+      : iGenbankstream (),
+	buf ()
+    {
+      this->init (&buf);
+    }
 
     /**
      * Initializes the stream with filename.
      * @param name the file name.
      * @param mode the file mode.
      */
-    ifGenbankstream (const char *name, int mode = ios::in)
-      : fstreambase (),
-	iGenbankstream (rdbuf ())
+    ifGenbankstream (const char *name, ios_base::openmode mode = ios_base::in)
+      : iGenbankstream (),
+	buf ()
     {
-      open (name, mode);
+      this->init (&buf);
+      this->open (name, mode);
     }
+
+    /**
+     * Gets the file buffer.
+     * @return the file buffer.
+     */
+    filebuf* rdbuf () const { return &buf; }
+
+    /**
+     * Tells if the buf is open.
+     * @return whether buf is open.
+     */
+    bool is_open () const { return buf.is_open (); }
 
     /**
      * Opens the stream with file name.
      * @param name the file name.
      * @param mode the file mode.
      */
-    void open (const char *name, int mode=ios::in)
-    { fstreambase::open (name, mode); }
+    void open (const char *name, ios_base::openmode mode = ios_base::in)
+    {
+      if (! buf.open (name, mode | ios_base::in))
+	this->setstate (ios::failbit);
+    }
 
     /**
-     * Gets the buffer.
-     * @return the compressed file buffer object.
+     * Closes the stream.
      */
-    filebuf* rdbuf() { return fstreambase::rdbuf (); }
+    void close ()
+    {
+      if (! buf.close ())
+	this->setstate (ios::failbit);
+    }
   };
 
 
@@ -136,45 +166,70 @@ namespace mccore
    * 
    * @author Patrick Gendron 
    */
-  class izfGenbankstream : public zfstreambase, public iGenbankstream
+  class izfGenbankstream : public iGenbankstream
   {
+    /**
+     * The compressed stream buffer.
+     */
+    mutable zstreambuf buf;
+    
   public:
 
     /**
      * Initializes the stream.
      */
     izfGenbankstream ()
-      : zfstreambase (),
-	iGenbankstream (rdbuf ())
-    { }
+      : iGenbankstream (),
+	buf ()
+    {
+      this->init (&buf);
+    }
   
     /**
      * Initializes the stream with filename.
      * @param name the file name.
      * @param mode the file mode.
      */
-    izfGenbankstream (const char *name, int mode = ios::in)
-      : zfstreambase (),
-	iGenbankstream (rdbuf ())
+    izfGenbankstream (const char *name, ios_base::openmode mode = ios_base::in)
+      : iGenbankstream (),
+	buf ()
     {
-      open (name, mode);
+      this->init (&buf);
+      this->open (name, mode);
     }
+
+    /**
+     * Gets the file buffer.
+     * @return the file buffer.
+     */
+    zstreambuf* rdbuf () const { return &buf; }
+
+    /**
+     * Tells if the buf is open.
+     * @return whether buf is open.
+     */
+    bool is_open () const { return buf.is_open (); }
 
     /**
      * Opens the stream with file name.
      * @param name the file name.
      * @param mode the file mode.
      */
-    void open (const char *name, int mode=ios::in)
-    { zfstreambase::open (name, mode); }
+    void open (const char *name, ios_base::openmode mode = ios_base::in)
+    {
+      if (! buf.open (name, mode | ios_base::in))
+	this->setstate (ios::failbit);
+    }
 
     /**
-     * Gets the buffer.
-     * @return the compressed file buffer object.
+     * Closes the stream.
      */
-    zfstreambuf* rdbuf() { return zfstreambase::rdbuf(); }
+    void close ()
+    {
+      if (! buf.close ())
+	this->setstate (ios::failbit);
+    }
   };
-
 }
 
 #endif

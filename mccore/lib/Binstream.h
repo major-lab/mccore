@@ -1,11 +1,11 @@
 //                         -*- Mode: C++ -*-
 // Binstream.h
-// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-04 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:11:41 EDT
-// $Revision: 1.13 $
-// $Id: Binstream.h,v 1.13 2003-12-23 14:47:22 larosem Exp $
+// $Revision: 1.14 $
+// $Id: Binstream.h,v 1.14 2004-01-09 21:15:13 larosem Exp $
 //
 //  This file is part of mccore.
 //
@@ -28,6 +28,10 @@
 #define _Binstream_h_
 
 #include <iostream>
+#include <fstream>
+#include <zlib.h>
+
+#include "zstream.h"
 
 using namespace std;
 
@@ -62,7 +66,7 @@ namespace mccore {
     /**
      * Initializes the stream.  Nothing to be done.
      */
-    iBinstream () : istream (cin.rdbuf ()) { }
+    iBinstream () : istream (0) { }
     
     /**
      * Initializes the stream with a predefined stream buffer.
@@ -234,7 +238,7 @@ namespace mccore {
     /**
      * Initializes the stream.  Nothing to be done.
      */
-    oBinstream () : ostream (cout.rdbuf ()) { }
+    oBinstream () : ostream (0) { }
     
     /**
      * Initializes the stream with a predefined stream buffer.
@@ -383,6 +387,11 @@ namespace mccore {
     // LIFECYCLE ------------------------------------------------------------
     
     /**
+     * Initializes the stream.
+     */
+    Binstream () : iBinstream (), oBinstream () { }
+    
+    /**
      * Initializes the stream with a predefined stream buffer.
      * @param sb the stream buffer.
      */
@@ -403,6 +412,459 @@ namespace mccore {
      * Closes the stream.
      */
     virtual void close () { }
+    
+    // I/O ------------------------------------------------------------------
+  };
+
+
+  /**
+   * @short Input binary file streams.
+   *
+   * Implementation of binary file streams, based on fstreambase and
+   * Binstream.  These streams are used for binary dumps in files.  The
+   * general layout is based on fstream while I/O operators comes from
+   * Binstream.
+   *
+   * @author Martin Larose <larosem@IRO.UMontreal.CA>
+   */
+  class ifBinstream : public iBinstream
+  {
+    /**
+     * The stream buffer.
+     */
+    mutable filebuf buf;
+    
+  public:
+    
+    // LIFECYCLE ------------------------------------------------------------
+    
+    /**
+     * Initializes the objet.
+     */
+    ifBinstream ()
+      : iBinstream (),
+	buf ()
+    {
+      this->init (&buf);
+    }
+    
+    /**
+     * Initializes the stream with file name and parameters.
+     * @param name the path and file name to open.
+     * @param mode the open mode (default ios_base::in).
+     */
+    ifBinstream (const char *name, ios_base::openmode mode = ios_base::in)
+      : iBinstream (),
+	buf ()
+    {
+      this->init (&buf);
+      this->open (name, mode);
+    }
+    
+    // OPERATORS ------------------------------------------------------------
+    
+    // ACCESS ---------------------------------------------------------------
+    
+    // METHODS --------------------------------------------------------------
+    
+    /**
+     * Gets the file buffer.
+     * @return the file buffer.
+     */
+    filebuf* rdbuf () const { return &buf; }
+
+    /**
+     * Tells if the buf is open.
+     * @return whether buf is open.
+     */
+    bool is_open () const { return buf.is_open (); }
+
+    /**
+     * Opens the stream with file name and parameters.
+     * @param name the path and file name to open.
+     * @param mode the open mode (default ios_base::in).
+     */
+    void open (const char *name, ios_base::openmode mode = ios_base::in)
+    {
+      if (! buf.open (name, mode))
+	this->setstate (ios::failbit);
+      iBinstream::open ();
+    }
+    
+    /**
+     * Closes the stream.
+     */
+    void close ()
+    {
+      iBinstream::close ();
+      if (! buf.close ())
+	this->setstate (ios::failbit);
+    }
+    
+    // I/O ------------------------------------------------------------------
+  };
+  
+  
+  /**
+   * @short Output binary file stream.
+   *
+   * Implementation of binary file streams, based on fstreambase and
+   * Binstream.  These streams are used for binary dumps in files.  The
+   * general layout is based on fstream while I/O operators comes from
+   * Binstream.
+   *
+   * @author Martin Larose <larosem@IRO.UMontreal.CA>
+   */
+  class ofBinstream : public oBinstream
+  {
+    /**
+     * The stream buffer.
+     */
+    mutable filebuf buf;
+    
+  public:
+    
+    // LIFECYCLE ------------------------------------------------------------
+    
+    /**
+     * Initializes the stream.
+     */
+    ofBinstream ()
+      : oBinstream (),
+	buf ()
+    {
+      this->init (&buf);
+    }
+    
+    /**
+     * Initializes the stream with file name and parameters.
+     * @param name the path and file name to open.
+     * @param mode the open mode (default ios_base::out).
+     */
+    ofBinstream (const char *name, ios_base::openmode mode = ios_base::out)
+      : oBinstream (),
+	buf ()
+    {
+      this->init (&buf);
+      this->open (name, mode);
+    }
+    
+    // OPERATORS ------------------------------------------------------------
+    
+    // ACCESS ---------------------------------------------------------------
+    
+    // METHODS --------------------------------------------------------------
+    
+    /**
+     * Gets the file buffer.
+     * @return the file buffer.
+     */
+    filebuf* rdbuf () const { return &buf; }
+
+    /**
+     * Tells if the buf is open.
+     * @return whether buf is open.
+     */
+    bool is_open () const { return buf.is_open (); }
+
+    /**
+     * Opens the stream with file name and optional mode and protection.
+     * @param name the path and file name to open.
+     * @param mode the open mode (default = ios_base::out).
+     */
+    void open (const char *name, ios_base::openmode mode = ios_base::out | ios_base::trunc)
+    {
+      if (! buf.open (name, mode | ios_base::out))
+	this->setstate (ios::failbit);
+      oBinstream::open ();
+    }
+    
+    /**
+     * Closes the stream.
+     */
+    void close ()
+    {
+      oBinstream::close ();
+      if (! buf.close ())
+	this->setstate (ios::failbit);
+    }
+    
+    // I/O ------------------------------------------------------------------
+  };
+  
+  
+  /**
+   * @short General binary file stream.
+   *
+   * Implementation of binary file streams, based on fstreambase and
+   * Binstream.  These streams are used for binary dumps in files.  The
+   * general layout is based on fstream while I/O operators comes from
+   * Binstream.
+   *
+   * @author Martin Larose <larosem@IRO.UMontreal.CA>
+   */
+  class fBinstream : public Binstream
+  {
+    /**
+     * The stream buffer.
+     */
+    mutable filebuf buf;
+    
+  public:
+    
+    // LIFECYCLE ------------------------------------------------------------
+    
+    /**
+     * Initializes the stream.
+     */
+    fBinstream ()
+      : Binstream (),
+	buf ()
+    {
+      this->init (&buf);
+    }
+    
+    /**
+     * Initializes the stream with file name and parameters.
+     * @param name the path and file name to open.
+     * @param mode the open mode (default ios_base::in | ios_base::out).
+     */
+    fBinstream (const char *name, ios_base::openmode mode = ios_base::in | ios_base::out)
+      : Binstream (),
+	buf ()
+    {
+      this->init (&buf);
+      this->open (name, mode);
+    }
+    
+    // OPERATORS ------------------------------------------------------------
+    
+    // ACCESS ---------------------------------------------------------------
+    
+    // METHODS --------------------------------------------------------------
+    
+    /**
+     * Gets the file buffer.
+     * @return the file buffer.
+     */
+    filebuf* rdbuf () const { return &buf; }
+
+    /**
+     * Tells if the buf is open.
+     * @return whether buf is open.
+     */
+    bool is_open () const { return buf.is_open (); }
+
+    /**
+     * Opens the stream with file name and parameters.
+     * @param name the path and file name to open.
+     * @param mode the open mode (default ios_base::in | ios_base::out).
+     */
+    void open (const char *name, ios_base::openmode mode = ios_base::in | ios_base::out)
+    {
+      if (! buf.open (name, mode))
+	this->setstate (ios::failbit);
+      Binstream::open ();
+    }
+    
+    /**
+     * Closes the stream.
+     */
+    virtual void close ()
+    {
+      Binstream::close ();
+      if (! buf.close ())
+	this->setstate (ios::failbit);
+    }
+
+    // I/O ------------------------------------------------------------------
+  };
+
+
+  /**
+   * @short Compressed input binary stream.
+   *
+   * I/O general classes using the GNU zip compression system.  These streams
+   * adds the compression on the normal binary streams.  The input stream can
+   * read an uncompressed file.  When creating a output stream the programmer
+   * can specify a compression level from 0 (Z_NO_COMPRESSION) to 9
+   * (Z_BEST_COMPRESSION), the default is level 1 (Z_BEST_SPEED).  The usage
+   * of compression level 0 is not recommended: the data is not compressed but
+   * a gzip dependent header an footer is added to the file.  It is preferable
+   * to use the fBinstream classes for uncompressed output binary streams.
+   * For further details see @ref iBinstream and @ref zfstreambase.  Note that
+   * the compression level is not used in input streams.
+   *
+   * @author Martin Larose <larosem@IRO.UMontreal.CA>
+   */
+  class izfBinstream : public iBinstream
+  {
+    /**
+     * The compressed stream buffer.
+     */
+    mutable zstreambuf buf;
+    
+  public:
+    
+    // LIFECYCLE ------------------------------------------------------------
+    
+    /**
+     * Initializes the stream.
+     */
+    izfBinstream ()
+      : iBinstream (),
+	buf ()
+    {
+      this->init (&buf);
+    }
+    
+    /**
+     * Initializes the stream with file name and parameters.
+     * @param name the path and file name to open.
+     * @param mode the open mode (default ios_base::in).
+     */
+    izfBinstream(const char *name, ios_base::openmode mode = ios_base::in)
+      : iBinstream (),
+	buf ()
+    {
+      this->init (&buf);
+      this->open (name, mode);
+    }
+    
+    // OPERATORS ------------------------------------------------------------
+    
+    // ACCESS ---------------------------------------------------------------
+    
+    // METHODS --------------------------------------------------------------
+    
+    /**
+     * Gets the file buffer.
+     * @return the file buffer.
+     */
+    zstreambuf* rdbuf () const { return &buf; }
+
+    /**
+     * Tells if the buf is open.
+     * @return whether buf is open.
+     */
+    bool is_open () const { return buf.is_open (); }
+
+    /**
+     * Opens the stream with file name and parameters.
+     * @param name the path and file name to open.
+     * @param mode the open mode (default ios_base::in).
+     */
+    void open (const char *name, ios_base::openmode mode = ios_base::in)
+    {
+      if (! buf.open (name, mode | ios_base::in))
+	this->setstate (ios::failbit);
+      iBinstream::open ();
+    }
+    
+    /**
+     * Closes the stream.
+     */
+    void close ()
+    {
+      iBinstream::close ();
+      if (! buf.close ())
+	this->setstate (ios::failbit);
+    }
+    
+    // I/O ------------------------------------------------------------------
+  };
+  
+  
+  /**
+   * @short Compressed output binary stream.
+   *
+   * I/O general classes using the GNU zip compression system.  These streams
+   * adds the compression on the normal binary streams.  The input stream can
+   * read an uncompressed file.  When creating a output stream the programmer
+   * can specify a compression level from 0 (Z_NO_COMPRESSION) to 9
+   * (Z_BEST_COMPRESSION), the default is level 1 (Z_BEST_SPEED).  The usage
+   * of compression level 0 is not recommended: the data is not compressed but
+   * a gzip dependent header an footer is added to the file.  It is preferable
+   * to use the fBinstream classes for uncompressed output binary streams.
+   * For further details see @ref oBinstream and @ref zfstreambase.
+   *
+   * @author Martin Larose <larosem@IRO.UMontreal.CA>
+   */
+  class ozfBinstream : public oBinstream
+  {
+    /**
+     * The compressed stream buffer.
+     */
+    mutable zstreambuf buf;
+    
+  public:
+    
+    // LIFECYCLE ------------------------------------------------------------
+    
+    /**
+     * Initializes the stream.
+     */
+    ozfBinstream ()
+      : oBinstream (),
+	buf ()
+    {
+      this->init (&buf);
+    }
+    
+    /**
+     * Initializes the stream with file name and parameters.
+     * @param name the path and file name to open.
+     * @param mode the open mode (default ios_base::out).
+     * @param level the compression level for output.
+     */
+    ozfBinstream (const char *name, ios_base::openmode mode = ios_base::out, int level = Z_BEST_SPEED)
+      : oBinstream (),
+	buf()
+    {
+      this->init (&buf);
+      this->open (name, mode, level);
+    }
+    
+    // OPERATORS ------------------------------------------------------------
+    
+    // ACCESS ---------------------------------------------------------------
+    
+    // METHODS --------------------------------------------------------------
+    
+    /**
+     * Gets the file buffer.
+     * @return the file buffer.
+     */
+    zstreambuf* rdbuf () const { return &buf; }
+
+    /**
+     * Tells if the buf is open.
+     * @return whether buf is open.
+     */
+    bool is_open () const { return buf.is_open (); }
+
+    /**
+     * Opens the stream with file name and parameters.
+     * @param name the path and file name to open.
+     * @param mode the open mode (default ios_base::out | ios_base::trunc).
+     * @param level the compression level for output (default Z_BEST_SPEED).
+     */
+    void open (const char *name, ios_base::openmode mode = ios_base::out | ios_base::trunc, int level = Z_BEST_SPEED)
+    {
+      if (! buf.open (name, mode | ios_base::out, level))
+	this->setstate (ios::failbit);
+      oBinstream::open ();
+    }
+    
+    /**
+     * Closes the stream.
+     */
+    void close ()
+    {
+      oBinstream::close ();
+      if (! buf.close ())
+	this->setstate (ios::failbit);
+    }
     
     // I/O ------------------------------------------------------------------
   };

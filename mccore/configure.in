@@ -1,11 +1,11 @@
 #                              -*- Mode: Sh -*- 
 # configure.in
-# Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
+# Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique.
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
-# $Revision: 1.23 $
-# $Id: configure.in,v 1.23 2003-12-23 14:46:09 larosem Exp $
+# $Revision: 1.24 $
+# $Id: configure.in,v 1.24 2004-01-09 21:15:10 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -48,18 +48,6 @@ AC_CHECK_FUNCS(isfdtype)
 AC_CHECK_FUNCS(acosf)
 AC_CHECK_FUNCS(sqrtf)
 
-AC_MSG_CHECKING(for fstreambase)
-AC_CACHE_VAL(ac_cv_have_fstreambase,
-             AC_TRY_COMPILE([#include <fstream>],
-                            fstreambase f;, 
-                            ac_cv_have_fstreambase="yes", 
-                            ac_cv_have_fstreambase="no"))
-if test $ac_cv_have_fstreambase = "yes"; then
-    AC_DEFINE(HAVE_FSTREAMBASE)
-fi
-AC_MSG_RESULT($ac_cv_have_fstreambase)
-
-
 AC_CACHE_CHECK(whether the compiler has numeric_limits<T>,
 ac_cv_cxx_have_numeric_limits,
 [AC_LANG_SAVE
@@ -70,6 +58,8 @@ ac_cv_cxx_have_numeric_limits,
  ac_cv_cxx_have_numeric_limits=yes, ac_cv_cxx_have_numeric_limits=no)
  AC_LANG_RESTORE
 ])
+
+
 if test "$ac_cv_cxx_have_numeric_limits" = yes; then
   AC_DEFINE(HAVE_NUMERIC_LIMITS,,[define if the compiler has numeric_limits<T>])
 fi

@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // Residue.cc
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.27 $
-// $Id: Residue.cc,v 1.27 2003-12-23 14:57:49 larosem Exp $
+// $Revision: 1.28 $
+// $Id: Residue.cc,v 1.28 2004-01-09 21:15:34 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -41,7 +41,6 @@
 #include "Residue.h"
 #include "ResidueTopology.h"
 #include "Rmsd.h"
-#include "zfPdbstream.h"
 
 
 

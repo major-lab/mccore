@@ -1,11 +1,11 @@
 #                            -*- Mode: Makefile -*-
 # Makefile.in
-# Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
+# Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique.
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.41 $
-# $Id: Makefile.in,v 1.41 2003-12-23 14:48:23 larosem Exp $
+# $Revision: 1.42 $
+# $Id: Makefile.in,v 1.42 2004-01-09 21:15:24 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -70,13 +70,19 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 % : %.cc
 % : %.o
 
-SOURCES = zfstream.cc \
-	  Binstream.cc \
+SOURCES = Binstream.cc \
+	  CException.cc \
+	  Fastastream.cc \
+	  Genbankstream.cc \
+	  Messagestream.cc \
+	  PdbFileHeader.cc \
 	  Pdbstream.cc \
 	  RnamlReader.cc \
 	  RnamlWriter.cc \
-	  CException.cc \
-	  Messagestream.cc \
+	  ServerSocket.cc \
+	  Sequence.cc \
+	  sockstream.cc \
+	  zstream.cc \
 \
 	  Vector3D.cc \
 	  HomogeneousTransfo.cc \
@@ -98,8 +104,6 @@ SOURCES = zfstream.cc \
 	  ResidueFactoryMethod.cc \
 	  ResidueTopology.cc \
 \
-	  PdbFileHeader.cc \
-	  Pdbstream.cc \
 	  HBond.cc \
 	  Model.cc \
 	  Molecule.cc \
@@ -111,21 +115,12 @@ SOURCES = zfstream.cc \
           RiboseBuilder.cc \
           RiboseOptimizer5D.cc \
           RiboseOptimizer2D.cc \
-          RiboseEstimator.cc \
-\
-	  sockstream.cc \
-	  ServerSocket.cc \
-\
-	  Sequence.cc \
-	  Fastastream.cc \
-	  Genbankstream.cc
+          RiboseEstimator.cc
 
 
 HEADERS = $(SOURCES:.cc=.h) Algo.h Path.h AdjacencyMatrix.h Graph.h \
-UndirectedGraph.h MaximumFlowGraph.h \
-fstreambase.h fPdbstream.h zfPdbstream.h fBinstream.h zfBinstream.h \
-sBinstream.h SocketCommand.h SymmetricalMatrix.h SymmetricalMatrix.cc \
-stlio.h
+UndirectedGraph.h MaximumFlowGraph.h sBinstream.h SocketCommand.h \
+SymmetricalMatrix.h SymmetricalMatrix.cc stlio.h
 
 OBJECTS = $(SOURCES:.cc=.o)
 

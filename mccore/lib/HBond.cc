@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // HBond.cc
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu Mar 20 18:05:28 2003
@@ -33,7 +33,7 @@
 #include "AtomType.h"
 #include "Residue.h"
 #include "Atom.h"
-#include "fPdbstream.h"
+#include "Pdbstream.h"
 
 namespace mccore {
 
