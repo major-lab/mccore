@@ -4,8 +4,8 @@
 // Author           : Martin Larose
 // Created On       : Fri Oct  6 08:21:55 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Fri Feb  2 14:56:18 2001
-// Update Count     : 6
+// Last Modified On : Mon Feb  5 18:52:22 2001
+// Update Count     : 7
 // Status           : Unknown.
 // 
 
@@ -41,7 +41,7 @@ CModel::operator[] (size_type nth)
     {
       iterator it;
       
-      for (it = begin (); nth >= 0; --nth, ++it);
+      for (it = begin (); nth > 0; --nth, ++it);
       return *it;
     }
 }
@@ -57,7 +57,7 @@ CModel::operator[] (size_type nth) const
     {
       const_iterator cit;
       
-      for (cit = begin (); nth >= 0; --nth, ++cit);
+      for (cit = begin (); nth > 0; --nth, ++cit);
       return *cit;
     }
 }
