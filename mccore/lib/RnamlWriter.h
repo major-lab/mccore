@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // RnamlWriter.h
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.2 $
-// $Id: RnamlWriter.h,v 1.2 2003-12-23 14:58:09 larosem Exp $
+// $Revision: 1.3 $
+// $Id: RnamlWriter.h,v 1.3 2005-01-03 23:05:31 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -39,10 +39,10 @@ namespace rnaml
 
 
 
-namespace mccore {
-  
+namespace mccore
+{
   class Atom;
-  class Model;
+  class AbstractModel;
   class Molecule;
   class Residue;
   
@@ -54,7 +54,7 @@ namespace mccore {
    * This class writes the mccore objects into a stream.  The objects are
    * transformed into rnamlObjects, then outputted to the stream.
    *
-   * @author Martin Larose (<larosem@iro.umontreal.ca>).
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>).
    */
   class RnamlWriter
   {
@@ -106,11 +106,11 @@ namespace mccore {
     static rnaml::Base* toRnaml (const Residue &residue);
     
     /**
-     * Transforms a mccore Model to a rnaml Model.
-     * @param model the mccore Model.
+     * Transforms a mccore AbstractModel to a rnaml Model.
+     * @param model the mccore AbstractModel.
      * @return the rnaml Model.
      */
-    static rnaml::Model* toRnaml (const Model &model);
+    static rnaml::Model* toRnaml (const AbstractModel &model);
     
     /**
      * Transforms a mccore Molecule to a rnaml Molecule.

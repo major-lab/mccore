@@ -1,13 +1,14 @@
 //                              -*- Mode: C++ -*- 
-// SqlExtrac.h
+// GraphModel.cc
 // Copyright © 2004 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
-// Author           : Anita Boisgontier
-// Created On       : 
+//                  Université de Montréal
+// Author           : Martin Larose
+// Created On       : Wed Dec 29 00:44:53 2004
 // $Revision: 1.2 $
-// 
+// $Id: GraphModel.cc,v 1.2 2005-01-03 23:11:15 larosem Exp $
+//
 // This file is part of mccore.
-// 
+//
 // mccore is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
 // License as published by the Free Software Foundation; either
@@ -23,54 +24,39 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _mccore_SqlExtrac_h_
-#define _mccore_SqlExtrac_h_
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
-#include <vector>
-#include <mysql++.hh>
+#include <iostream>
 
+#include "GraphModel.h"
+#include "Messagestream.h"
+#include "Pdbstream.h"
+#include "stlio.h"
+
+using namespace mccore;
 using namespace std;
 
 
 
-namespace mccore
+int
+main (int argc, char *argv[])
 {
-  class Atom;
-  class ResidueFactoryMethod;
-  class Residue;
-  class Model;
-  class Molecule;
+  izfPdbstream ifs;
+  GraphModel model;
 
+  ifs.open ("1L8V.pdb.gz");
+  ifs >> model;
+  ifs.close ();
 
-  
-  /**
-   * @author Anita Boisgontier (<a href="boisgona@iro.umontreal.ca">boisgona@iro.umontreal.ca</a>)
-   * @version $Id: SqlExtrac.h,v 1.2 2005-01-03 23:08:01 larosem Exp $
-   */
-  class sqlExtrac
-  {
-    
-  private:
-
-    const char *name;
-    ResidueFactoryMethod *residueFM;
-    Connection con;
-    sqlExtrac() {}
-    
-  public:
-    
-    sqlExtrac (const char *name) : name (name), con (use_exceptions) { }
-
-    virtual ~sqlExtrac () { }
-    
-  private:
-    
-    Model* toExtrac (int num_Mod);
-
-  public:
-
-    Molecule* read ();
-  };
+//   gOut (0) << model << endl;
+  model.removeWater ();
+  model.addHLP ();
+  model.annotate ();
+  gOut (0) << model << endl;
+  return EXIT_SUCCESS;
 }
-
-#endif
+  
+  
+    

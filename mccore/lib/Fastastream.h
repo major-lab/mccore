@@ -1,9 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // Fastastream.h
 // Copyright © 2001-04 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Thu Jan 17 12:53:27 2002
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 //
 // This file is part of mccore.
 // 
@@ -22,8 +23,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _Fastastream_h_
-#define _Fastastream_h_
+#ifndef _mccore_Fastastream_h_
+#define _mccore_Fastastream_h_
 
 #include <iostream>
 #include <fstream>
@@ -46,7 +47,8 @@ namespace mccore
    *  "> ID Description"
    *  "ACGUGACUCGAGCCCG"
    * 
-   * @author Patrick Gendron 
+   * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
+   * @version $Id: Fastastream.h,v 1.6 2005-01-03 22:53:33 larosem Exp $
    */
   class iFastastream : public istream
   {

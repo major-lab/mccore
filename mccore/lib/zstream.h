@@ -4,8 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Fri Jan  9 14:08:33 2004
-// $Revision: 1.1 $
-// $Id: zstream.h,v 1.1 2004-01-09 21:15:42 larosem Exp $
+// $Revision: 1.2 $
 //
 // This file is part of mccore.
 // 
@@ -24,8 +23,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _zstream_h_
-#define _zstream_h_
+#ifndef _mccore_zstream_h_
+#define _mccore_zstream_h_
 
 #include <iostream>
 #include <zlib.h>
@@ -34,14 +33,15 @@ using namespace std;
 
 
 
-namespace mccore {
-
+namespace mccore
+{
   /**
    * @short Implementation of compressed file buffer.
    *
    * This implementation of buffer suits for compressed streams.
    *
-   * @author Patrick Gendron <gendrop@iro.umontreal.ca>
+   * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
+   * @version $Id: zstream.h,v 1.2 2005-01-03 23:10:37 larosem Exp $
    */
   class zstreambuf : public streambuf
   {
@@ -137,7 +137,8 @@ namespace mccore {
    *
    * This is a simple stream that reads a compressed gzip file.
    *
-   * @author Patrick Gendron <gendrop@iro.umontreal.ca>
+   * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
+   * @version $Id: zstream.h,v 1.2 2005-01-03 23:10:37 larosem Exp $
    */
   class izfstream : public istream
   {
@@ -210,7 +211,8 @@ namespace mccore {
    *
    * This is a simple stream that writes to a compressed gzip file.
    *
-   * @author Patrick Gendron <gendrop@iro.umontreal.ca>
+   * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
+   * @version $Id: zstream.h,v 1.2 2005-01-03 23:10:37 larosem Exp $
    */
   class ozfstream : public ostream
   {    

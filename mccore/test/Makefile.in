@@ -1,0 +1,135 @@
+#                            -*- Mode: Makefile -*-
+# Makefile.in
+# Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique.
+#                     Université de Montréal.
+# Author           : Martin Larose <larosem@iro.umontreal.ca>
+# Created On       : Tue Sep 19 18:57:11 2000
+# $Revision: 1.2 $
+# $Id: Makefile.in,v 1.2 2005-01-03 23:12:05 larosem Exp $
+# 
+# This file is part of mccore.
+# 
+# mccore is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+# 
+# mccore is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+# 
+# You should have received a copy of the GNU Lesser General Public
+# License along with mccore; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+
+PACKAGE = @PACKAGE@
+VERSION = @VERSION@
+
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+datadir = @datadir@
+includedir = @includedir@
+libdir = @libdir@
+
+CXX = @CXX@
+CXXFLAGS = @CXXFLAGS@
+DEPFLAGS = @DEPFLAGS@
+DEFS = @DEFS@
+LD = @CXX@
+LINKOPTIONS = @LINKOPTIONS@
+LDNAMEPARAM = @LDNAMEPARAM@
+LIBEXT = @LIBEXT@
+LDFLAGS = @LDFLAGS@
+LIBS = @LIBS@
+LIBALLFLAGSTART = @LIBALLFLAGSTART@
+LIBALLFLAGSTOP = @LIBALLFLAGSTOP@
+
+AR = @AR@
+ARXX = @ARXX@
+AROPTIONS = @AROPTIONS@
+
+INSTALL = @INSTALL@
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+
+HAVE_LIBRNAML = @HAVE_LIBRNAML@
+HAVE_LIBMYSQL = @HAVE_LIBMYSQL@
+
+
+.SUFFIXES:
+
+%.d: %.cc
+	@ $(SHELL) -ec '$(CXX) $(DEPFLAGS) $(DEFS) -I.. -I$(srcdir) -I$(srcdir)/../lib $< \
+	    | sed '\''s/\($*\)\.o[ :]*/\1.o \1.lo $@ : /g'\'' > $@; \
+	      [ -s $@ ] || rm -f $@'
+
+%.o: %.cc
+	$(CXX) $(CXXFLAGS) $(DEFS) -I.. -I$(srcdir) -I$(srcdir)/../lib -c $<
+
+% : %.cc
+% : %.o
+	$(LD) -o $@ $^ $(LDFLAGS) -L../lib -lmccore $(LIBS)
+
+
+
+SOURCES = GraphModel.cc OrientedGraph.cc UndirectedGraph.cc
+
+HEADERS = 
+
+OBJECTS = $(SOURCES:%.cc=%.o)
+
+PROGRAMS = $(SOURCES:%.cc=%)
+
+DISTFILES = Makefile.in $(SOURCES) $(HEADERS)
+
+
+all static doc:
+
+test: $(PROGRAMS)
+	@ if test ! -f 1L8V.pdb.gz; then \
+	    $(RM) 1L8V.pdb.gz; \
+	    ln -s $(srcdir)/1L8V.pdb.gz; \
+	  fi
+	@ for program in $(PROGRAMS); do \
+	    echo "Testing " $$program; \
+	    ./$$program > $$program.out; \
+	    diff $(srcdir)/$$program.good $$program.out || echo "Errors in " $$program; \
+	  done
+
+install install-static uninstall:
+
+mostlyclean:
+	@ $(RM) *~
+
+clean: mostlyclean
+	@ $(RM) $(OBJECTS) $(PROGRAMS)
+	@ $(RM) *.d *.out
+	@ if test -L 1L8V.pdb.gz; then \
+	    $(RM) 1L8V.pdb.gz; \
+	  fi
+
+distclean: clean
+	@ $(RM) Makefile
+
+release:
+
+dist:
+	@ echo "Copying distribution files"
+	@ for file in $(DISTFILES); do \
+	   ln $(srcdir)/$$file ../$(PACKAGE)-$(VERSION)/test 2> /dev/null \
+	    || cp -p $(srcdir)/$$file ../$(PACKAGE)-$(VERSION)/test; \
+	  done
+
+Makefile: $(srcdir)/Makefile.in ../config.status
+	@ cd .. && ./config.status test/$@
+
+# Tell versions [3.59,3.63) of GNU make not to export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:
+
+-include $(SOURCES:%.cc=%.d)

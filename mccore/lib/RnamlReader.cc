@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // RnamlReader.cc
-// Copyright Å© 2003 Laboratoire de Biologie Informatique et ThÅÈorique
-//                  UniversitÅÈ de MontrÅÈal.
+// Copyright Å© 2003-04 Laboratoire de Biologie Informatique et ThÅÈorique
+//                     UniversitÅÈ de MontrÅÈal.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
-// $Revision: 1.3 $
-// $Id: RnamlReader.cc,v 1.3 2004-12-06 21:38:52 thibaup Exp $
+// $Revision: 1.4 $
+// $Id: RnamlReader.cc,v 1.4 2005-01-03 23:04:44 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -31,6 +31,7 @@
 #include <string.h>
 #include <errno.h>
 
+#include "AbstractModel.h"
 #include "Atom.h"
 #include "AtomType.h"
 #include "Messagestream.h"
@@ -56,8 +57,8 @@
 
 
 
-namespace mccore {
-
+namespace mccore
+{
   
   RnamlReader::RnamlReader (const char *name, ResidueFactoryMethod *fm)
     : is (0),
@@ -83,7 +84,6 @@ namespace mccore {
   }
   
   
-  
   RnamlReader::RnamlReader (rnaml::InputStream *is, ResidueFactoryMethod *fm)
     : is (is),
       residueFM (fm),
@@ -94,7 +94,6 @@ namespace mccore {
   }
   
   
-  
   RnamlReader::~RnamlReader ()
   {
     if (0 != is)
@@ -103,7 +102,6 @@ namespace mccore {
     if (0 != rnaml)
       delete rnaml;
   }
-  
   
   
   mccore::Atom*
@@ -118,7 +116,6 @@ namespace mccore {
     a->setAll (atom.getX (), atom.getY (), atom.getZ (), AtomType::parseType (type));
     return a;
   }
-  
   
   
   Residue*
@@ -154,11 +151,10 @@ namespace mccore {
   }
   
   
-  
-  Model*
+  AbstractModel*
   RnamlReader::toMccore (const rnaml::Model &model)
   {
-    Model *m;
+    AbstractModel *m;
     const vector< rnaml::Base* > &bases = ((rnaml::Model&) model).getBases ();
     vector< rnaml::Base* >::const_iterator cit;
     
@@ -173,7 +169,6 @@ namespace mccore {
       }
     return m;
   }
-  
   
   
   Molecule*
@@ -207,14 +202,13 @@ namespace mccore {
 	
 	for (cit = models.begin (); models.end () != cit; ++cit)
 	{
-	  Model* mdl = toMccore (**cit);
+	  AbstractModel* mdl = toMccore (**cit);
 	  m->insert (*mdl);
 	  delete mdl;
 	}
       }
     return m;
   }
-  
   
   
   void
@@ -224,7 +218,7 @@ namespace mccore {
       is->close ();
   }
   
-  
+
   Molecule*
   RnamlReader::read ()
   {
@@ -253,4 +247,5 @@ namespace mccore {
       }
     return molecule;
   }
+  
 }

@@ -1,18 +1,30 @@
 //                              -*- Mode: C++ -*- 
 // AtomSet.h
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu Mar 13 13:03:07 2003
-// Last Modified By : Philippe Thibault
-// Last Modified On : Wed Sep 29 16:30:49 2004
-// Update Count     : 45
-// Status           : Unknown.
+// $Revision: 1.8 $
 // 
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _AtomSet_h_
-#define _AtomSet_h_
+#ifndef _mccore_AtomSet_h_
+#define _mccore_AtomSet_h_
 
 #include <iostream>
 #include <set>
@@ -34,7 +46,8 @@ namespace mccore {
    * Abstract class for filtering atom sets.  These classes are used in the
    * residues iterators.
    *
-   * @author Martin Larose <larosem@IRO.UMontreal.CA>
+   * @author Martin Larose (<a href="larosem@IRO.UMontreal.CA">larosem@iro.umontreal.ca</a>)
+   * @version $Id: AtomSet.h,v 1.8 2005-01-03 22:50:27 larosem Exp $
    */
   class AtomSet
   {
@@ -139,23 +152,6 @@ namespace mccore {
      */
     virtual oBinstream& output (oBinstream &obs) const = 0;
   };
-
-  /**
-   * Ouputs the set to the stream.
-   * @param os the output stream.
-   * @param as the atomset.
-   * @return the used output stream.
-   */
-  ostream& operator<< (ostream &os, const AtomSet &as);
-
-  /**
-   * Outputs the atom to the binary stream.
-   * @param obs the output binary stream.
-   * @param atom the atom.
-   * @return the output binary stream used.
-   */
-  oBinstream& operator<< (oBinstream &obs, const Atom &atom);
- 
 
 
 
@@ -1202,6 +1198,21 @@ namespace mccore {
      */
     virtual oBinstream& output (oBinstream &obs) const;
   };
+
+}
+
+
+
+namespace std
+{
+
+  /**
+   * Ouputs the set to the stream.
+   * @param os the output stream.
+   * @param as the atomset.
+   * @return the used output stream.
+   */
+  ostream& operator<< (ostream &os, const mccore::AtomSet &as);
 
 }
 

@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Fri Jan  9 14:06:32 2004
-// $Revision: 1.1 $
-// $Id: zstream.cc,v 1.1 2004-01-09 21:15:38 larosem Exp $
+// $Revision: 1.2 $
+// $Id: zstream.cc,v 1.2 2005-01-03 23:10:16 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -27,14 +27,15 @@
 #include <config.h>
 #endif
 
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 
 #include "zstream.h"
 
 
 
-namespace mccore {
+namespace mccore
+{
 
   zstreambuf::zstreambuf ()
     : opened (false)

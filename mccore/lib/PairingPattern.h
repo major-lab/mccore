@@ -4,45 +4,46 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Thu May 31 08:17:56 2001
-// $Revision: 1.7 $
-// $Id: PairingPattern.h,v 1.7 2004-09-24 22:20:02 larosem Exp $
+// $Revision: 1.8 $
+// $Id: PairingPattern.h,v 1.8 2005-01-03 22:57:55 larosem Exp $
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _PairingPattern_h_
-#define _PairingPattern_h_
+#ifndef _mccore_PairingPattern_h_
+#define _mccore_PairingPattern_h_
 
 #include <iostream>
 #include <list>
 #include <vector>
 
-#include "AtomType.h"
-#include "ResidueType.h"
-#include "PropertyType.h"
 #include "HBond.h"
 #include "Relation.h"
-#include "Residue.h"
 
 using namespace std;
 
 
 
-namespace mccore {
+namespace mccore
+{
+  class AtomType;
+  class PropertyType;
+  class Residue;
+  class ResidueType;
 
   /**
    * @short Patterns for MC-Sym's ancient pairing system.
@@ -51,20 +52,21 @@ namespace mccore {
    * described by a vector of HBondFlow* and the arabic/roman numeral used to
    * identify the pairing.
    *
-   * @author Patrick Gendron
+   * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
+   * @version $Id: PairingPattern.h,v 1.8 2005-01-03 22:57:55 larosem Exp $
    */
   class PairingPattern
     {
       /**
        * The MC-Sym Id.
        */
-      const PropertyType* name;
+      const PropertyType *name;
 
       /**
        * The type of residues involved in the pattern description.
        */
-      const ResidueType* typeA;
-      const ResidueType* typeB;
+      const ResidueType *typeA;
+      const ResidueType *typeB;
 
     public:
       
@@ -133,7 +135,7 @@ namespace mccore {
       /**
        * Initializes the object.
        */
-      PairingPattern ();
+      PairingPattern () : name (0), typeA (0), typeB (0), msize (0) { }
 
     public:
 
@@ -143,19 +145,26 @@ namespace mccore {
        * @param type_a the type of one residue.
        * @param type_b the type of another residue.
        */
-      PairingPattern (const PropertyType* id, const ResidueType* type_a, const ResidueType* type_b);
+      PairingPattern (const PropertyType *id, const ResidueType *type_a, const ResidueType *type_b)
+	: name (id), typeA (type_a), typeB (type_b), msize (0)
+      { }
 
       /**
        * Initializes the object with the other's content.
        * @param other, the object to copy.
        */
-      PairingPattern (const PairingPattern &other);
+      PairingPattern (const PairingPattern &other)
+	: name (other.name),
+	  typeA (other.typeA),
+	  typeB (other.typeB),
+	  descriptions (other.descriptions),
+	  msize (other.msize)
+      { }
 
       /**
-       * Destructs the object.
-
-      */
-      ~PairingPattern (void);
+       * Destroys the object.
+       */
+      ~PairingPattern () { }
 
       // OPERATORS ------------------------------------------------------------
 
@@ -227,8 +236,7 @@ namespace mccore {
        * @param loneair the lonepair implicated.
        * @param ignore wether this shouldn't be in the pairing.
        */
-      void addBond (char dir, const AtomType *donor, const AtomType *hydro, 
-		    const AtomType *acceptor, const AtomType *lonepair, bool ignore=false);
+      void addBond (char dir, const AtomType *donor, const AtomType *hydro, const AtomType *acceptor, const AtomType *lonepair, bool ignore=false);
   
      
       /**
@@ -237,19 +245,8 @@ namespace mccore {
        * @param pattern the description of the flow pattern in a BasePair.
        * @return the property type or 0 if there is no match.
        */
-      const PropertyType* 
-      evaluate (const Residue* ra, const Residue *rb, list< HBondFlow > &hbf) const;
+      const PropertyType* evaluate (const Residue *ra, const Residue *rb, list< HBondFlow > &hbf) const;
 
-      /**
-       * Write Amber description.
-       * @param the output stream.
-       */
-//       void amberOutput (ostream& out, CResId &id_a, CResId &id_b,
-// 			t_Residue *ta, t_Residue *tb);
-
-      
-      // STATIC FUNCTIONS -----------------------------------------------------
-      
       /**
        * Initializes the Global vector of pairing patterns
        */
@@ -264,17 +261,19 @@ namespace mccore {
 
     };
 
-  // NON-MEMBER FUNCTION -------------------------------------------------------
+}
 
 
+namespace std
+{
+  
   /**
    * Outputs the pairing pattern to an output stream.
    * @param obs the output stream.
    * @param obj the model to output.
    * @return the output stream.
    */
-  ostream& operator<< (ostream &obs, const PairingPattern &pat);
-
+  ostream& operator<< (ostream &obs, const mccore::PairingPattern &pat);
 
   /**
    * Outputs the pairing pattern to an output stream.
@@ -282,7 +281,7 @@ namespace mccore {
    * @param obj the Description to output.
    * @return the output stream.
    */
-  ostream& operator<< (ostream &obs, const PairingPattern::Description &desc);
+  ostream& operator<< (ostream &obs, const mccore::PairingPattern::Description &desc);
 
 }
 

@@ -1,27 +1,27 @@
 //                              -*- Mode: C++ -*- 
 // HomogeneousTransfo.cc
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.15 $
+// $Revision: 1.16 $
+// $Id: HomogeneousTransfo.cc,v 1.16 2005-01-03 22:55:17 larosem Exp $
 //
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifdef HAVE_CONFIG_H
@@ -31,8 +31,10 @@
 #include <iomanip>
 
 #include "Binstream.h"
-#include "HomogeneousTransfo.h"
 #include "Exception.h"
+#include "HomogeneousTransfo.h"
+
+
 
 namespace mccore 
 {
@@ -53,15 +55,13 @@ namespace mccore
   const float HomogeneousTransfo::alpha_square = 2.25;
   
 
-  // LIFECYCLE ------------------------------------------------------------
-
   HomogeneousTransfo::HomogeneousTransfo () 
   { 
     matrix = new float[16];
     setIdentity (); 
   }
-  
 
+  
   HomogeneousTransfo::HomogeneousTransfo(float n00, float n01, float n02, float n03,
 					 float n10, float n11, float n12, float n13,
 					 float n20, float n21, float n22, float n23,
@@ -95,9 +95,6 @@ namespace mccore
   }
 
 
-  // OPERATORS ------------------------------------------------------------
-
-
   HomogeneousTransfo& 
   HomogeneousTransfo::operator= (const HomogeneousTransfo &other)
   {
@@ -109,9 +106,6 @@ namespace mccore
     return *this;
   }
   
-
-   // ACCESS ---------------------------------------------------------------
-
 
   void HomogeneousTransfo::set(float n00, float n01, float n02, float n03,
 			       float n10, float n11, float n12, float n13,
@@ -140,9 +134,6 @@ namespace mccore
   }
 
 
-  // METHODS --------------------------------------------------------------
-
-  
   HomogeneousTransfo 
   HomogeneousTransfo::operator* (const HomogeneousTransfo &right) const 
   {
@@ -214,9 +205,6 @@ namespace mccore
   }
   
   
-
-
-
   pair< Vector3D, float >
   HomogeneousTransfo::getRotationVector () const
   {
@@ -289,8 +277,6 @@ namespace mccore
     
     return make_pair (v, theta);
   }
-
-
 
 
   Vector3D
@@ -577,9 +563,6 @@ namespace mccore
   }
   
 
-  // I/O  -----------------------------------------------------------------
-  
-  
   ostream &
   HomogeneousTransfo::output (ostream &out) const 
   {
@@ -628,8 +611,7 @@ namespace mccore
     return ibs;
   }
   
-  
-  
+
   oBinstream&
   operator<< (oBinstream &obs, const HomogeneousTransfo &obj)
   {

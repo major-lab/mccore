@@ -4,11 +4,10 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:11:41 EDT
-// $Revision: 1.15 $
-// $Id: Binstream.h,v 1.15 2004-04-30 19:22:51 larosem Exp $
+// $Revision: 1.16 $
 //
-//  This file is part of mccore.
-//
+// This file is part of mccore.
+// 
 // mccore is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
 // License as published by the Free Software Foundation; either
@@ -24,8 +23,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _Binstream_h_
-#define _Binstream_h_
+#ifndef _mccore_Binstream_h_
+#define _mccore_Binstream_h_
 
 #include <iostream>
 #include <fstream>
@@ -55,7 +54,8 @@ namespace mccore {
    * from little endianness to big on read and write on system that uses
    * this encoding.
    *
-   * @author Martin Larose <larosem@iro.umontreal.ca> 
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: Binstream.h,v 1.16 2005-01-03 22:52:01 larosem Exp $
    */
   class iBinstream : public istream
   {

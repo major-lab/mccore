@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
-# $Revision: 1.34 $
-# $Id: configure.in,v 1.34 2004-12-06 21:35:58 thibaup Exp $
+# $Revision: 1.35 $
+# $Id: configure.in,v 1.35 2005-01-03 22:48:16 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -47,21 +47,6 @@ AC_CHECK_FUNCS(strsep)
 AC_CHECK_FUNCS(isfdtype)
 AC_CHECK_FUNCS(acosf)
 AC_CHECK_FUNCS(sqrtf)
-
-AC_CACHE_CHECK(whether the compiler has numeric_limits<T>,
-ac_cv_cxx_have_numeric_limits,
-[AC_LANG_SAVE
- AC_LANG_CPLUSPLUS
- AC_TRY_COMPILE([#include <limits> 
- using namespace std; 
- ],[double e = numeric_limits<double>::epsilon(); return 0;],
- ac_cv_cxx_have_numeric_limits=yes, ac_cv_cxx_have_numeric_limits=no)
- AC_LANG_RESTORE
-])
-
-if test "$ac_cv_cxx_have_numeric_limits" = yes; then
-  AC_DEFINE(HAVE_NUMERIC_LIMITS,,[define if the compiler has numeric_limits<T>])
-fi
 
 if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
     case "$host" in
@@ -165,12 +150,6 @@ elif eval "test \"`echo $GXX`\" = yes"; then     # gnu compiler
 	esac;
 fi
 
-
-AC_ARG_WITH(malloc,
-[  --with-malloc           replace STL allocator with malloc],
-AC_DEFINE(__USE_MALLOC),
-)
-
 AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)
 AC_SUBST(CXXFLAGS)
@@ -186,4 +165,8 @@ AC_SUBST(AROPTIONS)
 AC_SUBST(HAVE_LIBRNAML)
 AC_SUBST(HAVE_LIBMYSQL)
 
-AC_OUTPUT( Makefile docs/Makefile lib/Makefile, echo timestamp > stamp-h )
+AC_OUTPUT(
+    Makefile
+    docs/Makefile
+    lib/Makefile
+    test/Makefile, echo timestamp > stamp-h )

@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.56 $
-# $Id: Makefile.in,v 1.56 2004-12-10 00:30:04 larosem Exp $
+# $Revision: 1.57 $
+# $Id: Makefile.in,v 1.57 2005-01-03 22:55:43 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -93,57 +93,50 @@ endif
 SOURCES = $(RNAML_SOURCES) \
 	  $(MYSQL_SOURCES) \
 	  AbstractModel.cc \
+	  Atom.cc \
+	  AtomSet.cc \
+	  AtomType.cc \
+	  AtomTypeStore.cc \
 	  Binstream.cc \
 	  Exception.cc \
+	  ExtendedResidue.cc \
 	  Fastastream.cc \
 	  Genbankstream.cc \
+	  GraphModel.cc \
+	  HBond.cc \
+	  HomogeneousTransfo.cc \
 	  Messagestream.cc \
+	  Model.cc \
+	  Molecule.cc \
+	  PairingPattern.cc \
 	  PdbFileHeader.cc \
 	  Pdbstream.cc \
+	  PropertyType.cc \
+	  PropertyTypeStore.cc \
+	  Relation.cc \
+	  ResId.cc \
+	  ResIdSet.cc \
+	  Residue.cc \
+	  ResidueFactoryMethod.cc \
+	  ResidueTopology.cc \
+	  ResidueType.cc \
+	  ResidueTypeStore.cc \
+          RiboseBuilder.cc \
+          RiboseEstimator.cc \
+	  RiboseOptimizer5D.cc \
+          RiboseOptimizer2D.cc \
+	  Rmsd.cc \
 	  ServerSocket.cc \
 	  Sequence.cc \
 	  TypeRepresentationTables.cc \
-	  sockstream.cc \
-	  zstream.cc \
-\
 	  Vector3D.cc \
-	  HomogeneousTransfo.cc \
-\
-	  AtomType.cc \
-	  AtomTypeStore.cc \
-	  Atom.cc \
-	  AtomSet.cc \
-\
-	  PropertyType.cc \
-	  PropertyTypeStore.cc \
-\
-	  ResId.cc \
-	  ResIdSet.cc \
-	  ResidueType.cc \
-	  ResidueTypeStore.cc \
-	  Residue.cc \
-	  ExtendedResidue.cc \
-	  ResidueFactoryMethod.cc \
-	  ResidueTopology.cc \
-\
-	  HBond.cc \
-	  Model.cc \
-	  Molecule.cc \
-\
-	  Rmsd.cc \
-	  Relation.cc \
-	  PairingPattern.cc \
-\
-          RiboseBuilder.cc \
-          RiboseOptimizer5D.cc \
-          RiboseOptimizer2D.cc \
-          RiboseEstimator.cc
+	  sockstream.cc \
+	  zstream.cc
 
 
-HEADERS = $(SOURCES:.cc=.h) AbstractGraph.h AdjacencyMatrix.h Algo.h \
-ArrayGraph.h Graph.h GraphAlgo.h MaximumFlowGraph.h Path.h \
-SocketCommand.h SymmetricalMatrix.h SymmetricalMatrix.cc \
-UndirectedArrayGraph.h UndirectedGraph.h stlio.h
+HEADERS = $(SOURCES:.cc=.h) AdjacencyMatrix.h Algo.h Graph.h GraphAlgo.h \
+MaximumFlowGraph.h OrientedGraph.h Path.h SocketCommand.h SymmetricalMatrix.h \
+UndirectedGraph.h stlio.h
 
 
 OBJECTS = $(SOURCES:.cc=.o)
@@ -166,6 +159,7 @@ $(LIBRARY).a: $(OBJECTS)
 TAGS: $(SOURCES) $(HEADERS)
 	@- etags --c++ $^
 
+test:
 
 doc: html texi docbook
 

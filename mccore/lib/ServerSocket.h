@@ -4,8 +4,7 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:51 2001
-// $Revision: 1.9 $
-// $Id: ServerSocket.h,v 1.9 2004-04-30 19:23:04 larosem Exp $
+// $Revision: 1.10 $
 //
 // This file is part of mccore.
 // 
@@ -24,8 +23,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _ServerSocket_h_
-#define _ServerSocket_h_
+#ifndef _mccore_ServerSocket_h_
+#define _mccore_ServerSocket_h_
 
 #define MAX_QUEUE_LEN 0
 
@@ -44,7 +43,8 @@ namespace mccore
    * wait for a connection from a client and returns a socket stream
    * (Sockstream).
    *
-   * @author Patrick Gendron <gendrop@iro.umontreal.ca> 
+   * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
+   * @version $Id: ServerSocket.h,v 1.10 2005-01-03 23:06:40 larosem Exp $
    */
   class ServerSocket
   {
@@ -64,7 +64,7 @@ namespace mccore
     /**
      * Destructor.
      */
-    ~ServerSocket ();
+    ~ServerSocket () {}
     
     int GetSocketId () { return socket_id; }
     int GetPort () { return port; }

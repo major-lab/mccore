@@ -4,8 +4,7 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.34 $
-// $Id: Pdbstream.h,v 1.34 2004-12-09 19:55:58 thibaup Exp $
+// $Revision: 1.35 $
 // 
 // This file is part of mccore.
 // 
@@ -24,8 +23,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _Pdbstream_h_
-#define _Pdbstream_h_
+#ifndef _mccore_Pdbstream_h_
+#define _mccore_Pdbstream_h_
 
 #include <iostream>
 #include <algorithm>
@@ -53,7 +52,14 @@ namespace mccore
   class ResidueType;
   class Model;
 
-  
+
+  /**
+   * Reads and writes models from and through streams in the Protein Data
+   * Bank (PDB) format.
+   *
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: Pdbstream.h,v 1.35 2005-01-03 22:58:47 larosem Exp $
+   */
   class Pdbstream
   {
   public:
@@ -146,8 +152,8 @@ namespace mccore
    * 79 - 80        LString(2)      charge        Charge on the atom.
    * </pre>
    *
-   * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Pdbstream.h,v 1.34 2004-12-09 19:55:58 thibaup Exp $
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: Pdbstream.h,v 1.35 2005-01-03 22:58:47 larosem Exp $
    */
   class iPdbstream : public istream
   {
@@ -303,7 +309,8 @@ namespace mccore
    *
    * This stream is used to output residues to pdb files.
    *
-   * @author Martin Larose <larosem@iro.umontreal.ca>
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: Pdbstream.h,v 1.35 2005-01-03 22:58:47 larosem Exp $
    */
   class oPdbstream : public ostream
   {
@@ -627,7 +634,8 @@ namespace mccore
   /**
    * @short Input pdb file stream.
    *
-   * @author Martin Larose <larosem@iro.umontreal.ca>.
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: Pdbstream.h,v 1.35 2005-01-03 22:58:47 larosem Exp $
    */
   class ifPdbstream : public iPdbstream
   {
@@ -715,7 +723,8 @@ namespace mccore
    * This stream can be used as a regular file stream (ofstream).  The output
    * is formatted for pdb files.
    *
-   * @author Martin Larose <larosem@iro.umontreal.ca>.
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: Pdbstream.h,v 1.35 2005-01-03 22:58:47 larosem Exp $
    */
   class ofPdbstream : public oPdbstream
   {
@@ -800,7 +809,8 @@ namespace mccore
   /**
    * @short Input pdb socket stream.
    *
-   * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: Pdbstream.h,v 1.35 2005-01-03 22:58:47 larosem Exp $
    */
   class isPdbstream : public iPdbstream
   {
@@ -895,7 +905,8 @@ namespace mccore
   /**
    * @short Output pdb socket stream.
    *
-   * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: Pdbstream.h,v 1.35 2005-01-03 22:58:47 larosem Exp $
    */
   class osPdbstream : public oPdbstream
   {
@@ -991,6 +1002,7 @@ namespace mccore
    * @short Pdb socket stream.
    *
    * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: Pdbstream.h,v 1.35 2005-01-03 22:58:47 larosem Exp $
    */
   class sPdbstream : public iPdbstream, public oPdbstream
   {
@@ -1094,7 +1106,8 @@ namespace mccore
    * This stream can be used the same way as the ifPdbstream except that it
    * can read compressed files.
    *
-   * @author Martin Larose <larosem@iro.umontreal.ca>.
+   * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: Pdbstream.h,v 1.35 2005-01-03 22:58:47 larosem Exp $
    */
   class izfPdbstream : public iPdbstream
   {
@@ -1188,6 +1201,8 @@ namespace mccore
    * and footer to the file (witch is often not desired).
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>.
+   * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: Pdbstream.h,v 1.35 2005-01-03 22:58:47 larosem Exp $
    */
   class ozfPdbstream : public oPdbstream
   {

@@ -1,14 +1,28 @@
 //                              -*- Mode: C++ -*- 
 // ResId.cc
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:45:21 2003
-// Last Modified By : Philippe Thibault
-// Last Modified On : Wed Jun 30 14:15:28 2004
-// Update Count     : 31
-// Status           : Unknown.
+// $Revision: 1.7 $
+// $Id: ResId.cc,v 1.7 2005-01-03 23:00:23 larosem Exp $
+//
+// This file is part of mccore.
 // 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -45,7 +59,8 @@ strsep (char **stringp, const char *delim)
 
 
 
-namespace mccore {
+namespace mccore
+{
   
   ResId::ResId (const char *str)
     : chain (' '), no (-1), iCode (' ')
@@ -119,21 +134,7 @@ namespace mccore {
     return *this;
   }
   
-  
-  ostream&
-  operator<< (ostream &os, const ResId &obj)
-  {
-    if (obj.getChainId () == ' ') os << obj.getResNo ();
-    else if (! isalpha (obj.getChainId ())) 
-      os << '\'' << obj.getChainId () << '\'' << obj.getResNo ();
-    else os << obj.getChainId () << obj.getResNo ();
     
-    if (obj.getInsertionCode () != ' ') os << '.' << obj.getInsertionCode ();
-    
-    return os;
-  }
-  
-  
   Exception&
   operator<< (Exception &ex, const ResId& obj)
   {
@@ -160,9 +161,8 @@ namespace mccore {
     obj.setInsertionCode (ic);
     return ibs;
   }
-  
-  
-  
+
+
   oBinstream&
   operator<< (oBinstream &obs, const ResId &obj)
   {
@@ -170,3 +170,34 @@ namespace mccore {
 	       << obj.getInsertionCode ();
   }
 }
+
+
+
+namespace std
+{
+
+  ostream&
+  operator<< (ostream &os, const mccore::ResId &obj)
+  {
+    if (obj.getChainId () == ' ')
+      {
+	os << obj.getResNo ();
+      }
+    else if (! isalpha (obj.getChainId ()))
+      {
+	os << '\'' << obj.getChainId () << '\'' << obj.getResNo ();
+      }
+    else
+      {
+	os << obj.getChainId () << obj.getResNo ();
+      }
+    
+    if (obj.getInsertionCode () != ' ')
+      {
+	os << '.' << obj.getInsertionCode ();
+      }
+    
+    return os;
+  }
+  
+}  

@@ -1,29 +1,30 @@
 //                              -*- Mode: C++ -*- 
 // AdjacencyMatrix.h
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Wed Aug 13 18:24:14 2003
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _AdjacencyMatrix_h_
-#define _AdjacencyMatrix_h_
+#ifndef _mccore_AdjacencyMatrix_h_
+#define _mccore_AdjacencyMatrix_h_
 
 #include <iostream>
 #include <map>
@@ -39,7 +40,7 @@ namespace mccore {
    * Abstract base clas for an adjacency matrix.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: AdjacencyMatrix.h,v 1.2 2003-10-16 21:56:58 gendrop Exp $
+   * @version $Id: AdjacencyMatrix.h,v 1.3 2005-01-03 22:49:13 larosem Exp $
    */
   class AdjacencyMatrix 
   {

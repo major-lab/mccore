@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 16:46:03 2004
-// $Revision: 1.1 $
-// $Id: AbstractModel.cc,v 1.1 2004-12-10 00:29:33 larosem Exp $
+// $Revision: 1.2 $
+// $Id: AbstractModel.cc,v 1.2 2005-01-03 22:48:44 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -113,7 +113,6 @@ namespace mccore
 	  ++it;
 	else
 	  {
-	    delete &*it;
 	    it = erase (it);
 	  }
       }
@@ -152,7 +151,6 @@ namespace mccore
       {
 	if (modelIt->getType ()->isAminoAcid ())
 	  {
-	    delete &*modelIt;
 	    modelIt = erase (modelIt);
 	  }
 	else
@@ -172,7 +170,6 @@ namespace mccore
       {
 	if (modelIt->getType ()->isNucleicAcid ())
 	  {
-	    delete &*modelIt;
 	    modelIt = erase (modelIt);
 	  }
 	else
@@ -192,7 +189,6 @@ namespace mccore
       {
 	if (modelIt->getType () == water)
 	  {
-	    delete &*modelIt;
 	    modelIt = erase (modelIt);
 	  }
 	else
@@ -212,7 +208,6 @@ namespace mccore
 	  ++modelIt;
 	else
 	  {
-	    delete &*modelIt;
 	    modelIt = erase (modelIt);
 	  }
       }
@@ -230,7 +225,6 @@ namespace mccore
 	  ++modelIt;
 	else
 	  {
-	    delete &*modelIt;
 	    modelIt = erase (modelIt);
 	  }
       }
@@ -262,13 +256,6 @@ namespace mccore
   }
   
   
-  ostream&
-  operator<< (ostream &os, const AbstractModel &obj)
-  {
-    return obj.output (os);
-  }
-
-
   iPdbstream&
   operator>> (iPdbstream &ips, AbstractModel &obj)
   {
@@ -309,4 +296,19 @@ namespace mccore
   {
     return *left < *right;
   }
+  
 }
+
+
+
+namespace std
+{
+  
+  ostream&
+  operator<< (ostream &os, const mccore::AbstractModel &obj)
+  {
+    return obj.output (os);
+  }
+
+}
+

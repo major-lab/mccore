@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 16:12:42 2004
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 //
 // This file is part of mccore.
 // 
@@ -23,11 +23,13 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _AbstractModel_h_
-#define _AbstractModel_h_
+#ifndef _mccore_AbstractModel_h_
+#define _mccore_AbstractModel_h_
 
 #include <iostream>
 #include <vector>
+
+#include "Exception.h"
 
 using namespace std;
 
@@ -46,22 +48,10 @@ namespace mccore
 
 
   /**
-   * @short Container for residues using a simple list.
-   *
-   * This object is the container for residues.  It is an unsorted list
-   * of residues.  Random access is simulated with sequential access.
-   * This class should be the replacement for nearly all Residue containers.
-   *
-   * NOTES:
-   *
-   * - The container contains pointers to residues but dereferenced
-   *   iterators yields object.
-   *
-   *  - Please do not change the STL container (see removeClash for
-   * details).
+   * Abstract class for Models.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: AbstractModel.h,v 1.1 2004-12-10 00:29:33 larosem Exp $
+   * @version $Id: AbstractModel.h,v 1.2 2005-01-03 22:48:56 larosem Exp $
    */
   class AbstractModel
   {
@@ -176,13 +166,21 @@ namespace mccore
   
     // LIFECYCLE ------------------------------------------------------------
 
+  private:
+
+    /**
+     * Initializes the object.
+     */
+    AbstractModel () { }
+
   protected:
     
     /**
      * Initializes the object.
-     * @param fm the residue factory methods that will instanciate new residues (default is @ref ExtendedResidueFM).
+     * @param fm the residue factory methods that will instanciate new
+     * residues (default is @ref ExtendedResidueFM).
      */
-    AbstractModel (const ResidueFactoryMethod *fm = 0);
+    AbstractModel (const ResidueFactoryMethod *fm);
 
     /**
      * Initializes the object with the right's content.
@@ -220,15 +218,17 @@ namespace mccore
      * Gets the model reference at nth position.
      * @param nth the position of the reference to get.
      * @return the nth reference.
+     * @exception ArrayIndexOutOfBoundsException
      */
-    virtual Residue& operator[] (size_type nth) = 0;
+    virtual Residue& operator[] (size_type nth) throw (ArrayIndexOutOfBoundsException) = 0;
 
     /**
      * Gets the model const_reference at nth position.
      * @param nth the position of the const_reference to get.
      * @return the nth const_reference.
+     * @exception ArrayIndexOutOfBoundsException
      */
-    virtual const Residue& operator[] (size_type nth) const = 0;
+    virtual const Residue& operator[] (size_type nth) const throw (ArrayIndexOutOfBoundsException) = 0;
 
     // ACCESS ---------------------------------------------------------------
 
@@ -284,7 +284,7 @@ namespace mccore
      * @param l the last iterator in the range.
      */
     template <class InputIterator>
-    void insert(InputIterator f, InputIterator l)
+    void insert (InputIterator f, InputIterator l)
     {
       while (f != l)
 	{
@@ -423,17 +423,6 @@ namespace mccore
 
   };
 
-
-  // NON-MEMBER FUNCTION -------------------------------------------------------
-
-  /**
-   * Outputs the model to an output stream.
-   * @param obs the output stream.
-   * @param obj the model to output.
-   * @return the output stream.
-   */
-  ostream& operator<< (ostream &obs, const AbstractModel &obj);
-
   /**
    * Inputs the model from a pdb stream.
    * @param ips the input pdb stream.
@@ -482,6 +471,21 @@ namespace mccore
    * @return wheter the residue pointed by left is less than right.
    */
   bool operator< (const AbstractModel::const_iterator &left, const AbstractModel::const_iterator &right);
+
+}
+
+
+
+namespace std
+{
+  
+  /**
+   * Outputs the model to an output stream.
+   * @param obs the output stream.
+   * @param obj the model to output.
+   * @return the output stream.
+   */
+  ostream& operator<< (ostream &obs, const mccore::AbstractModel &obj);
 
 }
 

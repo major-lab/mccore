@@ -1,11 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // ResidueFactoryMethod.h
-// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
-//                  Université de Montréal.
+// Copyright © 2001-04 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct 12 14:31:19 2001
-// $Revision: 1.4 $
-// $Id: ResidueFactoryMethod.h,v 1.4 2003-12-23 14:58:09 larosem Exp $
+// $Revision: 1.5 $
 //
 // This file is part of mccore.
 // 
@@ -24,13 +23,13 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _ResidueFactoryMethod_h_
-#define _ResidueFactoryMethod_h_
+#ifndef _mccore_ResidueFactoryMethod_h_
+#define _mccore_ResidueFactoryMethod_h_
 
 
 
-namespace mccore {
-
+namespace mccore
+{
   class Residue;
 
 
@@ -41,7 +40,8 @@ namespace mccore {
    * This class is used in Model to generate a given type of residue on input
    * methods.
    *
-   * @author Martin Larose <larosem@iro.umontreal.ca>
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: ResidueFactoryMethod.h,v 1.5 2005-01-03 23:01:55 larosem Exp $
    */
   class ResidueFactoryMethod
   {
@@ -85,9 +85,11 @@ namespace mccore {
   /**
    * @short ResidueFactoryMethod implementation for Residue class.
    *
-   * This is the residue factory method implementation for the BasicResidue class.
+   * This is the residue factory method implementation for the BasicResidue
+   * class.
    *
-   * @author Martin Larose <larosem@iro.umontreal.ca>
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: ResidueFactoryMethod.h,v 1.5 2005-01-03 23:01:55 larosem Exp $
    */
   class ResidueFM : public ResidueFactoryMethod
   {
@@ -135,7 +137,8 @@ namespace mccore {
    *
    * This is the residue factory method implementation for the Residue class.
    *
-   * @author Martin Larose <larosem@iro.umontreal.ca>
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: ResidueFactoryMethod.h,v 1.5 2005-01-03 23:01:55 larosem Exp $
    */
   class ExtendedResidueFM : public ResidueFactoryMethod
   {

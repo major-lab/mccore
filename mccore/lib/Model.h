@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.21 $
+// $Revision: 1.22 $
 //
 // This file is part of mccore.
 // 
@@ -23,13 +23,14 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _Model_h_
-#define _Model_h_
+#ifndef _mccore_Model_h_
+#define _mccore_Model_h_
 
 #include <iostream>
 #include <vector>
 
 #include "AbstractModel.h"
+#include "Exception.h"
 
 using namespace std;
 
@@ -57,8 +58,8 @@ namespace mccore
    * - The container contains pointers to residues but dereferenced
    *   iterators yields object.
    *
-   * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Model.h,v 1.21 2004-12-10 00:30:13 larosem Exp $
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: Model.h,v 1.22 2005-01-03 22:56:58 larosem Exp $
    */
   class Model : public AbstractModel
   {
@@ -81,13 +82,13 @@ namespace mccore
      * Initializes the object with the right's content.
      * @param right the object to copy.
      */
-    Model (const Model &right);
+    Model (const AbstractModel &right);
 
     /**
      * Clones the model.
      * @return a copy of the model.
      */
-    virtual Model* clone () const { return new Model (*this); }
+    virtual AbstractModel* clone () const { return new Model (*this); }
 
     /**
      * Destroys the object.
@@ -101,21 +102,23 @@ namespace mccore
      * @param right the object to copy.
      * @return itself.
      */
-    Model& operator= (const Model &right);
+    Model& operator= (const AbstractModel &right);
 
     /**
      * Gets the model reference at nth position.
      * @param nth the position of the reference to get.
      * @return the nth reference.
+     * @exception ArrayIndexOutOfBoundsException
      */
-    virtual Residue& operator[] (size_type nth);
+    virtual Residue& operator[] (size_type nth) throw (ArrayIndexOutOfBoundsException);
 
     /**
      * Gets the model const_reference at nth position.
      * @param nth the position of the const_reference to get.
      * @return the nth const_reference.
+     * @exception ArrayIndexOutOfBoundsException
      */
-    virtual const Residue& operator[] (size_type nth) const;
+    virtual const Residue& operator[] (size_type nth) const throw (ArrayIndexOutOfBoundsException);
 
     // ACCESS ---------------------------------------------------------------
 
@@ -153,17 +156,14 @@ namespace mccore
      * @param res the residue to insert.
      * @return the position where the residue was inserted.
      */
-    iterator insert (const Residue &res);
+    virtual iterator insert (const Residue &res);
 
     /**
      * Erases a residue from the model.
      * @param pos the position to erase.
      * @return an iterator on the next residue.
      */ 
-    iterator erase (iterator pos) 
-    {
-      return residues.erase (pos);
-    }
+    virtual iterator erase (iterator pos);
     
     /**
      * Sorts the model according to the Residue::operator<

@@ -1,15 +1,27 @@
 //                              -*- Mode: C++ -*- 
 // AtomSet.cc
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu Mar 13 13:03:07 2003
-// Last Modified By : Patrick Gendron
-// Last Modified On : Thu Aug 21 19:37:23 2003
-// Update Count     : 30
-// Status           : Unknown.
+// $Revision: 1.6 $
+// $Id: AtomSet.cc,v 1.6 2005-01-03 22:50:13 larosem Exp $
 // 
-
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifdef HAVE_CONFIG_H
@@ -49,13 +61,6 @@ namespace mccore {
   const char* AtomSetPSE::representation       = "pse";
   const char* AtomSetSideChain::representation = "sidechain";
   
-  ostream&
-  operator<< (ostream &os, const AtomSet &as)
-  {
-    return as.output (os);
-  }
-
-
   iBinstream& operator>> (iBinstream &ibs, AtomSet *&as)
   {
     int nb;
@@ -452,3 +457,15 @@ namespace mccore {
 
 }
 
+
+
+namespace std
+{
+  
+  ostream&
+  operator<< (ostream &os, const mccore::AtomSet &as)
+  {
+    return as.output (os);
+  }
+
+}  

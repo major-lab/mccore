@@ -1,41 +1,46 @@
 //                              -*- Mode: C++ -*- 
 // Path.h
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 24 21:31:52 2003
+// $Revision: 1.7 $
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _Path_h_
-#define _Path_h_
+#ifndef _mccore_Path_h_
+#define _mccore_Path_h_
 
 #include <iostream>
 #include <vector>
 
 using namespace std;
 
-namespace mccore {
+
+
+namespace mccore
+{
 
   /**
    * @short A path in a graph.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Path.h,v 1.6 2004-09-02 20:52:32 larosem Exp $
+   * @version $Id: Path.h,v 1.7 2005-01-03 22:58:03 larosem Exp $
    */
   template< class node_type, class valuetype >
   class Path : public vector< node_type >
@@ -175,12 +180,24 @@ namespace mccore {
     }
   };
 
+}
+
+
+namespace std
+{
+
+  /**
+   * Writes the path to the output stream.
+   * @param out the output stream.
+   * @param path the Path to write.
+   * @return the output stream.
+   */
   template < class node_type, class valuetype >
-  ostream &operator<< (ostream &out, const Path< node_type, valuetype > &path)
+  ostream &operator<< (ostream &out, const mccore::Path< node_type, valuetype > &path)
   {
     return path.output (out);
   }
+  
 }
   
-
 #endif

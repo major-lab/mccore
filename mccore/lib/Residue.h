@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // Residue.h
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.26 $
-// $Id: Residue.h,v 1.26 2004-12-07 15:57:28 thibaup Exp $
+// $Revision: 1.27 $
 //
 // This file is part of mccore.
 // 
@@ -23,8 +23,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _Residue_h_
-#define _Residue_h_
+#ifndef _mccore_Residue_h_
+#define _mccore_Residue_h_
 
 #include <iostream>
 #include <vector>
@@ -37,13 +37,12 @@
 #include "ResidueType.h"
 #include "HomogeneousTransfo.h"
 
-
 using namespace std;
+
 
 
 namespace mccore
 {
-
   class PropertyType;
   class ResidueFactoryMethod;
   class Exception;
@@ -62,8 +61,8 @@ namespace mccore
    * using iterators is garantied to follow a partial order defined by
    * the atom types.
    *
-   * @author Patrick Gendron <gendrop@iro.umontreal.ca>
-   * @version $Id: Residue.h,v 1.26 2004-12-07 15:57:28 thibaup Exp $
+   * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
+   * @version $Id: Residue.h,v 1.27 2005-01-03 23:02:07 larosem Exp $
    */
   class Residue
   {
@@ -565,7 +564,7 @@ namespace mccore
      * Clones the residue.
      * @return the copy of the object.
      */
-    virtual Residue* clone () const; 
+    virtual Residue* clone () const { return new Residue (*this); }
 
     /**
      * Destroys the object.
@@ -619,8 +618,10 @@ namespace mccore
      * @param other the residue to compare.
      * @return true if this residue is less than the other.
      */
-    virtual bool operator< (const Residue &other) const;
-
+    virtual bool operator< (const Residue &other) const
+    { 
+      return resId < other.resId; 
+    }
 
     // ACCESS ------------------------------------------------------------------
 
@@ -1218,24 +1219,6 @@ namespace mccore
 
   };
 
-  // NON-MEMBER FUNCTIONS ------------------------------------------------------
-  
-  /**
-   * Ouputs the residue to the stream.
-   * @param os the output stream.
-   * @param r the residue.
-   * @return the used output stream.
-   */
-  ostream& operator<< (ostream &os, const Residue &r);
-  
-  /**
-   * Ouputs the residue to the stream.
-   * @param os the output stream.
-   * @param r the residue.
-   * @return the used output stream.
-   */
-  //ostream& operator<< (ostream &os, const Residue *r);
-
   /**
    * Ouputs the residue to the exception stream.
    * @param ex the exception stream.
@@ -1277,6 +1260,21 @@ namespace mccore
    * @return the output pdb stream used.
    */
   oPdbstream& operator<< (oPdbstream &obs, const Residue &res);
+}
+
+
+
+namespace std
+{
+  
+  /**
+   * Ouputs the residue to the stream.
+   * @param os the output stream.
+   * @param r the residue.
+   * @return the used output stream.
+   */
+  ostream& operator<< (ostream &os, const mccore::Residue &r);
+  
 }
   
 #endif

@@ -4,8 +4,24 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Thu May 31 08:17:56 2001
-// $Revision: 1.11 $
-// $Id: PairingPattern.cc,v 1.11 2004-09-19 03:59:49 larosem Exp $
+// $Revision: 1.12 $
+// $Id: PairingPattern.cc,v 1.12 2005-01-03 22:57:48 larosem Exp $
+// 
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifdef HAVE_CONFIG_H
@@ -14,39 +30,21 @@
 
 #include <algorithm>
 
+#include "AtomType.h"
 #include "Messagestream.h"
 #include "PairingPattern.h"
+#include "PropertyType.h"
+#include "Residue.h"
+#include "ResidueType.h"
 #include "stlio.h"
 
 
 
-namespace mccore {
+namespace mccore
+{
 
   list< PairingPattern > PairingPattern::patterns;
   bool PairingPattern::isInit = false;
-
-
-  PairingPattern::PairingPattern ()
-    : name (0), typeA (0), typeB (0), msize (0)
-  { }
-
-
-  PairingPattern::PairingPattern (const PropertyType* id, const ResidueType* type_a, const ResidueType* type_b)
-    : name (id), typeA (type_a), typeB (type_b), msize (0)
-  { }
-
-
-  PairingPattern::PairingPattern (const PairingPattern &other)
-    : name (other.name),
-      typeA (other.typeA),
-      typeB (other.typeB),
-      descriptions (other.descriptions),
-      msize (other.msize)
-  { }
-
-
-  PairingPattern::~PairingPattern ()
-  { }
 
 
   const PairingPattern&
@@ -76,7 +74,7 @@ namespace mccore {
 
 
   const PropertyType*
-  PairingPattern::evaluate (const Residue* ra, const Residue *rb, list< HBondFlow > &hbf) const
+  PairingPattern::evaluate (const Residue *ra, const Residue *rb, list< HBondFlow > &hbf) const
   {
     bool ab = true;
     bool ba = true;
@@ -749,8 +747,8 @@ namespace mccore {
     patterns.push_back (pat);
     //# 82 is a 81 ;
   };
-
-
+  
+  
   ostream& 
   PairingPattern::output (ostream &os) const
   {
@@ -758,17 +756,22 @@ namespace mccore {
     for_each (descriptions.begin (), descriptions.end (), Print< const PairingPattern::Description > (os));
     return os;
   }
+  
+}
 
+
+namespace std
+{
   
   ostream&
-  operator<< (ostream &os, const PairingPattern &pat)
+  operator<< (ostream &os, const mccore::PairingPattern &pat)
   {
     return pat.output (os);
   }
 
   
   ostream&
-  operator<< (ostream &obs, const PairingPattern::Description &desc)
+  operator<< (ostream &obs, const mccore::PairingPattern::Description &desc)
   {
     if (desc.ignored)
       obs << "! ";

@@ -1,29 +1,30 @@
 //                              -*- Mode: C++ -*- 
 // Vector3D.h
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Wed Mar  5 15:05:43 2003
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _Vector3D_h_
-#define _Vector3D_h_
+#ifndef _mccore_Vector3D_h_
+#define _mccore_Vector3D_h_
 
 #include <iostream>
 #include <math.h>
@@ -46,7 +47,7 @@ namespace mccore
    * The 3D vector class represents simultaneously a location in space (a point) as well as a displacement.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Vector3D.h,v 1.4 2003-12-23 14:58:10 larosem Exp $
+   * @version $Id: Vector3D.h,v 1.5 2005-01-03 23:10:02 larosem Exp $
    */
   class Vector3D
   {
@@ -73,7 +74,7 @@ namespace mccore
     /**
      * Initializes the object.
      */
-    Vector3D ();
+    Vector3D () : x (0), y (0), z (0) { }
     
     /**
      * Initializes the object.
@@ -81,18 +82,18 @@ namespace mccore
      * @param yp the y coordinate.
      * @param zp the z coordinate.
      */
-    Vector3D (float xp, float yp, float zp);
+    Vector3D (float xp, float yp, float zp) : x (xp), y (yp), z (zp) { }
     
     /**
      * Initializes the object with the other's content.
      * @param other the object to copy.
      */
-    Vector3D (const Vector3D &other);
+    Vector3D (const Vector3D &other) : x (other.x), y (other.y), z (other.z) { }
     
     /**
      * Destroys the object.
      */
-    virtual ~Vector3D ();
+    virtual ~Vector3D () { }
     
     // OPERATORS ------------------------------------------------------------
     
@@ -316,7 +317,7 @@ namespace mccore
      * @param c the third vector.
      * @return the angle expressed in radian.
      */
-    float angle(const Vector3D &a, const Vector3D &c) const;
+    float angle (const Vector3D &a, const Vector3D &c) const;
     
     /**
      * Calculates the torsion angle around bond b-c with a sign to indicate the
@@ -326,7 +327,7 @@ namespace mccore
      * @param d the fourth vector
      * @return the signed torsion angle expressed in radian.
      */
-    float torsionAngle(const Vector3D &a, const Vector3D &c, const Vector3D &d) const;
+    float torsionAngle (const Vector3D &a, const Vector3D &c, const Vector3D &d) const;
     
     /**
      * Modifies the vector by the transformation.
@@ -347,22 +348,12 @@ namespace mccore
   };
   
   /**
-   * Outputs to a stream.
-   * @param out the output stream.
-   * @return the output stream used.
-   */
-  ostream &operator<< (ostream &out, const Vector3D &v);
-  
-  
-  /**
    * Inputs the point from a binary stream.
    * @param is the input binary stream.
    * @param p the point.
    * @return the input stream used.
    */
   iBinstream& operator>> (iBinstream &ibs, Vector3D &p);
-  
-  
   
   /**
    * Outputs the point to a binary stream.
@@ -372,8 +363,6 @@ namespace mccore
    */
   oBinstream& operator<< (oBinstream &obs, const Vector3D &p);
   
-  
-  // NON-MEMBER FUNCTIONS ------------------------------------------------------
   
   /**
    * Subtract the coordinates.
@@ -418,5 +407,19 @@ namespace mccore
   const Vector3D operator/ (const Vector3D &v, float value);
 
 }
+
+
+
+namespace std
+{
+
+  /**
+   * Outputs to a stream.
+   * @param out the output stream.
+   * @return the output stream used.
+   */
+  ostream &operator<< (ostream &out, const mccore::Vector3D &v);
+  
+}  
 
 #endif
