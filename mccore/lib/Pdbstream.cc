@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.40 $
-// $Id: Pdbstream.cc,v 1.40 2004-09-24 22:21:08 larosem Exp $
+// $Revision: 1.41 $
+// $Id: Pdbstream.cc,v 1.41 2004-09-30 19:15:49 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -569,6 +569,8 @@ namespace mccore {
   void
   oPdbstream::write (const Atom& at)
   {
+    string type;
+    
     if (! headerdone)
       writeHeader ();
 
@@ -584,13 +586,15 @@ namespace mccore {
     *this << ' ';
 
     setf (ios::left, ios::adjustfield);
-    if (isdigit (at.getType ()->toPdbString (pdbType)[0])
-	|| 4 == strlen (at.getType ()->toPdbString (pdbType)))
-      *this << setw (4) << at.getType ()->toPdbString (pdbType);
+    
+    type = (PDB == pdbType
+	    ? at.getType ()->toPdbString ()
+	    : at.getType ()->toAmberString ());
+    if (isdigit (type[0]) || 4 == type.size ())
+      *this << setw (4);
     else 
-      *this << ' ' << setw (3) << at.getType ()->toPdbString (pdbType);
-	
-    *this << ' ';  // ALTLOC
+      *this << ' ' << setw (3);
+    *this << type << ' ';  // ALTLOC
     
     setf (ios::right, ios::adjustfield);
     *this << setw (3) << rtype->toPdbString ();

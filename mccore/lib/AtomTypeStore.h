@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 12:30:39 2003
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 // 
 //  This file is part of mccore.
 //  
@@ -47,7 +47,7 @@ namespace mccore {
    * @short Repository of atomtypes.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: AtomTypeStore.h,v 1.8 2004-09-24 22:17:09 larosem Exp $
+   * @version $Id: AtomTypeStore.h,v 1.9 2004-09-30 19:15:43 larosem Exp $
    */
   class AtomTypeStore
   {
@@ -117,6 +117,12 @@ namespace mccore {
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const AminoAcid* > (t);
       }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "AminoAcid"; }
     };
     
     /**
@@ -131,6 +137,12 @@ namespace mccore {
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const NucleicAcid* > (t);
       }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "NucleicAcid"; }
     };
 
     /**
@@ -145,6 +157,12 @@ namespace mccore {
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const Backbone* > (t);
       }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "Backbone"; }
     };
 
     /**
@@ -159,6 +177,12 @@ namespace mccore {
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const Phosphate* > (t);
       }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "Phosphate"; }
     };
     
     /**
@@ -173,6 +197,12 @@ namespace mccore {
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const SideChain* > (t);
       }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "SideChain"; }
     };
 
     /**
@@ -187,6 +217,12 @@ namespace mccore {
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const Carbon* > (t);
       }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "C"; }
     };
 
     /**
@@ -201,6 +237,12 @@ namespace mccore {
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const Hydrogen* > (t);
       }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H"; }
     };
 
     /**
@@ -215,6 +257,12 @@ namespace mccore {
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const LonePair* > (t);
       }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "N"; }
     };
 
     /**
@@ -229,6 +277,12 @@ namespace mccore {
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const Magnesium* > (t);
       }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "P"; }
     };
 
     /**
@@ -243,6 +297,12 @@ namespace mccore {
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const Nitrogen* > (t);
       }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "O"; }
     };
 
     /**
@@ -257,6 +317,12 @@ namespace mccore {
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const Oxygen* > (t);
       }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "S"; }
     };
 
     /**
@@ -271,6 +337,12 @@ namespace mccore {
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const Phosphorus* > (t);
       }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "MG"; }
     };
 
     /**
@@ -285,6 +357,12 @@ namespace mccore {
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const Pseudo* > (t);
       }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "LonePair"; }
     };
 
     /**
@@ -299,6 +377,12 @@ namespace mccore {
       virtual bool describe (const AtomType* t) const {
 	return dynamic_cast< const Sulfur* > (t);
       }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "Pseudo"; }
     };
 
     /**
@@ -334,6 +418,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "C1'"; }
     };
 
     /**
@@ -370,6 +460,12 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "C2'"; }
     };
 
     /**
@@ -405,6 +501,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "C3'"; }
     };
 
     /**
@@ -440,6 +542,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "C4'"; }
     };
 
     /**
@@ -475,6 +583,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "C5'"; }
     };
 
     /**
@@ -510,6 +624,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H1'"; }
     };
 
     /**
@@ -545,6 +665,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H2'"; }
     };
 
     /**
@@ -580,6 +706,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H3'"; }
     };
 
     /**
@@ -615,6 +747,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H4'"; }
     };
 
     /**
@@ -650,6 +788,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H5'"; }
     };
 
     /**
@@ -685,6 +829,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "O1P"; }
     };
 
     /**
@@ -700,15 +850,6 @@ namespace mccore {
 	return dynamic_cast< const AO2p* > (t);
       }
       
-      /**
-       * Converts the atom type into a PDB compliant string.
-       * @return the string.
-       */
-      virtual const char* toPdbString (unsigned int i = oPdbstream::PDB) const
-      {
-	return (i == oPdbstream::AMBER) ? "O2'" : type;
-      }
-
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
@@ -729,6 +870,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "O2'"; }
     };
 
     /**
@@ -764,6 +911,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "O2P"; }
     };
 
     /**
@@ -799,6 +952,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "O3'"; }
     };
 
     /**
@@ -834,6 +993,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "O3P"; }
     };
 
     /**
@@ -869,6 +1034,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "O4'"; }
     };
 
     /**
@@ -904,6 +1075,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "O5'"; }
     };
 
     /**
@@ -940,6 +1117,12 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const;
 
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "P"; }
     };
 
     /**
@@ -975,6 +1158,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H2'1"; }
     };
 
     /**
@@ -1010,6 +1199,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H5'1"; }
     };
 
     /**
@@ -1045,6 +1240,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H2'2"; }
     };
 
     /**
@@ -1080,6 +1281,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H5'2"; }
     };
 
     /**
@@ -1117,6 +1324,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HO'2"; }
     };
 
     /**
@@ -1155,6 +1368,12 @@ namespace mccore {
        * @return 0.
        */
       virtual float getAmberCharge (const Residue *res) const { return 0; }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HO'3"; }
     };
 
     /**
@@ -1190,6 +1409,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "C2"; }
     };
 
     /**
@@ -1225,6 +1450,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "C4"; }
     };
 
     /**
@@ -1260,6 +1491,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "C5"; }
     };
 
     /**
@@ -1295,6 +1532,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const { return -0.2269; }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "C7"; }
     };
 
     /**
@@ -1330,6 +1573,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "C6"; }
     };
 
     /**
@@ -1365,6 +1614,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "C8"; }
     };
 
     /**
@@ -1400,6 +1655,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H1"; }
     };
 
     /**
@@ -1435,6 +1696,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H2"; }
     };
 
     /**
@@ -1470,6 +1737,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H3"; }
     };
 
     /**
@@ -1505,6 +1778,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H5"; }
     };
 
     /**
@@ -1540,6 +1819,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H6"; }
     };
 
     /**
@@ -1575,6 +1860,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const { return 0.0770; }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H7"; }
     };
 
     /**
@@ -1610,6 +1901,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H8"; }
     };
 
     /**
@@ -1645,6 +1942,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "N1"; }
     };
 
     /**
@@ -1680,6 +1983,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "N2"; }
     };
 
     /**
@@ -1715,6 +2024,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "N3"; }
     };
 
     /**
@@ -1750,6 +2065,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "N4"; }
     };
 
     /**
@@ -1785,6 +2106,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "N6"; }
     };
 
     /**
@@ -1820,6 +2147,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "N7"; }
     };
 
     /**
@@ -1855,6 +2188,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "N9"; }
     };
 
     /**
@@ -1890,6 +2229,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "O2"; }
     };
 
     /**
@@ -1925,6 +2270,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "O4"; }
     };
 
     /**
@@ -1960,6 +2311,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "O6"; }
     };
 
     /**
@@ -1995,6 +2352,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H21"; }
     };
 
     /**
@@ -2030,6 +2393,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H41"; }
     };
 
     /**
@@ -2065,6 +2434,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H71"; }
     };
 
     /**
@@ -2100,6 +2475,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H61"; }
     };
 
     /**
@@ -2135,6 +2516,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H22"; }
     };
 
     /**
@@ -2170,6 +2557,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H42"; }
     };
 
     /**
@@ -2205,6 +2598,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H72"; }
     };
 
     /**
@@ -2240,6 +2639,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H62"; }
     };
 
     /**
@@ -2275,6 +2680,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H73"; }
     };
 
     /**
@@ -2313,6 +2724,12 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const
       { return Pseudo::getAmberCharge (res); }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "PSY"; }
     };
 
     /**
@@ -2351,6 +2768,12 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const
       { return Pseudo::getAmberCharge (res); }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "PSZ"; }
     };
 
     /**
@@ -2389,6 +2812,12 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const
       { return LonePair::getAmberCharge (res); }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "LP1"; }
     };
 
     /**
@@ -2427,6 +2856,12 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const
       { return LonePair::getAmberCharge (res); }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "LP3"; }
     };
 
     /**
@@ -2465,6 +2900,12 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const
       { return LonePair::getAmberCharge (res); }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "LP7"; }
     };
 
     /**
@@ -2503,6 +2944,12 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const
       { return LonePair::getAmberCharge (res); }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "1LP2"; }
     };
 
     /**
@@ -2541,6 +2988,12 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const
       { return LonePair::getAmberCharge (res); }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "1LP4"; }
     };
 
     /**
@@ -2579,6 +3032,12 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const
       { return LonePair::getAmberCharge (res); }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "1LP6"; }
     };
 
     /**
@@ -2617,6 +3076,12 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const
       { return LonePair::getAmberCharge (res); }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "2LP2"; }
     };
 
     /**
@@ -2655,6 +3120,12 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const
       { return LonePair::getAmberCharge (res); }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "2LP4"; }
     };
 
     /**
@@ -2693,6 +3164,12 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const
       { return LonePair::getAmberCharge (res); }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "2LP6"; }
     };
 
     /**
@@ -2728,6 +3205,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H3T"; }
     };
 
     /**
@@ -2763,6 +3246,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H5T"; }
     };
 
     /**
@@ -2798,6 +3287,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "C"; }
     };
 
     /**
@@ -2833,6 +3328,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "CA"; }
     };
 
     /**
@@ -2868,6 +3369,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "CB"; }
     };
 
     /**
@@ -2903,6 +3410,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "CD"; }
     };
 
     /**
@@ -2938,6 +3451,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "CD1"; }
     };
 
     /**
@@ -2973,6 +3492,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "CD2"; }
     };
 
     /**
@@ -3008,6 +3533,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "CE"; }
     };
 
     /**
@@ -3043,6 +3574,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "CE1"; }
     };
 
     /**
@@ -3078,6 +3615,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "CE2"; }
     };
 
     /**
@@ -3113,6 +3656,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "CE3"; }
     };
 
     /**
@@ -3148,6 +3697,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "CG"; }
     };
 
     /**
@@ -3183,6 +3738,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "CG1"; }
     };
 
     /**
@@ -3218,6 +3779,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "CG2"; }
     };
 
     /**
@@ -3253,6 +3820,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "CH2"; }
     };
 
     /**
@@ -3288,6 +3861,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "CZ"; }
     };
 
     /**
@@ -3323,6 +3902,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "CZ2"; }
     };
 
     /**
@@ -3358,6 +3943,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "CZ3"; }
     };
 
     /**
@@ -3393,6 +3984,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "H"; }
     };
 
     /**
@@ -3428,6 +4025,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const { return 0.00000; }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "1H"; }
     };
 
     /**
@@ -3463,6 +4066,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const { return 0.00000; }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "2H"; }
     };
 
     /**
@@ -3498,6 +4107,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const { return 0.00000; }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "3H"; }
     };
 
     /**
@@ -3533,6 +4148,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HA"; }
     };
 
     /**
@@ -3568,6 +4189,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HA2"; }
     };
 
     /**
@@ -3603,6 +4230,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HA3"; }
     };
 
     /**
@@ -3638,6 +4271,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HB"; }
     };
 
     /**
@@ -3673,6 +4312,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HB1"; }
     };
 
     /**
@@ -3708,6 +4353,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HB2"; }
     };
 
     /**
@@ -3743,6 +4394,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HB3"; }
     };
 
     /**
@@ -3778,6 +4435,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HD1"; }
     };
 
     /**
@@ -3813,6 +4476,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HD2"; }
     };
 
     /**
@@ -3848,6 +4517,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HE"; }
     };
 
     /**
@@ -3883,6 +4558,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HE1"; }
     };
 
     /**
@@ -3918,6 +4599,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HE2"; }
     };
 
     /**
@@ -3953,6 +4640,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HE3"; }
     };
 
     /**
@@ -3988,6 +4681,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HG"; }
     };
 
     /**
@@ -4023,6 +4722,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HG1"; }
     };
 
     /**
@@ -4058,6 +4763,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HG2"; }
     };
 
     /**
@@ -4093,6 +4804,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HH"; }
     };
 
     /**
@@ -4128,6 +4845,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HH2"; }
     };
 
     /**
@@ -4163,6 +4886,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const { return 0.00000; }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HXT"; }
     };
 
     /**
@@ -4198,6 +4927,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HZ"; }
     };
 
     /**
@@ -4233,6 +4968,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HZ1"; }
     };
 
     /**
@@ -4268,6 +5009,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HZ2"; }
     };
 
     /**
@@ -4303,6 +5050,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HZ3"; }
     };
 
     /**
@@ -4338,6 +5091,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "N"; }
     };
 
     /**
@@ -4373,6 +5132,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "ND1"; }
     };
 
     /**
@@ -4408,6 +5173,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "ND2"; }
     };
 
     /**
@@ -4443,6 +5214,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "NE"; }
     };
 
     /**
@@ -4478,6 +5255,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "NE1"; }
     };
 
     /**
@@ -4513,6 +5296,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "NE2"; }
     };
 
     /**
@@ -4548,6 +5337,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "NH1"; }
     };
 
     /**
@@ -4583,6 +5378,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "NH2"; }
     };
 
     /**
@@ -4618,6 +5419,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "NZ"; }
     };
 
     /**
@@ -4653,6 +5460,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "O"; }
     };
 
     /**
@@ -4688,6 +5501,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "OD1"; }
     };
 
     /**
@@ -4723,6 +5542,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "OD2"; }
     };
 
     /**
@@ -4758,6 +5583,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "OE1"; }
     };
 
     /**
@@ -4793,6 +5624,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "OE2"; }
     };
 
     /**
@@ -4828,6 +5665,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "OG"; }
     };
 
     /**
@@ -4863,6 +5706,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "OG1"; }
     };
 
     /**
@@ -4898,6 +5747,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "OH"; }
     };
 
     /**
@@ -4933,6 +5788,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const { return 0.00000; }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "OXT"; }
     };
 
     /**
@@ -4968,6 +5829,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "SD"; }
     };
 
     /**
@@ -5003,6 +5870,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "SG"; }
     };
 
     /**
@@ -5038,6 +5911,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HD11"; }
     };
 
     /**
@@ -5073,6 +5952,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HD21"; }
     };
 
     /**
@@ -5108,6 +5993,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HE21"; }
     };
 
     /**
@@ -5143,6 +6034,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HG11"; }
     };
 
     /**
@@ -5178,6 +6075,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HG21"; }
     };
 
     /**
@@ -5213,6 +6116,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HH11"; }
     };
 
     /**
@@ -5248,6 +6157,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HH21"; }
     };
 
     /**
@@ -5283,6 +6198,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HD12"; }
     };
 
     /**
@@ -5318,6 +6239,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HD22"; }
     };
 
     /**
@@ -5353,6 +6280,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HE22"; }
     };
 
     /**
@@ -5388,6 +6321,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HG12"; }
     };
 
     /**
@@ -5423,6 +6362,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HG22"; }
     };
 
     /**
@@ -5458,6 +6403,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HH12"; }
     };
 
     /**
@@ -5493,6 +6444,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HH22"; }
     };
 
     /**
@@ -5528,6 +6485,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HD13"; }
     };
 
     /**
@@ -5563,6 +6526,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HD23"; }
     };
 
     /**
@@ -5598,6 +6567,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HG13"; }
     };
 
     /**
@@ -5633,6 +6608,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const;
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "HG23"; }
     };
 
     /**
@@ -5668,6 +6649,12 @@ namespace mccore {
        * @return the Amber charge.
        */
       virtual float getAmberCharge (const Residue *res) const { return 0.00000; }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "MG"; }
     };
 
     /**
@@ -5706,6 +6693,12 @@ namespace mccore {
        */
       virtual float getAmberCharge (const Residue *res) const
       { return Pseudo::getAmberCharge (res); }
+
+      /**
+       * Converts the atom type to an Amber string representation.
+       * @return "NucleicAcid".
+       */
+      virtual const char* toAmberString () const { return "PSAZ"; }
     };
 
   };  
