@@ -3,8 +3,8 @@
 // Copyright © 2002-04 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Wed Jan 30 19:57:48 2002
-// $Revision: 1.5 $
-// $Id: sockstream.cc,v 1.5 2004-04-30 19:23:07 larosem Exp $
+// $Revision: 1.6 $
+// $Id: sockstream.cc,v 1.6 2004-05-13 21:50:52 larosem Exp $
 //
 // This file is part of mccore.
 //
@@ -93,7 +93,6 @@ namespace mccore
 	  buffer+putback_size,
 	  buffer+putback_size);
   }
-  
   
   
   sockstreambuf::sockstreambuf (const char* host, unsigned int port) 
@@ -200,7 +199,6 @@ namespace mccore
   }
   
   
-  
   int     
   sockstreambuf::underflow ()
   {
@@ -244,8 +242,6 @@ namespace mccore
   }
   
   
-  
-  
   streamsize
   sockstreambuf::sys_read (char* buf, streamsize size)
   {
@@ -285,7 +281,6 @@ namespace mccore
 #endif
     return (size - nleft);
   }
-  
   
   
   streamsize 
@@ -331,22 +326,4 @@ namespace mccore
   {
     return shutdown (socket_id, SHUT_RDWR);
   }
-  
-  
-  
-//   void 
-//   sockstreambase::open (const char* host, int port)
-//   {
-//     clear ();
-//     if (!rdbuf ()->open (host, port))
-//       setstate (ios::badbit);
-//   }
-  
-  
-//   void 
-//   sockstreambase::close ()
-//   {
-//     if (!rdbuf ()->close ())
-//       setstate (ios::failbit);
-//   }
 }
