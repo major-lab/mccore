@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CTransfo.h
-// Copyright © 1999, 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron <gendrop@IRO.UMontreal.CA>
 // Created On       : Fri Oct  1 18:22:41 1999
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Nov 22 15:20:22 2000
-// Update Count     : 3
+// Last Modified On : Mon Jan 22 15:17:57 2001
+// Update Count     : 4
 // Status           : Ok.
 // 
 
@@ -38,19 +38,7 @@ class oBinstream;
  * Example:
  *
  * To align res2 on res1:
- *  res2.Transform (CTransfo ().Align (res2).Inverse ().Align (res1));
- *
- * or
- *
- * res2.Transform (CTransfo ().Referentiel (res1, res2).Inverse ());
- *
- * or
- *
- * CTransfo T1;
- * CTransfo T2;
- * T1.Align (res1);
- * T2.Align (res2);
- * res2.Transform (T1 * T2.Inverse ());
+ * res2.SetTransfo (res1.GetTransfo ());
  * </pre>
  *
  * @author Patrick Gendron <gendrop@IRO.UMontreal.CA>

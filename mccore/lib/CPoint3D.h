@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CPoint3D.h
-// Copyright © 1999, 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : 
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:14:58 2000
-// Update Count     : 1
+// Last Modified On : Mon Jan 22 15:14:33 2001
+// Update Count     : 2
 // Status           : Ok.
 // 
 
@@ -250,7 +250,8 @@ public:
    * @param D the fourth point
    * @return the unsigned torsion angle expressed in radian.
    */
-  float TorsionAngle (const CPoint3D &A, const CPoint3D &C, const CPoint3D &D);
+  float TorsionAngle (const CPoint3D &A, const CPoint3D &C,
+		      const CPoint3D &D) const;
 
   /**
    * Calculates the torsion angle around bond B-C with a sign to indicate the
@@ -261,7 +262,7 @@ public:
    * @return the signed torsion angle expressed in radian.
    */
   float TorsionAngleDir (const CPoint3D &A, const CPoint3D &C,
-			 const CPoint3D &D);
+			 const CPoint3D &D) const;
 
   /**
    * Calculates the cross product between two points.

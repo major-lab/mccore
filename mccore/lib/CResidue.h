@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CResidue.h
-// Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Thu Sep 28 16:59:32 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Nov 22 15:21:48 2000
-// Update Count     : 8
+// Last Modified On : Mon Jan 22 15:16:51 2001
+// Update Count     : 9
 // Status           : Ok.
 // 
 
@@ -698,7 +698,7 @@ public:
 
   /**
    * Creates a new residue with the atoms specified in the variable argument
-   * list.  The list must be terminated by a (t_Atom*) null pointer.
+   * list.  The list must be terminated by a (char*) null pointer.
    * @param at the first atom type.
    * @return the new residue.
    */

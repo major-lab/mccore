@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CMessageQueue.h
-// Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:14:47 2000
-// Update Count     : 1
+// Last Modified On : Mon Jan 22 15:12:46 2001
+// Update Count     : 2
 // Status           : Ok.
 // 
 
@@ -33,7 +33,7 @@
  *   2 : Avertissement de toute forme.  Erreur de sémantique
  *       potentielles. (debug)
  *   3 : Toute traces disponibles.  (verbose)
- *
+ * </pre>
  * @author Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
  */
 class CMessageQueue 

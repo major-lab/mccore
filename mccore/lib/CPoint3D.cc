@@ -1,11 +1,11 @@
 //                           -*- Mode: C++ -*-
 // CPoint3D.cc
-// Copyright © 1999, 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : 
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Dec  4 15:40:15 2000
-// Update Count     : 5
+// Last Modified On : Mon Jan 22 15:14:30 2001
+// Update Count     : 6
 // Status           : Ok.
 
 
@@ -199,7 +199,8 @@ CPoint3D::Angle (const CPoint3D &A, const CPoint3D &C) const
 
 
 float
-CPoint3D::TorsionAngle (const CPoint3D &A, const CPoint3D &C, const CPoint3D &D)
+CPoint3D::TorsionAngle (const CPoint3D &A, const CPoint3D &C,
+			const CPoint3D &D) const
 {
   CPoint3D B_C_Vect (C - *this);
   CPoint3D B_A_Vect (A - *this);
@@ -235,7 +236,7 @@ CPoint3D::TorsionAngle (const CPoint3D &A, const CPoint3D &C, const CPoint3D &D)
 
 float
 CPoint3D::TorsionAngleDir (const CPoint3D &A, const CPoint3D &C,
-			   const CPoint3D &D)
+			   const CPoint3D &D) const
 {
   CPoint3D B_C_Vect (C - *this);
   CPoint3D B_A_Vect (A - *this);
