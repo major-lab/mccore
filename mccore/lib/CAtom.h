@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Fri Feb  2 14:56:15 2001
-// Update Count     : 6
+// Last Modified On : Fri Feb  9 11:38:51 2001
+// Update Count     : 7
 // Status           : Ok.
 // 
 
@@ -124,6 +124,14 @@ public:
    * @return the result of the test.
    */
   bool operator!= (const CAtom &right) const { return ! operator== (right); }
+
+  /**
+   * Tests whether the atoms is not of the type t.  This is the negation of
+   * operator==.
+   * @param type the atom type.
+   * @return the result of the test.
+   */
+  bool operator!= (const t_Atom *type) const { return ! operator== (type); }
 
   /**
    * Tests whether the atom is less than the right one.  The order is based
