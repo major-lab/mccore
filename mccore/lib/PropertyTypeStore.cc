@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:42:25 2003
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 
 
 #ifdef HAVE_CONFIG_H
@@ -34,15 +34,25 @@ namespace mccore {
     stringType["type_B"] = PropertyType::pType_B = new Type_B ("type_B");
     stringType["helix"] = PropertyType::pHelix = new Helix ("helix");
     stringType["C1p_endo"] = PropertyType::pC1p_endo = new C1p_endo ("C1p_endo");
+    stringType["C1'_endo"] = PropertyType::pC1p_endo;
     stringType["C1p_exo"] = PropertyType::pC1p_exo = new C1p_exo ("C1p_exo");
+    stringType["C1'_exo"] = PropertyType::pC1p_exo;
     stringType["C2p_endo"] = PropertyType::pC2p_endo = new C2p_endo ("C2p_endo");
+    stringType["C2'_endo"] = PropertyType::pC2p_endo;
     stringType["C2p_exo"] = PropertyType::pC2p_exo = new C2p_exo ("C2p_exo");
+    stringType["C2'_exo"] = PropertyType::pC2p_exo;
     stringType["C3p_endo"] = PropertyType::pC3p_endo = new C3p_endo ("C3p_endo");
+    stringType["C3'_endo"] = PropertyType::pC3p_endo;
     stringType["C3p_exo"] = PropertyType::pC3p_exo = new C3p_exo ("C3p_exo");
+    stringType["C3'_exo"] = PropertyType::pC3p_exo;
     stringType["C4p_endo"] = PropertyType::pC4p_endo = new C4p_endo ("C4p_endo");
+    stringType["C4'_endo"] = PropertyType::pC4p_endo;
     stringType["C4p_exo"] = PropertyType::pC4p_exo = new C4p_exo ("C4p_exo");
+    stringType["C4'_exo"] = PropertyType::pC4p_exo;
     stringType["O4p_endo"] = PropertyType::pO4p_endo = new O4p_endo ("O4p_endo");
+    stringType["O4'_endo"] = PropertyType::pO4p_endo;
     stringType["O4p_exo"] = PropertyType::pO4p_exo = new O4p_exo ("O4p_exo");
+    stringType["O4'_exo"] = PropertyType::pO4p_exo;
     stringType["anti"] = PropertyType::pAnti = new Anti ("anti");
     stringType["syn"] = PropertyType::pSyn = new Syn ("syn");
     stringType["DIR_5p"] = PropertyType::pDIR_5p = new DIR_5p ("DIR_5p");
