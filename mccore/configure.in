@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
-# $Revision: 1.14.8.1 $
-# $Id: configure.in,v 1.14.8.1 2003-10-28 01:53:55 larosem Exp $
+# $Revision: 1.14.8.2 $
+# $Id: configure.in,v 1.14.8.2 2003-10-28 20:59:18 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -37,7 +37,6 @@ AC_DEFINE_UNQUOTED(VERSION, "$VERSION")
 
 AC_PROG_MAKE_SET
 
-AC_LANG_CPLUSPLUS
 AC_C_BIGENDIAN
 AC_PROG_CXX
 AC_CANONICAL_HOST

@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.28.8.1 $
-# $Id: Makefile.in,v 1.28.8.1 2003-10-28 01:54:00 larosem Exp $
+# $Revision: 1.28.8.2 $
+# $Id: Makefile.in,v 1.28.8.2 2003-10-28 20:59:25 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -93,6 +93,7 @@ SOURCES = zfstream.cc \
           CHBond.cc \
           CTransfo.cc \
 	  Model.cc \
+	  Molecule.cc \
 	  McCore.cc
 
 

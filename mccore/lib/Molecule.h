@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:36 2003
-// $Revision: 1.1.4.1 $
+// $Revision: 1.1.4.2 $
 // 
 // This file is part of mccore.
 // 
@@ -32,112 +32,114 @@
 
 
 
-namespace mccore
+class iPdbstream;
+class Model;
+class oPdbstream;
+
+
+
+/**
+ * @short Container for a collection of Models.
+ *
+ * This is a collection of mccore Models in a simple STL list.
+ *
+ * @author Martin Larose (<larosem@iro.umontreal.ca>)
+ * @version $Id: Molecule.h,v 1.1.4.2 2003-10-28 20:59:32 larosem Exp $
+ */
+class Molecule : public list< Model* >
 {
-  class iPdbstream;
-  class Model;
-  class oPdbstream;
-  
-  
-  
   /**
-   * @short Container for a collection of Models.
-   *
-   * This is a collection of mccore Models in a simple STL list.
-   *
-   * @author Martin Larose (<larosem@iro.umontreal.ca>)
-   * @version $Id: Molecule.h,v 1.1.4.1 2003-10-28 01:54:06 larosem Exp $
+   * Properties for the molecule class.
    */
-  class Molecule : public list< Model* >
-  {
-    /**
-     * Properties for the molecule class.
-     */
-    map< char*, char* > properties;
-    
-  public:
-    
-    // LIFECYCLE ------------------------------------------------------------
-    
-    /**
-     * Initializes the object.
-     */
-    Molecule () { }
-    
-    /**
-     * Initializes the object with the right's content.
-     * @param right the object to copy.
-     */
-    Molecule (const Molecule &right);
-    
-    /**
-     * Clones the molecule.
-     * @return a copy of the molecule.
-     */
-    virtual Molecule* clone () const { return new Molecule (*this); }
-    
-    /**
-     * Destroys the object.
-     */
-    virtual ~Molecule ();
-    
-    // OPERATORS ------------------------------------------------------------
-    
-    /**
-     * Assigns the object with the right's content.
-     * @param right the object to copy.
-     * @return itself.
-     */
-    Molecule& operator= (const Molecule &right);
-    
-    // ACCESS ---------------------------------------------------------------
-
-    /**
-     * Gets the property value of the key.
-     * @param key the key.
-     * @return the value of the key.
-     */
-    char* getProperty (const char *key) const;
-
-    /**
-     * Sets the key value pair.
-     * @param key the key.
-     * @param value the value.
-     */
-    void setProperty (char *key, char *value);
-
-    // METHODS --------------------------------------------------------------
-    
-    // I/O  -----------------------------------------------------------------
-    
-  };
-
-  // NON-MEMBER FUNCTION -------------------------------------------------------
+  map< const char*, char* > properties;
+  
+ public:
+  
+  // LIFECYCLE ------------------------------------------------------------
   
   /**
-   * Outputs the molecule to an output stream.
-   * @param obs the output stream.
-   * @param obj the molecule to output.
-   * @return the output stream.
+   * Initializes the object.
    */
-  ostream& operator<< (ostream &obs, const Molecule &obj);
-
+  Molecule () { }
+  
   /**
-   * Inputs the molecule from a pdb stream.
-   * @param ips the input pdb stream.
-   * @param obj the molecule where to put the models.
-   * @return the input pdb stream.
+   * Initializes the object with the right's content.
+   * @param right the object to copy.
    */
-  iPdbstream& operator>> (iPdbstream &ips, Molecule &obj);
-
+  Molecule (const Molecule &right);
+  
   /**
-   * Outputs the molecule to a pdb stream.
-   * @param ops the output pdb stream.
-   * @param obj the molecule to output.
-   * @return the output pdb stream.
+   * Clones the molecule.
+   * @return a copy of the molecule.
    */
-  oPdbstream& operator<< (oPdbstream &ops, const Molecule &obj);
+  virtual Molecule* clone () const { return new Molecule (*this); }
+  
+  /**
+   * Destroys the object.
+   */
+  virtual ~Molecule ();
+  
+  // OPERATORS ------------------------------------------------------------
+  
+  /**
+   * Assigns the object with the right's content.
+   * @param right the object to copy.
+   * @return itself.
+   */
+  Molecule& operator= (const Molecule &right);
+  
+  // ACCESS ---------------------------------------------------------------
+  
+  /**
+   * Gets the property value of the key.
+   * @param key the key.
+   * @return the value of the key.
+   */
+  char* getProperty (const char *key);
+  
+  /**
+   * Sets the key value pair.
+   * @param key the key.
+   * @param value the value.
+   */
+  void setProperty (const char *key, const char *value);
+  
+  /**
+   * Gets the property map.
+   * @return the property map.
+   */
+  map< const char*, char* >& getProperties () { return properties; }
+  
+  // METHODS --------------------------------------------------------------
+  
+  // I/O  -----------------------------------------------------------------
+  
+};
 
-}
+// NON-MEMBER FUNCTION -------------------------------------------------------
+
+/**
+ * Outputs the molecule to an output stream.
+ * @param obs the output stream.
+ * @param obj the molecule to output.
+ * @return the output stream.
+ */
+ostream& operator<< (ostream &obs, const Molecule &obj);
+
+/**
+ * Inputs the molecule from a pdb stream.
+ * @param ips the input pdb stream.
+ * @param obj the molecule where to put the models.
+ * @return the input pdb stream.
+ */
+iPdbstream& operator>> (iPdbstream &ips, Molecule &obj);
+
+/**
+ * Outputs the molecule to a pdb stream.
+ * @param ops the output pdb stream.
+ * @param obj the molecule to output.
+ * @return the output pdb stream.
+ */
+oPdbstream& operator<< (oPdbstream &ops, const Molecule &obj);
 
 #endif
