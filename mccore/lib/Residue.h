@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.12 $
+// $Revision: 1.13 $
 //
 //  This file is part of mccore.
 //  
@@ -56,7 +56,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Patrick Gendron <gendrop@iro.umontreal.ca>
-   * @version $Id: Residue.h,v 1.12 2003-08-28 14:49:45 gendrop Exp $
+   * @version $Id: Residue.h,v 1.13 2003-10-16 21:55:27 gendrop Exp $
    */
   class Residue
   {
@@ -802,7 +802,7 @@ namespace mccore {
    * @param r the residue.
    * @return the used output stream.
    */
-  ostream& operator<< (ostream &os, const Residue *r);
+  //ostream& operator<< (ostream &os, const Residue *r);
   
   /**
    * Inputs the residue from the binary stream.

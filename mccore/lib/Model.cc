@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.20 $
+// $Revision: 1.21 $
 // 
 //  This file is part of mccore.
 //  
@@ -31,7 +31,7 @@
 #include "Model.h"
 
 #include "Binstream.h"
-#include "Residue.h"
+#include "ExtendedResidue.h"
 #include "ResidueFactoryMethod.h"
 #include "Pdbstream.h"
 
@@ -69,7 +69,11 @@ namespace mccore {
   Model::~Model ()
   {
     delete residueFM;
-    clear ();
+    list< Residue* >::iterator it;
+    for (it = residues.begin (); it != residues.end (); ++it) {
+      delete *it;      
+    }
+    residues.clear ();    
   }
 
 
@@ -81,15 +85,12 @@ namespace mccore {
   {
     if (this != &right)
       {
-	iterator it;
 	const_iterator cit;
 
 	delete residueFM;
 	residueFM = right.residueFM->clone ();
-	for (it = begin (); it != end (); ++it)
-	  delete &*it;
-	clear ();
-
+	
+	clear ();	
 	for (cit = right.begin (); cit != right.end (); ++cit)
 	  insert (*cit);
       }
@@ -142,6 +143,15 @@ namespace mccore {
 
   // METHODS -------------------------------------------------------------------
 
+  
+  Model::model_iterator 
+  Model::insert (const Residue &res)
+  { 
+    Model::model_iterator ri = residues.insert (residues.end (), res.clone ());
+    return ri;     
+  }
+  
+  
 
 //   Residue::iterator
 //   Model::find (const char *str)
@@ -247,10 +257,10 @@ namespace mccore {
   void 
   Model::clear()
   {
-    iterator it;
-
-    for (it = begin (); it != end (); ++it)
-      delete &*it;
+    list< Residue* >::iterator it;
+    for (it = residues.begin (); it != residues.end (); ++it) {
+      delete *it;      
+    }
     residues.clear ();    
   }
 
@@ -407,7 +417,7 @@ namespace mccore {
 //       }
 
 //     for (t=toremove.begin (); t!=toremove.end (); ++t) {    
-//       delete &**t;
+//       delete **t;
 //       erase (*t);
 //     }  
 //   }
@@ -421,7 +431,7 @@ namespace mccore {
   {
     const_iterator cit;
     
-    os << "MODEL :" << flush;
+    os << "MODEL (size=" << flush << residues.size() << ") :" << flush;
     for (cit = begin (); cit != end (); ++cit)
       os << cit->getResId ()  << " ";
     return os;
@@ -539,13 +549,6 @@ namespace mccore {
       }
     return dist;
   }
-
-
-  Model::model_iterator 
-  Model::insert (const Residue &res)
-    { 
-      return residues.insert (residues.end (), res.clone ()); 
-    }
 
 
   // NON-MEMBER FUNCTIONS ------------------------------------------------------

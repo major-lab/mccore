@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Sep  5 17:06:24 2001
 // Last Modified By : Patrick Gendron
-// Last Modified On : Thu Jul 31 10:14:18 2003
-// Update Count     : 16
+// Last Modified On : Thu Oct 16 17:55:20 2003
+// Update Count     : 19
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -280,6 +280,8 @@ public:
    * @param level the new verbose level.
    */
   void setVerboseLevel (unsigned int level) { verboseLevel = level; }
+
+  unsigned int getVerboseLevel () { return verboseLevel; }
 
   // METHODS --------------------------------------------------------------
 
