@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
-# $Revision: 1.14.8.6 $
-# $Id: configure.in,v 1.14.8.6 2003-11-21 15:53:29 larosem Exp $
+# $Revision: 1.14.8.7 $
+# $Id: configure.in,v 1.14.8.7 2003-11-27 16:15:50 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -81,9 +81,12 @@ if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
 	AC_CHECK_LIB(z,gzopen)
 	AC_CHECK_LIB(rnamlc++,xmlcpginit)
 	LIBALLFLAGSTART="-all"
-	LIBALLFLAGSTOP="-notall";;
+	LIBALLFLAGSTOP="-notall"
+	ARXX="$AR"
+	AROPTIONS="crs"
+	;;	
     *-sun-*)
-	CXXFLAGS="$CXXFLAGS -O2"
+	CXXFLAGS="$CXXFLAGS -xO2"
 	DEPFLAGS="-xM"
 	echo "appending values of CPLUS_INCLUDE_PATH to include path..."
 	for t in `echo $CPLUS_INCLUDE_PATH | sed "s/\.*:/ /g"`; do
@@ -101,7 +104,10 @@ if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
 	AC_CHECK_LIB(z,gzopen)
 	AC_CHECK_LIB(rnamlc++,xmlcpginit)
 	LIBALLFLAGSTART="-z allextract"
-	LIBALLFLAGSTOP="-z defaultextract";;
+	LIBALLFLAGSTOP="-z defaultextract"
+	ARXX="$CXX"
+	AROPTIONS="-xar -o"
+	;;
     esac;
 elif eval "test \"`echo $GXX`\" = yes"; then     # gnu compiler
         AC_CHECK_LIB(z,main)
@@ -112,6 +118,8 @@ elif eval "test \"`echo $GXX`\" = yes"; then     # gnu compiler
 	LDNAMEPARAM="-Wl,-soname,"
 	LIBALLFLAGSTART="-Wl,-whole-archive"
 	LIBALLFLAGSTOP="-Wl,-no-whole-archive";
+	ARXX="$AR"
+	AROPTIONS="crs"
 fi
 
 
@@ -128,5 +136,7 @@ AC_SUBST(LDNAMEPARAM)
 AC_SUBST(LDFLAGS)
 AC_SUBST(LIBALLFLAGSTART)
 AC_SUBST(LIBALLFLAGSTOP)
+AC_SUBST(ARXX)
+AC_SUBST(AROPTIONS)
 
 AC_OUTPUT( Makefile docs/Makefile lib/Makefile, echo timestamp > stamp-h )
