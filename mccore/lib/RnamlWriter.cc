@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // RnamlWriter.cc
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.6 $
-// $Id: RnamlWriter.cc,v 1.6 2005-01-03 23:05:18 larosem Exp $
+// $Revision: 1.7 $
+// $Id: RnamlWriter.cc,v 1.7 2005-01-05 01:51:36 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -159,27 +159,51 @@ namespace mccore
   RnamlWriter::toRnaml (const Molecule &molecule)
   {
     rnaml::Molecule *m;
-    const char *property;
     
     m = new rnaml::Molecule ();
-    property = molecule.getProperty ("id");
-    if (0 != property)
-      m->setId (property);
-    property = molecule.getProperty ("type");
-    if (0 != property)
-      m->setType (property);
-    property = molecule.getProperty ("comment");
-    if (0 != property)
-      m->setComment (property);
-    property = molecule.getProperty ("reference-ids");
-    if (0 != property)
-      m->addReferenceId (property);
-    property = molecule.getProperty ("analysis-ids");
-    if (0 != property)
-      m->addAnalysisId (property);
-    property = molecule.getProperty ("database-ids");
-    if (0 != property)
-      m->addDatabaseId (property);
+    try
+      {
+	const string &property = molecule.getProperty ("id");
+
+	m->setId (property.c_str ());
+      }
+    catch (NoSuchElementException &e) { }
+    try
+      {
+	const string &property = molecule.getProperty ("type");
+	
+	m->setType (property.c_str ());
+      }
+    catch (NoSuchElementException &e) { }
+    try
+      {
+	const string &property = molecule.getProperty ("comment");
+	
+	m->setComment (property.c_str ());
+      }
+    catch (NoSuchElementException &e) { }
+    try
+      {
+	const string &property = molecule.getProperty ("reference-ids");
+	
+	m->addReferenceId (property.c_str ());
+      }
+    catch (NoSuchElementException &e) { }
+    try
+      {
+	const string &property = molecule.getProperty ("analysis-ids");
+	
+	m->addAnalysisId (property.c_str ());
+      }
+    catch (NoSuchElementException &e) { }
+    try
+      {
+	const string &property = molecule.getProperty ("database-ids");
+	
+	m->addDatabaseId (property.c_str ());
+      }
+    catch (NoSuchElementException &e) { }
+    
     if (! molecule.empty ())
       {
 	rnaml::Structure *s;
