@@ -12,13 +12,13 @@
 #include <iterator>
 
 #include "Relation.h"
-#include "BasicResidue.h"
+#include "Residue.h"
 #include "PropertyType.h"
 #include "UndirectedGraph.h"
 #include "MaximumFlowGraph.h"
 #include "ResidueTopology.h"
 #include "HBond.h"
-#include "Residue.h"
+#include "ExtendedResidue.h"
 
 namespace mccore {
 
@@ -44,7 +44,7 @@ namespace mccore {
   }
   
   
-  Relation::Relation (const BasicResidue *rA, const BasicResidue *rB)
+  Relation::Relation (const Residue *rA, const Residue *rB)
     : ref (rA), res (rB),
       refFace (0), resFace (0)
   {
@@ -151,10 +151,10 @@ namespace mccore {
 
 
   set< const PropertyType* > 
-  Relation::areAdjacent (const BasicResidue* ra, const BasicResidue *rb)
+  Relation::areAdjacent (const Residue* ra, const Residue *rb)
   {
     static const float ADJACENCY_SQUARED_DISTANCE = 4.0;
-    BasicResidue::const_iterator up, down;
+    Residue::const_iterator up, down;
     
     set< const PropertyType* > s;
     
@@ -191,7 +191,7 @@ namespace mccore {
 
 
   set< const PropertyType* > 
-  Relation::areStacked (const BasicResidue* ra, const BasicResidue *rb)
+  Relation::areStacked (const Residue* ra, const Residue *rb)
   {
     static const float STACK_DISTANCE_CUTOFF = 4.50f;
     static const float STACK_NORMAL_CUTOFF   = 0.61f; // 35 deg
@@ -359,7 +359,7 @@ namespace mccore {
 
 
   set< const PropertyType* > 
-  Relation::arePaired (const BasicResidue* ra, const BasicResidue *rb, 
+  Relation::arePaired (const Residue* ra, const Residue *rb, 
 		       const PropertyType* &pta, const PropertyType* &ptb)
   {
     static const float PAIRING_CUTOFF = 0.8f;
@@ -371,9 +371,9 @@ namespace mccore {
     if (!ra->getType ()->isNucleicAcid () && !rb->getType ()->isNucleicAcid ())
       return ts;
     
-    BasicResidue::const_iterator i, j, k, l;
+    Residue::const_iterator i, j, k, l;
     MaximumFlowGraph< int, HBond > graph;
-    map< BasicResidue::const_iterator, int > atomToInt; 
+    map< Residue::const_iterator, int > atomToInt; 
 
     int node = 0;
     graph.insert (node++); // Source
@@ -383,10 +383,10 @@ namespace mccore {
     const UndirectedGraph< const AtomType* > *gb = ResidueTopology::get (rb->getType ());
     if (ga == 0 || gb == 0) return ts;
     
-    vector< BasicResidue::const_iterator > ra_at;
-    vector< BasicResidue::const_iterator > ran_at;
-    vector< BasicResidue::const_iterator > rb_at;
-    vector< BasicResidue::const_iterator > rbn_at;
+    vector< Residue::const_iterator > ra_at;
+    vector< Residue::const_iterator > ran_at;
+    vector< Residue::const_iterator > rb_at;
+    vector< Residue::const_iterator > rbn_at;
     int x, y;
 
     AtomSet* as = new AtomSetOr (new AtomSetHydrogen (), new AtomSetLP ());
@@ -449,7 +449,7 @@ namespace mccore {
 
 
 //     {
-//       map< BasicResidue::const_iterator, int >::iterator m, n;
+//       map< Residue::const_iterator, int >::iterator m, n;
 //       for (m=atomToInt.begin (); m!=atomToInt.end (); ++m) {
 // 	cout << m->second << " : " << *m->first << endl;
 //       }
@@ -461,7 +461,7 @@ namespace mccore {
 //     graph.output (cout);
 
     float sum_flow = 0;
-    map< BasicResidue::const_iterator, int >::iterator m, n;
+    map< Residue::const_iterator, int >::iterator m, n;
     for (m=atomToInt.begin (); m!=atomToInt.end (); ++m) {
       for (n=atomToInt.begin (); n!=atomToInt.end (); ++n) {
 	if (graph.areConnected (m->second, n->second)) {
@@ -541,7 +541,7 @@ namespace mccore {
 
 
   Vector3D 
-  Relation::pyrimidineNormal (const BasicResidue *res)
+  Relation::pyrimidineNormal (const Residue *res)
   {
     Vector3D radius1, radius2, center;
     Vector3D normal;
@@ -571,7 +571,7 @@ namespace mccore {
 
 
   Vector3D 
-  Relation::imidazolNormal (const BasicResidue *res)
+  Relation::imidazolNormal (const Residue *res)
   {
     Vector3D radius1, radius2, center;
     Vector3D normal;
@@ -600,7 +600,7 @@ namespace mccore {
 
 
   const PropertyType* 
-  Relation::getFace (const BasicResidue *r, const Vector3D& p)
+  Relation::getFace (const Residue *r, const Vector3D& p)
   {
     if (!Relation::isInit) Relation::init ();
 
@@ -636,7 +636,7 @@ namespace mccore {
   {
     Vector3D ta, tb;
 
-    Residue A (ResidueType::rRA, ResId ('A', 1));
+    ExtendedResidue A (ResidueType::rRA, ResId ('A', 1));
     A.setIdeal ();
     A.setReferential (HomogeneousTransfo ());
 
@@ -663,7 +663,7 @@ namespace mccore {
     ta = *A.find (AtomType::aLP3);
     faces_A.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
 
-    Residue C (ResidueType::rRC, ResId ('C', 1));
+    ExtendedResidue C (ResidueType::rRC, ResId ('C', 1));
     C.setIdeal ();
     C.setReferential (HomogeneousTransfo ());
 
@@ -688,7 +688,7 @@ namespace mccore {
     ta = *C.find (AtomType::a1LP2);
     faces_C.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
 
-    Residue G (ResidueType::rRG, ResId ('G', 1));
+    ExtendedResidue G (ResidueType::rRG, ResId ('G', 1));
     G.setIdeal ();
     G.setReferential (HomogeneousTransfo ());
 
@@ -717,7 +717,7 @@ namespace mccore {
     ta = (*G.find (AtomType::a1H2) + *G.find (AtomType::aLP3)) / 2;
     faces_G.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
     
-    Residue U (ResidueType::rRU, ResId ('U', 1));
+    ExtendedResidue U (ResidueType::rRU, ResId ('U', 1));
     U.setIdeal ();
     U.setReferential (HomogeneousTransfo ());
 	
@@ -744,7 +744,7 @@ namespace mccore {
     ta = *U.find (AtomType::a1LP2);
     faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
     
-    Residue T (ResidueType::rDT, ResId ('T', 1));
+    ExtendedResidue T (ResidueType::rDT, ResId ('T', 1));
     T.setIdeal ();
     T.setReferential (HomogeneousTransfo ());
     

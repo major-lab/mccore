@@ -27,7 +27,7 @@
 #include <vector>
 #include <algorithm>
 
-#include "BasicResidue.h"
+#include "Residue.h"
 #include "ResidueType.h"
 #include "Atom.h"
 
@@ -41,7 +41,7 @@ namespace mccore {
  * with const_iterator and iterator types.
  *
  * @author Sebastien Lemieux
- * @version $Id: Algo.h,v 1.16 2003-05-30 16:47:23 gendrop Exp $
+ * @version $Id: Algo.h,v 1.17 2003-06-09 20:38:32 gendrop Exp $
  */
 class Algo
 {
@@ -50,8 +50,8 @@ public:
   /**
    * Using the Axis Aligned Bounding Box for collision detection, this
    * method calculates the possible contacts between residues.
-   * @param begin an iterator on a collection of BasicResidue.
-   * @param end an iterator on a collection of BasicResidue.
+   * @param begin an iterator on a collection of Residue.
+   * @param end an iterator on a collection of Residue.
    * @param cutoff on the minimum distance for a contact (default = 5.0 Angstroms).
    * @return a vector of pair of iterators on residues in contact.
    */
@@ -67,7 +67,7 @@ public:
     
     for (i = begin; i != end; ++i) 
       {
-        BasicResidue::const_iterator j;
+        Residue::const_iterator j;
 	
 	float minX, minY, minZ, maxX, maxY, maxZ;
 	minX = minY = minZ = HUGE;

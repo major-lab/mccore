@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Patrick Gendron
-// Last Modified On : Wed Apr 16 16:35:09 2003
-// Update Count     : 234
+// Last Modified On : Tue Jun  3 10:04:15 2003
+// Update Count     : 235
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -39,7 +39,7 @@
 #include "ResId.h"
 #include "AtomType.h"
 #include "ResidueType.h"
-#include "BasicResidue.h"
+#include "Residue.h"
 
 
 namespace mccore {
@@ -262,7 +262,7 @@ namespace mccore {
   
 
   iPdbstream& 
-  iPdbstream::operator>> (BasicResidue &r)
+  iPdbstream::operator>> (Residue &r)
   {
     // Cache an atom if needed.
     if (!ratom) cacheAtom (); 
@@ -513,14 +513,14 @@ namespace mccore {
 
 
   oPdbstream& 
-  oPdbstream::operator<< (const BasicResidue& r)
+  oPdbstream::operator<< (const Residue& r)
   {
     if (!headerdone) writeHeader ();
 
     setResidueType (r.getType ());
     setResId (r.getResId ());
     
-    for (BasicResidue::const_iterator i=r.begin (atomset->clone ()); i!=r.end (); ++i) {
+    for (Residue::const_iterator i=r.begin (atomset->clone ()); i!=r.end (); ++i) {
       *this << *i << endl;
     }
 

@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 24 20:17:50 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 // 
 //  This file is part of mccore.
 //  
@@ -38,7 +38,7 @@ namespace mccore {
    * algorithm by Kabsch, 1976.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Rmsd.h,v 1.1 2003-04-03 21:55:55 gendrop Exp $
+   * @version $Id: Rmsd.h,v 1.2 2003-06-09 20:38:34 gendrop Exp $
    */
   class Rmsd 
   {
@@ -106,6 +106,7 @@ namespace mccore {
       double e0;
       int i, j, k;
       int count = 0;
+      T cii, cij;
 
       for (cii = begin_a, cij = begin_b; 
 	   cii != end_a && cij != end_b; 
@@ -126,15 +127,15 @@ namespace mccore {
 	   cii != end_a && cij != end_b; 
 	   ++cii, ++cij)
 	{
-	  r[0*3+0] += ((*cij)->getX () - center_b.getX ()) * ((*cii)->getX () - center_a.getX ());
-	  r[0*3+1] += ((*cij)->getX () - center_b.getX ()) * ((*cii)->getY () - center_a.getY ());
-	  r[0*3+2] += ((*cij)->getX () - center_b.getX ()) * ((*cii)->getZ () - center_a.getZ ());
-	  r[1*3+0] += ((*cij)->getY () - center_b.getY ()) * ((*cii)->getX () - center_a.getX ());
-	  r[1*3+1] += ((*cij)->getY () - center_b.getY ()) * ((*cii)->getY () - center_a.getY ());
-	  r[1*3+2] += ((*cij)->getY () - center_b.getY ()) * ((*cii)->getZ () - center_a.getZ ());
-	  r[2*3+0] += ((*cij)->getZ () - center_b.getZ ()) * ((*cii)->getX () - center_a.getX ());
-	  r[2*3+1] += ((*cij)->getZ () - center_b.getZ ()) * ((*cii)->getY () - center_a.getY ());
-	  r[2*3+2] += ((*cij)->getZ () - center_b.getZ ()) * ((*cii)->getZ () - center_a.getZ ());
+	  r[0*3+0] += ((*cij).getX () - center_b.getX ()) * ((*cii).getX () - center_a.getX ());
+	  r[0*3+1] += ((*cij).getX () - center_b.getX ()) * ((*cii).getY () - center_a.getY ());
+	  r[0*3+2] += ((*cij).getX () - center_b.getX ()) * ((*cii).getZ () - center_a.getZ ());
+	  r[1*3+0] += ((*cij).getY () - center_b.getY ()) * ((*cii).getX () - center_a.getX ());
+	  r[1*3+1] += ((*cij).getY () - center_b.getY ()) * ((*cii).getY () - center_a.getY ());
+	  r[1*3+2] += ((*cij).getY () - center_b.getY ()) * ((*cii).getZ () - center_a.getZ ());
+	  r[2*3+0] += ((*cij).getZ () - center_b.getZ ()) * ((*cii).getX () - center_a.getX ());
+	  r[2*3+1] += ((*cij).getZ () - center_b.getZ ()) * ((*cii).getY () - center_a.getY ());
+	  r[2*3+2] += ((*cij).getZ () - center_b.getZ ()) * ((*cii).getZ () - center_a.getZ ());
 	}
       
       // E0 computation
@@ -144,12 +145,12 @@ namespace mccore {
 	   cii != end_a && cij != end_b; 
 	   ++cii, ++cij)
 	{
-	  e0 += (pow(p1.getX() - centerA.getX(), 2)
-		 + pow(p1.getY() - centerA.getY(), 2)
-		 + pow(p1.getZ() - centerA.getZ(), 2)
-		 + pow(p2.getX() - centerB.getX(), 2)
-		 + pow(p2.getY() - centerB.getY(), 2)
-		 + pow(p2.getZ() - centerB.getZ(), 2));
+	  e0 += (pow((*cii).getX() - center_a.getX(), 2)
+		 + pow((*cii).getY() - center_a.getY(), 2)
+		 + pow((*cii).getZ() - center_a.getZ(), 2)
+		 + pow((*cij).getX() - center_b.getX(), 2)
+		 + pow((*cij).getY() - center_b.getY(), 2)
+		 + pow((*cij).getZ() - center_b.getZ(), 2));
 	}
       e0 /= 2;
 	

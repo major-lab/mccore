@@ -5,8 +5,8 @@
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:10:38 2000
 ## Last Modified By : Patrick Gendron
-## Last Modified On : Mon May 12 19:36:16 2003
-## Update Count     : 37
+## Last Modified On : Wed May 14 12:00:43 2003
+## Update Count     : 38
 ## Status           : Ok.
 ###############################################################################
 #
@@ -76,8 +76,8 @@ doc:
 #	   (cd $$subdir && $(MAKE) $@) || exit 1; \
 #	  done
 
-test: static basic.cc
-	$(CXX) -O2 -DHAVE_CONFIG_H -I$(srcdir)/lib -I$(srcdir) -I. -o basic $(srcdir)/basic.cc lib/libmccore.a -lz
+test: basic.cc
+	$(CXX) -O2 -DHAVE_CONFIG_H -I$(srcdir)/lib -I$(srcdir) -I. -o basic $(srcdir)/basic.cc -lmccore -lz
 
 install install-static:
 	@ for subdir in $(SUBDIRS); do \

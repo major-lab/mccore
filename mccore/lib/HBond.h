@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Patrick Gendron
-// Last Modified On : Wed Apr  9 11:23:49 2003
-// Update Count     : 30
+// Last Modified On : Tue Jun  3 10:05:01 2003
+// Update Count     : 31
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -35,7 +35,7 @@ using namespace std;
 namespace mccore {
 
   class AtomType;
-  class BasicResidue;
+  class Residue;
   class Atom;
 
   /**
@@ -46,7 +46,7 @@ namespace mccore {
    * between any two atoms.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: HBond.h,v 1.2 2003-04-11 01:33:56 gendrop Exp $
+   * @version $Id: HBond.h,v 1.3 2003-06-09 20:38:32 gendrop Exp $
    */
   class HBond
     {
@@ -79,12 +79,12 @@ namespace mccore {
       /**
        * The residue on which we find the donor group
        */
-      const BasicResidue *resD;
+      const Residue *resD;
       
       /**
        * The residue on which we find the acceptor group
        */
-      const BasicResidue *resA;
+      const Residue *resA;
       
       /**
        * Gaussian parameters for Pairing pattern detection. (see
@@ -155,7 +155,7 @@ namespace mccore {
        * @return the donor atom. 
        */
       const Atom& getDonor () const;
-      const Atom& getDonor (const BasicResidue& r) const;
+      const Atom& getDonor (const Residue& r) const;
 
       /**
        * Returns the hydrogen atom.
@@ -165,7 +165,7 @@ namespace mccore {
        * @return the hydrogen atom. 
        */
       const Atom& getHydrogen () const;
-      const Atom& getHydrogen (const BasicResidue& r) const;
+      const Atom& getHydrogen (const Residue& r) const;
 
       /**
        * Returns the acceptor atom.
@@ -175,7 +175,7 @@ namespace mccore {
        * @return the acceptor atom. 
        */
       const Atom& getAcceptor () const;
-      const Atom& getAcceptor (const BasicResidue& r) const;
+      const Atom& getAcceptor (const Residue& r) const;
       
       /**
        * Returns the lonepair atom.
@@ -185,20 +185,20 @@ namespace mccore {
        * @return the lonepair atom. 
        */
       const Atom& getLonePair () const;
-      const Atom& getLonePair (const BasicResidue& r) const;
+      const Atom& getLonePair (const Residue& r) const;
       
       
       /**
        * Returns the donor residue, if one is set for this HBond.
        */
-      const BasicResidue* getDonorResidue () const {
+      const Residue* getDonorResidue () const {
 	return resD;
       }
 
       /**
        * Returns the donor residue, if one is set for this HBond.
        */
-      const BasicResidue* getAcceptorResidue () const {
+      const Residue* getAcceptorResidue () const {
 	return resA;
       }
 
@@ -215,7 +215,7 @@ namespace mccore {
        * @param rb the residue that contains the acceptor atom.
        * @return a score between 0 and 1, where 0 is low probability and 1 is high probability.
        */
-      float eval (const BasicResidue &ra, const BasicResidue &rb);
+      float eval (const Residue &ra, const Residue &rb);
 
       /**
        * Evaluates the possibility that the given hydrogen bond forms
@@ -226,7 +226,7 @@ namespace mccore {
        * @param rb the residue that contains the acceptor atom.
        * @return a score between 0 and 1, where 0 is low probability and 1 is high probability.      
        */
-      float evalStatistically (const BasicResidue &ra, const BasicResidue &rb);
+      float evalStatistically (const Residue &ra, const Residue &rb);
       
       // I/O -------------------------------------------------------------------
 

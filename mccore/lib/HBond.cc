@@ -31,7 +31,7 @@
 #include "HBond.h"
 
 #include "AtomType.h"
-#include "BasicResidue.h"
+#include "Residue.h"
 #include "Atom.h"
 
 namespace mccore {
@@ -172,7 +172,7 @@ HBond::getDonor () const
 }
 
 const Atom& 
-HBond::getDonor (const BasicResidue& r) const
+HBond::getDonor (const Residue& r) const
 {
   return *r.find (donor);
 }
@@ -186,7 +186,7 @@ HBond::getHydrogen () const
 }
 
 const Atom& 
-HBond::getHydrogen (const BasicResidue& r) const
+HBond::getHydrogen (const Residue& r) const
 {
   return *r.find (hydrogen);
 }
@@ -199,7 +199,7 @@ HBond::getAcceptor () const
 }
 
 const Atom&
-HBond::getAcceptor (const BasicResidue& r) const
+HBond::getAcceptor (const Residue& r) const
 {
   return *r.find (acceptor);
 }
@@ -212,7 +212,7 @@ HBond::getLonePair () const
 }
 
 const Atom&
-HBond::getLonePair (const BasicResidue& r) const
+HBond::getLonePair (const Residue& r) const
 {
   return *r.find (lonepair);
 }
@@ -221,7 +221,7 @@ HBond::getLonePair (const BasicResidue& r) const
 
 
 float 
-HBond::eval (const BasicResidue &ra, const BasicResidue &rb) 
+HBond::eval (const Residue &ra, const Residue &rb) 
 {
   resD = &ra;
   resA = &rb;
@@ -233,7 +233,7 @@ HBond::eval (const BasicResidue &ra, const BasicResidue &rb)
 
 
 float 
-HBond::evalStatistically (const BasicResidue &ra, const BasicResidue &rb) 
+HBond::evalStatistically (const Residue &ra, const Residue &rb) 
 {
   float x[3];
   float p_x = 0;

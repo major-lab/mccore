@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:26:33 2003
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 // 
 //  This file is part of mccore.
 //  
@@ -45,7 +45,7 @@ namespace mccore {
    *   - The nature of a type (nucleic acid (pur/pyr) or amino acid)<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueType.h,v 1.10 2003-05-15 13:35:47 thibaup Exp $
+   * @version $Id: ResidueType.h,v 1.11 2003-06-09 20:38:34 gendrop Exp $
    */
   class ResidueType
   {    
@@ -162,13 +162,13 @@ namespace mccore {
      * @param s the string.
      * @return a residue type for the string.
      */
-    static ResidueType* parseType (const char* t);
+    static const ResidueType* parseType (const char* t);
 
     /**
      * Invalidates the residue type.  
      * @return a new ResidueType with the current strings as content.
      */
-    ResidueType* invalidate () const {
+    const ResidueType* invalidate () const {
       return new ResidueType (type, longtype);
     }
     
@@ -286,9 +286,21 @@ namespace mccore {
       return (typeid (*this) == typeid (ResidueType));
     }
 
+    /**
+     * Finds the least general type for the given residue types.
+     * @param aResType1 a residue type.
+     * @param aResType2 a residue type.
+     * @return the least general type for the given residue types.
+     */
+    static const ResidueType* 
+    generalizeBase (const ResidueType *aResType1, const ResidueType *aResType2);
+
+
   public:
+
     
     // I/O ---------------------------------------------------------------------
+
 
     /**
      * Outputs to a stream.
@@ -297,6 +309,7 @@ namespace mccore {
      */
     ostream &output (ostream &out) const;
 
+
     /**
      * Outputs to a binary stream.
      * @param out the output stream.
@@ -304,9 +317,12 @@ namespace mccore {
      */
     oBinstream &output (oBinstream &out) const;
 
+
   public:
 
+
     // TYPE POINTERS -----------------------------------------------------------
+
 
     static ResidueType* rUnknown;
     static ResidueType* rNucleicAcid;

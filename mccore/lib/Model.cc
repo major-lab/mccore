@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.13 $
+// $Revision: 1.14 $
 // 
 //  This file is part of mccore.
 //  
@@ -31,7 +31,7 @@
 #include "Model.h"
 
 #include "Binstream.h"
-#include "BasicResidue.h"
+#include "Residue.h"
 #include "ResidueFactoryMethod.h"
 #include "Pdbstream.h"
 
@@ -39,7 +39,7 @@
 namespace mccore {
 
 
-  bool less_deref (BasicResidue *x, BasicResidue *y)
+  bool less_deref (Residue *x, Residue *y)
   {
     return *x < *y;
   }
@@ -98,7 +98,7 @@ namespace mccore {
 
 
 
-  BasicResidue&
+  Residue&
   Model::operator[] (size_type nth)
   {
     if (nth > size ())
@@ -114,7 +114,7 @@ namespace mccore {
 
 
 
-  const BasicResidue&
+  const Residue&
   Model::operator[] (size_type nth) const
   {
     if (nth > size ())
@@ -143,7 +143,7 @@ namespace mccore {
   // METHODS -------------------------------------------------------------------
 
 
-//   BasicResidue::iterator
+//   Residue::iterator
 //   Model::find (const char *str)
 //   {
 //     char *s = strdup (str);
@@ -151,7 +151,7 @@ namespace mccore {
 //     char *argum;
 //     vector< char* > tok;
 //     Model::iterator mit;
-//     BasicResidue::iterator it;
+//     Residue::iterator it;
   
 //     argum = strsep (&p, ":");
 //     while (argum)
@@ -164,14 +164,14 @@ namespace mccore {
 //     if (tok.size () != 2
 // 	|| (mit = find (CResId (tok[0]))) == end ()
 // 	|| (it = mit->find (iPdbstream::GetAtomType (tok[1]))) == mit->end ())
-//       it = BasicResidue::iterator ();
+//       it = Residue::iterator ();
 //     delete[] s;
 //     return it;
 //   }
 
 
 
-//   BasicResidue::const_iterator
+//   Residue::const_iterator
 //   Model::find (const char *str) const
 //   {
 //     char *s = strdup (str);
@@ -179,7 +179,7 @@ namespace mccore {
 //     char *argum;
 //     vector< char* > tok;
 //     Model::const_iterator mit;
-//     BasicResidue::const_iterator it;
+//     Residue::const_iterator it;
   
 //     argum = strsep (&p, ":");
 //     while (argum)
@@ -192,7 +192,7 @@ namespace mccore {
 //     if (tok.size () != 2
 // 	|| (mit = find (CResId (tok[0]))) == end ()
 // 	|| (it = mit->find (iPdbstream::GetAtomType (tok[1]))) == mit->end ())
-//       it = BasicResidue::const_iterator ();
+//       it = Residue::const_iterator ();
 //     delete[] s;
 //     return it;
 //   }
@@ -373,7 +373,7 @@ namespace mccore {
 //     possibleContacts = 
 //       Algo::ExtractContact_AABB (begin (), end (), 2.0);
 
-//     BasicResidue::iterator k, l;
+//     Residue::iterator k, l;
 
 //     set< iterator > toremove;
 //     set< iterator >::iterator t;
@@ -450,7 +450,7 @@ namespace mccore {
     
     while (! (ips.eof ()) && currNb == ips.getModelNb () )
       {
-	BasicResidue *res = getResidueFM ()->createResidue ();
+	Residue *res = getResidueFM ()->createResidue ();
 	
 	ips >> *res;
 	
@@ -486,7 +486,7 @@ namespace mccore {
     ibs >> sz;
     for (; sz > 0; --sz)
       {
-	BasicResidue *res = getResidueFM ()->createResidue ();
+	Residue *res = getResidueFM ()->createResidue ();
 	
 	ibs >> *res;
 	// Optimized insertion that bypasses the copy: 

@@ -120,12 +120,59 @@ namespace mccore {
   // METHODS -------------------------------------------------------------------
 
 
-  ResidueType* 
+  const ResidueType* 
   ResidueType::parseType (const char* s) 
   {
     return rtstore.get (s);
   }
 
+
+  const ResidueType* 
+  ResidueType::generalizeBase (const ResidueType *aResType1, const ResidueType *aResType2)
+  {
+    if (aResType1 == aResType2)
+      return aResType1;
+    
+    if (aResType1->isRNA () && aResType2->isRNA ()) {
+      if ((aResType1->isPurine() && aResType2->isPyrimidine())
+	  || (aResType1->isPyrimidine() && aResType2->isPurine()))
+	return rRNA;
+      if (aResType1->isPurine() && aResType2->isPurine())
+	return rRPurine;
+      if (aResType1->isPyrimidine() && aResType2->isPyrimidine())
+	return rRPyrimidine;
+      return rRNA;
+    }
+    
+    if (aResType1->isDNA () && aResType2->isDNA ()) {
+      if ((aResType1->isPurine() && aResType2->isPyrimidine())
+	  || (aResType1->isPyrimidine() && aResType2->isPurine()))
+	return rDNA;
+      if (aResType1->isPurine() && aResType2->isPurine())
+	return rDPurine;
+      if (aResType1->isPyrimidine() && aResType2->isPyrimidine())
+	return rDPyrimidine;
+      return rDNA;
+    }
+    
+    if (aResType1->isNucleicAcid () && aResType2->isNucleicAcid ()) {
+      if ((aResType1->isPurine() && aResType2->isPyrimidine())
+	  || (aResType1->isPyrimidine() && aResType2->isPurine()))
+	return rNucleicAcid;
+      if (aResType1->isPurine() && aResType2->isPurine())
+	return rPurine;
+      if (aResType1->isPyrimidine() && aResType2->isPyrimidine())
+	return rPyrimidine;
+      return rNucleicAcid;
+    }
+    
+    if (aResType1->isAminoAcid() && aResType2->isAminoAcid()) {
+      return rAminoAcid;
+    }
+    
+    return 0;
+  }
+  
 
   // I/O -----------------------------------------------------------------------
 

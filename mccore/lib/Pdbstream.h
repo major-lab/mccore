@@ -3,7 +3,7 @@
 // Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.16 $
+// $Revision: 1.17 $
 //  This file is part of mccore.
 //  
 //  mccore is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@ namespace mccore {
   class ResidueType;
   class Atom;
   class ResId;
-  class BasicResidue;
+  class Residue;
   class AtomSet;
   class Model;
 
@@ -74,7 +74,7 @@ namespace mccore {
    * </pre>
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Pdbstream.h,v 1.16 2003-04-11 01:34:31 gendrop Exp $
+   * @version $Id: Pdbstream.h,v 1.17 2003-06-09 20:38:33 gendrop Exp $
    */
   class iPdbstream : public istream
   {
@@ -188,7 +188,7 @@ namespace mccore {
      * @param r the residue to read.
      * @return the Pdbstream.
      */
-    iPdbstream& operator>> (BasicResidue &r);
+    iPdbstream& operator>> (Residue &r);
 
   };
 
@@ -487,7 +487,7 @@ namespace mccore {
      * @param at the residue to write.
      * @return itself.
      */
-    oPdbstream& operator<< (const BasicResidue& r);
+    oPdbstream& operator<< (const Residue& r);
 
   };  
   

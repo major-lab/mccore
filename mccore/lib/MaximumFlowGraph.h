@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Apr  7 18:28:55 2003
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 // 
 //  This file is part of mccore.
 //  
@@ -33,8 +33,6 @@
 
 #include "Graph.h"
 
-#include "stlio.h"
-
 namespace mccore {
 
 
@@ -43,7 +41,7 @@ namespace mccore {
    * only been tested when nodes are int.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: MaximumFlowGraph.h,v 1.3 2003-05-30 16:47:53 gendrop Exp $
+   * @version $Id: MaximumFlowGraph.h,v 1.4 2003-06-09 20:38:32 gendrop Exp $
    */
   template < class node_type,
 	     class edge_type = bool, 

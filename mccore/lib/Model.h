@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 // 
 //  This file is part of mccore.
 //  
@@ -27,7 +27,7 @@
 
 #include <list>
 
-#include "BasicResidue.h"
+#include "Residue.h"
 
 using namespace std;
 
@@ -57,7 +57,7 @@ namespace mccore {
    * details).
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Model.h,v 1.10 2003-05-13 18:19:51 gendrop Exp $
+   * @version $Id: Model.h,v 1.11 2003-06-09 20:38:32 gendrop Exp $
    */
   class Model
   {
@@ -72,7 +72,7 @@ namespace mccore {
     /**
      * Container for Residues.
      */
-    list< BasicResidue* > residues;
+    list< Residue* > residues;
 
   public:
 
@@ -120,14 +120,14 @@ namespace mccore {
      * @param nth the position of the reference to get.
      * @return the nth reference.
      */
-    BasicResidue& operator[] (size_type nth);
+    Residue& operator[] (size_type nth);
 
     /**
      * Gets the model const_reference at nth position.
      * @param nth the position of the const_reference to get.
      * @return the nth const_reference.
      */
-    const BasicResidue& operator[] (size_type nth) const;
+    const Residue& operator[] (size_type nth) const;
 
     // ACCESS ---------------------------------------------------------------
 
@@ -178,7 +178,7 @@ namespace mccore {
      * @param res the residue to insert.
      * @return the position where the residue was inserted.
      */
-    iterator insert (const BasicResidue &res)
+    iterator insert (const Residue &res)
     { 
       return residues.insert (residues.end (), res.clone ()); 
     }
@@ -216,7 +216,7 @@ namespace mccore {
     //    * @param str the text representation.
     //    * @return the residue iterator over the atom.
     //    */
-    //   BasicResidue::iterator find (const char *str);
+    //   Residue::iterator find (const char *str);
 
     //   /**
     //    * Finds an atom given it's text representation of the form residue:atom.
@@ -224,7 +224,7 @@ namespace mccore {
     //    * @param str the text representation.
     //    * @return the residue iterator over the atom.
     //    */
-    //   BasicResidue::const_iterator find (const char *str) const;
+    //   Residue::const_iterator find (const char *str) const;
 
     /**
      * Finds a residue given it's residue id.  Returns an iterator
@@ -245,7 +245,7 @@ namespace mccore {
     const_iterator find (const ResId &id) const;
 
     /**
-     * Sorts the model according to the BasicResidue::operator<
+     * Sorts the model according to the Residue::operator<
      */ 
     void sort ();
 
@@ -352,7 +352,7 @@ namespace mccore {
      *
      * @author Martin Larose <larosem@iro.umontreal.ca>
      */
-    class model_iterator : public list< BasicResidue* >::iterator
+    class model_iterator : public list< Residue* >::iterator
     {
     public:
 
@@ -361,14 +361,14 @@ namespace mccore {
       /**
        * Initializes the iterator.
        */
-      model_iterator () : list< BasicResidue* >::iterator () { }
+      model_iterator () : list< Residue* >::iterator () { }
     
       /**
        * Initializes the iterator with the list iterator.
        * @param lIt the list iterator.
        */
-      model_iterator (const list< BasicResidue* >::iterator &lIt)
-	: list< BasicResidue* >::iterator (lIt)
+      model_iterator (const list< Residue* >::iterator &lIt)
+	: list< Residue* >::iterator (lIt)
       { }
 
       // OPERATORS ------------------------------------------------------------
@@ -384,16 +384,16 @@ namespace mccore {
        * Redefines the access operator* to get the dereferenced residue.
        * @return the referenced residue.
        */
-      BasicResidue& operator* () const
+      Residue& operator* () const
       { 
-	return *list< BasicResidue* >::iterator::operator* (); 
+	return *list< Residue* >::iterator::operator* (); 
       }
 
       /**
        * Redefines the access operator-> to get the dereferenced residue.
        * @return the pointed residue.
        */
-      BasicResidue* operator-> () const { return &(operator* ()); }
+      Residue* operator-> () const { return &(operator* ()); }
     };
   
     /**
@@ -401,21 +401,21 @@ namespace mccore {
      *
      * @author Martin Larose <larosem@iro.umontreal.ca>
      */
-    class model_const_iterator : public list< BasicResidue* >::const_iterator
+    class model_const_iterator : public list< Residue* >::const_iterator
     {
     public:
 
       /**
        * Initializes the const iterator.
        */
-      model_const_iterator () : list< BasicResidue* >::const_iterator () { }
+      model_const_iterator () : list< Residue* >::const_iterator () { }
     
       /**
        * Initializes the iterator with the list iterator.
        * @param lIt the list iterator.
        */
-      model_const_iterator (const list< BasicResidue* >::const_iterator &lIt)
-	: list< BasicResidue* >::const_iterator (lIt)
+      model_const_iterator (const list< Residue* >::const_iterator &lIt)
+	: list< Residue* >::const_iterator (lIt)
       { }
 
       /**
@@ -423,7 +423,7 @@ namespace mccore {
        * @param it the model iterator.
        */
       model_const_iterator (const model_iterator& it)
-	: list< BasicResidue* >::const_iterator (it)
+	: list< Residue* >::const_iterator (it)
       { }
 
       // OPERATORS ------------------------------------------------------------
@@ -439,14 +439,14 @@ namespace mccore {
        * Redefines the access operator* to get the dereferenced residue.
        * @return the referenced residue.
        */
-      const BasicResidue& operator* () const
-      { return *list< BasicResidue* >::const_iterator::operator* (); }
+      const Residue& operator* () const
+      { return *list< Residue* >::const_iterator::operator* (); }
 
       /**
        * Redefines the access operator-> to get the dereferenced residue.
        * @return the pointed residue.
        */
-      const BasicResidue* operator-> () const { return &(operator* ()); }
+      const Residue* operator-> () const { return &(operator* ()); }
     };
 
   };

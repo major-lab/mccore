@@ -2813,8 +2813,8 @@ if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
         LINKOPTIONS= ;;
     esac;
 elif eval "test \"`echo $GXX`\" = yes"; then     # gnu compiler
-	CXXSHFLAGS="-g ";
-	CXXFLAGS="-g";
+	CXXSHFLAGS=" ";
+	CXXFLAGS="";
 	DEPFLAGS="-MM -Wno-deprecated"
 	LDFLAGS="-static $LDFLAGS"
 	LINKOPTIONS=;

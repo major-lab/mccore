@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron
 // Created On       : Thu Mar 20 16:21:52 2003
 // Last Modified By : Patrick Gendron
-// Last Modified On : Mon Mar 24 17:59:08 2003
-// Update Count     : 7
+// Last Modified On : Tue Jun  3 09:57:40 2003
+// Update Count     : 8
 // Status           : Unknown.
 //
 //  This file is part of mccore.
@@ -31,23 +31,23 @@
 
 
 #include "ResidueFactoryMethod.h"
-#include "BasicResidue.h"
 #include "Residue.h"
+#include "ExtendedResidue.h"
 
 namespace mccore {
 
 
-  BasicResidue* 
-  BasicResidueFM::createResidue () const
-  {
-    return new BasicResidue ();
-  }
-
-
-  BasicResidue* 
+  Residue* 
   ResidueFM::createResidue () const
   {
     return new Residue ();
+  }
+
+
+  Residue* 
+  ExtendedResidueFM::createResidue () const
+  {
+    return new ExtendedResidue ();
   }
 
 }

@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct 12 14:31:19 2001
 // Last Modified By : Patrick Gendron
-// Last Modified On : Thu Mar 20 18:40:06 2003
-// Update Count     : 9
+// Last Modified On : Tue Jun  3 10:01:10 2003
+// Update Count     : 12
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -32,7 +32,7 @@
 
 namespace mccore {
 
-  class BasicResidue;
+  class Residue;
 
   /**
    * @short Abstract class for residue factory methods.
@@ -76,63 +76,15 @@ namespace mccore {
      * Creates the residue.
      * @return the newly created empty residue.
      */
-    virtual BasicResidue* createResidue () const = 0;
+    virtual Residue* createResidue () const = 0;
 
   };
-
-
-  /**
-   * @short ResidueFactoryMethod implementation for BasicResidue class.
-   *
-   * This is the residue factory method implementation for the BasicResidue class.
-   *
-   * @author Martin Larose <larosem@iro.umontreal.ca>
-   */
-  class BasicResidueFM : public ResidueFactoryMethod
-  {
-
-  public:
-
-    // LIFECYCLE ------------------------------------------------------------
-
-    /**
-     * Initializes the object.
-     */
-    BasicResidueFM () { }
-
-    /**
-     * Clones the object.
-     * @return the copy of the object.
-     */
-    virtual ResidueFactoryMethod* clone () const { return new BasicResidueFM (); }
-  
-    /**
-     * Destroys the object.
-     */
-    virtual ~BasicResidueFM () { }
-
-    // OPERATORS ------------------------------------------------------------
-
-    // ACCESS ---------------------------------------------------------------
-
-    // METHODS --------------------------------------------------------------
-
-    /**
-     * Creates a new residue of Residue type.
-     * @return the newly created empty residue.
-     */
-    virtual BasicResidue* createResidue () const;
-
-    // I/O  -----------------------------------------------------------------
-
-  };
-
 
 
   /**
    * @short ResidueFactoryMethod implementation for Residue class.
    *
-   * This is the residue factory method implementation for the Residue class.
+   * This is the residue factory method implementation for the BasicResidue class.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
    */
@@ -169,7 +121,55 @@ namespace mccore {
      * Creates a new residue of Residue type.
      * @return the newly created empty residue.
      */
-    virtual BasicResidue* createResidue () const;
+    virtual Residue* createResidue () const;
+
+    // I/O  -----------------------------------------------------------------
+
+  };
+
+
+
+  /**
+   * @short ResidueFactoryMethod implementation for ExtendedResidue class.
+   *
+   * This is the residue factory method implementation for the Residue class.
+   *
+   * @author Martin Larose <larosem@iro.umontreal.ca>
+   */
+  class ExtendedResidueFM : public ResidueFactoryMethod
+  {
+
+  public:
+
+    // LIFECYCLE ------------------------------------------------------------
+
+    /**
+     * Initializes the object.
+     */
+    ExtendedResidueFM () { }
+
+    /**
+     * Clones the object.
+     * @return the copy of the object.
+     */
+    virtual ResidueFactoryMethod* clone () const { return new ExtendedResidueFM (); }
+  
+    /**
+     * Destroys the object.
+     */
+    virtual ~ExtendedResidueFM () { }
+
+    // OPERATORS ------------------------------------------------------------
+
+    // ACCESS ---------------------------------------------------------------
+
+    // METHODS --------------------------------------------------------------
+
+    /**
+     * Creates a new residue of Residue type.
+     * @return the newly created empty residue.
+     */
+    virtual Residue* createResidue () const;
 
     // I/O  -----------------------------------------------------------------
 

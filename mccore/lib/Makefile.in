@@ -5,8 +5,8 @@
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:57:11 2000
 ## Last Modified By : Patrick Gendron
-## Last Modified On : Fri May 16 14:15:46 2003
-## Update Count     : 91
+## Last Modified On : Tue Jun  3 09:56:12 2003
+## Update Count     : 92
 ## Status           : Ok.
 ###############################################################################
 #
@@ -89,8 +89,8 @@ SOURCES = Binstream.cc \
 	  ResIdSet.cc \
 	  ResidueType.cc \
 	  ResidueTypeStore.cc \
-	  BasicResidue.cc \
 	  Residue.cc \
+	  ExtendedResidue.cc \
 	  ResidueFactoryMethod.cc \
 	  ResidueTopology.cc \
 \

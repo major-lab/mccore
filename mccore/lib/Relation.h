@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 //
 //  This file is part of mccore.
 //  
@@ -38,26 +38,26 @@ class oBinstream;
 
 namespace mccore {
 
-  class BasicResidue;
+  class Residue;
   class PropertyType;
 
   /**
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.3 2003-05-30 16:48:06 gendrop Exp $
+   * @version $Id: Relation.h,v 1.4 2003-06-09 20:38:33 gendrop Exp $
    */
   class Relation
   {
     /**
      * The residue at the origin of this relation.
      */
-    const BasicResidue* ref;
+    const Residue* ref;
 
     /**
      * The residue at the destination of this relation.
      */
-    const BasicResidue* res;
+    const Residue* res;
 
     /**
      * The homogeneous matrix that expresses the transformation from the ref to the res.
@@ -103,7 +103,7 @@ namespace mccore {
      * @param rA the residue of origin of the relation.
      * @param rB the residue of destination of the relation.
      */
-    Relation (const BasicResidue *rA, const BasicResidue *rB);
+    Relation (const Residue *rA, const Residue *rB);
 
     /**
      * Initializes the object with the other's content.
@@ -130,12 +130,12 @@ namespace mccore {
     /**
      * Returns the origin residue of the relation.
      */
-    const BasicResidue* getRef () const { return ref; }
+    const Residue* getRef () const { return ref; }
 
     /**
      * Returns the destination residue of the relation.
      */
-    const BasicResidue* getRes () const { return res; }
+    const Residue* getRes () const { return res; }
     
     /**
      * Returns the face interacting in the relation, if any.
@@ -186,7 +186,7 @@ namespace mccore {
      * @return a set of properties describing the adjacency state.
      */
     static set< const PropertyType* > 
-    areAdjacent (const BasicResidue* ra, const BasicResidue *rb);
+    areAdjacent (const Residue* ra, const Residue *rb);
     
     /**
      * Determines if the given residues are stacked in space based
@@ -196,7 +196,7 @@ namespace mccore {
      * @return a set of properties describing the stacked state.
      */
     static set< const PropertyType* > 
-    areStacked (const BasicResidue* ra, const BasicResidue *rb);
+    areStacked (const Residue* ra, const Residue *rb);
     
     /**
      * Determines if the given residues are paired in space based
@@ -209,7 +209,7 @@ namespace mccore {
      *          the face of ra and the face of rb interacting in the pairing.
      */
     static set< const PropertyType* > 
-    arePaired (const BasicResidue* ra, const BasicResidue *rb, 
+    arePaired (const Residue* ra, const Residue *rb, 
 	       const PropertyType*& pta, const PropertyType*& pta);
 
     // PRIVATE METHODS ------------------------------------------------------
@@ -219,17 +219,17 @@ namespace mccore {
     /**
      *
      */
-    static Vector3D pyrimidineNormal (const BasicResidue *r);
+    static Vector3D pyrimidineNormal (const Residue *r);
 
     /**
      *
      */
-    static Vector3D imidazolNormal (const BasicResidue *r);
+    static Vector3D imidazolNormal (const Residue *r);
 
     /**
      * 
      */
-    static const PropertyType* getFace (const BasicResidue *r, const Vector3D& p);
+    static const PropertyType* getFace (const Residue *r, const Vector3D& p);
 
     /**
      * 
