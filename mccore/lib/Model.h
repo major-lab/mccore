@@ -43,9 +43,11 @@ class oBinstream;
 /**
  * @short Container for residues.
  *
- * This object is the container for abstract residues.  It is an unsorted list
- * of residues.  Random access is simulated with sequential access.  This class
- * should be the replacement for nearly all Residue*.
+ * This object is the container for abstract residues.  It is an
+ * unsorted list of residues.  Random access is simulated with
+ * sequential access.  This class should be the replacement for nearly
+ * all Residue*.  Please do not change the STL container (see
+ * removeClash for details).
  *
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
@@ -452,6 +454,14 @@ public:
    * Removes every residue that is not a nucleic acid.
    */
   void keepNucleicAcid ();
+
+  /**
+   * Remove residues that clash (cutoff 1A, no H, no LP).  This method
+   * will work only if model iterators are secure, i.e. are not
+   * rendered invalid by deletion in the container.  At the time of
+   * writing this, the Model uses a list.
+   */
+  void removeClashes ();
 
   // I/O  -----------------------------------------------------------------
 

@@ -1,12 +1,12 @@
 //                        -*- Mode: C++ -*-
 // CHBond.cc
-// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-01 , 2002, 2002Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Oct 25 11:17:36 2001
-// Update Count     : 42
+// Last Modified By : Patrick Gendron
+// Last Modified On : Tue Nov 19 16:27:26 2002
+// Update Count     : 43
 // Status           : 
 // 
 //  This file is part of mccore.
@@ -38,7 +38,8 @@
 #include "CHBond.h"
 #include "AbstractResidue.h"
 #include "McCore.h"
-
+#include "CResidue.h"
+#include "fPdbstream.h"
 
 HBond::HBond ()
   : donor (0), hydro (0), acceptor (0), lonepair (0)
@@ -216,10 +217,31 @@ CHBond::operator float () const
   if (cache_penality < 0)
     {
       float x[3];
-      x[0] = log (pow ((*mResidueA)[hydro] | (*mResidueB)[lonepair], 3));
-      x[1] = atanh (cos ((*mResidueA)[donor].Angle ((*mResidueA)[hydro], (*mResidueB)[acceptor])));
-      x[2] = atanh (cos ((*mResidueB)[acceptor].Angle ((*mResidueA)[donor], (*mResidueB)[lonepair])));
-      
+
+      // Special treatment for CH3 and OH position of hydrogens.
+      if (donor->is_C5M ()) {
+ 	CPoint3D px, py, pz, up, pv;
+ 	float tan70 = 2.7474774;
+ 	float C_H_dist = 1.08;
+
+	px = ((*mResidueB)[lonepair] - (*mResidueA)[a_C5]).Normalize ();
+	py = ((*mResidueA)[donor] - (*mResidueA)[a_C5]).Normalize ();
+	up = px.Cross (py).Normalize ();
+	pz = py.Cross (up);
+
+	pv = (*mResidueA)[donor] + (py + pz * tan70).Normalize () * C_H_dist;
+	CAtom at (pv.GetX (), pv.GetY (), pv.GetZ (), a_1H5M);
+	//	mResidueA->insert (at);
+
+	x[0] = log (pow (at | (*mResidueB)[lonepair], 3));
+	x[1] = atanh (cos ((*mResidueA)[donor].Angle (at, (*mResidueB)[acceptor])));
+	x[2] = atanh (cos ((*mResidueB)[acceptor].Angle ((*mResidueA)[donor], (*mResidueB)[lonepair])));      
+      } else {
+	x[0] = log (pow ((*mResidueA)[hydro] | (*mResidueB)[lonepair], 3));
+	x[1] = atanh (cos ((*mResidueA)[donor].Angle ((*mResidueA)[hydro], (*mResidueB)[acceptor])));
+	x[2] = atanh (cos ((*mResidueB)[acceptor].Angle ((*mResidueA)[donor], (*mResidueB)[lonepair])));
+      }
+
       float p_x = 0;
       float p_h = 0;
       for (int i = 0; i < sNbGauss; ++i) {
@@ -227,7 +249,7 @@ CHBond::operator float () const
 	diff[0] = x[0] - sMean[i][0];
 	diff[1] = x[1] - sMean[i][1];
 	diff[2] = x[2] - sMean[i][2];
-	
+
 	float tmp = exp ((diff[0] * (diff[0] * sCovarInv[i][0][0] + 
 				     diff[1] * sCovarInv[i][1][0] + 
 				     diff[2] * sCovarInv[i][2][0]) + 
@@ -245,10 +267,10 @@ CHBond::operator float () const
 	p_x += prob;
 	p_h += sProbH[i] * prob;
       }
-      
-      cache_penality = p_h / p_x;
 
+      cache_penality = p_h / p_x;
     }
+
   return cache_penality;
 }
 
@@ -338,17 +360,17 @@ void
 CHBond::DumpAmberRestraint (ostream &os)
 {
   os << " &rst iresid=1," << endl;
-  os << "      iat(1)=" << ((const CResId)*mResidueA).GetResNo ()
-     << ", iat(2)=" << ((const CResId)*mResidueB).GetResNo() << "," << endl;
+  os << "      iat(1)=" << ((const CResId&)*mResidueA).GetResNo ()
+     << ", iat(2)=" << ((const CResId&)*mResidueB).GetResNo() << "," << endl;
   os << "      atnam(1)= '" << donor->getAmberRep () << "', "
      << "atnam(2)= '" << acceptor->getAmberRep () << "'," << endl;
   os << "      r1= 1.0, r2= 1.5, r3= 3.0, r4= 5.0," << endl;
   os << "      rk2=0.0, rk3=32.0" << endl;
   os << " &end" << endl;
   os << " &rst iresid=1," << endl;
-  os << "      iat(1)=" << ((const CResId)*mResidueA).GetResNo()
-     << ", iat(2)=" << ((const CResId)*mResidueA).GetResNo()
-     << ", iat(3)=" << ((const CResId)*mResidueB).GetResNo() << "," << endl;
+  os << "      iat(1)=" << ((const CResId&)*mResidueA).GetResNo()
+     << ", iat(2)=" << ((const CResId&)*mResidueA).GetResNo()
+     << ", iat(3)=" << ((const CResId&)*mResidueB).GetResNo() << "," << endl;
   os << "      atnam(1)= '" << donor->getAmberRep () << "', "
      << "atnam(2)= '" << hydro->getAmberRep () << "', "
      << "atnam(3)= '" << acceptor->getAmberRep () << "'," << endl;
@@ -364,8 +386,8 @@ operator<< (ostream &os, const CHBond &theBond)
 {
   if (theBond.mResidueA && theBond.mResidueB)
     {
-      os << (const CResId)*theBond.mResidueA << " -> "
-	 << (const CResId)*theBond.mResidueB << "     "
+      os << (const CResId&)*theBond.mResidueA << " -> "
+	 << (const CResId&)*theBond.mResidueB << "     "
 	 << *(theBond.donor) << "-"
 	 << *(theBond.hydro) << " -> "
 	 << *(theBond.acceptor) << " (" << *(theBond.lonepair) << ")     "

@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // CHBond.h
-// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-02 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
@@ -110,6 +110,11 @@ public:
    * @return the truth value.
    */
   virtual bool operator== (const HBond &other) const;
+
+  t_Atom* getDonor () { return donor; }
+  t_Atom* getAcceptor () { return acceptor; }
+  t_Atom* getHydro () { return hydro; }
+  t_Atom* getLonePair () { return lonepair; }
 
   /**
    * Outputs the H-bond in human readable format.

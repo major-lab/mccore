@@ -575,14 +575,14 @@ Graph< Node, Edge >::cycle_base_vismara ()
 //    cout << "sort cycles" << endl;
   sort (bag.begin (), bag.end ());
 
-  {
-    cout << endl;
+//   {
+//     cout << endl;
     
-    vector< Path >::iterator i;
-    for (i=bag.begin (); i!=bag.end (); ++i) {
-      cout << (*i) << " " << endl;
-    }
-  }
+//     vector< Path >::iterator i;
+//     for (i=bag.begin (); i!=bag.end (); ++i) {
+//       cout << (*i) << " " << endl;
+//     }
+//   }
 
   vector< Path > newbag;
   vector< Path > tmpbag;
@@ -622,16 +622,16 @@ Graph< Node, Edge >::cycle_base_vismara ()
 
   for (j=0; j<(int)mEdgeMarks.size (); ++j) mEdgeMarks[j] = true;
 
-  cout << "After Gaussian elimination" << endl;
+//   cout << "After Gaussian elimination" << endl;
 
-  {
-    cout << endl;
+//   {
+//     cout << endl;
     
-    vector< Path >::iterator i;
-    for (i=newbag.begin (); i!=newbag.end (); ++i) {
-      cout << (*i) << " " << endl;
-    }
-  }
+//     vector< Path >::iterator i;
+//     for (i=newbag.begin (); i!=newbag.end (); ++i) {
+//       cout << (*i) << " " << endl;
+//     }
+//   }
 
 
   return newbag;
@@ -704,7 +704,7 @@ Graph< Node, Edge >::cycle_base_horton ()
 	{
 //  	  cout << "v=" << i << " {x,y}=" << " " << mEdgeNodes[j].first << ","
 //  	       << mEdgeNodes[j].second << endl;
-	  
+
 //  	  cout << "Pvx " << Pvx << endl;
 //  	  cout << "Pvy " << Pvy << endl;
 	  
@@ -733,14 +733,14 @@ Graph< Node, Edge >::cycle_base_horton ()
   
   sort (bag.begin (), bag.end ());
 
-  {
-    cout << endl;
+//   {
+//     cout << endl;
     
-    vector< Path >::iterator i;
-    for (i=bag.begin (); i!=bag.end (); ++i) {
-      cout << (*i) << " " << endl;
-    }
-  }
+//     vector< Path >::iterator i;
+//     for (i=bag.begin (); i!=bag.end (); ++i) {
+//       cout << (*i) << " " << endl;
+//     }
+//   }
 
   vector< Path > newbag;
   vector< Path > tmpbag;
@@ -748,18 +748,18 @@ Graph< Node, Edge >::cycle_base_horton ()
 
   for (j=0; j<(int)mEdgeMarks.size (); ++j) mEdgeMarks[j] = false;
 
-  cout << "Gaussian elimination" << endl;
+//    cout << "Gaussian elimination" << endl;
 
   newbag = gaussian_elimination (bag, false);
 
-  {
-    cout << endl;
+//    {
+//      cout << endl;
     
-    vector< Path >::iterator i;
-    for (i=newbag.begin (); i!=newbag.end (); ++i) {
-      cout << (*i) << " " << endl;
-    }
-  }
+//      vector< Path >::iterator i;
+//      for (i=newbag.begin (); i!=newbag.end (); ++i) {
+//        cout << (*i) << " " << endl;
+//      }
+//    }
 
   return newbag;
 }
@@ -785,7 +785,7 @@ Graph< Node, Edge >::gaussian_elimination (vector< Path > &bag, bool minimum_bas
     memset (row, false, mEdges.size () * sizeof (bool));
 
     // Let's see if *p is linearly independent to the content of newbag 
-    cout << "Treating " << *p << endl;
+//      cout << "Treating " << *p << endl;
 
     for (i=0; i<(int)p->size (); ++i) {
       row[getEdgeIndex ((*p)[i], (*p)[(i+1)%(int)p->size ()])] = true;
@@ -794,14 +794,16 @@ Graph< Node, Edge >::gaussian_elimination (vector< Path > &bag, bool minimum_bas
     bool inserted = false;
 
     for (n=matrix.begin (), q=newbag.begin (); q!=newbag.end (); ++n, ++q) {
-      for (j=0; j<(int)mEdges.size (); ++j) { cout << row[j] << " "; } cout << "  ->  " << flush; for (j=0; j<(int)mEdges.size (); ++j) { cout << (*n)[j] << " "; } cout << endl;
+//       for (j=0; j<(int)mEdges.size (); ++j) { cout << row[j] << " "; } 
+//       cout << "  ->  " << flush; 
+//       for (j=0; j<(int)mEdges.size (); ++j) { cout << (*n)[j] << " "; } cout << endl;
       
       j=0;    
       while (j<(int)mEdges.size () && row[j] == false && (*n)[j] == false) ++j;
       if (j == (int)mEdges.size ()) continue;
       
       if (row[j] == true && (*n)[j] == false) {
-	cout << "Marking " << *p << endl;
+//  	cout << "Marking " << *p << endl;
 	marked.push_back (p);
 	inserted = true;
 	break;
@@ -821,10 +823,10 @@ Graph< Node, Edge >::gaussian_elimination (vector< Path > &bag, bool minimum_bas
 	if (row[j] == true) break;
       }
       if (j!=(int)mEdges.size ()) {
-	cout << "Marking " << *p << endl;
+//  	cout << "Marking " << *p << endl;
 	marked.push_back (p);
       } else {
-	cout << "Rejecting " << *p << endl;
+//  	cout << "Rejecting " << *p << endl;
       }
     }
 
@@ -833,7 +835,7 @@ Graph< Node, Edge >::gaussian_elimination (vector< Path > &bag, bool minimum_bas
     // Let's see if we should try to insert the marked...
     if (p+1==bag.end () || (p+1)->size () > p->size ()) {
 
-      cout << "Inserting marked cycles" << endl;
+//        cout << "Inserting marked cycles" << endl;
 
       for (i=0; i<(int)marked.size (); ++i) {
 	bool* row = new bool[mEdges.size ()];
@@ -843,7 +845,7 @@ Graph< Node, Edge >::gaussian_elimination (vector< Path > &bag, bool minimum_bas
 	  row[getEdgeIndex ((*marked[i])[j], (*marked[i])[(j+1)%(int)p->size ()])] = true;
 	}
 
-	cout << "Treating " << *marked[i] << endl;	
+//  	cout << "Treating " << *marked[i] << endl;	
 
 	inserted = false;
 	
@@ -853,7 +855,7 @@ Graph< Node, Edge >::gaussian_elimination (vector< Path > &bag, bool minimum_bas
 	  if (j == (int)mEdges.size ()) continue;
 	  
 	  if (row[j] == true && (*n)[j] == false) {
-	    cout << "Inserting " << *marked[i] << endl;
+//  	    cout << "Inserting " << *marked[i] << endl;
 	    matrix.insert (n, row);
 	    newbag.insert (q, *marked[i]);
 	    inserted = true;
@@ -871,7 +873,7 @@ Graph< Node, Edge >::gaussian_elimination (vector< Path > &bag, bool minimum_bas
 	
 	if (!inserted) {
 	  if (!minimum_basis) {
-	    cout << "Accepting " << *marked[i] << endl;
+//  	    cout << "Accepting " << *marked[i] << endl;
 	    matrix.push_back (row);
 	    newbag.push_back (*marked[i]);
 	  } else {	    
@@ -879,25 +881,25 @@ Graph< Node, Edge >::gaussian_elimination (vector< Path > &bag, bool minimum_bas
 	      if (row[j] == true) break;
 	    }
 	    if (j!=(int)mEdges.size ()) {
-	      cout << "Accepting " << *marked[i] << endl;
+//  	      cout << "Accepting " << *marked[i] << endl;
 	      matrix.push_back (row);
 	      newbag.push_back (*marked[i]);
 	    } else {
-	      cout << "Rejecting " << *marked[i] << endl;
+//  	      cout << "Rejecting " << *marked[i] << endl;
 	    }
 	  }	
 	}
       }
       marked.clear ();
 
-      cout << "Matrix -----------------------" << endl;
-      for (i=0; i!=(int)matrix.size (); ++i) {
-	for (j=0; j<(int)mEdges.size (); ++j)
-	cout << matrix[i][j] << " " << flush;      
-      cout << " : " << newbag[i] << flush;
-      cout << endl;
-      }
-      cout << "------------------------------" << endl;
+//        cout << "Matrix -----------------------" << endl;
+//        for (i=0; i!=(int)matrix.size (); ++i) {
+//  	for (j=0; j<(int)mEdges.size (); ++j)
+//  	cout << matrix[i][j] << " " << flush;      
+//        cout << " : " << newbag[i] << flush;
+//        cout << endl;
+//        }
+//        cout << "------------------------------" << endl;
       
     }
   }
@@ -927,7 +929,7 @@ Graph< Node, Edge >::cycle_base ()
 	tmpPath = shortest_path (b, a);
   	chords.push_back (make_pair (tmpPath.getValue (),
   				     make_pair (a, b)));
-      	cout << a << ", " << b << " = " << tmpPath << endl;
+//       	cout << a << ", " << b << " = " << tmpPath << endl;
       }
     }
   }
@@ -944,10 +946,11 @@ Graph< Node, Edge >::cycle_base ()
 //      tmpPath.push_back (a);
     tmpPath.setValue (tmpPath.getValue () + 1);
 
-    cout << "ab = " << a << ", " << b << " -> ";
-    cout << " " << tmpPath << endl;
+//     cout << "ab = " << a << ", " << b << " -> ";
+//     cout << " " << tmpPath << endl;
 
-    bag.push_back (tmpPath);
+    if (tmpPath.size () > 0)
+      bag.push_back (tmpPath);
     markEdge (a, b);
     markEdge (b, a);
   }
@@ -978,7 +981,7 @@ Graph< Node, Edge >::build_tree (int index, int depth)
       markEdge (i, index);
       markNode (i);
       
-      cout << "Marking node " << i << " edge " << index << " " << i << endl;
+//       cout << "Marking node " << i << " edge " << index << " " << i << endl;
 
       build_tree (i, depth + 1);
     }

@@ -175,7 +175,7 @@ public:
    * Converts the residue type to a string.
    * @return "Nucleic acid"
    */
-  virtual operator const char* () const { return "Nucleic acid"; }
+  virtual operator const char* () const { return "Nucleic"; }
   
   // ACCESS ---------------------------------------------------------------
 
@@ -185,7 +185,7 @@ public:
    * Gets the residue type representation in PDB format.
    * @return the string representing the residue type.
    */
-  virtual const char* getPDBRep () const { return "Nucleic acid"; }
+  virtual const char* getPDBRep () const { return "Nucleic"; }
   
   /**
    * Gets the one letter representation of the type.
@@ -259,7 +259,7 @@ public:
    * Converts the residue type to a string.
    * @return "Amino acid"
    */
-  virtual operator const char* () const { return "Amino acid"; }
+  virtual operator const char* () const { return "Amino"; }
   
   // ACCESS ---------------------------------------------------------------
 
@@ -269,7 +269,7 @@ public:
    * Gets the residue type representation in PDB format.
    * @return the string representing the residue type.
    */
-  virtual const char* getPDBRep () const { return "Amino acid"; }
+  virtual const char* getPDBRep () const { return "Amino"; }
   
   /**
    * Gets the one letter representation of the type.
@@ -353,7 +353,7 @@ public:
    * Gets the residue type representation in PDB format.
    * @return "Phosphate".
    */
-  virtual const char* getPDBRep () const { return "Phosphate"; }
+  virtual const char* getPDBRep () const { return "PO4"; }
   
   /**
    * Gets the one letter representation of the type.

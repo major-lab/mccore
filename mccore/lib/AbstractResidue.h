@@ -494,6 +494,17 @@ public:
    */
   virtual ~AbstractResidue ();
 
+
+  /**
+   * Creates a residue containing the base atom coordinates of a
+   * standard residue as defined by G.Parkinson et al., ACTA CRYST.D
+   * (1996) v. 52, 57-64.
+   */
+  virtual void setIdeal () = 0;
+
+
+
+
   // OPERATORS ------------------------------------------------------------
 
   /**
@@ -682,6 +693,8 @@ protected:
    */
   virtual const CAtom& res (size_type pos) const = 0;
 
+public:
+  
   /**
    * Adds the hydrogens to the residue.
    */
@@ -692,8 +705,6 @@ protected:
    */
   void addLP ();
 
-public:
-  
   /**
    * Gets the number of atoms contained in the residue.
    * @return the size of the residue.
@@ -706,9 +717,18 @@ public:
    */
   virtual bool empty () const = 0;
 
+protected:
   /**
    * Inserts an atom in the residue.  It crushes the existing atom if it
-   * exists.
+   * exists.  The atom is inserted using local coordinates in the ref array.
+   * @param atom the atom to insert.
+   */
+  virtual void insert_local (const CAtom &atom) = 0;
+
+public:
+  /**
+   * Inserts an atom in the residue.  It crushes the existing atom if it
+   * exists.  
    * @param atom the atom to insert.
    */
   virtual void insert (const CAtom &atom) = 0;
@@ -767,6 +787,7 @@ public:
    * Aligns the residue.  Sets the transfo to the identity.
    */
   virtual void Align () = 0;
+
 
   // I/O  -----------------------------------------------------------------
 

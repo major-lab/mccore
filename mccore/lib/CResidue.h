@@ -119,6 +119,15 @@ public:
    */
   virtual ~CResidue () { }
 
+
+  /**
+   * Creates a residue containing the base atom coordinates of a
+   * standard residue as defined by G.Parkinson et al., ACTA CRYST.D
+   * (1996) v. 52, 57-64.
+   */
+  virtual void setIdeal ();
+
+
   // OPERATORS ------------------------------------------------------------
 
   /**
@@ -266,6 +275,15 @@ public:
    */
   virtual bool empty () const { return mAtomRef.empty (); }
   
+protected:
+  /**
+   * Inserts an atom in the residue.  It crushes the existing atom if it
+   * exists.  The index and the local referential containers are adjusted.
+   * @param atom the atom to insert.
+   */
+  virtual void insert_local (const CAtom &atom);
+
+public:
   /**
    * Inserts an atom in the residue.  It crushes the existing atom if it
    * exists.  The index and the local referential containers are adjusted.

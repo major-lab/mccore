@@ -261,6 +261,10 @@ t_Residue *r_TRP = 0;
 t_Residue *r_TYR = 0;
 t_Residue *r_VAL = 0;
 
+AbstractResidue *std_rA = 0;
+AbstractResidue *std_rC = 0;
+AbstractResidue *std_rG = 0;
+AbstractResidue *std_rU = 0;
 
 
 set< t_Atom* > gdAOblAtomSet;
@@ -595,19 +599,22 @@ atomicBondSymetricInsertion (t_Atom* a1, t_Atom* a2,
 void
 setAtomicGeometry ()
 {
-  atomicBondSymetricInsertion (a_N1,  a_C1p, gAtomicBond, 1.45);
-  atomicBondSymetricInsertion (a_N9,  a_C1p, gAtomicBond, 1.45);
+  // X-Plor mean parameters for C3'_endo RNA conformations (from param_ndbx_high.dna)
+  atomicBondSymetricInsertion (a_N1,  a_C1p, gAtomicBond, 1.47);
+  atomicBondSymetricInsertion (a_N9,  a_C1p, gAtomicBond, 1.46);
   atomicBondSymetricInsertion (a_C1p, a_C2p, gAtomicBond, 1.53);
-  atomicBondSymetricInsertion (a_C2p, a_O2p, gAtomicBond, 1.43);
-  atomicBondSymetricInsertion (a_C1p, a_O4p, gAtomicBond, 1.45);
+  atomicBondSymetricInsertion (a_C2p, a_O2p, gAtomicBond, 1.42);
+  atomicBondSymetricInsertion (a_C1p, a_O4p, gAtomicBond, 1.41);
   atomicBondSymetricInsertion (a_O4p, a_C4p, gAtomicBond, 1.45);
-  atomicBondSymetricInsertion (a_C2p, a_C3p, gAtomicBond, 1.51);
-  atomicBondSymetricInsertion (a_C3p, a_C4p, gAtomicBond, 1.51);
-  atomicBondSymetricInsertion (a_C4p, a_C5p, gAtomicBond, 1.52);
-  atomicBondSymetricInsertion (a_C5p, a_O5p, gAtomicBond, 1.45);
+  atomicBondSymetricInsertion (a_C2p, a_C3p, gAtomicBond, 1.52);
+  atomicBondSymetricInsertion (a_C3p, a_C4p, gAtomicBond, 1.52);
+  atomicBondSymetricInsertion (a_C4p, a_C5p, gAtomicBond, 1.51);
+  atomicBondSymetricInsertion (a_C5p, a_O5p, gAtomicBond, 1.44);
   atomicBondSymetricInsertion (a_O5p, a_P,   gAtomicBond, 1.59);
-  atomicBondSymetricInsertion (a_C3p, a_O3p, gAtomicBond, 1.43);
-  atomicBondSymetricInsertion (a_O3p, a_P,   gAtomicBond, 1.56);
+  atomicBondSymetricInsertion (a_C3p, a_O3p, gAtomicBond, 1.42);
+  atomicBondSymetricInsertion (a_O3p, a_P,   gAtomicBond, 1.60);
+  atomicBondSymetricInsertion (a_O1P, a_P,   gAtomicBond, 1.485);
+  atomicBondSymetricInsertion (a_O2P, a_P,   gAtomicBond, 1.485);
 }
 
 

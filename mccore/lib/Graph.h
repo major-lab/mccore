@@ -303,6 +303,7 @@ public:
 
   void markNode (int index);
   void unmarkNode (int index);
+  bool isMarked (int index) { return mNodeMarks[ index ]; }
 
   // (Un)Marks edge from a to b.  If the edge (b,a) exists, it is not modified
   void markEdge (int a, int b);
@@ -315,7 +316,7 @@ public:
   // Prim's algorithm
   vector< Edge > minimum_spanning_tree (void) const;
 
-  // Vismara's algorithm
+  // Vismara's algorithm -- not working properly...
   vector< Path > cycle_base_vismara ();
   void order_graph (int index = -1, int depth = 0);
 
@@ -324,7 +325,7 @@ public:
 
   vector< Path > gaussian_elimination (vector< Path > &bag, bool minimum_basis = true);
 
-  // Sebastien's algorithm
+  // Sebastien's algorithm  (with non-oriented graph)
   vector< Path > cycle_base ();
   void build_tree (int index = -1, int depth = 0);
 

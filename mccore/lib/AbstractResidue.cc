@@ -4,8 +4,8 @@
 // Author           : Martin Larose
 // Created On       : Fri Oct 12 18:21:12 2001
 // Last Modified By : Patrick Gendron
-// Last Modified On : Mon Apr 15 14:33:57 2002
-// Update Count     : 5
+// Last Modified On : Tue Nov 19 16:27:17 2002
+// Update Count     : 6
 // Status           : Unknown.
 // 
 
@@ -273,7 +273,9 @@ AbstractResidue::addHydrogens ()
 {
   float C_H_dist = 1.08;
   float N_H_dist = 1.00;
-  float tan60 = 1.7320508;
+  float tan60 = 1.7320508;  // For NH2-like conformations
+  float tan70 = 2.7474774;  // For CH3-like conformations
+  float tan30 = 0.57735027;
   CPoint3D x, y, z, up, a, b;
 
   if (mType->is_A ())
@@ -320,10 +322,10 @@ AbstractResidue::addHydrogens ()
       CPoint3D H61 = *ref (a_N6) + a * N_H_dist;
       CPoint3D H62 = *ref (a_N6) + b * N_H_dist;
       
-      insert (CAtom (H2.GetX (), H2.GetY (), H2.GetZ (), a_H2));
-      insert (CAtom (H8.GetX (), H8.GetY (), H8.GetZ (), a_H8));
-      insert (CAtom (H61.GetX (), H61.GetY (), H61.GetZ (), a_1H6));
-      insert (CAtom (H62.GetX (), H62.GetY (), H62.GetZ (), a_2H6));
+      insert_local (CAtom (H2.GetX (), H2.GetY (), H2.GetZ (), a_H2));
+      insert_local (CAtom (H8.GetX (), H8.GetY (), H8.GetZ (), a_H8));
+      insert_local (CAtom (H61.GetX (), H61.GetY (), H61.GetZ (), a_1H6));
+      insert_local (CAtom (H62.GetX (), H62.GetY (), H62.GetZ (), a_2H6));
     } 
   else if (mType->is_G ())
     { 
@@ -369,10 +371,10 @@ AbstractResidue::addHydrogens ()
       CPoint3D H21 = *ref (a_N2) + b * N_H_dist;
       CPoint3D H22 = *ref (a_N2) + a * N_H_dist;
       
-      insert (CAtom (H1.GetX (), H1.GetY (), H1.GetZ (), a_H1));
-      insert (CAtom (H8.GetX (), H8.GetY (), H8.GetZ (), a_H8));
-      insert (CAtom (H21.GetX (), H21.GetY (), H21.GetZ (), a_1H2));
-      insert (CAtom (H22.GetX (), H22.GetY (), H22.GetZ (), a_2H2));
+      insert_local (CAtom (H1.GetX (), H1.GetY (), H1.GetZ (), a_H1));
+      insert_local (CAtom (H8.GetX (), H8.GetY (), H8.GetZ (), a_H8));
+      insert_local (CAtom (H21.GetX (), H21.GetY (), H21.GetZ (), a_1H2));
+      insert_local (CAtom (H22.GetX (), H22.GetY (), H22.GetZ (), a_2H2));
     }
   else if (mType->is_C ())
     {
@@ -418,10 +420,10 @@ AbstractResidue::addHydrogens ()
       CPoint3D H41 = *ref (a_N4) + b * N_H_dist;
       CPoint3D H42 = *ref (a_N4) + a * N_H_dist;
       
-      insert (CAtom (H5.GetX (), H5.GetY (), H5.GetZ (), a_H5));
-      insert (CAtom (H6.GetX (), H6.GetY (), H6.GetZ (), a_H6));
-      insert (CAtom (H41.GetX (), H41.GetY (), H41.GetZ (), a_1H4));
-      insert (CAtom (H42.GetX (), H42.GetY (), H42.GetZ (), a_2H4));
+      insert_local (CAtom (H5.GetX (), H5.GetY (), H5.GetZ (), a_H5));
+      insert_local (CAtom (H6.GetX (), H6.GetY (), H6.GetZ (), a_H6));
+      insert_local (CAtom (H41.GetX (), H41.GetY (), H41.GetZ (), a_1H4));
+      insert_local (CAtom (H42.GetX (), H42.GetY (), H42.GetZ (), a_2H4));
     } 
   else if (mType->is_U ())
     {
@@ -460,9 +462,9 @@ AbstractResidue::addHydrogens ()
       z = (x + y).Normalize ();
       CPoint3D H6 = *ref (a_C6) + z * C_H_dist;
       
-      insert (CAtom (H3.GetX (), H3.GetY (), H3.GetZ (), a_H3));
-      insert (CAtom (H5.GetX (), H5.GetY (), H5.GetZ (), a_H5));
-      insert (CAtom (H6.GetX (), H6.GetY (), H6.GetZ (), a_H6));
+      insert_local (CAtom (H3.GetX (), H3.GetY (), H3.GetZ (), a_H3));
+      insert_local (CAtom (H5.GetX (), H5.GetY (), H5.GetZ (), a_H5));
+      insert_local (CAtom (H6.GetX (), H6.GetY (), H6.GetZ (), a_H6));
     }
   else if (mType->is_T ())
     {
@@ -495,8 +497,26 @@ AbstractResidue::addHydrogens ()
       z = (x + y).Normalize ();
       CPoint3D H6 = *ref (a_C6) + z * C_H_dist;
       
-      insert (CAtom (H3.GetX (), H3.GetY (), H3.GetZ (), a_H3));
-      insert (CAtom (H6.GetX (), H6.GetY (), H6.GetZ (), a_H6));
+      insert_local (CAtom (H3.GetX (), H3.GetY (), H3.GetZ (), a_H3));
+      insert_local (CAtom (H6.GetX (), H6.GetY (), H6.GetZ (), a_H6));
+
+      // 1H5M, 2H5M, 3H5M (arbitrarily placed)
+      
+      x = (*ref (a_C5M) - *ref (a_C5)).Normalize ();
+      y = (*ref (a_C5) - *ref (a_C4)).Normalize ();
+      up = x.Cross (y).Normalize ();
+      z = x.Cross (up);
+      
+      CPoint3D H5M1 = *ref (a_C5M) + (x + z * tan70).Normalize () * C_H_dist;
+      insert_local (CAtom (H5M1.GetX (), H5M1.GetY (), H5M1.GetZ (), a_1H5M));
+
+      a = (up - z*tan30).Normalize ();
+      CPoint3D H5M2 = *ref (a_C5M) + (x + a * tan70).Normalize () * C_H_dist;
+      insert_local (CAtom (H5M2.GetX (), H5M2.GetY (), H5M2.GetZ (), a_2H5M));
+
+      b = (-up - z*tan30).Normalize ();
+      CPoint3D H5M3 = *ref (a_C5M) + (x + b * tan70).Normalize () * C_H_dist;
+      insert_local (CAtom (H5M3.GetX (), H5M3.GetY (), H5M3.GetZ (), a_3H5M));
     }
   
   if (mType->is_NucleicAcid ())
@@ -515,7 +535,7 @@ AbstractResidue::addHydrogens ()
 	  z = (*r1 - *r4).Normalize ();
 	  
 	  CPoint3D H1p = *r1 + (x + y + z).Normalize () * 1.09;
-	  insert (CAtom (H1p.GetX (), H1p.GetY (), H1p.GetZ (), a_H1p));
+	  insert_local (CAtom (H1p.GetX (), H1p.GetY (), H1p.GetZ (), a_H1p));
 	}
       
       //  H3p
@@ -530,7 +550,7 @@ AbstractResidue::addHydrogens ()
 	  z = (*r1 - *r4).Normalize ();
 	  
 	  CPoint3D H3p = *r1 + (x + y + z).Normalize () * 1.09;
-	  insert (CAtom (H3p.GetX (), H3p.GetY (), H3p.GetZ (), a_H3p));
+	  insert_local (CAtom (H3p.GetX (), H3p.GetY (), H3p.GetZ (), a_H3p));
 	}
       
       //  H4p
@@ -545,7 +565,7 @@ AbstractResidue::addHydrogens ()
 	  z = (*r1 - *r4).Normalize ();
 	  
 	  CPoint3D H4p = *r1 + (x + y + z).Normalize () * 1.09;
-	  insert (CAtom (H4p.GetX (), H4p.GetY (), H4p.GetZ (), a_H4p));
+	  insert_local (CAtom (H4p.GetX (), H4p.GetY (), H4p.GetZ (), a_H4p));
 	}
       
       
@@ -562,8 +582,8 @@ AbstractResidue::addHydrogens ()
 	  
 	  CPoint3D H51p = *r1 + (up * 1.386 + z).Normalize () * 1.09;
 	  CPoint3D H52p = *r1 + (-up * 1.386 + z).Normalize () * 1.09;
-	  insert (CAtom (H51p.GetX (), H51p.GetY (), H51p.GetZ (), a_1H5p));
-	  insert (CAtom (H52p.GetX (), H52p.GetY (), H52p.GetZ (), a_2H5p));
+	  insert_local (CAtom (H51p.GetX (), H51p.GetY (), H51p.GetZ (), a_1H5p));
+	  insert_local (CAtom (H52p.GetX (), H52p.GetY (), H52p.GetZ (), a_2H5p));
 	}
       
       //  HO3p  // optionel
@@ -582,10 +602,10 @@ AbstractResidue::addHydrogens ()
 	      z = (*r1 - *r4).Normalize ();
 	      
 	      CPoint3D H2p = *r1 + (x + y + z).Normalize () * 1.09;
-	      insert (CAtom (H2p.GetX (), H2p.GetY (), H2p.GetZ (), a_H2p));
+	      insert_local (CAtom (H2p.GetX (), H2p.GetY (), H2p.GetZ (), a_H2p));
 	    }
 	  
-	  // HO2p
+	  // HO2p (arbitrary position)
 	  r1 = ref (a_O2p);
 	  r2 = ref (a_C2p);
 	  r3 = ref (a_C1p);
@@ -596,7 +616,7 @@ AbstractResidue::addHydrogens ()
 	      z = x.Cross (y).Cross (y).Normalize ();
 	      
 	      CPoint3D HO2p = *r1 + (y * 0.354 - z).Normalize () * 1.03;
-	      insert (CAtom (HO2p.GetX (), HO2p.GetY (), HO2p.GetZ (), a_HO2p));
+	      insert_local (CAtom (HO2p.GetX (), HO2p.GetY (), HO2p.GetZ (), a_HO2p));
 	    }
 	  
 	  
@@ -616,8 +636,8 @@ AbstractResidue::addHydrogens ()
 	      
 	      CPoint3D H21p = *r1 + (up * 1.386 + z).Normalize () * 1.09;
 	      CPoint3D H22p = *r1 + (-up * 1.386 + z).Normalize () * 1.09;
-	      insert (CAtom (H21p.GetX (), H21p.GetY (), H21p.GetZ (), a_1H2p));
-	      insert (CAtom (H22p.GetX (), H22p.GetY (), H22p.GetZ (), a_2H2p));
+	      insert_local (CAtom (H21p.GetX (), H21p.GetY (), H21p.GetZ (), a_1H2p));
+	      insert_local (CAtom (H22p.GetX (), H22p.GetY (), H22p.GetZ (), a_2H2p));
 	    }
 	}
     }
@@ -657,9 +677,9 @@ AbstractResidue::addLP ()
       z = (x + y).Normalize ();
       CPoint3D LP7 = *ref (a_N7) + z * N_LP_dist;
       
-      insert (CAtom (LP1.GetX (), LP1.GetY (), LP1.GetZ (), a_LP1));
-      insert (CAtom (LP3.GetX (), LP3.GetY (), LP3.GetZ (), a_LP3));
-      insert (CAtom (LP7.GetX (), LP7.GetY (), LP7.GetZ (), a_LP7));
+      insert_local (CAtom (LP1.GetX (), LP1.GetY (), LP1.GetZ (), a_LP1));
+      insert_local (CAtom (LP3.GetX (), LP3.GetY (), LP3.GetZ (), a_LP3));
+      insert_local (CAtom (LP7.GetX (), LP7.GetY (), LP7.GetZ (), a_LP7));
     }
   else if (mType->is_G ())
     {
@@ -687,10 +707,10 @@ AbstractResidue::addLP ()
       CPoint3D LP61 = *ref (a_O6) + b * O_LP_dist;
       CPoint3D LP62 = *ref (a_O6) + a * O_LP_dist;
       
-      insert (CAtom (LP3.GetX (), LP3.GetY (), LP3.GetZ (), a_LP3));
-      insert (CAtom (LP7.GetX (), LP7.GetY (), LP7.GetZ (), a_LP7));
-      insert (CAtom (LP61.GetX (), LP61.GetY (), LP61.GetZ (), a_1LP6));
-      insert (CAtom (LP62.GetX (), LP62.GetY (), LP62.GetZ (), a_2LP6));
+      insert_local (CAtom (LP3.GetX (), LP3.GetY (), LP3.GetZ (), a_LP3));
+      insert_local (CAtom (LP7.GetX (), LP7.GetY (), LP7.GetZ (), a_LP7));
+      insert_local (CAtom (LP61.GetX (), LP61.GetY (), LP61.GetZ (), a_1LP6));
+      insert_local (CAtom (LP62.GetX (), LP62.GetY (), LP62.GetZ (), a_2LP6));
     }
   else if (mType->is_C ())
     {
@@ -712,9 +732,9 @@ AbstractResidue::addLP ()
       CPoint3D LP21 = *ref (a_O2) + a * O_LP_dist;
       CPoint3D LP22 = *ref (a_O2) + b * O_LP_dist;
       
-      insert (CAtom (LP3.GetX (), LP3.GetY (), LP3.GetZ (), a_LP3));
-      insert (CAtom (LP21.GetX (), LP21.GetY (), LP21.GetZ (), a_1LP2));
-      insert (CAtom (LP22.GetX (), LP22.GetY (), LP22.GetZ (), a_2LP2));
+      insert_local (CAtom (LP3.GetX (), LP3.GetY (), LP3.GetZ (), a_LP3));
+      insert_local (CAtom (LP21.GetX (), LP21.GetY (), LP21.GetZ (), a_1LP2));
+      insert_local (CAtom (LP22.GetX (), LP22.GetY (), LP22.GetZ (), a_2LP2));
     }
   else if (mType->is_U () || mType->is_T ())
     {
@@ -742,10 +762,10 @@ AbstractResidue::addLP ()
       CPoint3D LP41 = *ref (a_O4) + b * O_LP_dist;
       CPoint3D LP42 = *ref (a_O4) + a * O_LP_dist;
       
-      insert (CAtom (LP21.GetX (), LP21.GetY (), LP21.GetZ (), a_1LP2));
-      insert (CAtom (LP22.GetX (), LP22.GetY (), LP22.GetZ (), a_2LP2));
-      insert (CAtom (LP41.GetX (), LP41.GetY (), LP41.GetZ (), a_1LP4));
-      insert (CAtom (LP42.GetX (), LP42.GetY (), LP42.GetZ (), a_2LP4));
+      insert_local (CAtom (LP21.GetX (), LP21.GetY (), LP21.GetZ (), a_1LP2));
+      insert_local (CAtom (LP22.GetX (), LP22.GetY (), LP22.GetZ (), a_2LP2));
+      insert_local (CAtom (LP41.GetX (), LP41.GetY (), LP41.GetZ (), a_1LP4));
+      insert_local (CAtom (LP42.GetX (), LP42.GetY (), LP42.GetZ (), a_2LP4));
     }
 }
 
@@ -759,6 +779,13 @@ AbstractResidue::validate ()
       set< t_Atom* >::const_iterator optbegin, optend, cit;
       set< t_Atom* > resset, diffset, allset;
       iterator it;
+      
+      if (mType->is_NucleicAcid ())
+	{
+	  removeOptionals ();
+	  addHydrogens ();
+	  addLP ();
+	}
 
       if (mType->is_DNA ())
 	{

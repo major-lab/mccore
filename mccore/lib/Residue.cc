@@ -92,6 +92,68 @@ Residue::~Residue ()
 
 
 
+void
+Residue::setIdeal ()
+{
+  mAtomIndex.clear ();
+  mAtomRef.clear ();
+  mAtomRes.clear ();
+  
+  if (mType->is_rA ()) {
+    insert (CAtom (0.213, 0.660, 1.287, a_N9));
+    insert (CAtom (0.250, 2.016, 1.509, a_C4));
+    insert (CAtom (0.016, 2.995, 0.619, a_N3));
+    insert (CAtom (0.142, 4.189, 1.194, a_C2));
+    insert (CAtom (0.451, 4.493, 2.459, a_N1));
+    insert (CAtom (0.681, 3.485, 3.329, a_C6));
+    insert (CAtom (0.990, 3.787, 4.592, a_N6));
+    insert (CAtom (0.579, 2.170, 2.844, a_C5));
+    insert (CAtom (0.747, 0.934, 3.454, a_N7));
+    insert (CAtom (0.520, 0.074, 2.491, a_C8));
+    insert (CAtom (0.000, 0.000, 0.000, a_C1p));
+  } else if (mType->is_rC ()) {
+    insert (CAtom (0.212, 0.668, 1.294, a_N1)); 
+    insert (CAtom (0.193, -0.043, 2.462, a_C6));
+    insert (CAtom (0.374, 2.055, 1.315, a_C2)); 
+    insert (CAtom (0.388, 2.673, 0.240, a_O2)); 
+    insert (CAtom (0.511, 2.687, 2.504, a_N3)); 
+    insert (CAtom (0.491, 1.984, 3.638, a_C4)); 
+    insert (CAtom (0.631, 2.649, 4.788, a_N4)); 
+    insert (CAtom (0.328, 0.569, 3.645, a_C5)); 
+    insert (CAtom (0.000, 0.000, 0.000, a_C1p));
+  } else if (mType->is_rG ()) {
+    insert (CAtom (0.214, 0.659, 1.283, a_N9)); 
+    insert (CAtom (0.254, 2.014, 1.509, a_C4)); 
+    insert (CAtom (0.034, 2.979, 0.591, a_N3)); 
+    insert (CAtom (0.142, 4.190, 1.110, a_C2)); 
+    insert (CAtom (0.047, 5.269, 0.336, a_N2)); 
+    insert (CAtom (0.444, 4.437, 2.427, a_N1)); 
+    insert (CAtom (0.676, 3.459, 3.389, a_C6)); 
+    insert (CAtom (0.941, 3.789, 4.552, a_O6)); 
+    insert (CAtom (0.562, 2.154, 2.846, a_C5)); 
+    insert (CAtom (0.712, 0.912, 3.448, a_N7)); 
+    insert (CAtom (0.498, 0.057, 2.485, a_C8)); 
+    insert (CAtom (0.000, 0.000, 0.000, a_C1p));
+  } else if (mType->is_rG ()) {
+    insert (CAtom (0.212, 0.676, 1.281, a_N1)); 
+    insert (CAtom (0.195, -0.023, 2.466, a_C6));
+    insert (CAtom (0.370, 2.048, 1.265, a_C2)); 
+    insert (CAtom (0.390, 2.698, 0.235, a_O2)); 
+    insert (CAtom (0.505, 2.629, 2.502, a_N3)); 
+    insert (CAtom (0.497, 1.990, 3.725, a_C4)); 
+    insert (CAtom (0.629, 2.653, 4.755, a_O4)); 
+    insert (CAtom (0.329, 0.571, 3.657, a_C5)); 
+    insert (CAtom (0.000, 0.000, 0.000, a_C1p));
+  } else {
+    gOut (2) << "Oups, setIdeal erased the residue " 
+	     << "but the ideal confo is unknown.  Go get a coffee!" << endl;
+  }
+
+  Align ();
+  init ();
+}
+
+
 Residue&
 Residue::operator= (const Residue &right)
 {
@@ -249,9 +311,9 @@ Residue::init ()
 	  CPoint3D Z = *p1 + (b.Cross (a)).Normalize ();
 
 	  clonedAtom->SetAll (Y.GetX (), Y.GetY (), Y.GetZ (), a_PSY);
-	  insert (*clonedAtom);
+	  insert_local (*clonedAtom);
 	  clonedAtom->SetAll (Z.GetX (), Z.GetY (), Z.GetZ (), a_PSZ);
-	  insert (*clonedAtom);
+	  insert_local (*clonedAtom);
 	  delete clonedAtom;
 	}
       else
@@ -284,7 +346,7 @@ Residue::init ()
 	  CPoint3D Z = *p1 + b.Cross (a).Normalize ();
 
 	  clonedAtom->SetAll (Z.GetX (), Z.GetY (), Z.GetZ (), a_PSAZ);
-	  insert (*clonedAtom);
+	  insert_local (*clonedAtom);
 	  delete clonedAtom;
 	}
       else
@@ -374,12 +436,6 @@ Residue::init ()
 	(*it)->Transform (theAlign);
     }
   
-  if (mType->is_NucleicAcid ())
-    {
-      addHydrogens ();
-      addLP ();
-    }
-
   isIdentity = mTfo.isIdentity ();
 }
 
@@ -429,7 +485,7 @@ Residue::res (t_Atom *t) const
 
 
 void
-Residue::insert (const CAtom &a)
+Residue::insert_local (const CAtom &a)
 {
   ResMap::iterator i = mAtomIndex.find (a.GetType ());
   
@@ -451,6 +507,36 @@ Residue::insert (const CAtom &a)
     }
 }
 
+
+void
+Residue::insert (const CAtom &a)
+{
+  ResMap::iterator i = mAtomIndex.find (a.GetType ());
+  
+  if (i == mAtomIndex.end ())
+    {
+      mAtomIndex[a.GetType ()] = size ();
+      mAtomRef.push_back (a.clone ());
+      mAtomRes.push_back (a.clone ());
+      mAtomRef.reserve (size ());
+      mAtomRes.reserve (size ());
+      i = mAtomIndex.find (a.GetType ());  
+    }
+  else
+    {
+      *mAtomRef[i->second] = a;
+    }
+
+  // Transform the atom to the origin
+  CTransfo theAlign (mTfo);
+  theAlign.Inverse ();
+  (*mAtomRef[i->second]).Transform (theAlign);
+
+  if (isPlaced)
+    {
+      *mAtomRes[i->second] = a;
+    }
+}
 
 
 Residue::iterator

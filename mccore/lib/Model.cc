@@ -42,6 +42,8 @@
 #include "Pdbstream.h"
 #include "ResidueFM.h"
 #include "ResidueType.h"
+#include "Messagestream.h"
+#include "Algo.h"
 
 bool less_deref_func (AbstractResidue *x, AbstractResidue *y)
 {
@@ -394,6 +396,57 @@ Model::keepNucleicAcid ()
 	  modelIt = erase (modelIt);
 	}
     }
+}
+
+
+
+void 
+Model::removeClashes ()
+{
+  iterator i, j;
+  vector< pair< iterator, iterator > > possibleContacts;
+  vector< pair< iterator, iterator > >::iterator m;
+
+  possibleContacts = 
+    Algo::ExtractContact_AABB (begin (), end (), 2.0);
+
+  AbstractResidue::iterator k, l;
+
+  set< iterator > toremove;
+  set< iterator >::iterator t;
+
+  for (m=possibleContacts.begin (); m!=possibleContacts.end (); ++m)
+    {
+      i = m->first;
+      j = m->second;
+
+      if (*(i->begin ()) | *(j->end ()) < 3.0) {
+	bool clash = false;
+	for (k=i->begin (new atomset_and (new no_pse_lp_atom_set (),
+					  new no_hydrogen_set ())); 
+	     k!=i->end (); ++k) {
+	  for (l=j->begin (new atomset_and (new no_pse_lp_atom_set (),
+					    new no_hydrogen_set ())); 
+	       l!=j->end (); ++l) {
+	    if ((*k | *l) < 0.8) {
+	      clash=true;
+	      break;
+	    }
+	  }
+	  if (clash) break;
+	}
+	if (clash) {
+	  gOut (3) << "Rejecting " << (CResId&)*j
+		   << " because of clashes with " << (CResId&)*i << endl;
+	  toremove.insert (j);
+	}
+      }
+    }
+
+  for (t=toremove.begin (); t!=toremove.end (); ++t) {    
+    delete &**t;
+    erase (*t);
+  }  
 }
 
 

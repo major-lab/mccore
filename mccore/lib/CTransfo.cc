@@ -370,7 +370,7 @@ CTransfo::Referentiel (const CPoint3D *p1, const CPoint3D *p2,
   p6p.Transform (m1);
   
   m2.Align (&p4p, &p5p, &p6p);
-  
+ 
   return *this *= m2;
 }
 

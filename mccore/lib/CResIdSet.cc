@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // CResIdSet.cc
-// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-01 , 2002Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Oct 26 10:24:02 2000
@@ -108,14 +108,14 @@ CResIdSet::_parse_and_insert (const char *str)
       char* token = 0;
       char* lower = 0;
       char* upper = 0;
-      
+
       strcpy (str_copy, str);
       token = strsep (&str_copy, ", ");
       while (token)
 	{
 	  lower = strsep (&token, "-");
 	  upper = strsep (&token, "-");
-	  
+
 	  CResId low (lower);
 	  insert (low);
 	  if (upper)

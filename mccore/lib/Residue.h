@@ -120,6 +120,14 @@ public:
    */
   virtual ~Residue ();
 
+  /**
+   * Creates a residue containing the base atom coordinates of a
+   * standard residue as defined by G.Parkinson et al., ACTA CRYST.D
+   * (1996) v. 52, 57-64.
+   */
+  virtual void setIdeal ();
+
+
   // OPERATORS ------------------------------------------------------------
 
   /**
@@ -267,6 +275,15 @@ public:
    */
   virtual bool empty () const { return mAtomRef.empty (); }
 
+protected:
+  /**
+   * Inserts an atom in the residue.  It crushes the existing atom if it
+   * exists.  The index and the local referential containers are adjusted.
+   * @param atom the atom to insert.
+   */
+  virtual void insert_local (const CAtom &atom);
+
+public:
   /**
    * Inserts an atom in the residue.  It crushes the existing atom if it
    * exists.  The index and the local referential containers are adjusted.
@@ -279,46 +296,48 @@ public:
    * @param type the atom type to remove.
    */
   virtual iterator erase (t_Atom *type);
-  
-  /**
-   * Erases a range of atoms from the residue, adjusting all containers and
-   * maps.
-   * @param start the iterator of the first atom to erase.
-   * @param finish the iterator of the last atom to erase.
-   */
-  template<class _InputIterator>
-  iterator
-  erase (const _InputIterator &start, const _InputIterator &finish)
-  {
-    vector< CAtom* >::const_iterator cit;
-    vector< CAtom* >::iterator it;
-    size_type index;
-    _InputIterator ciit;
+
+
+  // BROKEN!!!  
+//   /**
+//    * Erases a range of atoms from the residue, adjusting all containers and
+//    * maps.
+//    * @param start the iterator of the first atom to erase.
+//    * @param finish the iterator of the last atom to erase.
+//    */
+//   template<class _InputIterator>
+//   iterator
+//   erase (const _InputIterator &start, const _InputIterator &finish)
+//   {
+//     vector< CAtom* >::const_iterator cit;
+//     vector< CAtom* >::iterator it;
+//     size_type index;
+//     _InputIterator ciit;
     
-    for (ciit = start; ciit != finish; ++ciit)
-      {
-	ResMap::iterator it = mAtomIndex.find (*ciit);
+//     for (ciit = start; ciit != finish; ++ciit)
+//       {
+// 	ResMap::iterator it = mAtomIndex.find (*ciit);
 	
-	if (it != mAtomIndex.end ())
-	  {
-	    delete mAtomRef[it->second];
-	    next = mAtomRef.erase (mAtomRef.begin () + it->second);
-	    delete mAtomRes.back ();
-	    mAtomRes.pop_back ();
-	  }
-      }
-    mAtomIndex.clear ();
-    for (cit = mAtomRef.begin (), index = 0;
-	 cit != mAtomRef.end ();
-	 ++cit, ++index)
-      mAtomIndex[(*cit)->GetType ()] = index;
-    mAtomRes.reserve (index);
-    isPlaced = false;
-    if (next != mAtomRef.end ())
-      return find ((*next)->GetType ());
-    else
-      return end ();
-  }
+// 	if (it != mAtomIndex.end ())
+// 	  {
+// 	    delete mAtomRef[it->second];
+// 	    next = mAtomRef.erase (mAtomRef.begin () + it->second);
+// 	    delete mAtomRes.back ();
+// 	    mAtomRes.pop_back ();
+// 	  }
+//       }
+//     mAtomIndex.clear ();
+//     for (cit = mAtomRef.begin (), index = 0;
+// 	 cit != mAtomRef.end ();
+// 	 ++cit, ++index)
+//       mAtomIndex[(*cit)->GetType ()] = index;
+//     mAtomRes.reserve (index);
+//     isPlaced = false;
+//     if (next != mAtomRef.end ())
+//       return find ((*next)->GetType ());
+//     else
+//       return end ();
+//   }
   
   /**
    * Copies the atoms from the right residue.  This function preserves the
