@@ -50,6 +50,7 @@
 
 
 
+
 const CPoint3D&
 CPoint3D::operator= (const CPoint3D &right)
 {
