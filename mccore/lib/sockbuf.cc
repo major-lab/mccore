@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:34 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Oct  1 14:14:09 2001
-// Update Count     : 10
+// Last Modified On : Mon Oct  1 14:15:59 2001
+// Update Count     : 11
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -149,7 +149,7 @@ sockbuf::sys_read (char* buf, streamsize size)
 
   while (nleft > 0)
     {
-#if defined (__sgi) || defined (__sun) || defined (__FreeBSD)
+#if defined (__sgi) || defined (__sun) || defined (__FreeBSD__)
       signal (SIGPIPE, SIG_IGN);
       if ((nread = ::recv (socket_id, ptr, nleft, 0)) < 0)
 #else
@@ -160,7 +160,7 @@ sockbuf::sys_read (char* buf, streamsize size)
 	    nread = 0;
 	  else
 	    {
-#if defined (__sgi) || defined (__sun) || defined (__FreeBSD)
+#if defined (__sgi) || defined (__sun) || defined (__FreeBSD__)
 	      signal (SIGPIPE, SIG_DFL);
 #endif
 	      return -1;
@@ -171,7 +171,7 @@ sockbuf::sys_read (char* buf, streamsize size)
       nleft -= nread;
       ptr += nread;
     }
-#if defined (__sgi) || defined (__sun) || defined (__FreeBSD)
+#if defined (__sgi) || defined (__sun) || defined (__FreeBSD__)
   signal (SIGPIPE, SIG_DFL);
 #endif
   return (size - nleft);
@@ -190,7 +190,7 @@ sockbuf::sys_write (const char *buf, streamsize size)
   nleft = size;
   while (nleft > 0)
     {
-#if defined (__sgi) || defined (__sun) || defined (__FreeBSD)
+#if defined (__sgi) || defined (__sun) || defined (__FreeBSD__)
       signal (SIGPIPE, SIG_IGN);
       if ((nsent = ::send (socket_id, ptr, nleft, 0)) < 0)
 #else
@@ -201,7 +201,7 @@ sockbuf::sys_write (const char *buf, streamsize size)
 	    nsent = 0;
 	  else
 	    {
-#if defined (__sgi) || defined (__sun) || defined (__FreeBSD)
+#if defined (__sgi) || defined (__sun) || defined (__FreeBSD__)
 	      signal (SIGPIPE, SIG_DFL);
 #endif
 	      return -1;
@@ -210,7 +210,7 @@ sockbuf::sys_write (const char *buf, streamsize size)
       nleft -= nsent;
       ptr += nsent;
     }
-#if defined (__sgi) || defined (__sun) || defined (__FreeBSD)
+#if defined (__sgi) || defined (__sun) || defined (__FreeBSD__)
   signal (SIGPIPE, SIG_DFL);
 #endif
   return size;
