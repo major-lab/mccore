@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:26:33 2003
-// $Revision: 1.17 $
+// $Revision: 1.18 $
 // 
 //  This file is part of mccore.
 //  
@@ -47,7 +47,7 @@ namespace mccore {
    *   - The nature of a type (nucleic acid (pur/pyr) or amino acid)<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueType.h,v 1.17 2003-09-26 21:17:22 gendrop Exp $
+   * @version $Id: ResidueType.h,v 1.18 2003-10-01 15:49:45 thibaup Exp $
    */
   class ResidueType
   {    
@@ -225,9 +225,16 @@ namespace mccore {
     }
 
     /**
-     * is Phosphate
+     * is Phosphate?
      */
     virtual bool isPhosphate () const {
+        return false;
+    }
+
+    /**
+     * is Ribose?
+     */
+    virtual bool isRibose () const {
         return false;
     }
     
@@ -344,6 +351,7 @@ namespace mccore {
     static ResidueType* rRNA;
     static ResidueType* rDNA;
     static ResidueType* rPhosphate;
+    static ResidueType* rRibose;
     static ResidueType* rPurine; // (R = A || G)
     static ResidueType* rPyrimidine; // (Y = C || U)
     static ResidueType* rRPurine;
