@@ -3,8 +3,8 @@
 // Copyright © 2003-03 Laboratoire de Biologie Informatique et Théorique
 // Author           : Philippe Thibault
 // Created On       : Wed Oct 16 09:28:54 2002
-// $Revision: 1.5 $
-// $Id: SymmetricalMatrix.cc,v 1.5 2003-12-23 14:57:49 larosem Exp $
+// $Revision: 1.6 $
+// $Id: SymmetricalMatrix.cc,v 1.6 2004-06-30 18:17:04 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -33,7 +33,7 @@
 #include <math.h>
 
 #include "Binstream.h"
-#include "CException.h"
+#include "Exception.h"
 
 
 
@@ -102,7 +102,7 @@ SymmetricalMatrix< Type >::operator[] (int i) const
 {
   if (i < 0 || i >= oneSize)
     {
-      CFatalIntLibException ex ("1x", __FILE__, __LINE__);
+      FatalIntLibException ex ("1x", __FILE__, __LINE__);
       ex << oneSize << " matrix index " << i << "  out of bounds.";
       throw ex;
     }
@@ -129,7 +129,7 @@ SymmetricalMatrix< Type >::getij (int i, int j) const
 {
   if (i == j || i >= twoSize || j >= twoSize)
     {
-      CFatalIntLibException ex ("", __FILE__, __LINE__);
+      FatalIntLibException ex ("", __FILE__, __LINE__);
       ex << twoSize << 'x' << twoSize << " matrix indexes (" 
 	 << i << ',' << j << ") out of bounds.";
       throw ex;
@@ -146,7 +146,7 @@ SymmetricalMatrix< Type >::setij (int i, int j, const Type& data)
 {
   if (i == j || i >= twoSize || j >= twoSize)
     {
-      CFatalIntLibException ex ("", __FILE__, __LINE__);
+      FatalIntLibException ex ("", __FILE__, __LINE__);
       ex << twoSize << 'x' << twoSize << " matrix indexes (" 
 	 << i << ',' << j << ") out of bounds.";
       throw ex;

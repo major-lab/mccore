@@ -28,7 +28,7 @@
 
 #include "ResidueFactoryMethod.h"
 #include "ExtendedResidue.h"
-#include "CException.h"
+#include "Exception.h"
 
 #include "RiboseBuilder.h"
 
@@ -151,7 +151,7 @@ namespace mccore
     else if (quality == QFCT_BOND)
       qfct = new _BondQFct (this);
     else
-      throw CIntLibException ("unkown quality functor id \'") << quality << "\'.";
+      throw IntLibException ("unkown quality functor id \'") << quality << "\'.";
   }
 
 

@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.39 $
-// $Id: Residue.cc,v 1.39 2004-06-25 14:46:47 thibaup Exp $
+// $Revision: 1.40 $
+// $Id: Residue.cc,v 1.40 2004-06-30 18:16:02 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -23,7 +23,6 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -36,7 +35,7 @@
 #include <set>
 
 #include "Binstream.h"
-#include "CException.h"
+#include "Exception.h"
 #include "Messagestream.h"
 #include "Pdbstream.h"
 #include "PropertyType.h"
@@ -253,7 +252,7 @@ namespace mccore {
       }
     else
       {
-	CIntLibException ex;
+	IntLibException ex;
 	throw ex << "cannot create a theoretical residue for " << *this;
       }
 
@@ -272,7 +271,7 @@ namespace mccore {
       }
     else
       {
-	CIntLibException ex;
+	IntLibException ex;
 	throw ex << "cannot create a full theoretical residue for " << *this;
       }
     
@@ -1324,7 +1323,7 @@ namespace mccore {
       {
 	rho = this->getRho ();
       }
-    catch (CException& ex)
+    catch (Exception& ex)
       {
 	gOut (3) << "Failed to compute pseudorotation: " << ex << endl;
 	return PropertyType::parseType ("undefined");
@@ -1350,7 +1349,7 @@ namespace mccore {
       }
     else
       {
-	CLibException ex;
+	LibException ex;
 	throw ex << "cannot evaluate glycosyl torsion for " << *this;
       }
 
@@ -1369,7 +1368,7 @@ namespace mccore {
       {
 	chi = this->getChi ();
       }
-    catch (CException& ex)
+    catch (Exception& ex)
       {
 	gOut (3) << "Failed to compute glycosyl torsion: " << ex << endl;
 	return PropertyType::parseType ("undefined");
@@ -1384,6 +1383,8 @@ namespace mccore {
     Vector3D *v1, *v2, *v3;
     Vector3D a, b, y, z;
 
+    try
+    {
     if (this->type->isPurine ())
       {
 	// fetch needed atoms
@@ -1437,10 +1438,13 @@ namespace mccore {
       }
     else
       {
-	CLibException ex;
-	throw ex << "failed to finalize residue " << *this << " because type is not handled.";
+	gOut (3) << "Unknown pseudo-atoms for residue type " << *this << endl;
       }
-    
+    }
+    catch (Exception& ex)
+    {
+      gOut (3) << "Unknown pseudo-atoms for residue "<< *this << ": " << ex << endl;
+    }
     
     
 //     /* Compute the location of the pseudo atoms. */
@@ -1540,7 +1544,7 @@ namespace mccore {
     
     if (this != &other && resp) {
       if (type != resp->type) {
-	CLibException exc ("Invalid residue type ");
+	LibException exc ("Invalid residue type ");
 	
 	exc << *resp->type << ".";
 	throw exc;
@@ -1606,7 +1610,7 @@ namespace mccore {
 
     if (build5p && build3p)
       {
-	CLibException ex;
+	LibException ex;
 	throw ex << "needs at least one phosphate to build ribose for " << *this;
       }
     
@@ -1748,7 +1752,7 @@ namespace mccore {
 
     if (build5p && build3p)
       {
-	CLibException ex;
+	LibException ex;
 	throw ex << "needs at least one phosphate to build ribose for " << *this;
       }
     
@@ -1871,7 +1875,7 @@ namespace mccore {
     
     if (po4_3p == 0)
       {
-	CLibException ex;
+	LibException ex;
 	throw ex << "3' phosphate is mandatory to estimate ribose for " << *this;
       }
 
@@ -2113,7 +2117,7 @@ namespace mccore {
       return RAD_324;
     else
       {
-	CLibException ex;
+	LibException ex;
 	throw ex << "unknown pucker type " << pucker;
       }
   }
@@ -2144,7 +2148,7 @@ namespace mccore {
       return RAD_360;
     else
       {
-	CLibException ex;
+	LibException ex;
 	throw ex << "unknown pucker type " << pucker;
       }
   }
@@ -2159,7 +2163,7 @@ namespace mccore {
       return RAD_90;
     else
       {
-	CLibException ex;
+	LibException ex;
 	throw ex << "unknown glycosyl torsion type " << glycosyl;
       }
   }
@@ -2174,7 +2178,7 @@ namespace mccore {
       return RAD_270;
     else
       {
-	CLibException ex;
+	LibException ex;
 	throw ex << "unknown glycosyl torsion type " << glycosyl;
       }
   }
@@ -2207,7 +2211,7 @@ namespace mccore {
     AtomMap::const_iterator it = atomIndex.find (aType);
     if (it == atomIndex.end ())
       {
-	CIntLibException ex;
+	IntLibException ex;
 	throw ex << "residue " << *this << " is missing atom " << aType;
       }
     else
@@ -2249,43 +2253,57 @@ namespace mccore {
   {
     Vector3D *pivot[3];
 
-    // fetch pivot types
-    if (this->type->isPurine ())
+    try
+    {
+      // fetch pivot types
+      if (this->type->isPurine ())
       {
 	pivot[0] = this->_safe_get (AtomType::aN9);
 	pivot[1] = this->_safe_get (AtomType::aPSY);
 	pivot[2] = this->_safe_get (AtomType::aPSZ);
       }
-    else if (this->type->isPyrimidine ())
+      else if (this->type->isPyrimidine ())
       {
 	pivot[0] = this->_safe_get (AtomType::aN1);
 	pivot[1] = this->_safe_get (AtomType::aPSY);
 	pivot[2] = this->_safe_get (AtomType::aPSZ);
       }
-    else if (this->type->isPhosphate ())
+      else if (this->type->isPhosphate ())
       {
 	pivot[0] = this->_safe_get (AtomType::aP);
 	pivot[1] = this->_safe_get (AtomType::aO3p);
 	pivot[2] = this->_safe_get (AtomType::aO5p);
       }
-    else if (this->type->isRibose ())
+      else if (this->type->isRibose ())
       {
 	pivot[0] = this->_safe_get (AtomType::aC1p);
 	pivot[1] = this->_safe_get (AtomType::aC2p);
 	pivot[2] = this->_safe_get (AtomType::aO4p);
       }
-    else if (this->type->isAminoAcid ())
+      else if (this->type->isAminoAcid ())
       {
 	pivot[0] = this->_safe_get (AtomType::aCA);
 	pivot[1] = this->_safe_get (AtomType::aN);
 	pivot[2] = this->_safe_get (AtomType::aPSAZ);
       }
-    else
+      else if (this->size () >= 3)
       {
-	CLibException ex;
-	throw ex << "failed to compute referential in residue "
-		 << *this << " because type is not handled.";
+	pivot[0] = (Atom*)this->atomGlobal[0];
+	pivot[1] = (Atom*)this->atomGlobal[1];
+	pivot[2] = (Atom*)this->atomGlobal[2];
+	gOut (4) << "default referential with first three atoms for residue type " << *this << endl;	
       }
+      else
+      {
+	gOut (3) << "no referential for residue type " << *this << endl;
+	return HomogeneousTransfo ();
+      }
+    }
+    catch (Exception& ex)
+    {
+      gOut (3) << "no referential for residue " << *this << ": " << ex << endl;
+      return HomogeneousTransfo ();
+    }
 
     return HomogeneousTransfo::align (*pivot[0], *pivot[1], *pivot[2]);
   }
@@ -2316,7 +2334,7 @@ namespace mccore {
 	  }
 	else
 	  {
-	    CLibException ex;
+	    LibException ex;
 	    throw ex << "cannot build ribose on residue " << *this;
 	  }
 
@@ -2843,10 +2861,10 @@ namespace mccore {
 //     return r->output (os);
 //   }
 
-  CException&
-  operator<< (CException& ex, const Residue &r)
+  Exception&
+  operator<< (Exception& ex, const Residue &r)
   {
-    return ex << '<' << r.getResId () << ':' << (const char*)*r.getType () << '>';
+    return ex << '<' << r.getResId () << ':' << r.getType () << '>';
   }
   
   

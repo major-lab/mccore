@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 //
 //  This file is part of mccore.
 //  
@@ -32,7 +32,7 @@
 
 #include "Binstream.h"
 #include "HomogeneousTransfo.h"
-#include "CException.h"
+#include "Exception.h"
 
 namespace mccore 
 {
@@ -431,7 +431,7 @@ namespace mccore
   HomogeneousTransfo::invert () const 
   {
     if ((matrix[3] + matrix[7] + matrix[11]) != 0.0)
-      throw CFatalIntLibException ("HomogeneousTransfo containing scale cannot be inverted.", __FILE__, __LINE__);
+      throw FatalIntLibException ("HomogeneousTransfo containing scale cannot be inverted.", __FILE__, __LINE__);
 
     return HomogeneousTransfo (matrix[0], matrix[1], matrix[2], 
 			       -(matrix[12]*matrix[0] + matrix[13]*matrix[1] + matrix[14]*matrix[2]),

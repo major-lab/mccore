@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.46 $
-# $Id: Makefile.in,v 1.46 2004-04-30 19:22:56 larosem Exp $
+# $Revision: 1.47 $
+# $Id: Makefile.in,v 1.47 2004-06-30 18:14:24 thibaup Exp $
 # 
 # This file is part of mccore.
 # 
@@ -71,7 +71,7 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 % : %.o
 
 SOURCES = Binstream.cc \
-	  CException.cc \
+	  Exception.cc \
 	  Fastastream.cc \
 	  Genbankstream.cc \
 	  Messagestream.cc \

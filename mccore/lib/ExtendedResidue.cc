@@ -3,7 +3,7 @@
 // Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.19 $
+// $Revision: 1.20 $
 // 
 //  This file is part of mccore.
 //  
@@ -28,7 +28,7 @@
 
 #include "ExtendedResidue.h"
 #include "Messagestream.h"
-#include "CException.h"
+#include "Exception.h"
 #include "stlio.h"
 
 namespace mccore {
@@ -394,7 +394,7 @@ namespace mccore {
 
     if (this != &other && resp) {
       if (type != resp->getType ()) {
-	CLibException exc ("Invalid residue type ");
+	LibException exc ("Invalid residue type ");
 	
 	exc << *resp->getType () << ".";
 	throw exc;
@@ -411,7 +411,7 @@ namespace mccore {
     } else {
       if (this != &other) {
 	if (type != other.getType ()) {
-	  CLibException exc ("Invalid residue type ");
+	  LibException exc ("Invalid residue type ");
 	  
 	  exc << *other.getType () << ".";
 	  throw exc;

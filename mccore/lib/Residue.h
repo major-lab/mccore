@@ -3,8 +3,8 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.20 $
-// $Id: Residue.h,v 1.20 2004-06-25 14:46:47 thibaup Exp $
+// $Revision: 1.21 $
+// $Id: Residue.h,v 1.21 2004-06-30 18:16:08 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -46,7 +46,7 @@ namespace mccore
 
   class PropertyType;
   class ResidueFactoryMethod;
-  class CException;
+  class Exception;
   class iBinstream;
   class iPdbstream;
   class oBinstream;
@@ -63,7 +63,7 @@ namespace mccore
    * the atom types.
    *
    * @author Patrick Gendron <gendrop@iro.umontreal.ca>
-   * @version $Id: Residue.h,v 1.20 2004-06-25 14:46:47 thibaup Exp $
+   * @version $Id: Residue.h,v 1.21 2004-06-30 18:16:08 thibaup Exp $
    */
   class Residue
   {
@@ -568,7 +568,7 @@ namespace mccore
      * Sets all atoms according to standard coordinates as defined by
      * G.Parkinson et al., ACTA CRYST.D (1996) v. 52, 57-64.
      * Handled types are nitrogen bases (nucleic acid types), phosphates and riboses.
-     * @exception CIntLibException is thrown if type isn't handled.
+     * @exception IntLibException is thrown if type isn't handled.
      */
     void setTheoretical ();
 
@@ -576,7 +576,7 @@ namespace mccore
      * Sets all atoms according to standard coordinates as defined by
      * G.Parkinson et al., ACTA CRYST.D (1996) v. 52, 57-64.
      * A full nucleic acid residue is created.
-     * @exception CIntLibException is thrown if type isn't handled.
+     * @exception IntLibException is thrown if type isn't handled.
      */
     void setFullTheoretical ();
 				 
@@ -808,7 +808,7 @@ namespace mccore
     /**
      * Determines the pucker pseudorotation (rho) of the NucleicAcid backbone.
      * @return The pseudorotation value (rad).
-     * @exception CLibException thrown if type isn't a nucleic acid.
+     * @exception LibException thrown if type isn't a nucleic acid.
      */
     virtual float getRho () const;
     
@@ -821,7 +821,7 @@ namespace mccore
     /**
      * Determines the glycosyl torsion (chi) of the NucleicAcid backbone.
      * @return The glycosyl torsion value (rad).
-     * @exception CLibException thrown if type isn't a nucleic acid.
+     * @exception LibException thrown if type isn't a nucleic acid.
      */
     virtual float getChi () const;
     
@@ -833,7 +833,7 @@ namespace mccore
     
     /**
      * Finalizes the residue. Computes the referential's pseudo-atoms.
-     * @exception CLibException is thrown if a needed atom is missing.
+     * @exception LibException is thrown if a needed atom is missing.
      */
     virtual void finalize ();
 
@@ -901,7 +901,7 @@ namespace mccore
      * @param po4_5p Phosphate residue toward 5' (set it to NULL for an unconstrained branch).
      * @param po4_3p Phosphate residue toward 3' (mandatory!)
      * @return Rms deviation for the implicit C5'-O5' and C3'-O3' bond lengths (Angstroms).
-     * @exception CLibException is thrown if 3' phosphate is unspecified.
+     * @exception LibException is thrown if 3' phosphate is unspecified.
      */
     float buildRiboseByEstimation (const Residue* po4_5p, const Residue* po4_3p);
 
@@ -920,7 +920,7 @@ namespace mccore
      * @param pucker Optional pucker type restriction.
      * @param glycosyl Optional glycosyl torsion type restriction.
      * @return Rms deviation for the implicit C5'-O5' and C3'-O3' bond lengths (Angstroms).
-     * @exception CLibException is thrown if both phosphates are unspecified.
+     * @exception LibException is thrown if both phosphates are unspecified.
      */
     float buildRiboseByCCM2D (const Residue* po4_5p,
 			      const Residue* po4_3p,
@@ -945,7 +945,7 @@ namespace mccore
      * @param pucker Optional pucker type restriction.
      * @param glycosyl Optional glycosyl torsion type restriction.
      * @return Rms deviation for the implicit C5'-O5' and C3'-O3' bond lengths (Angstroms).
-     * @exception CLibException is thrown if both phosphates are unspecified.
+     * @exception LibException is thrown if both phosphates are unspecified.
      */
     float buildRiboseByCCM2D (const Residue* po4_5p,
 			      const Residue* po4_3p,
@@ -970,7 +970,7 @@ namespace mccore
      * @param pucker Optional pucker type restriction.
      * @param glycosyl Optional glycosyl torsion type restriction.
      * @return Rms deviation for the implicit C5'-O5' and C3'-O3' bond lengths (Angstroms).
-     * @exception CLibException is thrown if both phosphates are unspecified.
+     * @exception LibException is thrown if both phosphates are unspecified.
      */
     float buildRiboseByCCM4D (const Residue* po4_5p,
 			      const Residue* po4_3p,
@@ -995,7 +995,7 @@ namespace mccore
      * @param pucker Optional pucker type restriction.
      * @param glycosyl Optional glycosyl torsion type restriction.
      * @return Rms deviation for the implicit C5'-O5' and C3'-O3' bond lengths (Angstroms).
-     * @exception CLibException is thrown if both phosphates are unspecified.
+     * @exception LibException is thrown if both phosphates are unspecified.
      */
     float buildRiboseByCCM4D (const Residue* po4_5p,
 			      const Residue* po4_3p,
@@ -1011,7 +1011,7 @@ namespace mccore
      * @param reference Residue onto which phosphate should be aligned.
      * @param fm Residue factory method used to create phosphate (default: creates ExtendedResidue)
      * @return Newly created phosphate residue. The object is dynamically created, therefore caller has ownership on memory (caller should delete it...).
-     * @exception CLibException is thrown if reference is missing the needed atoms.
+     * @exception LibException is thrown if reference is missing the needed atoms.
      */
     static Residue* createPhosphate5p (const Residue& reference,
 				       const ResidueFactoryMethod* fm = 0);
@@ -1034,7 +1034,7 @@ namespace mccore
      * Gets the range of pseudorotation (rho) values associated with the specified pucker type.
      * @param pucker The pucker type.
      * @return The minimal or maximal pseudorotation (rho) value (rad).
-     * @exception CLibException is thrown if pucker type is unknown.
+     * @exception LibException is thrown if pucker type is unknown.
      */
     static float getMinRho (const PropertyType* pucker);
     static float getMaxRho (const PropertyType* pucker);
@@ -1043,7 +1043,7 @@ namespace mccore
      * Gets the range of glycosyl torsion (chi) values associated with the specified glycosyl torsion type.
      * @param pucker The pucker type.
      * @return The minimal or maximal glycosyl torsion (chi) value (rad).
-     * @exception CLibException is thrown if glycosyl torsion type is unknown.
+     * @exception LibException is thrown if glycosyl torsion type is unknown.
      */
     static float getMinChi (const PropertyType* glycosyl);
     static float getMaxChi (const PropertyType* glycosyl);
@@ -1068,7 +1068,7 @@ namespace mccore
      * not guaranteed to be valid.
      * @param type the atom type.
      * @return the atom.
-     * @exception CLibException is thrown if atom is missing.
+     * @exception LibException is thrown if atom is missing.
      */
     Atom* _safe_get (const AtomType* type) const;
 
@@ -1092,7 +1092,7 @@ namespace mccore
     /**
      * Compute the residue's referential transfo.
      * @return The residue's referential transfo.
-     * @exception CLibException is thrown if an atom is missing or type isn't handled.
+     * @exception LibException is thrown if an atom is missing or type isn't handled.
      */
     HomogeneousTransfo _compute_referential () const;
     
@@ -1112,7 +1112,7 @@ namespace mccore
      * @param o5p Atom to receive O5' aligned copy from 5' phosphate.
      * @param o3p Atom to receive O3' aligned copy from 3' phosphate.
      * @param referential Transfo to receive a copy of the residue's referential.
-     * @exception CLibException is thrown if residue type is not of the nucleic acid family or if anchor atoms are missing in the phosphates.
+     * @exception LibException is thrown if residue type is not of the nucleic acid family or if anchor atoms are missing in the phosphates.
      */
     void _build_ribose_preprocess (const Residue* po4_5p, const Residue* po4_3p,
 				   bool build5p, bool build3p,
@@ -1225,7 +1225,7 @@ namespace mccore
    * @param r the residue.
    * @return the used exception stream.
    */
-  CException& operator<< (CException& ex, const Residue &r);
+  Exception& operator<< (Exception& ex, const Residue &r);
   
   /**
    * Inputs the residue from the binary stream.

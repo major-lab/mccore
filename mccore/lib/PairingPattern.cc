@@ -3,9 +3,9 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Thu May 31 08:17:56 2001
-// Last Modified By : Patrick Gendron
-// Last Modified On : Thu Dec  4 19:11:29 2003
-// Update Count     : 51
+// Last Modified By : Philippe Thibault
+// Last Modified On : Wed Jun 30 14:14:25 2004
+// Update Count     : 52
 // Status           : Unknown.
 // 
 
@@ -197,7 +197,7 @@ namespace mccore {
 //     bool reverse = false;
 //     if (ta->is (typeB) && tb->is (typeA)) reverse = true;
 //     else if (!ta->is (typeA) || !tb->is (typeB)) {
-//       CLibException e;
+//       LibException e;
 //       throw e << "Pairing type " << *name
 // 	      << " does not fit residue types " 
 // 	      << *ta << ", " << *tb 

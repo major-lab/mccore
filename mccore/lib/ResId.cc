@@ -4,9 +4,9 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:45:21 2003
-// Last Modified By : Patrick Gendron
-// Last Modified On : Wed Jul 30 19:01:33 2003
-// Update Count     : 30
+// Last Modified By : Philippe Thibault
+// Last Modified On : Wed Jun 30 14:15:28 2004
+// Update Count     : 31
 // Status           : Unknown.
 // 
 
@@ -18,7 +18,7 @@
 
 #include "ResId.h"
 #include "Binstream.h"
-#include "CException.h"
+#include "Exception.h"
 
 
 
@@ -60,7 +60,7 @@ namespace mccore {
 	if (strlen (strCopy) < 4 || strCopy[2] != '\'')
 	  {
 	    delete[] base;
-	    CFatalLibException exc ("Malformed residue id ");
+	    FatalLibException exc ("Malformed residue id ");
 	    exc << strCopy;
 	    throw exc;
 	  }
@@ -75,7 +75,7 @@ namespace mccore {
     if (strlen (token) < 1)
       {
 	delete[] base;
-	CFatalLibException exc ("Malformed residue number in residue id ");
+	FatalLibException exc ("Malformed residue number in residue id ");
 	exc << '\'' << chain << '\'' << token;
 	if (strCopy && strlen (strCopy) > 0)
 	  exc << '.' << strCopy;
@@ -85,7 +85,7 @@ namespace mccore {
       if (!isdigit (token[i]))
 	{
 	  delete[] base;
-	  CFatalLibException exc ("Residue number is non numeric in residue id ");
+	  FatalLibException exc ("Residue number is non numeric in residue id ");
 	  exc << '\'' << chain << '\'' << token;
 	  if (strCopy && strlen (strCopy) > 0)
 	    exc << '.' << strCopy;
@@ -97,7 +97,7 @@ namespace mccore {
 	if (strlen (strCopy) != 1)
 	  {
 	    delete[] base;
-	    CFatalLibException exc ("Malformed insertion code in residue id ");
+	    FatalLibException exc ("Malformed insertion code in residue id ");
 	    exc << '\'' << chain << '\'' << no << "." << strCopy;
 	    throw exc;
 	  }
@@ -134,8 +134,8 @@ namespace mccore {
   }
   
   
-  CException&
-  operator<< (CException &ex, const ResId& obj)
+  Exception&
+  operator<< (Exception &ex, const ResId& obj)
   {
     if (obj.getChainId () == ' ') ex << obj.getResNo ();
     else if (! isalpha (obj.getChainId ())) 

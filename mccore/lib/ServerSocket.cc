@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:56 2001
-// $Revision: 1.16 $
-// $Id: ServerSocket.cc,v 1.16 2004-04-30 19:23:01 larosem Exp $
+// $Revision: 1.17 $
+// $Id: ServerSocket.cc,v 1.17 2004-06-30 18:16:53 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -61,7 +61,7 @@ namespace mccore
     
     // Creating socket ---
     if ((socket_id = socket (AF_INET, SOCK_STREAM, 0)) < 0) {
-      //      CFatalSocketException exc ("socket creation failed", __FILE__, __LINE__);
+      //      FatalSocketException exc ("socket creation failed", __FILE__, __LINE__);
       //      exc << ": " << strerror (errno);
       //      throw exc;
     }
@@ -73,13 +73,13 @@ namespace mccore
     sin.sin_port = htons (port);
     
     if (bind (socket_id, (sockaddr*)&sin, sizeof (sin)) < 0) {
-      //      CFatalSocketException exc ("socket binding failed", __FILE__, __LINE__);
+      //      FatalSocketException exc ("socket binding failed", __FILE__, __LINE__);
       //      exc << ": " << strerror (errno);
       //      throw exc;
     }
     
     if (listen (socket_id, MAX_QUEUE_LEN) < 0) {
-      //      CFatalSocketException exc ("socket listening failed", __FILE__, __LINE__);
+      //      FatalSocketException exc ("socket listening failed", __FILE__, __LINE__);
       //      exc << ": " << strerror (errno);
       //      throw exc;
     }
@@ -101,7 +101,7 @@ namespace mccore
     
     if ((cid = ::accept (socket_id, (sockaddr*)&client, 
 			 (socklen_t*)&clientlen)) < 0) {
-      //      CFatalSocketException exc ("socket connection accepting failed",
+      //      FatalSocketException exc ("socket connection accepting failed",
       //  			       __FILE__, __LINE__);
       //      exc << ": " << strerror (errno);
       //      throw exc;
@@ -118,7 +118,7 @@ namespace mccore
     
     /*
       if (shutdown (socket_id, SHUT_RDWR) == -1 && errno != ENOTCONN) {
-      CFatalSocketException exc ("socket shutdown failed",
+      FatalSocketException exc ("socket shutdown failed",
       __FILE__, __LINE__);
       exc << ": " << strerror (errno);
       throw exc;
@@ -126,7 +126,7 @@ namespace mccore
     */
     
     if (::close (socket_id) == -1) {
-      //      CFatalSocketException exc ("socket closing failed",
+      //      FatalSocketException exc ("socket closing failed",
       //  			       __FILE__, __LINE__);
       //      exc << ": " << strerror (errno);
       //      throw exc;

@@ -3,8 +3,8 @@
 // Copyright © 2002-04 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Wed Jan 30 19:57:48 2002
-// $Revision: 1.6 $
-// $Id: sockstream.cc,v 1.6 2004-05-13 21:50:52 larosem Exp $
+// $Revision: 1.7 $
+// $Id: sockstream.cc,v 1.7 2004-06-30 18:17:09 thibaup Exp $
 //
 // This file is part of mccore.
 //
@@ -40,7 +40,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "CException.h"
+#include "Exception.h"
 #include "sockstream.h"
 
 #if defined(__sgi) || defined (__sun)
@@ -74,7 +74,7 @@ namespace mccore
     // Creating socket ---
     if ((socket_id = socket (AF_INET, SOCK_STREAM, 0)) < 0) 
       {
-	CFatalSocketException exc ("socket creation failed", __FILE__, __LINE__);
+	FatalSocketException exc ("socket creation failed", __FILE__, __LINE__);
 	exc << ": " << strerror (errno);
 	throw exc;
       }
@@ -99,7 +99,7 @@ namespace mccore
   { 
     if ((socket_id = socket (AF_INET, SOCK_STREAM, 0)) < 0) 
       {
-	CFatalSocketException exc ("socket creation failed", __FILE__, __LINE__);
+	FatalSocketException exc ("socket creation failed", __FILE__, __LINE__);
 	exc << ": " << strerror (errno);
 	throw exc;
       }
@@ -129,7 +129,7 @@ namespace mccore
     
     if (hp == NULL)
       {
-	CSocketException exc ("unknown host: ");
+	SocketException exc ("unknown host: ");
 	exc << host;
 	throw exc;
       }
@@ -142,7 +142,7 @@ namespace mccore
     
     if (connect (socket_id, (sockaddr*)&sin, sizeof (sin)) < 0)
       {
-	CConnectionException exc ("connection to ");
+	ConnectionException exc ("connection to ");
 	exc << host << " via port #" << port
 	    << " failed:\n\t" << strerror (errno);
 	throw exc;
@@ -174,7 +174,7 @@ namespace mccore
     
     if (r != n)
       {
-	CSocketException exc ("Warning: incomplete read (");
+	SocketException exc ("Warning: incomplete read (");
 	
 	exc << r << "/" << n << " bytes):\n\t" << strerror (errno);
 	throw exc;
@@ -191,7 +191,7 @@ namespace mccore
     
     if (w !=n )
       {
-	CSocketException exc ("Warning: incomplete write (");      
+	SocketException exc ("Warning: incomplete write (");      
 	exc << w << "/" << n << " bytes):\n\t" << strerror (errno);
 	throw exc;
       }

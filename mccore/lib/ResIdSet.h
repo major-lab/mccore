@@ -3,7 +3,7 @@
 // Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique,
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Oct 26 10:24:02 2000
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 // 
 //  This file is part of mccore.
 //  
@@ -30,7 +30,7 @@
 
 #include "ResId.h"
 #include "Messagestream.h"
-#include "CException.h"
+#include "Exception.h"
 
 
 
@@ -148,7 +148,7 @@ namespace mccore {
      * </pre>
      * It throws an exception if the range format is invalid.
      * @param str the string to parse.
-     * @exception CIntLibException.
+     * @exception IntLibException.
      */
     void _parse_and_insert (const char *str);
   public:
@@ -161,7 +161,7 @@ namespace mccore {
     void insert (const char *str) { 
       try {
 	_parse_and_insert (str); 
-      } catch (CIntLibException &e) {
+      } catch (IntLibException &e) {
 	gOut (2) << e << endl;
       }
     }

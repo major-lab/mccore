@@ -26,7 +26,7 @@
 #endif
 
 
-#include "CException.h"
+#include "Exception.h"
 #include "RiboseOptimizer5D.h"
 
 
@@ -110,21 +110,21 @@ namespace mccore
       shift_rate (s_shift_rate)
   {
     if (!base)
-      throw CIntLibException ("Need a base to create ribose optimizer");
+      throw IntLibException ("Need a base to create ribose optimizer");
   
     if (!(p5p || p3p))
-      throw CIntLibException ("Need at least one phosphate to create ribose optimizer");
+      throw IntLibException ("Need at least one phosphate to create ribose optimizer");
 
     if (p5p)
       {
 	if ((anc_P5p_it = p5p->find (AtomType::aP)) == p5p->end ())
 	  {
-	    CIntLibException ex ("Cannot build ribose: ");
+	    IntLibException ex ("Cannot build ribose: ");
 	    throw ex << (const char*)*AtomType::aP << " not found in linked 5' phosphate.";
 	  }
 	if ((anc_O5p_it = p5p->find (AtomType::aO5p)) == p5p->end ())
 	  {
-	    CIntLibException ex ("Cannot build ribose: ");
+	    IntLibException ex ("Cannot build ribose: ");
 	    throw ex << (const char*)*AtomType::aO5p << " not found in linked 5' phosphate.";
 	  }
 	check_O5p = true;
@@ -136,12 +136,12 @@ namespace mccore
       {
 	if ((anc_P3p_it = p3p->find (AtomType::aP)) == p3p->end ())
 	  {
-	    CIntLibException ex ("Cannot build ribose: ");
+	    IntLibException ex ("Cannot build ribose: ");
 	    throw ex << (const char*)*AtomType::aP << " not found in linked 3' phosphate.";
 	  }
 	if ((anc_O3p_it = p3p->find (AtomType::aO3p)) == p3p->end ())
 	  {
-	    CIntLibException ex ("Cannot build ribose: ");
+	    IntLibException ex ("Cannot build ribose: ");
 	    throw ex << (const char*)*AtomType::aO3p << " not found in linked 3' phosphate.";
 	  }
 	check_O3p = true;
@@ -153,17 +153,17 @@ namespace mccore
       {
 	if ((anc_N19_it = base->find (AtomType::aN9)) == base->end ())
 	  {
-	    CIntLibException ex ("Cannot build ribose: ");
+	    IntLibException ex ("Cannot build ribose: ");
 	    throw ex << (const char*)*AtomType::aN9 << " not found in linked base.";
 	  }
 	if ((anc_C1p_it = base->find (AtomType::aC1p)) == base->end ())
 	  {
-	    CIntLibException ex ("Cannot build ribose: ");
+	    IntLibException ex ("Cannot build ribose: ");
 	    throw ex << (const char*)*AtomType::aC1p << " not found in linked base.";
 	  }
 	if ((anc_C24_it = base->find (AtomType::aC4)) == base->end ())
 	  {
-	    CIntLibException ex ("Cannot build ribose: ");
+	    IntLibException ex ("Cannot build ribose: ");
 	    throw ex << (const char*)*AtomType::aC4 << " not found in linked base.";
 	  }
       }
@@ -171,23 +171,23 @@ namespace mccore
       {
 	if ((anc_N19_it = base->find (AtomType::aN1)) == base->end ())
 	  {
-	    CIntLibException ex ("Cannot build ribose: ");
+	    IntLibException ex ("Cannot build ribose: ");
 	    throw ex << (const char*)*AtomType::aN1 << " not found in linked base.";
 	  }
 	if ((anc_C1p_it = base->find (AtomType::aC1p)) == base->end ())
 	  {
-	    CIntLibException ex ("Cannot build ribose: ");
+	    IntLibException ex ("Cannot build ribose: ");
 	    throw ex << (const char*)*AtomType::aC1p << " not found in linked base.";
 	  }
 	if ((anc_C24_it = base->find (AtomType::aC2)) == base->end ())
 	  {
-	    CIntLibException ex ("Cannot build ribose: ");
+	    IntLibException ex ("Cannot build ribose: ");
 	    throw ex << (const char*)*AtomType::aC2 << " not found in linked base.";
 	  }
       }
     else
       {
-	CIntLibException ex ("Cannot build ribose linked to base type \"");
+	IntLibException ex ("Cannot build ribose linked to base type \"");
 	throw ex << (const char*)*base->getType () << "\".";
       }
 
@@ -375,17 +375,17 @@ namespace mccore
   {
     if (!((anc_C24_it->getType () == AtomType::aC2 && anc_N19_it->getType () == AtomType::aN1) ||
 	  (anc_C24_it->getType () == AtomType::aC4 && anc_N19_it->getType () == AtomType::aN9)))
-      throw CIntLibException ("mismatched anchor atom iterator for base atoms (C2,N1) or (C4,N9)");  
+      throw IntLibException ("mismatched anchor atom iterator for base atoms (C2,N1) or (C4,N9)");  
     if (anc_C1p_it->getType () != AtomType::aC1p)
-      throw CIntLibException ("mismatched anchor atom iterator for C1'");
+      throw IntLibException ("mismatched anchor atom iterator for C1'");
     if (check_O5p && anc_O5p_it->getType () != AtomType::aO5p)
-      throw CIntLibException ("mismatched anchor atom iterator for O5'");
+      throw IntLibException ("mismatched anchor atom iterator for O5'");
     if (check_O5p && anc_P5p_it->getType () != AtomType::aP)
-      throw CIntLibException ("mismatched anchor atom iterator for P(5')");
+      throw IntLibException ("mismatched anchor atom iterator for P(5')");
     if (check_O3p && anc_O3p_it->getType () != AtomType::aO3p)
-      throw CIntLibException ("mismatched anchor atom iterator for O3'");
+      throw IntLibException ("mismatched anchor atom iterator for O3'");
     if (check_O3p && anc_P3p_it->getType () != AtomType::aP)
-      throw CIntLibException ("mismatched anchor atom iterator for P(3')");
+      throw IntLibException ("mismatched anchor atom iterator for P(3')");
   }
 
 

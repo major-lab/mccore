@@ -12,7 +12,7 @@
 #include "ResidueType.h"
 #include "ResidueTypeStore.h"
 #include "Binstream.h"
-#include "CException.h"
+#include "Exception.h"
 
 
 namespace mccore
@@ -233,17 +233,17 @@ namespace mccore
   }
 
 
-  CException&
-  operator<< (CException& ex, const ResidueType &t)
+  Exception&
+  operator<< (Exception& ex, const ResidueType &t)
   {
-    return ex << (const char*)t;
+    return ex << t.toLongString ();
   }
 
   
-  CException&
-  operator<< (CException& ex, const ResidueType *t)
+  Exception&
+  operator<< (Exception& ex, const ResidueType *t)
   {
-    return t == 0 ? (ex << "null") : (ex << (const char*)*t);
+    return t == 0 ? (ex << "null") : (ex << t->toLongString ());
   }
 
   

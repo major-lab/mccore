@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <string>
 
-#include "CException.h"
+#include "Exception.h"
 #include "ExtendedResidue.h"
 #include "HBond.h"
 #include "PairingPattern.h"
@@ -128,7 +128,7 @@ namespace mccore {
 	    r3 = ref;
 	  }
 	else
-	  throw CIntLibException ("adjacent relation should be either in direction 5' or 3'.");
+	  throw IntLibException ("adjacent relation should be either in direction 5' or 3'.");
 
 	pVec.push_back (*r5->find (AtomType::aO3p));
 	pVec.push_back (*r3->find (AtomType::aP));

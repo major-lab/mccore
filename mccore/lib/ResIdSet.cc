@@ -3,7 +3,7 @@
 // Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Oct 26 10:24:02 2000
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 // 
 //  This file is part of mccore.
 //  
@@ -28,7 +28,7 @@
 
 
 #include "Binstream.h"
-#include "CException.h"
+#include "Exception.h"
 #include "Messagestream.h"
 #include "ResIdSet.h"
 
@@ -154,7 +154,7 @@ namespace mccore {
 		  }
 		else
 		  {
-		    CIntLibException exc ("Malformed residue id range", __FILE__, __LINE__);
+		    IntLibException exc ("Malformed residue id range", __FILE__, __LINE__);
 		    throw exc;
 		  }
 	      }

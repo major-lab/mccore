@@ -3,7 +3,7 @@
 // Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
-// $Revision: 1.22 $
+// $Revision: 1.23 $
 // 
 //  This file is part of mccore.
 //  
@@ -40,7 +40,7 @@ namespace mccore
   
   class AtomTypeStore;
   class Residue;
-  class CException;
+  class Exception;
   class iBinstream;
   class oBinstream;
   
@@ -57,7 +57,7 @@ namespace mccore
    *   - The charge and van der Waals radius<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: AtomType.h,v 1.22 2004-06-25 14:40:19 thibaup Exp $ 
+   * @version $Id: AtomType.h,v 1.23 2004-06-30 18:13:53 thibaup Exp $ 
    */
   class AtomType 
   {
@@ -522,14 +522,14 @@ namespace mccore
    * @param out the exception stream.
    * @return the exception stream used.
    */
-  CException& operator<< (CException& ex, const AtomType &t);
+  Exception& operator<< (Exception& ex, const AtomType &t);
 
   /**
    * Outputs to an exception  stream.
    * @param out the exception stream.
    * @return the exception stream used.
    */
-  CException& operator<< (CException& ex, const AtomType *t);
+  Exception& operator<< (Exception& ex, const AtomType *t);
   
   /**
    * Inputs the atom type.  The integer type is read and the type object is
