@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Exception.h
-// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-04 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 16:27:35 1999
-// $Revision: 1.1 $
-// $Id: Exception.h,v 1.1 2004-06-30 18:13:05 thibaup Exp $
+// $Revision: 1.2 $
+// $Id: Exception.h,v 1.2 2004-07-09 17:57:17 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -29,6 +29,7 @@
 
 
 #include <iostream>
+#include <exception>
 
 
 using namespace std;
@@ -47,7 +48,7 @@ namespace mccore
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
    */
-  class Exception
+  class Exception : public exception
   {
     /**
      * The information message about the exception.
@@ -78,7 +79,7 @@ namespace mccore
     /**
      * Destructs the exception.
      */
-    virtual ~Exception () { delete[] mMessage; }
+    virtual ~Exception () throw () { delete[] mMessage; }
 
     // OPERATORS ------------------------------------------------------------
 
@@ -92,10 +93,17 @@ namespace mccore
     // ACCESS ---------------------------------------------------------------
 
     /**
+     * Gets the message.  Deprecated method, use the what () method instead.
+     * @return the message string.
+     * @deprecated Use the what method instead.
+     */
+    const char* GetMessage () const { return mMessage; }
+
+    /**
      * Gets the message.
      * @return the message string.
      */
-    const char* GetMessage () const { return mMessage; }
+    virtual const char* what () const throw () { return mMessage; }
 
     // METHODS --------------------------------------------------------------
 
@@ -370,7 +378,7 @@ namespace mccore
     /**
      * Destructs the exception.
      */
-    ~IntLibException () { delete[] mFile; }
+    virtual ~IntLibException () throw () { delete[] mFile; }
 
     // OPERATORS ------------------------------------------------------------
 
@@ -570,7 +578,7 @@ namespace mccore
     /**
      * Destructs the exception.
      */
-    ~FatalSocketException () { delete[] mFile; }
+    ~FatalSocketException () throw () { delete[] mFile; }
 
     // OPERATORS ------------------------------------------------------------
 
@@ -653,7 +661,7 @@ namespace mccore
     /**
      * Destructs the exception.
      */
-    ~ConnectionException () { }
+    virtual ~ConnectionException () throw () { }
 
     // OPERATORS ------------------------------------------------------------
 
