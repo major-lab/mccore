@@ -66,7 +66,7 @@ namespace mccore
 	while (!eof () &&
 	       strcmp (buf, "//") != 0) {
 	  if (!isdigit(buf[0])) {
-	    for (int i=0; i<strlen (buf); ++i) {
+	    for (int i=0; i<(int)strlen (buf); ++i) {
 	      seq.push_back (toupper (buf[i]));
 	    }
 	  }

@@ -427,7 +427,7 @@ namespace mccore {
       return ts;
     
     Residue::const_iterator i, j, k, l;
-    MaximumFlowGraph< int, HBond, MapMatrix > graph;
+    MaximumFlowGraph< int, HBond > graph;
     map< Residue::const_iterator, int > atomToInt; 
     
     int node = 0;
@@ -504,6 +504,7 @@ namespace mccore {
 
 	  h.evalStatistically (*ra, *rb);
 	  //h.eval (*ra, *rb);
+	  
 	  if (h.getValue () > 0.01) {
 	    if (atomToInt.find (i) == atomToInt.end ()) {
 	      graph.insert (node);
@@ -522,6 +523,7 @@ namespace mccore {
 
 	  h.evalStatistically (*rb, *ra);
 	  //h.eval (*rb, *ra);
+
 	  if (h.getValue () > 0.01) {
 	    if (atomToInt.find (k) == atomToInt.end ()) {
 	      graph.insert (node);
@@ -547,6 +549,7 @@ namespace mccore {
 // 	cout << m->second << " : " << *m->first << endl;
 //       }
 //     }
+
 //     graph.output (cout);
     
     graph.preFlowPush (0, 1);
@@ -653,7 +656,7 @@ namespace mccore {
   {
     Residue::const_iterator i, j, k, l;
     set< const PropertyType* > ts;
-    int x, y;
+//     int x, y;
     
     vector< Residue::const_iterator > ra_at;
     vector< Residue::const_iterator > ran_at;

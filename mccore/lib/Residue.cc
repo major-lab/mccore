@@ -1435,11 +1435,11 @@ namespace mccore {
     return r.output (os);
   }
 
-  // ostream&
-//   operator<< (ostream &os, const Residue *r)
-//   {
-//     return r->output (os);
-//   }
+  ostream&
+  operator<< (ostream &os, const Residue *r)
+  {
+    return r->output (os);
+  }
 
   iBinstream& operator>> (iBinstream &ibs, Residue &res)
   {

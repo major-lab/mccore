@@ -5,8 +5,8 @@
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:57:11 2000
 ## Last Modified By : Patrick Gendron
-## Last Modified On : Tue Oct 28 11:15:02 2003
-## Update Count     : 154
+## Last Modified On : Mon Dec 15 16:35:22 2003
+## Update Count     : 164
 ## Status           : Ok.
 ###############################################################################
 #
@@ -118,11 +118,13 @@ SOURCES = zfstream.cc \
 	  Genbankstream.cc
 
 
-HEADERS = $(SOURCES:.cc=.h) Algo.h Path.h AdjacencyMatrix.h Graph.h \
+HEADERS = $(SOURCES:.cc=.h) Algo.h Path.h AdjacencyMatrix.h \
+AbstractGraph.h Graph.h ArrayGraph.h UndirectedArrayGraph.h GraphAlgo.h \
 UndirectedGraph.h MaximumFlowGraph.h \
 fstreambase.h fPdbstream.h zfPdbstream.h fBinstream.h zfBinstream.h \
 sBinstream.h SocketCommand.h SymmetricalMatrix.h SymmetricalMatrix.cc \
 stlio.h
+
 
 OBJECTS = $(SOURCES:.cc=.o)
 

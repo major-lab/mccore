@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.5 $
+// $Revision: 1.5.2.1 $
 // 
 //  This file is part of mccore.
 //  
@@ -52,7 +52,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: ExtendedResidue.h,v 1.5 2003-10-28 16:02:06 gendrop Exp $
+   * @version $Id: ExtendedResidue.h,v 1.5.2.1 2003-12-17 16:34:13 gendrop Exp $
    */
   class ExtendedResidue : public virtual Residue
   {
@@ -124,7 +124,7 @@ namespace mccore {
      * @param other the object to copy.
      * @return itself.
      */
-    virtual ExtendedResidue& operator= (const ExtendedResidue &other);
+    ExtendedResidue& operator= (const ExtendedResidue &other);
 
     // ACCESS ---------------------------------------------------------------
 

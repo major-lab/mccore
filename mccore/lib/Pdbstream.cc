@@ -3,7 +3,7 @@
 // Copyright © 1999, 2000-01, 03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.34 $
+// $Revision: 1.34.2.1 $
 // 
 //  This file is part of mccore.
 //  
@@ -615,7 +615,7 @@ namespace mccore {
 
     setResidueType (r.getType ());
     setResId (r.getResId ());
-    
+
     for (Residue::const_iterator i=r.begin (atomset->clone ()); i!=r.end (); ++i) {
     //    for (Residue::const_iterator i=r.begin (); i!=r.end (); ++i) {
       *this << *i << endl;
