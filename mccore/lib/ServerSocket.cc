@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:56 2001
-// $Revision: 1.17 $
-// $Id: ServerSocket.cc,v 1.17 2004-06-30 18:16:53 thibaup Exp $
+// $Revision: 1.17.2.1 $
+// $Id: ServerSocket.cc,v 1.17.2.1 2004-12-25 02:46:58 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -54,6 +54,7 @@ typedef int socklen_t;
 
 namespace mccore
 {
+  
   ServerSocket::ServerSocket (int thePort)
     : port (thePort)
   {
@@ -85,11 +86,7 @@ namespace mccore
     }
     
   }
-  
-  ServerSocket::~ServerSocket ()
-  {
-  }
-  
+
   
   sBinstream*
   ServerSocket::accept ()
@@ -111,6 +108,7 @@ namespace mccore
     
     return stream;
   }
+
   
   void
   ServerSocket::close ()

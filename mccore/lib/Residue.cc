@@ -1,10 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Residue.cc
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.56.2.1 $
-// $Id: Residue.cc,v 1.56.2.1 2004-12-16 17:09:22 larosem Exp $
+// $Revision: 1.56.2.2 $
+// $Id: Residue.cc,v 1.56.2.2 2004-12-25 02:44:52 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -58,7 +59,10 @@
 #define RAD(deg) (deg * M_PI / 180.0)
 #define DEG(rad) (rad * 180.0 / M_PI)
 
-namespace mccore {
+
+
+namespace mccore
+{
 
   // Parameters taken for AMBER all_nuc94.in
   const float Residue::C_H_DIST_CYC = 1.08f;    // C-H distance for aromatic C
@@ -85,8 +89,6 @@ namespace mccore {
   float Residue::s_rib_mindrop = 0.00001;
   float Residue::s_rib_shiftrate = 0.5;
   
-  // LIFECYCLE ------------------------------------------------------------
-
 
   Residue::Residue ()
     : rib_dirty_ref (true),
@@ -96,7 +98,6 @@ namespace mccore {
     this->setType (0);
     rib_C1p = rib_C2p = rib_C3p = rib_C4p = rib_C5p = rib_O2p = rib_O3p = rib_O4p = rib_O5p = rib_P = rib_O1P = rib_O2P = 0;
   }
-
   
 
   Residue::Residue (const ResidueType *t, const ResId &i)
@@ -145,13 +146,6 @@ namespace mccore {
     rib_built_count = other.rib_built_count;
   }
 
-  
-  Residue* 
-  Residue::clone () const 
-  { 
-    return new Residue (*this); 
-  }
-  
 
   Residue::~Residue () 
   {
@@ -341,9 +335,6 @@ namespace mccore {
   }
   
 
-  // OPERATORS -----------------------------------------------------------------
-
-
   Residue& 
   Residue::operator= (const Residue &other)
   {
@@ -387,9 +378,6 @@ namespace mccore {
   { 
     return resId < other.resId; 
   }
-
-
-  // ACCESS --------------------------------------------------------------------
 
 
   const ResId& 
@@ -530,8 +518,6 @@ namespace mccore {
     return this->rib_built_count;
   }
 
-  
-  // METHODS -------------------------------------------------------------------
 
   const HomogeneousTransfo
   Residue::getReferential () const
@@ -2217,9 +2203,6 @@ namespace mccore {
   }
     
   
-  // PRIVATE METHODS -----------------------------------------------------------
-  
-  
   Atom& 
   Residue::_get (size_type pos) const 
   {
@@ -2850,8 +2833,6 @@ namespace mccore {
     this->_add_ribose_hydrogens (true);
   }
   
-  // I/O -----------------------------------------------------------------------
-
 
   ostream&
   Residue::output (ostream &os) const 
@@ -2904,19 +2885,7 @@ namespace mccore {
     return obs;
   }
 
-
-  ostream&
-  operator<< (ostream &os, const Residue &r)
-  {
-    return r.output (os);
-  }
-
-  // ostream&
-  //   operator<< (ostream &os, const Residue *r)
-  //   {
-  //     return r->output (os);
-  //   }
-
+  
   Exception&
   operator<< (Exception& ex, const Residue &r)
   {
@@ -2945,7 +2914,6 @@ namespace mccore {
   }
 
 
-
   oPdbstream&
   operator<< (oPdbstream &ops, const Residue &res)
   {
@@ -2954,15 +2922,10 @@ namespace mccore {
   }
 
   
-
-  // ITERATORS -----------------------------------------------------------------
-
-
   Residue::ResidueIterator::ResidueIterator ()
     : res (0),
       filter (new AtomSetAll ())
-  {
-  }
+  { }
 
   
   Residue::ResidueIterator::ResidueIterator (Residue *r, AtomMap::iterator p)
@@ -2987,16 +2950,13 @@ namespace mccore {
     while (pos != last && ! (*filter) (res->_get (pos->second)))
       ++pos;
   }
-  
 
 
   Residue::ResidueIterator::ResidueIterator (const ResidueIterator &right)
     : res (right.res),
       pos (right.pos),
       filter (right.filter->clone ())
-  {
-  }
-
+  { }
 
 
   Residue::ResidueIterator::~ResidueIterator ()
@@ -3004,7 +2964,6 @@ namespace mccore {
     delete filter;
   }
   
-
 
   Residue::ResidueIterator&
   Residue::ResidueIterator::operator= (const ResidueIterator &right)
@@ -3020,7 +2979,6 @@ namespace mccore {
   }
 
 
-
   Residue::ResidueIterator&
   Residue::ResidueIterator::operator+= (difference_type k)
   {
@@ -3031,7 +2989,6 @@ namespace mccore {
 	--k;
     return *this;
   }
-
 
   
   Residue::iterator&
@@ -3044,7 +3001,6 @@ namespace mccore {
 	break;
     return *this;
   }
-
 
 
   Residue::iterator
@@ -3060,12 +3016,10 @@ namespace mccore {
   }
 
 
-
   Residue::ResidueConstIterator::ResidueConstIterator ()
     : res (0),
       filter (new AtomSetAll ())
   { }
-
 
 
   Residue::ResidueConstIterator::ResidueConstIterator (const Residue *r,
@@ -3093,13 +3047,11 @@ namespace mccore {
   }
 
 
-
   Residue::ResidueConstIterator::ResidueConstIterator (const Residue::const_iterator &right)
     : res (right.res),
       pos (right.pos),
       filter (right.filter->clone ())
   { }
-
 
 
   Residue::ResidueConstIterator::ResidueConstIterator (const Residue::iterator &right)
@@ -3109,12 +3061,10 @@ namespace mccore {
   { }
 
 
-
   Residue::ResidueConstIterator::~ResidueConstIterator ()
   {
     delete filter;
   }
-
 
 
   Residue::const_iterator&
@@ -3131,7 +3081,6 @@ namespace mccore {
   }
 
 
-
   Residue::const_iterator&
   Residue::ResidueConstIterator::operator= (const Residue::iterator &right)
   {
@@ -3141,7 +3090,6 @@ namespace mccore {
     filter = ((ResidueConstIterator&) right).filter->clone ();
     return *this;
   }
-
 
 
   Residue::const_iterator&
@@ -3156,7 +3104,6 @@ namespace mccore {
   }
 
 
-
   Residue::const_iterator&
   Residue::ResidueConstIterator::operator++ ()
   {
@@ -3167,7 +3114,6 @@ namespace mccore {
 	break;
     return *this;
   }
-
 
 
   Residue::const_iterator
@@ -3182,5 +3128,17 @@ namespace mccore {
     return ret;
   }
 
+}
+
+
+
+namespace std
+{
+  
+  ostream&
+  operator<< (ostream &os, const mccore::Residue &r)
+  {
+    return r.output (os);
+  }
 
 }

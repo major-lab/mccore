@@ -1,41 +1,42 @@
 //                              -*- Mode: C++ -*- 
 // Sequence.h
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr 25 10:12:06 2003
-// $Revision: 1.4 $
+// $Revision: 1.4.2.1 $
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _Sequence_h_
-#define _Sequence_h_
+#ifndef _mccore_Sequence_h_
+#define _mccore_Sequence_h_
 
 #include <iostream>
 #include <vector>
 
 #include "ResId.h"
 
-
 using namespace std;
+
+
 
 namespace mccore 
 {
-  
   class iBinstream;
   class iFastastream;
   class oBinstream;
@@ -50,7 +51,8 @@ namespace mccore
    * Well maybe not the smallest size since we are using a vector instead of
    * a table but, hey!, operations might be simpler!
    *
-   * @author Patrick Gendron
+   * @author Patrick Gendron (<a href="gendrop.iro.umontreal.ca">gendrop.iro.umontreal.ca</a>)
+   * @version $Id: Sequence.h,v 1.4.2.1 2004-12-25 02:46:50 larosem Exp $
    */
   class Sequence : public vector< char >
   {
@@ -157,22 +159,6 @@ namespace mccore
   };
   
   /**
-   * Reads a sequence from a raw stream.
-   * @param ips the input raw stream.
-   * @param seq the pointer to the new sequence.
-   * @return the used input stream.
-   */
-  istream& operator>> (istream &is, Sequence &seq);
-
-  /**
-   * Outputs the sequence to the raw stream.
-   * @param obs the output stream.
-   * @param seq the Sequence.
-   * @return the output stream used.
-   */
-  ostream& operator<< (ostream &os, const Sequence &seq);
-  
-  /**
    * Reads a sequence from a fasta stream.
    * @param ips the input fasta stream.
    * @param seq the pointer to the new sequence.
@@ -195,6 +181,29 @@ namespace mccore
    * @return the used input stream.
    */
   iGenbankstream& operator>> (iGenbankstream &is, Sequence &seq);
+  
+}
+
+
+
+namespace std
+{
+  
+  /**
+   * Reads a sequence from a raw stream.
+   * @param ips the input raw stream.
+   * @param seq the pointer to the new sequence.
+   * @return the used input stream.
+   */
+  istream& operator>> (istream &is, mccore::Sequence &seq);
+
+  /**
+   * Outputs the sequence to the raw stream.
+   * @param obs the output stream.
+   * @param seq the Sequence.
+   * @return the output stream used.
+   */
+  ostream& operator<< (ostream &os, const mccore::Sequence &seq);
   
 }
 

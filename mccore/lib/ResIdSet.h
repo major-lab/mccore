@@ -1,30 +1,30 @@
 //                              -*- Mode: C++ -*- 
 // ResIdSet.h
-// Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique,
+// Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique,
+//                     Université de Montréal
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Oct 26 10:24:02 2000
-// $Revision: 1.5 $
+// $Revision: 1.5.2.1 $
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _ResIdSet_h_
-#define _ResIdSet_h_
-
+#ifndef _mccore_ResIdSet_h_
+#define _mccore_ResIdSet_h_
 
 #include <set>
 
@@ -34,8 +34,8 @@
 
 
 
-namespace mccore {
-
+namespace mccore
+{
   class iBinstream;
   class oBinstream;
   
@@ -46,7 +46,7 @@ namespace mccore {
    * 
    * This class represents the idea of a range of residue id.
    *
-   * @author Martin Larose <larosem@iro.umontreal.ca>
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
    */
   class ResIdSet : public set< ResId >
   {
@@ -208,14 +208,6 @@ namespace mccore {
   };
   
   /**
-   * Outputs the set to an output stream.
-   * @param os the output stream.
-   * @param residset the set to display.
-   * @return the output stream.
-   */
-  ostream& operator<< (ostream &os, const ResIdSet &residset);
-  
-  /**
    * Inputs the residue id set from a binary stream.
    * @param ibs the input binary stream.
    * @param obj the residue id set where to put the residue ids.
@@ -230,6 +222,20 @@ namespace mccore {
    * @return the output binary stream.
    */
   oBinstream& operator<< (oBinstream &obs, const ResIdSet &obj);
+  
+}
+
+
+namespace std
+{
+
+  /**
+   * Outputs the set to an output stream.
+   * @param os the output stream.
+   * @param residset the set to display.
+   * @return the output stream.
+   */
+  ostream& operator<< (ostream &os, const mccore::ResIdSet &residset);
   
 }
 

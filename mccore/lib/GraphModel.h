@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:31:01 2004
-// $Revision: 1.1.2.3 $
+// $Revision: 1.1.2.4 $
 // 
 // This file is part of mccore.
 // 
@@ -23,8 +23,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _GraphModel_h_
-#define _GraphModel_h_
+#ifndef _mccore_GraphModel_h_
+#define _mccore_GraphModel_h_
 
 #include "AbstractModel.h"
 #include "Residue.h"
@@ -41,7 +41,7 @@ namespace mccore
   
   /**
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.h,v 1.1.2.3 2004-12-21 07:10:45 larosem Exp $
+   * @version $Id: GraphModel.h,v 1.1.2.4 2004-12-25 02:41:14 larosem Exp $
    */
   class GraphModel : public AbstractModel, public UndirectedGraph < Residue*, Relation*, float, float, less_deref< Residue > >
   {

@@ -1,14 +1,30 @@
 //                              -*- Mode: C++ -*- 
 // GraphAlgo.h
-// Copyright © 2003, 2004 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Fri Dec  5 16:47:26 2003
-// $Revision: 1.5.2.1 $
-// $Id: GraphAlgo.h,v 1.5.2.1 2004-12-16 22:29:27 larosem Exp $
+// $Revision: 1.5.2.2 $
+//
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-#ifndef _GraphAlgo_h_
-#define _GraphAlgo_h_
+
+#ifndef _mccore_GraphAlgo_h_
+#define _mccore_GraphAlgo_h_
 
 #include <algorithm>
 #include <assert.h>
@@ -40,8 +56,8 @@ namespace mccore
    * Consequently, they are to be called with node ids instead of
    * actual nodes.
    *
-   * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: GraphAlgo.h,v 1.5.2.1 2004-12-16 22:29:27 larosem Exp $
+   * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
+   * @version $Id: GraphAlgo.h,v 1.5.2.2 2004-12-25 02:40:49 larosem Exp $
    */
   class GraphAlgo 
   {

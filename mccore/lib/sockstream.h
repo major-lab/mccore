@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // sockstream.h
 // Copyright © 2002-04 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Thu Jan 31 15:21:36 2002
-// $Revision: 1.5 $
-// $Id: sockstream.h,v 1.5 2004-05-13 21:51:03 larosem Exp $
+// $Revision: 1.5.2.1 $
 // 
 // This file is part of mccore.
 // 
@@ -23,8 +23,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _sockstream_h_
-#define _sockstream_h_
+#ifndef _mccore_sockstream_h_
+#define _mccore_sockstream_h_
 
 #include <iostream>
 
@@ -36,7 +36,8 @@ using namespace std;
 
 
 
-namespace mccore {
+namespace mccore
+{
   /**
    * @short Implementation of a socket stream buffer.
    *
@@ -49,7 +50,8 @@ namespace mccore {
    * This is necessary since a read interrupted by a SIGNAL would not empty
    * the read buffer and desynchronize the client and server...
    *
-   * @author Patrick Gendron <gendrop@iro.umontreal.ca> 
+   * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
+   * @version $Id: sockstream.h,v 1.5.2.1 2004-12-25 02:47:29 larosem Exp $
    */
   class sockstreambuf : public streambuf
   {

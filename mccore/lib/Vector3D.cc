@@ -1,26 +1,27 @@
 //                              -*- Mode: C++ -*- 
 // Vector3D.cc
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Wed Mar  5 15:05:43 2003
-// $Revision: 1.5 $
+// $Revision: 1.5.2.1 $
+// $Id: Vector3D.cc,v 1.5.2.1 2004-12-25 02:48:21 larosem Exp $
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifdef HAVE_CONFIG_H
@@ -30,40 +31,13 @@
 #include <iomanip>
 
 #include "Binstream.h"
-#include "Vector3D.h"
 #include "HomogeneousTransfo.h"
-
-namespace mccore {
-
-
-  // LIFECYCLE -----------------------------------------------------------------
+#include "Vector3D.h"
 
 
-  Vector3D::Vector3D () 
-    : x (0), y (0), z (0) 
-  {
-  }
 
-
-  Vector3D::Vector3D (float xp, float yp, float zp)
-    : x (xp), y (yp), z (zp) 
-  {
-  }
-
-
-  Vector3D::Vector3D (const Vector3D &other) 
-    : x (other.x), y (other.y), z (other.z) 
-  {
-  }
-  
-
-  Vector3D::~Vector3D () 
-  {
-  }
-
-  
-  // METHODS -------------------------------------------------------------------
-
+namespace mccore
+{
 
   float 
   Vector3D::angle(const Vector3D &a, const Vector3D &c) const
@@ -130,9 +104,6 @@ namespace mccore {
   }
 
 
-  // I/O  -----------------------------------------------------------------
-  
-  
   ostream &
   Vector3D::output (ostream &out) const 
   {
@@ -147,13 +118,6 @@ namespace mccore {
   }
   
 
-  ostream &
-  operator<< (ostream &out, const Vector3D &v)
-  {
-    return v.output (out);
-  }
-  
-  
   iBinstream& 
   operator>> (iBinstream &ibs, Vector3D &p)
   {
@@ -171,9 +135,6 @@ namespace mccore {
   {
     return obs << p.getX () << p.getY () << p.getZ ();
   }
-
-
-  // NON-MEMBER FUNCTIONS ------------------------------------------------------
 
 
   const Vector3D
@@ -222,5 +183,17 @@ namespace mccore {
     return result /= value;
   }
 
+}
 
+
+
+namespace std
+{
+  
+  ostream &
+  operator<< (ostream &out, const mccore::Vector3D &v)
+  {
+    return v.output (out);
+  }
+  
 }

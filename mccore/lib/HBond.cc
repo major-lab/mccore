@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // HBond.cc
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
+//                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu Mar 20 18:05:28 2003
-// $Revision: 1.11.4.2 $
-// $Id: HBond.cc,v 1.11.4.2 2004-12-24 08:33:27 larosem Exp $
+// $Revision: 1.11.4.3 $
+// $Id: HBond.cc,v 1.11.4.3 2004-12-25 02:41:19 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -35,12 +35,11 @@
 #include <cmath>
 #include <iomanip>
 
-#include "HBond.h"
-
-#include "AtomType.h"
-#include "Residue.h"
 #include "Atom.h"
+#include "AtomType.h"
+#include "HBond.h"
 #include "Pdbstream.h"
+#include "Residue.h"
 
 
 

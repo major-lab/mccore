@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Wed Apr  9 13:38:51 2003
-// $Revision: 1.8 $
-// $Id: stlio.h,v 1.8 2004-09-19 03:38:36 larosem Exp $
+// $Revision: 1.8.4.1 $
+// $Id: stlio.h,v 1.8.4.1 2004-12-25 02:48:03 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -24,8 +24,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _stlio_h_
-#define _stlio_h_
+#ifndef _mccore_stlio_h_
+#define _mccore_stlio_h_
 
 #include <functional>
 #include <iostream>
@@ -33,6 +33,8 @@
 #include <vector>
 #include <list>
 #include <map>
+
+
 
 namespace std
 {

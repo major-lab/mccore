@@ -4,7 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.32.2.5 $
+// $Revision: 1.32.2.6 $
+// $Id: Relation.cc,v 1.32.2.6 2004-12-25 02:44:01 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -1172,7 +1173,6 @@ namespace mccore
   }
 
 
-
   const PropertyType* 
   Relation::translatePairing (const Residue* ra, const Residue *rb, 
 			      list< HBondFlow > &hbf, 
@@ -1211,4 +1211,5 @@ namespace std
   {
     return r->write (os);
   }
+  
 }

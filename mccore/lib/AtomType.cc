@@ -4,8 +4,8 @@
 //                     Univesité de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 15:00:09 2003
-// $Revision: 1.17.2.1 $
-// $Id: AtomType.cc,v 1.17.2.1 2004-12-16 17:08:03 larosem Exp $
+// $Revision: 1.17.2.2 $
+// $Id: AtomType.cc,v 1.17.2.2 2004-12-25 02:39:29 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -235,20 +235,6 @@ namespace mccore
   }
 
 
-  ostream &
-  operator<< (ostream &out, const AtomType &a)
-  {
-    return a.output (out);
-  }
-  
-
-  ostream &
-  operator<< (ostream &out, const AtomType *a)
-  {
-    return (0 == a ? AtomType::aNull : a)->output (out);
-  }
-
-  
   Exception&
   operator<< (Exception& ex, const AtomType &t)
   {
@@ -284,6 +270,26 @@ namespace mccore
     t = AtomType::parseType (str);
     delete[] str;
     return ibs;
+  }
+
+}
+
+
+
+namespace std
+{
+
+  ostream &
+  operator<< (ostream &out, const mccore::AtomType &a)
+  {
+    return a.output (out);
+  }
+  
+
+  ostream &
+  operator<< (ostream &out, const mccore::AtomType *a)
+  {
+    return (0 == a ? mccore::AtomType::aNull : a)->output (out);
   }
 
 }

@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.21.2.1 $
+// $Revision: 1.21.2.2 $
 //
 // This file is part of mccore.
 // 
@@ -23,8 +23,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _Model_h_
-#define _Model_h_
+#ifndef _mccore_Model_h_
+#define _mccore_Model_h_
 
 #include <iostream>
 #include <vector>
@@ -57,8 +57,8 @@ namespace mccore
    * - The container contains pointers to residues but dereferenced
    *   iterators yields object.
    *
-   * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Model.h,v 1.21.2.1 2004-12-10 03:45:00 larosem Exp $
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: Model.h,v 1.21.2.2 2004-12-25 02:42:14 larosem Exp $
    */
   class Model : public AbstractModel
   {

@@ -1,10 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // PropertyType.cc
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.12.4.1 $
-// $Id: PropertyType.cc,v 1.12.4.1 2004-12-16 17:08:48 larosem Exp $
+// $Revision: 1.12.4.2 $
+// $Id: PropertyType.cc,v 1.12.4.2 2004-12-25 02:43:25 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -285,20 +286,6 @@ namespace mccore
   }
 
 
-  ostream &
-  operator<< (ostream &out, const PropertyType &t)
-  {
-    return t.output (out);
-  }
-  
-
-  ostream &
-  operator<< (ostream &out, const PropertyType *t)
-  {
-    return (t == 0 ? PropertyType::pNull : t)->output (out);
-  }
-
-  
   Exception&
   operator<< (Exception& ex, const PropertyType &t)
   {
@@ -334,6 +321,25 @@ namespace mccore
     t = PropertyType::parseType (str);
     delete[] str;
     return ibs;
+  }
+
+}
+
+
+namespace std
+{
+
+  ostream &
+  operator<< (ostream &out, const mccore::PropertyType &t)
+  {
+    return t.output (out);
+  }
+  
+
+  ostream &
+  operator<< (ostream &out, const mccore::PropertyType *t)
+  {
+    return (t == 0 ? mccore::PropertyType::pNull : t)->output (out);
   }
 
 }

@@ -3,27 +3,28 @@
 // Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
-// $Revision: 1.32.2.1 $
+// Created On       : 
+// $Revision: 1.32.2.2 $
 // 
-//  This file is part of mccore.
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _AtomType_h_
-#define _AtomType_h_
+#ifndef _mccore_AtomType_h_
+#define _mccore_AtomType_h_
 
 
 #include <iostream>
@@ -56,7 +57,7 @@ namespace mccore
    *   - The charge and van der Waals radius<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: AtomType.h,v 1.32.2.1 2004-12-16 17:08:08 larosem Exp $ 
+   * @version $Id: AtomType.h,v 1.32.2.2 2004-12-25 02:39:35 larosem Exp $ 
    */
   class AtomType 
   {
@@ -544,20 +545,6 @@ namespace mccore
   };
   
   /**
-   * Outputs to a stream.
-   * @param out the output stream.
-   * @return the output stream used.
-   */
-  ostream &operator<< (ostream &out, const AtomType &a);
-
-  /**
-   * Outputs to a stream.
-   * @param out the output stream.
-   * @return the output stream used.
-   */
-  ostream &operator<< (ostream &out, const AtomType *a);
-
-  /**
    * Outputs to an exception stream.
    * @param out the exception stream.
    * @return the exception stream used.
@@ -590,6 +577,27 @@ namespace mccore
    */
   oBinstream& operator<< (oBinstream &out, const AtomType *t);
   
+}
+
+
+
+namespace std
+{
+  
+  /**
+   * Outputs to a stream.
+   * @param out the output stream.
+   * @return the output stream used.
+   */
+  ostream &operator<< (ostream &out, const mccore::AtomType &a);
+
+  /**
+   * Outputs to a stream.
+   * @param out the output stream.
+   * @return the output stream used.
+   */
+  ostream &operator<< (ostream &out, const mccore::AtomType *a);
+
 }
 
 #endif

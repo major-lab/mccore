@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:36 2003
-// $Revision: 1.4.2.1 $
+// $Revision: 1.4.2.2 $
 // 
 // This file is part of mccore.
 // 
@@ -48,8 +48,8 @@ namespace mccore
    *
    * This is a collection of mccore Models in a simple STL list.
    *
-   * @author Martin Larose (<larosem@iro.umontreal.ca>)
-   * @version $Id: Molecule.h,v 1.4.2.1 2004-12-10 03:45:07 larosem Exp $
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: Molecule.h,v 1.4.2.2 2004-12-25 02:42:24 larosem Exp $
    */
   class Molecule
   {
@@ -249,7 +249,7 @@ namespace mccore
      * @param key the key.
      * @param value the value.
      */
-    void setProperty (const char *key, const char *value);
+    void setProperty (const string &key, const string &value);
     
     /**
      * Gets the property map.

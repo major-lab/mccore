@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.3.2.3 $
-// $Id: Exception.cc,v 1.3.2.3 2004-12-23 22:42:33 larosem Exp $
+// $Revision: 1.3.2.4 $
+// $Id: Exception.cc,v 1.3.2.4 2004-12-25 02:39:56 larosem Exp $
 //
 // This file is part of mccore.
 //
@@ -31,6 +31,7 @@
 #include <sstream>
 
 #include "Exception.h"
+
 
 
 namespace mccore

@@ -1,33 +1,33 @@
 //                              -*- Mode: C++ -*- 
 // ResId.h
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
+//                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:45:21 2003
-// $Revision: 1.12 $
+// $Revision: 1.12.2.1 $
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _ResId_h_
-#define _ResId_h_
+#ifndef _mccore_ResId_h_
+#define _mccore_ResId_h_
 
 #include <iostream>
-#include <stdlib.h>
+#include <cstdlib>
 
 using namespace std;
 
@@ -35,7 +35,6 @@ using namespace std;
 
 namespace mccore
 {
-
   class Exception;
   class iBinstream;
   class oBinstream;
@@ -49,7 +48,8 @@ namespace mccore
    *
    * "(?:'(.)'|([^0-9]))?([0-9]+)"
    *
-   * @author Patrick Gendron <gendrop@iro.umontreal.ca>
+   * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
+   * @version $Id: ResId.h,v 1.12.2.1 2004-12-25 02:44:23 larosem Exp $
    */
   class ResId
   {
@@ -222,21 +222,12 @@ namespace mccore
   };
 
   /**
-   * Outputs the residue id to the stream.
-   * @param os the output stream.
-   * @param obj the residue id.
-   * @return the used output stream.
-   */
-  ostream& operator<< (ostream &os, const ResId &obj);
-
-  /**
    * Outputs the residue id to the exception stream.
    * @param os the exception stream.
    * @param obj the residue id.
    * @return the used exception stream.
    */
   Exception& operator<< (Exception& ex, const ResId &resid);
-  
   
   /**
    * Inputs the residue id from the binary stream.
@@ -245,9 +236,7 @@ namespace mccore
    * @return the used input binary stream.
    */
   iBinstream& operator>> (iBinstream &ibs, ResId &obj);
-  
-  
-  
+    
   /**
    * Outputs the residue id to the binary stream.
    * @param obs the output binary stream.
@@ -255,8 +244,21 @@ namespace mccore
    * @return the used output binary stream.
    */
   oBinstream& operator<< (oBinstream &obs, const ResId &obj);
-  
 
 }
+
+
+namespace std
+{
+  
+  /**
+   * Outputs the residue id to the stream.
+   * @param os the output stream.
+   * @param obj the residue id.
+   * @return the used output stream.
+   */
+  ostream& operator<< (ostream &os, const mccore::ResId &obj);
+  
+}  
 
 #endif

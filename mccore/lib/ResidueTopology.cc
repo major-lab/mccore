@@ -4,7 +4,8 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 21 15:30:27 2003
-// $Revision: 1.5.2.1 $
+// $Revision: 1.5.2.2 $
+// $Id: ResidueTopology.cc,v 1.5.2.2 2004-12-25 02:45:17 larosem Exp $
 // 
 // This file is part of mccore.
 // 

@@ -1,9 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // MaximumFlowGraph.h
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Mon Apr  7 18:28:55 2003
-// $Revision: 1.10.4.6 $
+// $Revision: 1.10.4.7 $
 // 
 // This file is part of mccore.
 // 
@@ -47,8 +48,8 @@ namespace mccore
    *      float getValue ()
    * </pre>
    * for flow calculation.
-   * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: MaximumFlowGraph.h,v 1.10.4.6 2004-12-24 08:35:04 larosem Exp $
+   * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
+   * @version $Id: MaximumFlowGraph.h,v 1.10.4.7 2004-12-25 02:41:55 larosem Exp $
    */
   template< class V,
 	    class E,

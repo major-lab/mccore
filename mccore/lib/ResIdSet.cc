@@ -1,31 +1,32 @@
 //                              -*- Mode: C++ -*- 
 // ResIdSet.cc
-// Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Oct 26 10:24:02 2000
-// $Revision: 1.6 $
+// $Revision: 1.6.2.1 $
+// $Id: ResIdSet.cc,v 1.6.2.1 2004-12-25 02:44:31 larosem Exp $
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
-
 
 #include "Binstream.h"
 #include "Exception.h"
@@ -57,14 +58,14 @@ strsep (char **stringp, const char *delim)
 
 
 
-namespace mccore {
+namespace mccore
+{
   
   ResIdSet::ResIdSet (int resno, char chainid)
     : mIndex (begin ())
   {
     insert (resno, chainid);
   }
-  
   
   
   ResIdSet&
@@ -79,14 +80,12 @@ namespace mccore {
   }
   
   
-  
   ResIdSet&
   ResIdSet::operator++ ()
   {
     mIndex++;
     return *this;
   }
-
 
 
   ResIdSet
@@ -98,7 +97,6 @@ namespace mccore {
   }
 
 
-
   char
   ResIdSet::getChainId () const
   {
@@ -106,13 +104,11 @@ namespace mccore {
   }
 
 
-
   int
   ResIdSet::getResNo () const
   { 
     return (*mIndex).getResNo ();
   }
-
 
 
   void
@@ -165,7 +161,6 @@ namespace mccore {
   }
 
 
-
   void
   ResIdSet::insert (int resno, char chainid)
   {
@@ -173,11 +168,46 @@ namespace mccore {
   }
 
 
-
-  ostream&
-  operator<< (ostream &os, const ResIdSet &residset)
+  iBinstream&
+  operator>> (iBinstream &ibs, ResIdSet &obj)
   {
-    ResIdSet::const_iterator cit1, cit2;
+    ResIdSet::size_type sz;
+
+    obj.clear ();
+    ibs >> sz;
+    for (; sz > 0; --sz)
+      {
+	ResId id;
+
+	ibs >> id;
+	obj.insert (obj.end (), id);
+      }
+    return ibs;
+  }
+
+  
+  oBinstream&
+  operator<< (oBinstream &obs, const ResIdSet &obj)
+  {
+    ResIdSet::const_iterator cit;
+  
+    obs << obj.size ();
+    for (cit = obj.begin (); cit != obj.end (); ++cit)
+      obs << *cit;
+    return obs;
+  }
+
+}
+
+
+
+namespace std
+{
+  
+  ostream&
+  operator<< (ostream &os, const mccore::ResIdSet &residset)
+  {
+    mccore::ResIdSet::const_iterator cit1, cit2;
     
     cit1 = residset.begin ();
     if (cit1 != residset.end ())
@@ -205,36 +235,4 @@ namespace mccore {
     return os;
   }
 
-
-
-  iBinstream&
-  operator>> (iBinstream &ibs, ResIdSet &obj)
-  {
-    ResIdSet::size_type sz;
-
-    obj.clear ();
-    ibs >> sz;
-    for (; sz > 0; --sz)
-      {
-	ResId id;
-
-	ibs >> id;
-	obj.insert (obj.end (), id);
-      }
-    return ibs;
-  }
-
-
-
-  oBinstream&
-  operator<< (oBinstream &obs, const ResIdSet &obj)
-  {
-    ResIdSet::const_iterator cit;
-  
-    obs << obj.size ();
-    for (cit = obj.begin (); cit != obj.end (); ++cit)
-      obs << *cit;
-    return obs;
-  }
-
-}
+}  

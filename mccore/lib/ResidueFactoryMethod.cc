@@ -1,41 +1,41 @@
 //                              -*- Mode: C++ -*- 
 // ResidueFactoryMethod.cc
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
-// Author           : Patrick Gendron
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal.
+// Author           : Martin Larose
 // Created On       : Thu Mar 20 16:21:52 2003
-// Last Modified By : Patrick Gendron
-// Last Modified On : Tue Jun  3 09:57:40 2003
-// Update Count     : 8
-// Status           : Unknown.
+// $Revision: 1.2.6.1 $
+// $Id: ResidueFactoryMethod.cc,v 1.2.6.1 2004-12-25 02:44:58 larosem Exp $
 //
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
-
+#include "ExtendedResidue.h"
 #include "ResidueFactoryMethod.h"
 #include "Residue.h"
-#include "ExtendedResidue.h"
 
-namespace mccore {
 
+
+namespace mccore
+{
 
   Residue* 
   ResidueFM::createResidue () const

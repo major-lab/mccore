@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Messagestream.cc
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Wed Jul  9 11:25:19 2003
-// $Revision: 1.3 $
-// $Id: Messagestream.cc,v 1.3 2003-12-23 14:50:08 larosem Exp $
+// $Revision: 1.3.2.1 $
+// $Id: Messagestream.cc,v 1.3.2.1 2004-12-25 02:41:59 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -32,8 +32,11 @@
 
 
 
-oMessagestream out (cout, 2);
-Messagestream &gOut = out;
+namespace mccore
+{
+  
+  oMessagestream gOut (cout, 2);
 
-oMessagestream err (cerr, 2);
-Messagestream &gErr = err;
+  oMessagestream gErr (cerr, 2);
+
+}

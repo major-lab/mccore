@@ -1,59 +1,44 @@
 //                              -*- Mode: C++ -*- 
 // ExtendedResidue.cc
-// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-04 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.24 $
+// $Revision: 1.24.2.1 $
+// $Id: ExtendedResidue.cc,v 1.24.2.1 2004-12-25 02:40:04 larosem Exp $
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
+#include "Exception.h"
 #include "ExtendedResidue.h"
 #include "Messagestream.h"
-#include "Exception.h"
-#include "stlio.h"
+#include "ResId.h"
+#include "ResidueType.h"
 
-namespace mccore {
+
+
+namespace mccore
+{
   
-  // LIFECYCLE -----------------------------------------------------------------
-
-  ExtendedResidue::ExtendedResidue () 
-    : Residue (), placed (true)
-  {
-
-  }
-
-
-  ExtendedResidue::ExtendedResidue (const ResidueType *t, const ResId &i) 
-    : Residue (t, i) , placed (true)
-  {
-
-  } 
-  
-  ExtendedResidue::ExtendedResidue (const ResidueType *t, const ResId &i, vector< Atom > &vec)
-    : Residue (t, i, vec) , placed (true)
-  {
-
-  }
-
   ExtendedResidue::ExtendedResidue (const ExtendedResidue &other)
     : Residue (other)
   {
@@ -65,22 +50,6 @@ namespace mccore {
     this->tfo = other.tfo;
     this->placed = other.placed;
   }
-
-
-  Residue* 
-  ExtendedResidue::clone () const 
-  { 
-    return new ExtendedResidue (*this); 
-  }
-  
-  
-  ExtendedResidue::~ExtendedResidue () 
-  {
-    this->clear ();
-  }
-
-
-  // OPERATORS -----------------------------------------------------------------
 
 
   ExtendedResidue& 
@@ -101,28 +70,6 @@ namespace mccore {
     return *this;
   }
 
-
-  // ACCESS --------------------------------------------------------------------
-
-  
-  
-  // METHODS -------------------------------------------------------------------
-
-
-  const HomogeneousTransfo
-  ExtendedResidue::getReferential () const
-  {
-    return this->tfo; 
-  }
-
-
-  void 
-  ExtendedResidue::setReferential (const HomogeneousTransfo& m) 
-  { 
-    this->tfo = m; 
-    this->_displace ();
-  }
-  
 
   void 
   ExtendedResidue::insert (const Atom &atom)
@@ -271,7 +218,6 @@ namespace mccore {
     }
   }
 
-  // PRIVATE METHODS------------------------------------------------------------
 
   Atom*
   ExtendedResidue::_get_or_create (const AtomType *aType)
@@ -297,6 +243,18 @@ namespace mccore {
 
   
   void
+  ExtendedResidue::_build_ribose_postprocess (const HomogeneousTransfo& referential,
+					      bool build5p, bool build3p)
+  {
+    // place built ribose's atoms back in referential
+
+    // TODO: place only ribose atoms...
+    this->_displace (); // -> place all atoms :(
+    this->_add_ribose_hydrogens (true);
+  }
+  
+  
+  void
   ExtendedResidue::_place () const
   {
     if (false == this->placed)
@@ -314,24 +272,13 @@ namespace mccore {
       this->placed = true;
     }
   }
+
   
-  void ExtendedResidue::_displace () const
+  void
+  ExtendedResidue::_displace () const
   {
     this->placed = false;
     this->_place ();
   }
 
-  void
-  ExtendedResidue::_build_ribose_postprocess (const HomogeneousTransfo& referential,
-					      bool build5p, bool build3p)
-  {
-    // place built ribose's atoms back in referential
-
-    // TODO: place only ribose atoms...
-    this->_displace (); // -> place all atoms :(
-    this->_add_ribose_hydrogens (true);
-  }
-  
-  // I/O -----------------------------------------------------------------------
-  
 }

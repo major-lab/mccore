@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.29.4.1 $
-// $Id: ResidueType.h,v 1.29.4.1 2004-12-16 17:09:51 larosem Exp $
+// $Revision: 1.29.4.2 $
+// $Id: ResidueType.h,v 1.29.4.2 2004-12-25 02:45:37 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -24,8 +24,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _ResidueType_h_
-#define _ResidueType_h_
+#ifndef _mccore_ResidueType_h_
+#define _mccore_ResidueType_h_
 
 #include <iostream>
 #include <string>
@@ -53,7 +53,7 @@ namespace mccore
    *   - The nature of a type (nucleic acid (pur/pyr) or amino acid)<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueType.h,v 1.29.4.1 2004-12-16 17:09:51 larosem Exp $
+   * @version $Id: ResidueType.h,v 1.29.4.2 2004-12-25 02:45:37 larosem Exp $
    */
   class ResidueType
   {    
@@ -510,20 +510,6 @@ namespace mccore
   };
 
   /**
-   * Outputs to a stream.
-   * @param out the output stream.
-   * @return the output stream used.
-   */
-  ostream &operator<< (ostream &out, const ResidueType &t);
-
-  /**
-   * Outputs to a stream.
-   * @param out the output stream.
-   * @return the output stream used.
-   */
-  ostream &operator<< (ostream &out, const ResidueType *t);
-
-  /**
    * Outputs to an exception stream.
    * @param out the exception stream.
    * @return the exception stream used.
@@ -556,6 +542,27 @@ namespace mccore
    */
   oBinstream& operator<< (oBinstream &out, const ResidueType *t);
   
+}
+
+
+
+namespace std
+{
+  
+  /**
+   * Outputs to a stream.
+   * @param out the output stream.
+   * @return the output stream used.
+   */
+  ostream &operator<< (ostream &out, const mccore::ResidueType &t);
+
+  /**
+   * Outputs to a stream.
+   * @param out the output stream.
+   * @return the output stream used.
+   */
+  ostream &operator<< (ostream &out, const mccore::ResidueType *t);
+
 }
 
 #endif

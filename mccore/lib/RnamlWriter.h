@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.2.2.1 $
-// $Id: RnamlWriter.h,v 1.2.2.1 2004-12-10 03:45:38 larosem Exp $
+// $Revision: 1.2.2.2 $
+// $Id: RnamlWriter.h,v 1.2.2.2 2004-12-25 02:46:27 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -39,8 +39,8 @@ namespace rnaml
 
 
 
-namespace mccore {
-  
+namespace mccore
+{
   class Atom;
   class AbstractModel;
   class Molecule;
@@ -54,7 +54,7 @@ namespace mccore {
    * This class writes the mccore objects into a stream.  The objects are
    * transformed into rnamlObjects, then outputted to the stream.
    *
-   * @author Martin Larose (<larosem@iro.umontreal.ca>).
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>).
    */
   class RnamlWriter
   {

@@ -26,10 +26,11 @@
 #include <config.h>
 #endif
 
-#include "ResidueType.h"
-#include "ResidueTypeStore.h"
 #include "Binstream.h"
 #include "Exception.h"
+#include "ResidueType.h"
+#include "ResidueTypeStore.h"
+
 
 
 namespace mccore
@@ -232,20 +233,6 @@ namespace mccore
   }
 
 
-  ostream &
-  operator<< (ostream &out, const ResidueType &t)
-  {
-    return t.output (out);
-  }
-  
-
-  ostream &
-  operator<< (ostream &out, const ResidueType *t)
-  {
-    return (0 == t ? ResidueType::rNull : t)->output (out);
-  }
-
-
   Exception&
   operator<< (Exception& ex, const ResidueType &t)
   {
@@ -283,5 +270,25 @@ namespace mccore
     return ibs;
   }
 
+}
+
+
+
+namespace std
+{
+  
+  ostream &
+  operator<< (ostream &out, const mccore::ResidueType &t)
+  {
+    return t.output (out);
+  }
+  
+
+  ostream &
+  operator<< (ostream &out, const mccore::ResidueType *t)
+  {
+    return (0 == t ? mccore::ResidueType::rNull : t)->output (out);
+  }
 
 }
+

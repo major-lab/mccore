@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.5.2.1 $
-// $Id: RnamlWriter.cc,v 1.5.2.1 2004-12-10 03:45:35 larosem Exp $
+// $Revision: 1.5.2.2 $
+// $Id: RnamlWriter.cc,v 1.5.2.2 2004-12-25 02:46:21 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -58,8 +58,8 @@
 
 
 
-namespace mccore {
-
+namespace mccore
+{
   
   RnamlWriter::RnamlWriter (const char *name, bool zipped)
     : ps (0)
@@ -90,13 +90,11 @@ namespace mccore {
   }
   
   
-  
   RnamlWriter::~RnamlWriter ()
   {
     if (0 != ps)
       delete ps;
   }
-  
   
   
   rnaml::Atom*
@@ -109,7 +107,6 @@ namespace mccore {
     a->setCoordinates (atom.getX (), atom.getY (), atom.getZ ());
     return a;
   }
-  
   
   
   rnaml::Base*
@@ -145,7 +142,6 @@ namespace mccore {
   }
   
   
-  
   rnaml::Model*
   RnamlWriter::toRnaml (const AbstractModel &model)
   {
@@ -157,7 +153,6 @@ namespace mccore {
       m->addBase (RnamlWriter::toRnaml (*cit));
     return m;
   }
-  
   
   
   rnaml::Molecule*
@@ -213,14 +208,12 @@ namespace mccore {
   }
   
   
-  
   void
   RnamlWriter::close ()
   {
     if (0 != ps)
       ps->close ();
   }
-  
   
   
   void

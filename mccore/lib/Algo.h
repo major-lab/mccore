@@ -6,25 +6,25 @@
 // Created On       : Wed Feb 14 15:33:58 2001
 // $Revision $
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _Algo_h_
-#define _Algo_h_
+#ifndef _mccore_Algo_h_
+#define _mccore_Algo_h_
 
 #include <algorithm>
 #include <cmath>
@@ -50,7 +50,7 @@ namespace mccore {
    * the functions may be called with const_iterator and iterator types.
    *
    * @author Sebastien Lemieux
-   * @version $Id: Algo.h,v 1.20 2004-12-06 21:36:07 thibaup Exp $
+   * @version $Id: Algo.h,v 1.20.2.1 2004-12-25 02:38:57 larosem Exp $
    */
   class Algo
   {

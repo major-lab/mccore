@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // AtomTypeStore.h
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
+//                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 12:30:39 2003
-// $Revision: 1.12 $
+// $Revision: 1.12.2.1 $
 // 
 //  This file is part of mccore.
 //  
@@ -22,16 +22,16 @@
 //  License along with mccore; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-#ifndef _AtomTypeStore_h_
-#define _AtomTypeStore_h_
 
+#ifndef _mccore_AtomTypeStore_h_
+#define _mccore_AtomTypeStore_h_
 
 #include <set>
 
 #include "AtomType.h"
 
-
 using namespace std;
+
 
 
 namespace mccore
@@ -43,7 +43,7 @@ namespace mccore
    * @short Repository of atomtypes.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: AtomTypeStore.h,v 1.12 2004-12-06 21:37:06 thibaup Exp $
+   * @version $Id: AtomTypeStore.h,v 1.12.2.1 2004-12-25 02:39:45 larosem Exp $
    */
   class AtomTypeStore
   {

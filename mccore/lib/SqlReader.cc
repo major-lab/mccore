@@ -1,9 +1,35 @@
+//                              -*- Mode: C++ -*- 
+// SqlReader.cc
+// Copyright © 2004 Laboratoire de Biologie Informatique et Théorique
+//                  Université de Montréal.
+// Author           : Anita Boisgontier
+// Created On       : 
+// $Revision: 1.1.2.1 $
+// 
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
-#include <string.h>
-#include <errno.h>
+#include <cstring>
+#include <cerrno>
+#include <string>
 
 #include "Atom.h"
 #include "AtomType.h"
@@ -16,19 +42,24 @@
 #include "ResidueType.h"
 #include "SqlReader.h"
 
-namespace mccore {
+
+
+namespace mccore
+{
 
   RnasqlReader::RnasqlReader (const char *name, ResidueFactoryMethod *fm)
   : name(name), residueFM (fm), con(use_exceptions)
   {
     if (0 == fm) residueFM = new ExtendedResidueFM ();
   }
+
   
   RnasqlReader::~RnasqlReader ()
   {
     delete residueFM;
   }
 
+  
   Molecule*
   RnasqlReader::read()
   {
@@ -45,7 +76,12 @@ namespace mccore {
     for (imol = resMol.begin(); imol != resMol.end(); imol++)
     {
       Row rowMol = *imol;
-      molecule -> setProperty(rowMol["keyH"], rowMol["valueH"]);
+      string key;
+      string value;
+
+      key = rowMol["keyH"];
+      value = rowMol["valueH"];
+      molecule->setProperty (key, value);
       num_Mol = rowMol["num_M"];
     }
 
@@ -57,10 +93,15 @@ namespace mccore {
     for (imod = resMod.begin(); imod != resMod.end(); imod++)
     {
       Row rowMod = *imod;
-      molecule->push_back(toMccoreMod(rowMod["id"]));
+      AbstractModel *model;
+
+      model = toMccoreMod(rowMod["id"]);
+      molecule->insert (*model);
+      delete model;
     }
     return molecule;
   }
+
 
   Model*
   RnasqlReader::toMccoreMod (int num_Mod)
@@ -78,19 +119,16 @@ namespace mccore {
         Residue *r;
         Row rowRes = *ires;
         ResId id;
-        char *type;
-        const char *str, *ic;
+	string type;
         int no;
+
         r = residueFM->createResidue ();
-        str=rowRes["chain"].c_str();
-        id.setChainId (str[0]);
-        no=rowRes["number"];
+        id.setChainId (rowRes["chain"]);
+        no = rowRes["number"];
         id.setResNo (no);
-        ic=rowRes["insertion"].c_str();
-        id.setInsertionCode (ic[0]);
+        id.setInsertionCode (rowRes["insertion"]);
         r->setResId (id);
-        type = new char[strlen (rowRes["type"]) + 1];
-        strcpy (type, rowRes["type"]);
+        type = rowRes["type"];
         r->setType (ResidueType::parseType (type));
 
         Query queryAt = con.query();
@@ -103,8 +141,8 @@ namespace mccore {
           mccore::Atom *a;
           a = new mccore::Atom ();
           Row rowAt = *iat;
-          type = new char[strlen (rowAt["type"]) + 1];
-          strcpy (type, rowAt["type"]);
+	  
+          type = rowAt["type"];
           a->setAll (rowAt["x"], rowAt["y"], rowAt["z"], AtomType::parseType (type)); 
           r->insert (*a);
           delete a;

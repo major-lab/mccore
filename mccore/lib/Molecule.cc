@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Molecule.cc
-// Copyright © 2003, 2004 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:35 2003
-// $Revision: 1.7.2.1 $
-// $Id: Molecule.cc,v 1.7.2.1 2004-12-10 03:45:03 larosem Exp $
+// $Revision: 1.7.2.2 $
+// $Id: Molecule.cc,v 1.7.2.2 2004-12-25 02:42:19 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -139,14 +139,14 @@ namespace mccore
   
   
   void
-  Molecule::setProperty (const char *key, const char *value)
+  Molecule::setProperty (const string &key, const string &value)
   {
-    string ks (key), vs (value);
-    pair< map< string, string >::iterator, bool > inserted =
-      this->properties.insert (make_pair (ks, vs));
+    pair< map< string, string >::iterator, bool > inserted = properties.insert (make_pair (key, value));
 
-    if (!inserted.second)
-      inserted.first->second = vs;
+    if (! inserted.second)
+      {
+	inserted.first->second = value;
+      }
   }
 
   

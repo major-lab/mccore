@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
-// $Revision: 1.3.2.1 $
-// $Id: RnamlReader.cc,v 1.3.2.1 2004-12-10 03:45:11 larosem Exp $
+// $Revision: 1.3.2.2 $
+// $Id: RnamlReader.cc,v 1.3.2.2 2004-12-25 02:46:10 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -57,8 +57,8 @@
 
 
 
-namespace mccore {
-
+namespace mccore
+{
   
   RnamlReader::RnamlReader (const char *name, ResidueFactoryMethod *fm)
     : is (0),
@@ -84,7 +84,6 @@ namespace mccore {
   }
   
   
-  
   RnamlReader::RnamlReader (rnaml::InputStream *is, ResidueFactoryMethod *fm)
     : is (is),
       residueFM (fm),
@@ -95,7 +94,6 @@ namespace mccore {
   }
   
   
-  
   RnamlReader::~RnamlReader ()
   {
     if (0 != is)
@@ -104,7 +102,6 @@ namespace mccore {
     if (0 != rnaml)
       delete rnaml;
   }
-  
   
   
   mccore::Atom*
@@ -119,7 +116,6 @@ namespace mccore {
     a->setAll (atom.getX (), atom.getY (), atom.getZ (), AtomType::parseType (type));
     return a;
   }
-  
   
   
   Residue*
@@ -155,7 +151,6 @@ namespace mccore {
   }
   
   
-  
   AbstractModel*
   RnamlReader::toMccore (const rnaml::Model &model)
   {
@@ -174,7 +169,6 @@ namespace mccore {
       }
     return m;
   }
-  
   
   
   Molecule*
@@ -217,7 +211,6 @@ namespace mccore {
   }
   
   
-  
   void
   RnamlReader::close ()
   {
@@ -225,7 +218,7 @@ namespace mccore {
       is->close ();
   }
   
-  
+
   Molecule*
   RnamlReader::read ()
   {
@@ -254,4 +247,5 @@ namespace mccore {
       }
     return molecule;
   }
+  
 }

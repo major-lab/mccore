@@ -4,8 +4,7 @@
 //                           Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 16:27:35 1999
-// $Revision: 1.4.2.3 $
-// $Id: Exception.h,v 1.4.2.3 2004-12-23 22:42:37 larosem Exp $
+// $Revision: 1.4.2.4 $
 //
 // This file is part of mccore.
 // 
@@ -27,7 +26,6 @@
 #ifndef _mccore_Exception_h_
 #define _mccore_Exception_h_
 
-
 #include <iostream>
 #include <exception>
 #include <string>
@@ -45,7 +43,8 @@ namespace mccore
    * May be used as the base class for all exceptions in the helpers and
    * libraries.
    *
-   * @author Martin Larose <larosem@iro.umontreal.ca>
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: Exception.h,v 1.4.2.4 2004-12-25 02:40:00 larosem Exp $
    */
   class Exception : public exception
   {

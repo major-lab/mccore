@@ -1,10 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // sockstream.cc
 // Copyright © 2002-04 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Wed Jan 30 19:57:48 2002
-// $Revision: 1.8 $
-// $Id: sockstream.cc,v 1.8 2004-11-19 21:48:52 larosem Exp $
+// $Revision: 1.8.4.1 $
+// $Id: sockstream.cc,v 1.8.4.1 2004-12-25 02:47:22 larosem Exp $
 //
 // This file is part of mccore.
 //
@@ -69,6 +70,7 @@ isfdtype (int fd, int fdtype)
 
 namespace mccore
 {
+  
   sockstreambuf::sockstreambuf ()
   {
     // Creating socket ---
@@ -326,4 +328,5 @@ namespace mccore
   {
     return shutdown (socket_id, SHUT_RDWR);
   }
+
 }

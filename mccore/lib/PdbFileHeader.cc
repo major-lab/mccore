@@ -1,10 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // PdbFileHeader.cc
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Tue Mar 11 18:45:58 2003
-// $Revision: 1.3 $
-// $Id: PdbFileHeader.cc,v 1.3 2003-12-23 14:57:49 larosem Exp $
+// $Revision: 1.3.2.1 $
+// $Id: PdbFileHeader.cc,v 1.3.2.1 2004-12-25 02:43:07 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -33,7 +34,8 @@
 
 
 
-namespace mccore {
+namespace mccore
+{
 
   PdbFileHeader::PdbFileHeader (const PdbFileHeader &other) 
   {
@@ -94,16 +96,21 @@ namespace mccore {
     date += string (t+2);
   }
 
+}
+
+
+namespace std
+{
 
   ostream &
-  operator<< (ostream &out, const PdbFileHeader &h)
+  operator<< (ostream &out, const mccore::PdbFileHeader &h)
   {
-    out << "CLASS = " << h.getClassification () << "\n" 
-	<< "PDB Id = " << h.getPdbId () <<  "\n"
-	<< "DATE = " << h.getDate () <<  "\n"
-	<< "TITLE = " << h.getTitle () << "\n"
-      //	<< "COMPOUND = " << h.getCompound () << "\n"
-	<< "METHOD = " << h.getMethod () << "\n"
+    out << "CLASS = " << h.getClassification () << endl
+	<< "PDB Id = " << h.getPdbId () <<  endl
+	<< "DATE = " << h.getDate () <<  endl
+	<< "TITLE = " << h.getTitle () << endl
+      //	<< "COMPOUND = " << h.getCompound () << endl
+	<< "METHOD = " << h.getMethod () << endl
 	<< "RESOLUTION = " << h.getResolution ();
     return out;
   }

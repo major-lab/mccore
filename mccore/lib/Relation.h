@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.13.4.3 $
+// $Revision: 1.13.4.4 $
 // 
 // This file is part of mccore.
 // 
@@ -39,19 +39,18 @@ using namespace std;
 
 
 
-namespace mccore {
-
+namespace mccore
+{
   class Residue;
   class PropertyType;
-//   class iBinstream;
-//   class oBinstream;
 
   
 
   /**
    * HBondFlow
    */
-  struct HBondFlow {
+  struct HBondFlow
+  {
     HBond hbond;
     float flow;
 
@@ -65,7 +64,7 @@ namespace mccore {
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.13.4.3 2004-12-16 22:29:45 larosem Exp $
+   * @version $Id: Relation.h,v 1.13.4.4 2004-12-25 02:44:08 larosem Exp $
    */
   class Relation
   {

@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 16:12:42 2004
-// $Revision: 1.1.2.1 $
+// $Revision: 1.1.2.2 $
 //
 // This file is part of mccore.
 // 
@@ -23,8 +23,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _AbstractModel_h_
-#define _AbstractModel_h_
+#ifndef _mccore_AbstractModel_h_
+#define _mccore_AbstractModel_h_
 
 #include <iostream>
 #include <vector>
@@ -49,7 +49,7 @@ namespace mccore
    * Abstract class for Models.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: AbstractModel.h,v 1.1.2.1 2004-12-10 03:44:49 larosem Exp $
+   * @version $Id: AbstractModel.h,v 1.1.2.2 2004-12-25 02:38:40 larosem Exp $
    */
   class AbstractModel
   {

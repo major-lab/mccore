@@ -1,9 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // PropertyTypeStore.h
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:42:25 2003
-// $Revision: 1.7 $
+// $Revision: 1.7.4.1 $
 // 
 // This file is part of mccore.
 // 
@@ -21,16 +22,16 @@
 // License along with mccore; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-#ifndef _PropertyTypeStore_h_
-#define _PropertyTypeStore_h_
 
+#ifndef _mccore_PropertyTypeStore_h_
+#define _mccore_PropertyTypeStore_h_
 
 #include <set>
 
 #include "PropertyType.h"
 
-
 using namespace std;
+
 
 
 namespace mccore
@@ -40,8 +41,8 @@ namespace mccore
    * @short Repository of property types.
    *
    *
-   * @author Patrick Gendron
-   * @version $Id: PropertyTypeStore.h,v 1.7 2004-10-15 20:34:58 thibaup Exp $
+   * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
+   * @version $Id: PropertyTypeStore.h,v 1.7.4.1 2004-12-25 02:43:52 larosem Exp $
    */
   class PropertyTypeStore
   {

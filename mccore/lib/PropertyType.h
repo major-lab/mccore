@@ -1,9 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // PropertyType.h
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.12.2.1 $
+// $Revision: 1.12.2.2 $
 // 
 // This file is part of mccore.
 // 
@@ -22,8 +23,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _PropertyType_h_
-#define _PropertyType_h_
+#ifndef _mccore_PropertyType_h_
+#define _mccore_PropertyType_h_
 
 #include <iostream>
 #include <string>
@@ -46,7 +47,7 @@ namespace mccore
    * General property types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: PropertyType.h,v 1.12.2.1 2004-12-16 17:09:08 larosem Exp $
+   * @version $Id: PropertyType.h,v 1.12.2.2 2004-12-25 02:43:30 larosem Exp $
    */
   class PropertyType
   {
@@ -1282,20 +1283,6 @@ namespace mccore
   };
   
   /**
-   * Outputs to a stream.
-   * @param out the output stream.
-   * @return the output stream used.
-   */
-  ostream &operator<< (ostream &out, const PropertyType &t);
-  
-  /**
-   * Outputs to a stream.
-   * @param out the output stream.
-   * @return the output stream used.
-   */
-  ostream &operator<< (ostream &out, const PropertyType *t);
-  
-  /**
    * Outputs to an exception stream.
    * @param out the exception stream.
    * @return the exception stream used.
@@ -1328,6 +1315,26 @@ namespace mccore
    */
   oBinstream& operator<< (oBinstream &out, const PropertyType *t);
 
+}
+
+
+namespace std
+{
+
+  /**
+   * Outputs to a stream.
+   * @param out the output stream.
+   * @return the output stream used.
+   */
+  ostream &operator<< (ostream &out, const mccore::PropertyType &t);
+  
+  /**
+   * Outputs to a stream.
+   * @param out the output stream.
+   * @return the output stream used.
+   */
+  ostream &operator<< (ostream &out, const mccore::PropertyType *t);
+  
 }
 
 #endif

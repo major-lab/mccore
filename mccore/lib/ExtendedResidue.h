@@ -1,49 +1,47 @@
 //                              -*- Mode: C++ -*- 
 // ExtendedResidue.h
-// Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-04 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.12 $
+// $Revision: 1.12.2.1 $
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _ExtendedResidue_h_
-#define _ExtendedResidue_h_
+#ifndef _mccore_ExtendedResidue_h_
+#define _mccore_ExtendedResidue_h_
 
 #include <iostream>
 #include <vector>
 #include <map>
 
-#include "Residue.h"
-#include "ResId.h"
 #include "Atom.h"
 #include "HomogeneousTransfo.h"
-#include "ResidueType.h"
+#include "Residue.h"
 
 using namespace std;
 
 
 
-namespace mccore {
-
-  class iBinstream;
-  class oBinstream;
-
+namespace mccore
+{
+  class ResId;
+  class ResidueType;
 
   
   /**
@@ -55,8 +53,8 @@ namespace mccore {
    * using iterators is garantied to follow a partial order defined by
    * the atom types.
    *
-   * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: ExtendedResidue.h,v 1.12 2004-12-06 21:37:18 thibaup Exp $
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: ExtendedResidue.h,v 1.12.2.1 2004-12-25 02:40:17 larosem Exp $
    */
   class ExtendedResidue : public Residue
   {
@@ -86,14 +84,16 @@ namespace mccore {
     /**
      * Initializes the object.
      */
-    ExtendedResidue ();
+    ExtendedResidue () : Residue (), placed (true) { }
 
     /**
      * Initializes the residue with a type and id.
      * @param t the residue type.
      * @param i the residue id.
      */
-    ExtendedResidue (const ResidueType *t, const ResId &i); 
+    ExtendedResidue (const ResidueType *t, const ResId &i)
+      : Residue (t, i), placed (true)
+    { }
     
     /**
      * Initializes the residue with type, atom container and id.
@@ -101,7 +101,9 @@ namespace mccore {
      * @param i the residue id.
      * @param vec the atom container.
      */
-    ExtendedResidue (const ResidueType *t, const ResId &i, vector< Atom > &vec);
+    ExtendedResidue (const ResidueType *t, const ResId &i, vector< Atom > &vec)
+      : Residue (t, i, vec), placed (true)
+    { }
     
     /**
      * Initializes the object with the other's content.
@@ -113,13 +115,13 @@ namespace mccore {
      * Clones the residue.
      * @return the copy of the object.
      */
-    virtual Residue* clone () const; 
+    virtual Residue* clone () const { return new ExtendedResidue (*this); }
     
     /**
      * Initializes the objet with the other's content.
      * @param other the objet to copy.
      */
-    ~ExtendedResidue ();
+    virtual ~ExtendedResidue () { clear (); }
     
     // OPERATORS ------------------------------------------------------------
 
@@ -139,13 +141,17 @@ namespace mccore {
      * @param t a homogeneous matrix that will be filled if non null.
      * @return the referential.
      */
-    virtual const HomogeneousTransfo getReferential () const; 
+    virtual const HomogeneousTransfo getReferential () const { return tfo; }
 
     /**
      * Sets the homogeneous matrix representing the local referential.
      * @param m the new referential.
      */
-    virtual void setReferential (const HomogeneousTransfo& m);
+    virtual void setReferential (const HomogeneousTransfo& m)
+    {
+      tfo = m;
+      _displace ();
+    }
     
     /**
      * Inserts an atom in the residue.  It crushes the existing atom if it

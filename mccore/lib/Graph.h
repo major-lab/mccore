@@ -4,7 +4,7 @@
 //                  Université de Montréal
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 00:05:15 2004
-// $Revision: 1.23.4.12 $
+// $Revision: 1.23.4.13 $
 // 
 // This file is part of mccore.
 // 
@@ -47,6 +47,7 @@ namespace mccore
    * Exception for Graph access.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: Graph.h,v 1.23.4.13 2004-12-25 02:41:08 larosem Exp $
    */
   class NoSuchElementException : public Exception
   {
@@ -87,7 +88,7 @@ namespace mccore
    * costly.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Graph.h,v 1.23.4.12 2004-12-21 22:48:53 larosem Exp $
+   * @version $Id: Graph.h,v 1.23.4.13 2004-12-25 02:41:08 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -1349,14 +1350,24 @@ namespace mccore
 
 }
 
+
+
 namespace std
 {
 
+  /**
+   * Writes the graph into the output stream.  It calls the graph virtual
+   * method write.
+   * @param os the output stream.
+   * @param obj the graph.
+   * @return the output stream.
+   */
   template < class V, class E, class VW, class EW, class VC >
   ostream& operator<< (ostream &os, const mccore::Graph< V, E, VW, EW, VC > &obj)
   {
     return obj.write (os);
   }
+  
 }
 
 #endif

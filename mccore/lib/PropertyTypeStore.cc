@@ -1,10 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // PropertyTypeStore.cc
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:42:25 2003
-// $Revision: 1.10 $
-// $Id: PropertyTypeStore.cc,v 1.10 2004-10-15 20:34:54 thibaup Exp $
+// $Revision: 1.10.4.1 $
+// $Id: PropertyTypeStore.cc,v 1.10.4.1 2004-12-25 02:43:44 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -27,15 +28,12 @@
 #include <config.h>
 #endif
 
-
 #include "PropertyTypeStore.h"
+
 
 
 namespace mccore
 {
-
-
-  // LIFECYCLE -----------------------------------------------------------------
 
   PropertyTypeStore::PropertyTypeStore () 
   {
@@ -221,6 +219,7 @@ namespace mccore
     PropertyType::pBh = *this->repository.insert (new PBh (string ("Bh"))).first;
   }
 
+
   PropertyTypeStore::~PropertyTypeStore () 
   {
     set< PropertyType*, PropertyType::less_deref >::iterator it;
@@ -228,8 +227,6 @@ namespace mccore
       delete *it;
   }  
 
-
-  // METHODS -------------------------------------------------------------------
 
   const PropertyType* 
   PropertyTypeStore::get (const string& key) 
@@ -250,6 +247,4 @@ namespace mccore
     return ptype;
   }
     
-
-  
 }

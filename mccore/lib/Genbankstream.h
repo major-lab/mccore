@@ -1,9 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // Genbankstream.h
 // Copyright © 2002-04 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Tue Feb 12 14:40:55 2002
-// $Revision: 1.4 $
+// $Revision: 1.4.2.1 $
 //
 // This file is part of mccore.
 // 
@@ -22,13 +23,12 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _Genbankstream_h_
-#define _Genbankstream_h_
+#ifndef _mccore_Genbankstream_h_
+#define _mccore_Genbankstream_h_
 
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <zlib.h>
 
 #include "zstream.h"
 
@@ -41,10 +41,8 @@ namespace mccore
   /**
    * @short Base class for input of Genbank formated streams
    *
-   * Long Description
-   *
-   * @author Patrick Gendron
-   * @version $Id: Genbankstream.h,v 1.4 2004-01-09 21:15:19 larosem Exp $
+   * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
+   * @version $Id: Genbankstream.h,v 1.4.2.1 2004-12-25 02:40:45 larosem Exp $
    */
   class iGenbankstream : public istream
   {
