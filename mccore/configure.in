@@ -1,0 +1,66 @@
+#                               -*- Mode: Sh -*- 
+# configure.in
+# Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
+# Author           : Martin Larose
+# Created On       : Tue Sep 19 18:21:58 2000
+# Last Modified By : Martin Larose
+# Last Modified On : Tue Oct 24 11:14:07 2000
+# Update Count     : 1
+# Status           : Ok.
+# 
+
+
+dnl Process this file with autoconf to produce a configure script.
+
+
+AC_INIT(lib/UCore.h)
+
+PACKAGE=mccore
+VERSION=0.1
+AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE")
+AC_DEFINE_UNQUOTED(VERSION, "$VERSION")
+
+AC_PROG_MAKE_SET
+
+AC_LANG_CPLUSPLUS
+AC_C_BIGENDIAN
+AC_PROG_CXX
+AC_CANONICAL_HOST
+
+case "$host" in
+*-linux-gnu) CXXFLAGS="-Wall -O2 -g";
+             CXXSHFLAGS="-Wall -O2 -g";
+	     DEPFLAGS="-MM"
+	     LDFLAGS="-static"
+	     LINKOPTIONS= ;;
+*-sgi-*)     CXXFLAGS="-O2 -g -woff 1681 -ptused";
+             CXXSHFLAGS="-O2 -g -woff 1681 -ptused";
+	     DEPFLAGS="-M"
+	     LDFLAGS=
+	     LINKOPTIONS= ;;
+*-sun-*)     CXXFLAGS="-Wall -O2 -g";
+             CXXSHFLAGS="-Wall -O2 -g -fPIC";
+	     DEPFLAGS="-MM"
+	     LDFLAGS="-static"
+	     LINKOPTIONS= ;;
+esac
+
+
+AC_PROG_INSTALL
+AC_PATH_PROG(AR,ar)
+AC_CHECK_FUNCS(strsep)
+
+AC_ARG_WITH(malloc,
+[  --with-malloc           replace STL allocator with malloc],
+AC_DEFINE(__USE_MALLOC),
+)
+
+
+AC_SUBST(PACKAGE)
+AC_SUBST(VERSION)
+AC_SUBST(CXXSHFLAGS)
+AC_SUBST(DEPFLAGS)
+AC_SUBST(LDFLAGS)
+AC_SUBST(LINKOPTIONS)
+
+AC_OUTPUT( Makefile docs/Makefile lib/Makefile )

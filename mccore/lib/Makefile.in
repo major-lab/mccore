@@ -1,0 +1,166 @@
+############################ -*- Mode: Makefile -*- ###########################
+## Makefile.in
+## Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
+## Author           : Martin Larose
+## Created On       : Tue Sep 19 18:57:11 2000
+## Last Modified By : Martin Larose
+## Last Modified On : Tue Oct 24 11:15:15 2000
+## Update Count     : 2
+## Status           : Ok.
+###############################################################################
+
+
+PACKAGE = @PACKAGE@
+VERSION = @VERSION@
+
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+datadir = @datadir@
+includedir = @includedir@
+libdir = @libdir@
+
+CXX = @CXX@
+CXXFLAGS = @CXXFLAGS@
+CXXSHFLAGS = @CXXSHFLAGS@
+DEPFLAGS = @DEPFLAGS@
+DEFS = @DEFS@ -DDATADIR=\"@datadir@\"
+LD = @CXX@
+LIBS = @LIBS@
+
+AR = @AR@
+
+INSTALL = @INSTALL@
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+
+
+.SUFFIXES:
+.SUFFIXES: .cc .o .lo .d
+
+.cc.d:
+	@ $(SHELL) -ec '$(CXX) $(DEPFLAGS) $(DEFS) -I$(srcdir) $< \
+	    | sed '\''s/\($*\)\.o[ :]*/\1.o \1.lo $@ : /g'\'' > $@; \
+	      [ -s $@ ] || rm -f $@'
+
+.cc.o:
+	$(CXX) $(CXXFLAGS) $(DEFS) -c $<
+
+.cc.lo:
+	$(CXX) $(CXXSHFLAGS) $(DEFS) -c $< -o $@
+
+
+SOURCES = AtomType.cc \
+          Binstream.cc \
+          CAtom.cc \
+          CException.cc \
+          CHBond.cc \
+	  CMessageQueue.cc \
+	  CModel.cc \
+          CPoint3D.cc \
+          CResId.cc \
+          CResidue.cc \
+          CTransfo.cc \
+	  McCore.cc \
+	  Pdbstream.cc \
+          ResidueType.cc \
+          zfstreambase.cc
+
+HEADERS = $(SOURCES:.cc=.h) CGraph.h fBinstream.h fPdbstream.h \
+zfBinstream.h zfPdbstream.h zfstream.h
+
+OBJECTS = $(SOURCES:.cc=.o)
+
+SHOBJECTS = $(SOURCES:.cc=.lo)
+
+LIBRARY = libmccore
+
+DISTFILES = Makefile.in $(SOURCES) $(HEADERS) 
+
+
+all: $(LIBRARY).so TAGS
+
+all-static static: $(LIBRARY).a
+
+$(LIBRARY).so: $(SHOBJECTS)
+	$(LD) -shared $(LDFLAGS) -o $@ $^
+
+$(LIBRARY).a: $(OBJECTS)
+	$(AR) crs $@ $^
+
+TAGS: $(SOURCES) $(HEADERS)
+	@ etags --c++ $^
+
+
+doc: html texi docbook
+
+html: $(HEADERS)
+	@- kdoc -f html -d ../docs/html -p --strip-h-path -n libmccore -u "libmccore" -z $^
+
+texi: $(HEADERS)
+	@- kdoc -f texinfo -d ../docs/texinfo -p --strip-h-path $^
+
+docbook: $(HEADERS)
+	@- kdoc -f docbook -d ../docs/docbook -p --strip-h-path $^
+
+
+
+install: $(LIBRARY).so
+	@ echo Installing $^ in $(libdir)
+	@ $(srcdir)/../mkinstalldirs $(libdir)
+	@ $(srcdir)/../mkinstalldirs $(includedir)
+	@ $(INSTALL_DATA) $^ $(libdir)/$^
+	@ for file in $(HEADERS); do \
+	   $(INSTALL_DATA) $(srcdir)/$$file $(includedir); \
+	  done
+
+install-static: static
+	@ echo Installing $(LIBRARY).a in $(libdir)
+	@ $(srcdir)/../mkinstalldirs $(libdir)
+	@ $(srcdir)/../mkinstalldirs $(includedir)
+	@ $(INSTALL_DATA) $(LIBRARY).a $(libdir)/$(LIBRARY).a
+	@ for file in $(HEADERS); do \
+	   $(INSTALL_DATA) $(srcdir)/$$file $(includedir); \
+	  done
+
+uninstall:
+	@ rm -f $(libdir)/$(LIBRARY).a $(libdir)/$(LIBRARY).so
+	@ for file in $(HEADERS); do \
+           rm -f $(includedir)/$$file; \
+          done
+
+
+mostlyclean:
+	@ rm -f *~
+
+clean: mostlyclean
+	@ echo "Cleaning project"
+	@ rm -f $(LIBRARY).so $(LIBRARY).a
+	@ rm -f $(OBJECTS) $(SHOBJECTS) TAGS
+	@ rm -f *.d
+
+distclean: clean
+	@ rm -f Makefile
+
+topclean: distclean
+	@ echo "The project is getting _top_ clean\!"
+
+release: static
+
+dist:
+	@ echo "Copying distribution files"
+	@ for file in $(DISTFILES); do \
+	   ln $(srcdir)/$$file ../$(PACKAGE)-$(VERSION)/src 2> /dev/null \
+	    || cp -p $(srcdir)/$$file ../$(PACKAGE)$(VERSION)/src; \
+	  done
+
+Makefile: $(srcdir)/Makefile.in ../config.status
+	@ cd .. && CONFIG_FILES=lib/$@ CONFIG_HEADERS= ./config.status
+
+# Tell versions [3.59,3.63) of GNU make not to export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:
+
+-include $(SOURCES:.cc=.d)

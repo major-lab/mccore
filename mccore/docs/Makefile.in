@@ -1,0 +1,105 @@
+############################ -*- Mode: Makefile -*- ###########################
+## Makefile.in
+## Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
+## Author           : Martin Larose
+## Created On       : Tue Sep 19 18:53:22 2000
+## Last Modified By : Martin Larose
+## Last Modified On : Tue Oct 24 11:14:13 2000
+## Update Count     : 2
+## Status           : Ok.
+###############################################################################
+
+
+PACKAGE = @PACKAGE@
+VERSION = @VERSION@
+
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+datadir = @datadir@
+includedir = @includedir@
+libdir = @libdir@
+
+INSTALL = @INSTALL@
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+
+
+.SUFFIXES:
+.SUFFIXES: .tex
+
+DISTFILES = Makefile.in Manual.tex
+
+
+all all-static static:
+
+doc: Manual.pdf Manual.html html texi docbook
+
+html: $(srcdir)/../lib/UCore.h
+	@- kdoc -f html -d html -p --strip-h-path -n libmccore -u "libmccore" -z $^
+
+texi: $(srcdir)/../lib/UCore.h
+	@- kdoc -f texinfo -d texi -p --strip-h-path $^
+
+docbook: $(srcdir)/../lib/UCore.h
+	@- kdoc -f docbook -d docbook -p --strip-h-path $^
+
+
+Manual.dvi: Manual.tex
+	@ latex $<
+	@- makeindex Manual
+	@ latex $<
+
+Manual.ps: Manual.dvi
+	@ dvips -z -Pcm -o $@ $^
+
+Manual.pdf: Manual.ps
+	@ ps2pdf $^ $@
+
+Manual.html: Manual.dvi
+	@- ln -s $(srcdir)/Manual.tex 2> /dev/null
+	@ latex2html -address "<a href=\"mailto:Webmaster <adbit@iro.umontreal.ca>\">Webmaster</a>" -info "" -no_navigation Manual.tex
+
+
+install install-static: doc
+	@ $(srcdir)/../mkinstalldirs $(datadir)/$(PACKAGE)/$(VERSION)/doc
+	@ for file in Manual.ps Manual.pdf; do \
+	   $(INSTALL_DATA) $$file $(datadir)/$(PACKAGE)/$(VERSION)/doc; \
+	  done;
+
+uninstall:
+	@ for file in Manual.ps Manual.pdf; do \
+	   rm -f $(datadir)/$(PACKAGE)/$(VERSION)/doc/$$file; \
+	  done;
+
+
+mostlyclean:
+	@ rm -f *.aux *.dvi *.log *.toc *.ilg *.ind *.out body.tmp head.tmp
+
+clean: mostlyclean
+	@ rm Manual.pdf Manual.ps
+	@ rm -fr Manual docbook html texi
+
+distclean: clean
+	@ rm -f Makefile
+
+topclean: distclean
+	@ echo "The project is getting _top_ clean\!"
+
+release:
+
+dist:
+	@ echo "Copying distribution files"
+	@ for file in $(DISTFILES); do \
+	   ln $(srcdir)/$$file ../$(PACKAGE)-$(VERSION)/docs 2> /dev/null \
+	    || cp -p $(srcdir)/$$file ../$(PACKAGE)$(VERSION)/docs; \
+	  done
+
+Makefile: $(srcdir)/Makefile.in ../config.status
+	@ cd .. && CONFIG_FILES=docs/$@ CONFIG_HEADERS= ./config.status
+
+# Tell versions [3.59,3.63) of GNU make not to export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:

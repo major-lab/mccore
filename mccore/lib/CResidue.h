@@ -1,0 +1,736 @@
+//                              -*- Mode: C++ -*- 
+// CResidue.h
+// Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
+// Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
+// Created On       : Thu Sep 28 16:59:32 2000
+// Last Modified By : Martin Larose
+// Last Modified On : Tue Oct 24 11:15:06 2000
+// Update Count     : 1
+// Status           : Ok.
+// 
+
+
+#ifndef _CResidue_h_
+#define _CResidue_h_
+
+#include <map.h>
+#include <set.h>
+#include <vector.h>
+
+#include "CResId.h"
+#include "CTransfo.h"
+#include "CAtom.h"
+
+
+class t_Atom;
+class t_Residue;
+class oPdbstream;
+class iBinstream;
+class oBinstream;
+
+
+/**
+ * @short Residue implementation.
+ *
+ * Les pivots sont trois atomes qui sont utilises comme points de reference
+ * pour les atomes d'un residu.  CTransfo::Align(CResidue&) aligne les
+ * atomes d'un residu par rapport a ces trois pivots.  Un residu possede
+ * trois pointeurs vers les atomes de pivot dans le CResidue (mPivot). On
+ * n'a qu'a les assignes par la methode SetPivot() qui passe par pour aller
+ * chercher les t_Atom *des pivots et assigne les pointeurs.  Les operateurs
+ * >> de iPdbstream et iBinstream pour un residu assignent les pivots
+ * automatiquement (pour autant que le residu ait les trois atomes de pivots
+ * presents).
+ *
+ *  Si le residue contient moins de trois atomes (ex: HOH), aucun
+ *  pivot n'est utilise et on ne peut donc pas faire d'alignement
+ *
+ * @author Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
+ */
+class CResidue : public CResId
+{
+  typedef vector< CAtom >::size_type size_type;
+  
+  /**
+   * Tells wheter the id has been changed.
+   */
+  bool dirty_id;
+
+  /**
+   * The residue type.
+   */
+  t_Residue  *mType;
+
+  /**
+   * The residue type as read from an input file.  This is kept for output
+   * of invalid residues.  It is only valid when mType == 0.
+   */
+  t_Residue *mReadType;
+
+  /**
+   * The name of the residue.
+   */
+  char* mResName;
+
+  /**
+   * The atom container in global referential.
+   */
+  vector< CAtom > mAtomRef;
+
+  /**
+   * The position container to mAtomRes.  If -1 is found then the atom has
+   * not been transformed in local referential.
+   */
+  mutable vector< int > mAtomResPos;
+
+  /**
+   * The associative container between atom types and atom position in
+   * mAtomRef, mAtomResPos.
+   */
+  map< t_Atom*, int > mAtomIndex;
+
+  /**
+   * The atom container in local referential.
+   */
+  mutable vector< CAtom > mAtomRes;
+
+  /**
+   * The tranfo for local referential.
+   */
+  CTransfo mTfo;
+
+public:
+
+  /**
+   * The global counter over the number of residues.
+   */
+  static int count;
+
+  /**
+   * @short Iterator class over atoms in residues.
+   *
+   * @author Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
+   */
+  class iterator
+  {
+    typedef random_access_iterator_tag iterator_category;
+    typedef CAtom value_type;
+    typedef ptrdiff_t difference_type;
+    typedef CAtom* pointer;
+    typedef CAtom& reference;
+    
+    typedef vector< CAtom >::size_type size_type;
+    
+    /**
+     * The pointer over the residue.
+     */
+    CResidue *mRes;
+
+    /**
+     * The index of the atom global referencial container.
+     */
+    size_type mPos;
+
+    /**
+     * The unary function filter.
+     */
+    AtomSet *mSet;
+
+    /**
+     * The unary function option filter.
+     */
+    AtomSet *mOption;
+    
+  public:
+
+    // LIFECYCLE ------------------------------------------------------------
+
+    /**
+     * Initializes the iterator.
+     */
+    iterator ();
+
+    /**
+     * Initializes the iterator with a residue and position.
+     * @param nRes the residue.
+     * @param nPos the position over the atom global referential container.
+     * @param nSet the atom set unary filter function.
+     * @param nOption the atom set option unary filter function.
+     */
+    iterator (CResidue *nRes, int nPos, AtomSet *nSet = 0,
+	      AtomSet *nOption = 0);
+
+    /**
+     * Initializes the iterator with the right's contents.
+     * @param right the iterator to copy.
+     */
+    iterator (const iterator &right);
+    
+    /**
+     * Destructs the object.
+     */
+    ~iterator () { delete mSet; delete mOption; }
+    
+    // OPERATORS ------------------------------------------------------------
+
+    /**
+     * Assigns the iterator with the right's content.
+     * @param right the object to copy.
+     * @return itself.
+     */
+    iterator& operator= (const iterator &right);
+
+    /**
+     * Advances and assigns the iterator of k positions.
+     * @param k the number of positions to advance.
+     * @return itself.
+     */
+    iterator& operator+= (difference_type k);
+    
+    /**
+     * Gets the atom pointed by the current mPos index.  Places the atom if
+     * needed.
+     * @return the atom pointer over local referential atom container.
+     */
+    pointer operator-> () { return &(mRes->Place (mPos)); }
+
+    /**
+     * Dereferences the iterator.  Places the atom if needed.
+     * @return the atom reference over local referential atom container.
+     */
+    reference operator* () { return mRes->Place (mPos); }
+
+    /**
+     * Pre-advances the iterator to the next atom filtered by the unary
+     * functions.
+     * @return the iterator over the next atom.
+     */
+    iterator& operator++ ();
+
+    /**
+     * Post-advances the iterator to the next atom filtered by the unary
+     * functions.
+     * @param ign ignored parameter.
+     * @return the iterator over the current atom.
+     */
+    iterator operator++ (int ign);
+
+    /**
+     * Adds the iterator to a distance type k.  The result may points to the
+     * end of the residue.
+     * @param k the distance type.
+     * @return a new iterator pointing to itself + k.
+     */
+    iterator operator+ (difference_type k) const;
+
+    /**
+     * Calculates the distance between 2 iterators.  Self and i must be
+     * iterators from the same container.
+     * @param i the iterator.
+     * @return the difference type between 2 iterators.
+     */
+    difference_type operator- (const iterator &i) const;
+    
+    /**
+     * Tests whether the iterators are equal.
+     * @param right the right iterator.
+     * @return the truth value.
+     */
+    bool operator== (const iterator &right) const { return mPos == right.mPos; }
+
+    /**
+     * Tests whether the iterators are different.
+     * @param right the right iterator.
+     * @return the truth value.
+     */
+    bool operator!= (const iterator &right) const
+    { return !(operator== (right)); }
+    
+    /**
+     * Tests whether the current iterator is less than the right.
+     * @param right the right iterator.
+     * @return the truth value.
+     */
+    bool operator< (const iterator &right) const { return mPos < right.mPos; }
+
+    // ACCESS ---------------------------------------------------------------
+
+    /**
+     * Casts the iterator to a residue.
+     * @return the residue pointed by the iterator.
+     */
+    operator CResidue* () { return mRes; }
+
+    // METHODS --------------------------------------------------------------
+
+    // I/O  -----------------------------------------------------------------
+  };
+
+  friend iterator;
+
+  /**
+   * @short Const iterator class over atoms in residues.
+   *
+   * @author Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
+   */
+  class const_iterator
+  {
+    typedef random_access_iterator_tag iterator_category;
+    typedef const CAtom value_type;
+    typedef ptrdiff_t difference_type;
+    typedef const CAtom* pointer;
+    typedef const CAtom& reference;
+
+    typedef vector< const CAtom >::size_type size_type;
+    
+    /**
+     * The pointer over the residue.
+     */
+    const CResidue *mRes;
+
+    /**
+     * The index of the atom global referencial container.
+     */
+    size_type mPos;
+
+    /**
+     * The unary function filter.
+     */
+    const AtomSet *mSet;
+
+    /**
+     * The unary function option filter.
+     */
+    const AtomSet *mOption;
+    
+  public:
+
+    // LIFECYCLE ------------------------------------------------------------
+
+    /**
+     * Initializes the iterator.
+     */
+    const_iterator ();
+
+    /**
+     * Initializes the iterator with a residue and position.
+     * @param nRes the residue.
+     * @param nPos the position over the atom global referential container.
+     * @param nSet the atom set unary filter function.
+     * @param nOption the atom set option unary filter function.
+     */
+    const_iterator (const CResidue *nRes, int nPos, const AtomSet *nSet = 0,
+		    const AtomSet *nOption = 0);
+
+    /**
+     * Initializes the const_iterator with the right's contents.
+     * @param right the const_iterator to copy.
+     */
+    const_iterator (const const_iterator &right);
+    
+    /**
+     * Destructs the object.
+     */
+    ~const_iterator () { delete mSet; delete mOption; }
+     
+    // OPERATORS ------------------------------------------------------------
+
+    /**
+     * Assigns the const_iterator with the right's content.
+     * @param right the object to copy.
+     * @return itself.
+     */
+    const_iterator& operator= (const const_iterator &right);
+
+    /**
+     * Advances and assigns the const_iterator of k positions.
+     * @param k the number of positions to advance.
+     * @return itself.
+     */
+    const_iterator& operator+= (difference_type k);
+    
+    /**
+     * Gets the atom pointed by the current mPos index.  Places the atom if
+     * needed.
+     * @return the atom pointer over local referential atom container.
+     */
+    pointer operator-> () { return &(mRes->Place (mPos)); }
+
+    /**
+     * Dereferences the iterator.  Places the atom if needed.
+     * @return the atom reference over local referential atom container.
+     */
+    reference operator* () { return mRes->Place (mPos); }
+
+    /**
+     * Pre-advances the iterator to the next atom filtered by the unary
+     * functions.
+     * @return the iterator over the next atom.
+     */
+    const_iterator& operator++ ();
+
+    /**
+     * Post-advances the iterator to the next atom filtered by the unary
+     * functions.
+     * @param ign ignored parameter.
+     * @return the iterator over the current atom.
+     */
+    const_iterator operator++ (int ign);
+
+    /**
+     * Adds the const_iterator to a distance type k.  The result may points
+     * to the end of the residue.
+     * @param k the distance type.
+     * @return a new iterator pointing to itself + k.
+     */
+    const_iterator operator+ (difference_type k) const;
+
+    /**
+     * Calculates the distance between 2 const_iterators.  Self and i must
+     * be const_iterators from the same container.
+     * @param i the const_iterator.
+     * @return the difference type between 2 const_iterators.
+     */
+    difference_type operator- (const const_iterator &i) const;
+    
+    /**
+     * Tests whether the iterators are equal.
+     * @param right the right iterator.
+     * @return the truth value.
+     */
+    bool operator== (const const_iterator &right) const
+    { return mPos == right.mPos; }
+
+    /**
+     * Tests whether the iterators are different.
+     * @param right the right iterator.
+     * @return the truth value.
+     */
+    bool operator!= (const const_iterator &right) const
+    { return !(operator== (right)); }
+    
+    /**
+     * Tests whether the current iterator is less than the right.
+     * @param right the right iterator.
+     * @return the truth value.
+     */
+    bool operator< (const const_iterator &right) const
+    { return mPos < right.mPos; }
+
+    // ACCESS ---------------------------------------------------------------
+
+    /**
+     * Casts the iterator to a residue.
+     * @return the residue pointed by the iterator.
+     */
+    operator const CResidue* () const { return mRes; }
+
+    // METHODS --------------------------------------------------------------
+
+    // I/O  -----------------------------------------------------------------
+  };
+
+  friend const_iterator;
+
+  // LIFECYCLE ------------------------------------------------------------
+
+  /**
+   * Initializes the residue.  Increases the global count.
+   */
+  CResidue ()
+    : CResId (), dirty_id (false), mType (0), mReadType (0), mResName (0),
+      mTfo ()
+  {count++;} 
+
+  /**
+   * Initializes the residue with type, atom container and id.
+   * @param type the residue type.
+   * @param vec the atom container.
+   * @param nId the residue id.
+   * @param readtype the type read from the input file.
+   */
+  CResidue (t_Residue *type, const vector< CAtom > &vec,
+	    const CResId &nId, t_Residue *readtype = 0);
+
+  /**
+   * Initializes the residue with the right's content.
+   * @param right the object to copy.
+   */
+  CResidue (const CResidue &right);
+
+  /**
+   * Destructs the object.
+   */
+  ~CResidue ();
+
+  // OPERATORS ------------------------------------------------------------
+
+  /**
+   * Assigns the object with the right's content.
+   * @param right the object to copy.
+   * @return itself.
+   */
+  const CResidue& operator= (const CResidue &right);
+
+  /**
+   * Tests if the residues are equals.
+   * @param right the right residue.
+   * @return the truth value.
+   */
+  bool operator== (const CResidue &right) const;
+
+  /**
+   * Tests whether the residues are different.
+   * @param right the right residue.
+   * @return the truth value.
+   */
+  bool operator!= (const CResidue &right) const { return !operator== (right); }
+
+  /**
+   * Tests if the residue id is less than the right one.
+   * @param right the right residue.
+   * @return the truth value.
+   */
+  bool operator< (const CResidue &right) const;
+
+  /**
+   * Returns a reference to the atom associated with the type.  The returned
+   * atom is not garanteed to stay valid.
+   * @param type the atom type.
+   * @return the reference to the atom in the local referential.
+   */
+  CAtom& operator[] (t_Atom *type) ;
+
+  /**
+   * Returns a const reference to the atom associated with the type.  The
+   * returned atom is not garanteed to be valid.
+   * @param type the atom type.
+   * @return the reference to the atom in the local referential.
+   */
+  const CAtom& operator[] (t_Atom *type) const;
+
+  // ACCESS ---------------------------------------------------------------
+
+  /**
+   * Casts the residue to a boolean.  Tests if the type is empty.
+   * @return whether the type has been set.
+   */
+  operator bool () { return mType; }
+
+  /**
+   * Gets the size of the global referential atom container.
+   * @return the size of the container.
+   */
+  size_type size () const { return mAtomRef.size (); }
+
+  /**
+   * Gets the iterator begin.
+   * @return the iterator over the first element.
+   */
+  iterator begin (AtomSet *atomset = 0, AtomSet *atomsetopt = 0)
+  { return iterator (this, 0, atomset, atomsetopt); }
+
+  /**
+   * Gets the end iterator.
+   * @return the iterator past the last element.
+   */
+  iterator end ()
+  { return iterator (this, size ()); }
+
+  /**
+   * Gets the begin const iterator.
+   * @return the const_iterator over the first element.
+   */
+  const_iterator begin (AtomSet *atomset = 0, AtomSet *atomsetopt = 0) const
+  { return const_iterator (this, 0, atomset, atomsetopt); }
+
+  /**
+   * Gets the end const iterator.
+   * @return the const_iterator past the last element.
+   */
+  const_iterator end () const
+  { return const_iterator (this, size ()); }
+
+  /**
+   * Gets the residue id.
+   * @return the residue id.
+   */
+  const CResId& GetId () const { return *this; }
+
+  /**
+   * Sets the residue id.
+   * @param resid the new residue id.
+   */
+  void SetResId (const CResId &resid) { CResId::operator= (resid); }
+
+  /**
+   * Gets the residue type.
+   * @return the residue type.
+   */
+  const t_Residue* GetType () const { return mType; }
+
+  /**
+   * Sets the residue type.
+   * @param type the new residue type.
+   */
+  void SetType (t_Residue *type) { mType = type; }
+
+  /**
+   * Gets the read residue type.
+   * @return the read residue type.
+   */
+  const t_Residue* GetReadType () const { return mReadType; }
+ 
+ /**
+   * Gets the transfo.
+   * @return the transfo.
+   */
+  const CTransfo& GetTransfo () const { return mTfo; }
+
+  /**
+   * Sets the transfo.  Only the internal transfo is modified,
+   * the atoms in local referential are erased.
+   * @param tfo the new transfo.
+   */
+  void SetTransfo (const CTransfo &tfo);
+
+  /**
+   * Gets the residue name.
+   * @return the residue name.
+   */
+  const char* GetResName () const
+  { return (mResName == 0) ? *mType : mResName; }
+
+  /**
+   * Sets the residue name.
+   * @param nName the new residue name.
+   */
+  void SetResName (const char* nName);
+
+  // METHODS --------------------------------------------------------------
+
+private:
+  
+  /**
+   * Gets the atom at pos index if it is in local referential.  Transforms
+   * it if it is not.
+   * @param pos the index.
+   * @return the atom in local referential.
+   */
+  CAtom& Place (int pos) const;
+
+  /**
+   * Gets the atom of type t in global referential.
+   * @param t the atom type.
+   * @return the atom or 0 if it is not found.
+   */
+  CAtom* Ref (t_Atom *t);
+
+  /**
+   * Inserts an atom in the residue.  It crushes the existing atom if it
+   * exists.  The index and the local referential containers are adjusted.
+   * @param atom the atom to insert.
+   */
+  void Create (const CAtom &a);
+
+  /**
+   * Erases an atom from the residue, adjusting all containers and maps.
+   * @param type the atom type to remove.
+   */
+  void erase (t_Atom *type);
+  
+  /**
+   * Erases a range of atoms from the residue, adjusting all containers and
+   * maps.
+   * @param start the iterator of the first atom to erase.
+   * @param finish the iterator of the last atom to erase.
+   */
+  void CResidue::erase (set< t_Atom* >::iterator start,
+			set< t_Atom* >::iterator finish);
+
+public:
+  
+  /**
+   * Adds the hydrogen in the residue.
+   */
+  void AddHydrogens ();
+
+  /**
+   * Adds the lone pairs in the residue.
+   */
+  void AddLP ();
+
+  /**
+   * Tests wether all the obligatory atoms are in the residue and removes
+   * all atoms that are not obligatory or optional.
+   * @return false if the type was not set or if any atom is missing.
+   */
+  bool Validate ();
+  
+  /**
+   * Applies a tfo over each atoms.  Only the internal transfo is modified,
+   * the atoms in local referential are erased.
+   * @param theTfo the transfo to apply.
+   * @return itself.
+   */
+  CResidue& Transform (const CTransfo &theTfo);
+
+  /**
+   * Aligns the residue.  Sets the transfo to the identity.
+   */
+  void Align () { mTfo.SetIdentity (); }
+
+  // I/O  -----------------------------------------------------------------
+};
+
+
+
+/**
+ * Outputs the residue to the stream.
+ * @param os the output stream.
+ * @param res the residue to display.
+ * @return the used output stream.
+ */
+ostream& operator<< (ostream &os, const CResidue &res);
+
+
+
+/**
+ * Inputs a residue from an input binary stream.
+ * @param ibs the input binary stream.
+ * @param res the residue.
+ * @return the used input binary stream.
+ */
+iBinstream& operator>> (iBinstream &ibs, CResidue &res);
+
+
+
+/**
+ * Outputs the residue to the binary stream.
+ * @param obs the output binary stream.
+ * @param res the residue.
+ * @return the used output binary stream.
+ */
+oBinstream& operator<< (oBinstream &obs, const CResidue &res);
+
+
+
+/**
+ * Reads the residue from a pdb file.
+ * @param ips the input pdb stream.
+ * @param res the residue.
+ * @return the used input pdb stream.
+ */
+iPdbstream& operator>> (iPdbstream &ips, CResidue &res);
+
+
+
+/**
+ * Writes the residue to a pdb format file.
+ * @param ops the ouput pdb stream.
+ * @param the residue to output.
+ * @return the used output pdb stream.
+ */
+oPdbstream& operator<< (oPdbstream &ops, const CResidue &res);
+
+#endif

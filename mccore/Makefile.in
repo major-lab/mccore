@@ -1,0 +1,151 @@
+############################ -*- Mode: Makefile -*- ###########################
+## Makefile.in
+## Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
+## Author           : Martin Larose
+## Created On       : Tue Sep 19 18:10:38 2000
+## Last Modified By : Martin Larose
+## Last Modified On : Tue Oct 24 11:13:50 2000
+## Update Count     : 1
+## Status           : Ok.
+###############################################################################
+
+
+PACKAGE = @PACKAGE@
+VERSION = @VERSION@
+
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+@SET_MAKE@
+
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+datadir = @datadir@
+includedir = @includedir@
+libdir = @libdir@
+
+INSTALL = @INSTALL@
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+
+SUBDIRS = lib docs
+
+RELEASESUBDIRS = $(SUBDIRS)
+
+DISTFILES = ChangeLog INSTALL Makefile.in NEWS README config.guess \
+config.sub configure.in configure install-sh mkinstalldirs
+
+
+.SUFFIXES:
+
+
+
+all all-static static:
+	@ for subdir in $(SUBDIRS); do \
+	   echo "Building $@ in $$subdir"; \
+	   (cd $$subdir && $(MAKE) $@) || exit 1; \
+	  done
+
+install install-static:
+	@ for subdir in $(SUBDIRS); do \
+	   echo "Building $@ in $$subdir"; \
+	   (cd $$subdir && $(MAKE) $@) || exit 1; \
+	  done
+	@ $(srcdir)/mkinstalldirs $(datadir)/$(PACKAGE)/$(VERSION)/doc
+	@ for file in ChangeLog NEWS README; do \
+           $(INSTALL_DATA) $(srcdir)/$$file $(datadir)/$(PACKAGE)/$(VERSION)/doc; \
+	  done
+
+uninstall:
+	@ for file in ChangeLog NEWS README; do \
+           rm -f $(datadir)/$(PACKAGE)/$(VERSION)/doc/$$file; \
+	  done
+	@ for subdir in $(SUBDIRS); do \
+	   echo Making $@ in $$subdir; \
+	   (cd $$subdir && $(MAKE) $@) || exit 1; \
+	  done
+	@- rmdir -p $(datadir)/$(PACKAGE)/$(VERSION)/doc
+
+
+doc:
+	@ cd docs && $(MAKE) $@
+
+
+
+mostlyclean: mostlyclean-recursive mostlyclean-local
+
+mostlyclean-local:
+
+clean: clean-recursive clean-local
+
+clean-local: mostlyclean-local
+
+distclean: distclean-recursive distclean-local
+
+distclean-local: clean-local
+	@ rm -f Makefile config.cache config.h config.log config.status
+
+topclean: topclean-recursive topclean-local
+
+topclean-local: distclean-local
+
+mostlyclean-recursive clean-recursive distclean-recursive topclean-recursive:
+	@ for subdir in $(SUBDIRS); do \
+	   target=`echo $@ | sed 's/-recursive//'`; \
+	   echo Making $$target in $$subdir; \
+	   (cd $$subdir && $(MAKE) $$target) || exit 1; \
+	  done
+
+release:
+	@ rm -fr $(PACKAGE)-$(VERSION)
+	@ rm -f $(PACKAGE)-$(VERSION).tar.gz
+	@ mkdir $(PACKAGE)-$(VERSION)
+	@ chmod 777 $(PACKAGE)-$(VERSION)
+	@ for file in INSTALL NEWS README; do \
+	   ln -s ../$(srcdir)/$$file $(PACKAGE)-$(VERSION)/$$file; \
+	  done
+	@ for subdir in $(RELEASESUBDIRS); do \
+	   mkdir $(PACKAGE)-$(VERSION)/$$subdir; \
+	   chmod 777 $(PACKAGE)-$(VERSION)/$$subdir; \
+	  done
+	@ for subdir in $(SUBDIRS); do \
+	   (cd $$subdir && $(MAKE) $@) || exit 1; \
+	  done
+	@ chmod -R a+r $(PACKAGE)-$(VERSION)
+	@ tar chof $(PACKAGE)-$(VERSION).tar $(PACKAGE)-$(VERSION)
+	@ gzip -9 $(PACKAGE)-$(VERSION).tar
+	@ rm -fr $(PACKAGE)-$(VERSION)
+
+dist:
+	@ rm -fr $(PACKAGE)-$(VERSION)
+	@ mkdir $(PACKAGE)-$(VERSION)
+	@ chmod 777 $(PACKAGE)-$(VERSION)
+	@ echo Copying distribution files
+	@ for file in $(DISTFILES); do \
+	   ln $(srcdir)/$$file $(PACKAGE)-$(VERSION) 2> /dev/null \
+	     || cp -p $(srcdir)/$$file $(PACKAGE)-$(VERSION); \
+	  done
+	@ for subdir in $(SUBDIRS); do \
+	   echo Making $@ in $$subdir; \
+	   mkdir $(PACKAGE)-$(VERSION)/$$subdir; \
+	   chmod 777 $(PACKAGE)-$(VERSION)/$$subdir; \
+	   (cd $$subdir && $(MAKE) $@) || exit 1; \
+	  done
+	@ chmod -R a+r $(PACKAGE)-$(VERSION)
+	@ tar chof $(PACKAGE)-$(VERSION).tar $(PACKAGE)-$(VERSION)
+	@ gzip -9 $(PACKAGE)-$(VERSION).tar
+	@ rm -fr $(PACKAGE)-$(VERSION)
+
+
+Makefile: $(srcdir)/Makefile.in config.status
+	@ CONFIG_FILES=$@ CONFIG_HEADERS= ./config.status
+
+config.status: configure
+	@ ./config.status --recheck
+
+configure: configure.in
+	@ cd $(srcdir) && autoconf configure.in > configure
+
+# Tell versions [3.59,3.63) of GNU make not to export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:

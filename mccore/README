@@ -1,0 +1,51 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -*- Mode: Text -*- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; README
+;; Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
+;; Author           : Martin Larose
+;; Created On       : Tue Sep 19 18:16:58 2000
+;; Last Modified By : Martin Larose
+;; Last Modified On : Tue Oct 24 11:13:57 2000
+;; Update Count     : 1
+;; Status           : Ok.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+This is the README file for the MC-SYM core library.
+
+For instructions on how to install the core package see the INSTALL file.
+For a release history, new features and bug-fix notes see the NEWS file.
+
+The Manual is available in postscript and pdf version under the name
+Manual.ps and Manual.pdf in the docs directory.
+
+You may either contact us via our web page http://www-lbit.iro.umontreal.ca
+or via email mcsym@iro.umontreal.ca
+
+
+MAILING LIST:
+
+You can ask for help or discuss on miscellaneous subjects in the mcsym
+mailing list mcsym-user@iro.umontreal.ca.  To subscribe, send a mail to
+majordomo@iro.umontreal.ca with 'subscribe mcsym-user' as the body of the
+message.
+
+
+AUTHORS:
+
+Sébastien Lemieux
+François Major,
+Patrick Gendron,
+Daniel St-Arnaud,
+Martin Larose,
+Michel Boivin.
+
+
+BUGS:
+
+If you find a bug or have a suggestion please send your informations to
+mcsym-bug@iro.umontreal.ca
+
+
+Copyright © 2000 Laboratoire de Biologie Informatique et Théorique,
+Université de Montréal.
