@@ -4,9 +4,9 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Wed Sep  5 16:32:07 2001
-// Update Count     : 6
+// Last Modified By : Philippe Thibault
+// Last Modified On : Wed Mar 19 16:37:40 2003
+// Update Count     : 7
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -122,6 +122,12 @@ public:
    * @return false.
    */
   virtual bool is_Phosphate () const { return false; }
+
+  /**
+   * Tells if the residue is a ribose.
+   * @return false.
+   */
+  virtual bool is_Ribose () const { return false; }
 
   /**
    * Tells if the residue is a purine.
