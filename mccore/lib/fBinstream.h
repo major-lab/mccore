@@ -4,209 +4,231 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:20:58 EDT
-// Last Modified By : Patrick Gendron
-// Last Modified On : Thu Mar 27 12:35:15 2003
-// Update count     : 0
-// Status           : Ok.
+// $Revision
+// $Id: fBinstream.h,v 1.7 2003-12-23 14:58:10 larosem Exp $
 //
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifndef _fBinstream_h_
 #define _fBinstream_h_
 
 #include <iostream>
-#include <fstream>
+
+#include "Binstream.h"
+#include "fstreambase.h"
 
 using namespace std;
 
-#include "fstreambase.h"
-#include "Binstream.h"
 
 
-/**
- * @short Input binary file streams.
- *
- * Implementation of binary file streams, based on fstreambase and
- * Binstream.  These streams are used for binary dumps in files.  The
- * general layout is based on fstream while I/O operators comes from
- * Binstream.
- *
- * @author Martin Larose <larosem@IRO.UMontreal.CA>
- */
-class ifBinstream : public iBinstream, public fstreambase
-{
-
-public:
-
-  // LIFECYCLE ------------------------------------------------------------
-
+namespace mccore {
+  
   /**
-   * Initializes the objet.
+   * @short Input binary file streams.
+   *
+   * Implementation of binary file streams, based on fstreambase and
+   * Binstream.  These streams are used for binary dumps in files.  The
+   * general layout is based on fstream while I/O operators comes from
+   * Binstream.
+   *
+   * @author Martin Larose <larosem@IRO.UMontreal.CA>
    */
-  ifBinstream () : iBinstream (fstreambase::rdbuf ()) { }
-
-  /**
-   * Initializes the stream with file name and parameters.
-   * @param name the path and file name to open.
-   * @param mode the open mode (default ios::in).
-   */
-  ifBinstream (const char *name, int mode=ios::in)
-    : iBinstream (fstreambase::rdbuf ()), fstreambase (name, mode) { }
-
-  // OPERATORS ------------------------------------------------------------
-
-  // ACCESS ---------------------------------------------------------------
-
-  // METHODS --------------------------------------------------------------
-
-  /**
-   * Opens the stream with file name and parameters.
-   * @param name the path and file name to open.
-   * @param mode the open mode (default ios::in).
-   */
-  void open (const char *name, int mode=ios::in)
+  class ifBinstream : public fstreambase, public iBinstream
+  {
+    
+  public:
+    
+    // LIFECYCLE ------------------------------------------------------------
+    
+    /**
+     * Initializes the objet.
+     */
+    ifBinstream ()
+      : fstreambase (),
+	iBinstream (fstreambase::rdbuf ())
+    { }
+    
+    /**
+     * Initializes the stream with file name and parameters.
+     * @param name the path and file name to open.
+     * @param mode the open mode (default ios::in).
+     */
+    ifBinstream (const char *name, int mode=ios::in)
+      : fstreambase (),
+	iBinstream (fstreambase::rdbuf ())
+    {
+      open (name, mode);
+    }
+    
+    // OPERATORS ------------------------------------------------------------
+    
+    // ACCESS ---------------------------------------------------------------
+    
+    // METHODS --------------------------------------------------------------
+    
+    /**
+     * Opens the stream with file name and parameters.
+     * @param name the path and file name to open.
+     * @param mode the open mode (default ios::in).
+     */
+    void open (const char *name, int mode=ios::in)
     {
       fstreambase::open (name, mode);
       iBinstream::open ();
     }
-
-  /**
-   * Closes the stream.
-   */
-  virtual void close () { iBinstream::close (); fstreambase::close (); }
-
-  // I/O ------------------------------------------------------------------
-};
-
-
-
-/**
- * @short Output binary file stream.
- *
- * Implementation of binary file streams, based on fstreambase and
- * Binstream.  These streams are used for binary dumps in files.  The
- * general layout is based on fstream while I/O operators comes from
- * Binstream.
- *
- * @author Martin Larose <larosem@IRO.UMontreal.CA>
- */
-class ofBinstream : public oBinstream, public fstreambase
-{
-
-public:
-
-  // LIFECYCLE ------------------------------------------------------------
-
-  /**
-   * Initializes the stream.
-   */
-  ofBinstream () : oBinstream (fstreambase::rdbuf ()) { }
-
-  /**
-   * Initializes the stream with file name and parameters.
-   * @param name the path and file name to open.
-   * @param mode the open mode (default ios::out).
-   */
-  ofBinstream (const char *name, int mode = ios::out)
-    : oBinstream (fstreambase::rdbuf ()), fstreambase (name, mode) { }
-
-  // OPERATORS ------------------------------------------------------------
-
-  // ACCESS ---------------------------------------------------------------
-
-  // METHODS --------------------------------------------------------------
-
-  /**
-   * Opens the stream with file name and optional mode and protection.
-   * @param name the path and file name to open.
-   * @param mode the open mode (default = ios::out).
-   */
-  void open (const char *name, int mode = ios::out)
-  {
-    fstreambase::open (name, mode);
-    oBinstream::open ();
-  }
-
-  /**
-   * Closes the stream.
-   */
-  virtual void close () { oBinstream::close (); fstreambase::close (); }
-
-  // I/O ------------------------------------------------------------------
-};
-
-
-
-/**
- * @short General binary file stream.
- *
- * Implementation of binary file streams, based on fstreambase and
- * Binstream.  These streams are used for binary dumps in files.  The
- * general layout is based on fstream while I/O operators comes from
- * Binstream.
- *
- * @author Martin Larose <larosem@IRO.UMontreal.CA>
- */
-class fBinstream : public Binstream, public fstreambase
-{
+    
+    /**
+     * Closes the stream.
+     */
+    virtual void close () { iBinstream::close (); fstreambase::close (); }
+    
+    // I/O ------------------------------------------------------------------
+  };
   
-public:
-
-  // LIFECYCLE ------------------------------------------------------------
-
+  
+  
   /**
-   * Initializes the stream.
+   * @short Output binary file stream.
+   *
+   * Implementation of binary file streams, based on fstreambase and
+   * Binstream.  These streams are used for binary dumps in files.  The
+   * general layout is based on fstream while I/O operators comes from
+   * Binstream.
+   *
+   * @author Martin Larose <larosem@IRO.UMontreal.CA>
    */
-  fBinstream () : Binstream (fstreambase::rdbuf ()) { }
-
-  /**
-   * Initializes the stream with file name and parameters.
-   * @param name the path and file name to open.
-   * @param mode the open mode (default ios::in).
-   * @param prot the protection (default 0644).
-   */
-  fBinstream (const char *name, int mode = ios::in)
-    : Binstream (fstreambase::rdbuf ()), fstreambase(name, mode)  { }
-
-  // OPERATORS ------------------------------------------------------------
-
-  // ACCESS ---------------------------------------------------------------
-
-  // METHODS --------------------------------------------------------------
-
-  /**
-   * Opens the stream with file name and parameters.
-   * @param name the path and file name to open.
-   * @param mode the open mode (default ios::in).
-   * @param prot the protection (default 0644).
-   */
-  void open (const char *name, int mode = ios::in)
+  class ofBinstream : public fstreambase, public oBinstream
   {
-    fstreambase::open (name, mode);
-    Binstream::open ();
-  }
-
+    
+  public:
+    
+    // LIFECYCLE ------------------------------------------------------------
+    
+    /**
+     * Initializes the stream.
+     */
+    ofBinstream ()
+      : fstreambase (),
+	oBinstream (fstreambase::rdbuf ())
+    { }
+    
+    /**
+     * Initializes the stream with file name and parameters.
+     * @param name the path and file name to open.
+     * @param mode the open mode (default ios::out).
+     */
+    ofBinstream (const char *name, int mode = ios::out)
+      : fstreambase (),
+	oBinstream (fstreambase::rdbuf ())
+    {
+      open (name, mode);
+    }
+    
+    // OPERATORS ------------------------------------------------------------
+    
+    // ACCESS ---------------------------------------------------------------
+    
+    // METHODS --------------------------------------------------------------
+    
+    /**
+     * Opens the stream with file name and optional mode and protection.
+     * @param name the path and file name to open.
+     * @param mode the open mode (default = ios::out).
+     */
+    void open (const char *name, int mode = ios::out)
+    {
+      fstreambase::open (name, mode);
+      oBinstream::open ();
+    }
+    
+    /**
+     * Closes the stream.
+     */
+    virtual void close () { oBinstream::close (); fstreambase::close (); }
+    
+    // I/O ------------------------------------------------------------------
+  };
+  
+  
+  
   /**
-   * Closes the stream.
+   * @short General binary file stream.
+   *
+   * Implementation of binary file streams, based on fstreambase and
+   * Binstream.  These streams are used for binary dumps in files.  The
+   * general layout is based on fstream while I/O operators comes from
+   * Binstream.
+   *
+   * @author Martin Larose <larosem@IRO.UMontreal.CA>
    */
-  virtual void close () { Binstream::close (); fstreambase::close (); }
-
-  // I/O ------------------------------------------------------------------
-};
+  class fBinstream : public fstreambase, public Binstream
+  {
+    
+  public:
+    
+    // LIFECYCLE ------------------------------------------------------------
+    
+    /**
+     * Initializes the stream.
+     */
+    fBinstream ()
+      : fstreambase (),
+	Binstream (fstreambase::rdbuf ())
+    { }
+    
+    /**
+     * Initializes the stream with file name and parameters.
+     * @param name the path and file name to open.
+     * @param mode the open mode (default ios::in).
+     * @param prot the protection (default 0644).
+     */
+    fBinstream (const char *name, int mode = ios::in)
+      : fstreambase (),
+	Binstream (fstreambase::rdbuf ())
+    {
+      open (name, mode);
+    }
+    
+    // OPERATORS ------------------------------------------------------------
+    
+    // ACCESS ---------------------------------------------------------------
+    
+    // METHODS --------------------------------------------------------------
+    
+    /**
+     * Opens the stream with file name and parameters.
+     * @param name the path and file name to open.
+     * @param mode the open mode (default ios::in).
+     * @param prot the protection (default 0644).
+     */
+    void open (const char *name, int mode = ios::in)
+    {
+      fstreambase::open (name, mode);
+      Binstream::open ();
+    }
+    
+    /**
+     * Closes the stream.
+     */
+    virtual void close () { Binstream::close (); fstreambase::close (); }
+    
+    // I/O ------------------------------------------------------------------
+  };
+}
 
 #endif

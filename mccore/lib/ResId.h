@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:45:21 2003
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 // 
 //  This file is part of mccore.
 //  
@@ -30,10 +30,13 @@
 
 using namespace std;
 
-class iBinstream;
-class oBinstream;
+
 
 namespace mccore {
+
+  class iBinstream;
+  class oBinstream;
+
 
   /**
    * @short A residue Id.

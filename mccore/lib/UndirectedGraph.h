@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 24 21:30:26 2003
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 // 
 //  This file is part of mccore.
 //  
@@ -43,7 +43,7 @@ namespace mccore {
  * a node ordering determined by the node_comparator function object.
  *
  * @author Patrick Gendron (gendrop@iro.umontreal.ca)
- * @version $Id: UndirectedGraph.h,v 1.8 2003-10-16 21:57:10 gendrop Exp $
+ * @version $Id: UndirectedGraph.h,v 1.9 2003-12-23 14:58:09 larosem Exp $
  */
 template< class node_type, 
 	  class edge_type = bool, 
@@ -88,7 +88,7 @@ public:
    * @param other the object to copy.
    * @return itself.
    */
-  virtual UndirectedGraph& operator= (const UndirectedGraph &other) {
+  UndirectedGraph& operator= (const UndirectedGraph &other) {
     if (this != &other) {
       Graph< node_type, edge_type, matrix_type, node_comparator >::operator= (other);      
     }

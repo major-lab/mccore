@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:35 2003
-// $Revision: 1.4 $
-// $Id: Molecule.cc,v 1.4 2003-12-23 14:52:50 larosem Exp $
+// $Revision: 1.5 $
+// $Id: Molecule.cc,v 1.5 2003-12-23 14:57:49 larosem Exp $
 // 
 // This file is part of mccore.
 // 

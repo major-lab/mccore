@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr 25 10:12:06 2003
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 // 
 //  This file is part of mccore.
 //  
@@ -30,17 +30,20 @@
 
 #include "ResId.h"
 
-class iBinstream;
-class oBinstream;
 
 using namespace std;
 
 namespace mccore 
 {
+  
+  class iBinstream;
   class iFastastream;
+  class oBinstream;
   class oFastastream;
   class iGenbankstream;
 
+
+  
   /**
    * @short A sequence of residues in its simplest, fastest form.
    *
@@ -184,7 +187,6 @@ namespace mccore
    * @return the output stream used.
    */
   oFastastream& operator<< (oFastastream &os, const Sequence &seq);
-  
   
   /**
    * Reads a sequence from a genbank stream.

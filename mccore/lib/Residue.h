@@ -3,23 +3,24 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.15 $
+// $Revision: 1.16 $
+// $Id: Residue.h,v 1.16 2003-12-23 14:58:09 larosem Exp $
 //
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifndef _Residue_h_
@@ -36,15 +37,19 @@
 #include "ResidueType.h"
 #include "HomogeneousTransfo.h"
 
-
 using namespace std;
 
-class iBinstream;
-class oBinstream;
+
 
 namespace mccore {
 
   class PropertyType;
+  class iBinstream;
+  class iPdbstream;
+  class oBinstream;
+  class oPdbstream;
+
+  
 
   /**
    * @short A basic residue.
@@ -56,7 +61,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Patrick Gendron <gendrop@iro.umontreal.ca>
-   * @version $Id: Residue.h,v 1.15 2003-12-04 22:44:43 gendrop Exp $
+   * @version $Id: Residue.h,v 1.16 2003-12-23 14:58:09 larosem Exp $
    */
   class Residue
   {
@@ -69,13 +74,13 @@ namespace mccore {
      */
     typedef unsigned int size_type;
     
-  protected:
-
     /**
      * Definition of the sorted mapping.
      */
     typedef map< const AtomType*, size_type, AtomType::less > AtomMap;
     
+  protected:
+
     /**
      * The residue type.
      */
@@ -97,18 +102,361 @@ namespace mccore {
     AtomMap atomIndex;  
 
     
+//   public:
+  protected:
+
+    // PRIVATE METHODS ------------------------------------------------------
+
+    /**
+     * Gets the atom at a position given by an index.  This is used by
+     * the iterators.  It is private since no atom pointers should be
+     * used outside the residue; these pointers are not guaranteed to be valid.
+     * @param pos the position of the atom in the atom vector;
+     * @return the atom.
+     */
+    virtual Atom& get (size_type pos) const;
+
   public:
 
-    class ResidueIterator;
-    friend class ResidueIterator;
-    typedef ResidueIterator iterator;
+    // ITERATORS ---------------------------------------------------------------
 
-    class ResidueConstIterator;
-    friend class ResidueConstIterator;
-    typedef ResidueConstIterator const_iterator;
+    /**
+     * @short Iterators for residues.
+     *
+     * The iterator provides a generic way to access atoms in different
+     * residue component types.  It looks like the forward iterator from STL.
+     * It requires that the residue defines a size method and a bracket
+     * ([Residue::size_type]) accessor.
+     *
+     * @author Martin Larose <larosem@iro.umontreal.ca>
+     */
+    class ResidueIterator
+    {
+    public:
+      
+      typedef random_access_iterator_tag iterator_category;
+      typedef Atom value_type;
+      typedef ptrdiff_t difference_type;
+      typedef Atom* pointer;
+      typedef Atom& reference;
+      
+    private:
+      
+      /**
+       * The pointer over the residue.
+       */
+      Residue *res;
+      
+      /**
+       * The position of the iterator.  It is given by the ResMap iterator.
+       */
+      AtomMap::iterator pos;
+      
+      /**
+       * The filter function over the atom types.  Will be destroyed here.
+       */
+      AtomSet *filter;
+      
+    public:
+      
+      // LIFECYCLE ------------------------------------------------------------
+      
+      /**
+       * Initializes the iterator.
+       */
+      ResidueIterator ();
+      
+      /**
+       * Initializes the iterator.
+       * @param r the residue owning the iterator.
+       * @param p the position of the iterator.
+       * @param f the filter function.
+       */
+      ResidueIterator (Residue *r, AtomMap::iterator p, AtomSet *f = 0);
+      
+      /**
+       * Initializes the iterator with the right's contents.
+       * @param right the iterator to copy.
+       */
+      ResidueIterator (const ResidueIterator &right);
+      
+      /**
+       * Destroys the iterator.
+       */
+      ~ResidueIterator ();
+      
+      // OPERATORS ------------------------------------------------------------
+      
+      /**
+       * Assigns the iterator with the right's content.
+       * @param right the object to copy.
+       * @return itself.
+       */
+      ResidueIterator& operator= (const ResidueIterator &right);
+      
+      /**
+       * Advances and assigns the iterator of k positions.
+       * @param k the number of positions to advance.
+       * @return itself.
+       */
+      ResidueIterator& operator+= (difference_type k);
+      
+      /**
+       * Gets the atom pointed by the current iterator.
+       * @return a pointer over the atom placed by the transfo.
+       */
+      pointer operator-> () const { return &(res->get (pos->second)); }
+      
+      /**
+       * Dereferences the iterator.
+       * @return an atom reference.
+       */
+      reference operator* () const { return res->get (pos->second); }
+  
+      /**
+       * Pre-advances the iterator to the next atom.
+       * @return the iterator over the next atom.
+       */
+      ResidueIterator& operator++ ();
+      
+      /**
+       * Post-advances the iterator to the next atom.
+       * @param ign ignored parameter.
+       * @return the iterator over the current atom.
+       */
+      ResidueIterator operator++ (int ign);
+      
+      /**
+       * Adds the iterator to a distance type k.  The result may points to the
+       * end of the residue.
+       * @param k the distance type.
+       * @return a new iterator pointing to itself + k.
+       */
+      ResidueIterator operator+ (difference_type k) const
+      {
+	return ResidueIterator (*this) += k;
+      }
+      
+      /**
+       * Tests whether the iterators are equal.
+       * @param right the right iterator.
+       * @return the truth value.
+       */
+      bool operator== (const ResidueIterator &right) const
+      {
+	return res == right.res && pos == right.pos;
+      }
+    
+      /**
+       * Tests whether the iterators are different.
+       * @param right the right iterator.
+       * @return the truth value.
+       */
+      bool operator!= (const ResidueIterator &right) const
+      {
+	return !operator== (right);
+      }
+      
+      /**
+       * Tests whether the current iterator is less than the right.
+       * @param right the right iterator.
+       * @return the truth value.
+       */
+      bool operator< (const ResidueIterator &right) const
+      {
+	return (res < right.res ||
+		res == right.res && pos->first < right.pos->first);
+      }
+      
+      /**
+       * Casts the iterator to a residue.
+       * @return the residue pointed by the iterator.
+       */
+      operator Residue* () { return res; }
+    };
+    friend class Residue::ResidueIterator;
 
+
+    /**
+     * @short Const iterators for residues.
+     *
+     * The const_iterator provides a generic way to access atoms in different
+     * residue component types.  It looks like the forward iterator from STL.
+     * It requires that the residue defines a size method and a bracket
+     * ([Residue::size_type]) accessor.
+     *
+     * @author Martin Larose <larosem@iro.umontreal.ca>
+     */
+    class ResidueConstIterator
+    {
+    public:
+
+      typedef random_access_iterator_tag iterator_category;
+      typedef const Atom value_type;
+      typedef ptrdiff_t difference_type;
+      typedef const Atom* pointer;
+      typedef const Atom& reference;
+
+    private:
+    
+      /**
+       * The pointer over the residue.
+       */
+      const Residue *res;
+    
+      /**
+       * The residue index where the const_residue_iterator points to.
+       */
+      AtomMap::const_iterator pos;
+    
+      /**
+       * The filter function over the atom types.
+       */
+      AtomSet *filter;
+
+    public:
+
+      // LIFECYCLE ------------------------------------------------------------
+    
+      /**
+       * Initializes the iterator.
+       */
+      ResidueConstIterator ();
+    
+      /**
+       * Initializes the iterator.
+       * @param r the residue owning the iterator.
+       * @param p the position of the iterator.
+       * @param f the filter function.
+       */
+      ResidueConstIterator (const Residue *r,
+			    AtomMap::const_iterator p,
+			    AtomSet *f = 0);
+
+      /**
+       * Initializes the ResidueConstIterator with the right's contents.
+       * @param right the ResidueConstIterator to copy.
+       */
+      ResidueConstIterator (const ResidueConstIterator &right);
+    
+    
+      /**
+       * Initializes the ResidueConstIterator with the right's contents. 
+       * Adding constness is allowed.
+       * @param right the ResidueConstIterator to copy.
+       */
+      ResidueConstIterator (const ResidueIterator &right);
+
+      /**
+       * Destroys the object.
+       */
+      ~ResidueConstIterator ();
+    
+      // OPERATORS ------------------------------------------------------------
+    
+      /**
+       * Assigns the ResidueConstIterator with the right's content.
+       * @param right the object to copy.
+       * @return itself.
+       */
+      ResidueConstIterator& operator= (const ResidueConstIterator &right);
+    
+      /**
+       * Assigns the ResidueConstIterator with the right's content.
+       * Adding constness is allowed.
+       * @param right the object to copy.
+       * @return itself.
+       */
+      ResidueConstIterator& operator= (const ResidueIterator &right);
+    
+      /**
+       * Advances and assigns the const_iterator of k positions.
+       * @param k the number of positions to advance.
+       * @return itself.
+       */
+      ResidueConstIterator& operator+= (difference_type k);
+    
+      /**
+       * Gets the atom pointed by the current iterator.
+       * @return the atom pointer.
+       */
+      pointer operator-> () const { return &(res->get (pos->second)); }
+    
+      /**
+       * Dereferences the iterator.
+       * @return an atom reference.
+       */
+      reference operator* () const { return res->get (pos->second); }
+    
+      /**
+       * Pre-advances the iterator to the next atom.
+       * @return the iterator over the next atom.
+       */
+      ResidueConstIterator& operator++ ();
+    
+      /**
+       * Post-advances the iterator to the next atom.
+       * @param ign ignored parameter.
+       * @return the iterator over the current atom.
+       */
+      ResidueConstIterator operator++ (int ign);
+    
+      /**
+       * Adds the const_iterator to a distance type k.  The result may points
+       * to the end of the residue.
+       * @param k the distance type.
+       * @return a new iterator pointing to itself + k.
+       */
+      ResidueConstIterator operator+ (difference_type k) const
+      {
+	return ResidueConstIterator (*this) += k;
+      }
+    
+      /**
+       * Tests whether the iterators are equal.
+       * @param right the right iterator.
+       * @return the truth value.
+       */
+      bool operator== (const ResidueConstIterator &right) const
+      {
+	return res == right.res && pos == right.pos;
+      }
+    
+      /**
+       * Tests whether the iterators are different.
+       * @param right the right iterator.
+       * @return the truth value.
+       */
+      bool operator!= (const ResidueConstIterator &right) const
+      {
+	return !operator== (right);
+      }
+    
+      /**
+       * Tests whether the current iterator is less than the right.
+       * @param right the right iterator.
+       * @return the truth value.
+       */
+      bool operator< (const ResidueConstIterator &right) const
+      {
+	return (res < right.res ||
+		res == right.res && pos->first < right.pos->first);
+      }
+    
+      /**
+       * Casts the iterator to a residue.
+       * @return the residue pointed by the iterator.
+       */
+      operator const Residue* () const { return res; }
+    
+    };
+    
+    friend class Residue::ResidueConstIterator;
     
   public:
+
+    typedef ResidueIterator iterator;
+    typedef ResidueConstIterator const_iterator;
     
     // LIFECYCLE ---------------------------------------------------------------
     
@@ -165,7 +513,7 @@ namespace mccore {
      * @param other the object to copy.
      * @return itself.
      */
-    virtual Residue& operator= (const Residue &other);
+    Residue& operator= (const Residue &other);
     
     /**
      * Indicates whether some other residue is "equal to" this one.
@@ -403,15 +751,6 @@ namespace mccore {
     // PRIVATE METHODS ------------------------------------------------------
 
     /**
-     * Gets the atom at a position given by an index.  This is used by
-     * the iterators.  It is private since no atom pointers should be
-     * used outside the residue; these pointers are not guaranteed to be valid.
-     * @param pos the position of the atom in the atom vector;
-     * @return the atom.
-     */
-    virtual Atom& get (size_type pos) const;
-
-    /**
      * Gets the atom of given type.  It is private since no atom
      * pointers should be used outside the residue; these pointers are
      * not guaranteed to be valid.
@@ -447,349 +786,10 @@ namespace mccore {
      */
     virtual oBinstream& output (oBinstream &obs) const;
 
-
-  protected:
-    
-    // ITERATORS ---------------------------------------------------------------
-
-    /**
-     * @short Iterators for residues.
-     *
-     * The iterator provides a generic way to access atoms in different
-     * residue component types.  It looks like the forward iterator from STL.
-     * It requires that the residue defines a size method and a bracket
-     * ([Residue::size_type]) accessor.
-     *
-     * @author Martin Larose <larosem@iro.umontreal.ca>
-     */
-    class ResidueIterator
-    {
-      friend class Residue::ResidueConstIterator;
-      
-    public:
-      
-      typedef random_access_iterator_tag iterator_category;
-      typedef Atom value_type;
-      typedef ptrdiff_t difference_type;
-      typedef Atom* pointer;
-      typedef Atom& reference;
-      
-    private:
-      
-      /**
-       * The pointer over the residue.
-       */
-      Residue *res;
-      
-      /**
-       * The position of the iterator.  It is given by the ResMap iterator.
-       */
-      AtomMap::iterator pos;
-      
-      /**
-       * The filter function over the atom types.  Will be destroyed here.
-       */
-      AtomSet *filter;
-      
-    public:
-      
-      // LIFECYCLE ------------------------------------------------------------
-      
-      /**
-       * Initializes the iterator.
-       */
-      ResidueIterator ();
-      
-      /**
-       * Initializes the iterator.
-       * @param r the residue owning the iterator.
-       * @param p the position of the iterator.
-       * @param f the filter function.
-       */
-      ResidueIterator (Residue *r, AtomMap::iterator p, AtomSet *f = 0);
-      
-      /**
-       * Initializes the iterator with the right's contents.
-       * @param right the iterator to copy.
-       */
-      ResidueIterator (const ResidueIterator &right);
-      
-      /**
-       * Destroys the iterator.
-       */
-      ~ResidueIterator ();
-      
-      // OPERATORS ------------------------------------------------------------
-      
-      /**
-       * Assigns the iterator with the right's content.
-       * @param right the object to copy.
-       * @return itself.
-       */
-      ResidueIterator& operator= (const ResidueIterator &right);
-      
-      /**
-       * Advances and assigns the iterator of k positions.
-       * @param k the number of positions to advance.
-       * @return itself.
-       */
-      ResidueIterator& operator+= (difference_type k);
-      
-      /**
-       * Gets the atom pointed by the current iterator.
-       * @return a pointer over the atom placed by the transfo.
-       */
-      pointer operator-> () const { return &(res->get (pos->second)); }
-      
-      /**
-       * Dereferences the iterator.
-       * @return an atom reference.
-       */
-      reference operator* () const { return res->get (pos->second); }
-  
-      /**
-       * Pre-advances the iterator to the next atom.
-       * @return the iterator over the next atom.
-       */
-      ResidueIterator& operator++ ();
-      
-      /**
-       * Post-advances the iterator to the next atom.
-       * @param ign ignored parameter.
-       * @return the iterator over the current atom.
-       */
-      ResidueIterator operator++ (int ign);
-      
-      /**
-       * Adds the iterator to a distance type k.  The result may points to the
-       * end of the residue.
-       * @param k the distance type.
-       * @return a new iterator pointing to itself + k.
-       */
-      ResidueIterator operator+ (difference_type k) const
-      {
-	return ResidueIterator (*this) += k;
-      }
-      
-      /**
-       * Tests whether the iterators are equal.
-       * @param right the right iterator.
-       * @return the truth value.
-       */
-      bool operator== (const ResidueIterator &right) const
-      {
-	return res == right.res && pos == right.pos;
-      }
-    
-      /**
-       * Tests whether the iterators are different.
-       * @param right the right iterator.
-       * @return the truth value.
-       */
-      bool operator!= (const ResidueIterator &right) const
-      {
-	return !operator== (right);
-      }
-      
-      /**
-       * Tests whether the current iterator is less than the right.
-       * @param right the right iterator.
-       * @return the truth value.
-       */
-      bool operator< (const ResidueIterator &right) const
-      {
-	return (res < right.res ||
-		res == right.res && pos->first < right.pos->first);
-      }
-      
-      /**
-       * Casts the iterator to a residue.
-       * @return the residue pointed by the iterator.
-       */
-      operator Residue* () { return res; }
-    };
-
-
-    /**
-     * @short Const iterators for residues.
-     *
-     * The const_iterator provides a generic way to access atoms in different
-     * residue component types.  It looks like the forward iterator from STL.
-     * It requires that the residue defines a size method and a bracket
-     * ([Residue::size_type]) accessor.
-     *
-     * @author Martin Larose <larosem@iro.umontreal.ca>
-     */
-    class ResidueConstIterator
-    {
-      friend class Residue::ResidueIterator;
-
-    public:
-
-      typedef random_access_iterator_tag iterator_category;
-      typedef const Atom value_type;
-      typedef ptrdiff_t difference_type;
-      typedef const Atom* pointer;
-      typedef const Atom& reference;
-
-    private:
-    
-      /**
-       * The pointer over the residue.
-       */
-      const Residue *res;
-    
-      /**
-       * The residue index where the const_residue_iterator points to.
-       */
-      AtomMap::const_iterator pos;
-    
-      /**
-       * The filter function over the atom types.
-       */
-      AtomSet *filter;
-
-    public:
-
-      // LIFECYCLE ------------------------------------------------------------
-    
-      /**
-       * Initializes the iterator.
-       */
-      ResidueConstIterator ();
-    
-      /**
-       * Initializes the iterator.
-       * @param r the residue owning the iterator.
-       * @param p the position of the iterator.
-       * @param f the filter function.
-       */
-      ResidueConstIterator (const Residue *r,
-			    AtomMap::const_iterator p,
-			    AtomSet *f = 0);
-
-      /**
-       * Initializes the ResidueConstIterator with the right's contents.
-       * @param right the ResidueConstIterator to copy.
-       */
-      ResidueConstIterator (const ResidueConstIterator &right);
-    
-    
-      /**
-       * Initializes the ResidueConstIterator with the right's contents. 
-       * Adding constness is allowed.
-       * @param right the ResidueConstIterator to copy.
-       */
-      ResidueConstIterator (const ResidueIterator &right);
-
-      /**
-       * Destroys the object.
-       */
-      ~ResidueConstIterator ();
-    
-      // OPERATORS ------------------------------------------------------------
-    
-      /**
-       * Assigns the ResidueConstIterator with the right's content.
-       * @param right the object to copy.
-       * @return itself.
-       */
-      ResidueConstIterator& operator= (const ResidueConstIterator &right);
-    
-      /**
-       * Assigns the ResidueConstIterator with the right's content.
-       * Adding constness is allowed.
-       * @param right the object to copy.
-       * @return itself.
-       */
-      ResidueConstIterator& operator= (const ResidueIterator &right);
-    
-      /**
-       * Advances and assigns the const_iterator of k positions.
-       * @param k the number of positions to advance.
-       * @return itself.
-       */
-      ResidueConstIterator& operator+= (difference_type k);
-    
-      /**
-       * Gets the atom pointed by the current iterator.
-       * @return the atom pointer.
-       */
-      pointer operator-> () const { return &(res->get (pos->second)); }
-    
-      /**
-       * Dereferences the iterator.
-       * @return an atom reference.
-       */
-      reference operator* () const { return res->get (pos->second); }
-    
-      /**
-       * Pre-advances the iterator to the next atom.
-       * @return the iterator over the next atom.
-       */
-      ResidueConstIterator& operator++ ();
-    
-      /**
-       * Post-advances the iterator to the next atom.
-       * @param ign ignored parameter.
-       * @return the iterator over the current atom.
-       */
-      ResidueConstIterator operator++ (int ign);
-    
-      /**
-       * Adds the const_iterator to a distance type k.  The result may points
-       * to the end of the residue.
-       * @param k the distance type.
-       * @return a new iterator pointing to itself + k.
-       */
-      ResidueConstIterator operator+ (difference_type k) const
-      {
-	return ResidueConstIterator (*this) += k;
-      }
-    
-      /**
-       * Tests whether the iterators are equal.
-       * @param right the right iterator.
-       * @return the truth value.
-       */
-      bool operator== (const ResidueConstIterator &right) const
-      {
-	return res == right.res && pos == right.pos;
-      }
-    
-      /**
-       * Tests whether the iterators are different.
-       * @param right the right iterator.
-       * @return the truth value.
-       */
-      bool operator!= (const ResidueConstIterator &right) const
-      {
-	return !operator== (right);
-      }
-    
-      /**
-       * Tests whether the current iterator is less than the right.
-       * @param right the right iterator.
-       * @return the truth value.
-       */
-      bool operator< (const ResidueConstIterator &right) const
-      {
-	return (res < right.res ||
-		res == right.res && pos->first < right.pos->first);
-      }
-    
-      /**
-       * Casts the iterator to a residue.
-       * @return the residue pointed by the iterator.
-       */
-      operator const Residue* () const { return res; }
-    
-    };
-    
   };
 
   // NON-MEMBER FUNCTIONS ------------------------------------------------------
-
+  
   /**
    * Ouputs the residue to the stream.
    * @param os the output stream.
@@ -797,7 +797,7 @@ namespace mccore {
    * @return the used output stream.
    */
   ostream& operator<< (ostream &os, const Residue &r);
-
+  
   /**
    * Ouputs the residue to the stream.
    * @param os the output stream.
@@ -813,7 +813,7 @@ namespace mccore {
    * @return the input binary stream used.
    */
   iBinstream& operator>> (iBinstream &ibs, Residue &res);
-
+  
   
   /**
    * Outputs the Residue to the binary stream.
@@ -822,7 +822,23 @@ namespace mccore {
    * @return the output binary stream used.
    */
   oBinstream& operator<< (oBinstream &obs, const Residue &res);
-  
-}
 
+  /**
+   * Inputs the residue from the pdb stream.
+   * @param ibs the input pdb stream.
+   * @param res the residue to fill.
+   * @return the input pdb stream used.
+   */
+  iPdbstream& operator>> (iPdbstream &ibs, Residue &res);
+  
+  
+  /**
+   * Outputs the Residue to the pdb stream.
+   * @param obs the output pdb stream.
+   * @param res the Residue.
+   * @return the output pdb stream used.
+   */
+  oPdbstream& operator<< (oPdbstream &obs, const Residue &res);
+}
+  
 #endif

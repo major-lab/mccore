@@ -1,12 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // SocketCommand.h
-// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Aug 16 16:21:12 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:17:27 2001
-// Update Count     : 4
-// Status           : Unknown.
+// $Revision: 1.4 $
+// $Id: SocketCommand.h,v 1.4 2003-12-23 14:58:09 larosem Exp $
 // 
 //  This file is part of mccore.
 //  

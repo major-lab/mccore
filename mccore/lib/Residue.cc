@@ -3,23 +3,24 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
+// $Revision: 1.27 $
+// $Id: Residue.cc,v 1.27 2003-12-23 14:57:49 larosem Exp $
+//
+// This file is part of mccore.
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifdef HAVE_CONFIG_H
@@ -29,20 +30,24 @@
 #include <algorithm>
 #include <assert.h>
 #include <math.h>
+#include <set>
 
+#include "Binstream.h"
+#include "CException.h"
+#include "Messagestream.h"
+#include "Pdbstream.h"
+#include "PropertyType.h"
+#include "ResId.h"
 #include "Residue.h"
 #include "ResidueTopology.h"
-#include "ResId.h"
-#include "Binstream.h"
-#include "PropertyType.h"
-#include "Messagestream.h"
 #include "Rmsd.h"
 #include "zfPdbstream.h"
-#include "CException.h"
+
+
 
 namespace mccore {
 
-  // LIFECYCLE -----------------------------------------------------------------
+  // LIFECYCLE ------------------------------------------------------------
 
 
   Residue::Residue ()
@@ -50,6 +55,7 @@ namespace mccore {
   {
   }
 
+  
 
   Residue::Residue (const ResidueType *t, const ResId &i)
     : type (t), resId (i) 
@@ -379,7 +385,7 @@ namespace mccore {
       pivot[0] = 0;
       pivot[1] = 0;
       pivot[2] = 0;
-      gOut (4) << "Residue " << getType () << " " << getResId () 
+      gOut (4) << "Residue " << *getType () << " " << getResId () 
 	       << " has less than 3 atoms and cannot be moved: " << endl;
     }
     
@@ -418,7 +424,7 @@ namespace mccore {
       pivot[0] = 0;
       pivot[1] = 0;
       pivot[2] = 0;
-      gOut (4) << "Residue " << getType () << " " << getResId () 
+      gOut (4) << "Residue " << *getType () << " " << getResId () 
 	       << " has less than 3 atoms and cannot be moved: " << endl;
     }
     curr = HomogeneousTransfo::align (*pivot[0], *pivot[1], *pivot[2]);
@@ -450,9 +456,9 @@ namespace mccore {
 
 
   Residue::iterator 
-  Residue::erase (const AtomType *type)
+  Residue::erase (const AtomType *aType)
   {
-    AtomMap::iterator i = atomIndex.find (type);
+    AtomMap::iterator i = atomIndex.find (aType);
     
     if (i!=atomIndex.end ()) {
       vector< Atom* >::const_iterator cit;
@@ -514,7 +520,7 @@ namespace mccore {
 
   void Residue::validate () 
   {
-    gOut (6) << "Validating " << resId << " " << type << endl;
+    gOut (6) << "Validating " << resId << " " << *type << endl;
 
     if (!type) {
       gOut (6) << "Validate called on an empty residue" << endl;
@@ -522,7 +528,7 @@ namespace mccore {
     }
 
     if (!type->isNucleicAcid () && !type->isAminoAcid ()) {
-      gOut (6) << "Validate called on a unknown residue: " << type << endl;
+      gOut (6) << "Validate called on a unknown residue: " << *type << endl;
       return;
     }
     
@@ -597,7 +603,7 @@ namespace mccore {
 		|| 0 == get(AtomType::aN7) || 0 == get(AtomType::aN9)
 		|| 0 == get(AtomType::aC6) || 0 == get(AtomType::aC5)
 		|| 0 == get(AtomType::aN6) || 0 == get(AtomType::aC4)) {
-	      gOut (2) << "Residue " << getType() << " " << getResId ()
+	      gOut (2) << "Residue " << *getType () << " " << getResId ()
 		       << " is missing one or more critical atoms." << endl;
 	      type = type->invalidate ();
 	      return;
@@ -641,7 +647,7 @@ namespace mccore {
 		|| 0 == get(AtomType::aN3) || 0 == get(AtomType::aN2)
 		|| 0 == get(AtomType::aC4) || 0 == get(AtomType::aC5)
 		|| 0 == get(AtomType::aO6)) {
-	      gOut (2) << "Residue " << getType() << " " << getResId ()
+	      gOut (2) << "Residue " << *getType () << " " << getResId ()
 		       << " is missing one or more critical atoms." << endl;
 	      type = type->invalidate ();
 	      return;
@@ -686,7 +692,7 @@ namespace mccore {
  		|| 0 == get(AtomType::aN3) || 0 == get(AtomType::aN4)
 		|| 0 == get(AtomType::aC6) || 0 == get(AtomType::aC5)
 		|| 0 == get(AtomType::aC2) || 0 == get(AtomType::aO2)) {
-	      gOut (2) << "Residue " << getType() << " " << getResId ()
+	      gOut (2) << "Residue " << *getType () << " " << getResId ()
 		       << " is missing one or more critical atoms." << endl;
 	      type = type->invalidate ();
 	      return;
@@ -729,7 +735,7 @@ namespace mccore {
 		|| 0 == get(AtomType::aC4) || 0 == get(AtomType::aC5)
 		|| 0 == get(AtomType::aC6) || 0 == get(AtomType::aN1)
 		|| 0 == get(AtomType::aO2) || 0 == get(AtomType::aO4)) {
-	      gOut (2) << "Residue " << getType() << " " << getResId ()
+	      gOut (2) << "Residue " << *getType () << " " << getResId ()
 		       << " is missing one or more critical atoms." << endl;
 	      type = type->invalidate ();
 	      return;
@@ -769,7 +775,7 @@ namespace mccore {
 		|| 0 == get(AtomType::aC6) || 0 == get(AtomType::aN1)
 		|| 0 == get(AtomType::aO2) || 0 == get(AtomType::aO4)
 		|| 0 == get(AtomType::aC5M)) {
-	      gOut (2) << "Residue " << getType() << " " << getResId ()
+	      gOut (2) << "Residue " << *getType () << " " << getResId ()
 		       << " is missing one or more critical atoms." << endl;
 	      type = type->invalidate ();
 	      return;
@@ -985,7 +991,7 @@ namespace mccore {
 	    || 0 == get (AtomType::aN7) || 0 == get (AtomType::aN9)
 	    || 0 == get (AtomType::aC6) || 0 == get (AtomType::aC5)
 	    || 0 == get (AtomType::aN6) || 0 == get (AtomType::aC4)) {
-	  gOut (2) << "Residue " << getType() << " " << getResId ()
+	  gOut (2) << "Residue " << *getType () << " " << getResId ()
 		   << " is missing one or more critical atoms." << endl;
 	  type = type->invalidate();
 	  return;
@@ -1025,7 +1031,7 @@ namespace mccore {
 	    || 0 == get (AtomType::aN3) || 0 == get (AtomType::aN2)
 	    || 0 == get (AtomType::aC4) || 0 == get (AtomType::aC5)
 	    || 0 == get (AtomType::aO6)) {
-	  gOut (2) << "Residue " << getType() << " " << getResId ()
+	  gOut (2) << "Residue " << *getType () << " " << getResId ()
 		   << " is missing one or more critical atoms." << endl;
 	  type = type->invalidate();	      
 	  return;
@@ -1071,7 +1077,7 @@ namespace mccore {
 	    || 0 == get (AtomType::aN3) || 0 == get (AtomType::aN4)
 	    || 0 == get (AtomType::aC6) || 0 == get (AtomType::aC5)
 	    || 0 == get (AtomType::aC2) || 0 == get (AtomType::aO2)) {
-	  gOut (2) << "Residue " << getType() << " " << getResId ()
+	  gOut (2) << "Residue " << *getType () << " " << getResId ()
 		   << " is missing one or more critical atoms." << endl;
 	  type = type->invalidate();	      
 	  return;
@@ -1109,7 +1115,7 @@ namespace mccore {
 	    || 0 == get (AtomType::aC4) || 0 == get (AtomType::aC5)
 	    || 0 == get (AtomType::aC6) || 0 == get (AtomType::aN1)
 	    || 0 == get (AtomType::aO2) || 0 == get (AtomType::aO4)) {
-	  gOut (2) << "Residue " << getType() << " " << getResId ()
+	  gOut (2) << "Residue " << *getType () << " " << getResId ()
 		   << " is missing one or more critical atoms." << endl;
 	  type = type->invalidate();	      
 	  return;
@@ -1274,7 +1280,7 @@ namespace mccore {
 	
 	insert (Atom(z, AtomType::aPSAZ));
       } else {
-	gOut (2) << "Residue " << getResId () << "-" << getType()
+	gOut (2) << "Residue " << getResId () << "-" << *getType ()
 		 << " is missing one or more critical atoms." << endl;		
       }	
     }    
@@ -1301,8 +1307,8 @@ namespace mccore {
 						*r.find (AtomType::aC),
 						*r.find (AtomType::aO));
       
-      return (min (abs (deltaPseudoPhi), (float)(2 * M_PI - abs (deltaPseudoPhi)))
-	      + min (abs (deltaPseudoPsi), (float)(2 * M_PI - abs (deltaPseudoPsi))));
+      return (min ((float) abs (deltaPseudoPhi), (float)(2 * M_PI - abs (deltaPseudoPhi)))
+	      + min ((float) abs (deltaPseudoPsi), (float)(2 * M_PI - abs (deltaPseudoPsi))));
     } else if (getType ()->isNucleicAcid ()) {
       // nucleic acid
       Residue *tmpRef = clone ();
@@ -1327,7 +1333,7 @@ namespace mccore {
       return result;
     }
     gOut (2) << "Distance metric is not defined for residues " 
-	     << getType () << " and " << r.getType () << endl;
+	     << *getType () << " and " << *r.getType () << endl;
     return MAXFLOAT;
   }
   
@@ -1364,9 +1370,9 @@ namespace mccore {
 
 
   Atom* 
-  Residue::get (const AtomType* type) const 
+  Residue::get (const AtomType* aType) const 
   {
-    AtomMap::const_iterator it = atomIndex.find (type);
+    AtomMap::const_iterator it = atomIndex.find (aType);
     if (it == atomIndex.end ())
       return 0;
     else
@@ -1452,6 +1458,24 @@ namespace mccore {
     return res.output (obs);
   }
 
+
+  iPdbstream& 
+  operator>> (iPdbstream &ips, Residue &res)
+  {
+    ips.read (res);
+    return ips;
+  }
+
+
+
+  oPdbstream&
+  operator<< (oPdbstream &ops, const Residue &res)
+  {
+    ops.write (res);
+    return ops;
+  }
+
+  
 
   // ITERATORS -----------------------------------------------------------------
 
@@ -1585,9 +1609,9 @@ namespace mccore {
 
 
   Residue::ResidueConstIterator::ResidueConstIterator (const Residue::iterator &right)
-    : res (right.res),
-      pos (right.pos),
-      filter (right.filter->clone ())
+    : res (((ResidueConstIterator&) right).res),
+      pos (((ResidueConstIterator&) right).pos),
+      filter (((ResidueConstIterator&) right).filter->clone ())
   { }
 
 
@@ -1617,10 +1641,10 @@ namespace mccore {
   Residue::const_iterator&
   Residue::ResidueConstIterator::operator= (const Residue::iterator &right)
   {
-    res = right.res;
-    pos = right.pos;
+    res = ((ResidueConstIterator&) right).res;
+    pos = ((ResidueConstIterator&) right).pos;
     delete filter;
-    filter = right.filter->clone ();
+    filter = ((ResidueConstIterator&) right).filter->clone ();
     return *this;
   }
 

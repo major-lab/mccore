@@ -1,50 +1,43 @@
 //                              -*- Mode: C++ -*- 
 // ServerSocket.cc
 // Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
-//                  Université de Montréal.
+//                     Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:56 2001
-// Last Modified By : Patrick Gendron
-// Last Modified On : Thu Mar 27 11:36:20 2003
-// Update Count     : 13
-// Status           : Unknown.
+// $Revision: 1.15 $
+// $Id: ServerSocket.cc,v 1.15 2003-12-23 14:57:49 larosem Exp $
+//
+// This file is part of mccore.
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
-#include "ServerSocket.h"
-
-#include <iostream>
-
 #include <errno.h>
-#include <string.h>
-#include <unistd.h>
+#include <fcntl.h>
+#include <netdb.h>
+#include <netinet/in.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
 #include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
-#include <fcntl.h>
-
+#include <sys/types.h>
+#include <unistd.h>
 
 #if defined(__sgi) || defined (__sun)
 #include <strings.h>
@@ -54,6 +47,8 @@
 typedef int socklen_t;
 #endif
 
+#include "ServerSocket.h"
+#include "sockstream.h"
 
 
 
@@ -63,7 +58,7 @@ ServerSocket::ServerSocket (int thePort)
   sockaddr_in sin;
 
   // Creating socket ---
-  if ((socket_id = ::socket (AF_INET, SOCK_STREAM, 0)) < 0) {
+  if ((socket_id = socket (AF_INET, SOCK_STREAM, 0)) < 0) {
 //      CFatalSocketException exc ("socket creation failed", __FILE__, __LINE__);
 //      exc << ": " << strerror (errno);
 //      throw exc;
@@ -75,7 +70,7 @@ ServerSocket::ServerSocket (int thePort)
   sin.sin_addr.s_addr = INADDR_ANY;
   sin.sin_port = htons (port);
 
-  if (::bind (socket_id, (sockaddr*)&sin, sizeof (sin)) < 0) {
+  if (bind (socket_id, (sockaddr*)&sin, sizeof (sin)) < 0) {
 //      CFatalSocketException exc ("socket binding failed", __FILE__, __LINE__);
 //      exc << ": " << strerror (errno);
 //      throw exc;
@@ -120,7 +115,7 @@ ServerSocket::close ()
 {
 
   /*
-  if (::shutdown (socket_id, SHUT_RDWR) == -1 && errno != ENOTCONN) {
+  if (shutdown (socket_id, SHUT_RDWR) == -1 && errno != ENOTCONN) {
     CFatalSocketException exc ("socket shutdown failed",
 			       __FILE__, __LINE__);
     exc << ": " << strerror (errno);

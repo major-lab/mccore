@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:42:25 2003
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 // 
 //  This file is part of mccore.
 //  
@@ -2182,7 +2182,7 @@ namespace mccore {
     /**
      * Public class for Ws.
      */
-    class PWs : public virtual PropertyType {
+    class PWs : public PW {
     public:
       PWs () {}
       PWs (const char* t) : PropertyType (t) {}
@@ -2194,7 +2194,7 @@ namespace mccore {
     /**
      * Public class for Ww.
      */
-    class PWw : public virtual PropertyType {
+    class PWw : public PW {
     public:
       PWw () {}
       PWw (const char* t) : PropertyType (t) {}
@@ -2206,7 +2206,7 @@ namespace mccore {
     /**
      * Public class for Wh.
      */
-    class PWh : public virtual PropertyType {
+    class PWh : public PW {
     public:
       PWh () {}
       PWh (const char* t) : PropertyType (t) {}
@@ -2218,7 +2218,7 @@ namespace mccore {
     /**
      * Public class for Sw.
      */
-    class PSw : public virtual PropertyType {
+    class PSw : public PS {
     public:
       PSw () {}
       PSw (const char* t) : PropertyType (t) {}
@@ -2230,7 +2230,7 @@ namespace mccore {
     /**
      * Public class for Ss.
      */
-    class PSs : public virtual PropertyType {
+    class PSs : public PS {
     public:
       PSs () {}
       PSs (const char* t) : PropertyType (t) {}
@@ -2242,7 +2242,7 @@ namespace mccore {
     /**
      * Public class for Hw.
      */
-    class PHw : public virtual PropertyType {
+    class PHw : public PH {
     public:
       PHw () {}
       PHw (const char* t) : PropertyType (t) {}
@@ -2254,7 +2254,7 @@ namespace mccore {
     /**
      * Public class for Hh.
      */
-    class PHh : public virtual PropertyType {
+    class PHh : public PH {
     public:
       PHh () {}
       PHh (const char* t) : PropertyType (t) {}
@@ -2266,7 +2266,7 @@ namespace mccore {
     /**
      * Public class for C8.
      */
-    class PC8 : public virtual PropertyType {
+    class PC8 : public PH {
     public:
       PC8 () {}
       PC8 (const char* t) : PropertyType (t) {}
@@ -2278,7 +2278,7 @@ namespace mccore {
     /**
      * Public class for Bs.
      */
-    class PBs : public virtual PropertyType {
+    class PBs : public PB {
     public:
       PBs () {}
       PBs (const char* t) : PropertyType (t) {}
@@ -2290,7 +2290,7 @@ namespace mccore {
     /**
      * Public class for Bh.
      */
-    class PBh : public virtual PropertyType {
+    class PBh : public PB {
     public:
       PBh () {}
       PBh (const char* t) : PropertyType (t) {}

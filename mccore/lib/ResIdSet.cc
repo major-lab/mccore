@@ -3,7 +3,7 @@
 // Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Oct 26 10:24:02 2000
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 // 
 //  This file is part of mccore.
 //  
@@ -31,6 +31,31 @@
 #include "CException.h"
 #include "Messagestream.h"
 #include "ResIdSet.h"
+
+
+
+#ifndef HAVE_STRSEP
+static char*
+strsep (char **stringp, const char *delim)
+{
+  char *return_val = *stringp;
+  char *to;
+
+  if (*stringp == 0)
+    return 0;
+
+  to = strpbrk (*stringp, delim);
+
+  if (to)
+    *to++ = '\0';
+  
+  *stringp = to;
+
+  return return_val;
+}
+#endif
+
+
 
 namespace mccore {
   

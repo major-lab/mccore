@@ -1,19 +1,39 @@
 //                              -*- Mode: C++ -*- 
 // SymmetricalMatrix.h
+// Copyright © 2003-03 Laboratoire de Biologie Informatique et Théorique
 // Author           : Philippe Thibault
 // Created On       : Wed Oct 16 09:28:54 2002
-// Last Modified By : Philippe Thibault
-// Last Modified On : Wed Oct 23 08:13:55 2002
-// Update Count     : 2
-// Status           : Ok.
+// $Revision: 1.4 $
+// $Id: SymmetricalMatrix.h,v 1.4 2003-12-23 14:58:09 larosem Exp $
 // 
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifndef _SymmetricalMatrix_h_
 #define _SymmetricalMatrix_h_
 
-class iBinstream;
-class oBinstream;
+#include <utility>
+
+namespace mccore {
+  class iBinstream;
+  class oBinstream;
+}
+
+using namespace mccore;
 
 
 
@@ -97,7 +117,7 @@ public:
    * @param j the column index.
    * @return the data at (i,j).
    */
-  Type& operator[] (pair< int, int > ij) const { return getij (ij.first, ij.second); }
+  Type& operator[] (std::pair< int, int > ij) const { return getij (ij.first, ij.second); }
 
   /**
    * Access the two-dimensional matrix data at (i,j).

@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar  5 15:05:43 2003
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 // 
 //  This file is part of mccore.
 //  
@@ -192,7 +192,7 @@ namespace mccore {
   }
 
 
-  const float 
+  float 
   operator* (const Vector3D &v, const Vector3D &w) 
   {
     return v.dot (w);

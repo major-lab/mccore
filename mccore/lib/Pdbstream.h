@@ -1,24 +1,27 @@
 //                              -*- Mode: C++ -*- 
 // Pdbstream.h
 // Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
+//                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.21 $
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// $Revision: 1.22 $
+// $Id: Pdbstream.h,v 1.22 2003-12-23 14:58:09 larosem Exp $
+// 
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifndef _Pdbstream_h_
@@ -33,14 +36,15 @@
 
 using namespace std;
 
+
+
 namespace mccore {
 
-  class AtomType;
-  class ResidueType;
   class Atom;
-  class ResId;
-  class Residue;
   class AtomSet;
+  class AtomType;
+  class Residue;
+  class ResidueType;
   class Model;
 
   /**
@@ -52,7 +56,7 @@ namespace mccore {
    * <pre>
    * ATOM FIELD
    * COLUMNS        DATA TYPE       FIELD         DEFINITION
-   * ---------------------------------------------------------------------------------
+   * -----------------------------------------------------------------------
    *  1 -  6        Record name     "ATOM  "
    *  7 - 11        Integer         serial        Atom serial number.
    * 13 - 16        Atom            name          Atom name.
@@ -74,7 +78,7 @@ namespace mccore {
    * </pre>
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Pdbstream.h,v 1.21 2003-09-26 21:16:47 gendrop Exp $
+   * @version $Id: Pdbstream.h,v 1.22 2003-12-23 14:58:09 larosem Exp $
    */
   class iPdbstream : public istream
   {
@@ -112,7 +116,7 @@ namespace mccore {
 
   public:
 
-    // LIFECYCLE -----------------------------------------------------------------
+    // LIFECYCLE -----------------------------------------------------------
 
     /**
      * Initializes the stream.
@@ -130,9 +134,9 @@ namespace mccore {
      */
     virtual ~iPdbstream ();
 
-    // OPERATORS -----------------------------------------------------------------
+    // OPERATORS -----------------------------------------------------------
 
-    // ACCESS --------------------------------------------------------------------
+    // ACCESS --------------------------------------------------------------
 
     /**
      * Gets the header information.
@@ -145,7 +149,7 @@ namespace mccore {
      */
     int getModelNb () { return modelNb; }
 
-    // METHODS -------------------------------------------------------------------
+    // METHODS -------------------------------------------------------------
 
     /**
      * Gets a text line.  Same as the inherited one except that the endline
@@ -171,7 +175,7 @@ namespace mccore {
      */
     bool eom () { return (eomFlag || eof ()); }
 
-    // PRIVATE METHODS ---------------------------------------------------------
+    // PRIVATE METHODS -----------------------------------------------------
 
   private:
 
@@ -188,23 +192,21 @@ namespace mccore {
      */
     char* trim (char* cp);
 
-    // I/O ---------------------------------------------------------------------
+    // I/O -----------------------------------------------------------------
 
   public:
 
     /**
      * Reads an atom from the stream.
      * @param at the atom to read.
-     * @return the Pdbstream.
      */
-    iPdbstream& operator>> (Atom &at);
+    void read (Atom &at);
     
     /**
      * Reads a residue from the stream.
-     * @param r the residue to read.
-     * @return the Pdbstream.
+     * @return r the residue to read.
      */
-    iPdbstream& operator>> (Residue &r);
+    void read (Residue &r);
 
   };
 
@@ -253,7 +255,7 @@ namespace mccore {
     /**
      * Atom counter.
      */
-    int n;    
+    int atomCounter;    
 
     /**
      * Nb of bytes written on the current line
@@ -262,7 +264,7 @@ namespace mccore {
     
   public:
 
-    // LIFECYCLE ---------------------------------------------------------------
+    // LIFECYCLE -----------------------------------------------------------
 
     /**
      * Initializes the stream.
@@ -283,7 +285,7 @@ namespace mccore {
     virtual ~oPdbstream ();
 
 
-    // OPERATORS ---------------------------------------------------------------
+    // OPERATORS -----------------------------------------------------------
 
     /**
      * Casts the pdb stream to a ostream.
@@ -292,7 +294,7 @@ namespace mccore {
     operator ostream* () { return dynamic_cast<ostream*>(this); }
     
 
-    // ACCESS ------------------------------------------------------------------
+    // ACCESS --------------------------------------------------------------
 
     /**
      * Sets the atomset filter used for dumping residues.
@@ -311,8 +313,10 @@ namespace mccore {
      * @param r the ResId.
      */
     void setResId (const ResId &r) { 
-      if (!rid) rid = new ResId (r); 
-      else *rid = r;
+      if (!rid)
+	rid = new ResId (r); 
+      else
+	*rid = r;
     }    
 
     /**
@@ -321,7 +325,7 @@ namespace mccore {
     void setHeader (const PdbFileHeader &h) { header = h; } 
 
 
-    // METHODS -----------------------------------------------------------------
+    // METHODS -------------------------------------------------------------
     
     /**
      * Opens a pdb stream.  Resets the slots.
@@ -384,7 +388,7 @@ namespace mccore {
 
   public:
     
-    // I/O ---------------------------------------------------------------------
+    // I/O -----------------------------------------------------------------
 
     /**
      * Writes a character to the pdb stream.
@@ -486,8 +490,6 @@ namespace mccore {
      */
     oPdbstream& operator<< (long double n) { return operator<< ((double)n); }
 
-  public:
-
     /**
      * Modifies the pdb stream.
      * @param func the ios manipulator function.
@@ -505,21 +507,18 @@ namespace mccore {
     { (*func)(*(ostream*)this); return *this; }
 
     /**
-     * Writes an atom to the pdb stream.
+     * Writes an atom to the stream.
      * @param at the atom to write.
-     * @return itself.
      */
-    oPdbstream& operator<< (const Atom& at);
-
+    void write (const Atom &at);
+    
     /**
      * Writes a residue to the pdb stream.
      * @param at the residue to write.
-     * @return itself.
      */
-    oPdbstream& operator<< (const Residue& r);
+    void write (const Residue &r);
 
-  };  
-  
+  };
 }
-
+  
 #endif

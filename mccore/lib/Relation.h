@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 //
 //  This file is part of mccore.
 //  
@@ -35,14 +35,16 @@
 
 using namespace std;
 
-class iBinstream;
-class oBinstream;
+
 
 namespace mccore {
 
   class Residue;
   class PropertyType;
+  class iBinstream;
+  class oBinstream;
 
+  
 
   /**
    * HBondFlow
@@ -59,7 +61,7 @@ namespace mccore {
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.9 2003-10-06 18:17:21 gendrop Exp $
+   * @version $Id: Relation.h,v 1.10 2003-12-23 14:58:09 larosem Exp $
    */
   class Relation
   {
@@ -247,7 +249,7 @@ namespace mccore {
      */
     static set< const PropertyType* > 
     arePaired (const Residue* ra, const Residue *rb, 
-	       const PropertyType*& pta, const PropertyType*& pta);
+	       const PropertyType*& pta, const PropertyType*& ptb);
 
     /**
      * [Experimental] Determines if there is at least one H-HBond

@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Philippe Thibault <thibaup@iro.umontreal.ca> 
 // Created On       : Mon Sep 29 14:59:19 2003
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 //
 //  This file is part of mccore.
 //  
@@ -203,7 +203,7 @@ namespace mccore
      * @param right the object to copy.
      * @return itself.
      */
-    virtual RiboseEstimator& operator= (const RiboseEstimator &right);
+    RiboseEstimator& operator= (const RiboseEstimator &right);
   
     // ACCESS ---------------------------------------------------------------
 

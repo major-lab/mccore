@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 24 20:17:50 2003
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 // 
 //  This file is part of mccore.
 //  
@@ -38,7 +38,7 @@ namespace mccore {
    * algorithm by Kabsch, 1976.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Rmsd.h,v 1.3 2003-08-28 14:49:52 gendrop Exp $
+   * @version $Id: Rmsd.h,v 1.4 2003-12-23 14:58:09 larosem Exp $
    */
   class Rmsd 
   {
@@ -170,9 +170,10 @@ namespace mccore {
       double mu[3];
       double a[3*3];
       double b[3*3];
-      int nrot;
+//       int nrot;
     
-      nrot = jacobi (rr, 3, mu, a);
+//       nrot = jacobi (rr, 3, mu, a);
+      jacobi (rr, 3, mu, a);
 
       // Sort of eigenvalues and eigenvectors
       for (i = 0; i < 2; ++i) {
@@ -348,9 +349,10 @@ namespace mccore {
       double mu[3];
       double a[3*3];
       double b[3*3];
-      int nrot;
+//       int nrot;
     
-      nrot = jacobi (rr, 3, mu, a);
+//       nrot = jacobi (rr, 3, mu, a);
+      jacobi (rr, 3, mu, a);
 
       // Sort of eigenvalues and eigenvectors
       for (i = 0; i < 2; ++i) {

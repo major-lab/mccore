@@ -10,8 +10,8 @@
 #endif
 
 #include <iterator>
+#include <stdio.h>
 #include <vector>
-#include <cstdio>
 
 #include "Relation.h"
 #include "Residue.h"
@@ -653,8 +653,6 @@ namespace mccore {
   {
     Residue::const_iterator i, j, k, l;
     set< const PropertyType* > ts;
-    int x, y;
-    
     vector< Residue::const_iterator > ra_at;
     vector< Residue::const_iterator > ran_at;
     vector< Residue::const_iterator > rb_at;

@@ -1,38 +1,37 @@
 //                              -*- Mode: C++ -*- 
 // zfstream.cc
-// Copyright © 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2002-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Mon Jan 28 16:58:09 2002
-// Last Modified By : Patrick Gendron
-// Last Modified On : Fri Jul 11 17:28:26 2003
-// Update Count     : 4
-// Status           : Unknown.
+// $Revision: 1.3 $
+// $Id: zfstream.cc,v 1.3 2003-12-23 14:57:49 larosem Exp $
 // 
+// This file is part of mccore.
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
-#include <cstdio>
+#include <stdio.h>
 #include <string.h>
 
 #include "zfstream.h"
+
+
 
 zfstreambuf::zfstreambuf ()
   : opened (0)
@@ -77,7 +76,8 @@ zfstreambuf::open (const char* name, int mode, int level)
   sprintf (fmode, "%s%d", nmode, level);
   file = gzopen (name, fmode);
 
-  if (file) opened = 1;
+  if (file)
+    opened = 1;
 
   return file ? this : 0;
 }
@@ -170,27 +170,12 @@ zfstreambuf::sync ()
 }
 
 
-
-
-zfstreambase::zfstreambase(const char* name, int mode = ios::in, int level)
-{
-  init (&buf);
-  open (name, mode, level);
-}
-
-
-zfstreambase::~zfstreambase()
-{
-  close();
-}
-
-
 void 
 zfstreambase::open (const char* name, int mode, int level)
 {
   clear ();
   if (!buf.open (name, mode, level))
-    clear (ios::badbit);
+    setstate (ios::badbit);
 }
 
 
@@ -199,6 +184,6 @@ zfstreambase::close ()
 {
   if (buf.is_open ())
     if (!buf.close ())
-      clear (ios::badbit);
+      setstate (ios::badbit);
 }
 

@@ -3,28 +3,42 @@
 // Copyright © 2002-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Wed Jan 30 19:57:48 2002
-// Last Modified By : Patrick Gendron
-// Last Modified On : Thu Mar 27 11:35:19 2003
-// Update Count     : 4
-// Status           : Unknown.
+// $Revision: 1.3 $
+// $Id: sockstream.cc,v 1.3 2003-12-23 14:57:49 larosem Exp $
+//
+// This file is part of mccore.
+//
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 // 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-#include <iostream>
-#include <string>
 
-#include <unistd.h>
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <errno.h>
-#include <stdlib.h>
+#include <fcntl.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
-
+#include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
-#include <netinet/in.h>
-#include <netdb.h>
-#include <fcntl.h>
-#include <signal.h>
+#include <unistd.h>
 
 #include "CException.h"
 #include "sockstream.h"
@@ -33,6 +47,7 @@
 #include <strings.h>
 #define MSG_NOSIGNAL 0
 #endif
+
 
 
 #ifndef HAVE_ISFDTYPE

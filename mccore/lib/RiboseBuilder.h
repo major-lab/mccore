@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Philippe Thibault <thibaup@iro.umontreal.ca>
 // Created On       : Mon Sep 29 14:59:19 2003
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 //
 //  This file is part of mccore.
 //  
@@ -27,11 +27,12 @@
 
 #include <vector>
 
-using namespace std;
-
 #include "Residue.h"
 #include "ResidueFactoryMethod.h"
-#include "Binstream.h"
+
+using namespace std;
+
+
 
 namespace mccore
 {
@@ -185,7 +186,7 @@ namespace mccore
        * @param right the object to copy.
        * @return itself.
        */
-      virtual _QualityFunctor& operator= (const _QualityFunctor& right)
+      _QualityFunctor& operator= (const _QualityFunctor& right)
       { builder = right.builder; return *this; }
 
       /**
@@ -464,7 +465,7 @@ namespace mccore
      * @param right the object to copy.
      * @return itself.
      */
-    virtual RiboseBuilder& operator= (const RiboseBuilder &right);
+    RiboseBuilder& operator= (const RiboseBuilder &right);
   
     // ACCESS ---------------------------------------------------------------
 
@@ -630,9 +631,6 @@ namespace mccore
     
   };
 
-  
-
 }
-
 
 #endif

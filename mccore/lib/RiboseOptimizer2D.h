@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Philippe Thibault <thibaup@iro.umontreal.ca> 
 // Created On       : Mon Sep 29 14:59:19 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 //
 //  This file is part of mccore.
 //  
@@ -201,7 +201,7 @@ namespace mccore
      * @param right the object to copy.
      * @return itself.
      */
-    virtual RiboseOptimizer2D& operator= (const RiboseOptimizer2D &right);
+    RiboseOptimizer2D& operator= (const RiboseOptimizer2D &right);
   
     // ACCESS ---------------------------------------------------------------
   

@@ -1,44 +1,47 @@
 //                              -*- Mode: C++ -*- 
 // Pdbstream.cc
-// Copyright © 1999, 2000-01, 03 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
+//                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.34 $
+// $Revision: 1.35 $
+// $Id: Pdbstream.cc,v 1.35 2003-12-23 14:57:49 larosem Exp $
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
+#include <ctype.h>
 #include <iostream>
 #include <iomanip>
-#include <cctype>
+#include <stdio.h>
 #include <unistd.h>
-#include <cstdio>
 
-#include "Pdbstream.h"
 #include "Atom.h"
-#include "ResId.h"
 #include "AtomType.h"
-#include "ResidueType.h"
-#include "Residue.h"
 #include "Model.h"
+#include "Pdbstream.h"
+#include "ResId.h"
+#include "Residue.h"
+#include "ResidueType.h"
+
 
 
 namespace mccore {
@@ -138,7 +141,8 @@ namespace mccore {
   {    
     char line[LINELENGTH+2];
     char tag[7]; tag[6] = '\0';
-    int length, taglength;
+    int length;
+//     int taglength;
     char field[LINELENGTH];
     char* fieldp;
 
@@ -151,7 +155,7 @@ namespace mccore {
 
     while ((getline (line, LINELENGTH+2)) > 0) {
       length = min ((int)strlen (line), LINELENGTH);
-      taglength = min ((int)strlen (line), 6);
+//       taglength = min ((int)strlen (line), 6);
       strncpy (tag, line, 6);
 
       if (length<LINELENGTH) {
@@ -250,82 +254,82 @@ namespace mccore {
 
 
   // I/O -----------------------------------------------------------------------
-  
-  
-  iPdbstream& 
-  iPdbstream::operator>> (Atom &at)
+
+  void
+  iPdbstream::read (Atom &at)
   {
     // Cache an atom if needed.
-    if (!ratom) cacheAtom (); 
+    if (!ratom)
+      cacheAtom (); 
     // No atom was found, return.
-    if (!ratom) return *this;
-
-    eomFlag = false;
-
-    // Copy the return value.
-    at = *ratom;
-    
-    // Cache another atom in order to detect endfiles.
-    cacheAtom ();
-    
-    return *this;
+    if (ratom)
+      {
+	eomFlag = false;
+	
+	// Copy the return value.
+	at = *ratom;
+	
+	// Cache another atom in order to detect endfiles.
+	cacheAtom ();
+      }
   }
-  
 
-  iPdbstream& 
-  iPdbstream::operator>> (Residue &r)
+  
+  
+  void
+  iPdbstream::read (Residue &r)
   {
     // Cache an atom if needed.
-    if (!ratom) cacheAtom (); 
+    if (!ratom)
+      cacheAtom (); 
     // No atom was found, return.
-    if (!ratom) return *this;
-    
-    eomFlag = false;
-    
-    ResId previd = *rid;
+    if (ratom)
+      {
+	ResId previd;
 
-    r.clear ();
-    r.setType (rtype);
-    r.setResId (*rid);
-    r.insert (*ratom);
-
-    cacheAtom ();
-    while (!eom () && (rid == 0 || *rid == previd)) {
-      // Insert the atom.
-      previd = *rid;
-      r.insert (*ratom);      
-      
-      // Cache another atom in order to detect endfiles.
-      cacheAtom ();
-    }
-
-    // Post reading processing
-    if (r.size () > 0) {
-      // Fix type.
-      if (r.getType ()->isNucleicAcid ()) {
-	if (r.contains (AtomType::aO2p)) {
-	  if (r.getType () == ResidueType::rDA) r.setType (ResidueType::rRA);
-	  else if (r.getType () == ResidueType::rDC) r.setType (ResidueType::rRC);
-	  else if (r.getType () == ResidueType::rDG) r.setType (ResidueType::rRG);
-	  else if (r.getType () == ResidueType::rDT) r.setType (ResidueType::rRU);
-	} else {
-	  if (r.getType () == ResidueType::rRA) r.setType (ResidueType::rDA);
-	  else if (r.getType () == ResidueType::rRC) r.setType (ResidueType::rDC);
-	  else if (r.getType () == ResidueType::rRG) r.setType (ResidueType::rDG);
-	  else if (r.getType () == ResidueType::rRU) r.setType (ResidueType::rDT);
+	previd = *rid;
+	eomFlag = false;
+	
+	r.clear ();
+	r.setType (rtype);
+	r.setResId (*rid);
+	r.insert (*ratom);
+	
+	cacheAtom ();
+	while (!eom () && (rid == 0 || *rid == previd)) {
+	  // Insert the atom.
+	  previd = *rid;
+	  r.insert (*ratom);      
+	  
+	  // Cache another atom in order to detect endfiles.
+	  cacheAtom ();
+	}
+	
+	// Post reading processing
+	if (r.size () > 0) {
+	  // Fix type.
+	  if (r.getType ()->isNucleicAcid ()) {
+	    if (r.contains (AtomType::aO2p)) {
+	      if (r.getType () == ResidueType::rDA) r.setType (ResidueType::rRA);
+	      else if (r.getType () == ResidueType::rDC) r.setType (ResidueType::rRC);
+	      else if (r.getType () == ResidueType::rDG) r.setType (ResidueType::rRG);
+	      else if (r.getType () == ResidueType::rDT) r.setType (ResidueType::rRU);
+	    } else {
+	      if (r.getType () == ResidueType::rRA) r.setType (ResidueType::rDA);
+	      else if (r.getType () == ResidueType::rRC) r.setType (ResidueType::rDC);
+	      else if (r.getType () == ResidueType::rRG) r.setType (ResidueType::rDG);
+	      else if (r.getType () == ResidueType::rRU) r.setType (ResidueType::rDT);
+	    }
+	  }
+	  
+	  // Finalize
+	  r.finalize ();
 	}
       }
-
-      // Finalize
-      r.finalize ();
-    }
-
-    return *this;
   }
   
 
   // LIFECYCLE -----------------------------------------------------------------
-
 
   oPdbstream::oPdbstream ()
     : ostream (cout.rdbuf ()),
@@ -335,10 +339,11 @@ namespace mccore {
       rtype (ResidueType::parseType ("UNK")),
       rid (new ResId ()),
       modelnb (1),
-      n (1)
+      atomCounter (1)
   { 
   }
   
+
 
   oPdbstream::oPdbstream (streambuf* sb)
     : ostream (sb),
@@ -348,9 +353,10 @@ namespace mccore {
       rtype (ResidueType::parseType ("UNK")),
       rid (new ResId ()),
       modelnb (1),
-      n (1)
+      atomCounter (1)
   { 
   }
+
 
   oPdbstream::oPdbstream (ostream &os)
     : ostream (os.rdbuf ()),
@@ -360,13 +366,14 @@ namespace mccore {
       rtype (ResidueType::parseType ("UNK")),
       rid (new ResId ()),
       modelnb (1),
-      n (1)
+      atomCounter (1)
   { 
   }
 
+
   oPdbstream::~oPdbstream () 
   { 
-    if (n != 1) close ();
+    if (atomCounter != 1) close ();
 
     if (rid) delete rid;
     delete atomset; 
@@ -390,7 +397,7 @@ namespace mccore {
     if (rid) delete rid;
     rid = new ResId ();
     modelnb = 1;
-    n = 1;
+    atomCounter = 1;
   }
   
   void oPdbstream::close () 
@@ -403,7 +410,7 @@ namespace mccore {
     if (rid) delete rid;
     rid = new ResId ();
     modelnb = 1;
-    n = 1;
+    atomCounter = 1;
   }
 
   void oPdbstream::writeHeader ()
@@ -495,7 +502,7 @@ namespace mccore {
     setf (ios::left, ios::adjustfield);
     *this << setw (6) << "TER";
     setf (ios::right, ios::adjustfield);
-    *this << setw (5) << n++;
+    *this << setw (5) << atomCounter++;
     *this << "      ";  // EMPTY SPACE.
     setf (ios::right, ios::adjustfield);
     *this << setw (3) << rtype->toPdbString ();
@@ -551,10 +558,11 @@ namespace mccore {
   }
 
 
-  oPdbstream& 
-  oPdbstream::operator<< (const Atom& at)
+  void
+  oPdbstream::write (const Atom& at)
   {
-    if (!headerdone) writeHeader ();
+    if (!headerdone)
+      writeHeader ();
 
     setf (ios::left, ios::adjustfield);
     if (rtype->isUnknown ())
@@ -562,7 +570,7 @@ namespace mccore {
     else
       *this << setw (6) << "ATOM";
     setf (ios::right, ios::adjustfield);
-    *this << setw (5) << n++;
+    *this << setw (5) << atomCounter++;
 
     *this << ' ';
 
@@ -599,19 +607,18 @@ namespace mccore {
 
     pad (14);
 
-    at.setSerialNo (n);
+    at.setSerialNo (atomCounter);
 
-    if (n>99999) n=1;
-
-
-    return *this;
+    if (atomCounter > 99999)
+      atomCounter = 1;
   }
 
 
-  oPdbstream& 
-  oPdbstream::operator<< (const Residue& r)
+  void
+  oPdbstream::write (const Residue& r)
   {
-    if (!headerdone) writeHeader ();
+    if (!headerdone)
+      writeHeader ();
 
     setResidueType (r.getType ());
     setResId (r.getResId ());
@@ -620,7 +627,6 @@ namespace mccore {
     //    for (Residue::const_iterator i=r.begin (); i!=r.end (); ++i) {
       *this << *i << endl;
     }
-
-    return *this;
-  }  
+  }
+  
 }

@@ -1,25 +1,27 @@
 //                              -*- Mode: C++ -*- 
 // ResidueType.h
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
-// Author           : Patrick Gendron
-// Created On       : Wed Mar 12 10:26:33 2003
-// $Revision: 1.18 $
+// Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal.
+// Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
+// Created On       : 
+// $Revision: 1.19 $
+// $Id: ResidueType.h,v 1.19 2003-12-23 14:58:09 larosem Exp $
+//
+// This file is part of mccore.
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifndef _ResidueType_h_
@@ -28,14 +30,19 @@
 #include <iostream>
 #include <typeinfo>
 
+
+
 using namespace std;
 
-class iBinstream;
-class oBinstream;
+
 
 namespace mccore { 
 
   class ResidueTypeStore;
+  class iBinstream;
+  class oBinstream;
+  
+  
   
   /**
    * Residue types.<br>
@@ -47,7 +54,7 @@ namespace mccore {
    *   - The nature of a type (nucleic acid (pur/pyr) or amino acid)<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueType.h,v 1.18 2003-10-01 15:49:45 thibaup Exp $
+   * @version $Id: ResidueType.h,v 1.19 2003-12-23 14:58:09 larosem Exp $
    */
   class ResidueType
   {    

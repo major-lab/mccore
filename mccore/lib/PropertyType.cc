@@ -13,8 +13,9 @@
 #include "PropertyTypeStore.h"
 #include "Binstream.h"
 
-namespace mccore {
 
+
+namespace mccore {
 
   // STATIC MEMBERS ------------------------------------------------------------
 
