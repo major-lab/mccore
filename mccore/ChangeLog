@@ -1,4 +1,271 @@
+2001-05-28  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/CModel.h, lib/CModel.cc: sortAtoms is no longer needed since
+	the atoms in the residue are already sorted.
+
+	* lib/CResidue.h, lib/CResidue.cc: The residue is no longer lazy
+	but semi lazy.  On the first request to an atom, all the atoms of
+	the residue are placed in local referential.  On const_iterator,
+	the atom in global reference is returned if the transfo is the
+	identity.
+
+2001-05-28  Patrick Gendron  <gendrop@mansarde.IRO.UMontreal.CA>
+
+	* lib/CAtom.cc, lib/CAtom.h, lib/CHBond.cc, lib/CHBond.h, lib/CModel.h, lib/CResidue.cc, lib/CResidue.h, lib/DirectedGraph.cc, lib/DirectedGraph.h, lib/Makefile.in, lib/McCore.cc, lib/McCore.h:
+	Added a directed graph class and the CHBond for LW+ pairings
+
+	* lib/DirectedGraph.cc, lib/DirectedGraph.h: New file.
+
+2001-05-15  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/ResidueTypeImp.cc, lib/AtomTypeImp.cc: The type are saved in
+	a int form for compatibility with jmccore.
+
+2001-05-11  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/zfstream.h, lib/zfilebuf.h, lib/zfilebuf.cc, lib/zfPdbstream.h, lib/zfBinstream.h, lib/sockbuf.h, lib/sockbuf.cc, lib/sBinstream.h, lib/fPdbstream.h, lib/fBinstream.h, lib/ServerSocket.h, lib/ServerSocket.cc, lib/ResidueTypeImp.h, lib/ResidueTypeImp.cc, lib/ResidueType.h, lib/Pdbstream.h, lib/Pdbstream.cc, lib/McCore.h, lib/McCore.cc, lib/Makefile.in, lib/CTransfo.h, lib/CTransfo.cc, lib/CResidue.h, lib/CResidue.cc, lib/CResIdSet.h, lib/CResIdSet.cc, lib/CResId.h, lib/CResId.cc, lib/CPoint3D.h, lib/CPoint3D.cc, lib/CModel.h, lib/CModel.cc, lib/CMessageQueue.h, lib/CMessageQueue.cc, lib/CHBond.h, lib/CHBond.cc, lib/CGraph.h, lib/CException.h, lib/CException.cc, lib/CAtom.h, lib/CAtom.cc, lib/Binstream.h, lib/Binstream.cc, lib/AtomTypeImp.h, lib/AtomTypeImp.cc, lib/AtomType.h, lib/Algo.h, lib/Algo.cc, configure.in, COPYING:
+	The mccore package will now be licenced under GNU Lesser General Public
+	License (LGPL).  Copyleft notices added.
+
+	* Makefile.in: Added COPYING file.
+
+2001-05-10  Patrick Gendron  <gendrop@mansarde.IRO.UMontreal.CA>
+
+	* lib/sBinstream.h, lib/ServerSocket.cc, lib/ServerSocket.h, lib/sockbuf.cc, lib/sockbuf.h, lib/zfilebuf.h:
+	Synchronizing
+
+2001-05-01  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/ResidueTypeImp.cc, lib/AtomTypeImp.cc: AtomType and
+	ResidueType binary representation changed to a int.
+
+2001-04-23  Patrick Gendron  <gendrop@mansarde.IRO.UMontreal.CA>
+
+	* lib/sockbuf.cc, lib/Binstream.cc: small correction in sockbuf.cc
+
+	* lib/Binstream.cc, lib/sBinstream.h, lib/ServerSocket.cc, lib/ServerSocket.h, lib/sockbuf.cc, lib/sockbuf.h:
+	Solved the socket stream java compatibility problem
+
+2001-04-20  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Binstream.cc: Oups!!! Humiliation.
+
+	* lib/ResidueTypeImp.cc, lib/Pdbstream.h, lib/Pdbstream.cc, lib/AtomTypeImp.cc:
+	AtomType and ResidueType binary representation changed to int.
+
+	* lib/Makefile.in, lib/Binstream.cc: dummy
+
+2001-04-20  Patrick Gendron  <gendrop@mansarde.IRO.UMontreal.CA>
+
+	* lib/Binstream.cc, lib/Binstream.h, lib/CResIdSet.cc, lib/CResidue.h, lib/Makefile.in, lib/sBinstream.h, lib/ServerSocket.cc, lib/ServerSocket.h, lib/sockbuf.cc, lib/sockbuf.h, lib/zfBinstream.h, lib/zfilebuf.cc, lib/zfilebuf.h, lib/zfPdbstream.h, lib/zfstreambase.cc, lib/zfstreambase.h, lib/zfstream.h:
+	Added the socket streams
+
+2001-04-19  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/CResidue.h, lib/CResidue.cc: The find method uses const atom
+	type.
+
+2001-04-19  Sebastien Lemieux  <lemieuxs@mansarde.IRO.UMontreal.CA>
+
+	* lib/CResidue.cc: Added some consts...
+
+	* lib/CResidue.h: oups
+
+2001-04-09  Sebastien Lemieux  <lemieuxs@mansarde.IRO.UMontreal.CA>
+
+	* lib/CResidue.h: Add method 'exists'.  Added a const on the
+	argument of operator[].
+
+2001-03-26  Labo Lbit  <adbit@mansarde.IRO.UMontreal.CA>
+
+	* lib/CModel.cc, lib/Algo.h: Irix compliance corrections.
+
+2001-03-23  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/CTransfo.h, lib/CTransfo.cc, lib/CResidue.h, lib/CResidue.cc:
+	Cast from CResidue to CTransfo and transfo assingment over a residu
+	added.
+
+	* lib/CPoint3D.h: Get replaced by operator[].
+
+	* lib/CPoint3D.h, lib/CPoint3D.cc: Coordinates can be accessed via
+	the [] operator.
+
+	* lib/AtomType.cc, lib/ResidueType.cc: Implementation placed in
+	Imp files.
+
+2001-03-07  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/ResidueTypeImp.h, lib/ResidueTypeImp.cc, lib/ResidueType.h, lib/Pdbstream.cc, lib/McCore.cc, lib/Makefile.in, lib/CResidue.cc, lib/AtomTypeImp.h, lib/AtomTypeImp.cc, lib/AtomType.h:
+	AtomType and ResidueType implementation separated from the interface.
+
+2001-02-28  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Pdbstream.h, lib/Pdbstream.cc: atomsetopt removed.
+
+2001-02-21  Patrick Gendron  <gendrop@mansarde.IRO.UMontreal.CA>
+
+	* lib/CResidue.cc, lib/CResidue.h: The residue reserves space for
+	mAtomRes
+
+	* lib/Algo.h: Corrected a bug when the model contains no contact
+
+2001-02-21  Sebastien Lemieux  <lemieuxs@mansarde.IRO.UMontreal.CA>
+
+	* lib/CResidue.cc, lib/CResidue.h: CResidue::Align now correctly
+	resets the transformed atoms positions.
+
+2001-02-14  Sebastien Lemieux  <lemieuxs@mansarde.IRO.UMontreal.CA>
+
+	* lib/Makefile.in: dummy
+
+	* lib/Algo.cc: See comment on Algo.h
+
+	* lib/Algo.h: Algo class is used to encapsulate algorithms on
+	McCore data structure.  This initial version contain
+	'ExtractContact_AABB' allowing to extract contacts on a structure
+	using axis aligned bounding boxes.
+
+	* lib/CPoint3D.h: Added method 'Get(int)' allowing to deal with a
+	point as a vector.
+
+2001-02-09  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/CResIdSet.cc, lib/CResId.cc: Nouveau lexique pour les
+	residue id: '<char>'<no> | <char><no> | <no>.
+
+	* lib/CAtom.h: Operator != added for atom and type comparison.
+
+	* docs/McCoreManual.tex, docs/Makefile.in: Manual added.
+
+	* lib/Makefile.in: headers installed in include/mcccore-$(VERSION)
+	directory.  Version number added in the libraries.
+
+	* lib/Pdbstream.h: Comments removed.
+
+	* lib/CMessageQueue.h: Output operator added for ostream and ios
+	functions.
+
+2001-02-05  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/CModel.cc: Iteration bug in operator[] corrected.
+
+2001-02-02  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/McCore.cc, lib/Pdbstream.cc, lib/CResidue.h, lib/CResidue.cc, lib/CModel.cc, lib/CAtom.h, configure.in, configure:
+	Temporary update.
+
+2001-01-24  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/CResidue.cc: Validate removes the second residue of a duplicate.
+
+2001-01-23  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Pdbstream.h, lib/Pdbstream.cc, lib/McCore.h, lib/McCore.cc, lib/Makefile.in, lib/CTransfo.h, lib/CResidue.h, lib/CResidue.cc, lib/CResIdSet.h, lib/CResId.h, lib/CResId.cc, lib/CPoint3D.h, lib/CPoint3D.cc, lib/CModel.h, lib/CModel.cc, lib/CMessageQueue.h, lib/CMessageQueue.cc, lib/CException.h, lib/CAtom.h, lib/CAtom.cc, lib/Binstream.h, lib/Binstream.cc, lib/AtomType.h, lib/AtomType.cc:
+	Documentation enhancement.
+
+2001-01-22  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Binstream.h, lib/Binstream.cc: The binstream are back with
+	swap_endian.  ntohl and htonl are incompatible with older versions
+	of the database.
+
+	* lib/zfBinstream.h: Cyclic call to izfBinstream close call corrected.
+
+	* lib/Pdbstream.h, lib/Pdbstream.cc, lib/McCore.h, lib/McCore.cc:
+	Amino acid names modified.
+
+	* lib/CTransfo.h: *** empty log message ***
+
+	* lib/CResidue.cc: Output added in Validate method.
+
+	* lib/CResidue.h: *** empty log message ***
+
+	* lib/CResId.h, lib/CResId.cc: operator const char* added.
+
+	* lib/CPoint3D.h, lib/CPoint3D.cc: *** empty log message ***
+
+	* lib/CModel.h, lib/CModel.cc: A model is now a list of residues.
+
+	* lib/CAtom.h, lib/CAtom.cc: AtomSet binary saving added.
+
+	* lib/Binstream.h: operator<< and operator>> defined over booleans.
+
+	* lib/AtomType.h: Naming corrections over some amino acids.
+	AmberRep method is added.
+
+	* lib/AtomType.cc: Naming corrections over some amino acids.
+
+2000-12-04  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Pdbstream.h: GetAtomType is now public.
+
+	* lib/Pdbstream.cc: Bug correction: PSY and PSZ were considered as
+	Misc atoms.
+
+	* lib/CResidue.cc: Explicit call to AtomSet operator().
+
+	* lib/CResIdSet.cc: Code transfered to CResId constructor.
+
+	* lib/CResId.h, lib/CResId.cc: Constructor over string
+	representation added.
+
+	* lib/CPoint3D.cc: Test over 0 divisor to prevent crash.
+
+	* lib/CModel.h, lib/CModel.cc: find methods added.
+
+	* lib/CAtom.h: AtomSet clone and evaluation functions corrected.
+
+2000-12-01  Patrick Gendron  <gendrop@mansarde.IRO.UMontreal.CA>
+
+	* lib/CResIdSet.cc: Corrrected a bug in CResIdSet output
+
+2000-11-22  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/CResidue.h, lib/CResidue.cc: The second AtomSet function is
+	removed from the iterators.  It can be replaced by the conjunction
+	atomset_and.
+
+	* lib/CTransfo.h: RMS_align method removed.
+
+	* lib/McCore.h, lib/McCore.cc: Magnesium, MG, 1H, 2H and 3H atom
+	types and objects added.  gMcLicenseDir variable pointing to the
+	license directory added.
+
+	* lib/CResidue.cc: Partial corrections over iterator increments
+	made.  More to come.
+
+	* lib/Pdbstream.cc, lib/AtomType.h, lib/AtomType.cc: Magnesium,
+	MG, 1H, 2H and 3H atom added.  Corrections over is_connected and
+	GetAtomType made for amino acids.
+
+2000-11-14  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/McCore.h, lib/McCore.cc, lib/CResidue.h, lib/CResidue.cc:
+	iterator inlining done.
+
+	* lib/CResidue.cc: Iterator bug corrected.  The mPos might be
+	higher than the size of the atom vector.
+
+2000-11-10  Labo Lbit  <adbit@mansarde.IRO.UMontreal.CA>
+
+	* lib/CResIdSet.cc: McCore header needed.
+
+	* lib/CResidue.h: typedef made public for irix compilation.
+
 2000-11-09  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/McCore.h, lib/McCore.cc, lib/CResidue.h, lib/CResidue.cc:
+	Correction on CResidue iterators to facilitate sgi compilation.
+
+2000-11-09  Labo Lbit  <adbit@mansarde.IRO.UMontreal.CA>
+
+	* lib/McCore.h, lib/McCore.cc, lib/CResidue.h, lib/CResidue.cc:
+	Corrections for irix compilation.
+
+2000-11-09  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* ChangeLog: Revision 0.1.
 
 	* configure, Makefile.in, configure.in, docs/Makefile.in, lib/ResidueType.h, lib/ResidueType.cc, lib/Pdbstream.h, lib/Pdbstream.cc, lib/McCore.h, lib/McCore.cc, lib/Makefile.in, lib/CTransfo.h, lib/CTransfo.cc, lib/CResidue.h, lib/CResidue.cc, lib/CResIdSet.h, lib/CResIdSet.cc, lib/CResId.h, lib/CPoint3D.cc, lib/CModel.h, lib/CModel.cc, lib/CAtom.h, lib/CAtom.cc:
 	Correction made for mcrms inclusion.
