@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 12:30:39 2003
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 // 
 //  This file is part of mccore.
 //  
@@ -43,7 +43,7 @@ namespace mccore
    * @short Repository of atomtypes.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: AtomTypeStore.h,v 1.10 2004-10-15 20:34:43 thibaup Exp $
+   * @version $Id: AtomTypeStore.h,v 1.11 2004-12-03 16:08:37 sebastienl Exp $
    */
   class AtomTypeStore
   {
@@ -133,8 +133,6 @@ namespace mccore
 	return dynamic_cast< const NucleicAcid* > (t);
       }
 
-
-      
     };
 
     /**
@@ -371,21 +369,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
       
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1094.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1094; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094; }
       
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -409,21 +407,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1094.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1094; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
 
@@ -448,21 +446,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1094.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1094; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -486,21 +484,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1094.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1094; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -524,21 +522,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1094.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1094; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -562,21 +560,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.2870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.2870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.2870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -600,21 +598,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.3870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.3870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.3870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -638,21 +636,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.3870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.3870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.3870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -676,21 +674,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.3870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.3870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.3870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -714,21 +712,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.3870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.3870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.3870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -752,21 +750,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.6612.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.6612; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.6612; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2100.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.2100; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -790,21 +788,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.7210.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.7210; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.7210; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2104.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.2104; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2104; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -828,21 +826,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.6612.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.6612; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.6612; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2100.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.2100; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -866,21 +864,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return the returned value depends if the residue is a terminal.
        */
-      virtual float getVDWR (const Residue *res) const;
+      virtual float getVDWR (const ResidueType *r) const;
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return the returned value depends if the residue is a terminal.
        */
-      virtual float getAmberEpsilon (const Residue *res) const;
+      virtual float getAmberEpsilon (const ResidueType *r) const;
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -904,21 +902,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.6612.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.6612; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.6612; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2100.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.2100; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -942,21 +940,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.6837.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.6837; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.6837; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -980,21 +978,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return the returned value depends if the residue is a terminal.
        */
-      virtual float getVDWR (const Residue *res) const;
+      virtual float getVDWR (const ResidueType *r) const;
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return the returned value depends if the residue is a terminal.
        */
-      virtual float getAmberEpsilon (const Residue *res) const;
+      virtual float getAmberEpsilon (const ResidueType *r) const;
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -1018,21 +1016,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 2.1000.
        */
-      virtual float getVDWR (const Residue *res) const { return 2.1000; }
+      virtual float getVDWR (const ResidueType *r) const { return 2.1000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2000.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.2000; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2000; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
 
@@ -1057,21 +1055,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -1095,21 +1093,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.3870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.3870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.3870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -1133,21 +1131,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -1171,21 +1169,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.3870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.3870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.3870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -1210,7 +1208,7 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.
        */
-      virtual float getVDWR (const Residue *res) const { return 0; }
+      virtual float getVDWR (const ResidueType *r) const { return 0; }
 
       /**
        * Gets the Amber epsilon value for the atom.  The value is not defined
@@ -1218,14 +1216,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -1250,7 +1248,7 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.
        */
-      virtual float getVDWR (const Residue *res) const { return 0; }
+      virtual float getVDWR (const ResidueType *r) const { return 0; }
 
       /**
        * Gets the Amber epsilon value for the atom.  The value is not defined
@@ -1258,7 +1256,7 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -1266,7 +1264,7 @@ namespace mccore
        * @param res the residue type.
        * @return 0.
        */
-      virtual float getAmberCharge (const Residue *res) const { return 0; }
+      virtual float getAmberCharge (const ResidueType *r) const { return 0; }
 
 
       
@@ -1290,21 +1288,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -1328,21 +1326,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -1366,21 +1364,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -1404,21 +1402,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const { return -0.2269; }
+      virtual float getAmberCharge (const ResidueType *r) const { return -0.2269; }
 
 
       
@@ -1442,21 +1440,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -1480,21 +1478,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -1518,21 +1516,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -1556,21 +1554,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.3590.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.3590; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.3590; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0150.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0150; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0150; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -1594,21 +1592,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -1632,21 +1630,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4590.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.4590; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4590; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0150.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0150; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0150; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -1670,21 +1668,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4090.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.4090; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4090; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0150.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0150; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0150; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -1708,21 +1706,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const { return 0.0770; }
+      virtual float getAmberCharge (const ResidueType *r) const { return 0.0770; }
 
 
       
@@ -1746,21 +1744,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.3590.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.3590; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.3590; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0150.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0150; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0150; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -1784,21 +1782,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -1822,21 +1820,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -1860,21 +1858,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -1898,21 +1896,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -1936,21 +1934,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -1974,21 +1972,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -2012,21 +2010,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -2050,21 +2048,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.6612.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.6612; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.6612; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2100.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.2100; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -2088,21 +2086,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.6612.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.6612; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.6612; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2100.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.2100; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -2126,21 +2124,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.6612.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.6612; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.6612; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2100.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.2100; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -2164,21 +2162,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -2202,21 +2200,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -2240,21 +2238,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -2278,21 +2276,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -2316,21 +2314,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -2354,21 +2352,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -2392,21 +2390,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -2430,21 +2428,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -2468,21 +2466,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -2506,24 +2504,24 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return the Pseudo atom value.
        */
-      virtual float getVDWR (const Residue *res) const
-      { return Pseudo::getVDWR (res); }
+      virtual float getVDWR (const ResidueType *r) const
+      { return Pseudo::getVDWR (r); }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return the Pseudo atom value.
        */
-      virtual float getAmberEpsilon (const Residue *res) const
-      { return Pseudo::getAmberEpsilon (res); }
+      virtual float getAmberEpsilon (const ResidueType *r) const
+      { return Pseudo::getAmberEpsilon (r); }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const
-      { return Pseudo::getAmberCharge (res); }
+      virtual float getAmberCharge (const ResidueType *r) const
+      { return Pseudo::getAmberCharge (r); }
 
 
       
@@ -2547,24 +2545,24 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return the Pseudo atom value.
        */
-      virtual float getVDWR (const Residue *res) const
-      { return Pseudo::getVDWR (res); }
+      virtual float getVDWR (const ResidueType *r) const
+      { return Pseudo::getVDWR (r); }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return the Pseudo atom value.
        */
-      virtual float getAmberEpsilon (const Residue *res) const
-      { return Pseudo::getAmberEpsilon (res); }
+      virtual float getAmberEpsilon (const ResidueType *r) const
+      { return Pseudo::getAmberEpsilon (r); }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Pseudo atom Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const
-      { return Pseudo::getAmberCharge (res); }
+      virtual float getAmberCharge (const ResidueType *r) const
+      { return Pseudo::getAmberCharge (r); }
 
 
       
@@ -2588,24 +2586,24 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return the LonePair atom value.
        */
-      virtual float getVDWR (const Residue *res) const
-      { return LonePair::getVDWR (res); }
+      virtual float getVDWR (const ResidueType *r) const
+      { return LonePair::getVDWR (r); }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return the LonePair atom value.
        */
-      virtual float getAmberEpsilon (const Residue *res) const
-      { return LonePair::getAmberEpsilon (res); }
+      virtual float getAmberEpsilon (const ResidueType *r) const
+      { return LonePair::getAmberEpsilon (r); }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the LonePair atom Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const
-      { return LonePair::getAmberCharge (res); }
+      virtual float getAmberCharge (const ResidueType *r) const
+      { return LonePair::getAmberCharge (r); }
 
 
       
@@ -2629,24 +2627,24 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return the LonePair atom value.
        */
-      virtual float getVDWR (const Residue *res) const
-      { return LonePair::getVDWR (res); }
+      virtual float getVDWR (const ResidueType *r) const
+      { return LonePair::getVDWR (r); }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return the LonePair atom value.
        */
-      virtual float getAmberEpsilon (const Residue *res) const
-      { return LonePair::getAmberEpsilon (res); }
+      virtual float getAmberEpsilon (const ResidueType *r) const
+      { return LonePair::getAmberEpsilon (r); }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the LonePair atom Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const
-      { return LonePair::getAmberCharge (res); }
+      virtual float getAmberCharge (const ResidueType *r) const
+      { return LonePair::getAmberCharge (r); }
 
 
       
@@ -2670,24 +2668,24 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return the LonePair atom value.
        */
-      virtual float getVDWR (const Residue *res) const
-      { return LonePair::getVDWR (res); }
+      virtual float getVDWR (const ResidueType *r) const
+      { return LonePair::getVDWR (r); }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return the LonePair atom value.
        */
-      virtual float getAmberEpsilon (const Residue *res) const
-      { return LonePair::getAmberEpsilon (res); }
+      virtual float getAmberEpsilon (const ResidueType *r) const
+      { return LonePair::getAmberEpsilon (r); }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the LonePair atom Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const
-      { return LonePair::getAmberCharge (res); }
+      virtual float getAmberCharge (const ResidueType *r) const
+      { return LonePair::getAmberCharge (r); }
 
 
       
@@ -2711,24 +2709,24 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return the LonePair atom value.
        */
-      virtual float getVDWR (const Residue *res) const
-      { return LonePair::getVDWR (res); }
+      virtual float getVDWR (const ResidueType *r) const
+      { return LonePair::getVDWR (r); }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return the LonePair atom value.
        */
-      virtual float getAmberEpsilon (const Residue *res) const
-      { return LonePair::getAmberEpsilon (res); }
+      virtual float getAmberEpsilon (const ResidueType *r) const
+      { return LonePair::getAmberEpsilon (r); }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the LonePair atom Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const
-      { return LonePair::getAmberCharge (res); }
+      virtual float getAmberCharge (const ResidueType *r) const
+      { return LonePair::getAmberCharge (r); }
 
 
       
@@ -2752,24 +2750,24 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return the LonePair atom value.
        */
-      virtual float getVDWR (const Residue *res) const
-      { return LonePair::getVDWR (res); }
+      virtual float getVDWR (const ResidueType *r) const
+      { return LonePair::getVDWR (r); }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return the LonePair atom value.
        */
-      virtual float getAmberEpsilon (const Residue *res) const
-      { return LonePair::getAmberEpsilon (res); }
+      virtual float getAmberEpsilon (const ResidueType *r) const
+      { return LonePair::getAmberEpsilon (r); }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the LonePair atom Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const
-      { return LonePair::getAmberCharge (res); }
+      virtual float getAmberCharge (const ResidueType *r) const
+      { return LonePair::getAmberCharge (r); }
 
 
       
@@ -2793,24 +2791,24 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return the LonePair atom value.
        */
-      virtual float getVDWR (const Residue *res) const
-      { return LonePair::getVDWR (res); }
+      virtual float getVDWR (const ResidueType *r) const
+      { return LonePair::getVDWR (r); }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return the LonePair atom value.
        */
-      virtual float getAmberEpsilon (const Residue *res) const
-      { return LonePair::getAmberEpsilon (res); }
+      virtual float getAmberEpsilon (const ResidueType *r) const
+      { return LonePair::getAmberEpsilon (r); }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the LonePair atom Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const
-      { return LonePair::getAmberCharge (res); }
+      virtual float getAmberCharge (const ResidueType *r) const
+      { return LonePair::getAmberCharge (r); }
 
 
       
@@ -2834,24 +2832,24 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return the LonePair atom value.
        */
-      virtual float getVDWR (const Residue *res) const
-      { return LonePair::getVDWR (res); }
+      virtual float getVDWR (const ResidueType *r) const
+      { return LonePair::getVDWR (r); }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return the LonePair atom value.
        */
-      virtual float getAmberEpsilon (const Residue *res) const
-      { return LonePair::getAmberEpsilon (res); }
+      virtual float getAmberEpsilon (const ResidueType *r) const
+      { return LonePair::getAmberEpsilon (r); }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the LonePair atom Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const
-      { return LonePair::getAmberCharge (res); }
+      virtual float getAmberCharge (const ResidueType *r) const
+      { return LonePair::getAmberCharge (r); }
 
 
       
@@ -2875,24 +2873,24 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return the LonePair atom value.
        */
-      virtual float getVDWR (const Residue *res) const
-      { return LonePair::getVDWR (res); }
+      virtual float getVDWR (const ResidueType *r) const
+      { return LonePair::getVDWR (r); }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return the LonePair atom value.
        */
-      virtual float getAmberEpsilon (const Residue *res) const
-      { return LonePair::getAmberEpsilon (res); }
+      virtual float getAmberEpsilon (const ResidueType *r) const
+      { return LonePair::getAmberEpsilon (r); }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the LonePair atom Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const
-      { return LonePair::getAmberCharge (res); }
+      virtual float getAmberCharge (const ResidueType *r) const
+      { return LonePair::getAmberCharge (r); }
 
 
       
@@ -2916,24 +2914,24 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return the LonePair atom value.
        */
-      virtual float getVDWR (const Residue *res) const
-      { return LonePair::getVDWR (res); }
+      virtual float getVDWR (const ResidueType *r) const
+      { return LonePair::getVDWR (r); }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return the LonePair atom value.
        */
-      virtual float getAmberEpsilon (const Residue *res) const
-      { return LonePair::getAmberEpsilon (res); }
+      virtual float getAmberEpsilon (const ResidueType *r) const
+      { return LonePair::getAmberEpsilon (r); }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the LonePair atom Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const
-      { return LonePair::getAmberCharge (res); }
+      virtual float getAmberCharge (const ResidueType *r) const
+      { return LonePair::getAmberCharge (r); }
 
 
       
@@ -2957,21 +2955,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.
        */
-      virtual float getVDWR (const Residue *res) const { return 0; }
+      virtual float getVDWR (const ResidueType *r) const { return 0; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -2995,21 +2993,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.
        */
-      virtual float getVDWR (const Residue *res) const { return 0; }
+      virtual float getVDWR (const ResidueType *r) const { return 0; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -3033,21 +3031,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -3071,21 +3069,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1094.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1094; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -3109,21 +3107,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1094.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1094; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -3147,21 +3145,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return the value depends of the residue type.
        */
-      virtual float getAmberEpsilon (const Residue *res) const;
+      virtual float getAmberEpsilon (const ResidueType *r) const;
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -3185,21 +3183,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return the value depends of the residue type.
        */
-      virtual float getAmberEpsilon (const Residue *res) const;
+      virtual float getAmberEpsilon (const ResidueType *r) const;
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -3223,21 +3221,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -3261,21 +3259,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1094.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1094; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -3299,21 +3297,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -3337,21 +3335,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -3375,21 +3373,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -3413,21 +3411,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return the value depends of the residue type.
        */
-      virtual float getAmberEpsilon (const Residue *res) const;
+      virtual float getAmberEpsilon (const ResidueType *r) const;
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -3451,21 +3449,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1094.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1094; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -3489,21 +3487,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1094.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1094; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -3527,21 +3525,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -3565,21 +3563,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -3603,21 +3601,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -3641,21 +3639,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -3679,21 +3677,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -3717,21 +3715,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.0000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.0000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0000; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0000; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const { return 0.00000; }
+      virtual float getAmberCharge (const ResidueType *r) const { return 0.00000; }
 
 
       
@@ -3755,21 +3753,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.0000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.0000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0000; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0000; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const { return 0.00000; }
+      virtual float getAmberCharge (const ResidueType *r) const { return 0.00000; }
 
 
       
@@ -3793,21 +3791,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.0000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.0000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0000; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0000; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const { return 0.00000; }
+      virtual float getAmberCharge (const ResidueType *r) const { return 0.00000; }
 
 
       
@@ -3831,21 +3829,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.3870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.3870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.3870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -3869,21 +3867,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.3870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.3870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.3870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -3907,21 +3905,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.3870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.3870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.3870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -3945,21 +3943,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -3983,21 +3981,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4021,21 +4019,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return the result depends of the residue type.
        */
-      virtual float getVDWR (const Residue *res) const;
+      virtual float getVDWR (const ResidueType *r) const;
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4059,21 +4057,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return the result depends of the residue type.
        */
-      virtual float getVDWR (const Residue *res) const;
+      virtual float getVDWR (const ResidueType *r) const;
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4097,21 +4095,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return the result depends of the residue type.
        */
-      virtual float getVDWR (const Residue *res) const;
+      virtual float getVDWR (const ResidueType *r) const;
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return the result depends of the residue type.
        */
-      virtual float getAmberEpsilon (const Residue *res) const;
+      virtual float getAmberEpsilon (const ResidueType *r) const;
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4135,21 +4133,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return the result depends of the residue type.
        */
-      virtual float getVDWR (const Residue *res) const;
+      virtual float getVDWR (const ResidueType *r) const;
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return the result depends of the residue type.
        */
-      virtual float getAmberEpsilon (const Residue *res) const;
+      virtual float getAmberEpsilon (const ResidueType *r) const;
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4173,21 +4171,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4211,21 +4209,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return the result depends of the residue type.
        */
-      virtual float getVDWR (const Residue *res) const;
+      virtual float getVDWR (const ResidueType *r) const;
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return the result depends of the residue type.
        */
-      virtual float getAmberEpsilon (const Residue *res) const;
+      virtual float getAmberEpsilon (const ResidueType *r) const;
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4249,21 +4247,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return the result depends of the residue type.
        */
-      virtual float getVDWR (const Residue *res) const;
+      virtual float getVDWR (const ResidueType *r) const;
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return the result depends of the residue type.
        */
-      virtual float getAmberEpsilon (const Residue *res) const;
+      virtual float getAmberEpsilon (const ResidueType *r) const;
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4287,21 +4285,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return the result depends of the residue type.
        */
-      virtual float getVDWR (const Residue *res) const;
+      virtual float getVDWR (const ResidueType *r) const;
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return the result depends of the residue type.
        */
-      virtual float getAmberEpsilon (const Residue *res) const;
+      virtual float getAmberEpsilon (const ResidueType *r) const;
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4325,21 +4323,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4363,21 +4361,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.0000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.0000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0000; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0000; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4401,21 +4399,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return the result depends of the residue type.
        */
-      virtual float getVDWR (const Residue *res) const;
+      virtual float getVDWR (const ResidueType *r) const;
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4439,21 +4437,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.0000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.0000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0000; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0000; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4477,21 +4475,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4590.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.4590; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4590; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0150.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0150; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0150; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4515,21 +4513,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.0000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.0000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0000; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0000; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const { return 0.00000; }
+      virtual float getAmberCharge (const ResidueType *r) const { return 0.00000; }
 
 
       
@@ -4553,21 +4551,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4590.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.4590; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4590; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0150.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0150; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0150; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4591,21 +4589,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4629,21 +4627,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return the result depends of the residue type.
        */
-      virtual float getVDWR (const Residue *res) const;
+      virtual float getVDWR (const ResidueType *r) const;
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return the result depends of the residue type.
        */
-      virtual float getAmberEpsilon (const Residue *res) const;
+      virtual float getAmberEpsilon (const ResidueType *r) const;
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4667,21 +4665,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return the result depends of the residue type.
        */
-      virtual float getVDWR (const Residue *res) const;
+      virtual float getVDWR (const ResidueType *r) const;
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return the result depends of the residue type.
        */
-      virtual float getAmberEpsilon (const Residue *res) const;
+      virtual float getAmberEpsilon (const ResidueType *r) const;
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4705,21 +4703,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4743,21 +4741,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4781,21 +4779,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4819,21 +4817,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4857,21 +4855,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4895,21 +4893,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4933,21 +4931,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -4971,21 +4969,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5009,21 +5007,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5047,21 +5045,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.6612.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.6612; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.6612; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2100.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.2100; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5085,21 +5083,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.6612.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.6612; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.6612; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2100.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.2100; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5123,21 +5121,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.6612.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.6612; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.6612; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2100.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.2100; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5161,21 +5159,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.6612.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.6612; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.6612; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2100.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.2100; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5199,21 +5197,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.6612.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.6612; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.6612; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2100.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.2100; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5237,21 +5235,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.7210.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.7210; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.7210; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2104.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.2104; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2104; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5275,21 +5273,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.7210.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.7210; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.7210; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2104.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.2104; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2104; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5313,21 +5311,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.7210.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.7210; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.7210; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2104.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.2104; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2104; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5351,21 +5349,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.7210.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.7210; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.7210; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2104.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.2104; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2104; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const { return 0.00000; }
+      virtual float getAmberCharge (const ResidueType *r) const { return 0.00000; }
 
 
       
@@ -5389,21 +5387,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 2.0000.
        */
-      virtual float getVDWR (const Residue *res) const { return 2.0000; }
+      virtual float getVDWR (const ResidueType *r) const { return 2.0000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2500.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.2500; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2500; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5427,21 +5425,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 2.0000.
        */
-      virtual float getVDWR (const Residue *res) const { return 2.0000; }
+      virtual float getVDWR (const ResidueType *r) const { return 2.0000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2500.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.2500; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2500; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5465,21 +5463,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5503,21 +5501,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5541,21 +5539,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5579,21 +5577,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5617,21 +5615,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5655,21 +5653,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5693,21 +5691,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5731,21 +5729,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5769,21 +5767,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5807,21 +5805,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5845,21 +5843,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5883,21 +5881,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5921,21 +5919,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5959,21 +5957,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -5997,21 +5995,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -6035,21 +6033,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -6073,21 +6071,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -6111,21 +6109,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const Residue *res) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const;
+      virtual float getAmberCharge (const ResidueType *r) const;
 
 
       
@@ -6149,21 +6147,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getVDWR (const Residue *res) const { return 0.0000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.0000; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getAmberEpsilon (const Residue *res) const { return 0.0000; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0000; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const { return 0.00000; }
+      virtual float getAmberCharge (const ResidueType *r) const { return 0.00000; }
 
 
       
@@ -6187,24 +6185,24 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return the Pseudo atom value.
        */
-      virtual float getVDWR (const Residue *res) const
-      { return Pseudo::getVDWR (res); }
+      virtual float getVDWR (const ResidueType *r) const
+      { return Pseudo::getVDWR (r); }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return the Pseudo atom value.
        */
-      virtual float getAmberEpsilon (const Residue *res) const
-      { return Pseudo::getAmberEpsilon (res); }
+      virtual float getAmberEpsilon (const ResidueType *r) const
+      { return Pseudo::getAmberEpsilon (r); }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Pseudo atom Amber charge.
        */
-      virtual float getAmberCharge (const Residue *res) const
-      { return Pseudo::getAmberCharge (res); }
+      virtual float getAmberCharge (const ResidueType *r) const
+      { return Pseudo::getAmberCharge (r); }
 
 
       

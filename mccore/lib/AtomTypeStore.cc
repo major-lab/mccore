@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Tue Mar 11 13:56:50 2003
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -220,10 +220,8 @@ namespace mccore
   // TYPES ---------------------------------------------------------------------
 
   float
-  AtomTypeStore::AC1p::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AC1p::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-    
     if (r == ResidueType::rRA)      return 0.0394;
     else if (r == ResidueType::rDA) return 0.0431;
     else if (r == ResidueType::rRC) return 0.0066;
@@ -237,11 +235,11 @@ namespace mccore
 
   
   float
-  AtomTypeStore::AC2p::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AC2p::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType ()->isRNA ())
+    if (r->isRNA ())
       return 0.0670;
-    else if (res->getType ()->isDNA ())
+    else if (r->isDNA ())
       return -0.0854;
     else
       return 0;
@@ -249,11 +247,11 @@ namespace mccore
   
 
   float
-  AtomTypeStore::AC3p::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AC3p::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType ()->isRNA ())
+    if (r->isRNA ())
       return 0.2022;
-    else if (res->getType ()->isDNA ())
+    else if (r->isDNA ())
       return 0.0713;
     else
       return 0;
@@ -261,32 +259,30 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AC4p::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AC4p::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType ()->isRNA ())
+    if (r->isRNA ())
       return 0.1065;
-    else if (res->getType ()->isDNA ())
+    else if (r->isDNA ())
       return 0.1629;
     else
       return 0;
   }
 
   float
-  AtomTypeStore::AC5p::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AC5p::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType ()->isRNA ())
+    if (r->isRNA ())
       return 0.0558;
-    else if (res->getType ()->isDNA ())
+    else if (r->isDNA ())
       return -0.0069;
     else
       return 0;
   }
 
   float
-  AtomTypeStore::AH1p::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AH1p::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-  
     if (r == ResidueType::rDA) return 0.1838;
     else if (r == ResidueType::rRA) return 0.2007;
     else if (r == ResidueType::rDC) return 0.1963;
@@ -300,33 +296,33 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AH2p::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AH2p::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType ()->isDNA ())
+    if (r->isDNA ())
       return 0.0718;
-    else if (res->getType ()->isRNA ())
+    else if (r->isRNA ())
       return 0.0972;
     else
       return 0;
   }
 
   float
-  AtomTypeStore::AH3p::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AH3p::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType ()->isDNA ())
+    if (r->isDNA ())
       return 0.0985;
-    else if (res->getType ()->isRNA ())
+    else if (r->isRNA ())
       return 0.0615;
     else
       return 0;
   }
 
   float
-  AtomTypeStore::AH4p::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AH4p::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType ()->isDNA ())
+    if (r->isDNA ())
       return 0.1176;
-    else if (res->getType ()->isRNA ())
+    else if (r->isRNA ())
       return 0.1174;
     else
       return 0;
@@ -334,11 +330,11 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AH5p::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AH5p::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType ()->isDNA ())
+    if (r->isDNA ())
       return 0.0754;
-    else if (res->getType ()->isRNA ())
+    else if (r->isRNA ())
       return 0.0679;
     else
       return 0;
@@ -347,11 +343,11 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AO1P::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AO1P::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType ()->isDNA ())
+    if (r->isDNA ())
       return -0.7761;
-    else if (res->getType ()->isRNA ())
+    else if (r->isRNA ())
       return -0.7760;
     else
       return 0;
@@ -359,9 +355,9 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AO2p::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AO2p::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType ()->isRNA ())
+    if (r->isRNA ())
       return -0.6139;
     else
       return 0;
@@ -369,11 +365,11 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AO2P::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AO2P::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType ()->isDNA ())
+    if (r->isDNA ())
       return -0.7761;
-    else if (res->getType ()->isRNA ())
+    else if (r->isRNA ())
       return -0.7760;
     else
       return 0;
@@ -384,50 +380,51 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AO3p::getVDWR (const Residue *res) const
+  AtomTypeStore::AO3p::getVDWR (const ResidueType *r) const
   {
-    return res->find (AtomType::aH3T) != res->end () ? 1.7210 : 1.6837;
+    //return res->find (AtomType::aH3T) != res->end () ? 1.7210 : 1.6837;
+    return 1.6837;  // Assumes the residue is not terminal
   }
 
 
 
   float
-  AtomTypeStore::AO3p::getAmberEpsilon (const Residue *res) const
+  AtomTypeStore::AO3p::getAmberEpsilon (const ResidueType *r) const
   {
-    return res->find (AtomType::aH3T) != res->end () ? 0.2104 : 0.1700;
+    //return res->find (AtomType::aH3T) != res->end () ? 0.2104 : 0.1700;
+    return 0.1700;  // Assumes the residue is not terminal
   }
   
   
   
   float
-  AtomTypeStore::AO3p::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AO3p::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-    
-    if (res->find (AtomType::aH3T) == res->end ())
-      {
-	if (r->isDNA ())
-	  return -0.5232;
-	else if (r->isRNA ())
-	  return -0.5246;
-      }
-    else
-      {
-	if (r->isDNA ())
-	  return -0.6549;
-	else if (r->isRNA ())
-	  return -0.6541;
-      }
+//     if (res->find (AtomType::aH3T) == res->end ())
+//       {
+    // *** Now assumes the residue is not terminal
+    if (r->isDNA ())
+      return -0.5232;
+    else if (r->isRNA ())
+      return -0.5246;
+//       }
+//     else
+//       {
+// 	if (r->isDNA ())
+// 	  return -0.6549;
+// 	else if (r->isRNA ())
+// 	  return -0.6541;
+//       }
     return 0;
   }
 
 
   float
-  AtomTypeStore::AO3P::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AO3P::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType ()->isDNA ())
+    if (r->isDNA ())
       return -0.7761;
-    else if (res->getType ()->isRNA ())
+    else if (r->isRNA ())
       return -0.7760;
     else
       return 0;
@@ -435,10 +432,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AO4p::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AO4p::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-  
     if (r->isDNA ())
       return -0.3691;
     else if (r->isRNA ())
@@ -450,50 +445,49 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AO5p::getVDWR (const Residue *res) const
+  AtomTypeStore::AO5p::getVDWR (const ResidueType *r) const
   {
-    return res->find (AtomType::aH5T) != res->end () ? 1.7210 : 1.6837;
+    //return res->find (AtomType::aH5T) != res->end () ? 1.7210 : 1.6837;
+    return 1.6837;  // Assumes the residue is not terminal
   }
 
 
 
   float
-  AtomTypeStore::AO5p::getAmberEpsilon (const Residue *res) const
+  AtomTypeStore::AO5p::getAmberEpsilon (const ResidueType *r) const
   {
-    return res->find (AtomType::aH5T) != res->end () ? 0.2104 : 0.1700;
+    //return res->find (AtomType::aH5T) != res->end () ? 0.2104 : 0.1700;
+    return 0.1700;  // Assumes the residue is not terminal
   }
 
 
 
   float
-  AtomTypeStore::AO5p::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AO5p::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
-    if (res->find (AtomType::aH5T) != res->end ())
-      {
-	if (r->isDNA ())
-	  return -0.6318;
-	else if (r->isRNA ())
-	  return -0.6223;
-      }
-    else
-      {
-	if (r->isDNA ())
-	  return -0.4954;
-	else if (r->isRNA ())
-	  return -0.4989;
-      }
-    return 0;
+//     if (res->find (AtomType::aH5T) != res->end ())
+//       {
+    // Assumes the residue is not terminal
+    if (r->isDNA ())
+      return -0.6318;
+    else if (r->isRNA ())
+      return -0.6223;
+//       }
+//     else
+//       {
+// 	if (r->isDNA ())
+// 	  return -0.4954;
+// 	else if (r->isRNA ())
+// 	  return -0.4989;
+//       }
+//     return 0;
   }
 
 
 
   float
-  AtomTypeStore::AP::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AP::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r->isDNA ())
       return 1.1659;
     else if (r->isRNA ())
@@ -503,10 +497,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::A1H2p::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A1H2p::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r->isDNA ())
       return 0.0718;
     else if (r->isRNA ())
@@ -516,10 +508,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::A1H5p::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A1H5p::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r->isDNA ())
       return 0.0754;
     else if (r->isRNA ())
@@ -528,17 +518,15 @@ namespace mccore
   }
 
   float
-  AtomTypeStore::A2H2p::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A2H2p::getAmberCharge (const ResidueType *r) const
   {
     return 0.0718;
   }
 
 
   float
-  AtomTypeStore::A2H5p::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A2H5p::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r->isDNA ())
       return 0.0754;
     else if (r->isRNA ())
@@ -548,17 +536,15 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHO2p::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AHO2p::getAmberCharge (const ResidueType *r) const
   {
     return 0.4186;
   }
 
 
   float
-  AtomTypeStore::AC2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AC2::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r->isDNA ())
       {
 	if (r->isA ())
@@ -585,10 +571,8 @@ namespace mccore
   }
 
   float
-  AtomTypeStore::AC4::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AC4::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r->isDNA ())
       {
 	if (r->isA ())
@@ -615,10 +599,8 @@ namespace mccore
   }
 
   float
-  AtomTypeStore::AC5::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AC5::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r->isDNA ())
       {
 	if (r->isA ())
@@ -646,10 +628,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AC6::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AC6::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r->isDNA ())
       {
 	if (r->isA ())
@@ -676,10 +656,8 @@ namespace mccore
   }
 
   float
-  AtomTypeStore::AC8::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AC8::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r->isDNA ())
       {
 	if (r->isA ())
@@ -697,11 +675,11 @@ namespace mccore
     return 0;
   }
   float
-  AtomTypeStore::AH1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AH1::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rDG)
+    if (r == ResidueType::rDG)
       return 0.3520;
-    else if (res->getType () == ResidueType::rRG)
+    else if (r == ResidueType::rRG)
       return 0.3424;
     return 0;
   }
@@ -709,22 +687,22 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AH2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AH2::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rDA)
+    if (r == ResidueType::rDA)
       return 0.0598;
-    else if (res->getType () == ResidueType::rRA)
+    else if (r == ResidueType::rRA)
       return 0.0473;
     return 0;
   }
 
 
   float
-  AtomTypeStore::AH3::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AH3::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rDT)
+    if (r == ResidueType::rDT)
       return 0.3420;
-    else if (res->getType () == ResidueType::rRU)
+    else if (r == ResidueType::rRU)
       return 0.3154;
     return 0;
   }
@@ -732,10 +710,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AH5::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AH5::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rDC)
       return 0.1863;
     else if (r == ResidueType::rRC)
@@ -747,10 +723,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AH6::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AH6::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r->isDNA ())
       {
 	if (r->isT ())
@@ -768,10 +742,8 @@ namespace mccore
     return 0;
   }
   float
-  AtomTypeStore::AH8::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AH8::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r->isDNA ())
       {
 	if (r->isA ())
@@ -791,10 +763,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AN1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AN1::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r->isDNA ())
       {
 	if (r->isA ())
@@ -822,21 +792,19 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AN2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AN2::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rDG)
+    if (r == ResidueType::rDG)
       return -0.9230;
-    else if (res->getType () == ResidueType::rRG)
+    else if (r == ResidueType::rRG)
       return -0.9672;
     return 0;
   }
 
 
   float
-  AtomTypeStore::AN3::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AN3::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r->isDNA ())
       {
 	if (r->isA ())
@@ -864,30 +832,28 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AN4::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AN4::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rDC)
+    if (r == ResidueType::rDC)
       return -0.9773;
-    else if (res->getType () == ResidueType::rRC)
+    else if (r == ResidueType::rRC)
       return -0.9530;
     return 0;
   }
 
   float
-  AtomTypeStore::AN6::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AN6::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rDA)
+    if (r == ResidueType::rDA)
       return -0.9123;
-    else if (res->getType () == ResidueType::rRA)
+    else if (r == ResidueType::rRA)
       return -0.9019;
     return 0;
   }
 
   float
-  AtomTypeStore::AN7::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AN7::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r->isDNA ())
       {
 	if (r->isA ())
@@ -906,10 +872,8 @@ namespace mccore
   }
 
   float
-  AtomTypeStore::AN9::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AN9::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r->isDNA ())
       {
 	if (r->isA ())
@@ -929,10 +893,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AO2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AO2::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r->isDNA ())
       {
 	if (r->isT ())
@@ -952,113 +914,113 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AO4::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AO4::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rDT)
+    if (r == ResidueType::rDT)
       return -0.5563;
-    else if (res->getType () == ResidueType::rRU)
+    else if (r == ResidueType::rRU)
       return -0.5761;
     return 0;
   }
 
 
   float
-  AtomTypeStore::AO6::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AO6::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rDG)
+    if (r == ResidueType::rDG)
       return -0.5699;
-    else if (res->getType () == ResidueType::rRG)
+    else if (r == ResidueType::rRG)
       return -0.5597;
     return 0;
   }
 
   float
-  AtomTypeStore::A1H2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A1H2::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rDG)
+    if (r == ResidueType::rDG)
       return 0.4235;
-    else if (res->getType () == ResidueType::rRG)
+    else if (r == ResidueType::rRG)
       return 0.4364;
     return 0;
   }
 
 
   float
-  AtomTypeStore::A1H4::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A1H4::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rDC)
+    if (r == ResidueType::rDC)
       return 0.4314;
-    else if (res->getType () == ResidueType::rRC)    
+    else if (r == ResidueType::rRC)    
       return 0.4234;
     return 0;
   }
 
 
   float
-  AtomTypeStore::A1H5M::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A1H5M::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rDT)
+    if (r == ResidueType::rDT)
       return 0.0770;
     return 0;
   }
 
 
   float
-  AtomTypeStore::A1H6::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A1H6::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rDA)
+    if (r == ResidueType::rDA)
       return 0.4167;
-    else if (res->getType () == ResidueType::rRA)
+    else if (r == ResidueType::rRA)
       return 0.4115;
     return 0;
   }
 
   float
-  AtomTypeStore::A2H2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A2H2::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rDG)
+    if (r == ResidueType::rDG)
       return 0.4235;
-    else if (res->getType () == ResidueType::rRG)
+    else if (r == ResidueType::rRG)
       return 0.4364;
     return 0;
   }
 
 
   float
-  AtomTypeStore::A2H4::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A2H4::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rDC)
+    if (r == ResidueType::rDC)
       return 0.4314;
-    else if (res->getType () == ResidueType::rRC)    
+    else if (r == ResidueType::rRC)    
       return 0.4234;
     return 0;
   }
 
 
   float
-  AtomTypeStore::A2H5M::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A2H5M::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rDT)
+    if (r == ResidueType::rDT)
       return 0.0770;
     return 0;
   }
 
 
   float
-  AtomTypeStore::A2H6::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A2H6::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rDA)
+    if (r == ResidueType::rDA)
       return 0.4167;
-    else if (res->getType () == ResidueType::rRA)
+    else if (r == ResidueType::rRA)
       return 0.4115;
     return 0;
   }
 
 
   float
-  AtomTypeStore::A3H5M::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A3H5M::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rDT)
+    if (r == ResidueType::rDT)
       return 0.0770;
     return 0;
   }
@@ -1066,31 +1028,29 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AH3T::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AH3T::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType ()->isDNA ())
+    if (r->isDNA ())
       return 0.4396;
-    else if (res->getType ()->isRNA ())
+    else if (r->isRNA ())
       return 0.4376;
     return 0;
   }
 
   float
-  AtomTypeStore::AH5T::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AH5T::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType ()->isDNA ())
+    if (r->isDNA ())
       return 0.4422;
-    else if (res->getType ()->isRNA ())
+    else if (r->isRNA ())
       return 0.4295;
     return 0;
   }
 
 
   float
-  AtomTypeStore::AC::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AC::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rALA || r == ResidueType::rGLY || r == ResidueType::rSER || r == ResidueType::rTHR       
 	|| r == ResidueType::rLEU || r == ResidueType::rILE || r == ResidueType::rVAL || r == ResidueType::rASN       
 	|| r == ResidueType::rGLN || r == ResidueType::rHIS || r == ResidueType::rTRP || r == ResidueType::rPHE       
@@ -1107,10 +1067,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::ACA::getAmberCharge (const Residue *res) const
+  AtomTypeStore::ACA::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rALA)
       return 0.03370;
     else if (r == ResidueType::rGLY)
@@ -1156,10 +1114,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::ACB::getAmberCharge (const Residue *res) const
+  AtomTypeStore::ACB::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rALA)
       return -0.18250;
     else if (r == ResidueType::rSER)
@@ -1203,9 +1159,9 @@ namespace mccore
 
 
   float
-  AtomTypeStore::ACD::getAmberEpsilon (const Residue *res) const
+  AtomTypeStore::ACD::getAmberEpsilon (const ResidueType *r) const
   {
-    const ResidueType *t = res->getType ();
+    const ResidueType *t = r;
   
     return t == ResidueType::rGLN || t == ResidueType::rGLU ? 0.0860 : 0.1094;
   }
@@ -1213,10 +1169,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::ACD::getAmberCharge (const Residue *res) const
+  AtomTypeStore::ACD::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rGLN)
       return 0.69510;
     else if (r == ResidueType::rARG)
@@ -1231,23 +1185,19 @@ namespace mccore
   }
 
   float
-  AtomTypeStore::ACD1::getAmberEpsilon (const Residue *res) const
+  AtomTypeStore::ACD1::getAmberEpsilon (const ResidueType *r) const
   {
-    const ResidueType *t = res->getType ();
-  
-    return (t == ResidueType::rPHE
-	    || t == ResidueType::rTYR
-	    || t == ResidueType::rTRP
+    return (r == ResidueType::rPHE
+	    || r == ResidueType::rTYR
+	    || r == ResidueType::rTRP
 	    ? 0.0860 : 0.1094);
   }
 
 
 
   float
-  AtomTypeStore::ACD1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::ACD1::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rLEU)
       return -0.41210;
     else if (r == ResidueType::rILE)
@@ -1263,10 +1213,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::ACD2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::ACD2::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rLEU)
       return -0.41210;
     else if (r == ResidueType::rHIS)
@@ -1282,10 +1230,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::ACE::getAmberCharge (const Residue *res) const
+  AtomTypeStore::ACE::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rLYS)
       return -0.01430;
     else if (r == ResidueType::rMET)
@@ -1294,10 +1240,8 @@ namespace mccore
   }
 
   float
-  AtomTypeStore::ACE1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::ACE1::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rHIS)
       return 0.20570;
     else if (r == ResidueType::rPHE)
@@ -1310,10 +1254,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::ACE2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::ACE2::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rTRP)
       return 0.13800;
     else if (r == ResidueType::rPHE)
@@ -1325,18 +1267,18 @@ namespace mccore
 
 
   float
-  AtomTypeStore::ACE3::getAmberCharge (const Residue *res) const
+  AtomTypeStore::ACE3::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rTRP)
+    if (r == ResidueType::rTRP)
       return -0.23870;
     return 0;
   }
 
 
   float
-  AtomTypeStore::ACG::getAmberEpsilon (const Residue *res) const
+  AtomTypeStore::ACG::getAmberEpsilon (const ResidueType *r) const
   {
-    const ResidueType *t = res->getType ();
+    const ResidueType *t = r;
   
     return ((t == ResidueType::rASN || t == ResidueType::rHIS || t == ResidueType::rTRP
 	     || t == ResidueType::rPHE || t == ResidueType::rTYR || t == ResidueType::rASP)
@@ -1346,10 +1288,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::ACG::getAmberCharge (const Residue *res) const
+  AtomTypeStore::ACG::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rLEU)
       return 0.35310;
     else if (r == ResidueType::rASN)
@@ -1382,10 +1322,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::ACG1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::ACG1::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rILE)
       return -0.04300;
     else if (r == ResidueType::rVAL)
@@ -1395,10 +1333,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::ACG2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::ACG2::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rTHR)
       return -0.24380;
     else if (r == ResidueType::rILE)
@@ -1410,19 +1346,17 @@ namespace mccore
 
 
   float
-  AtomTypeStore::ACH2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::ACH2::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rTRP)
+    if (r == ResidueType::rTRP)
       return -0.11340;
     return 0;
   }
 
 
   float
-  AtomTypeStore::ACZ::getAmberCharge (const Residue *res) const
+  AtomTypeStore::ACZ::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rARG)
       return 0.80760;
     else if (r == ResidueType::rPHE)
@@ -1434,28 +1368,26 @@ namespace mccore
 
 
   float
-  AtomTypeStore::ACZ2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::ACZ2::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rTRP)
+    if (r == ResidueType::rTRP)
       return -0.26010;
     return 0;
   }
 
 
   float
-  AtomTypeStore::ACZ3::getAmberCharge (const Residue *res) const
+  AtomTypeStore::ACZ3::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rTRP)
+    if (r == ResidueType::rTRP)
       return -0.19720;
     return 0;
   }
 
 
   float
-  AtomTypeStore::AH::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AH::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rALA || r == ResidueType::rGLY || r == ResidueType::rSER || r == ResidueType::rTHR
 	|| r == ResidueType::rLEU || r == ResidueType::rILE || r == ResidueType::rVAL || r == ResidueType::rASN
 	|| r == ResidueType::rGLN || r == ResidueType::rHIS || r == ResidueType::rTRP || r == ResidueType::rPHE
@@ -1470,10 +1402,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHA::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AHA::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rALA)
       return 0.08230;
     else if (r == ResidueType::rSER)
@@ -1515,28 +1445,26 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHA1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AHA1::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rGLY)
+    if (r == ResidueType::rGLY)
       return 0.06980;
     return 0;
   }
 
 
   float
-  AtomTypeStore::AHA2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AHA2::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rGLY)
+    if (r == ResidueType::rGLY)
       return 0.06980;
     return 0;
   }
 
 
   float
-  AtomTypeStore::AHB::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AHB::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rTHR)
       return 0.00430;
     else if (r == ResidueType::rILE)
@@ -1547,9 +1475,9 @@ namespace mccore
   }
 
   float
-  AtomTypeStore::AHB1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AHB1::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rALA)
+    if (r == ResidueType::rALA)
       return 0.06030;
     return 0;
   }
@@ -1557,9 +1485,9 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHB2::getVDWR (const Residue *res) const
+  AtomTypeStore::AHB2::getVDWR (const ResidueType *r) const
   {
-    const ResidueType *t = res->getType ();
+    const ResidueType *t = r;
   
     return (t == ResidueType::rSER || t == ResidueType::rCYS) ? 1.3870 : 1.4870;
   }
@@ -1567,10 +1495,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHB2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AHB2::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rALA)
       return 0.06030;
     else if (r == ResidueType::rSER)
@@ -1605,9 +1531,9 @@ namespace mccore
   }
 
   float
-  AtomTypeStore::AHB3::getVDWR (const Residue *res) const
+  AtomTypeStore::AHB3::getVDWR (const ResidueType *r) const
   {
-    const ResidueType *t = res->getType ();
+    const ResidueType *t = r;
   
     return t == ResidueType::rSER || t == ResidueType::rCYS ? 1.3870 : 1.4870;
   }
@@ -1615,10 +1541,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHB3::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AHB3::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rALA)
       return 0.06030;
     else if (r == ResidueType::rSER)
@@ -1653,9 +1577,9 @@ namespace mccore
   }
 
   float
-  AtomTypeStore::AHD1::getVDWR (const Residue *res) const
+  AtomTypeStore::AHD1::getVDWR (const ResidueType *r) const
   {
-    const ResidueType *t = res->getType ();
+    const ResidueType *t = r;
 
     if (t == ResidueType::rHIS)
       return 0.6000;
@@ -1668,18 +1592,16 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHD1::getAmberEpsilon (const Residue *res) const
+  AtomTypeStore::AHD1::getAmberEpsilon (const ResidueType *r) const
   {
-    return res->getType () == ResidueType::rHIS ? 0.0157 : 0.0150;
+    return r == ResidueType::rHIS ? 0.0157 : 0.0150;
   }
 
 
 
   float
-  AtomTypeStore::AHD1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AHD1::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rHIS)
       return 0.36490;
     else if (r == ResidueType::rTRP)
@@ -1693,9 +1615,9 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHD2::getVDWR (const Residue *res) const
+  AtomTypeStore::AHD2::getVDWR (const ResidueType *r) const
   {
-    const ResidueType *t = res->getType ();
+    const ResidueType *t = r;
 
     if (t == ResidueType::rARG || t == ResidueType::rPRO)
       return 1.3870; // H1
@@ -1712,9 +1634,9 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHD2::getAmberEpsilon (const Residue *res) const
+  AtomTypeStore::AHD2::getAmberEpsilon (const ResidueType *r) const
   {
-    const ResidueType *t = res->getType ();
+    const ResidueType *t = r;
 
     if (t == ResidueType::rARG || t == ResidueType::rPRO || t == ResidueType::rLYS)
       return 0.0157; // H1 HC
@@ -1727,10 +1649,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHD2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AHD2::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rARG)
       return 0.06870;
     else if (r == ResidueType::rHIS)
@@ -1747,9 +1667,9 @@ namespace mccore
   }
 
   float
-  AtomTypeStore::AHE::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AHE::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rARG)
+    if (r == ResidueType::rARG)
       return 0.34560;
     return 0;
   }
@@ -1757,9 +1677,9 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHE1::getVDWR (const Residue *res) const
+  AtomTypeStore::AHE1::getVDWR (const ResidueType *r) const
   {
-    const ResidueType *t = res->getType ();
+    const ResidueType *t = r;
 
     if (t == ResidueType::rHIS)
       return 1.3590; // H5
@@ -1775,9 +1695,9 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHE1::getAmberEpsilon (const Residue *res) const
+  AtomTypeStore::AHE1::getAmberEpsilon (const ResidueType *r) const
   {
-    const ResidueType *t = res->getType ();
+    const ResidueType *t = r;
 
     if (t == ResidueType::rHIS || t == ResidueType::rPHE || t == ResidueType::rTYR)
       return 0.0150; // H5 HA
@@ -1789,10 +1709,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHE1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AHE1::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rHIS)
       return 0.13920;
     else if (r == ResidueType::rTRP)
@@ -1807,9 +1725,9 @@ namespace mccore
   }
 
   float
-  AtomTypeStore::AHE2::getVDWR (const Residue *res) const
+  AtomTypeStore::AHE2::getVDWR (const ResidueType *r) const
   {
-    const ResidueType *t = res->getType ();
+    const ResidueType *t = r;
 
     if (t == ResidueType::rHIS)
       return 0.6000; // H
@@ -1827,9 +1745,9 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHE2::getAmberEpsilon (const Residue *res) const
+  AtomTypeStore::AHE2::getAmberEpsilon (const ResidueType *r) const
   {
-    const ResidueType *t = res->getType ();
+    const ResidueType *t = r;
 
     if (t == ResidueType::rHIS || t == ResidueType::rLYS || t == ResidueType::rMET)
       return 0.0157; // H HP H1
@@ -1843,10 +1761,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHE2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AHE2::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rPHE)
       return 0.14300;
     else if (r == ResidueType::rTYR)
@@ -1860,9 +1776,9 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHE3::getVDWR (const Residue *res) const
+  AtomTypeStore::AHE3::getVDWR (const ResidueType *r) const
   {
-    const ResidueType *t = res->getType ();
+    const ResidueType *t = r;
 
     if (t == ResidueType::rTRP)
       return 1.4590; // HA
@@ -1876,9 +1792,9 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHE3::getAmberEpsilon (const Residue *res) const
+  AtomTypeStore::AHE3::getAmberEpsilon (const ResidueType *r) const
   {
-    const ResidueType *t = res->getType ();
+    const ResidueType *t = r;
 
     if (t == ResidueType::rLYS || t == ResidueType::rMET)
       return 0.0157; // HP H1
@@ -1890,10 +1806,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHE3::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AHE3::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rTRP)
       return 0.17000;
     else if (r == ResidueType::rLYS)
@@ -1905,10 +1819,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHG::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AHG::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rSER)
       return 0.42750;
     else if (r == ResidueType::rLEU)
@@ -1920,18 +1832,18 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHG1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AHG1::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rTHR)
+    if (r == ResidueType::rTHR)
       return 0.41020;
     return 0;
   }
 
 
   float
-  AtomTypeStore::AHG2::getVDWR (const Residue *res) const
+  AtomTypeStore::AHG2::getVDWR (const ResidueType *r) const
   {
-    const ResidueType *t = res->getType ();
+    const ResidueType *t = r;
 
     if (t == ResidueType::rGLN || t == ResidueType::rARG || t == ResidueType::rGLU || t == ResidueType::rLYS
 	|| t == ResidueType::rPRO)
@@ -1944,10 +1856,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHG2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AHG2::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rGLN)
       return 0.03520;
     else if (r == ResidueType::rARG)
@@ -1964,36 +1874,36 @@ namespace mccore
   }
 
   float
-  AtomTypeStore::AHH::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AHH::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rTYR)
+    if (r == ResidueType::rTYR)
       return 0.39920;
     return 0;
   }
 
 
   float
-  AtomTypeStore::AHH2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AHH2::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rTRP)
+    if (r == ResidueType::rTRP)
       return 0.14170;
     return 0;
   }
 
 
   float
-  AtomTypeStore::AHZ::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AHZ::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rPHE)
+    if (r == ResidueType::rPHE)
       return 0.12970;
     return 0;
   }
 
 
   float
-  AtomTypeStore::AHZ1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AHZ1::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rLYS)
+    if (r == ResidueType::rLYS)
       return 0.34000;
     return 0;
   }
@@ -2001,9 +1911,9 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHZ2::getVDWR (const Residue *res) const
+  AtomTypeStore::AHZ2::getVDWR (const ResidueType *r) const
   {
-    const ResidueType *t = res->getType ();
+    const ResidueType *t = r;
 
     if (t == ResidueType::rTRP)
       return 1.4590; // HA
@@ -2015,9 +1925,9 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHZ2::getAmberEpsilon (const Residue *res) const
+  AtomTypeStore::AHZ2::getAmberEpsilon (const ResidueType *r) const
   {
-    const ResidueType *t = res->getType ();
+    const ResidueType *t = r;
 
     if (t == ResidueType::rTRP)
       return 0.0150; // HA
@@ -2029,19 +1939,19 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHZ2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AHZ2::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rTRP)
+    if (r == ResidueType::rTRP)
       return 0.15720;
-    else if (res->getType ()== ResidueType::rLYS)
+    else if (r== ResidueType::rLYS)
       return 0.34000;
     return 0;
   }
 
   float
-  AtomTypeStore::AHZ3::getVDWR (const Residue *res) const
+  AtomTypeStore::AHZ3::getVDWR (const ResidueType *r) const
   {
-    const ResidueType *t = res->getType ();
+    const ResidueType *t = r;
     
     if (t == ResidueType::rTRP)
       return 1.4590; // HA
@@ -2053,9 +1963,9 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHZ3::getAmberEpsilon (const Residue *res) const
+  AtomTypeStore::AHZ3::getAmberEpsilon (const ResidueType *r) const
   {
-    const ResidueType *t = res->getType ();
+    const ResidueType *t = r;
 
     if (t == ResidueType::rTRP)
       return 0.0150; // HA
@@ -2067,21 +1977,19 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AHZ3::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AHZ3::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rTRP)
+    if (r == ResidueType::rTRP)
       return 0.14470;
-    else if (res->getType () == ResidueType::rLYS)
+    else if (r == ResidueType::rLYS)
       return 0.34000;
     return 0;
   }
 
 
   float
-  AtomTypeStore::AN::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AN::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rALA || r == ResidueType::rGLY || r == ResidueType::rSER || r == ResidueType::rTHR
 	|| r == ResidueType::rLEU || r == ResidueType::rILE || r == ResidueType::rVAL || r == ResidueType::rASN
 	|| r == ResidueType::rGLN || r == ResidueType::rHIS || r == ResidueType::rTRP || r == ResidueType::rPHE
@@ -2098,46 +2006,44 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AND1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AND1::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rHIS)
+    if (r == ResidueType::rHIS)
       return -0.38110;
     return 0;
   }
 
 
   float
-  AtomTypeStore::AND2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AND2::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rASN)
+    if (r == ResidueType::rASN)
       return -0.91910;
     return 0;
   }
 
 
   float
-  AtomTypeStore::ANE::getAmberCharge (const Residue *res) const
+  AtomTypeStore::ANE::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rARG)
+    if (r == ResidueType::rARG)
       return -0.52950;
     return 0;
   }
 
 
   float
-  AtomTypeStore::ANE1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::ANE1::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rTRP)
+    if (r == ResidueType::rTRP)
       return -0.34180;
     return 0;
   }
 
 
   float
-  AtomTypeStore::ANE2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::ANE2::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rGLN)
       return -0.94070;
     else if (r == ResidueType::rHIS)
@@ -2146,37 +2052,35 @@ namespace mccore
   }
 
   float
-  AtomTypeStore::ANH1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::ANH1::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rARG)
+    if (r == ResidueType::rARG)
       return -0.86270;
     return 0;
   }
 
 
   float
-  AtomTypeStore::ANH2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::ANH2::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rARG)
+    if (r == ResidueType::rARG)
       return -0.86270;
     return 0;
   }
 
 
   float
-  AtomTypeStore::ANZ::getAmberCharge (const Residue *res) const
+  AtomTypeStore::ANZ::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rLYS)
+    if (r == ResidueType::rLYS)
       return -0.38540;
     return 0;
   }
 
 
   float
-  AtomTypeStore::AO::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AO::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rALA || r == ResidueType::rGLY || r == ResidueType::rSER || r == ResidueType::rTHR
 	|| r == ResidueType::rLEU || r == ResidueType::rILE || r == ResidueType::rVAL || r == ResidueType::rASN
 	|| r == ResidueType::rGLN || r == ResidueType::rHIS || r == ResidueType::rTRP || r == ResidueType::rPHE
@@ -2192,10 +2096,8 @@ namespace mccore
   }
 
   float
-  AtomTypeStore::AOD1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AOD1::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rASN)
       return -0.59310;
     else if (r == ResidueType::rASP)
@@ -2205,19 +2107,17 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AOD2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AOD2::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rASP)
+    if (r == ResidueType::rASP)
       return -0.80140;
     return 0;
   }
 
 
   float
-  AtomTypeStore::AOE1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AOE1::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rGLN)
       return -0.60860;
     else if (r == ResidueType::rGLU)
@@ -2227,62 +2127,60 @@ namespace mccore
 
 
   float
-  AtomTypeStore::AOE2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AOE2::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rGLU)
+    if (r == ResidueType::rGLU)
       return -0.81880;
     return 0;
   }
 
 
   float
-  AtomTypeStore::AOG::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AOG::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rSER)
+    if (r == ResidueType::rSER)
       return -0.65460;
     return 0;
   }
 
   float
-  AtomTypeStore::AOG1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AOG1::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rTHR)
+    if (r == ResidueType::rTHR)
       return -0.67610;
     return 0;
   }
 
 
   float
-  AtomTypeStore::AOH::getAmberCharge (const Residue *res) const
+  AtomTypeStore::AOH::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rTYR)
+    if (r == ResidueType::rTYR)
       return -0.55790;
     return 0;
   }
 
   float
-  AtomTypeStore::ASD::getAmberCharge (const Residue *res) const
+  AtomTypeStore::ASD::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rMET)
+    if (r == ResidueType::rMET)
       return -0.27370;
     return 0;
   }
 
 
   float
-  AtomTypeStore::ASG::getAmberCharge (const Residue *res) const
+  AtomTypeStore::ASG::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rCYS)
+    if (r == ResidueType::rCYS)
       return -0.31190;
     return 0;
   }
 
 
   float
-  AtomTypeStore::A1HD1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A1HD1::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rLEU)
       return 0.10000;
     else if (r == ResidueType::rILE)
@@ -2292,10 +2190,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::A1HD2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A1HD2::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rLEU)
       return 0.10000;
     else if (r == ResidueType::rASN)
@@ -2305,28 +2201,26 @@ namespace mccore
 
 
   float
-  AtomTypeStore::A1HE2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A1HE2::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rGLN)
+    if (r == ResidueType::rGLN)
       return 0.42510;
     return 0;
   }
 
 
   float
-  AtomTypeStore::A1HG1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A1HG1::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rVAL)
+    if (r == ResidueType::rVAL)
       return 0.07910;
     return 0;
   }
 
 
   float
-  AtomTypeStore::A1HG2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A1HG2::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rTHR)
       return 0.06420;
     else if (r == ResidueType::rILE)
@@ -2338,27 +2232,25 @@ namespace mccore
 
 
   float
-  AtomTypeStore::A1HH1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A1HH1::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rARG)
+    if (r == ResidueType::rARG)
       return 0.44780;
     return 0;
   }
 
 
   float
-  AtomTypeStore::A1HH2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A1HH2::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rARG)
+    if (r == ResidueType::rARG)
       return 0.44780;
     return 0;
   }
 
   float
-  AtomTypeStore::A2HD1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A2HD1::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rLEU)
       return 0.10000;
     else if (r == ResidueType::rILE)
@@ -2368,10 +2260,8 @@ namespace mccore
 
 
   float
-  AtomTypeStore::A2HD2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A2HD2::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rLEU)
       return 0.10000;
     else if (r == ResidueType::rASN)
@@ -2381,19 +2271,17 @@ namespace mccore
 
 
   float
-  AtomTypeStore::A2HE2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A2HE2::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rGLN)
+    if (r == ResidueType::rGLN)
       return 0.42510;
     return 0;
   }
 
 
   float
-  AtomTypeStore::A2HG1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A2HG1::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rILE)
       return 0.02360;
     else if (r == ResidueType::rVAL)
@@ -2402,10 +2290,8 @@ namespace mccore
   }
 
   float
-  AtomTypeStore::A2HG2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A2HG2::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rTHR)
       return 0.06420;
     else if (r == ResidueType::rILE)
@@ -2417,27 +2303,25 @@ namespace mccore
 
 
   float
-  AtomTypeStore::A2HH1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A2HH1::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rARG)
+    if (r == ResidueType::rARG)
       return 0.44780;
     return 0;
   }
 
 
   float
-  AtomTypeStore::A2HH2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A2HH2::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rARG)
+    if (r == ResidueType::rARG)
       return 0.44780;
     return 0;
   }
 
   float
-  AtomTypeStore::A3HD1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A3HD1::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rLEU)
       return 0.10000;
     else if (r == ResidueType::rILE)
@@ -2448,19 +2332,17 @@ namespace mccore
 
 
   float
-  AtomTypeStore::A3HD2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A3HD2::getAmberCharge (const ResidueType *r) const
   {
-    if (res->getType () == ResidueType::rLEU)
+    if (r == ResidueType::rLEU)
       return 0.10000;
     return 0;
   }
 
 
   float
-  AtomTypeStore::A3HG1::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A3HG1::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rILE)
       return 0.02360;
     else if (r == ResidueType::rVAL)
@@ -2469,10 +2351,8 @@ namespace mccore
   }
 
   float
-  AtomTypeStore::A3HG2::getAmberCharge (const Residue *res) const
+  AtomTypeStore::A3HG2::getAmberCharge (const ResidueType *r) const
   {
-    const ResidueType *r = res->getType ();
-
     if (r == ResidueType::rTHR)
       return 0.06420;
     else if (r == ResidueType::rILE)
