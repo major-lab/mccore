@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Tue Mar 11 18:45:58 2003
-// $Revision: 1.6 $
-// $Id: PdbFileHeader.cc,v 1.6 2005-03-10 18:36:52 thibaup Exp $
+// $Revision: 1.7 $
+// $Id: PdbFileHeader.cc,v 1.7 2005-03-10 19:18:36 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -633,8 +633,9 @@ namespace mccore
     return obj.read (ips);
   }
 
+
   iBinstream& 
-  operator<< (iBinstream &ibs, PdbFileHeader& obj)
+  operator>> (iBinstream &ibs, PdbFileHeader& obj)
   {
     return obj.read (ibs);
   }
