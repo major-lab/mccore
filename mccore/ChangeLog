@@ -1,0 +1,10 @@
+2000-11-09  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* configure, Makefile.in, configure.in, docs/Makefile.in, lib/ResidueType.h, lib/ResidueType.cc, lib/Pdbstream.h, lib/Pdbstream.cc, lib/McCore.h, lib/McCore.cc, lib/Makefile.in, lib/CTransfo.h, lib/CTransfo.cc, lib/CResidue.h, lib/CResidue.cc, lib/CResIdSet.h, lib/CResIdSet.cc, lib/CResId.h, lib/CPoint3D.cc, lib/CModel.h, lib/CModel.cc, lib/CAtom.h, lib/CAtom.cc:
+	Correction made for mcrms inclusion.
+
+2000-10-24  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/zfstreambase.h, lib/zfstreambase.cc, lib/zfstream.h, lib/zfPdbstream.h, lib/zfBinstream.h, lib/fPdbstream.h, lib/fBinstream.h, lib/ResidueType.h, lib/ResidueType.cc, lib/Pdbstream.h, lib/Pdbstream.cc, lib/McCore.h, lib/McCore.cc, lib/Makefile.in, lib/CTransfo.h, lib/CTransfo.cc, lib/CResidue.h, lib/CResidue.cc, lib/CResId.h, lib/CResId.cc, lib/CPoint3D.h, lib/CPoint3D.cc, lib/CModel.h, lib/CModel.cc, lib/CMessageQueue.h, lib/CMessageQueue.cc, lib/CHBond.h, lib/CHBond.cc, lib/CGraph.h, lib/CException.h, lib/CException.cc, lib/CAtom.h, lib/CAtom.cc, lib/Binstream.h, lib/Binstream.cc, lib/AtomType.h, lib/AtomType.cc, docs/Makefile.in, mkinstalldirs, install-sh, configure.in, configure, config.sub, config.guess, README, NEWS, Makefile.in, INSTALL:
+	Initial revision.
+
