@@ -1,342 +1,385 @@
 //                              -*- Mode: C++ -*- 
 // UndirectedGraph.h
-// Copyright � 2003, 2004 Laboratoire de Biologie Informatique et Th�orique
-// Author           : Patrick Gendron
-// Created On       : Mon Mar 24 21:30:26 2003
-// $Revision: 1.12 $
+// Copyright © 2004 Laboratoire de Biologie Informatique et Théorique
+//                  Université de Montréal.
+// Author           : Martin Larose <larosem@iro.umontreal.ca>
+// Created On       : Fri Dec 10 19:09:13 2004
+// $Revision: 1.12.2.1 $
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later vertypename sion.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
+#ifndef _mccore_UndirectedGraph_h_
+#define _mccore_UndirectedGraph_h_
 
-#ifndef _UndirectedGraph_h_
-#define _UndirectedGraph_h_
-
+#include <functional>
 #include <iostream>
 #include <map>
-#include <algorithm>
+#include <vector>
 
-#include "AbstractGraph.h"
 #include "Graph.h"
-#include "GraphAlgo.h"
-#include "Path.h"
+
+using namespace std;
 
 
 
-namespace mccore {
-
+namespace mccore
+{
   /**
-   * @short A templated undirected graph class.  It is implemented using
-   * the directed graph base class and by using a triangular matrix and
-   * a node ordering determined by the node_comparator function object.
+   * Undirected graph implementation.
    *
-   * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: UndirectedGraph.h,v 1.12 2004-09-02 20:52:41 larosem Exp $
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: UndirectedGraph.h,v 1.12.2.1 2004-12-11 01:35:13 larosem Exp $
    */
-  template< class node_type, 
-	    class edge_type = bool, 
-	    class node_comparator = less< node_type > >
-  class UndirectedGraph : public virtual Graph< node_type, edge_type, node_comparator >,
-			  public virtual UndirectedAbstractGraph< node_type, edge_type, node_comparator >
+  template< class V,
+	    class E,
+	    class VW = float,
+	    class EW = float,
+	    class Vertex_Comparator = less< V > >	    
+  class UndirectedGraph : public Graph<V,E,VW,EW,Vertex_Comparator>
   {
-  
-    // LIFECYCLE ------------------------------------------------------------
+
+  protected:
+    
+    /**
+     * The vertex collection.
+     */
+    vector< V > vertices;
+
+    /**
+     * The vertex weight collection.
+     */
+    vector< VW > vertexWeights;
+
+    /**
+     * The EdgeEntry collection.
+     */
+    vector< Graph::EdgeEntry< E, EW > > edges;
+
+    /**
+     * The map between a vertex and its index.
+     */
+    map< V, size_type > vertex2ind;
+    
+    /**
+     * The map between a vertex id and a map of vertex id to edge entry index.
+     */
+    map< size_type, map< size_type, typename vector< Graph::EdgeEntry< E, EW > >::size_type > > internalGraph;
 
   public:
+
+    // LIFECYCLE ------------------------------------------------------------
 
     /**
      * Initializes the object.
      */
-    UndirectedGraph () 
-      : Graph< node_type, edge_type, node_comparator > () {}
-
+    UndirectedGraph () { }
 
     /**
-     * Initializes the object with the other's content.
-     * @param other the object to copy.
+     * Initializes the object with the right's content.
+     * @param right the object to copy.
      */
-    UndirectedGraph (const UndirectedGraph &other) 
-      : Graph< node_type, edge_type, node_comparator > (other) {}
-
+    UndirectedGraph (const UndirectedGraph &right)
+      : vertices (right.vertices),
+	vertexWeights (right.vertexWeights),
+	edges (right.edges),
+	vertex2ind (right.vertex2ind),
+	internalGraph (right.internalGraph)
+    { }
 
     /**
-     * Destroys the object.
+     * Clones the object.
+     * @return a copy of the object.
      */
-    virtual ~UndirectedGraph () {
-      clear ();
+    virtual Graph* clone () const
+    {
+      return new UndirectedGraph<V,VW,E,EW,Vertex_Comparator> (*this);
     }
 
+    /**
+     * Destructs the object.
+     */
+    virtual ~UndirectedGraph () { }
 
     // OPERATORS ------------------------------------------------------------
 
-  public:
-
     /**
-     * Assigns the object with the other's content.
-     * @param other the object to copy.
+     * Assigns the object with the right's content.
+     * @param right the object to copy.
      * @return itself.
      */
-    UndirectedGraph& operator= (const UndirectedGraph &other) {    
-      if (this != &other) {
-	Graph< node_type, edge_type, node_comparator >::operator= (other);      
-      }
+    UndirectedGraph& operator= (const UndirectedGraph &right)
+    {
+      if (this != &right)
+	{
+	  vertices = right.vertices;
+	  vertexWeights = right.vertexWeights;
+	  edges = right.edges;
+	  vertex2ind = right.vertex2ind;
+	  internalGraph = right.internalGraph;
+	}
       return *this;
-    }
-
+    }	  
 
     // ACCESS ---------------------------------------------------------------
 
+    /**
+     * Gets the vertex weight.
+     * @param n the vertex.
+     * @return the vertex weight.
+     */
+    virtual VW& getVertexWeight (const V &n) throw (NoSuchElementException)
+    {
+      map<
+
+    /**
+     * Gets the vertex weight.
+     * @param n the vertex.
+     * @return the vertex weight.
+     */
+    virtual const VW& getVertexWeight (const V &n) const = 0;
+
+    /**
+     * Sets the vertex weight.
+     * @param n the vertex.
+     * @param w the vertex weight.
+     */
+    virtual void setVertexWeight (const V &n, const VW &w) = 0;
+
+    /**
+     * Gets the edge that exists between vertices o and p.
+     * @param o an extremity of the edge.
+     * @param p an extremity of the edge.
+     * @return the edge.
+     */
+    virtual E& getEdge (const V &o, const V &p) = 0;
+
+    /**
+     * Gets the edge that exists between vertices o and p.
+     * @param o an extremity of the edge.
+     * @param p an extremity of the edge.
+     * @return the edge.
+     */
+    virtual const E& getEdge (const V &o, const V &p) const = 0;
+
+    /**
+     * Gets the edge weight.
+     * @param o the origin vertex.
+     * @param p the destination vertex.
+     * @return the edge weight.
+     */
+    virtual EW& getWeight (const V &o, const V &p) = 0;
+    
+    /**
+     * Gets the edge weight.
+     * @param o the origin vertex.
+     * @param p the destination vertex.
+     * @return the edge weight.
+     */
+    virtual const EW& getWeight (const V &o, const V &p) const = 0;
+
+    /**
+     * Sets the edge weight.
+     * @param o the origin vertex.
+     * @param p the destination vertex.
+     * @param w the new weight.
+     */
+    virtual void setEdgeWeight (const V &o, const V &p, const EW &w) = 0;
+
+    /**
+     * Gets the id of the vertex.
+     * @param v the vertex.
+     * @return the vertex id.
+     */
+    virtual size_type getVertexIndex (const V &v) const = 0;
+    
+    /**
+     * Determines if the vertex is in the graph.
+     * @param v the vertex to find.
+     * @return wheter this graph containst the vertex v.
+     */
+    virtual bool contains (const V &v) const = 0;
+
+    /**
+     * Returns true if there exists an edge between vertices o and p.
+     * @param o an extremity of the edge.
+     * @param p an extremity of the edge.
+     * @return true if there exists an edge between vertices o and p.
+     */
+    virtual bool areConnected (const V &o, const V &p) const = 0;
+
+    /**
+     * Returns the neighbors of the given vertex.
+     * @param o a vertex in the graph.
+     * @return the list of neighbors.
+     */
+    virtual list< V > getNeighbors (const V& o) const = 0;
+
+    /**
+     * Gets a vertex given its id.
+     * @param idx the vertex id.
+     * @return the vertex.
+     */
+    virtual V& internalGetVertex (size_type idx) = 0;
+
+    /**
+     * Gets a vertex given its id.
+     * @param idx the vertex id.
+     * @return the vertex.
+     */
+    virtual const V& internalGetVertex (size_type idx) const = 0;
+
+    /**
+     * Gets the vertex index weight.
+     * @param idx the vertex index.
+     * @return the vertex weight.
+     */
+    virtual VW& internalGetVertexWeight (size_type idx) = 0;
+
+    /**
+     * Gets the vertex index weight.
+     * @param idx the vertex index.
+     * @return the vertex weight.
+     */
+    virtual const VW& internalGetVertexWeight (size_type idx) const = 0;
+
+    /**
+     * Sets the vertex index weight.
+     * @param idx the vertex index.
+     * @param w the new vertex weight.
+     */
+    virtual void internalSetVertexWeight (size_type idx, const VW &w) = 0;
+
+    /**
+     * Gets the edge given its index.
+     * @param idx the edge index.
+     * @return the edge.
+     */
+    virtual E& internalGetEdge (size_type idx) = 0;
+
+    /**
+     * Gets the edge given its index.
+     * @param idx the edge index.
+     * @return the edge.
+     */
+    virtual const E& internalGetEdge (size_type idx) const = 0;
+
+    /**
+     * Gets the edge index that exists between vertices indexes o and p.
+     * @param o an extremity of the edge.
+     * @param p an extremity of the edge.
+     * @return the edge index.
+     */
+    virtual size_type internalGetEdgeIndex (size_type o, size_type p) const = 0;
+    
+    /**
+     * Gets the edge weight.
+     * @param o the origin vertex index.
+     * @param p the destination vertex index.
+     * @return the edge weight.
+     */
+    virtual EW& internalGetEdgeWeight (size_type o, size_type p) = 0;
+
+    /**
+     * Gets the edge weight.
+     * @param o the origin vertex index.
+     * @param p the destination vertex index.
+     * @return the edge weight.
+     */
+    virtual const EW& internalGetEdgeWeight (size_type o, size_type p) const = 0;
+
+    /**
+     * Gets the edge weight given the edge index.
+     * @param idx the edge index.
+     * @return the edge weight.
+     */
+    virtual EW& internalGetEdgeWeight (size_type idx) = 0;
+
+    /**
+     * Gets the edge weight given the edge index.
+     * @param idx the edge index.
+     * @return the edge weight.
+     */
+    virtual const EW& internalGetEdgeWeight (size_type idx) const = 0;
+
+    /**
+     * Determines if the vertex index is in the graph.
+     * @param idx the vertex index to find.
+     * @return whether the index is within the range of vertices.
+     */
+    virtual bool internalContains (size_type idx) const = 0;
+
+    /**
+     * Returns true if there exists an edge between vertices indexes o and p.
+     * @param o an extremity of the edge.
+     * @param p an extremity of the edge.
+     * @return true if there exists an edge between o and p.
+     */
+    virtual bool internalAreConnected (size_type o, size_type p) const = 0;
+
+    /**
+     * Returns the neighbors of the given node.
+     * @param o a node in the graph.
+     * @return the list of neighbors.
+     */
+    virtual list< size_type > internalGetNeighbors (size_type o) const = 0;
+
+    /**
+     * Gets the iterator pointing to the beginning of the graph vertices.
+     * @return the iterator.
+     */
+    virtual iterator begin () = 0;
+
+    /**
+     * Gets the iterator pointing to the end of the graph vertices.
+     * @return the iterator.
+     */
+    virtual iterator end () = 0;
+
+    /**
+     * Gets the const_iterator pointing to the beginning of the graph vertices.
+     * @return the iterator.
+     */
+    virtual const_iterator begin () const = 0;
+
+    /**
+     * Gets the const_iterator pointing to the end of the graph vertices.
+     * @return the iterator.
+     */
+    virtual const_iterator end () const = 0;
+
     // METHODS --------------------------------------------------------------
-
-  public:
-  
-    /**
-     * Connect two nodes of the graph by a directed edge.
-     * @param o a node.
-     * @param p another node.
-     * @param w the weight of this edge (default=1).
-     * @return true if the connect operation succeeded.
-     */
-    virtual bool connect (const node_type &o, const node_type &p, 
-			  const edge_type &e = edge_type(), float w = 1) 
-    {
-      if (!contains (o) || !contains (p)) return false;
-    
-      edges.push_back (e);
-      edgeWeights.push_back (w);
-
-      graph[mapping[o]][mapping[p]] = edges.size ()-1;
-      graph[mapping[p]][mapping[o]] = edges.size ()-1;
-      edgeCoordinates.insert (make_pair (edges.size () - 1, make_pair (mapping[o], mapping[p])));
-        
-      return true;
-    }
-
-    /**
-     * Disconnect two nodes of the graph.
-     * @param o a node.
-     * @param p another node.
-     * @return true if the nodes were disconnected.
-     */
-    virtual bool disconnect (const node_type &o, const node_type &p) 
-    {
-      if (!contains (o)
-	  || !contains (p)
-	  || !areConnected (o, p))
-	return false;
-    
-      int e = graph[mapping[o]][mapping[p]];
-      graph.find (mapping[o])->second.erase (mapping[p]);
-      graph.find (mapping[p])->second.erase (mapping[o]);
-
-      edges.erase (edges.begin () + e);
-      edgeWeights.erase (edgeWeights.begin () + e);
-
-      map< int, pair< int, int > >::iterator eIt;
-      map< int, pair< int, int > >::iterator eIt2;
-      map< int, map< int, int > >::iterator i;
-      map< int, int >::iterator j;
-    
-      for (i=graph.begin (); i!=graph.end (); ++i) {
-	for (j=i->second.begin (); j!=i->second.end (); ++j) {
-	  if (j->second > e) j->second--;
-	}
-      }
-    
-      eIt = edgeCoordinates.find (e);
-      eIt2 = eIt++;
-      edgeCoordinates.erase (eIt2);
-      while (edgeCoordinates.end () != eIt)
-	{
-	  edgeCoordinates.insert (make_pair (eIt->first - 1, eIt->second));
-	  eIt2 = eIt++;
-	  edgeCoordinates.erase (eIt2);
-	}
-      return true;
-    }
-  
-  
-    /**
-     * Prim's algorithm for the minimum spanning tree.
-     * @return a vector of edges representing a spanning tree of the graph.
-     */
-    vector< pair< node_type, node_type > > 
-    minimumSpanningTree () 
-    {
-      vector< pair< int, int > > aedges;
-      vector< pair< int, int > >::iterator i;
-      vector< pair< node_type, node_type > > realedges;
-
-      GraphAlgo::minimumSpanningTree (*this, aedges);
-    
-      for (i=aedges.begin (); i!=aedges.end (); ++i) {
-	realedges.push_back (make_pair (nodes[i->first],
-					nodes[i->second]));
-      }
-      return realedges;
-    }
-
-
-    /**
-     * Computes a minimum cycle basis for this graph.
-     */
-    template< class value_type >
-    vector< Path< node_type, value_type > > cycleBase ()
-    {
-      vector< Path< unsigned int, int > > paths;
-      vector< Path< unsigned int, int > >::iterator p;
-      vector< Path< node_type, value_type > > realpaths;
-      
-      paths = GraphAlgo::cycleBaseHorton< node_type, edge_type, node_comparator > (*this);
-      for (p = paths.begin (); p != paths.end (); ++p)
-	{
-	  Path< unsigned int, int >::iterator pi;
-	  realpaths.push_back (Path< node_type, value_type > ());
-	  Path< node_type, value_type > &path = realpaths.back ();
-	  
-	  for (pi = p->begin (); pi != p->end (); ++pi)
-	    path.push_back (nodes[*pi]);
-	  path.setValue (p->getValue ());
-	}
-      return realpaths;
-    }
-
-    /**
-     * Computes the union of the minimum cycle basis for this graph.
-     */
-    template< class value_type >
-    vector< Path< node_type, value_type > > cycleBaseUnion ()
-    {
-      vector< Path< unsigned int, int > > paths;
-      vector< Path< unsigned int, int > >::iterator p;
-      vector< Path< node_type, value_type > > realpaths;
-      vector< AbstractGraph< unsigned int, bool, less< unsigned int > >* > digraphs;
-      vector< AbstractGraph< unsigned int, bool, less< unsigned int> >* >::iterator diit;
-      typename UndirectedGraph< node_type, edge_type, node_comparator>::iterator it;
-
-      for (it = begin (); end () != it; ++it)
-	digraphs.push_back (new Graph< unsigned int, bool, less< unsigned int > > ());
-      paths = GraphAlgo::unionMinimumCycleBases< node_type, edge_type, node_comparator > (*this, digraphs);
-      
-      for (p = paths.begin (); p != paths.end (); ++p)
-	{
-	  realpaths.push_back (Path< node_type, value_type > ());
-	  Path< node_type, value_type > &path = realpaths.back ();
-	  Path< unsigned int, int >::iterator pi;
-	  
-	  for (pi = p->begin (); pi != p->end (); ++pi)
-	    path.push_back (nodes[*pi]);
-	  path.setValue (p->getValue ());
-	}
-      for (diit = digraphs.begin (); digraphs.end () != diit; ++diit)
-	{
-	  gOut (4) << **diit << " ";
-	  delete *diit;
-	}
-      return realpaths;
-    }
-
-//     /**
-//      * Computes the union of the minimum cycle basis for this graph.
-//      */
-//     template< class value_type >
-//     vector< Path< node_type, value_type > > cycleBaseUnion () { 
-
-//       vector< Path< int, value_type > > paths;
-//       typename vector< Path< int, value_type > >::iterator p;
-//       typename Path< int, value_type >::iterator pi;
-//       vector< Path< node_type, value_type > > realpaths;
-
-//       paths = GraphAlgo::cycleBaseHorton< node_type, edge_type , node_comparator, value_type > (*this, 1); 
-      
-//       for (p=paths.begin (); p!=paths.end (); ++p) {
-//       	Path< node_type, value_type > aPath;
-//       	for (pi=p->begin (); pi!=p->end (); ++pi) {
-//       	  aPath.push_back (nodes[*pi]);
-//       	}
-//       	aPath.setValue (p->getValue ());
-//       	realpaths.push_back (aPath);      
-//       }
-      
-//       return realpaths;
-//     }
-
-    /**
-     * Computes the union of all the minimum cycles for this graph.
-     */
-    template< class value_type >
-    vector< Path< node_type, value_type > > minimumCycles () { 
-
-      vector< Path< int, value_type > > paths;
-      typename vector< Path< int, value_type > >::iterator p;
-      typename Path< int, value_type >::iterator pi;
-      vector< Path< node_type, value_type > > realpaths;
-
-      paths = GraphAlgo::cycleBaseHorton< node_type, edge_type, node_comparator, value_type > (*this, 2);
-      
-      for (p=paths.begin (); p!=paths.end (); ++p) {
-      	Path< node_type, value_type > aPath;
-      	for (pi=p->begin (); pi!=p->end (); ++pi) {
-      	  aPath.push_back (nodes[*pi]);
-      	}
-      	aPath.setValue (p->getValue ());
-      	realpaths.push_back (aPath);      
-      }
-      
-      return realpaths;
-    }
-
 
     // I/O  -----------------------------------------------------------------
 
-  public:
-
-
-//     virtual ostream& output (ostream& os) const
-//     {
-//       typename UndirectedGraph::const_iterator ki, kj;
-//       typename vector< node_type >::const_iterator i;
-//       typename vector< edge_type >::const_iterator j;
-
-//       os << "Nodes:" << endl;
-//       for (i=nodes.begin (); i!=nodes.end (); ++i) {
-// 	os << i-nodes.begin () << " : " << *i << " " << mapping.find (*i)->second << endl;
-//       }
-//       os << "Edges:" << endl;
-//       for (j=edges.begin (); j!=edges.end (); ++j) {
-// 	os << j-edges.begin () << " : " << *j << " (" 
-// 	   << edgeWeights[j-edges.begin ()] << ")" << endl;
-//       }
-    
-//       os << "Adjacency:" << endl;
-//       for (ki=begin (); ki!=end (); ++ki) {      
-// 	os << *ki << "(" << getWeight (*ki) << ")" << " : ";      
-// 	for (kj=begin (); kj!=end (); ++kj) {
-// 	  if (areConnected (*ki, *kj)) 
-// 	    os << *kj << "(" << getEdge (*ki, *kj) << ") ";
-// 	}
-// 	os << endl;
-//       }
-    
-//       return os;
-//     }
+    /**
+     * Writes the object to a stream.
+     * @param os The stream.
+     * @return The written stream.
+     */
+    ostream& write (ostream& os) const;
 
   };
 
+}
+
+namespace std
+{
+  ostream& operator<< (ostream &os, const mccore::UndirectedGraph& obj);
 }
 
 #endif
