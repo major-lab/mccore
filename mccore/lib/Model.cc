@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Oct 25 11:27:39 2001
-// Update Count     : 3
+// Last Modified On : Thu Nov  1 10:07:32 2001
+// Update Count     : 4
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -54,6 +54,22 @@ Model::model_iterator::operator= (const Model::model_iterator &right)
 }
 
 
+
+unsigned int
+Model::model_iterator::operator- (const Model::model_iterator &right) const
+{
+  model_iterator it = right;
+  unsigned int dist = 0;
+
+  while (it != *this)
+    {
+      --it;
+      ++dist;
+    }
+  return dist;
+}
+
+
   
 Model::model_const_iterator&
 Model::model_const_iterator::operator= (const Model::model_const_iterator &right)
@@ -65,6 +81,22 @@ Model::model_const_iterator::operator= (const Model::model_const_iterator &right
 
 
 
+unsigned int
+Model::model_const_iterator::operator- (const Model::model_const_iterator &right) const
+{
+  model_const_iterator it = right;
+  unsigned int dist = 0;
+
+  while (it != *this)
+    {
+      --it;
+      ++dist;
+    }
+  return dist;
+}
+
+
+  
 Model::Model (ResidueFactoryMethod *fm)
 {
   residueFM = (fm == 0) ? new CResidueFM () : fm;

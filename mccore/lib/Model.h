@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Oct 25 11:20:57 2001
-// Update Count     : 2
+// Last Modified On : Thu Nov  1 10:07:37 2001
+// Update Count     : 3
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -107,7 +107,14 @@ protected:
      */
     bool operator!= (const model_iterator &right) const
     { return !operator== (right); }
-     
+
+    /**
+     * Defines a difference operator for Model iterators.
+     * @param right the right iterator value in the difference.
+     * @return the distance between the iterators.
+     */
+    unsigned int operator- (const model_iterator &right) const;
+    
     /**
      * Redefines the access operator* to get the dereferenced residue.
      * @return the referenced residue.
@@ -169,6 +176,13 @@ protected:
     bool operator!= (const model_const_iterator &right) const
     { return !operator== (right); }
      
+    /**
+     * Defines a difference operator for Model const_iterators.
+     * @param right the right iterator value in the difference.
+     * @return the distance between the iterators.
+     */
+    unsigned int operator- (const model_const_iterator &right) const;
+
     /**
      * Redefines the access operator* to get the dereferenced residue.
      * @return the referenced residue.
