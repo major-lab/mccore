@@ -113,7 +113,7 @@ namespace mccore {
       insert (Atom (0.579f, 2.170f, 2.844f, AtomType::aC5));
       insert (Atom (0.747f, 0.934f, 3.454f, AtomType::aN7));
       insert (Atom (0.520f, 0.074f, 2.491f, AtomType::aC8));
-      insert (Atom (0.000f, 0.000f, 0.000f, AtomType::aC1p));
+      insert (Atom (-0.094f, -0.005f, 0.017f, AtomType::aC1p));
     } else if (type == ResidueType::rRC || type == ResidueType::rDC) {
       insert (Atom (0.212f, 0.668f, 1.294f, AtomType::aN1)); 
       insert (Atom (0.193f, -0.043f, 2.462f, AtomType::aC6));
@@ -123,7 +123,7 @@ namespace mccore {
       insert (Atom (0.491f, 1.984f, 3.638f, AtomType::aC4)); 
       insert (Atom (0.631f, 2.649f, 4.788f, AtomType::aN4)); 
       insert (Atom (0.328f, 0.569f, 3.645f, AtomType::aC5)); 
-      insert (Atom (0.000f, 0.000f, 0.000f, AtomType::aC1p));
+      insert (Atom (0.064f, -0.006f, 0.002f, AtomType::aC1p));
     } else if (type == ResidueType::rRG || type == ResidueType::rDG) {
       insert (Atom (0.214f, 0.659f, 1.283f, AtomType::aN9)); 
       insert (Atom (0.254f, 2.014f, 1.509f, AtomType::aC4)); 
@@ -136,7 +136,7 @@ namespace mccore {
       insert (Atom (0.562f, 2.154f, 2.846f, AtomType::aC5)); 
       insert (Atom (0.712f, 0.912f, 3.448f, AtomType::aN7)); 
       insert (Atom (0.498f, 0.057f, 2.485f, AtomType::aC8)); 
-      insert (Atom (0.000f, 0.000f, 0.000f, AtomType::aC1p));
+      insert (Atom (-0.075f, -0.005f, 0.009f, AtomType::aC1p));
     } else if (type == ResidueType::rRU) {
       insert (Atom (0.212f, 0.676f, 1.281f, AtomType::aN1)); 
       insert (Atom (0.195f, -0.023f, 2.466f, AtomType::aC6));
@@ -146,7 +146,7 @@ namespace mccore {
       insert (Atom (0.497f, 1.990f, 3.725f, AtomType::aC4)); 
       insert (Atom (0.629f, 2.653f, 4.755f, AtomType::aO4)); 
       insert (Atom (0.329f, 0.571f, 3.657f, AtomType::aC5)); 
-      insert (Atom (0.000f, 0.000f, 0.000f, AtomType::aC1p));
+      insert (Atom (0.063f, -0.008f, -0.006f, AtomType::aC1p));
     } else if (type == ResidueType::rDT) {
       insert (Atom (0.214f, 0.668f, 1.296f, AtomType::aN1)); 
       insert (Atom (0.171f, -0.052f, 2.470f, AtomType::aC6)); 
