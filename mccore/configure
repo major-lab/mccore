@@ -525,7 +525,7 @@ fi
 
 
 PACKAGE=mccore
-VERSION=1.0
+VERSION=1.1
 cat >> confdefs.h <<EOF
 #define PACKAGE "$PACKAGE"
 EOF

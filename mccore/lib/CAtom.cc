@@ -43,6 +43,7 @@
 #define AS_PSE          6
 #define AS_NO_HYDROGEN  7
 #define AS_NO_PSE_LP    8
+#define AS_NO_O2p       9
 
 
 
@@ -204,6 +205,9 @@ operator>> (iBinstream &ibs, AtomSet *&as)
     case AS_NO_PSE_LP:
       as = new no_pse_lp_atom_set ();
       break;
+    case AS_NO_O2p:
+      as = new no_O2p_atom_set ();
+      break;
     default:
       throw CFatalIntLibException ("Invalid atom set code.");
     }
@@ -303,3 +307,12 @@ no_pse_lp_atom_set::BinOutput (oBinstream &obs) const
 {
   obs << (unsigned char) AS_NO_PSE_LP;
 }
+
+
+
+void
+no_O2p_atom_set::BinOutput (oBinstream &obs) const
+{
+  obs << (unsigned char) AS_NO_O2p;
+}
+

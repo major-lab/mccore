@@ -3,8 +3,8 @@
 // Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Fri May 11 18:03:54 2001
+// Last Modified By : Patrick Gendron
+// Last Modified On : Mon May 28 16:29:28 2001
 // Update Count     : 9
 // Status           : Ok.
 // 
@@ -1787,6 +1787,34 @@ float RadToDegree (float r);
  */
 float rmsd (const vector< CResidue::iterator > &mgr1,
 	    const vector< CResidue::iterator > &mgr2);
+
+
+
+/**
+ * Calculates the rmsd between the atoms in the iterator range 
+ * without performing an alignment.
+ *@param begin_a a start iterator on the first atom container
+ *@param end_a an end iterator on the first atom container
+ *@param begin_b a start iterator on the second atom container
+ *@param end_b an end iterator on the second atom container
+ *@return the rmsd value.
+ */
+float rmsd (const CResidue::iterator &begin_a, const CResidue::iterator &end_a,
+	    const CResidue::iterator &begin_b, const CResidue::iterator &end_b);
+
+
+
+/**
+ * Calculates the rmsd between the atoms in the const_iterator range 
+ * without performing an alignment.
+ *@param begin_a a start iterator on the first atom container
+ *@param end_a an end iterator on the first atom container
+ *@param begin_b a start iterator on the second atom container
+ *@param end_b an end iterator on the second atom container
+ *@return the rmsd value.
+ */
+float rmsd (const CResidue::const_iterator &begin_a, const CResidue::const_iterator &end_a,
+	    const CResidue::const_iterator &begin_b, const CResidue::const_iterator &end_b);
 
 
 

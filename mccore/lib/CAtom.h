@@ -816,4 +816,67 @@ public:
   virtual void BinOutput (oBinstream& obs) const;
 };
 
+
+/**
+ * @short All atoms exept O2p unary function.
+ *
+ * Filters O2p atoms since this is the main difference between RNA and
+ * DNA except for backbone hydrogens.
+ *
+ * @author Patrick Gendron <larosem@IRO.UMontreal.CA>
+ */
+class no_O2p_atom_set : public AtomSet
+{
+public:
+
+  // LIFECYCLE -----------------------------------------------------
+
+  /**
+   * Initializes the object.
+   */
+  no_O2p_atom_set () : AtomSet () { }
+
+  /**
+   * Initializes the object with the right's content.
+   * @param right the object to copy.
+   */
+  no_O2p_atom_set (const no_O2p_atom_set& right) : AtomSet (right) { }
+  
+  // OPERATORS -----------------------------------------------------
+
+  /**
+   * Tests whether the atom is a pseudo or a lone pair atom.
+   * @param atom the atom to test.
+   * @return the truth value.
+   */
+  virtual bool operator() (const CAtom &atom) const
+  {
+    return ! (atom.GetType ()->is_O2p ());
+  }
+
+  /**
+   * Converts the function object to a character representation.
+   * @return a constant char string.
+   */
+  virtual operator const char* () const { return "no_O2p"; }
+
+  // ACCESS --------------------------------------------------------
+
+  // METHODS -------------------------------------------------------
+
+  /**
+   * Copies the function object.
+   * @return a copy of itself.
+   */
+  virtual AtomSet* clone () const { return new no_O2p_atom_set (); }
+  
+  // I/O -----------------------------------------------------------
+  
+  /**
+   * Outputs the function object to a binary stream.
+   * @param obs the output binary stream.
+   */
+  virtual void BinOutput (oBinstream& obs) const;
+};
+
 #endif

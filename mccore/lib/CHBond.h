@@ -1,36 +1,23 @@
 //                              -*- Mode: C++ -*- 
 // CHBond.h
-// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Fri May 11 18:02:50 2001
-// Update Count     : 2
+// Last Modified On : Tue Oct 24 11:14:42 2000
+// Update Count     : 6
 // Status           : Ok.
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifndef _CHBond_h
 #define _CHBond_h
 
+#include <stdlib.h>
 
 class CResidue;
 class t_Atom;
+class CAtom;
 class ostream;
 
 
@@ -42,6 +29,12 @@ class ostream;
  */
 class CHBond
 {
+
+  /**
+   * Parameters (mean, variance, weight, prob H-bond) for each measure.
+   */
+
+
   /**
    * The left residue in the bond.
    */
@@ -79,6 +72,12 @@ class CHBond
   mutable float cache_penality;
 
 public:
+  static const int sNbGauss;
+  static const float sProbH[7];
+  static const float sWeight[7];
+  static const float sMean[7][3];
+  static const float sCovarInv[7][3][3];
+  static const float sCovarDet[7];
 
   // LIFECYCLE ------------------------------------------------------------
 
@@ -141,8 +140,16 @@ public:
   void SetHBond (const CResidue *nResidueA, const CResidue *nResidueB,
 		 t_Atom *nDonor, t_Atom *nHydro,
 		 t_Atom *nAcceptor, t_Atom *nLonePair);
+  const CResidue *GetResidueA () const { return mResidueA; }
+  const CResidue *GetResidueB () const { return mResidueB; }
+  const CAtom &GetDonor (const CResidue *r = NULL) const ;
+  const CAtom &GetHydrogen (const CResidue *r = NULL) const ;
+  const CAtom &GetAcceptor (const CResidue *r = NULL) const ;
+  const CAtom &GetLonePair (const CResidue *r = NULL) const ;
 
   // METHODS --------------------------------------------------------------
+
+  static float Eval (float dist, float angle_h, float angle_l, bool decision = false);
 
   // I/O  -----------------------------------------------------------------
 

@@ -3,8 +3,8 @@
 ## Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:10:38 2000
-## Last Modified By : Martin Larose
-## Last Modified On : Fri May 11 17:59:14 2001
+## Last Modified By : Patrick Gendron
+## Last Modified On : Mon May 28 16:28:46 2001
 ## Update Count     : 3
 ## Status           : Ok.
 ###############################################################################
@@ -40,7 +40,7 @@ config.sub configure.in configure install-sh mkinstalldirs
 
 
 
-all all-static static doc:
+all all-static static doc html:
 	@ for subdir in $(SUBDIRS); do \
 	   echo "Building $@ in $$subdir"; \
 	   (cd $$subdir && $(MAKE) $@) || exit 1; \

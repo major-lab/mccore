@@ -3,9 +3,9 @@
 // Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Mon May 28 14:30:54 2001
-// Update Count     : 18
+// Last Modified By : Patrick Gendron
+// Last Modified On : Mon May 28 16:29:20 2001
+// Update Count     : 19
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -381,6 +381,8 @@ CResidue::CResidue (t_Residue *type,
       addLP ();
     }
 
+  isIdentity = mTfo.isIdentity ();
+
   mAtomRes.reserve (size ());
   mAtomRes.resize (size ());
 }
@@ -445,7 +447,7 @@ CResidue::operator= (const CTransfo &tfo)
 {
   mTfo = tfo; 
   isPlaced = false;
-  isIdentity = false;
+  isIdentity = mTfo.isIdentity ();
   return *this;
 }
 
@@ -1328,7 +1330,7 @@ CResidue::Transform (const CTransfo& tfo)
 {
   mTfo = tfo * mTfo;
   isPlaced = false;
-  isIdentity = false;
+  isIdentity = mTfo.isIdentity ();
   return *this;
 }
 
@@ -1338,6 +1340,7 @@ void
 CResidue::Align ()
 {
   mTfo.SetIdentity ();
+  isPlaced = false;
   isIdentity = true;
 }
 

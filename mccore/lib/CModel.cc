@@ -3,9 +3,9 @@
 // Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct  6 08:21:55 2000
-// Last Modified By : Martin Larose
-// Last Modified On : Mon May 28 14:31:43 2001
-// Update Count     : 10
+// Last Modified By : Patrick Gendron
+// Last Modified On : Mon May 28 16:29:07 2001
+// Update Count     : 9
 // Status           : Unknown.
 // 
 //  This file is part of mccore.

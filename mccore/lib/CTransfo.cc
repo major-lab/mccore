@@ -127,6 +127,7 @@ CTransfo::operator*= (const CTransfo &right)
   m[9] = m8 * right.m[1] + m9 * right.m[5] + m10 * right.m[9];
   m[10] = m8 * right.m[2] + m9 * right.m[6] + m10 * right.m[10];
   m[11] = m8 * right.m[3] + m9 * right.m[7] + m10 * right.m[11] + m11;
+
   return *this;
 }
 
@@ -150,6 +151,16 @@ CTransfo::SetIdentity ()
   m[0] = 1.0;  m[1] = 0.0;  m[ 2] = 0.0;  m[ 3] = 0.0;
   m[4] = 0.0;  m[5] = 1.0;  m[ 6] = 0.0;  m[ 7] = 0.0;
   m[8] = 0.0;  m[9] = 0.0;  m[10] = 1.0;  m[11] = 0.0;
+}
+
+
+
+bool
+CTransfo::isIdentity ()
+{
+  return (m[0] == 1 && m[1] == 0 && m[ 2] == 0 && m[ 3] == 0 &&
+	  m[4] == 0 && m[5] == 1 && m[ 6] == 0 && m[ 7] == 0 &&
+	  m[8] == 0 && m[9] == 0 && m[10] == 1 && m[11] == 0);
 }
 
 
@@ -201,7 +212,7 @@ CTransfo::GetTranslation () const
 pair< CPoint3D, float >
 CTransfo::GetRotation () const
 {
-  CPoint3D v (0, 0, 0);  // Not done yet...
+  CPoint3D v (0, 0, 0);  // Still to be done: axis of rotation...
 
   float a = m[9] - m[6];
   float b = m[2] - m[8];
@@ -232,6 +243,7 @@ CTransfo::Inverse ()
   m[1] = m4;  m[4] = m1;
   m[2] = m8;  m[8] = m2;
   m[6] = m9;  m[9] = m6;
+
   return *this;
 }
 
@@ -254,6 +266,7 @@ CTransfo::Rotate (const CPoint3D &axis, float theta)
   CTransfo theRot;
   
   theRot.SetRotation (axis, theta);
+
   return *this *= theRot;
 }
 

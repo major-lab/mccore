@@ -3,9 +3,9 @@
 // Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Thu Sep 28 16:59:32 2000
-// Last Modified By : Martin Larose
-// Last Modified On : Mon May 28 14:30:57 2001
-// Update Count     : 15
+// Last Modified By : Patrick Gendron
+// Last Modified On : Mon May 28 16:29:23 2001
+// Update Count     : 16
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -97,6 +97,8 @@ private:
    * The flag indicating whether the atoms are placed.
    */
   mutable bool isPlaced;
+
+public:
 
   /**
    * The flag indicating whether the transfo is the identity.

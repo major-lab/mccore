@@ -3,9 +3,9 @@
 // Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct  6 08:21:55 2000
-// Last Modified By : Martin Larose
-// Last Modified On : Mon May 28 14:31:45 2001
-// Update Count     : 7
+// Last Modified By : Patrick Gendron
+// Last Modified On : Mon May 28 16:29:14 2001
+// Update Count     : 6
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -46,7 +46,8 @@ class oBinstream;
  * 
  * This object is the container for residues.  It is an unsorted list of
  * residues.  Random access is simulated with sequential access.  This class
- * should be the replacement for nearly all CResidue*.
+ * should be the replacement for nearly all CResidue*.  Note: A
+ * validated model contains only nucleic acids residues.
  *
  * @author Martin Larose
  */
@@ -100,7 +101,8 @@ public:
   // METHODS --------------------------------------------------------------
 
   /**
-   * Creates a new model with validated residues.
+   * Creates a new model with validated residues.  Only nucleic acids
+   * residues are considered valid at this point.
    * @return the new model.
    */
   CModel Validate () const;

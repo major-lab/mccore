@@ -183,6 +183,11 @@ public:
    */
   void SetIdentity ();
 
+  /**
+   * Determines if the matrix is set to identity.
+   */
+  bool isIdentity ();
+
   // METHODS --------------------------------------------------------------
 
 
@@ -284,6 +289,12 @@ public:
   CTransfo& Referentiel (const CPoint3D *p1, const CPoint3D *p2,
 			 const CPoint3D *p3, const CPoint3D *p4,
 			 const CPoint3D *p5, const CPoint3D *p6);
+
+  // PRIVATE METHODS ------------------------------------------------------
+
+private:
+
+  bool determineIdentity ();
 
   // I/O  -----------------------------------------------------------------
 };
