@@ -1199,14 +1199,14 @@ if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
         CXXSHFLAGS="$CXXFLAGS -O2 -fPIC"
 	CXXFLAGS="$CXXFLAGS -O2"
 	DEPFLAGS="-MM"
-        LDFLAGS="-static"
+        LDFLAGS="-static $LDFLAGS"
         LINKOPTIONS= ;;
     esac;
 elif eval "test \"`echo $GXX`\" = yes"; then     # gnu compiler
 	CXXSHFLAGS="$CXXFLAGS -Wall";
 	CXXFLAGS="$CXXFLAGS -Wall";
 	DEPFLAGS="-MM"
-	LDFLAGS="-static"
+	LDFLAGS="-static $LDFLAGS"
 	LINKOPTIONS=;
 fi
 
