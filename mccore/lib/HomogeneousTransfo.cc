@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // HomogeneousTransfo.cc
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.18 $
-// $Id: HomogeneousTransfo.cc,v 1.18 2005-01-11 19:39:40 thibaup Exp $
+// $Revision: 1.19 $
+// $Id: HomogeneousTransfo.cc,v 1.19 2005-01-26 19:17:44 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -584,13 +584,6 @@ namespace mccore
   }
   
   
-  ostream &
-  operator<< (ostream &out, const HomogeneousTransfo &v)
-  {
-    return v.output (out);
-  }
-  
-  
   iBinstream&
   operator>> (iBinstream &ibs, HomogeneousTransfo &obj)
   {
@@ -617,4 +610,17 @@ namespace mccore
     return obs;
   }
   
+}
+
+
+
+namespace std
+{
+
+  ostream&
+  operator<< (ostream &out, const mccore::HomogeneousTransfo &v)
+  {
+    return v.output (out);
+  }
+
 }

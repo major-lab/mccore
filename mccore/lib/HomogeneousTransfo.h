@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // HomogeneousTransfo.h
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.16 $
+// $Revision: 1.17 $
 //
 // This file is part of mccore.
 // 
@@ -56,7 +56,7 @@ namespace mccore
    * </pre>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: HomogeneousTransfo.h,v 1.16 2005-01-11 19:39:39 thibaup Exp $
+   * @version $Id: HomogeneousTransfo.h,v 1.17 2005-01-26 19:17:50 larosem Exp $
    */
   class HomogeneousTransfo
   {
@@ -463,21 +463,12 @@ namespace mccore
   };
   
   /**
-   * Outputs to a stream.
-   * @param out the output stream.
-   * @return the output stream used.
-   */
-  ostream &operator<< (ostream &out, const HomogeneousTransfo &h);
-  
-  /**
    * Reads a tranfo from the input binary stream.
    * @param ibs the input binary stream.
    * @param obj the transfo to fill.
    * @return the used input binary stream.
    */
   iBinstream& operator>> (iBinstream& ibs, HomogeneousTransfo &obj);
-  
-  
   
   /**
    * Writes the transfo to the output binary stream.
@@ -486,7 +477,20 @@ namespace mccore
    * @return the used output binary stream.
    */
   oBinstream& operator<< (oBinstream& obs, const HomogeneousTransfo &obj);
+
+}
+
+
+
+namespace std
+{
   
+  /**
+   * Outputs to a stream.
+   * @param out the output stream.
+   * @return the output stream used.
+   */
+  ostream &operator<< (ostream &out, const mccore::HomogeneousTransfo &h);
   
 }
 
