@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.31 $
-// $Id: Pdbstream.h,v 1.31 2004-11-22 14:15:42 thibaup Exp $
+// $Revision: 1.32 $
+// $Id: Pdbstream.h,v 1.32 2004-12-02 20:20:01 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -63,22 +63,27 @@ namespace mccore
     /**
      * The atom type input parse table for Pdb streams.
      */
-    static const PdbAtomTypeRepresentationTable pdbAtomTypeParseTable;
+    static const PdbAtomTypeRepresentationTable *pdbAtomTypeParseTable;
     
     /**
      * The atom type input parse table for Amber streams.
      */
-    static const AmberAtomTypeRepresentationTable amberAtomTypeParseTable;
+    static const AmberAtomTypeRepresentationTable *amberAtomTypeParseTable;
     
     /**
      * The residue type input parse table for Pdb streams.
      */
-    static const PdbResidueTypeRepresentationTable pdbResidueTypeParseTable;
+    static const PdbResidueTypeRepresentationTable *pdbResidueTypeParseTable;
     
     /**
      * The residue type input parse table for Amber streams.
      */
-    static const AmberResidueTypeRepresentationTable amberResidueTypeParseTable;
+    static const AmberResidueTypeRepresentationTable *amberResidueTypeParseTable;
+
+    /**
+     * Initialises the representation tables.
+     */
+    static void Pdbstream::init ();
 
     /**
      * Uses specific type table to parse type string.
@@ -142,7 +147,7 @@ namespace mccore
    * </pre>
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Pdbstream.h,v 1.31 2004-11-22 14:15:42 thibaup Exp $
+   * @version $Id: Pdbstream.h,v 1.32 2004-12-02 20:20:01 larosem Exp $
    */
   class iPdbstream : public istream
   {

@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.45 $
-// $Id: Pdbstream.cc,v 1.45 2004-11-22 14:17:32 thibaup Exp $
+// $Revision: 1.46 $
+// $Id: Pdbstream.cc,v 1.46 2004-12-02 20:19:57 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -49,23 +49,38 @@
 namespace mccore
 {
 
-  const PdbAtomTypeRepresentationTable Pdbstream::pdbAtomTypeParseTable;
-  const AmberAtomTypeRepresentationTable Pdbstream::amberAtomTypeParseTable;
-  const PdbResidueTypeRepresentationTable Pdbstream::pdbResidueTypeParseTable;
-  const AmberResidueTypeRepresentationTable Pdbstream::amberResidueTypeParseTable;
+  const PdbAtomTypeRepresentationTable *Pdbstream::pdbAtomTypeParseTable = 0;
+  const AmberAtomTypeRepresentationTable *Pdbstream::amberAtomTypeParseTable = 0;
+  const PdbResidueTypeRepresentationTable *Pdbstream::pdbResidueTypeParseTable = 0;
+  const AmberResidueTypeRepresentationTable *Pdbstream::amberResidueTypeParseTable = 0;
   
   const unsigned int iPdbstream::LINELENGTH = 80;
   const int oPdbstream::LINELENGTH = 80;
+
+
+  void
+  Pdbstream::init ()
+  {
+    if (0 == Pdbstream::pdbAtomTypeParseTable)
+      {
+	Pdbstream::pdbAtomTypeParseTable = new PdbAtomTypeRepresentationTable ();
+	Pdbstream::amberAtomTypeParseTable = new AmberAtomTypeRepresentationTable ();
+	Pdbstream::pdbResidueTypeParseTable = new PdbResidueTypeRepresentationTable ();
+	Pdbstream::amberResidueTypeParseTable = new AmberResidueTypeRepresentationTable ();
+      }
+  }    
 
   
   const ResidueType*
   Pdbstream::parseResidueType (const char* str, unsigned int type)
   {
     string key (str);
+
+    Pdbstream::init ();
     if (Pdbstream::PDB == type)
-      return Pdbstream::pdbResidueTypeParseTable.parseType (key);
+      return Pdbstream::pdbResidueTypeParseTable->parseType (key);
     else if (Pdbstream::AMBER == type)
-      return Pdbstream::amberResidueTypeParseTable.parseType (key);
+      return Pdbstream::amberResidueTypeParseTable->parseType (key);
     else
     {
       IntLibException ex ("", __FILE__, __LINE__);
@@ -79,10 +94,11 @@ namespace mccore
   const char*
   Pdbstream::stringifyResidueType (const ResidueType* rtype, unsigned int type)
   {
+    Pdbstream::init ();
     if (Pdbstream::PDB == type)
-      return Pdbstream::pdbResidueTypeParseTable.toString (rtype);
+      return Pdbstream::pdbResidueTypeParseTable->toString (rtype);
     else if (Pdbstream::AMBER == type)
-      return Pdbstream::amberResidueTypeParseTable.toString (rtype);
+      return Pdbstream::amberResidueTypeParseTable->toString (rtype);
     else
     {
       IntLibException ex ("", __FILE__, __LINE__);
@@ -96,11 +112,12 @@ namespace mccore
   const AtomType*
   Pdbstream::parseAtomType (const char* str, unsigned int type)
   {
+    Pdbstream::init ();
     string key (str);
     if (Pdbstream::PDB == type)
-      return Pdbstream::pdbAtomTypeParseTable.parseType (key);
+      return Pdbstream::pdbAtomTypeParseTable->parseType (key);
     else if (Pdbstream::AMBER == type)
-      return Pdbstream::amberAtomTypeParseTable.parseType (key);
+      return Pdbstream::amberAtomTypeParseTable->parseType (key);
     else
     {
       IntLibException ex ("", __FILE__, __LINE__);
@@ -114,10 +131,11 @@ namespace mccore
   const char*
   Pdbstream::stringifyAtomType (const AtomType* rtype, unsigned int type)
   {
+    Pdbstream::init ();
     if (Pdbstream::PDB == type)
-      return Pdbstream::pdbAtomTypeParseTable.toString (rtype);
+      return Pdbstream::pdbAtomTypeParseTable->toString (rtype);
     else if (Pdbstream::AMBER == type)
-      return Pdbstream::amberAtomTypeParseTable.toString (rtype);
+      return Pdbstream::amberAtomTypeParseTable->toString (rtype);
     else
     {
       IntLibException ex ("", __FILE__, __LINE__);
@@ -135,10 +153,12 @@ namespace mccore
       ratom (0),
       modelNb (1),
       eomFlag (false),
-      pdbType (Pdbstream::PDB),
-      atomTypeParseTable (&Pdbstream::pdbAtomTypeParseTable),
-      residueTypeParseTable (&Pdbstream::pdbResidueTypeParseTable)
-  { }
+      pdbType (Pdbstream::PDB)
+  {
+    Pdbstream::init ();
+    atomTypeParseTable = Pdbstream::pdbAtomTypeParseTable;
+    residueTypeParseTable = Pdbstream::pdbResidueTypeParseTable;
+  }
   
   
   iPdbstream::iPdbstream (streambuf* sb)
@@ -148,10 +168,12 @@ namespace mccore
       ratom (0),
       modelNb (1),
       eomFlag (false),
-      pdbType (Pdbstream::PDB),
-      atomTypeParseTable (&Pdbstream::pdbAtomTypeParseTable),
-      residueTypeParseTable (&Pdbstream::pdbResidueTypeParseTable)
-  { }
+      pdbType (Pdbstream::PDB)
+  {
+    Pdbstream::init ();
+    atomTypeParseTable = Pdbstream::pdbAtomTypeParseTable;
+    residueTypeParseTable = Pdbstream::pdbResidueTypeParseTable;
+  }
   
   iPdbstream::~iPdbstream ()
   {
@@ -175,13 +197,13 @@ namespace mccore
     pdbType = type;
     if (Pdbstream::AMBER == type)
       {
-	atomTypeParseTable = &Pdbstream::amberAtomTypeParseTable;
-	residueTypeParseTable = &Pdbstream::amberResidueTypeParseTable;
+	atomTypeParseTable = Pdbstream::amberAtomTypeParseTable;
+	residueTypeParseTable = Pdbstream::amberResidueTypeParseTable;
       }
     else
       {
-	atomTypeParseTable = &Pdbstream::pdbAtomTypeParseTable;
-	residueTypeParseTable = &Pdbstream::pdbResidueTypeParseTable;
+	atomTypeParseTable = Pdbstream::pdbAtomTypeParseTable;
+	residueTypeParseTable = Pdbstream::pdbResidueTypeParseTable;
       }	
   }
   
@@ -295,8 +317,11 @@ namespace mccore
 	    x = atof (trim (copy = line.substr (30, 8)).c_str ());
 	    y = atof (trim (copy = line.substr (38, 8)).c_str ());	    
 	    z = atof (trim (copy = line.substr (46, 8)).c_str ());
-	    
-	    at = atomTypeParseTable->parseType (trim (copy = line.substr (12, 4)));
+
+// 	    at = atomTypeParseTable->parseType (trim (copy = line.substr (12, 4)));
+	    copy = line.substr (12, 4);
+	    trim (copy);
+	    at = atomTypeParseTable->parseType (copy);
 
 	    rtype = residueTypeParseTable->parseType (trim (copy = line.substr (17, 3)));
 	    
@@ -425,10 +450,12 @@ namespace mccore
       rid (new ResId ()),
       modelnb (1),
       atomCounter (1),
-      pdbType (Pdbstream::PDB),
-      atomTypeParseTable (&Pdbstream::pdbAtomTypeParseTable),
-      residueTypeParseTable (&Pdbstream::pdbResidueTypeParseTable)
-  { }
+      pdbType (Pdbstream::PDB)
+  {
+    Pdbstream::init ();
+    atomTypeParseTable = Pdbstream::pdbAtomTypeParseTable;
+    residueTypeParseTable = Pdbstream::pdbResidueTypeParseTable;
+  }
   
 
 
@@ -441,10 +468,12 @@ namespace mccore
       rid (new ResId ()),
       modelnb (1),
       atomCounter (1),
-      pdbType (Pdbstream::PDB),
-      atomTypeParseTable (&Pdbstream::pdbAtomTypeParseTable),
-      residueTypeParseTable (&Pdbstream::pdbResidueTypeParseTable)
-  { }
+      pdbType (Pdbstream::PDB)
+  {
+    Pdbstream::init ();
+    atomTypeParseTable = Pdbstream::pdbAtomTypeParseTable;
+    residueTypeParseTable = Pdbstream::pdbResidueTypeParseTable;
+  }
 
 
   oPdbstream::oPdbstream (ostream &os)
@@ -457,8 +486,8 @@ namespace mccore
       modelnb (1),
       atomCounter (1),
       pdbType (Pdbstream::PDB),
-      atomTypeParseTable (&Pdbstream::pdbAtomTypeParseTable),
-      residueTypeParseTable (&Pdbstream::pdbResidueTypeParseTable)
+      atomTypeParseTable (Pdbstream::pdbAtomTypeParseTable),
+      residueTypeParseTable (Pdbstream::pdbResidueTypeParseTable)
   { }
 
 
@@ -486,14 +515,14 @@ namespace mccore
     if (Pdbstream::AMBER == type)
       {
 	headerdone = true;
-	atomTypeParseTable = &Pdbstream::amberAtomTypeParseTable;
-	residueTypeParseTable = &Pdbstream::amberResidueTypeParseTable;
+	atomTypeParseTable = Pdbstream::amberAtomTypeParseTable;
+	residueTypeParseTable = Pdbstream::amberResidueTypeParseTable;
       }
     else
       {
 	headerdone = false;
-	atomTypeParseTable = &Pdbstream::pdbAtomTypeParseTable;
-	residueTypeParseTable = &Pdbstream::pdbResidueTypeParseTable;
+	atomTypeParseTable = Pdbstream::pdbAtomTypeParseTable;
+	residueTypeParseTable = Pdbstream::pdbResidueTypeParseTable;
       }	
   }
   
