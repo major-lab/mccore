@@ -43,7 +43,6 @@
 #include "ResidueFM.h"
 #include "ResidueType.h"
 
-
 bool less_deref_func (AbstractResidue *x, AbstractResidue *y)
 {
   return *x < *y;
@@ -518,3 +517,6 @@ operator<< (ostream &os, const Model &model)
     os << *cit;
   return os;
 }
+
+ 
+

@@ -61,7 +61,7 @@ if test $ac_cv_have_fstreambase = "yes"; then
     AC_DEFINE(HAVE_FSTREAMBASE)
 fi
 AC_MSG_RESULT($ac_cv_have_fstreambase)
-
+AC_CHECK_LIB(xmlcpg,main)
 
 if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
     case "$host" in

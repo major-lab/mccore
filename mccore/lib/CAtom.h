@@ -36,6 +36,9 @@
 #include "CPoint3D.h"
 #include "AtomType.h"
 
+extern "C"{
+#include "xmlcpg/xmlcpg.h"
+}
 class ostream;
 class iBinstream;
 class oBinstream;
@@ -66,7 +69,7 @@ class CAtom : public CPoint3D
    * The serial number of the atom when it is dumped in a pdb file.
    */
   mutable unsigned int mAtomSerNo;
-
+  
 public:
 
   /**
