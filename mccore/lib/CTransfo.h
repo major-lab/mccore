@@ -4,9 +4,9 @@
 //                           Université de Montréal.
 // Author           : Patrick Gendron <gendrop@IRO.UMontreal.CA>
 // Created On       : Fri Oct  1 18:22:41 1999
-// Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:34:29 2001
-// Update Count     : 8
+// Last Modified By : Patrick Gendron
+// Last Modified On : Wed Nov 13 16:49:44 2002
+// Update Count     : 9
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -122,7 +122,7 @@ public:
   CTransfo operator* (const CTransfo &right) const;
 
   /**
-   * Calculates and assigns the matrix multiplication.
+   * Calculates and assigns the matrix multiplication (Premultiplies).
    * @param right the right matrix.
    * @return itself.
    */
@@ -274,6 +274,7 @@ public:
   CTransfo& Align (const CPoint3D *p1, const CPoint3D *p2, const CPoint3D *p3);
   
   /**
+   * ** DEPRECATED *****
    * Finds the transfo that expresses the coordinate system of r2 as seen
    * from the reference frame r1 when called on an identity transfo.
    * Otherwise, premultiply the transfo from r1 to r2 to *this.  Throw an

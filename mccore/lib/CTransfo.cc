@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron <gendrop@IRO.UMontreal.CA>
 // Created On       : Fri Oct  1 18:22:41 1999
 // Last Modified By : Patrick Gendron
-// Last Modified On : Mon Feb 25 11:36:22 2002
-// Update Count     : 10
+// Last Modified On : Wed Nov 13 16:49:38 2002
+// Update Count     : 11
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -350,6 +350,9 @@ CTransfo::Referentiel (const CPoint3D *p1, const CPoint3D *p2,
 		       const CPoint3D *p3, const CPoint3D *p4,
 		       const CPoint3D *p5, const CPoint3D *p6)
 {
+  throw CFatalIntLibException ("CTransfo::Referentiel is a deprecated method.", 
+			       __FILE__, __LINE__);
+
   if (p1 == 0 || p2 == 0 || p3 == 0
       || p4 == 0 || p5 == 0 || p6 == 0)
     throw CFatalIntLibException ("Pivot(s) not set.", __FILE__, __LINE__);
