@@ -4,8 +4,8 @@
 ## Author           : Martin Larose
 ## Created On       : Tue Sep 19 18:57:11 2000
 ## Last Modified By : Martin Larose
-## Last Modified On : Fri Apr 20 17:06:19 2001
-## Update Count     : 9
+## Last Modified On : Fri Apr 20 17:07:06 2001
+## Update Count     : 10
 ## Status           : Ok.
 ###############################################################################
 
@@ -73,11 +73,7 @@ SOURCES = Algo.cc \
 	  ServerSocket.cc
 
 HEADERS = $(SOURCES:.cc=.h) AtomType.h CGraph.h ResidueType.h fBinstream.h \
-<<<<<<< Makefile.in
-fPdbstream.h zfBinstream.h zfPdbstream.h zfstream.h Sockstream.h
-=======
 fPdbstream.h zfBinstream.h zfPdbstream.h zfstream.h sBinstream.h
->>>>>>> 1.7
 
 OBJECTS = $(SOURCES:.cc=.o)
 
