@@ -1,12 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // Algo.h
-// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
 // Author           : Sebastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Wed Feb 14 15:33:58 2001
 // Last Modified By : Patrick Gendron
-// Last Modified On : Tue Jun 11 16:07:06 2002
-// Update Count     : 46
+// Last Modified On : Fri Mar  7 11:41:38 2003
+// Update Count     : 48
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -53,16 +53,16 @@ class Algo
 
 private:
 
-  template< class iterator >
+  template< class iter >
   class ResidueRange
   {
-    iterator mRes;
+    iter mRes;
     float mMin;
     float mMax;
     
   public:
     
-    ResidueRange (iterator nRes, float nMin, float nMax)
+    ResidueRange (iter nRes, float nMin, float nMax)
       : mRes (nRes), mMin (nMin), mMax (nMax) {}
     bool operator< (const ResidueRange &o) const { return mMin < o.mMin; }
     void Min (float nMin) { if (nMin < mMin) mMin = nMin; }
@@ -76,23 +76,23 @@ private:
       else
 	return mMin <= o.mMax;
     }
-    iterator GetResidue () const { return mRes; }
+    iter GetResidue () const { return mRes; }
     void Output (ostream &out)
     {
-      out << (CResId)(*mRes) << " : " << mMin << "-" << mMax << endl;
+      out << (CResId &)(*mRes) << " : " << mMin << "-" << mMax;
     }
   };
-  
-  template< class iterator >
-  static void ExtractContact_OneDim (vector< ResidueRange< iterator > > &range, 
-				     map< pair< iterator, iterator >, int > &contact,
+
+  template< class iter >
+  static void ExtractContact_OneDim (vector< ResidueRange< iter > > &range, 
+				     map< pair< iter, iter >, int > &contact,
 				     float cutoff)
   {
-    vector< ResidueRange< iterator > >::iterator i;
+    vector< ResidueRange< iter > >::iterator i;
     
     for (i = range.begin (); i != range.end (); ++i)
       {
-	vector< ResidueRange< iterator > >::iterator j;
+	vector< ResidueRange< iter > >::iterator j;
 	
 	for (j = i; j != range.end (); ++j)
 	  if (i != j)
@@ -113,22 +113,22 @@ private:
   
 public:
   
-  template< class iterator >
-  static vector< pair< iterator, iterator > > ExtractContact_AABB (iterator begin, iterator end, float cutoff) 
+  template< class iter >
+  static vector< pair< iter, iter > > ExtractContact_AABB (iter begin, iter end, float cutoff) 
   {
-    vector< pair< iterator, iterator > > result;
-    vector< ResidueRange< iterator > > X_range;
-    vector< ResidueRange< iterator > > Y_range;
-    vector< ResidueRange< iterator > > Z_range;
-    iterator i;
+    vector< pair< iter, iter > > result;
+    vector< ResidueRange< iter > > X_range;
+    vector< ResidueRange< iter > > Y_range;
+    vector< ResidueRange< iter > > Z_range;
+    iter i;
     
     for (i = begin; i != end; ++i) 
       {
 	AbstractResidue::const_iterator j;
-	ResidueRange< iterator > tmp_X (i, HUGE, -HUGE);
-	ResidueRange< iterator > tmp_Y (i, HUGE, -HUGE);
-	ResidueRange< iterator > tmp_Z (i, HUGE, -HUGE);
-	
+	ResidueRange< iter > tmp_X (i, HUGE, -HUGE);
+	ResidueRange< iter > tmp_Y (i, HUGE, -HUGE);
+	ResidueRange< iter > tmp_Z (i, HUGE, -HUGE);
+
 	for (j = i->begin (); j != i->end (); ++j)
 	  {
 	    tmp_X.Max (j->GetX ());
@@ -146,15 +146,15 @@ public:
     std::sort (Y_range.begin (), Y_range.end ());
     std::sort (Z_range.begin (), Z_range.end ());
 
-    map< pair< iterator, iterator >, int > contact;
+    map< pair< iter, iter >, int > contact;
     
     ExtractContact_OneDim (X_range, contact, cutoff);
     ExtractContact_OneDim (Y_range, contact, cutoff);
 
-    map< pair< iterator, iterator >, int >::iterator cont_i;
+    map< pair< iter, iter >, int >::iterator cont_i;
     for (cont_i = contact.begin (); cont_i != contact.end (); ++cont_i)
       {
-	map< pair< iterator, iterator >, int >::iterator tmp = cont_i;
+	map< pair< iter, iter >, int >::iterator tmp = cont_i;
 	
 	tmp++;
 	if (cont_i->second < 2)

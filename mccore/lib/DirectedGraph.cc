@@ -1,12 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // DirectedGraph.cc
-// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001, 2003 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu May 10 14:49:18 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:17:15 2001
-// Update Count     : 3
+// Last Modified By : Patrick Gendron
+// Last Modified On : Wed Jan 15 13:39:43 2003
+// Update Count     : 11
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -72,11 +72,36 @@ DirectedGraph &DirectedGraph::operator= (const DirectedGraph &other)
 
 // I/O  -----------------------------------------------------------------
 
+ostream& DirectedGraph::output (ostream& os) const
+{
+  os << "----" << endl;;
+  map< int, int >::const_iterator k;
+  for (int i=0; i<mAdj.size (); ++i) {
+    for (int j=0; j<mAdj.size (); ++j) {
+      if ((k=mAdj[i].find (j)) != mAdj[i].end ())
+	os << k->second << " ";
+      else
+	os << "-" << " ";					   
+    }
+    os << endl;
+  }
+  os << "----" << endl;
+   for (int i=0; i<mReverse.size (); ++i) {
+    for (int j=0; j<mReverse.size (); ++j) {
+      if ((k=mReverse[i].find (j)) != mReverse[i].end ())
+	os << k->second << " ";
+      else
+	os << "-" << " ";					   
+    }
+    os << endl;
+  }
+  return os;
+}
 
-//  ostream &operator<< (ostream &os, const DirectedGraph &obj)
-//  {
-//    return obj.output (os);
-//  }
+ ostream &operator<< (ostream &os, const DirectedGraph &obj)
+ {
+   return obj.output (os);
+ }
 
 
 //  istream &operator>> (istream &is, DirectedGraph &obj)

@@ -1,12 +1,12 @@
 //                        -*- Mode: C++ -*-
 // CHBond.cc
-// Copyright © 1999, 2000-02 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Patrick Gendron
-// Last Modified On : Tue Nov 19 16:29:09 2002
-// Update Count     : 44
+// Last Modified On : Fri Mar  7 11:41:45 2003
+// Update Count     : 57
 // Status           : 
 // 
 //  This file is part of mccore.
@@ -163,7 +163,7 @@ const float CHBond::sCovarDet[7] = {
   0.999763, 
   0.00418066, 
   0.126178, 
-  0.45749,
+  0.45749
 };
 
 
@@ -259,7 +259,6 @@ CHBond::operator float () const
 			  diff[2] * (diff[0] * sCovarInv[i][0][2] +
 				     diff[1] * sCovarInv[i][1][2] +
 				     diff[2] * sCovarInv[i][2][2])) * -0.5);
-	
 	float prob;
 	if (isnan (tmp) || fabs (sCovarDet[i]) < 0.0005) prob = 0;
 	else prob = sWeight[i] * tmp / (pow (2 * M_PI, 1.5) * sqrt (sCovarDet[i]));

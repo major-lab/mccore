@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Graph.cc
-// Copyright © 2002 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Mon Feb 18 16:07:09 2002
-// Last Modified By : Martin Larose
-// Last Modified On : Fri Nov  1 17:16:05 2002
-// Update Count     : 7
+// Last Modified By : Patrick Gendron
+// Last Modified On : Thu Feb 27 16:04:59 2003
+// Update Count     : 24
 // Status           : Unknown.
 // 
 
@@ -350,15 +350,15 @@ vector< Path > Graph< Node, Edge >::shortest_path (int root) const
     }
   }
   
-//    cout << "P =  ("; for  (i=0; i<(int)size (); i++) { cout << P[ i ] << " "; } cout << ")" << endl;
-//    cout << "C =  ("; for  (i=0; i<(int)C.size(); i++) { cout << C[ i ] << " "; } cout << ")" << endl;
+//   cout << "P =  ("; for  (i=0; i<(int)size (); i++) { cout << P[ i ] << " "; } cout << ")" << endl;
+//   cout << "C =  ("; for  (i=0; i<(int)C.size(); i++) { cout << C[ i ] << " "; } cout << ")" << endl;
 
   // Execute ---
   for  (i=0; i<n-2; i++) {
     vector< int >::iterator min_iter = C.begin();
     int min_value = P[ *min_iter ].getValue(); // in C
     int min_index;
-    
+
     for  (k=C.begin(); k!=C.end(); k++) {
       if  (P[ *k ].getValue() < min_value) {
 	min_value = P[ *k ].getValue();
@@ -394,17 +394,12 @@ Path Graph< Node, Edge >::shortest_path (int a, int b) const
   vector< Path > paths = shortest_path (a);
   vector< Path >::iterator i;
   
-//    cout << "Shortest path between " << a << " and " << b << endl;
-  
-//    for (i=paths.begin (); i!=paths.end (); ++i) {
-//      if (i->size ()) {
-//        cout << *i << endl;;
-//      }
-//    }
-  
+//   cout << "Shortest path between " << a << " and " << b << endl;
+
   for (i=paths.begin (); i!=paths.end (); ++i) {
     if (i->size ()) {
       if (i->back () == b) {
+// 	cout << *i << endl;
 	return *i;
       }
     }
@@ -456,206 +451,9 @@ vector< Edge > Graph< Node, Edge >::minimum_spanning_tree (void) const
   return T;
 }
 
-
-
-// Supposes that edge values are all 1.
 template< class Node, class Edge >
 vector< Path > 
-Graph< Node, Edge >::cycle_base_vismara ()
-{
-  vector< Path > bag;
-  vector< Path >::iterator p, q;
-  int r, j, y, z;
-
-  for (unsigned int i = 0; i < mEdges.size (); ++i) mEdgeValues [i] = 1;
-
-  for (r=0; r<(int)size (); ++r) {
-//      cout << "r = " << r << endl;
-    for (j=r+1; j<(int)size (); ++j) mNodeMarks[j] = false;
-
-    vector< int > Vr;
-    vector< Path > sp = shortest_path (r);
-
-    for (p=sp.begin (); p!=sp.end (); ++p) {
-      if (p->size () != 0) {
-	y = p->back ();
-	vector< int > S;
-	
-//  	cout << " y = " << y << endl;
-
-	for (q=sp.begin (); q!=sp.end (); ++q) {	  
-	  if (q->size () != 0 && 
-	      isConnected (y, q->back ())) {
-	    z = q->back ();
-	    
-//  	    cout << " z = " << z << endl;
-
-	    Path Prz = shortest_path (r,z);
-	    int drz = Prz.getValue ();
-	    Path Pry = shortest_path (r,y);
-	    int dry = Pry.getValue ();
-	    
-
-//  	    cout << " Pry = " << Pry << endl;
-//  	    cout << " Prz = " << Prz << endl;
-
-	    if (drz + 1 == dry) {
-	      S.push_back (z);
-	    }
-	    else if ((drz != dry + 1) &&
-		     (z < y)) {
-	      Path Pryp = Pry;
-	      sort (Pryp.begin (), Pryp.end ());
-	      Path Przp = Prz; 
-	      sort (Przp.begin (), Przp.end ());
-      
-	      Path inter;
-	      set_intersection (Pryp.begin (), Pryp.end (),
-				Przp.begin (), Przp.end (),
-				inserter (inter, inter.begin ()));
-
-//  	      cout << "Intersection = " << inter << endl;
-	      
-	      if (inter.size () == 1 && inter.front () == r) {
-		Path C = Pry;
-		C.insert (C.end (), Prz.rbegin (), Prz.rend ());
-		C.pop_back ();
-		C.setValue (Prz.getValue () + Pry.getValue () + 1);
-		bag.push_back (C);
-
-//  		cout << "Adding " << C << endl;
-	      }
-	    }
-	  }     
-	}
-
-//  	cout << " S = " << S.size () << endl;
-
-	int m, n;
-	for (m=0; m<(int)S.size (); ++m) {
-	  for (n=m+1; n<(int)S.size (); ++n) {
-	    Path Prm = shortest_path (r, S[m]);
-	    Path Prmp = Prm;
-	    sort (Prmp.begin (), Prmp.end ());
-	    Path Prn = shortest_path (r, S[n]);
-	    Path Prnp = Prn;
-	    sort (Prnp.begin (), Prnp.end ());
-	    
-	    Path inter;
-	    set_intersection (Prmp.begin (), Prmp.end (),
-			      Prnp.begin (), Prnp.end (),
-			      inserter (inter, inter.begin ()));
-	    
-//  	    cout << "m = " << S[m] << endl;
-//  	    cout << "n = " << S[n] << endl;
-//  	    cout << "Intersection = " << inter << endl;
-
-	    if (inter.size () == 1 && inter.front () == r) {
-	      Path C = Prm;
-	      C.push_back (y);
-	      C.insert (C.end (), Prn.rbegin (), Prn.rend ());
-	      C.pop_back ();
-	      C.setValue (Prm.getValue () + Prn.getValue () + 2);
-	      bag.push_back (C);
-//  	      cout << "Adding " << C << endl;
-	    }	  
-	  }	
-	}
-      }
-    }
-    for (j=r+1; j<(int)size (); ++j) mNodeMarks[j] = true;
-  }
-  
-
-  // [...]
-  // Missing step: list all cycles of each family...
-  // [...]
-
-  
-//    cout << "sort cycles" << endl;
-  sort (bag.begin (), bag.end ());
-
-//   {
-//     cout << endl;
-    
-//     vector< Path >::iterator i;
-//     for (i=bag.begin (); i!=bag.end (); ++i) {
-//       cout << (*i) << " " << endl;
-//     }
-//   }
-
-  vector< Path > newbag;
-  vector< Path > tmpbag;
-  int pi;
-
-  for (j=0; j<(int)mEdgeMarks.size (); ++j) mEdgeMarks[j] = false;
-
-  for (p=bag.begin (); p!=bag.end (); ++p) {
-    {
-      if (p!=bag.begin () && p->size () != (p-1)->size ()) {
-	newbag.insert (newbag.end (), tmpbag.begin (), tmpbag.end ());
-	for (q=tmpbag.begin (); q!=tmpbag.end (); ++q) {
-	  for (pi=0; pi<(int)q->size (); ++pi) {
-	    mEdgeMarks[getEdgeIndex ((*q)[pi], (*q)[(pi+1)%q->size ()])] = true;
-	  }
-	}
-	tmpbag.clear ();
-      }
-      
-//        cout << "Considering " << *p << " " << p->size () << endl;
-
-//        cout << *this << endl;
-
-      for (pi=0; pi<(int)p->size (); ++pi) {
-//    	cout << " " << (*p)[pi] << " " 
-//    	     << " " << (*p)[(pi+1)%p->size ()] << " " 
-//    	     << mEdgeMarks[getEdgeIndex ((*p)[pi], (*p)[(pi+1)%p->size ()])] << endl;
-	
-	if (mEdgeMarks[getEdgeIndex ((*p)[pi], (*p)[(pi+1)%p->size ()])] == false) break;
-      }
-      if (pi!=(int)p->size ()) tmpbag.push_back (*p);      
-    }
-    
-  }
-
-  newbag.insert (newbag.end (), tmpbag.begin (), tmpbag.end ());
-
-  for (j=0; j<(int)mEdgeMarks.size (); ++j) mEdgeMarks[j] = true;
-
-//   cout << "After Gaussian elimination" << endl;
-
-//   {
-//     cout << endl;
-    
-//     vector< Path >::iterator i;
-//     for (i=newbag.begin (); i!=newbag.end (); ++i) {
-//       cout << (*i) << " " << endl;
-//     }
-//   }
-
-
-  return newbag;
-}
-
-
-
-template< class Node, class Edge >
-void
-Graph< Node, Edge >::order_graph (int index, int depth)
-{
-  build_tree ();
-  for (unsigned int i = 0; i < mNodeMarks.size (); ++i) mNodeMarks[i] = true;
-  for (unsigned int i = 0; i < mEdgeMarks.size(); ++i) mEdgeMarks[i] = true;
-}
-
-
-
-
-
-
-template< class Node, class Edge >
-vector< Path > 
-Graph< Node, Edge >::cycle_base_horton ()
+Graph< Node, Edge >::cycle_base_horton (bool minimum_basis_union)
 {
   vector< Path > bag;
   vector< Path >::iterator p;
@@ -666,13 +464,12 @@ Graph< Node, Edge >::cycle_base_horton ()
   map< int, map< int, Path > > paths;
   for (int i=0; i<(int)size (); ++i) {
     for (int j=0; j<(int)size (); ++j) {
-      paths[i][j] = 
-	shortest_path (i, j);
+      paths[i][j] = shortest_path (i, j);
     }
   }
 
   for (int i=0; i<(int)size (); ++i) {
-    for (int j=0; j<(int)mEdges.size (); ++j) {
+    for (int j=i+1; j<(int)mEdges.size (); ++j) {
 
 //        unmarkEdge (mEdgeNodes[j].first, mEdgeNodes[j].second);
 //        unmarkEdge (mEdgeNodes[j].second, mEdgeNodes[j].first);
@@ -750,7 +547,7 @@ Graph< Node, Edge >::cycle_base_horton ()
 
 //    cout << "Gaussian elimination" << endl;
 
-  newbag = gaussian_elimination (bag, false);
+  newbag = gaussian_elimination (bag, minimum_basis_union);
 
 //    {
 //      cout << endl;
@@ -767,7 +564,7 @@ Graph< Node, Edge >::cycle_base_horton ()
 
 template< class Node, class Edge >
 vector< Path > 
-Graph< Node, Edge >::gaussian_elimination (vector< Path > &bag, bool minimum_basis)
+Graph< Node, Edge >::gaussian_elimination (vector< Path > &bag, bool minimum_basis_union)
 {
   if (bag.size () == 0) return bag;
 
@@ -872,7 +669,7 @@ Graph< Node, Edge >::gaussian_elimination (vector< Path > &bag, bool minimum_bas
 	}
 	
 	if (!inserted) {
-	  if (!minimum_basis) {
+	  if (minimum_basis_union) {
 //  	    cout << "Accepting " << *marked[i] << endl;
 	    matrix.push_back (row);
 	    newbag.push_back (*marked[i]);
@@ -905,89 +702,6 @@ Graph< Node, Edge >::gaussian_elimination (vector< Path > &bag, bool minimum_bas
   }
   return newbag;
 }
-
-
-
-template< class Node, class Edge >
-vector< Path > 
-Graph< Node, Edge >::cycle_base ()
-{
-  vector< Path > bag;
-  Path tmpPath;
-  vector< pair< float, pair< int, int > > > chords;
-
-  for (unsigned int i = 0; i < mEdges.size (); ++i) mEdgeValues [i] = 1;
-
-//    cout << "Building tree" << endl;
-  build_tree();
-  
-//    cout << "Extract chords..." << endl;
-  for(int b = 0; b < (int)size() - 1; ++b) {
-    for(int a = b + 1; a < (int)size (); ++a) {
-      if (getEdgeIndex (a, b) != -1 && mEdgeMarks[getEdgeIndex (a, b)] == false) {
-
-	tmpPath = shortest_path (b, a);
-  	chords.push_back (make_pair (tmpPath.getValue (),
-  				     make_pair (a, b)));
-//       	cout << a << ", " << b << " = " << tmpPath << endl;
-      }
-    }
-  }
-
-//    cout << "sort chords" << endl;
-  sort (chords.begin (), chords.end ());
-
-//    cout << "Build cycles" << endl;
-  for (unsigned int i = 0; i < chords.size (); ++i) {
-    int a = chords[i].second.first;
-    int b = chords[i].second.second;
-
-    tmpPath = shortest_path (a, b);
-//      tmpPath.push_back (a);
-    tmpPath.setValue (tmpPath.getValue () + 1);
-
-//     cout << "ab = " << a << ", " << b << " -> ";
-//     cout << " " << tmpPath << endl;
-
-    if (tmpPath.size () > 0)
-      bag.push_back (tmpPath);
-    markEdge (a, b);
-    markEdge (b, a);
-  }
-//    cout << "done." << endl;
-
-  sort (bag.begin (), bag.end ());
-  
-  return bag;
-}
-
-template< class Node, class Edge >
-void 
-Graph< Node, Edge >::build_tree (int index, int depth)
-{
-  if (index == -1) {
-    for (unsigned int i = 0; i < mNodeMarks.size (); ++i) mNodeMarks[i] = false;
-    for (unsigned int i = 0; i < mEdgeMarks.size(); ++i) mEdgeMarks[i] = false;
-    mNodeMarks[0] = true;
-    index = 0;
-  }
-  
-  mNodeValues[index] = depth;
-  
-  for(int i = 0; i < (int)size (); ++i) {
-    if (getEdgeIndex(index, i) != -1 && mNodeMarks[i] == false) {
-      
-      markEdge (index, i);
-      markEdge (i, index);
-      markNode (i);
-      
-//       cout << "Marking node " << i << " edge " << index << " " << i << endl;
-
-      build_tree (i, depth + 1);
-    }
-  }
-}
-
 
 
 // I/O  -----------------------------------------------------------------

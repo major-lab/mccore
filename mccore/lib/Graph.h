@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Graph.h
-// Copyright © 2002 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Mon Feb 18 16:07:09 2002
 // Last Modified By : Patrick Gendron
-// Last Modified On : Fri Jul 26 15:21:33 2002
-// Update Count     : 5
+// Last Modified On : Thu Feb 27 17:30:21 2003
+// Update Count     : 24
 // Status           : Unknown.
 // 
 
@@ -16,9 +16,13 @@
 #include <iostream.h>
 
 #include <vector.h>
-#include <hash_map.h>
+#include <map.h>
+#include <algo.h>
 
 #include "mccore/Binstream.h"
+
+#define nodeid int
+#define edgeid int
 
 /**
  * @short A class for a path in a graph.
@@ -316,21 +320,17 @@ public:
   // Prim's algorithm
   vector< Edge > minimum_spanning_tree (void) const;
 
-  // Vismara's algorithm -- not working properly...
-  vector< Path > cycle_base_vismara ();
-  void order_graph (int index = -1, int depth = 0);
-
   // Horton's algorithm 
-  vector< Path > cycle_base_horton ();
+  vector< Path > cycle_base () { return cycle_base_horton (); }
+  vector< Path > cycle_base_union () { return cycle_base_horton (true); }
+  private: vector< Path > cycle_base_horton (bool minimum_basis_union = false);
+  private: vector< Path > gaussian_elimination (vector< Path > &bag, bool minimum_basis_union);
 
-  vector< Path > gaussian_elimination (vector< Path > &bag, bool minimum_basis = true);
-
-  // Sebastien's algorithm  (with non-oriented graph)
-  vector< Path > cycle_base ();
-  void build_tree (int index = -1, int depth = 0);
-
+  // Seb's algorithm.
+  // TODO: CODE THIS ALGO...  FROM ~lemieuxs/prog/analysis/UnGraph.h
 
   // I/O  -----------------------------------------------------------------
+public:
 
   ostream &output (ostream &out) const;
 

@@ -783,7 +783,7 @@ __rmsd_with_align_aux (CPoint3D &center_a, CPoint3D &center_b,
   int i, j, k;
   double rr[3 * 3];
 
-  // Calcul de RR
+    // Calcul de RR
 
   for (i = 0; i < 3; ++i)
     for (j = 0; j < 3; ++j)

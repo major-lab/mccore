@@ -1,12 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // DirectedGraph.h
-// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001, 2003 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu May 10 14:49:18 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:17:18 2001
-// Update Count     : 2
+// Last Modified By : Patrick Gendron
+// Last Modified On : Wed Jan 15 13:22:09 2003
+// Update Count     : 6
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -114,10 +114,10 @@ public:
    * @param index_a the source node
    * @param index_b the destination
    */
-  void addEdge (int index_a, int index_b) {
+  unsigned int addEdge (int index_a, int index_b) {
     mAdj[index_a][index_b] = mLastEdge;
     mReverse[index_b][index_a] = -mLastEdge;
-    ++mLastEdge;
+    return mLastEdge++;
   }
 
   /**
@@ -134,11 +134,14 @@ public:
    *         by following edges in their reverse direction
    */
   neighbor &GetReverse (int index) { return mReverse[index]; }
+
+
+  ostream& output (ostream& os) const;
 };
 
 // I/O  -------------------------------------------------------------------
 
-//  ostream &operator<< (ostream &os, const DirectedGraph &obj);
-//  istream &operator>> (istream &is, DirectedGraph &obj);
+ostream &operator<< (ostream &os, const DirectedGraph &obj);
+//istream &operator>> (istream &is, DirectedGraph &obj);
 
 #endif
