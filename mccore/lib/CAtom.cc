@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:09:31 2001
-// Update Count     : 47
+// Last Modified On : Thu Oct 25 11:17:14 2001
+// Update Count     : 48
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -81,7 +81,7 @@ CAtom::CAtom (float x, float y, float z, t_Atom *type)
 
 
 
-const CAtom&
+CAtom&
 CAtom::operator= (const CAtom &right)
 {
   if (&right != this)  

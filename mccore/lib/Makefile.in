@@ -5,8 +5,8 @@
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:57:11 2000
 ## Last Modified By : Martin Larose
-## Last Modified On : Mon Oct  1 13:16:40 2001
-## Update Count     : 20
+## Last Modified On : Thu Oct 25 11:18:36 2001
+## Update Count     : 21
 ## Status           : Ok.
 ###############################################################################
 #
@@ -70,28 +70,33 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 	$(CXX) $(CXXSHFLAGS) $(DEFS) -I.. -I$(srcdir) -c $< -o $@
 
 
-SOURCES = AtomTypeImp.cc \
+SOURCES = AbstractResidue.cc \
+	  AtomTypeImp.cc \
           Binstream.cc \
           CAtom.cc \
           CException.cc \
           CHBond.cc \
-	  CModel.cc \
           CPoint3D.cc \
           CResId.cc \
 	  CResIdSet.cc \
           CResidue.cc \
+	  CResidueFM.cc \
           CTransfo.cc \
 	  DirectedGraph.cc \
 	  McCore.cc \
+	  Model.cc \
 	  Pdbstream.cc \
+	  Residue.cc \
+	  ResidueFM.cc \
           ResidueTypeImp.cc \
 	  ServerSocket.cc \
 	  sockbuf.cc \
           zfilebuf.cc
 
-HEADERS = $(SOURCES:.cc=.h) Algo.h AtomType.h Messagestream.h ResidueType.h \
-SocketCommand.h fBinstream.h fPdbstream.h oMessagestream.h zfBinstream.h \
-zfPdbstream.h zfstream.h sBinstream.h
+HEADERS = $(SOURCES:.cc=.h) Algo.h AtomType.h Messagestream.h \
+ResidueFactoryMethod.h ResidueType.h SocketCommand.h fBinstream.h \
+fPdbstream.h oMessagestream.h zfBinstream.h zfPdbstream.h zfstream.h \
+sBinstream.h
 
 OBJECTS = $(SOURCES:.cc=.o)
 

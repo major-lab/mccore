@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Sep  5 16:32:03 2001
-// Update Count     : 17
+// Last Modified On : Thu Oct 25 11:21:03 2001
+// Update Count     : 18
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -37,11 +37,11 @@
 #include <unistd.h>
 #include <algo.h>
 
+#include "AbstractResidue.h"
 #include "AtomTypeImp.h"
 #include "CAtom.h"
-#include "CModel.h"
-#include "CResidue.h"
 #include "McCore.h"
+#include "Model.h"
 #include "Pdbstream.h"
 #include "ResidueTypeImp.h"
 
@@ -773,7 +773,7 @@ oPdbstream::putatom (const CAtom &atom)
 
 
 void
-oPdbstream::putmodel (const CModel &model)
+oPdbstream::putmodel (const Model &model)
 {
   MODEL ();
   *this << model;
@@ -783,17 +783,17 @@ oPdbstream::putmodel (const CModel &model)
 
 
 void
-oPdbstream::putconect (const CModel &model)
+oPdbstream::putconect (const Model &model)
 {
-  CModel::const_iterator cit1, cit2;
+  Model::const_iterator cit1, cit2;
   
   for (cit2 = model.begin (), cit1 = cit2++;
        cit2 != model.end ();
        ++cit1, ++cit2)
-    if ((*cit1).GetChainId () == (*cit2).GetChainId ()
-	&& (*cit1).GetResNo () + 1 == (*cit2).GetResNo ())
+    if (((CResId)*cit1).GetChainId () == ((CResId)*cit2).GetChainId ()
+	&& ((CResId)*cit1).GetResNo () + 1 == ((CResId)*cit2).GetResNo ())
       {
-	CResidue::const_iterator a, b;
+	AbstractResidue::const_iterator a, b;
 	
 	a = find ((*cit1).begin (), (*cit1).end (), a_O3p);
 	b = find ((*cit2).begin (), (*cit2).end (), a_P);

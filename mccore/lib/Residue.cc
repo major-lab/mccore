@@ -1,13 +1,13 @@
 //                              -*- Mode: C++ -*- 
-// CResidue.cc
-// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
-//                     Université de Montréal.
-// Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
-// Created On       : 
+// Residue.cc
+// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+//                  Université de Montréal.
+// Author           : Martin Larose <larosem@iro.umontreal.ca>
+// Created On       : Tue Oct  9 15:58:22 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Oct 25 11:18:10 2001
-// Update Count     : 29
-// Status           : Ok.
+// Last Modified On : Thu Oct 25 11:21:16 2001
+// Update Count     : 2
+// Status           : Unknown.
 // 
 //  This file is part of mccore.
 //  
@@ -32,55 +32,87 @@
 
 #include <iostream.h>
 #include <set.h>
+#include <list.h>
 #include <algo.h>
+#include <string.h>
 #include <stdarg.h>
 
 #include "AtomType.h"
 #include "Binstream.h"
 #include "CException.h"
 #include "CPoint3D.h"
-#include "CResidue.h"
 #include "McCore.h"
 #include "Messagestream.h"
 #include "Pdbstream.h"
+#include "Residue.h"
 #include "ResidueTypeImp.h"
 
 
 
-CResidue::CResidue (t_Residue *type,
-		    const vector< CAtom > &vec,
-		    const CResId &nId)
+Residue::Residue (t_Residue *type,
+		  vector< CAtom > &vec,
+		  const CResId &nId)
   : AbstractResidue (nId, type),
-    mAtomRef (vec),
     isPlaced (false),
     isIdentity (true)
 {
+  vector< CAtom >::iterator it;
+
+  for (it = vec.begin (); it != vec.end (); ++it)
+    mAtomRef.push_back (it->clone ());
   init ();
 }
 
 
 
-CResidue::CResidue (const CResidue& right)
+Residue::Residue (const Residue& right)
   : AbstractResidue (right),
-    mAtomRef (right.mAtomRef),
     mAtomIndex (right.mAtomIndex),
-    mAtomRes (right.mAtomRes),
     isPlaced (right.isPlaced),
     isIdentity (right.isIdentity)
 {
+  vector< CAtom* >::const_iterator cit;
+  
+  for (cit = right.mAtomRef.begin (); cit != right.mAtomRef.end (); ++cit)
+    mAtomRef.push_back ((*cit)->clone ());
+  for (cit = right.mAtomRes.begin (); cit != right.mAtomRes.end (); ++cit)
+    mAtomRes.push_back ((*cit)->clone ());
 }
 
 
 
-CResidue&
-CResidue::operator= (const CResidue &right)
+Residue::~Residue ()
 {
+  vector< CAtom* >::iterator it;
+
+  for (it = mAtomRef.begin (); it != mAtomRef.end (); ++it)
+    delete *it;
+  for (it = mAtomRes.begin (); it != mAtomRes.end (); ++it)
+    delete *it;
+}
+
+
+
+Residue&
+Residue::operator= (const Residue &right)
+{
+  vector< CAtom* >::const_iterator cit;
+  vector< CAtom* >::iterator it;
+  
   if (&right != this)
     {
       AbstractResidue::operator= (right);
-      mAtomRef = right.mAtomRef;
+      for (it = mAtomRef.begin (); it != mAtomRef.end (); ++it)
+	delete *it;
+      mAtomRef.clear ();
+      for (cit = right.mAtomRef.begin (); cit != right.mAtomRef.end (); ++cit)
+	mAtomRef.push_back ((*cit)->clone ());
       mAtomIndex = right.mAtomIndex;
-      mAtomRes = right.mAtomRes;
+      for (it = mAtomRes.begin (); it != mAtomRes.end (); ++it)
+	delete *it;
+      mAtomRes.clear ();
+      for (cit = right.mAtomRes.begin (); cit != right.mAtomRes.end (); ++cit)
+	mAtomRes.push_back ((*cit)->clone ());
       isPlaced = right.isPlaced;
       isIdentity = right.isIdentity;
     }
@@ -89,8 +121,8 @@ CResidue::operator= (const CResidue &right)
 
 
 
-CResidue&
-CResidue::operator= (const CTransfo &tfo)
+Residue&
+Residue::operator= (const CTransfo &tfo)
 {
   mTfo = tfo; 
   isPlaced = false;
@@ -101,15 +133,20 @@ CResidue::operator= (const CTransfo &tfo)
 
 
 CAtom&
-CResidue::operator[] (t_Atom *type)
+Residue::operator[] (t_Atom *type)
 {
   ResMap::iterator i = mAtomIndex.find (type);
   
   if (i == mAtomIndex.end ())
     {
-      mAtomRef.push_back (CAtom ());
+      CAtom *clonedAtom;
+
+      // keep this line until there is an AtomFM.
+      clonedAtom = mAtomRef.empty () ? new CAtom () : mAtomRef[0]->clone ();
+      clonedAtom->SetType (type);
+      mAtomRef.push_back (clonedAtom->clone ());
       mAtomIndex[type] = size ();
-      mAtomRes.push_back (CAtom ());
+      mAtomRes.push_back (clonedAtom);
       i = mAtomIndex.find (type);
     }
   return place (i->second);
@@ -118,7 +155,7 @@ CResidue::operator[] (t_Atom *type)
 
 
 const CAtom&
-CResidue::operator[] (const t_Atom *type) const
+Residue::operator[] (const t_Atom *type) const
 {
   ResMap::const_iterator cit = mAtomIndex.find (type);
 
@@ -130,8 +167,8 @@ CResidue::operator[] (const t_Atom *type) const
 
 
 
-CResidue::iterator
-CResidue::find (const t_Atom *k)
+Residue::iterator
+Residue::find (const t_Atom *k)
 {
   ResMap::const_iterator cit = mAtomIndex.find (k);
 
@@ -143,8 +180,8 @@ CResidue::find (const t_Atom *k)
 
 
 
-CResidue::const_iterator
-CResidue::find (const t_Atom *k) const
+Residue::const_iterator
+Residue::find (const t_Atom *k) const
 {
   ResMap::const_iterator cit = mAtomIndex.find (k);
 
@@ -157,32 +194,37 @@ CResidue::find (const t_Atom *k) const
 
 
 void
-CResidue::init ()
+Residue::init ()
 {
   const CAtom *pivot[3] = {0, 0, 0};
-  vector< CAtom >::iterator it = mAtomRef.begin ();
+  vector< CAtom* >::iterator it;
   size_type i = 0;
+  CAtom *clonedAtom;
 
   mAtomIndex.clear ();
+  for (it = mAtomRes.begin (); it != mAtomRes.end (); ++it)
+    delete *it;
   mAtomRes.clear ();
+  it = mAtomRef.begin ();
   while (it != mAtomRef.end ())
     {
-      t_Atom *type = it->GetType ();
+      t_Atom *type = (*it)->GetType ();
       ResMap::iterator pos = mAtomIndex.find (type);
-
+      
       if (pos != mAtomIndex.end ())
 	{
-	  gOut (2) << "CResidue: Duplicated atom [" << *type
-		   << "] in residue " << resId << "." << endl;
+	  gOut(2) << "Residue: Duplicated atom [" << *mType
+		  << "] in residue " << resId << "." << endl;
+	  delete *it;
 	  it = mAtomRef.erase (it);
 	}
       else
 	{
 	  mAtomIndex[type] = i++;
+	  mAtomRes.push_back ((*it)->clone ());
 	  ++it;
 	}
     }
-
   mAtomRes.reserve (size ());
   mAtomRes.resize (size ());
 
@@ -195,11 +237,11 @@ CResidue::init ()
       const CPoint3D *p1 = 0, *p2 = 0, *p3 = 0;
       
       if ((mType->is_Purine ()
-	   && (p1 = ref (a_N9))
+	   && (p1 = clonedAtom = ref (a_N9)->clone ())
 	   && (p2 = ref (a_C8))
 	   && (p3 = ref (a_C4)))
 	  || (mType->is_Pyrimidine ()
-	      && (p1 = ref (a_N1))
+	      && (p1 = clonedAtom = ref (a_N1)->clone ())
 	      && (p2 = ref (a_C6))
 	      && (p3 = ref (a_C2))))
 	{
@@ -208,15 +250,18 @@ CResidue::init ()
 	  CPoint3D Y = *p1 + (a + b).Normalize ();
 	  CPoint3D Z = *p1 + (b.Cross (a)).Normalize ();
 
-	  insert (CAtom (Y.GetX (), Y.GetY (), Y.GetZ (), a_PSY));
-	  insert (CAtom (Z.GetX (), Z.GetY (), Z.GetZ (), a_PSZ));
+	  clonedAtom->SetAll (Y.GetX (), Y.GetY (), Y.GetZ (), a_PSY);
+	  insert (*clonedAtom);
+	  clonedAtom->SetAll (Z.GetX (), Z.GetY (), Z.GetZ (), a_PSZ);
+	  insert (*clonedAtom);
+	  delete clonedAtom;
 	}
       else
 	{
 	  // Create an invalid residue but keep it in misc residues.
-	  gOut (1) << "Residue " << *mType << "-" << resId
-		   << " is missing one or more critical atoms." 
-		   << endl;
+	  gOut(1) << "Residue " << *mType << "-" << resId
+		  << " is missing one or more critical atoms." 
+		  << endl;
 	  map< const char *, t_Residue*, less_string >::iterator i
 	    = gMiscResidueString.find ((const char*)*mType);
 	  
@@ -231,20 +276,24 @@ CResidue::init ()
     {
       const CPoint3D *p1 = 0, *p2 = 0, *p3 = 0;
       
-      if ((p1 = ref (a_CA)) && (p2 = ref (a_N)) && (p3 = ref (a_C)))
+      if ((p1 = clonedAtom = ref (a_CA)->clone ())
+	  && (p2 = ref (a_N))
+	  && (p3 = ref (a_C)))
 	{
 	  CPoint3D a = (*p2 - *p1).Normalize ();
 	  CPoint3D b = (*p3 - *p1).Normalize ();
 	  CPoint3D Z = *p1 + b.Cross (a).Normalize ();
 
-	  insert (CAtom (Z.GetX (), Z.GetY (), Z.GetZ (), a_PSAZ));
+	  clonedAtom->SetAll (Z.GetX (), Z.GetY (), Z.GetZ (), a_PSAZ);
+	  insert (*clonedAtom);
+	  delete clonedAtom;
 	}
       else
 	{
 	  // Create an invalid residue but keep it in misc residues.
-	  gOut (1) << "Residue " << *mType << "-" << resId
-		   << " is missing one or more critical atoms." 
-		   << endl;
+	  gOut(1) << "Residue " << *mType << "-" << resId
+		  << " is missing one or more critical atoms." 
+		  << endl;
 	  map< const char *, t_Residue*, less_string >::iterator i
 	    = gMiscResidueString.find ((const char*)*mType);
 	  
@@ -277,9 +326,9 @@ CResidue::init ()
     }
   else if (size () >= 3)
     {
-      pivot[0] = &(mAtomRef[0]);
-      pivot[1] = &(mAtomRef[1]);
-      pivot[2] = &(mAtomRef[2]);
+      pivot[0] = mAtomRef[0];
+      pivot[1] = mAtomRef[1];
+      pivot[2] = mAtomRef[2];
     }
   else
     return;
@@ -321,9 +370,9 @@ CResidue::init ()
       mTfo.Align (pivot[0], pivot[1], pivot[2]);
       CTransfo theAlign (mTfo);
       theAlign.Inverse ();
-
+      
       for (it = mAtomRef.begin (); it != mAtomRef.end (); ++it)
-	it->Transform (theAlign);
+	(*it)->Transform (theAlign);
     }
   
   if (mType->is_NucleicAcid ())
@@ -332,23 +381,28 @@ CResidue::init ()
       addLP ();
     }
 
+//    vector< CAtom* >::iterator shit;
+//    cout << resId << " " << *mType << endl;
+//    for (shit = mAtomRef.begin (); shit != mAtomRef.end (); ++shit)
+//      cout << **shit << endl;
+//    cout << endl;
   isIdentity = mTfo.isIdentity ();
-}  
+}
 
 
 
 void
-CResidue::placeIt () const
+Residue::placeIt () const
 {
-  vector< CAtom >::const_iterator refit;
-  vector< CAtom >::iterator resit;
+  vector< CAtom* >::const_iterator refit;
+  vector< CAtom* >::iterator resit;
   
   for (refit = mAtomRef.begin (), resit = mAtomRes.begin ();
        refit != mAtomRef.end ();
        ++refit, ++resit)
     {
-      *resit = *refit;
-      resit->Transform (mTfo);
+      **resit = **refit;
+      (*resit)->Transform (mTfo);
     }
   isPlaced = true;
 }
@@ -356,24 +410,24 @@ CResidue::placeIt () const
 
 
 const CAtom*
-CResidue::ref (t_Atom *t) const
+Residue::ref (t_Atom *t) const
 {
   ResMap::const_iterator i = mAtomIndex.find (t);
 
-  return i == mAtomIndex.end () ? 0 : &(mAtomRef[i->second]);
+  return i == mAtomIndex.end () ? 0 : mAtomRef[i->second];
 }
 
 
 
 const CAtom*
-CResidue::res (t_Atom *t) const
+Residue::res (t_Atom *t) const
 {
   ResMap::const_iterator i = mAtomIndex.find (t);
 
   if (i == mAtomIndex.end ())
     return 0;
   else if (isIdentity)
-    return &(mAtomRef[i->second]);
+    return mAtomRef[i->second];
   else
     return &place (i->second);
 }
@@ -381,46 +435,49 @@ CResidue::res (t_Atom *t) const
 
 
 void
-CResidue::insert (const CAtom &a)
+Residue::insert (const CAtom &a)
 {
   ResMap::iterator i = mAtomIndex.find (a.GetType ());
   
   if (i == mAtomIndex.end ())
     {
       mAtomIndex[a.GetType ()] = size ();
-      mAtomRef.push_back (a);
-      mAtomRes.push_back (CAtom ());
+      mAtomRef.push_back (a.clone ());
+      mAtomRes.push_back (a.clone ());
+      mAtomRef.reserve (size ());
       mAtomRes.reserve (size ());
       i = mAtomIndex.find (a.GetType ());
     }
   else
-    mAtomRef[i->second] = a;
+    *mAtomRef[i->second] = a;
   if (isPlaced)
     {
-      mAtomRes[i->second] = mAtomRef[i->second];
-      mAtomRes[i->second].Transform (mTfo);
+      *mAtomRes[i->second] = *mAtomRef[i->second];
+      mAtomRes[i->second]->Transform (mTfo);
     }
 }
 
 
 
-CResidue::iterator
-CResidue::erase (t_Atom *type)
+Residue::iterator
+Residue::erase (t_Atom *type)
 {
   ResMap::iterator i = mAtomIndex.find (type);
 
   if (i != mAtomIndex.end ())
     {
-      vector< CAtom >::const_iterator cit;
+      vector< CAtom* >::const_iterator cit;
       t_Atom *next;
       size_type index;
-      
-      next = mAtomRef.erase (mAtomRef.begin () + i->second)->GetType ();
+
+      delete mAtomRef[i->second];
+      next = (*mAtomRef.erase (mAtomRef.begin () + i->second))->GetType ();
       mAtomIndex.clear ();
       for (cit = mAtomRef.begin (), index = 0;
 	   cit != mAtomRef.end ();
 	   ++cit, ++index)
-	mAtomIndex[cit->GetType ()] = index;
+	mAtomIndex[(*cit)->GetType ()] = index;
+      delete mAtomRes.back ();
       mAtomRes.pop_back ();
       mAtomRes.reserve (index);
       isPlaced = false;
@@ -433,13 +490,13 @@ CResidue::erase (t_Atom *type)
 
 
 void
-CResidue::AtomCopy (const AbstractResidue &right)
+Residue::AtomCopy (const AbstractResidue &right)
 {
-  const CResidue *resp = dynamic_cast< const CResidue* > (&right);
+  const Residue *resp = dynamic_cast< const Residue* > (&right);
   
   if (this != &right && resp)
     {
-      const CResidue &res = *resp;
+      const Residue &res = *resp;
       
       if (mType != res.mType)
 	{
@@ -448,18 +505,18 @@ CResidue::AtomCopy (const AbstractResidue &right)
 	  exc << (const char*)*res.mType << ".";
 	  throw exc;
 	}
-      
+
       ResMap::iterator i;
       ResMap::const_iterator j;
-      
+
       // Since the atom ordering must be the same for the two
       // residues, we can do this:
       for (i = mAtomIndex.begin (), j = res.mAtomIndex.begin ();
 	   i != mAtomIndex.end () && j != res.mAtomIndex.end ();
 	   ++i, ++j)
 	{
-	  mAtomRef[i->second] = res.mAtomRef[j->second];
-	  mAtomRes[i->second] = res.mAtomRes[j->second];
+	  *mAtomRef[i->second] = *res.mAtomRef[j->second];
+	  *mAtomRes[i->second] = *res.mAtomRes[j->second];
 	}
       isPlaced = res.isPlaced;
       isIdentity = res.isIdentity;
@@ -470,12 +527,12 @@ CResidue::AtomCopy (const AbstractResidue &right)
 
 
 AbstractResidue*
-CResidue::select (t_Atom *at ...) const
+Residue::select (t_Atom *at ...) const
 {
   va_list ap;
   vector< CAtom > atom_vec;
   const CAtom *atom;
-  
+
   atom = ref (at);
   if (atom)
     atom_vec.push_back (*atom);
@@ -490,13 +547,13 @@ CResidue::select (t_Atom *at ...) const
       if (atom)
 	atom_vec.push_back (*atom);
     }
-  return new CResidue (mType, atom_vec, resId);
+  return new Residue (mType, atom_vec, resId);
 }
 
 
 
-CResidue&
-CResidue::Transform (const CTransfo& tfo)
+AbstractResidue&
+Residue::Transform (const CTransfo& tfo)
 {
   mTfo = tfo * mTfo;
   isPlaced = false;
@@ -507,7 +564,7 @@ CResidue::Transform (const CTransfo& tfo)
 
 
 void
-CResidue::Align ()
+Residue::Align ()
 {
   mTfo.SetIdentity ();
   isPlaced = false;
@@ -517,17 +574,19 @@ CResidue::Align ()
 
 
 iBinstream&
-CResidue::read (iBinstream& ibs)
+Residue::read (iBinstream &ibs)
 {
-  vector< CAtom >::size_type nb;
+  vector< CAtom* >::size_type nb;
+  vector< CAtom* > vec;
 
   mAtomRef.clear ();
   ibs >> resId >> mType >> nb;
   for (; nb > 0; --nb)
     {
-      mAtomRef.push_back (CAtom ());
-      CAtom &aref = mAtomRef.back ();
-      ibs >> aref;
+      CAtom *atom = new CAtom ();
+
+      ibs >> *atom;
+      mAtomRef.push_back (atom);
     }
   init ();
   return ibs;
@@ -536,11 +595,11 @@ CResidue::read (iBinstream& ibs)
 
 
 oBinstream&
-CResidue::write (oBinstream& obs) const
+Residue::write (oBinstream &obs) const
 {
-  vector< const_iterator > atoms;
-  vector< const_iterator >::iterator ciit;
-  const_iterator cit;
+  list< Residue::const_iterator > atoms;
+  list< Residue::const_iterator >::iterator ciit;
+  Residue::const_iterator cit;
   
   obs << resId << mType;
   
@@ -555,12 +614,12 @@ CResidue::write (oBinstream& obs) const
   for (ciit = atoms.begin (); ciit != atoms.end (); ++ciit)
     obs << **ciit;
   return obs;
-}
+}  
 
 
 
 iPdbstream&
-CResidue::read (iPdbstream &ips)
+Residue::read (iPdbstream &ips)
 {
   vector< CAtom > vec;
   vector< CAtom >::iterator it;
@@ -633,7 +692,7 @@ CResidue::read (iPdbstream &ips)
       mAtomRef.clear ();
       for (it = vec.begin (); it != vec.end (); ++it)
 	if (filter (*it))
-	  mAtomRef.push_back (*it);
+	  mAtomRef.push_back (it->clone ());
 
       resId = ips.GetPrevResId ();
       mType = ips.GetPrevResType ();
@@ -642,17 +701,16 @@ CResidue::read (iPdbstream &ips)
     }
   return ips;
 }
-  
+
 
 
 oPdbstream&
-CResidue::write (oPdbstream &ops) const
+Residue::write (oPdbstream &ops) const
 {
   const_iterator cit;
 
   ops.SetResType (mType);
   ops.SetResId (resId);
-  
   for (cit = begin (); cit != end (); ++cit)
     ops << *cit;
   return ops;
@@ -661,10 +719,10 @@ CResidue::write (oPdbstream &ops) const
 
 
 ostream&
-CResidue::write (ostream &os) const
+Residue::write (ostream &os) const
 {
   const_iterator cit;
-  
+
   os << *mType << '(' << resId
      << ") type=" << *mType << ":" << endl;
   for (cit = begin (); cit != end (); ++cit)

@@ -1,13 +1,13 @@
 //                              -*- Mode: C++ -*- 
-// CResidue.h
-// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
-//                     Université de Montréal.
-// Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
-// Created On       : Thu Sep 28 16:59:32 2000
+// Residue.h
+// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+//                  Université de Montréal.
+// Author           : Martin Larose <larosem@iro.umontreal.ca>
+// Created On       : Tue Oct  9 15:58:22 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Oct 25 11:18:17 2001
-// Update Count     : 21
-// Status           : Ok.
+// Last Modified On : Thu Oct 25 11:21:23 2001
+// Update Count     : 2
+// Status           : Unknown.
 // 
 //  This file is part of mccore.
 //  
@@ -26,49 +26,54 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef _CResidue_h_
-#define _CResidue_h_
+#ifndef _Residue_h_
+#define _Residue_h_
 
-#include <map.h>
 #include <vector.h>
+#include <map.h>
 
 #include "AbstractResidue.h"
 #include "CAtom.h"
 
-class t_Atom;
-class t_Residue;
-class oPdbstream;
 class iBinstream;
 class oBinstream;
-class ostream;
+class iPdbstream;
+class oPdbstream;
+class t_Atom;
+class t_Residue;
 
 
 
 /**
- * @short Residue implementation.
+ * @short Residue implementation that uses atom pointers.
  *
- * The residues contains an array of atoms (CAtoms).  The atoms are
- * positioned in a global referential space and are only placed in local
- * referential space when the first residue iterator is dereferenced.  It is
- * necessary to manipulates residue iterator instead of atom pointers since
- * the atom address is unstable when it is placed.
+ * The residue is a container object of CAtom pointers.  It follows exactly
+ * the CResidue class.  The atoms are positioned in a global referential
+ * space and are only placed in local referential space when the first
+ * residue iterator is dereferenced.  It is necessary to manipulates residue
+ * iterator instead of atom pointers since the atom address is unstable when
+ * it is placed.  Every methods that modifies the contents of the atom array
+ * are functional, i.e. a new residue is created, modified and returned.
+ * This way existing iterators over the residue are not dandling.  Atom
+ * traversal using iterators is garantied to follow a partial order defined
+ * by the atom types.
  *
- * @author Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
+ * @author Martin Larose <larosem@iro.umontreal.ca>
  */
-class CResidue : public AbstractResidue
+class Residue : public AbstractResidue
 {
-  
-protected:
-  
-  typedef vector< CAtom >::size_type size_type;
+
+public:
+
+//    typedef vector< CAtom* >::size_type size_type;
   typedef map< const t_Atom*, size_type > ResMap;
-  
+
 private:
   
   /**
    * The atom container in global referential.
    */
-  vector< CAtom > mAtomRef;
+  vector< CAtom* > mAtomRef;
 
   /**
    * The associative container between atom types and atom position in
@@ -80,7 +85,7 @@ private:
    * The atom container in local referential.
    */
 
-  mutable vector< CAtom > mAtomRes;
+  mutable vector< CAtom* > mAtomRes;
 
   /**
    * The flag indicating whether the atoms are placed.
@@ -93,14 +98,14 @@ private:
   bool isIdentity;
 
 public:
-
+  
   // LIFECYCLE ------------------------------------------------------------
 
   /**
    * Initializes the residue.  Increases the global count.
    */
-  CResidue () : AbstractResidue (), isPlaced (false), isIdentity (true)
-  { } 
+  Residue () : AbstractResidue (), isPlaced (false), isIdentity (true)
+  { }
 
   /**
    * Initializes the residue with type, atom container and id.
@@ -108,24 +113,24 @@ public:
    * @param vec the atom container.
    * @param nId the residue id.
    */
-  CResidue (t_Residue *type, const vector< CAtom > &vec, const CResId &nId);
+  Residue (t_Residue *type, vector< CAtom > &vec, const CResId &nId);
 
   /**
-   * Initializes the residue with the right's content.
+   * Initializes the object with the right's content.
    * @param right the object to copy.
    */
-  CResidue (const CResidue &right);
+  Residue (const Residue &right);
 
   /**
    * Clones the residue.
-   * @return the copy of the object.
+   * @return a copy of the residue.
    */
-  virtual AbstractResidue* clone () const { return new CResidue (*this); }
+  virtual AbstractResidue* clone () const { return new Residue (*this); }
   
   /**
    * Destroys the object.
    */
-  virtual ~CResidue () { }
+  virtual ~Residue ();
 
   // OPERATORS ------------------------------------------------------------
 
@@ -134,13 +139,13 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  CResidue& operator= (const CResidue &right);
+  Residue& operator= (const Residue &right);
 
   /**
    * Assigns the transfo.  Only the internal transfo is modified.
    * @param tfo the new transfo.
    */
-  virtual CResidue& operator= (const CTransfo &tfo);
+  Residue& operator= (const CTransfo &tfo);
 
   /**
    * Returns a reference to the atom associated with the type.  The returned
@@ -151,11 +156,11 @@ public:
   virtual CAtom& operator[] (t_Atom *type);
 
   /**
-   * Returns a const reference to the atom associated with the type.  The
+   * Returns a const pointer to the atom associated with the type.  The
    * returned atom is not garanteed to be valid after operations over the
    * residue.
    * @param type the atom type.
-   * @return the reference to the atom in the global or local referential.
+   * @return the const pointer to the atom in the global or local referential.
    */
   virtual const CAtom& operator[] (const t_Atom *type) const;
 
@@ -179,14 +184,14 @@ public:
    * Gets the begin const_iterator.
    * @return the const_iterator over the first element.
    */
-  const_iterator begin (AtomSet *atomset = 0) const
+  virtual const_iterator begin (AtomSet *atomset = 0) const
   { return const_iterator (this, 0, atomset); }
 
   /**
    * Gets the end const_iterator.
    * @return the const_iterator past the last element.
    */
-  const_iterator end () const
+  virtual const_iterator end () const
   { return const_iterator (this, mAtomRef.size ()); }
 
   /**
@@ -194,14 +199,14 @@ public:
    * @param k the atom type key.
    * @return the iterator to the element or end () if it is not found.
    */
-  iterator find (const t_Atom *k);
+  virtual iterator find (const t_Atom *k);
 
   /**
    * Finds an element whose key is k.
    * @param k the atom type key.
    * @return the iterator to the element or end () if it is not found.
    */
-  const_iterator find (const t_Atom *k) const;
+  virtual const_iterator find (const t_Atom *k) const;
 
   // METHODS --------------------------------------------------------------
 
@@ -222,7 +227,7 @@ protected:
   {
     if (! isPlaced)
       placeIt ();
-    return mAtomRes[pos];
+    return *mAtomRes[pos];
   }
 
   /**
@@ -240,9 +245,9 @@ protected:
   /**
    * Gets the atom reference in global referential.
    * @param pos the index of the atom to get.
-   * @return the atom reference at position pos.
+   * @return the atom pointer at position pos.
    */
-  virtual const CAtom& ref (size_type pos) const { return mAtomRef[pos]; }
+  virtual const CAtom& ref (size_type pos) const { return *mAtomRef[pos]; }
 
   /**
    * Gets the atom of type t in global referential if the tranfo is the
@@ -255,10 +260,10 @@ protected:
   /**
    * Gets the atom reference in the sorted position pos.
    * @param pos the index of the atom to get.
-   * @return the atom reference at position pos.
+   * @return the atom at position pos.
    */
   virtual const CAtom& res (size_type pos) const
-  { return isIdentity ? mAtomRef[pos] : place (pos); }
+  { return isIdentity ? *mAtomRef[pos] : place (pos); }
 
 public:
 
@@ -273,7 +278,7 @@ public:
    * @return whether the residue is empty.
    */
   virtual bool empty () const { return mAtomRef.empty (); }
-  
+
   /**
    * Inserts an atom in the residue.  It crushes the existing atom if it
    * exists.  The index and the local referential containers are adjusted.
@@ -294,29 +299,37 @@ public:
    * @param finish the iterator of the last atom to erase.
    */
   template<class _InputIterator>
-  void erase (const _InputIterator &start, const _InputIterator &finish)
+  iterator
+  erase (const _InputIterator &start, const _InputIterator &finish)
   {
-    vector< CAtom >::const_iterator cit;
+    vector< CAtom* >::const_iterator cit;
+    vector< CAtom* >::iterator it;
     size_type index;
     _InputIterator ciit;
     
     for (ciit = start; ciit != finish; ++ciit)
       {
-	vector< CAtom >::iterator it = ::find (mAtomRef.begin (),
-					       mAtomRef.end (), *ciit);
+	ResMap::iterator it = mAtomIndex.find (*ciit);
 	
-	if (it != mAtomRef.end ())
-	  mAtomRef.erase (it);
+	if (it != mAtomIndex.end ())
+	  {
+	    delete mAtomRef[it->second];
+	    next = mAtomRef.erase (mAtomRef.begin () + it->second);
+	    delete mAtomRes.back ();
+	    mAtomRes.pop_back ();
+	  }
       }
     mAtomIndex.clear ();
-    mAtomRes.clear ();
     for (cit = mAtomRef.begin (), index = 0;
 	 cit != mAtomRef.end ();
 	 ++cit, ++index)
-      mAtomIndex[cit->GetType ()] = index;
+      mAtomIndex[(*cit)->GetType ()] = index;
     mAtomRes.reserve (index);
-    mAtomRes.resize (index);
     isPlaced = false;
+    if (next != mAtomRef.end ())
+      return find ((*next)->GetType ());
+    else
+      return end ();
   }
   
   /**
@@ -340,7 +353,7 @@ public:
    * @param theTfo the transfo to apply.
    * @return itself.
    */
-  virtual CResidue& Transform (const CTransfo &theTfo);
+  virtual AbstractResidue& Transform (const CTransfo &theTfo);
 
   /**
    * Aligns the residue.  Sets the transfo to the identity.
@@ -348,7 +361,7 @@ public:
   virtual void Align ();
 
   // I/O  -----------------------------------------------------------------
-  
+
   /**
    * Reads the residue from the data input stream.
    * @param ibs the data input stream.

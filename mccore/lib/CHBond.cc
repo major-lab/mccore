@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Sep  5 16:32:01 2001
-// Update Count     : 41
+// Last Modified On : Thu Oct 25 11:17:36 2001
+// Update Count     : 42
 // Status           : 
 // 
 //  This file is part of mccore.
@@ -34,8 +34,9 @@
 #include <math.h>
 
 #include "AtomType.h"
+#include "CAtom.h"
 #include "CHBond.h"
-#include "CResidue.h"
+#include "AbstractResidue.h"
 #include "McCore.h"
 
 
@@ -175,7 +176,7 @@ CHBond::CHBond ()
 
 
 
-CHBond::CHBond (const CResidue *nResidueA, const CResidue *nResidueB,
+CHBond::CHBond (const AbstractResidue *nResidueA, const AbstractResidue *nResidueB,
 		t_Atom *nDonor, t_Atom *nHydro, 
 		t_Atom *nAcceptor, t_Atom *nLonePair)
   : HBond (nDonor, nHydro, nAcceptor, nLonePair),
@@ -253,7 +254,7 @@ CHBond::operator float () const
 
 
 
-void CHBond::SetHBond (const CResidue *nResidueA, const CResidue *nResidueB,
+void CHBond::SetHBond (const AbstractResidue *nResidueA, const AbstractResidue *nResidueB,
 		       t_Atom *nDonor, t_Atom *nHydro,
 		       t_Atom *nAcceptor, t_Atom *nLonePair)
 {
@@ -268,25 +269,25 @@ void CHBond::SetHBond (const CResidue *nResidueA, const CResidue *nResidueB,
 
 
 const CAtom &
-CHBond::GetDonor (const CResidue *r) const 
+CHBond::GetDonor (const AbstractResidue *r) const 
 { 
   return (r)?(*r)[donor]:(*mResidueA)[donor]; 
 }
 
 const CAtom &
-CHBond::GetHydrogen (const CResidue *r) const 
+CHBond::GetHydrogen (const AbstractResidue *r) const 
 { 
   return (r)?(*r)[hydro]:(*mResidueA)[hydro]; 
 }
 
 const CAtom &
-CHBond::GetAcceptor (const CResidue *r) const 
+CHBond::GetAcceptor (const AbstractResidue *r) const 
 { 
 return (r)?(*r)[acceptor]:(*mResidueB)[acceptor]; 
 }
 
 const CAtom &
-CHBond::GetLonePair (const CResidue *r) const 
+CHBond::GetLonePair (const AbstractResidue *r) const 
 { 
 return (r)?(*r)[lonepair]:(*mResidueB)[lonepair]; 
 }
@@ -337,17 +338,17 @@ void
 CHBond::DumpAmberRestraint (ostream &os)
 {
   os << " &rst iresid=1," << endl;
-  os << "      iat(1)=" << mResidueA->GetResNo()
-     << ", iat(2)=" << mResidueB->GetResNo() << "," << endl;
+  os << "      iat(1)=" << ((const CResId)*mResidueA).GetResNo ()
+     << ", iat(2)=" << ((const CResId)*mResidueB).GetResNo() << "," << endl;
   os << "      atnam(1)= '" << donor->getAmberRep () << "', "
      << "atnam(2)= '" << acceptor->getAmberRep () << "'," << endl;
   os << "      r1= 1.0, r2= 1.5, r3= 3.0, r4= 5.0," << endl;
   os << "      rk2=0.0, rk3=32.0" << endl;
   os << " &end" << endl;
   os << " &rst iresid=1," << endl;
-  os << "      iat(1)=" << mResidueA->GetResNo()
-     << ", iat(2)=" << mResidueA->GetResNo()
-     << ", iat(3)=" << mResidueB->GetResNo() << "," << endl;
+  os << "      iat(1)=" << ((const CResId)*mResidueA).GetResNo()
+     << ", iat(2)=" << ((const CResId)*mResidueA).GetResNo()
+     << ", iat(3)=" << ((const CResId)*mResidueB).GetResNo() << "," << endl;
   os << "      atnam(1)= '" << donor->getAmberRep () << "', "
      << "atnam(2)= '" << hydro->getAmberRep () << "', "
      << "atnam(3)= '" << acceptor->getAmberRep () << "'," << endl;

@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Aug 14 12:33:49 2001
-// Update Count     : 9
+// Last Modified On : Thu Oct 25 11:17:20 2001
+// Update Count     : 10
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -98,6 +98,12 @@ public:
   CAtom (float x, float y, float z, t_Atom *type);
 
   /**
+   * Clones the atom.
+   * @return a copy of itself.
+   */
+  virtual CAtom* clone () const { return new CAtom (*this); }
+  
+  /**
    * Destructs the object.  The atom count is decreased.
    */
   virtual ~CAtom () { count--; }
@@ -109,7 +115,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const CAtom& operator= (const CAtom &right);
+  CAtom& operator= (const CAtom &right);
 
   /**
    * Tests whether the atom is typed.

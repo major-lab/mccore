@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Sep  6 17:24:46 2001
-// Update Count     : 13
+// Last Modified On : Thu Oct 25 11:18:55 2001
+// Update Count     : 14
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -36,7 +36,7 @@
 #include <function.h>
 #include <string.h>
 
-#include "CResidue.h"
+#include "AbstractResidue.h"
 
 class t_Atom;
 class t_Residue;
@@ -2004,8 +2004,8 @@ float RadToDegree (float r);
  * @param mgr2 the second vector of atoms.
  * @return the rmsd value.
  */
-float rmsd (const vector< CResidue::iterator > &mgr1,
-	    const vector< CResidue::iterator > &mgr2);
+float rmsd (const vector< AbstractResidue::iterator > &mgr1,
+	    const vector< AbstractResidue::iterator > &mgr2);
 
 
 
@@ -2018,8 +2018,10 @@ float rmsd (const vector< CResidue::iterator > &mgr1,
  *@param end_b an end iterator on the second atom container
  *@return the rmsd value.
  */
-float rmsd (const CResidue::iterator &begin_a, const CResidue::iterator &end_a,
-	    const CResidue::iterator &begin_b, const CResidue::iterator &end_b);
+float rmsd (const AbstractResidue::iterator &begin_a,
+	    const AbstractResidue::iterator &end_a,
+	    const AbstractResidue::iterator &begin_b,
+	    const AbstractResidue::iterator &end_b);
 
 
 
@@ -2032,8 +2034,10 @@ float rmsd (const CResidue::iterator &begin_a, const CResidue::iterator &end_a,
  *@param end_b an end iterator on the second atom container
  *@return the rmsd value.
  */
-float rmsd (const CResidue::const_iterator &begin_a, const CResidue::const_iterator &end_a,
-	    const CResidue::const_iterator &begin_b, const CResidue::const_iterator &end_b);
+float rmsd (const AbstractResidue::const_iterator &begin_a,
+	    const AbstractResidue::const_iterator &end_a,
+	    const AbstractResidue::const_iterator &begin_b,
+	    const AbstractResidue::const_iterator &end_b);
 
 
 

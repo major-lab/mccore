@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Sep  6 17:24:42 2001
-// Update Count     : 16
+// Last Modified On : Thu Oct 25 11:18:47 2001
+// Update Count     : 17
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -40,11 +40,10 @@
 
 #include "AtomTypeImp.h"
 #include "CAtom.h"
-#include "oMessagestream.h"
-#include "CResidue.h"
+#include "CException.h"
 #include "CTransfo.h"
 #include "ResidueTypeImp.h"
-#include "CException.h"
+#include "oMessagestream.h"
 
 
 map< const char *, t_Atom*, less_string > gMiscAtomString;
@@ -659,11 +658,11 @@ RadToDegree (float r)
 
 
 float 
-rmsd (const vector< CResidue::iterator > &mgr1,
-      const vector< CResidue::iterator > &mgr2)
+rmsd (const vector< AbstractResidue::iterator > &mgr1,
+      const vector< AbstractResidue::iterator > &mgr2)
 {
   float rmsd = 0;
-  vector< CResidue::iterator >::const_iterator i, j;
+  vector< AbstractResidue::iterator >::const_iterator i, j;
   
   for (i = mgr1.begin (), j = mgr2.begin (); i != mgr1.end (); i++, j++)
     rmsd += **i || **j;
@@ -673,12 +672,14 @@ rmsd (const vector< CResidue::iterator > &mgr1,
 
 
 float 
-rmsd (const CResidue::iterator &begin_a, const CResidue::iterator &end_a,
-      const CResidue::iterator &begin_b, const CResidue::iterator &end_b)
+rmsd (const AbstractResidue::iterator &begin_a,
+      const AbstractResidue::iterator &end_a,
+      const AbstractResidue::iterator &begin_b,
+      const AbstractResidue::iterator &end_b)
 {
   float rmsd = 0.0;
   int count = 0;
-  CResidue::iterator i,j;
+  AbstractResidue::iterator i,j;
   
   for (i=begin_a, j=begin_b; (i!=end_a || j!=end_b); ++i, ++j) {
     if (i->GetType () != j->GetType ())
@@ -697,13 +698,15 @@ rmsd (const CResidue::iterator &begin_a, const CResidue::iterator &end_a,
 
 
 
-float 
-rmsd (const CResidue::const_iterator &begin_a, const CResidue::const_iterator &end_a,
-      const CResidue::const_iterator &begin_b, const CResidue::const_iterator &end_b)
+float
+rmsd (const AbstractResidue::const_iterator &begin_a,
+      const AbstractResidue::const_iterator &end_a,
+      const AbstractResidue::const_iterator &begin_b,
+      const AbstractResidue::const_iterator &end_b)
 {
   float rmsd = 0.0;
   int count = 0;
-  CResidue::const_iterator i,j;
+  AbstractResidue::const_iterator i,j;
   
   for (i=begin_a, j=begin_b; (i!=end_a || j!=end_b); ++i, ++j) {
     if (i->GetType () != j->GetType ())

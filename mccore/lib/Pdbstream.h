@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Sep  5 16:32:05 2001
-// Update Count     : 12
+// Last Modified On : Thu Oct 25 11:21:10 2001
+// Update Count     : 13
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -34,8 +34,7 @@
 #include "CResId.h"
 #include "CAtom.h"
 
-class CModel;
-class CResidue;
+class Model;
 class t_Residue;
 class t_Atom;
 
@@ -584,13 +583,13 @@ public:
    * the ENDMDL records.
    * @param model the model to output.
    */
-  void putmodel (const CModel &model);
+  void putmodel (const Model &model);
 
   /**
    * Writes the CONECT records.
    * @param model the model to write the conect for.
    */
-  void putconect (const CModel &model);
+  void putconect (const Model &model);
 
   /**
    * Writes a MODEL record to the pdb stream.

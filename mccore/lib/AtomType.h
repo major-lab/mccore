@@ -4,9 +4,9 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Patrick Gendron
-// Last Modified On : Wed Sep 12 11:55:26 2001
-// Update Count     : 11
+// Last Modified By : Martin Larose
+// Last Modified On : Thu Oct 25 11:15:51 2001
+// Update Count     : 12
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -30,7 +30,7 @@
 #define _AtomType_h_
 
 
-class CResidue;
+class AbstractResidue;
 class t_Residue;
 class iBinstream;
 class oBinstream;
@@ -1126,21 +1126,21 @@ public:
    * @param res the residue that contains the atom.
    * @return the Van Der Waals radius value.
    */
-  virtual float getVDWR (const CResidue *res) const = 0;
+  virtual float getVDWR (const AbstractResidue *res) const = 0;
 
   /**
    * Gets the Amber epsilon value for the atom.
    * @param res the residue that contains the atom.
    * @return the Amber epsilon value.
    */
-  virtual float getAmberEpsilon (const CResidue *res) const = 0;
+  virtual float getAmberEpsilon (const AbstractResidue *res) const = 0;
 
   /**
    * Gets the Amber charge value for the atom in the given residue type.
    * @param res the residue type.
    * @return the Amber charge.
    */
-  virtual float getAmberCharge (const CResidue *res) const = 0;
+  virtual float getAmberCharge (const AbstractResidue *res) const = 0;
 
   // I/O  -----------------------------------------------------------------
 

@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:17:12 2001
-// Update Count     : 8
+// Last Modified On : Thu Oct 25 11:17:57 2001
+// Update Count     : 9
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -31,7 +31,7 @@
 
 #include <stdlib.h>
 
-class CResidue;
+class AbstractResidue;
 class t_Atom;
 class CAtom;
 class ostream;
@@ -135,12 +135,12 @@ class CHBond : public HBond
   /**
    * The left residue in the bond.
    */
-  const CResidue *mResidueA;
+  const AbstractResidue *mResidueA;
 
   /**
    * The right residue in the bond.
    */
-  const CResidue *mResidueB;
+  const AbstractResidue *mResidueB;
 
   /**
    * The penality associated with the bond.  It is calculated once and then
@@ -178,7 +178,7 @@ public:
    * @param nAcceptor the acceptor atom type.
    * @param nLonePair the lonepair implicated.
    */
-  CHBond (const CResidue *nResidueA, const CResidue *nResidueB,
+  CHBond (const AbstractResidue *nResidueA, const AbstractResidue *nResidueB,
 	  t_Atom *nDonor, t_Atom *nHydro, 
 	  t_Atom *nAcceptor, t_Atom *nLonePair);
 
@@ -219,15 +219,16 @@ public:
    * @param nAcceptor the acceptor atom type.
    * @param nLonePair the lonepair implicated.
    */
-  void SetHBond (const CResidue *nResidueA, const CResidue *nResidueB,
+  void SetHBond (const AbstractResidue *nResidueA,
+		 const AbstractResidue *nResidueB,
 		 t_Atom *nDonor, t_Atom *nHydro,
 		 t_Atom *nAcceptor, t_Atom *nLonePair);
-  const CResidue *GetResidueA () const { return mResidueA; }
-  const CResidue *GetResidueB () const { return mResidueB; }
-  const CAtom &GetDonor (const CResidue *r = NULL) const;
-  const CAtom &GetHydrogen (const CResidue *r = NULL) const;
-  const CAtom &GetAcceptor (const CResidue *r = NULL) const;
-  const CAtom &GetLonePair (const CResidue *r = NULL) const;
+  const AbstractResidue *GetResidueA () const { return mResidueA; }
+  const AbstractResidue *GetResidueB () const { return mResidueB; }
+  const CAtom &GetDonor (const AbstractResidue *r = NULL) const;
+  const CAtom &GetHydrogen (const AbstractResidue *r = NULL) const;
+  const CAtom &GetAcceptor (const AbstractResidue *r = NULL) const;
+  const CAtom &GetLonePair (const AbstractResidue *r = NULL) const;
 
   // METHODS --------------------------------------------------------------
 
