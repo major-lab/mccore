@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.4 $
-// $Id: Exception.cc,v 1.4 2005-01-03 22:52:16 larosem Exp $
+// $Revision: 1.5 $
+// $Id: Exception.cc,v 1.5 2005-01-07 16:35:42 thibaup Exp $
 //
 // This file is part of mccore.
 //
@@ -63,7 +63,7 @@ namespace mccore
     mMessage += message;
     return *this;
   }
-  
+
 
   Exception&
   Exception::operator<< (int integer)

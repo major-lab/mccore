@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.58 $
-// $Id: Residue.cc,v 1.58 2005-01-05 01:50:48 larosem Exp $
+// $Revision: 1.59 $
+// $Id: Residue.cc,v 1.59 2005-01-07 16:38:43 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -458,6 +458,8 @@ namespace mccore
     AtomMap::iterator it = atomIndex.find (k);
     if (it == atomIndex.end ())
     {
+      abort();
+      
       NoSuchAtomException ex ("", __FILE__, __LINE__);
       ex << "residue " << *this << " is missing atom " << k;
       throw ex;
@@ -472,6 +474,8 @@ namespace mccore
     AtomMap::const_iterator cit = atomIndex.find (k);
     if (cit == atomIndex.end ())
     {
+      abort();
+      
       NoSuchAtomException ex ("", __FILE__, __LINE__);
       ex << "residue " << *this << " is missing atom " << k;
       throw ex;
