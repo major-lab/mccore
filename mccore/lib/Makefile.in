@@ -5,8 +5,8 @@
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:57:11 2000
 ## Last Modified By : Martin Larose
-## Last Modified On : Thu Aug 23 15:17:20 2001
-## Update Count     : 15
+## Last Modified On : Tue Aug 28 15:12:00 2001
+## Update Count     : 16
 ## Status           : Ok.
 ###############################################################################
 #
@@ -51,7 +51,7 @@ LINKOPTIONS = @LINKOPTIONS@
 AR = @AR@
 
 INSTALL = @INSTALL@
-INSTALL_DATA = @INSTALL_DATA@
+INSTALL_DATA = @INSTALL_DATA@ -p
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 
 
