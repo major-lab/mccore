@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 16:01:52 2003
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 // 
 //  This file is part of mccore.
 //  
@@ -88,7 +88,7 @@ namespace mccore {
  * </pre>
  *
  * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
- * @version $Id: PdbFileHeader.h,v 1.3 2004-03-08 22:30:11 larosem Exp $
+ * @version $Id: PdbFileHeader.h,v 1.4 2004-05-13 21:48:22 larosem Exp $
  *
  */
 class PdbFileHeader
@@ -151,10 +151,10 @@ public:
   // ACCESS ---------------------------------------------------------------
 
   const string& getClassification () const { return classification; }
-  void setClassification (const string s) { classification = s; }
+  void setClassification (const string &s) { classification = s; }
   
   const string& getDate () const { return date; }
-  void setDate (const string s) { date = s; }
+  void setDate (const string &s) { date = s; }
 
   /**
    * Set the date to today.
@@ -167,13 +167,13 @@ public:
   void setDate (int day, int month, int year);
 
   const string& getPdbId () const { return pdbId; }
-  void setPdbId (const string s) { pdbId = s; }
+  void setPdbId (const string &s) { pdbId = s; }
   
   const string& getTitle () const { return title; }
-  void setTitle (const string s) { title = s; }
+  void setTitle (const string &s) { title = s; }
   
   const string& getMethod () const { return method; }
-  void setMethod (const string s) { method = s; }
+  void setMethod (const string &s) { method = s; }
   
   float getResolution () const { return resolution; }
   void setResolution (float f) { resolution = f; }
