@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 // 
 //  This file is part of mccore.
 //  
@@ -50,7 +50,7 @@ namespace mccore {
   
   Model::Model (ResidueFactoryMethod *fm)
   {
-    residueFM = (fm == 0) ? new ResidueFM () : fm;
+    residueFM = (fm == 0) ? new ExtendedResidueFM () : fm;
   }
 
 
@@ -423,7 +423,7 @@ namespace mccore {
     
     os << "MODEL :" << flush;
     for (cit = begin (); cit != end (); ++cit)
-      os << *cit  << " ";
+      os << cit->getResId ()  << " ";
     return os;
   }
   
@@ -532,9 +532,9 @@ namespace mccore {
   // NON-MEMBER FUNCTIONS ------------------------------------------------------
 
   ostream&
-  operator<< (ostream &os, const Model &model)
+  operator<< (ostream &os, const Model &obj)
   {
-    return model.output (os);
+    return obj.output (os);
   }
 
 

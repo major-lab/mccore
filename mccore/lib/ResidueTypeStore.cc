@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -57,6 +57,7 @@ namespace mccore {
     stringType["RV"] = ResidueType::rRV = new RV ("(RV)", "(RV)");
     stringType["DV"] = ResidueType::rDV = new DV ("(DV)", "(DV)");
     
+    ResidueType::rA = new A ("A", "ADE"); 
     stringType["A"] = t = ResidueType::rRA = new RA ("A", "ADE"); 
     stringType["ADE"] = t; 
     stringType["RA"] = t; 
@@ -66,6 +67,7 @@ namespace mccore {
     stringType["DA5"] = t; 
     stringType["DA3"] = t; 
     
+    ResidueType::rC = new C ("C", "CYT");
     stringType["C"] = t = ResidueType::rRC = new RC ("C", "CYT");
     stringType["CYT"] = t; 
     stringType["RC"] = t; 
@@ -75,6 +77,7 @@ namespace mccore {
     stringType["DC5"] = t; 
     stringType["DC3"] = t; 
     
+    ResidueType::rG = new G ("G", "GUA"); 
     stringType["G"] = t = ResidueType::rRG = new RG ("G", "GUA"); 
     stringType["GUA"] = t;
     stringType["RG"] = t; 
@@ -84,6 +87,7 @@ namespace mccore {
     stringType["DG5"] = t; 
     stringType["DG3"] = t; 
     
+    ResidueType::rU = new U ("U", "URA");
     stringType["U"] = t = ResidueType::rRU = new RU ("U", "URA"); 
     stringType["RU"] = t;
     stringType["URI"] = t; 
@@ -91,6 +95,7 @@ namespace mccore {
     stringType["RU5"] = t; 
     stringType["RU3"] = t; 
     
+    ResidueType::rT = new T ("T", "TYM"); 
     stringType["T"] = t = ResidueType::rDT = new DT ("T", "TYM"); 
     stringType["DT"] = t;
     stringType["TYM"] = t; 

@@ -58,6 +58,11 @@ namespace mccore {
   ResidueType* ResidueType::rDH;
   ResidueType* ResidueType::rDV;
 
+  ResidueType* ResidueType::rA;
+  ResidueType* ResidueType::rC;
+  ResidueType* ResidueType::rG;
+  ResidueType* ResidueType::rU;
+  ResidueType* ResidueType::rT;
   ResidueType* ResidueType::rRA;
   ResidueType* ResidueType::rRC;
   ResidueType* ResidueType::rRG;
@@ -156,6 +161,16 @@ namespace mccore {
     }
     
     if (aResType1->isNucleicAcid () && aResType2->isNucleicAcid ()) {
+      if (aResType1->isA () && aResType2->isA ())
+	return rA;
+      if (aResType1->isC () && aResType2->isC ())
+	return rC;
+      if (aResType1->isG () && aResType2->isG ())
+	return rG;
+      if (aResType1->isU () && aResType2->isU ())
+	return rU;
+      if (aResType1->isT () && aResType2->isT ())
+	return rT;
       if ((aResType1->isPurine() && aResType2->isPyrimidine())
 	  || (aResType1->isPyrimidine() && aResType2->isPurine()))
 	return rNucleicAcid;

@@ -162,34 +162,35 @@ namespace mccore {
       return false;
     }
 
-    if (type->isRNA ()) {
-      insert (Atom ( 4.691f,  0.327f, -2.444f, AtomType::aP));
-      insert (Atom ( 5.034f,  1.678f, -1.932f, AtomType::aO1P));
-      insert (Atom ( 4.718f,  0.068f, -3.906f, AtomType::aO2P));
-      insert (Atom ( 3.246f, -0.057f, -1.895f, AtomType::aO5p));
-      insert (Atom ( 2.957f, -1.393f, -1.443f, AtomType::aC5p));
-      insert (Atom ( 1.509f, -1.478f, -1.022f, AtomType::aC4p));
-      insert (Atom ( 1.286f, -0.587f,  0.103f, AtomType::aO4p));
-      insert (Atom ( 0.000f,  0.000f,  0.000f, AtomType::aC1p));
-      insert (Atom (-0.694f, -0.627f, -1.210f, AtomType::aC2p));
-      insert (Atom (-1.474f, -1.731f, -0.795f, AtomType::aO2p));
-      insert (Atom ( 0.499f, -1.031f, -2.067f, AtomType::aC3p));
-      insert (Atom ( 0.178f, -2.084f, -2.981f, AtomType::aO3p));
-    } else if (type->isDNA ()) {
-      insert (Atom (  0.224f,  -4.365f,   2.383f, AtomType::aP));
-      insert (Atom (  1.336f,  -3.982f,   3.290f, AtomType::aO1P));
-      insert (Atom (  0.278f,  -5.664f,   1.666f, AtomType::aO2P));
-      insert (Atom (  0.042f,  -3.205f,   1.307f, AtomType::aO5p));
-      insert (Atom (  1.149f,  -0.891f,  -0.438f, AtomType::aC2p));
-      insert (Atom ( -1.014f,  -3.256f,   0.347f, AtomType::aC5p));
-      insert (Atom ( -0.913f,  -2.083f,  -0.600f, AtomType::aC4p));
-      insert (Atom ( -1.127f,  -0.853f,   0.133f, AtomType::aO4p));
-      insert (Atom (  0.000f,   0.000f,   0.000f, AtomType::aC1p));
-      insert (Atom (  0.445f,  -1.932f,  -1.287f, AtomType::aC3p));
-      insert (Atom (  0.272f,  -1.450f,  -2.624f, AtomType::aO3p));	    
-    } else {
-      return false;
-    }
+    // These data are not valid and should be replaced...
+//     if (type->isRNA ()) {
+//       insert (Atom ( 4.691f,  0.327f, -2.444f, AtomType::aP));
+//       insert (Atom ( 5.034f,  1.678f, -1.932f, AtomType::aO1P));
+//       insert (Atom ( 4.718f,  0.068f, -3.906f, AtomType::aO2P));
+//       insert (Atom ( 3.246f, -0.057f, -1.895f, AtomType::aO5p));
+//       insert (Atom ( 2.957f, -1.393f, -1.443f, AtomType::aC5p));
+//       insert (Atom ( 1.509f, -1.478f, -1.022f, AtomType::aC4p));
+//       insert (Atom ( 1.286f, -0.587f,  0.103f, AtomType::aO4p));
+//       insert (Atom ( 0.000f,  0.000f,  0.000f, AtomType::aC1p));
+//       insert (Atom (-0.694f, -0.627f, -1.210f, AtomType::aC2p));
+//       insert (Atom (-1.474f, -1.731f, -0.795f, AtomType::aO2p));
+//       insert (Atom ( 0.499f, -1.031f, -2.067f, AtomType::aC3p));
+//       insert (Atom ( 0.178f, -2.084f, -2.981f, AtomType::aO3p));
+//     } else if (type->isDNA ()) {
+//       insert (Atom (  0.224f,  -4.365f,   2.383f, AtomType::aP));
+//       insert (Atom (  1.336f,  -3.982f,   3.290f, AtomType::aO1P));
+//       insert (Atom (  0.278f,  -5.664f,   1.666f, AtomType::aO2P));
+//       insert (Atom (  0.042f,  -3.205f,   1.307f, AtomType::aO5p));
+//       insert (Atom (  1.149f,  -0.891f,  -0.438f, AtomType::aC2p));
+//       insert (Atom ( -1.014f,  -3.256f,   0.347f, AtomType::aC5p));
+//       insert (Atom ( -0.913f,  -2.083f,  -0.600f, AtomType::aC4p));
+//       insert (Atom ( -1.127f,  -0.853f,   0.133f, AtomType::aO4p));
+//       insert (Atom (  0.000f,   0.000f,   0.000f, AtomType::aC1p));
+//       insert (Atom (  0.445f,  -1.932f,  -1.287f, AtomType::aC3p));
+//       insert (Atom (  0.272f,  -1.450f,  -2.624f, AtomType::aO3p));	    
+//     } else {
+//       return false;
+//     }
 
     finalize ();
 

@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 //
 //  This file is part of mccore.
 //  
@@ -28,8 +28,10 @@
 #include <iostream>
 #include <set>
 #include <vector>
+#include <list>
 
 #include "HomogeneousTransfo.h"
+#include "HBond.h"
 
 using namespace std;
 
@@ -41,14 +43,27 @@ namespace mccore {
   class Residue;
   class PropertyType;
 
+
+  /**
+   * HBondFlow
+   */
+  struct HBondFlow {
+    HBond hbond;
+    float flow;
+    
+    bool operator< (const HBondFlow& other) const { return flow < other.flow; }
+  };
+  
+
   /**
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.4 2003-06-09 20:38:33 gendrop Exp $
+   * @version $Id: Relation.h,v 1.5 2003-06-18 22:25:40 gendrop Exp $
    */
   class Relation
   {
+    
     /**
      * The residue at the origin of this relation.
      */
@@ -153,6 +168,8 @@ namespace mccore {
     const set< const PropertyType* >& getLabels () const { return labels; }
 
 
+    HomogeneousTransfo getTransfo () const { return tfo; }
+
     // METHODS --------------------------------------------------------------
 
     bool is (const PropertyType* t) const {
@@ -235,6 +252,13 @@ namespace mccore {
      * 
      */
     static void init ();
+
+    /**
+     * 
+     */
+    static const PropertyType* 
+    translatePairing (const Residue* ra, const Residue *rb, 
+		      list< HBondFlow > &hbf, float total_flow, int size_hint);
 
     // I/O  -----------------------------------------------------------------
 

@@ -194,7 +194,7 @@ namespace mccore {
       atomGlobal.push_back (atom.clone ());
       it = atomIndex.find (atom.getType ());
     } else {
-      *atomLocal[it->second] = atom;
+      *atomGlobal[it->second] = atom;
     }
 
     // Transform the atom to the origin

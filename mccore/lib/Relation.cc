@@ -10,6 +10,7 @@
 #endif
 
 #include <iterator>
+#include <vector>
 
 #include "Relation.h"
 #include "Residue.h"
@@ -19,6 +20,7 @@
 #include "ResidueTopology.h"
 #include "HBond.h"
 #include "ExtendedResidue.h"
+#include "PairingPattern.h"
 
 namespace mccore {
 
@@ -364,7 +366,7 @@ namespace mccore {
   {
     static const float PAIRING_CUTOFF = 0.8f;
     static const float TWO_BONDS_CUTOFF = 1.5f;
-    //static const  float THREE_BONDS_CUTOFF = 2.1f;
+    static const float THREE_BONDS_CUTOFF = 2.1f;
 
     set< const PropertyType* > ts;
 
@@ -485,34 +487,34 @@ namespace mccore {
       Vector3D pva;
       Vector3D pvb;
       
-      float sum = 0;
-      
+      list< HBondFlow > hbf;
       for (m=atomToInt.begin (); m!=atomToInt.end (); ++m) {
 	for (n=atomToInt.begin (); n!=atomToInt.end (); ++n) {
 	  if (graph.areConnected (m->second, n->second)) {
-	    HBond h = graph.getEdge (m->second, n->second);
-	    float c = graph.getFlow (m->second, n->second);
-	    sum += c;
-	    
-	    if (h.getDonorResidue () == ra) {
-	      pa = pa + (h.getHydrogen () * c);
-	      pb = pb + (h.getLonePair () * c);
-	      pva = pva + (h.getHydrogen () * c);
-	      pvb = pvb + (h.getAcceptor () * c);
+	    HBondFlow fl;
+	    fl.hbond = graph.getEdge (m->second, n->second);
+	    fl.flow = graph.getFlow (m->second, n->second);
+	    hbf.push_back (fl);
+
+	    if (fl.hbond.getDonorResidue () == ra) {
+	      pa = pa + (fl.hbond.getHydrogen () * fl.flow);
+	      pb = pb + (fl.hbond.getLonePair () * fl.flow);
+	      pva = pva + (fl.hbond.getHydrogen () * fl.flow);
+	      pvb = pvb + (fl.hbond.getAcceptor () * fl.flow);
 	    } else {
-	      pa = pa + (h.getLonePair () * c);
-	      pb = pb + (h.getHydrogen () * c);
-	      pva = pva + (h.getAcceptor () * c);
-	      pvb = pvb + (h.getHydrogen () * c);			    
+	      pa = pa + (fl.hbond.getLonePair () * fl.flow);
+	      pb = pb + (fl.hbond.getHydrogen () * fl.flow);
+	      pva = pva + (fl.hbond.getAcceptor () * fl.flow);
+	      pvb = pvb + (fl.hbond.getHydrogen () * fl.flow);			    
 	    }
 	  }
 	}	   
       } 
 
-      pa = pa / sum;
-      pb = pb / sum;
-      pva = pva / sum;
-      pvb = pvb / sum;
+      pa = pa / sum_flow;
+      pb = pb / sum_flow;
+      pva = pva / sum_flow;
+      pvb = pvb / sum_flow;
       
       Vector3D pc, pd;
       pc = *ra->find (AtomType::aC1p); 
@@ -531,6 +533,24 @@ namespace mccore {
 
       pta = getFace (ra, pa);
       ptb = getFace (rb, pb);
+      
+      int size_hint;
+      if (sum_flow >= PAIRING_CUTOFF && sum_flow < TWO_BONDS_CUTOFF) {
+	size_hint = 1;
+      } else if (sum_flow < THREE_BONDS_CUTOFF) {
+	size_hint = 2;
+      } else {
+	size_hint = 3;
+      }
+
+      hbf.sort ();
+
+      while (hbf.size () != size_hint) hbf.pop_front ();
+
+      const PropertyType *pp = translatePairing (ra, rb, hbf, sum_flow, size_hint);
+
+      if (pp) ts.insert (pp);
+      
     }
     
     return ts;
@@ -772,6 +792,32 @@ namespace mccore {
     faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
  
     isInit = true;
+  }
+
+
+
+  const PropertyType* 
+  Relation::translatePairing (const Residue* ra, const Residue *rb, 
+			      list< HBondFlow > &hbf, 
+			      float total_flow, int size_hint)
+  {
+    list< PairingPattern* >::iterator i;
+    const PropertyType *type;
+    const PropertyType *best_type = 0;
+    int best_size = 0;
+
+    for (i=PairingPattern::patternList().begin ();
+	 i!=PairingPattern::patternList().end (); ++i) {
+      if (size_hint >= (*i)->size () && 
+	  (type = (*i)->evaluate (ra, rb, hbf)) != 0) {
+	if ((*i)->size () > best_size) {
+	  best_size = (*i)->size ();
+	  best_type = type;
+	}
+      }
+    }
+
+    return best_type;
   }
 
 

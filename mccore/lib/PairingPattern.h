@@ -4,8 +4,8 @@
 // Author           : Patrick Gendron
 // Created On       : Thu May 31 08:17:56 2001
 // Last Modified By : Patrick Gendron
-// Last Modified On : Thu Apr 10 21:11:09 2003
-// $Revision: 1.1 $
+// Last Modified On : Wed Jun 18 18:25:32 2003
+// $Revision: 1.2 $
 // 
 //  This file is part of mccore.
 //  
@@ -35,6 +35,8 @@
 #include "ResidueType.h"
 #include "PropertyType.h"
 #include "HBond.h"
+#include "Relation.h"
+#include "Residue.h"
 
 namespace mccore {
 
@@ -87,8 +89,6 @@ namespace mccore {
        */
       static bool isInit;
 
-    public:
-
       // LIFECYCLE ------------------------------------------------------------
 
       /**
@@ -103,6 +103,8 @@ namespace mccore {
        * @param type_b the type of another residue.
        */
       PairingPattern (const PropertyType* id, const ResidueType* type_a, const ResidueType* type_b);
+
+    public:
 
       /**
        * Initializes the object with the other's content.
@@ -128,6 +130,8 @@ namespace mccore {
       // ACCESS ---------------------------------------------------------------
 
       int size () const { return mSize; }
+
+      static list< PairingPattern* >& patternList () { return patterns; }
 
       // METHODS --------------------------------------------------------------
 
@@ -156,8 +160,9 @@ namespace mccore {
        * @param pattern the description of the flow pattern in a BasePair.
        * @return the property type or 0 if there is no match.
        */
-//       const PropertyType* evaluate (BasePair &bp) const;
-
+      const PropertyType* 
+      evaluate (const Residue* ra, const Residue *rb, list< HBondFlow > &hbf) const;
+     
       /**
        * Write Amber description.
        * @param the output stream.
@@ -173,7 +178,26 @@ namespace mccore {
        */
       static void init ();
          
+      /**
+       * Ouputs the pairing pattern to the stream.
+       * @param os the output stream.
+       * @return the used output stream.
+       */
+      ostream& output (ostream &os) const;
+
     };
+
+  // NON-MEMBER FUNCTION -------------------------------------------------------
+
+
+  /**
+   * Outputs the pairing pattern to an output stream.
+   * @param obs the output stream.
+   * @param obj the model to output.
+   * @return the output stream.
+   */
+  ostream& operator<< (ostream &obs, const PairingPattern &pat);
+
 
 }
 

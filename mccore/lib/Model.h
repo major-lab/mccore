@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 // 
 //  This file is part of mccore.
 //  
@@ -57,7 +57,7 @@ namespace mccore {
    * details).
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Model.h,v 1.11 2003-06-09 20:38:32 gendrop Exp $
+   * @version $Id: Model.h,v 1.12 2003-06-18 22:25:22 gendrop Exp $
    */
   class Model
   {
@@ -308,7 +308,7 @@ namespace mccore {
     // I/O  -----------------------------------------------------------------
 
     /**
-     * Ouputs the set to the stream.
+     * Ouputs the model to the stream.
      * @param os the output stream.
      * @return the used output stream.
      */
