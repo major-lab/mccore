@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:35 2003
-// $Revision: 1.1 $
-// $Id: Molecule.cc,v 1.1 2003-07-08 21:12:49 larosem Exp $
+// $Revision: 1.2 $
+// $Id: Molecule.cc,v 1.2 2003-07-31 18:07:17 gendrop Exp $
 // 
 // This file is part of mccore.
 // 
@@ -119,7 +119,6 @@ mccore::operator<< (oPdbstream &ops, const Molecule &obj)
   bool modelHeaders;
 
   ops.setHeader (obj.getPdbFileHeader ());
-  ops.writeHeader ();
   modelHeaders = 1 < obj.size ();
   for (cit = obj.begin (); obj.end () != cit; ++cit)
     {
