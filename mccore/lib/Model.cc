@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.21 $
+// $Revision: 1.22 $
 // 
 //  This file is part of mccore.
 //  
@@ -51,6 +51,7 @@ namespace mccore {
   Model::Model (ResidueFactoryMethod *fm)
   {
     residueFM = (fm == 0) ? new ExtendedResidueFM () : fm;
+    //residueFM = (fm == 0) ? new ResidueFM () : fm;
   }
 
 
@@ -321,9 +322,34 @@ namespace mccore {
   {
     iterator modelIt;
 
-    for (modelIt = begin (); modelIt != end ();)
+    modelIt = begin ();
+
+    while (modelIt != end ())
       {
 	if (modelIt->getType ()->isNucleicAcid ())
+	  {
+	    delete &*modelIt;
+	    modelIt = erase (modelIt);
+	  }
+	else
+	  ++modelIt;
+      }
+  }
+
+
+
+  void
+  Model::removeWater ()
+  {
+    const ResidueType* water = ResidueType::parseType ("HOH");
+
+    iterator modelIt;
+
+    modelIt = begin ();
+
+    while (modelIt != end ())
+      {
+	if (modelIt->getType () == water)
 	  {
 	    delete &*modelIt;
 	    modelIt = erase (modelIt);
