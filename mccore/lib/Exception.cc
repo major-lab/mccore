@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Exception.cc
-// Copyright © 1999, 2000-03 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-04 Laboratoire de Biologie Informatique et Théorique.
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.1 $
-// $Id: Exception.cc,v 1.1 2004-06-30 18:13:01 thibaup Exp $
+// $Revision: 1.2 $
+// $Id: Exception.cc,v 1.2 2004-07-09 21:23:49 larosem Exp $
 //
 // This file is part of mccore.
 //
@@ -39,22 +39,8 @@ namespace mccore
 {
 
   
-#ifdef HAVE_NUMERIC_LIMITS
-  void terminate_func (void)
-  {
-    cerr << "An exception was thrown but not caught." << endl
-	 << "Please send a bug report to 'bug-mcsym@iro.umontreal.ca'." << endl;
-    exit(EXIT_FAILURE);
-  }
-#endif
-
-
   Exception::Exception ()
   { 
-#ifdef HAVE_NUMERIC_LIMITS
-    set_terminate(&terminate_func);
-#endif
-
     mMessage = new char[1];
     mMessage[0] = '\0';
   }
@@ -63,9 +49,6 @@ namespace mccore
 
   Exception::Exception (const char *message)
   {
-#ifdef HAVE_NUMERIC_LIMITS
-    set_terminate(&terminate_func);
-#endif
     mMessage = new char[strlen (message) + 1];
     strcpy (mMessage, message);
   }
@@ -80,7 +63,7 @@ namespace mccore
 
 
 
-  const Exception&
+  Exception&
   Exception::operator= (const Exception &right)
   {
     if (this != &right)
@@ -218,7 +201,7 @@ namespace mccore
   }
 
   
-  const InterruptException&
+  InterruptException&
   InterruptException::operator= (const InterruptException &right)
   {
     if (this != &right)
@@ -228,7 +211,7 @@ namespace mccore
 
 
 
-  const LibException&
+  LibException&
   LibException::operator= (const LibException &right)
   {
     if (this != &right)
@@ -238,7 +221,7 @@ namespace mccore
 
 
 
-  const FatalLibException&
+  FatalLibException&
   FatalLibException::operator= (const FatalLibException &right)
   {
     if (this != &right)
@@ -284,7 +267,7 @@ namespace mccore
 
 
 
-  const IntLibException&
+  IntLibException&
   IntLibException::operator= (const IntLibException &right)
   {
     if (this != &right)
@@ -311,7 +294,7 @@ namespace mccore
 
 
 
-  const FatalIntLibException&
+  FatalIntLibException&
   FatalIntLibException::operator= (const FatalIntLibException &right)
   {
     if (this != &right)
@@ -321,7 +304,7 @@ namespace mccore
 
 
 
-  const SocketException&
+  SocketException&
   SocketException::operator= (const SocketException &right)
   {
     if (this != &right)
@@ -367,7 +350,7 @@ namespace mccore
 
 
 
-  const FatalSocketException&
+  FatalSocketException&
   FatalSocketException::operator= (const FatalSocketException &right)
   {
     if (this != &right)
@@ -392,7 +375,7 @@ namespace mccore
 
 
 
-  const ConnectionException&
+  ConnectionException&
   ConnectionException::operator= (const ConnectionException &right)
   {
     if (this != &right)

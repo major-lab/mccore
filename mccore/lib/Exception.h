@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 16:27:35 1999
-// $Revision: 1.2 $
-// $Id: Exception.h,v 1.2 2004-07-09 17:57:17 larosem Exp $
+// $Revision: 1.3 $
+// $Id: Exception.h,v 1.3 2004-07-09 21:23:58 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -88,7 +88,7 @@ namespace mccore
      * @param right the exception to copy.
      * @return itself.
      */
-    const Exception& operator= (const Exception &right);
+    Exception& operator= (const Exception &right);
   
     // ACCESS ---------------------------------------------------------------
 
@@ -215,7 +215,7 @@ namespace mccore
      * @param right the exception to copy.
      * @return itself.
      */
-    const InterruptException& operator= (const InterruptException &right);
+    InterruptException& operator= (const InterruptException &right);
 
     // ACCESS ---------------------------------------------------------------
 
@@ -266,7 +266,7 @@ namespace mccore
      * @param right the exception to copy.
      * @return itself.
      */
-    const LibException& operator= (const LibException &right);
+    LibException& operator= (const LibException &right);
 
     // ACCESS ---------------------------------------------------------------
 
@@ -318,7 +318,7 @@ namespace mccore
      * @param right the exception to copy.
      * @return itself.
      */
-    const FatalLibException& operator= (const FatalLibException &right);
+    FatalLibException& operator= (const FatalLibException &right);
 
     // ACCESS ---------------------------------------------------------------
 
@@ -387,7 +387,7 @@ namespace mccore
      * @param right the exception to copy.
      * @return itself.
      */
-    const IntLibException& operator= (const IntLibException &right);
+    IntLibException& operator= (const IntLibException &right);
 
     // ACCESS ---------------------------------------------------------------
 
@@ -466,7 +466,7 @@ namespace mccore
      * @param right the exception to copy.
      * @return itself.
      */
-    const FatalIntLibException& operator= (const FatalIntLibException &right);
+    FatalIntLibException& operator= (const FatalIntLibException &right);
 
     // ACCESS ---------------------------------------------------------------
 
@@ -518,7 +518,7 @@ namespace mccore
      * @param right the exception to copy.
      * @return itself.
      */
-    const SocketException& operator= (const SocketException &right);
+    SocketException& operator= (const SocketException &right);
 
     // ACCESS ---------------------------------------------------------------
 
@@ -587,7 +587,7 @@ namespace mccore
      * @param right the exception to copy.
      * @return itself.
      */
-    const FatalSocketException& operator= (const FatalSocketException &right);
+    FatalSocketException& operator= (const FatalSocketException &right);
 
     // ACCESS ---------------------------------------------------------------
 
@@ -670,7 +670,7 @@ namespace mccore
      * @param right the exception to copy.
      * @return itself.
      */
-    const ConnectionException& operator= (const ConnectionException &right);
+    ConnectionException& operator= (const ConnectionException &right);
 
     // ACCESS ---------------------------------------------------------------
 
