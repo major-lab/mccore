@@ -4,8 +4,8 @@
 // Author           : 
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Nov  9 10:45:00 2000
-// Update Count     : 4
+// Last Modified On : Mon Dec  4 15:40:15 2000
+// Update Count     : 5
 // Status           : Ok.
 
 
@@ -191,8 +191,9 @@ CPoint3D::Angle (const CPoint3D &A, const CPoint3D &C) const
 {
   CPoint3D u (A - *this);
   CPoint3D v (C - *this);
-  
-  return acosf (u * v / (u.Length () * v.Length ()));
+  float len = u.Length () * v.Length ();
+
+  return len == 0 ? 0 : acosf (u * v / len);
 }
 
 
