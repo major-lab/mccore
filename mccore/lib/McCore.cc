@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Oct 25 11:18:47 2001
-// Update Count     : 17
+// Last Modified On : Fri Nov 16 13:32:24 2001
+// Update Count     : 18
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -681,18 +681,25 @@ rmsd (const AbstractResidue::iterator &begin_a,
   int count = 0;
   AbstractResidue::iterator i,j;
   
-  for (i=begin_a, j=begin_b; (i!=end_a || j!=end_b); ++i, ++j) {
-    if (i->GetType () != j->GetType ())
-      throw CFatalIntLibException ("Mismatch atom in rmsd computation.", 
-				   __FILE__, __LINE__);
-    rmsd += *i || *j;
-    count ++;
-  }
+  for (i = begin_a, j = begin_b; i != end_a || j != end_b; ++i, ++j)
+    {
+      if (i->GetType () != j->GetType ())
+	{
+	  CFatalIntLibException exc ("Mismatch atom in rmsd computation ", 
+				     __FILE__, __LINE__);
+	  
+	  exc << (const char*)*i->GetType () << " != "
+	      << (const char*)*j->GetType () << ".";
+	  throw exc;
+	}
+      rmsd += *i || *j;
+      count ++;
+    }
   
   if (i!=end_a || j!=end_b)
     throw CFatalIntLibException ("One residue is missing some atoms", 
 				 __FILE__, __LINE__);
-    
+  
   return sqrt (rmsd / (float)count);
 }
 
@@ -708,18 +715,25 @@ rmsd (const AbstractResidue::const_iterator &begin_a,
   int count = 0;
   AbstractResidue::const_iterator i,j;
   
-  for (i=begin_a, j=begin_b; (i!=end_a || j!=end_b); ++i, ++j) {
-    if (i->GetType () != j->GetType ())
-      throw CFatalIntLibException ("Mismatch atom in rmsd computation.", 
-				   __FILE__, __LINE__);
-    rmsd += *i || *j;
-    count ++;
-  }
+  for (i=begin_a, j=begin_b; (i!=end_a || j!=end_b); ++i, ++j)
+    {
+      if (i->GetType () != j->GetType ())
+	{
+	  CFatalIntLibException exc ("Mismatch atom in rmsd computation ", 
+				     __FILE__, __LINE__);
+	  
+	  exc << (const char*)*i->GetType () << " != "
+	      << (const char*)*j->GetType () << ".";
+	  throw exc;
+	}
+      rmsd += *i || *j;
+      count ++;
+    }
   
   if (i!=end_a || j!=end_b)
     throw CFatalIntLibException ("One residue is missing some atoms", 
 				 __FILE__, __LINE__);
-
+  
   return sqrt (rmsd / (float)count);
 }
 
