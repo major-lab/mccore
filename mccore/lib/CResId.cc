@@ -1,16 +1,17 @@
 //                              -*- Mode: C++ -*- 
 // CResId.cc
-// Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : Thu Sep 28 15:55:29 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Dec  4 15:40:53 2000
-// Update Count     : 2
+// Last Modified On : Mon Jan 22 15:16:12 2001
+// Update Count     : 3
 // Status           : Ok.
 // 
 
 
 #include <iostream.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
 
@@ -18,7 +19,7 @@
 #include "Binstream.h"
 
 
-
+  
 CResId::CResId (const char *str)
 {
   if (isalpha (str[0]))
@@ -30,7 +31,7 @@ CResId::CResId (const char *str)
 
 
 
-const CResId&
+CResId&
 CResId::operator= (const CResId &right)
 {
   if (this != &right)
@@ -43,12 +44,21 @@ CResId::operator= (const CResId &right)
 
 
 
+CResId::operator const char* () const
+{
+  if (chain == ' ')
+    sprintf (mRep, "%d", no);
+  else
+    sprintf (mRep, "%c%d", chain, no);
+  return mRep;
+}
+
+
+
 ostream&
 operator<< (ostream &os, const CResId &obj)
 {
-  if (obj.GetChainId () != ' ')
-    os << obj.GetChainId ();
-  return os << obj.GetResNo ();
+  return os << obj.operator const char* ();
 }
 
 

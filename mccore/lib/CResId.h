@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CResId.h
-// Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : Thu Sep 28 15:55:29 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Dec  4 15:40:55 2000
-// Update Count     : 3
+// Last Modified On : Mon Jan 22 15:16:14 2001
+// Update Count     : 4
 // Status           : Ok.
 // 
 
@@ -36,6 +36,11 @@ class CResId
    * The residue chain id.
    */
   char chain;
+
+  /**
+   * The id representation.
+   */
+  mutable char mRep[10];
   
 public:
 
@@ -58,8 +63,7 @@ public:
    * Initializes the object with the right's content.
    * @param right the object to copy.
    */
-  CResId (const CResId &right)
-    : no (right.no), chain (right.chain) { }
+  CResId (const CResId &right) : no (right.no), chain (right.chain) { }
 
   /**
    * Destructs the object.
@@ -73,7 +77,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  const CResId& operator= (const CResId &right);
+  CResId& operator= (const CResId &right);
   
   /**
    * Tests the equality between ids.
@@ -97,6 +101,11 @@ public:
    */
   bool operator< (const CResId &right) const
   { return chain < right.chain || (chain == right.chain && no < right.no); }
+
+  /**
+   * Converts the residue id to a string representation.
+   */
+  operator const char* () const;
   
   // ACCESS ---------------------------------------------------------------
 
