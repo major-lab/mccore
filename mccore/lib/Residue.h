@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 //
 //  This file is part of mccore.
 //  
@@ -56,7 +56,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Patrick Gendron <gendrop@iro.umontreal.ca>
-   * @version $Id: Residue.h,v 1.9 2003-06-09 20:38:34 gendrop Exp $
+   * @version $Id: Residue.h,v 1.10 2003-07-09 21:50:12 gendrop Exp $
    */
   class Residue
   {
@@ -378,7 +378,19 @@ namespace mccore {
      */
     virtual void finalize ();
 
-  private:
+    /**
+     * Computes the distance between two residues by first aligning
+     * the residues and computing the RMSD on the backbone atoms.  For
+     * more details, see a discussion of the metric used in
+     * P. Gendron, S. Lemieuxs and F. Major (2001) Quantitative
+     * analysis of nucleic acid three-dimensional structures,
+     * J. Mol. Biol. 308(5):919-936 
+     * @param m the other residue.
+     * @return the computed distance.
+     */
+    float distance (const Residue &r) const;
+
+  protected:
 
     // PRIVATE METHODS ------------------------------------------------------
 

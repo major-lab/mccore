@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:45:21 2003
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 // 
 //  This file is part of mccore.
 //  
@@ -38,7 +38,10 @@ namespace mccore {
   /**
    * @short A residue Id.
    *
-   * An identification structure for residues.
+   * An identification structure for residues.  When using an input
+   * string, the following format is recognized:
+   *
+   * "(?:'(.)'|([^0-9]))?([0-9]+)"
    *
    * @author Patrick Gendron <gendrop@iro.umontreal.ca>
    */
@@ -151,10 +154,6 @@ namespace mccore {
       return ResId (no + 1, chain, iCode);
     }
 
-    /**
-     * Converts the residue id to a string representation.
-     */
-    operator const char* () const;
 
     // ACCESS ---------------------------------------------------------------
 

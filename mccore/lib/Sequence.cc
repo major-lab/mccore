@@ -10,6 +10,7 @@
 #endif
 
 #include <ctype.h>
+#include <assert.h>
 
 #include "Sequence.h"
 #include "Fastastream.h"

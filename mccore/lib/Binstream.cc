@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@orage.IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:18:52 EDT
 // Last Modified By : Patrick Gendron
-// Last Modified On : Mon Mar 24 17:57:53 2003
-// Update Count     : 15
+// Last Modified On : Wed Jul  9 11:15:02 2003
+// Update Count     : 24
 // Status           : Ok.
 // 
 //  This file is part of mccore.

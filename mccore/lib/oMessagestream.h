@@ -1,12 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // oMessagestream.h
-// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2001, 2003 Laboratoire de Biologie Informatique et Théorique
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Sep  5 18:11:06 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Sep 20 12:46:09 2001
-// Update Count     : 3
+// Last Modified By : Patrick Gendron
+// Last Modified On : Wed Jul  9 11:28:36 2003
+// Update Count     : 4
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -28,52 +28,5 @@
 
 #ifndef _oMessagestream_h_
 #define _oMessagestream_h_
-
-
-#include "Messagestream.h"
-
-
-
-/**
- * @short Text implementation of Messages.
- *
- * @author Martin Larose <larosem@iro.umontreal.ca>
- */
-class oMessagestream : public Messagestream
-{
-
-protected:
-
-  // LIFECYCLE ------------------------------------------------------------
-
-  /**
-   * Initializes the object.  It must not be used.
-   */
-  oMessagestream () { }
-
-public:
-
-  /**
-   * Initializes the message system with a ostream and an initial verbose
-   * level.
-   * @param os the output stream.
-   * @param level the initial verbose level.
-   */
-  oMessagestream (ostream &os, unsigned int level)
-    : Messagestream (os.rdbuf (), level, level) { }
-  
-  /**
-   * Destructs the object.
-   */
-  virtual ~oMessagestream () { }
-
-  // OPERATORS ------------------------------------------------------------
-
-  // ACCESS ---------------------------------------------------------------
-
-  // METHODS --------------------------------------------------------------
-
-  // I/O  -----------------------------------------------------------------
-};
 
 #endif

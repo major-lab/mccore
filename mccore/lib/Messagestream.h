@@ -1,12 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // Messagestream.h
-// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Sep  5 17:06:24 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Sep 20 12:45:33 2001
-// Update Count     : 3
+// Last Modified By : Patrick Gendron
+// Last Modified On : Wed Jul  9 11:50:34 2003
+// Update Count     : 13
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -30,12 +30,22 @@
 #define _Messagestream_h_
 
 
-#include <iostream.h>
+#include <iostream>
 
+using namespace std;
+
+class Messagestream;
+
+
+extern Messagestream &gOut;
 
 
 /**
  * @short Interface for output messages.
+ *
+ * Levels of verbose range from 0 to MAXINT, 0 being the most crucial.
+ * When setting the verbose level to x, only messages of priority
+ * inferior or equal to x will be printed.
  * 
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
@@ -268,5 +278,51 @@ public:
 
   // I/O  -----------------------------------------------------------------
 };
+
+
+
+
+/**
+ * @short Text implementation of Messages.
+ *
+ * @author Martin Larose <larosem@iro.umontreal.ca>
+ */
+class oMessagestream : public Messagestream
+{
+
+protected:
+
+  // LIFECYCLE ------------------------------------------------------------
+
+  /**
+   * Initializes the object.  It must not be used.
+   */
+  oMessagestream () { }
+
+public:
+
+  /**
+   * Initializes the message system with a ostream and an initial verbose
+   * level.
+   * @param os the output stream.
+   * @param level the initial verbose level.
+   */
+  oMessagestream (ostream &os, unsigned int level)
+    : Messagestream (os.rdbuf (), level, level) { }
+  
+  /**
+   * Destructs the object.
+   */
+  virtual ~oMessagestream () { }
+
+  // OPERATORS ------------------------------------------------------------
+
+  // ACCESS ---------------------------------------------------------------
+
+  // METHODS --------------------------------------------------------------
+
+  // I/O  -----------------------------------------------------------------
+};
+
 
 #endif

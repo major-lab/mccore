@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:45:21 2003
 // Last Modified By : Patrick Gendron
-// Last Modified On : Mon Mar 10 16:50:27 2003
-// Update Count     : 8
+// Last Modified On : Wed Jul  9 12:53:09 2003
+// Update Count     : 27
 // Status           : Unknown.
 // 
 
@@ -18,6 +18,7 @@
 
 #include "ResId.h"
 #include "Binstream.h"
+#include "CException.h"
 
 namespace mccore {
 
@@ -33,9 +34,10 @@ ResId::ResId (const char *str)
     {
       if (strlen (strCopy) < 4 || strCopy[2] != '\'')
 	{
-// 	  gOut (2) << "Malformed residue id " << strCopy << endl;
-	  delete[] base;
-	  return;
+ 	  delete[] base;
+	  CFatalLibException exc ("Malformed residue id ");
+	  exc << strCopy;
+	  throw exc;
 	}
       chain = strCopy[1];
       strCopy += 3;
@@ -45,42 +47,40 @@ ResId::ResId (const char *str)
   
   token = strsep (&strCopy, ".");
 
-  if (strlen (token) > 4 || strlen (token) < 1)
+  if (strlen (token) < 1)
     {
-//       gOut (2) << "Malformed residue number in residue id "
-// 	       << '\'' << chain << '\'' << token;
-//       if (strlen (strCopy) > 0)
-// 	gOut << '.' << strCopy;
-//       gOut << endl;
       delete[] base;
-      return;
+      CFatalLibException exc ("Malformed residue number in residue id ");
+      exc << '\'' << chain << '\'' << token;
+      if (strCopy && strlen (strCopy) > 0)
+	exc << '.' << strCopy;
+      throw exc;
     }
   for (i = 0; i < strlen (token); ++i)
     if (!isdigit (token[i]))
       {
-// 	gOut (2) << "Malformed residue number in residue id "
-// 		 << '\'' << chain << '\'' << token;
-// 	if (strlen (strCopy) > 0)
-// 	  gOut << '.' << strCopy;
-// 	gOut << endl;
 	delete[] base;
-	return;
+	CFatalLibException exc ("Residue number is non numeric in residue id ");
+	exc << '\'' << chain << '\'' << token;
+	if (strCopy && strlen (strCopy) > 0)
+	  exc << '.' << strCopy;
+	throw exc;
       }
   no = atoi (token);
   if (strCopy)
     {
       if (strlen (strCopy) != 1)
 	{
-// 	  gOut (2) << "Malformed insertion code in residue id "
-// 		   << (const char*)*this << "." << strCopy << endl;
 	  delete[] base;
-	  return;
+	  CFatalLibException exc ("Malformed insertion code in residue id ");
+	  exc << '\'' << chain << '\'' << no << "." << strCopy;
+	  throw exc;
 	}
       iCode = strCopy[0];
     }
   delete[] base;
 }
-
+  
 
 ResId&
 ResId::operator= (const ResId &other)
@@ -107,6 +107,8 @@ operator<< (ostream &os, const ResId &obj)
 
   return os;
 }
+
+
 
 
 

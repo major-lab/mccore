@@ -25,7 +25,10 @@
 #include <config.h>
 #endif
 
+#include <assert.h>
+
 #include "ExtendedResidue.h"
+#include "Messagestream.h"
 
 
 namespace mccore {
@@ -271,40 +274,13 @@ namespace mccore {
   }
 
 
-  // PRIVATE METHODS------------------------------------------------------------
-
-  void ExtendedResidue::place () const
-  {
-    if (!isPlaced ()) {
-      vector< Atom* >::const_iterator cit;
-      vector< Atom* >::iterator it;
-    
-      for (cit = atomLocal.begin (), it = atomGlobal.begin ();
-	   cit != atomLocal.end ();
-	   ++cit, ++it)
-	{
-	  **it = **cit;
-	  (*it)->transform (tfo);
-	}
-      placed = true;
-    }
-  }
-  
-  void ExtendedResidue::displace () const
-  {
-    placed=false;
-    place ();
-  }
-
-
   void ExtendedResidue::finalize ()
   {
     unsigned int i;
     Vector3D *pivot[3];
     Vector3D *v1, *v2, *v3;
 
-    // Some checks...
-    if (type == 0 || empty ()) return;
+    if (!type || empty ()) return;
     
     /* Compute the location of the pseudo atoms. */
     if (((v1 = get (AtomType::aN9)) != 0 
@@ -334,8 +310,8 @@ namespace mccore {
 	
 	insert (Atom(z, AtomType::aPSAZ));
       } else {
-	cerr << "Residue " << getResId () << "-" << getType()
-	  << " is missing one or more critical atoms." << endl;		
+	gOut (2) << "Residue " << getResId () << "-" << getType()
+		 << " is missing one or more critical atoms." << endl;	
       }	
     }
     
@@ -362,7 +338,8 @@ namespace mccore {
       pivot[0] = 0;
       pivot[1] = 0;
       pivot[2] = 0;
-      //cerr << "Warning, residue has less than 3 atoms: " << getType () << endl;
+      gOut (2) << "Residue " << getType () << " " << getResId () 
+	       << " has less than 3 atoms and cannot be moved: " << endl;
     }
     
     /* Align the residue to the origin. */
@@ -376,6 +353,9 @@ namespace mccore {
       }
     }	
   }
+
+
+  // PRIVATE METHODS------------------------------------------------------------
 
 
   Atom& 
@@ -397,6 +377,31 @@ namespace mccore {
     else
       return atomGlobal[it->second];
   }
+
+
+  void ExtendedResidue::place () const
+  {
+    if (!isPlaced ()) {
+      vector< Atom* >::const_iterator cit;
+      vector< Atom* >::iterator it;
+    
+      for (cit = atomLocal.begin (), it = atomGlobal.begin ();
+	   cit != atomLocal.end ();
+	   ++cit, ++it)
+	{
+	  **it = **cit;
+	  (*it)->transform (tfo);
+	}
+      placed = true;
+    }
+  }
+  
+  void ExtendedResidue::displace () const
+  {
+    placed=false;
+    place ();
+  }
+
 
   // I/O -----------------------------------------------------------------------
 

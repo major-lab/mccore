@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 // 
 //  This file is part of mccore.
 //  
@@ -52,7 +52,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: ExtendedResidue.h,v 1.1 2003-06-03 14:20:59 gendrop Exp $
+   * @version $Id: ExtendedResidue.h,v 1.2 2003-07-09 21:49:27 gendrop Exp $
    */
   class ExtendedResidue : public virtual Residue
   {
@@ -242,15 +242,15 @@ namespace mccore {
      */
     virtual void clear();
 
-
-    // PRIVATE METHODS ------------------------------------------------------
-
     /**
      *  Initializes all the internals of the residue.  It aligns the
      *  residue to the origin of the global coordinate and stores the
      *  transformation internally.  
      */
     void finalize ();
+
+
+    // PRIVATE METHODS ------------------------------------------------------
 
   protected:
     

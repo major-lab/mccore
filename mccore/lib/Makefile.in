@@ -5,8 +5,8 @@
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:57:11 2000
 ## Last Modified By : Patrick Gendron
-## Last Modified On : Tue Jun  3 09:56:12 2003
-## Update Count     : 92
+## Last Modified On : Wed Jul  9 11:27:56 2003
+## Update Count     : 94
 ## Status           : Ok.
 ###############################################################################
 #
@@ -73,6 +73,7 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 SOURCES = Binstream.cc \
 	  zfstream.cc \
 	  CException.cc \
+	  Messagestream.cc \
 \
 	  Vector3D.cc \
 	  HomogeneousTransfo.cc \
@@ -114,8 +115,8 @@ SOURCES = Binstream.cc \
 
 HEADERS = $(SOURCES:.cc=.h) Algo.h Path.h Graph.h UndirectedGraph.h \
 fstreambase.h fPdbstream.h zfPdbstream.h fBinstream.h zfBinstream.h \
-sBinstream.h SocketCommand.h Messagestream.h oMessagestream.h \
-SymmetricalMatrix.h SymmetricalMatrix.cc stlio.h
+sBinstream.h SocketCommand.h SymmetricalMatrix.h SymmetricalMatrix.cc \
+stlio.h
 
 OBJECTS = $(SOURCES:.cc=.o)
 

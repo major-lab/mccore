@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 // 
 //  This file is part of mccore.
 //  
@@ -43,7 +43,7 @@ namespace mccore {
    * General property types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: PropertyType.h,v 1.1 2003-04-11 01:34:35 gendrop Exp $
+   * @version $Id: PropertyType.h,v 1.2 2003-07-09 21:49:50 gendrop Exp $
    */
 class PropertyType
 {
@@ -153,7 +153,23 @@ public:
    */
   static PropertyType* parseType (const char* t);
 
- 
+  /**
+   * General is method for use when both objects to compare are of
+   * unknown type.
+   */
+  virtual bool is (const PropertyType *t) const {
+    return t->describe (this);
+  }
+  
+  /**
+   * Tests whether the type t is a ResidueType or derived class.
+   * @param the type to test.
+   * @return the truth value of the test.
+   */
+  virtual bool describe (const PropertyType *t) const {
+    return dynamic_cast< const PropertyType* >(t);
+  }
+
   // I/O  -----------------------------------------------------------------
 
   /**

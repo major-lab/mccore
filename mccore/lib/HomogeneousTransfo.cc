@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
 // Last Modified By : Patrick Gendron
-// Last Modified On : Thu Apr 10 21:34:01 2003
-// Update Count     : 22
+// Last Modified On : Wed Jul  9 17:49:40 2003
+// Update Count     : 26
 // Status           : Unknown.
 // 
 
@@ -20,6 +20,7 @@
 
 #include "Binstream.h"
 #include "HomogeneousTransfo.h"
+#include "CException.h"
 
 namespace mccore 
 {
@@ -301,7 +302,8 @@ namespace mccore
   HomogeneousTransfo::invert () const 
   {
     if ((matrix[3] + matrix[7] + matrix[11]) != 0.0)
-      cerr << "HTM containing scale cannot be inverted." << endl;
+      throw CFatalIntLibException ("HomogeneousTransfo containing scale cannot be inverted.", __FILE__, __LINE__);
+
     return HomogeneousTransfo (matrix[0], matrix[1], matrix[2], 
 			       -(matrix[12]*matrix[0] + matrix[13]*matrix[1] + matrix[14]*matrix[2]),
 			       matrix[4], matrix[5], matrix[6], 

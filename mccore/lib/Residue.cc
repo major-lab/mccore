@@ -27,12 +27,18 @@
 #endif
 
 #include <algorithm>
+#include <assert.h>
+#include <math.h>
 
 #include "Residue.h"
 #include "ResidueTopology.h"
 #include "ResId.h"
 #include "Binstream.h"
 #include "PropertyType.h"
+#include "Messagestream.h"
+#include "Rmsd.h"
+#include "zfPdbstream.h"
+
 
 namespace mccore {
 
@@ -343,6 +349,7 @@ namespace mccore {
   Residue::getReferential (HomogeneousTransfo *t) const
   {
     Vector3D *pivot[3];
+
     assert (t!=0);
 
     /* Set the pivots */
@@ -368,9 +375,10 @@ namespace mccore {
       pivot[0] = 0;
       pivot[1] = 0;
       pivot[2] = 0;
-      cerr << "Warning, residue has less than 3 atoms: " << getType () << endl;
+      gOut (2) << "Residue " << getType () << " " << getResId () 
+	       << " has less than 3 atoms and cannot be moved: " << endl;
     }
-
+    
     if (pivot[0] != 0 && pivot[1] != 0 && pivot[2] != 0) {
       *t = HomogeneousTransfo::align (*pivot[0], *pivot[1], *pivot[2]);
     }
@@ -406,7 +414,8 @@ namespace mccore {
       pivot[0] = 0;
       pivot[1] = 0;
       pivot[2] = 0;
-      cerr << "Warning, residue has less than 3 atoms: " << getType () << endl;
+      gOut (2) << "Residue " << getType () << " " << getResId () 
+	       << " has less than 3 atoms and cannot be moved: " << endl;
     }
     curr = HomogeneousTransfo::align (*pivot[0], *pivot[1], *pivot[2]);
 
@@ -501,7 +510,15 @@ namespace mccore {
 
   void Residue::validate () 
   {
-    if (!type->isNucleicAcid () && !type->isAminoAcid ()) return;
+    if (!type) {
+      gOut (3) << "Validate called on an empty residue" << endl;
+      return;
+    }
+
+    if (!type->isNucleicAcid () && !type->isAminoAcid ()) {
+      gOut (2) << "Validate called on a non valid residue" << endl;
+      return;
+    }
     
     if (getType ()->isNucleicAcid ()) {
       removeOptionals ();
@@ -545,72 +562,7 @@ namespace mccore {
     }
   }
 
-  // PRIVATE METHODS------------------------------------------------------------
 
-
-  void 
-  Residue::finalize ()
-  {
-    Vector3D *v1, *v2, *v3;
-
-    // Some checks...
-    if (type == 0 || empty ()) return;
-    
-    /* Compute the location of the pseudo atoms. */
-    if (((v1 = get (AtomType::aN9)) != 0 
-	 && (v2 = get (AtomType::aC8)) != 0 
-	 && (v3 = get (AtomType::aC4)) != 0)
-	|| ((v1 = get (AtomType::aN1)) != 0 
-	    && (v2 = get (AtomType::aC6)) != 0 
-	    && (v3 = get (AtomType::aC2)) != 0)) {
-      Vector3D a, b, y, z;
-      
-      a = (*v2-*v1).normalize();
-      b = (*v3-*v1).normalize();
-      y = *v1 + (a + b).normalize();
-      z = *v1 + (b.cross(a)).normalize();
-      
-      insert (Atom (y, AtomType::aPSY));
-      insert (Atom (z, AtomType::aPSZ));
-
-    } else if (type->isPhosphate ()) {
-      // no pseudo atoms in phosphate residue, nothing to do!
-    } else if (type->isAminoAcid ()) {
-      if ((v1 = get (AtomType::aCA)) != 0 &&
-	  (v2 = get (AtomType::aN)) != 0 &&
-	  (v3 = get (AtomType::aC)) != 0) {
-	Vector3D a, b, z;
-	a = (*v2 - *v1).normalize();
-	b = (*v3 - *v1).normalize();
-	z = *v1 + (b.cross(a)).normalize();
-	
-	insert (Atom(z, AtomType::aPSAZ));
-      } else {
-	cerr << "Residue " << getResId () << "-" << getType()
-	     << " is missing one or more critical atoms." << endl;		
-      }	
-    }
-  }
-  
-  
-  Atom& 
-  Residue::get (size_type pos) const 
-  {
-    assert (pos < atomGlobal.size ());
-    return *atomGlobal[pos];
-  }
-
-
-  Atom* 
-  Residue::get (const AtomType* type) const 
-  {
-    AtomMap::const_iterator it = atomIndex.find (type);
-    if (it == atomIndex.end ())
-      return 0;
-    else
-      return atomGlobal[it->second];
-  }
-  
   void Residue::addHydrogens () 
   {
     // Parameters taken for AMBER all_nuc94.in
@@ -640,10 +592,10 @@ namespace mccore {
 		|| 0 == get(AtomType::aN7) || 0 == get(AtomType::aN9)
 		|| 0 == get(AtomType::aC6) || 0 == get(AtomType::aC5)
 		|| 0 == get(AtomType::aN6) || 0 == get(AtomType::aC4)) {
-		cerr << "A Residue " << getResId () << "-" << getType()
-		     << " is missing one or more critical atoms." << endl;
-		type = type->invalidate ();
-		return;
+	      gOut (2) << "Residue " << getType() << " " << getResId ()
+		       << " is missing one or more critical atoms." << endl;
+	      type = type->invalidate ();
+	      return;
 	    }
 	    
 	    // H2
@@ -684,10 +636,10 @@ namespace mccore {
 		|| 0 == get(AtomType::aN3) || 0 == get(AtomType::aN2)
 		|| 0 == get(AtomType::aC4) || 0 == get(AtomType::aC5)
 		|| 0 == get(AtomType::aO6)) {
-		cerr << "G Residue " << getResId () << "-" << getType()
-		     << " is missing one or more critical atoms." << endl;
-		type = type->invalidate ();
-		return;
+	      gOut (2) << "Residue " << getType() << " " << getResId ()
+		       << " is missing one or more critical atoms." << endl;
+	      type = type->invalidate ();
+	      return;
 	    }
 	    
 	    // H1
@@ -729,10 +681,10 @@ namespace mccore {
  		|| 0 == get(AtomType::aN3) || 0 == get(AtomType::aN4)
 		|| 0 == get(AtomType::aC6) || 0 == get(AtomType::aC5)
 		|| 0 == get(AtomType::aC2) || 0 == get(AtomType::aO2)) {
-		cerr << "C Residue " << getResId () << "-" << getType()
-		     << " is missing one or more critical atoms." << endl;
-		type = type->invalidate ();
-		return;
+	      gOut (2) << "Residue " << getType() << " " << getResId ()
+		       << " is missing one or more critical atoms." << endl;
+	      type = type->invalidate ();
+	      return;
 	    }
 
 	    // H5
@@ -772,10 +724,10 @@ namespace mccore {
 		|| 0 == get(AtomType::aC4) || 0 == get(AtomType::aC5)
 		|| 0 == get(AtomType::aC6) || 0 == get(AtomType::aN1)
 		|| 0 == get(AtomType::aO2) || 0 == get(AtomType::aO4)) {
-		cerr << "U Residue " << getResId () << "-" << getType()
-		     << " is missing one or more critical atoms." << endl;
-		type = type->invalidate ();
-  		return;
+	      gOut (2) << "Residue " << getType() << " " << getResId ()
+		       << " is missing one or more critical atoms." << endl;
+	      type = type->invalidate ();
+	      return;
   	    }
 
 	    // H3
@@ -811,10 +763,10 @@ namespace mccore {
 		|| 0 == get(AtomType::aC4) || 0 == get(AtomType::aC5)
 		|| 0 == get(AtomType::aC6) || 0 == get(AtomType::aN1)
 		|| 0 == get(AtomType::aO2) || 0 == get(AtomType::aO4)) {
-		cerr << "T Residue " << getResId () << "-" << getType()
-		     << " is missing one or more critical atoms." << endl;
-		type = type->invalidate ();
-  		return;
+	      gOut (2) << "Residue " << getType() << " " << getResId ()
+		       << " is missing one or more critical atoms." << endl;
+	      type = type->invalidate ();
+	      return;
   	    }
 
 	    // H3
@@ -1027,8 +979,8 @@ namespace mccore {
 	    || 0 == get (AtomType::aN7) || 0 == get (AtomType::aN9)
 	    || 0 == get (AtomType::aC6) || 0 == get (AtomType::aC5)
 	    || 0 == get (AtomType::aN6) || 0 == get (AtomType::aC4)) {
-	  cerr << "A Residue " << getResId () << "-" << getType()
-	       << " is missing one or more critical atoms." << endl;
+	  gOut (2) << "Residue " << getType() << " " << getResId ()
+		   << " is missing one or more critical atoms." << endl;
 	  type = type->invalidate();
 	  return;
 	}
@@ -1067,8 +1019,8 @@ namespace mccore {
 	    || 0 == get (AtomType::aN3) || 0 == get (AtomType::aN2)
 	    || 0 == get (AtomType::aC4) || 0 == get (AtomType::aC5)
 	    || 0 == get (AtomType::aO6)) {
-	  cerr << "G Residue " << getResId () << "-" << getType()
-	       << " is missing one or more critical atoms." << endl;
+	  gOut (2) << "Residue " << getType() << " " << getResId ()
+		   << " is missing one or more critical atoms." << endl;
 	  type = type->invalidate();	      
 	  return;
 	}
@@ -1113,8 +1065,8 @@ namespace mccore {
 	    || 0 == get (AtomType::aN3) || 0 == get (AtomType::aN4)
 	    || 0 == get (AtomType::aC6) || 0 == get (AtomType::aC5)
 	    || 0 == get (AtomType::aC2) || 0 == get (AtomType::aO2)) {
-	  cerr << "C Residue " << getResId () << "-" << getType()
-	       << " is missing one or more critical atoms." << endl;
+	  gOut (2) << "Residue " << getType() << " " << getResId ()
+		   << " is missing one or more critical atoms." << endl;
 	  type = type->invalidate();	      
 	  return;
 	}
@@ -1151,8 +1103,8 @@ namespace mccore {
 	    || 0 == get (AtomType::aC4) || 0 == get (AtomType::aC5)
 	    || 0 == get (AtomType::aC6) || 0 == get (AtomType::aN1)
 	    || 0 == get (AtomType::aO2) || 0 == get (AtomType::aO4)) {
-	  cerr << "U Residue " << getResId () << "-" << getType()
-	       << " is missing one or more critical atoms." << endl;
+	  gOut (2) << "Residue " << getType() << " " << getResId ()
+		   << " is missing one or more critical atoms." << endl;
 	  type = type->invalidate();	      
 	  return;
 	}
@@ -1271,6 +1223,123 @@ namespace mccore {
     return 0;
   }
 
+  void 
+  Residue::finalize ()
+  {
+    Vector3D *v1, *v2, *v3;
+
+    if (!type || empty ()) return;
+    
+    /* Compute the location of the pseudo atoms. */
+    if (((v1 = get (AtomType::aN9)) != 0 
+	 && (v2 = get (AtomType::aC8)) != 0 
+	 && (v3 = get (AtomType::aC4)) != 0)
+	|| ((v1 = get (AtomType::aN1)) != 0 
+	    && (v2 = get (AtomType::aC6)) != 0 
+	    && (v3 = get (AtomType::aC2)) != 0)) {
+      Vector3D a, b, y, z;
+      
+      a = (*v2-*v1).normalize();
+      b = (*v3-*v1).normalize();
+      y = *v1 + (a + b).normalize();
+      z = *v1 + (b.cross(a)).normalize();
+      
+      insert (Atom (y, AtomType::aPSY));
+      insert (Atom (z, AtomType::aPSZ));
+
+    } else if (type->isPhosphate ()) {
+      // no pseudo atoms in phosphate residue, nothing to do!
+    } else if (type->isAminoAcid ()) {
+      if ((v1 = get (AtomType::aCA)) != 0 &&
+	  (v2 = get (AtomType::aN)) != 0 &&
+	  (v3 = get (AtomType::aC)) != 0) {
+	Vector3D a, b, z;
+	a = (*v2 - *v1).normalize();
+	b = (*v3 - *v1).normalize();
+	z = *v1 + (b.cross(a)).normalize();
+	
+	insert (Atom(z, AtomType::aPSAZ));
+      } else {
+	gOut (2) << "Residue " << getResId () << "-" << getType()
+		 << " is missing one or more critical atoms." << endl;		
+      }	
+    }
+  }
+
+
+  float 
+  Residue::distance (const Residue &r) const
+  {
+    if (getType ()->isAminoAcid ()) {
+      float deltaPseudoPhi =
+	find (AtomType::aN)->torsionAngle (*find (AtomType::aH),
+					   *find (AtomType::aCA),
+					   *find (AtomType::aC))
+	- r.find (AtomType::aN)->torsionAngle (*r.find (AtomType::aH),
+					       *r.find (AtomType::aCA),
+					       *r.find (AtomType::aC));
+      
+      float deltaPseudoPsi =
+	find (AtomType::aCA)->torsionAngle (*find (AtomType::aN),
+					    *find (AtomType::aC),
+					    *find (AtomType::aO))
+	- r.find (AtomType::aCA)->torsionAngle (*r.find (AtomType::aN),
+						*r.find (AtomType::aC),
+						*r.find (AtomType::aO));
+      
+      return (min (abs (deltaPseudoPhi), (float)(2 * M_PI - abs (deltaPseudoPhi)))
+	      + min (abs (deltaPseudoPsi), (float)(2 * M_PI - abs (deltaPseudoPsi))));
+    } else if (getType ()->isNucleicAcid ()) {
+      // nucleic acid
+      Residue *tmpRef = clone ();
+      Residue *tmpRes = r.clone ();
+      AtomSet *as;
+      float result;
+      
+      HomogeneousTransfo t;
+      tmpRes->setReferential (tmpRef->getReferential (&t));
+
+      // This supposes that the atoms are in the same order in the two 
+      // residues, which is the case since we iterate on sorted residues 
+      // by definition of a residue iterator
+      as = new AtomSetAnd (new AtomSetBackbone (),
+			   new AtomSetNot (new AtomSetOr (new AtomSetHydrogen (), 
+							  new AtomSetAtom (AtomType::aO2p))));
+      result = Rmsd::rmsd (tmpRef->begin (as->clone ()), 
+			   tmpRef->end (),
+			   tmpRes->begin (as),
+			   tmpRes->end ());
+      delete tmpRef;
+      delete tmpRes;
+      return result;
+    }
+    gOut (2) << "Distance metric is not defined for residues " 
+	     << getType () << " and " << r.getType () << endl;
+    return MAXFLOAT;
+  }
+
+
+  // PRIVATE METHODS -----------------------------------------------------------
+  
+  
+  Atom& 
+  Residue::get (size_type pos) const 
+  {
+    assert (pos < atomGlobal.size ());
+    return *atomGlobal[pos];
+  }
+
+
+  Atom* 
+  Residue::get (const AtomType* type) const 
+  {
+    AtomMap::const_iterator it = atomIndex.find (type);
+    if (it == atomIndex.end ())
+      return 0;
+    else
+      return atomGlobal[it->second];
+  }
+  
   
   // I/O -----------------------------------------------------------------------
 

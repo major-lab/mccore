@@ -3,7 +3,7 @@
 // Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique,
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Oct 26 10:24:02 2000
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 // 
 //  This file is part of mccore.
 //  
@@ -152,7 +152,13 @@ public:
    * string defined in _parse_and_insert.
    * @param str the string description of the range.
    */
-  void insert (const char *str) { _parse_and_insert (str); }
+  void insert (const char *str) { 
+    try {
+      _parse_and_insert (str); 
+    } catch (CIntLibException &e) {
+      gOut (2) << e << endl;
+    }
+  }
   
   /**
    * Inserts a residue number and chain id in the set.
