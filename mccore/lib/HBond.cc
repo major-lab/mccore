@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu Mar 20 18:05:28 2003
-// $Revision: 1.11.4.3 $
-// $Id: HBond.cc,v 1.11.4.3 2004-12-25 02:41:19 larosem Exp $
+// $Revision: 1.11.4.4 $
+// $Id: HBond.cc,v 1.11.4.4 2004-12-27 01:39:46 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -119,9 +119,9 @@ namespace mccore
   };
 
 
-  HBond::HBond ()
+  HBond::HBond (float val)
     : donor (0), hydrogen (0), acceptor (0), lonepair (0),
-      value (0), resD (0), resA (0)
+      value (val), resD (0), resA (0)
   { }
 
 
@@ -171,69 +171,99 @@ namespace mccore
 
 
   const Atom& 
-  HBond::getDonor () const
+  HBond::getDonor () const throw (NullPointerException)
   {
-    if (resD == 0) cerr << "Residue not set in HBond" << endl;
+    if (resD == 0)
+      {
+	throw NullPointerException ("Residue not set in HBond", __FILE__, __LINE__);
+      }
     return *resD->safeFind (donor);
   }
   
   const Atom& 
-  HBond::getDonor (const Residue& r) const
+  HBond::getDonor (const Residue &r) const
   {
     return *r.safeFind (donor);
   }
   
   
-  const Atom& 
-  HBond::getHydrogen () const
+  const Atom&
+  HBond::getHydrogen () const throw (NullPointerException)
   {
-    if (resD == 0) cerr << "Residue not set in HBond" << endl;
+    if (resD == 0)
+      {
+	throw NullPointerException ("Residue not set in HBond", __FILE__, __LINE__);
+      }
     return *resD->safeFind (hydrogen);
   }
 
   
   const Atom& 
-  HBond::getHydrogen (const Residue& r) const
+  HBond::getHydrogen (const Residue &r) const
   {
     return *r.safeFind (hydrogen);
   }
 
   
   const Atom&
-  HBond::getAcceptor () const
+  HBond::getAcceptor () const throw (NullPointerException)
   {
-    if (resA == 0) cerr << "Residue not set in HBond" << endl;
+    if (resA == 0)
+      {
+	throw NullPointerException ("Residue not set in HBond", __FILE__, __LINE__);
+      }
     return *resA->safeFind (acceptor);
   }
   
   
   const Atom&
-  HBond::getAcceptor (const Residue& r) const
+  HBond::getAcceptor (const Residue &r) const
   {
     return *r.safeFind (acceptor);
   }
 
   
   const Atom&
-  HBond::getLonePair () const
+  HBond::getLonePair () const throw (NullPointerException)
   {
-    if (resA == 0) cerr << "Residue not set in HBond" << endl;
+    if (resA == 0)
+      {
+	throw NullPointerException ("Residue not set in HBond", __FILE__, __LINE__);
+      }
     return *resA->safeFind (lonepair);
   }
 
   
   const Atom&
-  HBond::getLonePair (const Residue& r) const
+  HBond::getLonePair (const Residue &r) const
   {
     return *r.safeFind (lonepair);
   }
   
   
-  float 
-  HBond::eval (const Residue &ra, const Residue &rb) 
+  void
+  HBond::reassignResiduePointers (const set< const Residue*, less_deref< Residue > > &resSet) throw (IntLibException)
   {
-    resD = &ra;
-    resA = &rb;
+    set< const Residue* >::iterator resIt;
+
+    if (resSet.end () == (resIt = resSet.find (resA)))
+      {
+	throw IntLibException ("Residue not found", __FILE__, __LINE__);
+      }
+    resA = *resIt;
+    if (resSet.end () == (resIt = resSet.find (resD)))
+      {
+	throw IntLibException ("Residue not found", __FILE__, __LINE__);
+      }
+    resD = *resIt;
+  }
+
+  
+  float 
+  HBond::eval (const Residue *ra, const Residue *rb) 
+  {
+    resD = ra;
+    resA = rb;
     
     float hlp = getHydrogen ().distance (getLonePair ());
     return (hlp >= 0.1 && hlp < 1.65
@@ -243,14 +273,14 @@ namespace mccore
   
   
   float 
-  HBond::evalStatistically (const Residue &ra, const Residue &rb) 
+  HBond::evalStatistically (const Residue *ra, const Residue *rb) 
   {
     float x[3];
     float p_x = 0;
     float p_h = 0;
     
-    resD = &ra;
-    resA = &rb;
+    resD = ra;
+    resA = rb;
     
     // PreCheck on the donor/acceptor distance
     if (getDonor ().distance (getAcceptor ()) > 5) return (value = 0);
@@ -260,8 +290,8 @@ namespace mccore
       float tan70 = 2.7474774;
       float C_H_dist = 1.08;
       
-      px = (getLonePair () - *resD->safeFind (AtomType::aC5)).normalize ();
-      py = (getDonor () - *resD->safeFind (AtomType::aC5)).normalize ();
+      px = (getLonePair () - *ra->safeFind (AtomType::aC5)).normalize ();
+      py = (getDonor () - *rb->safeFind (AtomType::aC5)).normalize ();
       up = px.cross (py).normalize ();
       pz = py.cross (up);
       pv = getDonor () + (py + pz * tan70).normalize () * C_H_dist;
@@ -322,10 +352,18 @@ namespace mccore
 		  << acceptor << " (" << lonepair << ")";  
       }
   }
+
+}
+
+
+
+namespace std
+{
   
-  
-  ostream &operator<< (ostream &os, const HBond &theBond)
+  ostream&
+  operator<< (ostream &os, const mccore::HBond &theBond)
   {
     return theBond.output (os);
   }
+  
 }
