@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:00:09 2003
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 // 
 // This file is part of mccore.
 // 
@@ -42,15 +42,14 @@ namespace mccore
   class oBinstream;
   class oPdbstream;
 
-  
-
   /**
    * @short Derived from Vector3D, this class adds the type of the atom.
    *
    * Derived from Vector3D, this class adds the type of the atom.
+   * Warning: nothing is done to prevents slicing when assigning from a Vector*.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Atom.h,v 1.8 2005-01-05 01:41:45 larosem Exp $
+   * @version $Id: Atom.h,v 1.9 2005-02-02 18:11:20 thibaup Exp $
    */
   class Atom : public Vector3D
   {
@@ -159,16 +158,51 @@ namespace mccore
     }
     
     /**
-     * Sets every field of the atom.
+     * Sets the atom's coordinates and type.
      * @param ax the x coordinate.
      * @param ay the y coordinate.
      * @param az the z coordinate.
      * @param type the atom type.
-     * @param loc the atom alternate location id (default = ' ').
+     * @return itself
      */
-    void setAll (float ax, float ay, float az, const AtomType *t) {
-      set (ax, ay, az);
-      type = t;
+    Atom& set (float ax, float ay, float az, const AtomType *t) 
+    {
+      this->x = ax;
+      this->y = ay;
+      this->z = az;
+      this->type = t;
+      return *this;
+    }
+
+    /**
+     * Sets the atom's coordinates and type.
+     * @param v the point vector.
+     * @param type the optional atom type. If not specified, then
+     *        this atom's type is left unchanged.
+     * @return itself
+     */
+    Atom& set (const Vector3D& v, const AtomType *t)
+    {
+      this->x = v.x;
+      this->y = v.y;
+      this->z = v.z;
+      this->type = t;
+      return *this;
+    }
+
+    /**
+     * Sets the atom's coordinates only.
+     * @param v the point vector.
+     * @param type the optional atom type. If not specified, then
+     *        this atom's type is left unchanged.
+     * @return itself
+     */
+    Atom& set (const Vector3D& v)
+    {
+      this->x = v.x;
+      this->y = v.y;
+      this->z = v.z;
+      return *this;
     }
 
     /**

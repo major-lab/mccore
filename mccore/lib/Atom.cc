@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:00:09 2003
-// $Revision: 1.11 $
-// $Id: Atom.cc,v 1.11 2005-01-05 01:41:23 larosem Exp $
+// $Revision: 1.12 $
+// $Id: Atom.cc,v 1.12 2005-02-02 18:11:20 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -99,8 +99,8 @@ namespace mccore
   { 
     return *type < *other.type; 
   }
-  
-  
+
+
   Vector3D 
   Atom::getColor () const 
   {
@@ -119,8 +119,8 @@ namespace mccore
     atom.setType (type);
     return ibs;
   }
-  
-  
+
+
   oBinstream&
   operator<< (oBinstream &obs, const Atom &atom)
   {

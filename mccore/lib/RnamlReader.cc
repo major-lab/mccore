@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
-// $Revision: 1.8 $
-// $Id: RnamlReader.cc,v 1.8 2005-01-26 19:57:58 thibaup Exp $
+// $Revision: 1.9 $
+// $Id: RnamlReader.cc,v 1.9 2005-02-02 18:11:20 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -123,7 +123,7 @@ namespace mccore
     a = new mccore::Atom ();
     type = new char[strlen (atom.getAtomType ()) + 1];
     strcpy (type, atom.getAtomType ());
-    a->setAll (atom.getX (), atom.getY (), atom.getZ (), AtomType::parseType (type));
+    a->set (atom.getX (), atom.getY (), atom.getZ (), AtomType::parseType (type));
     return a;
   }
   
