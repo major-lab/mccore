@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.42 $
-// $Id: Residue.cc,v 1.42 2004-07-12 19:34:18 thibaup Exp $
+// $Revision: 1.43 $
+// $Id: Residue.cc,v 1.43 2004-07-12 20:16:15 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -685,12 +685,12 @@ namespace mccore {
 	    O3_P->setType (AtomType::aO3p);
 	    this->insert (*O3_P);
 	    this->erase (AtomType::aO3P);
-	    gOut (6) << "Renamed O3P to O3' in residue " << *this << endl;
+	    gOut (3) << "Renamed O3P to O3' in residue " << *this << endl;
 	  }
 	else
 	  {
 	    this->erase (AtomType::aO3P);
-	    gOut (6) << "Removed O3P in residue " << *this << endl;
+	    gOut (3) << "Removed O3P in residue " << *this << endl;
 	  }
       }
     
@@ -753,7 +753,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add hydrogen " << AtomType::aH2 << " in "
+	gOut (3) << "Failed to add hydrogen " << AtomType::aH2 << " in "
 		 << *this << ": " << ex << endl;
       }
       try // H8
@@ -766,7 +766,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add hydrogen " << AtomType::aH8 << " in "
+	gOut (3) << "Failed to add hydrogen " << AtomType::aH8 << " in "
 		 << *this << ": " << ex << endl;
       }
       try // H61 and H62
@@ -786,7 +786,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add hydrogens " << AtomType::a1H6 << " and "
+	gOut (3) << "Failed to add hydrogens " << AtomType::a1H6 << " and "
 		 << AtomType::a2H6 << " in " << *this << ": " << ex << endl;
       }
     }
@@ -802,7 +802,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add hydrogen " << AtomType::aH1 << " in "
+	gOut (3) << "Failed to add hydrogen " << AtomType::aH1 << " in "
 		 << *this << ": " << ex << endl;
       }
       try // H8
@@ -815,7 +815,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add hydrogen " << AtomType::aH8 << " in "
+	gOut (3) << "Failed to add hydrogen " << AtomType::aH8 << " in "
 		 << *this << ": " << ex << endl;
       }    
       try // 1H2 and 2H2
@@ -835,7 +835,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add hydrogens " << AtomType::a1H2 << " and "
+	gOut (3) << "Failed to add hydrogens " << AtomType::a1H2 << " and "
 		 << AtomType::a2H2 << " in " << *this << ": " << ex << endl;
       }
     }
@@ -851,7 +851,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add hydrogen " << AtomType::aH5 << " in "
+	gOut (3) << "Failed to add hydrogen " << AtomType::aH5 << " in "
 		 << *this << ": " << ex << endl;
       }          
       try // H6
@@ -864,7 +864,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add hydrogen " << AtomType::aH6 << " in "
+	gOut (3) << "Failed to add hydrogen " << AtomType::aH6 << " in "
 		 << *this << ": " << ex << endl;
       }	    
       try // 1H4 and 2H4
@@ -884,7 +884,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add hydrogens " << AtomType::a1H4 << " and "
+	gOut (3) << "Failed to add hydrogens " << AtomType::a1H4 << " and "
 		 << AtomType::a2H4 << " in " << *this << ": " << ex << endl;
       }	
     }
@@ -900,7 +900,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add hydrogen " << AtomType::aH3 << " in "
+	gOut (3) << "Failed to add hydrogen " << AtomType::aH3 << " in "
 		 << *this << ": " << ex << endl;
       }	 	    
       try // H5
@@ -913,7 +913,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add hydrogen " << AtomType::aH5 << " in "
+	gOut (3) << "Failed to add hydrogen " << AtomType::aH5 << " in "
 		 << *this << ": " << ex << endl;
       }		    
       try // H6
@@ -926,7 +926,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add hydrogen " << AtomType::aH6 << " in "
+	gOut (3) << "Failed to add hydrogen " << AtomType::aH6 << " in "
 		 << *this << ": " << ex << endl;
       }	
     }
@@ -942,7 +942,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add hydrogen " << AtomType::aH3 << " in "
+	gOut (3) << "Failed to add hydrogen " << AtomType::aH3 << " in "
 		 << *this << ": " << ex << endl;
       }		    
       try // H6
@@ -955,7 +955,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add hydrogen " << AtomType::aH6 << " in "
+	gOut (3) << "Failed to add hydrogen " << AtomType::aH6 << " in "
 		 << *this << ": " << ex << endl;
       }	
       try // 1H5M, 2H5M, 3H5M (arbitrarily placed)
@@ -978,7 +978,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add hydrogens " << AtomType::a1H5M << ", "
+	gOut (3) << "Failed to add hydrogens " << AtomType::a1H5M << ", "
 		 << AtomType::a2H5M << " and " << AtomType::a3H5M << " in "
 		 << *this << ": " << ex << endl;
       }	      
@@ -1016,7 +1016,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add hydrogen " << AtomType::aH1p << " in "
+	gOut (3) << "Failed to add hydrogen " << AtomType::aH1p << " in "
 		 << *this << ": " << ex << endl;
       }
     }
@@ -1038,7 +1038,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add hydrogen " << AtomType::aH3p << " in "
+	gOut (3) << "Failed to add hydrogen " << AtomType::aH3p << " in "
 		 << *this << ": " << ex << endl;
       }
     }
@@ -1060,7 +1060,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add hydrogen " << AtomType::aH4p << " in "
+	gOut (3) << "Failed to add hydrogen " << AtomType::aH4p << " in "
 		 << *this << ": " << ex << endl;
       }
     }
@@ -1085,7 +1085,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add hydrogens " << AtomType::a1H5p << " and "
+	gOut (3) << "Failed to add hydrogens " << AtomType::a1H5p << " and "
 		 << AtomType::a2H5p << " in " << *this << ": " << ex << endl;
       }	
     }
@@ -1117,7 +1117,7 @@ namespace mccore {
 	}
 	catch (NoSuchAtomException& ex)
 	{
-	  gOut (5) << "Failed to add hydrogens " << AtomType::a1H2p << " and "
+	  gOut (3) << "Failed to add hydrogens " << AtomType::a1H2p << " and "
 		   << AtomType::a2H2p << " in " << *this << ": " << ex << endl;
 	}	
       }
@@ -1142,7 +1142,7 @@ namespace mccore {
 	}
 	catch (NoSuchAtomException& ex)
 	{
-	  gOut (5) << "Failed to add hydrogen " << AtomType::aH2p << " in "
+	  gOut (3) << "Failed to add hydrogen " << AtomType::aH2p << " in "
 		   << *this << ": " << ex << endl;
 	}
       }
@@ -1163,7 +1163,7 @@ namespace mccore {
 	}
 	catch (NoSuchAtomException& ex)
 	{
-	  gOut (5) << "Failed to add hydrogen " << AtomType::aHO2p << " in "
+	  gOut (3) << "Failed to add hydrogen " << AtomType::aHO2p << " in "
 		   << *this << ": " << ex << endl;
 	}
       }
@@ -1192,7 +1192,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add hydrogen " << AtomType::aHO3p << " in "
+	gOut (3) << "Failed to add hydrogen " << AtomType::aHO3p << " in "
 		 << *this << ": " << ex << endl;
       }
     }
@@ -1216,7 +1216,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add lone pair " << AtomType::aLP1 << " in "
+	gOut (3) << "Failed to add lone pair " << AtomType::aLP1 << " in "
 		 << *this << ": " << ex << endl;
       }
       try // LP3
@@ -1229,7 +1229,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add lone pair " << AtomType::aLP3 << " in "
+	gOut (3) << "Failed to add lone pair " << AtomType::aLP3 << " in "
 		 << *this << ": " << ex << endl;
       }      
       try // LP7
@@ -1242,7 +1242,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add lone pair " << AtomType::aLP7 << " in "
+	gOut (3) << "Failed to add lone pair " << AtomType::aLP7 << " in "
 		 << *this << ": " << ex << endl;
       }  	
     } 
@@ -1258,7 +1258,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add lone pair " << AtomType::aLP3 << " in "
+	gOut (3) << "Failed to add lone pair " << AtomType::aLP3 << " in "
 		 << *this << ": " << ex << endl;
       }	
       try // LP7
@@ -1271,7 +1271,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add lone pair " << AtomType::aLP7 << " in "
+	gOut (3) << "Failed to add lone pair " << AtomType::aLP7 << " in "
 		 << *this << ": " << ex << endl;
       }	
       try // 1LP6 and 2LP6
@@ -1291,7 +1291,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add lone pairs " << AtomType::a1LP6 << " and "
+	gOut (3) << "Failed to add lone pairs " << AtomType::a1LP6 << " and "
 		 << AtomType::a2LP6 << " in " << *this << ": " << ex << endl;
       }	
     } 
@@ -1307,7 +1307,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add lone pair " << AtomType::aLP3 << " in "
+	gOut (3) << "Failed to add lone pair " << AtomType::aLP3 << " in "
 		 << *this << ": " << ex << endl;
       }			
       try // 1LP2 and 2LP2
@@ -1327,7 +1327,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add lone pairs " << AtomType::a1LP2 << " and "
+	gOut (3) << "Failed to add lone pairs " << AtomType::a1LP2 << " and "
 		 << AtomType::a2LP2 << " in " << *this << ": " << ex << endl;
       }	      
     } 
@@ -1350,7 +1350,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add lone pairs " << AtomType::a1LP2 << " and "
+	gOut (3) << "Failed to add lone pairs " << AtomType::a1LP2 << " and "
 		 << AtomType::a2LP2 << " in " << *this << ": " << ex << endl;
       }	        
       try // 1LP4 and 2LP4
@@ -1370,7 +1370,7 @@ namespace mccore {
       }
       catch (NoSuchAtomException& ex)
       {
-	gOut (5) << "Failed to add lone pairs " << AtomType::a1LP4 << " and "
+	gOut (3) << "Failed to add lone pairs " << AtomType::a1LP4 << " and "
 		 << AtomType::a2LP4 << " in " << *this << ": " << ex << endl;
       }	       
     }      
@@ -1416,7 +1416,7 @@ namespace mccore {
       }
     catch (IntLibException& ex)
       {
-	gOut (4) << "Failed to compute pseudorotation: " << ex << endl;
+	gOut (3) << "Failed to compute pseudorotation: " << ex << endl;
 	return PropertyType::parseType ("undefined");
       }
     return Residue::getPuckerType (rho);
@@ -1462,7 +1462,7 @@ namespace mccore {
       }
     catch (IntLibException& ex)
       {
-	gOut (4) << "Failed to compute glycosyl torsion: " << ex << endl;
+	gOut (3) << "Failed to compute glycosyl torsion: " << ex << endl;
 	return PropertyType::parseType ("undefined");
       }
     return Residue::getGlycosylType (chi);
@@ -1530,12 +1530,12 @@ namespace mccore {
       }
       else
       {
-	gOut (5) << "Unknown pseudo-atoms for residue type " << *this << endl;
+	gOut (3) << "Unknown pseudo-atoms for residue type " << *this << endl;
       }
     }
     catch (NoSuchAtomException& ex)
     {
-      gOut (5) << "Unknown pseudo-atoms for residue "<< *this << ": " << ex << endl;
+      gOut (3) << "Unknown pseudo-atoms for residue "<< *this << ": " << ex << endl;
     }
     
   }
@@ -2352,17 +2352,17 @@ namespace mccore {
 	pivot[0] = (Atom*)this->atomGlobal[0];
 	pivot[1] = (Atom*)this->atomGlobal[1];
 	pivot[2] = (Atom*)this->atomGlobal[2];
-	gOut (5) << "default referential with first three atoms for residue type " << *this << endl;	
+	gOut (3) << "default referential with first three atoms for residue type " << *this << endl;	
       }
       else
       {
-	gOut (5) << "no referential for residue type " << *this << endl;
+	gOut (3) << "no referential for residue type " << *this << endl;
 	return HomogeneousTransfo::identity;
       }
     }
     catch (NoSuchAtomException& ex)
     {
-      gOut (5) << "no referential for residue " << *this << ": " << ex << endl;
+      gOut (3) << "no referential for residue " << *this << ": " << ex << endl;
       return HomogeneousTransfo::identity;
     }
 

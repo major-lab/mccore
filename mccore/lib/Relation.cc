@@ -159,7 +159,7 @@ namespace mccore
 	}
 	catch (NoSuchAtomException& ex)
 	{
-	  gOut (4) << "unable to compute phosphate transfo: " << ex << endl;
+	  gOut (3) << "unable to compute phosphate transfo: " << ex << endl;
 	  po4_tfo.setIdentity ();
 	}
 	
@@ -666,7 +666,7 @@ namespace mccore
     }
     catch (NoSuchAtomException& ex)
     {
-      gOut (4) << "An error occured during pairing annotation: " << ex << endl;
+      gOut (3) << "An error occured during pairing annotation: " << ex << endl;
     }
   }
     
@@ -846,7 +846,7 @@ namespace mccore
     }
     catch (NoSuchAtomException& ex)
     {
-      gOut (4) << "An error occured during stacking annotation: " << ex << endl;
+      gOut (3) << "An error occured during stacking annotation: " << ex << endl;
     }
     
   }
