@@ -4,9 +4,9 @@
 //                           Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 16:27:35 1999
-// Last Modified By : Philippe Thibault
-// Last Modified On : Fri Sep  7 15:23:36 2001
-// Update Count     : 14
+// Last Modified By : Martin Larose
+// Last Modified On : Mon Oct  1 14:56:35 2001
+// Update Count     : 15
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -122,6 +122,24 @@ public:
    * @return itself.
    */
   CException& operator<< (unsigned int integer);
+
+  /**
+   * Concatenates the current message with a long integer.  Be careful when
+   * using this operator, the returned exception is a CException type NOT a
+   * derived type.
+   * @param integer the long integer to concatenate.
+   * @return itself.
+   */
+  CException& operator<< (long int integer);
+
+  /**
+   * Concatenates the current message with an unsigned long integer.  Be
+   * carefulwhen using this operator, the returned exception is a CException
+   * type NOT a derived type.
+   * @param integer the unsigned long integer to concatenate.
+   * @return itself.
+   */
+  CException& operator<< (unsigned long int integer);
 
   /**
    * Concatenates the current message with a float.  Be careful when using

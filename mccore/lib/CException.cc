@@ -4,9 +4,9 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Philippe Thibault
-// Last Modified On : Fri Sep  7 15:23:32 2001
-// Update Count     : 13
+// Last Modified By : Martin Larose
+// Last Modified On : Mon Oct  1 14:56:27 2001
+// Update Count     : 14
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -115,6 +115,40 @@ CException::operator<< (unsigned int integer)
   char *tmp;
 
   sprintf (str, "%u", integer);
+  tmp = new char[strlen (mMessage) + strlen (str) + 1];
+  strcpy (tmp, mMessage);
+  strcat (tmp, str);
+  delete[] mMessage;
+  mMessage = tmp;
+  return *this;
+}
+
+
+
+CException&
+CException::operator<< (long int integer)
+{
+  char str[256];
+  char *tmp;
+
+  sprintf (str, "%ld", integer);
+  tmp = new char[strlen (mMessage) + strlen (str) + 1];
+  strcpy (tmp, mMessage);
+  strcat (tmp, str);
+  delete[] mMessage;
+  mMessage = tmp;
+  return *this;
+}
+
+
+
+CException&
+CException::operator<< (unsigned long int integer)
+{
+  char str[256];
+  char *tmp;
+
+  sprintf (str, "%lu", integer);
   tmp = new char[strlen (mMessage) + strlen (str) + 1];
   strcpy (tmp, mMessage);
   strcat (tmp, str);
