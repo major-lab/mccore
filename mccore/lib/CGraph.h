@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CGraph.h
-// Copyright © 1999, 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 1999, 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Oct 24 11:14:37 2000
-// Update Count     : 1
+// Last Modified On : Fri Mar 23 15:15:49 2001
+// Update Count     : 2
 // Status           : Ok.
 // 
 
@@ -43,7 +43,7 @@ public:
 
   // LIFECYCLE ------------------------------------------------------------
 
-  CPath () : vector< Node >() mValue (0) { }
+  CPath () : vector< Node > (), mValue (0) { }
   CPath (const CPath &other)
     : vector< Node > (other), mValue (other.mValue) { }
   ~CPath () { }
@@ -217,12 +217,8 @@ public:
   bool isConnected (nodeid a, nodeid b) const // a=origin, b=destination
   { 
     adjgraph::const_iterator i = mAdj.find (a);
-    adjlist::const_iterator j;
-    
-    if (i == mAdj.end ())
-      return false;
-    j = i->second.find (b);
-    return j != i->second.end ()
+
+    return (i != mAdj.end () && i->second.find (b) != i->second.end ());
   }
 
   // METHODS --------------------------------------------------------------
