@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:35 2003
-// $Revision: 1.6 $
-// $Id: Molecule.cc,v 1.6 2004-12-06 21:37:50 thibaup Exp $
+// $Revision: 1.7 $
+// $Id: Molecule.cc,v 1.7 2004-12-07 21:10:06 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -29,7 +29,6 @@
 #endif
 
 
-#include "Model.h"
 #include "ResidueFactoryMethod.h"
 #include "Pdbstream.h"
 #include "Binstream.h"

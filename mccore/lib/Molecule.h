@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:36 2003
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 // 
 // This file is part of mccore.
 // 
@@ -31,14 +31,15 @@
 #include <map>
 #include <string>
 
-using namespace std;
+#include "Model.h"
 
+
+using namespace std;
 
 
 namespace mccore
 {
 
-  class Model;
   class ResidueFactoryMethod;
   class iPdbstream;
   class oPdbstream;
@@ -51,7 +52,7 @@ namespace mccore
    * This is a collection of mccore Models in a simple STL list.
    *
    * @author Martin Larose (<larosem@iro.umontreal.ca>)
-   * @version $Id: Molecule.h,v 1.3 2004-12-06 21:38:01 thibaup Exp $
+   * @version $Id: Molecule.h,v 1.4 2004-12-07 21:10:23 thibaup Exp $
    */
   class Molecule
   {
