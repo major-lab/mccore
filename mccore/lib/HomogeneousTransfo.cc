@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.16 $
-// $Id: HomogeneousTransfo.cc,v 1.16 2005-01-03 22:55:17 larosem Exp $
+// $Revision: 1.17 $
+// $Id: HomogeneousTransfo.cc,v 1.17 2005-01-07 16:38:19 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -467,7 +467,7 @@ namespace mccore
 
   
   float 
-  HomogeneousTransfo::strength () const 
+  HomogeneousTransfo::strength (float* tvalue, float* rvalue) const 
   {
     float l2 = matrix[12]*matrix[12] + matrix[13]*matrix[13] + matrix[14]*matrix[14];
     
@@ -477,6 +477,9 @@ namespace mccore
     float diag = matrix[0] + matrix[5] + matrix[10] - 1;
     
     float theta_rad = (float) atan2 (sqrt (a*a + b*b + c*c), diag);
+
+    if (tvalue) *tvalue = l2;
+    if (rvalue) *rvalue = HomogeneousTransfo::alpha_square * theta_rad * theta_rad;
 
     return (float) sqrt (l2 + HomogeneousTransfo::alpha_square * theta_rad * theta_rad);
   }
@@ -496,9 +499,9 @@ namespace mccore
 
 
   float
-  HomogeneousTransfo::distance (const HomogeneousTransfo &m) const 
+  HomogeneousTransfo::distance (const HomogeneousTransfo &m, float* tvalue, float* rvalue) const 
   {
-    return (this->invert () * m).strength ();
+    return (this->invert () * m).strength (tvalue, rvalue);
   }
 
   

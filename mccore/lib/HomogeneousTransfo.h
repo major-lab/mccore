@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 //
 // This file is part of mccore.
 // 
@@ -56,7 +56,7 @@ namespace mccore
    * </pre>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: HomogeneousTransfo.h,v 1.14 2005-01-03 22:55:33 larosem Exp $
+   * @version $Id: HomogeneousTransfo.h,v 1.15 2005-01-07 16:38:23 thibaup Exp $
    */
   class HomogeneousTransfo
   {
@@ -376,7 +376,7 @@ namespace mccore
      * the translation and rotation components.
      * @return the strength (Angstroms).
      */
-    float strength () const;
+    float strength (float* tvalue = 0, float* rvalue = 0) const;
 
     /**
      * Computes the rms of <i,j,k> moved by this transfo from the global referential.
@@ -404,7 +404,7 @@ namespace mccore
      * @param m the transfo to compare to.
      * @return the computed distance (Angstroms).
      */
-    float distance (const HomogeneousTransfo &m) const;
+    float distance (const HomogeneousTransfo &m, float* tvalue = 0, float* rvalue = 0) const;
 
     /**
      * M: m -> m'
