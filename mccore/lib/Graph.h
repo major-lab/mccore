@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Tue Mar 25 10:40:26 2003
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 // 
 //  This file is part of mccore.
 //  
@@ -38,7 +38,7 @@ namespace mccore {
    * @short A templated directed graph class.  Graphs are always weighted using floats!
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Graph.h,v 1.9 2003-04-11 01:33:50 gendrop Exp $
+   * @version $Id: Graph.h,v 1.10 2003-04-30 20:01:43 gendrop Exp $
    */
   template< class node_type, 
 	    class edge_type = bool, 
@@ -224,6 +224,23 @@ namespace mccore {
     }
 
     /**
+     * Inserts the residue range before pos.  It calls the list<> method.
+     * @param pos the iterator where the residue will be placed.
+     * @param f the first iterator in the range.
+     * @param l the last iterator in the range.
+     * @return the position where the residue was inserted.
+     */
+    template <class InputIterator>
+    void insert(InputIterator f, InputIterator l)
+    {
+      while (f != l)
+	{
+	  insert (*f);
+	  ++f;
+	}
+    }
+    
+    /**
      * Erase a node from the graph.
      * @param n the node to remove.
      * @return the number of nodes that were erased.
@@ -375,148 +392,152 @@ namespace mccore {
       typedef float value_type;
       if (!contains (source) || !contains (dest)) return Path< node_type, value_type >();
       
-      map< node_type, Path< node_type, value_type > > paths;
+      map< const node_type*, Path< const node_type*, value_type > > paths;
       paths = shortestPath (source);
-      if (paths.find (dest) != paths.end ()) 
-	return paths[dest];
-      return Path< node_type, value_type >();
-    }
 
-
-
-    /**
-     * Dijkstra's algorithm for the shortest path in a directed graph.
-     * NOTE: value_type must be a float since we still use gcc-2.95.3
-     * and we can't know the MAX_VALUE of types at runtime.  and it
-     * doesn't implement numeric_limits<T> 
-     * @param source the source node of the paths.
-     * @return a map of nodes with their paths from the source.
-     */
-    map< node_type, Path< node_type, float > >
-    shortestPath (const node_type &source) 
-    {
-      typedef float value_type;
-      value_type MAXVALUE = MAXFLOAT;
-
-      if (!contains (source)) return map< node_type, Path< node_type, value_type > > ();
-      
-      map< const node_type*, vector< const node_type* > > p;  // path description
-      map< const node_type*, value_type > v;                  // value of paths in p
-      vector< const node_type* > c;                           // node set
-      const_iterator i;
-      int j, k;
-      
-      // Initialize.
-      for (i=begin (); i!=end (); ++i) {
-      	if (!equals (source, *i)) {
-      	  v[&*i] = value_type ();
-      	  p[&*i] = vector< const node_type* > ();
-      	} else {
-      	  c.push_back (&*i);
-      	  if (areConnected (source, *i)) {
-      	    v[&*i] = getWeight (source, *i);
-      	    p[&*i] = vector< const node_type* > ();
-      	    p[&*i].push_back (&source);
-      	    p[&*i].push_back (&*i);
-      	  } else {
-      	    v[&*i] = MAXVALUE;
-      	    p[&*i] = vector< const node_type* > ();
-      	  }	
-	}
-      }
-
-//       {
-// 	map< const node_type*, vector< const node_type* > >::iterator it;
-// 	map< const node_type*, value_type >::iterator jt;
-// 	vector< const node_type* >::iterator kt; 
-      
-// 	cout << "p =  (" << endl;
-// 	for  (it=p.begin (), jt=v.begin (); it!=p.end () && jt!= v.end (); ++it, ++jt) {
-// 	  cout << *(it->first) << "=[";
-// 	  for (kt=it->second.begin (); kt!=it->second.end (); ++kt) {
-// 	    cout << **kt << " ";
-// 	  }
-// 	  cout << "] " << jt->second << endl;
-// 	} 
-// 	cout << ")" << endl;
-
-// 	cout << "c = ";
-// 	for (kt=c.begin (); kt!=c.end (); ++kt) {
-// 	  cout << **kt << " ";
-// 	}
-// 	cout << endl;
-//       }
-
-      // Execute ---
-      for (j=0; j<size ()-2; ++j) {
-	// Find an element of c that minimizes the current path weight.
-	int minId = 0;
-	value_type minVal = v[c[minId]];
-	for (k=0; k<c.size (); ++k) {
-	  value_type currVal = v[c[k]];
-	  if (currVal < minVal) {
-	    minVal = currVal;
-	    minId = k;
-	  }
-	}	
-	
-	// Break if nothing was found.
-	if (minVal == MAXVALUE) break;
-	
-	// Remove this element from the node set.
-	const node_type* minNode = c[minId];
-	c.erase (c.begin ()+minId);
-
-	// Update paths.
-	for (k=0; k<c.size (); ++k) {
-	  value_type oldVal = v[c[k]];
-	  value_type newVal;
-	  const node_type* kp = c[k];
-	  if (areConnected (*minNode, *kp))
-	    newVal = minVal + getWeight (*minNode, *kp);
-	  else
-	    newVal = MAXVALUE;
-
-	  if (oldVal > newVal) {
-	    p[kp] = p[minNode];
-	    p[kp].push_back (kp);
-	    v[kp] = newVal;
-	  }
-	}
-      }
-
-      // Recreate the resulting map.
-      map< node_type, Path< node_type, value_type > > paths;      
+      map< node_type, Path< node_type, value_type > > realpaths;      
       {
-	map< const node_type*, vector< const node_type* > >::iterator it;
-	map< const node_type*, value_type >::iterator jt;
-	vector< const node_type* >::iterator kt; 
+	map< const node_type*, Path< const node_type*, value_type > >::iterator it;
+	Path< const node_type*, value_type >::iterator kt; 
 
-	for  (it=p.begin (), jt=v.begin (); it!=p.end () && jt!= v.end (); ++it, ++jt) {
+	for  (it=paths.begin (); it!=paths.end (); ++it) {
 	  if (it->second.size () > 0) {
 	    Path< node_type, value_type > aPath;
 	    for (kt=it->second.begin (); kt!=it->second.end (); ++kt) {
 	      aPath.push_back (**kt);
 	    }
-	    aPath.setValue (jt->second);
-	    paths[*(it->first)] = aPath;
+	    aPath.setValue (it->second.getValue ());
+	    realpaths[*(it->first)] = aPath;
 	  }
 	}
       } 
       
-      return paths;
+      if (realpaths.find (dest) != realpaths.end ()) 
+	return realpaths[dest];
+
+      // Recreate the resulting map.
+
+      return Path< node_type, value_type >();
     }
+
 
     // PRIVATE METHODS -----------------------------------------------------------
 
   protected:
 
-    bool equals (const node_type& o, const node_type& p) {
-      return !node_comparator () (o, p) && !node_comparator () (p, o);
-    }
+//     /**
+//      * Dijkstra's algorithm for the shortest path in a directed graph.
+//      * NOTE: value_type must be a float since we still use gcc-2.95.3
+//      * and we can't know the MAX_VALUE of types at runtime.  and it
+//      * doesn't implement numeric_limits<T> 
+//      * @param source the source node of the paths.
+//      * @return a map of nodes with their paths from the source.
+//      */
+//     map< const node_type*, Path< const node_type*, float > >
+//     shortestPath (const node_type &source) 
+//     {
+//       typedef float value_type;
+//       value_type MAXVALUE = MAXFLOAT;
+
+//       if (!contains (source)) return map< const node_type*, Path< const node_type*, value_type > > ();
+      
+//       map< const node_type*, Path< const node_type*, value_type > > p;  // path description
+//       vector< const node_type* > c;                                     // node set
+//       const_iterator i;
+//       int j, k;
+      
+//       // Initialize.
+//       for (i=begin (); i!=end (); ++i) {
+//       	if (equals (source, *i)) {
+//       	  p[&*i] = Path< const node_type*, value_type > ();
+//       	} else {
+//       	  c.push_back (&*i);
+//       	  if (areConnected (source, *i)) {
+//       	    p[&*i] = Path< const node_type*, value_type > ();
+//       	    p[&*i].setValue (getWeight (source, *i));
+//       	    p[&*i].push_back (&source);
+//       	    p[&*i].push_back (&*i);
+//       	  } else {
+//       	    p[&*i] = Path< const node_type*, value_type > ();
+//       	    p[&*i].setValue (MAXVALUE);
+//       	  }	
+// 	}
+//       }
+
+//       {
+// 	map< const node_type*, Path< const node_type*, value_type > >::iterator it;
+// 	Path< const node_type*, value_type >::iterator kt; 
+// 	vector< const node_type* >::iterator jt; 
+
+// 	cout << "p =  (" << endl;
+// 	for  (it=p.begin (); it!=p.end (); ++it) {
+// 	  cout << *(it->first) << "=[";
+// 	  for (kt=it->second.begin (); kt!=it->second.end (); ++kt) {
+// 	    cout << **kt << " ";
+// 	  }
+// 	  cout << "] " << it->second.getValue () << endl;
+// 	} 
+// 	cout << ")" << endl;
+
+// 	cout << "c = ";
+// 	for (jt=c.begin (); jt!=c.end (); ++jt) {
+// 	  cout << **jt << " ";
+// 	}
+// 	cout << endl;
+//       }
+
+//       // Execute ---
+//       for (j=0; j<size ()-2; ++j) {
+// 	// Find an element of c that minimizes the current path weight.
+// 	int minId = 0;
+// 	value_type minVal = p[c[minId]].getValue ();
+// 	for (k=0; k<c.size (); ++k) {
+// 	  value_type currVal = p[c[k]].getValue ();
+// 	  if (currVal < minVal) {
+// 	    minVal = currVal;
+// 	    minId = k;
+// 	  }
+// 	}	
+	
+// 	// Break if nothing was found.
+// 	if (minVal == MAXVALUE) break;
+	
+// 	// Remove this element from the node set.
+// 	const node_type* minNode = c[minId];
+// 	c.erase (c.begin ()+minId);
+
+// 	// Update paths.
+// 	for (k=0; k<c.size (); ++k) {
+// 	  value_type oldVal = p[c[k]].getValue ();
+// 	  value_type newVal;
+// 	  const node_type* kp = c[k];
+// 	  if (areConnected (*minNode, *kp))
+// 	    newVal = minVal + getWeight (*minNode, *kp);
+// 	  else
+// 	    newVal = MAXVALUE;
+
+// 	  if (oldVal > newVal) {
+// 	    p[kp] = p[minNode];
+// 	    p[kp].push_back (kp);
+// 	    p[kp].setValue (newVal);
+// 	  }
+// 	}
+//       }
+      
+//       return p;
+//     }
+
+
+//   protected:
+
+//     bool equals (const node_type& o, const node_type& p) {
+//       return !node_comparator () (o, p) && !node_comparator () (p, o);
+//     }
+
 
     // I/O -----------------------------------------------------------------------
 
+  public:
 
     virtual ostream& output (ostream& os) const
     {
@@ -605,13 +626,13 @@ namespace mccore {
   };  
 
 
-//   template< class node_type, 
-// 	    class edge_type = bool, 
-// 	    class node_comparator = less< node_type > >
-//   ostream &operator<< (ostream &out, const Graph< node_type, edge_type, node_comparator> &g)
-//   {
-//     return g.output (out);
-//   }
+  template< class node_type, 
+	    class edge_type, 
+	    class node_comparator >
+  ostream &operator<< (ostream &out, const Graph< node_type, edge_type, node_comparator> &g)
+  {
+    return g.output (out);
+  }
 
   
 }
