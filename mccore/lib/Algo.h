@@ -28,20 +28,50 @@
 
 #include <algorithm>
 #include <cmath>
+#include <functional>
 #include <limits>
 #include <map>
 #include <utility>
 #include <vector>
 
 #include "Residue.h"
-#include "ResidueType.h"
-#include "Atom.h"
+#include "AtomSet.h"
+#include "Exception.h"
 
 using namespace std;
 
 
 
-namespace mccore {
+namespace mccore
+{
+  /**
+   * Comparator that dereferences the argument before applying the comparator.
+   *
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: Algo.h,v 1.20.2.2 2004-12-27 01:32:35 larosem Exp $
+   */
+  template < class V , class VC = less< V > >
+  class less_deref : public binary_function< V, V, bool >
+  {
+    
+  public:
+
+    /**
+     * Calls the comparator VC over the dereferenced pointers.
+     * @return whether left is less than right.
+     * @exception NullPointerException is thrown if any of the pointers are null.
+     */
+    bool operator() (const V *left, const V *right) const throw (NullPointerException)
+    {
+      if (0 == left || 0 == right)
+	{
+	  throw NullPointerException ("", __FILE__, __LINE__);
+	}      
+      return VC ().operator() (*left, *right);
+    }
+  };
+  
+
   /**
    * @short A class for lone algorithms in the mccore library
    * 
@@ -50,10 +80,11 @@ namespace mccore {
    * the functions may be called with const_iterator and iterator types.
    *
    * @author Sebastien Lemieux
-   * @version $Id: Algo.h,v 1.20.2.1 2004-12-25 02:38:57 larosem Exp $
+   * @version $Id: Algo.h,v 1.20.2.2 2004-12-27 01:32:35 larosem Exp $
    */
   class Algo
   {
+
   public:
     
     /**
@@ -76,27 +107,27 @@ namespace mccore {
       AtomSetNot as_nopse (new AtomSetPSE ());
       
       for (i = begin; i != end; ++i) 
-      {
-	Residue::const_iterator j;
-	  
-	float minX, minY, minZ, maxX, maxY, maxZ;
-	minX = minY = minZ = numeric_limits<float>::max ();
-	maxX = maxY = maxZ = numeric_limits<float>::min ();
-	  
-	for (j = i->begin (as_nopse); j != i->end (); ++j)
 	{
-	  minX = min (minX, j->getX ());
-	  minY = min (minY, j->getY ());
-	  minZ = min (minZ, j->getZ ());
-	  maxX = max (maxX, j->getX ());
-	  maxY = max (maxY, j->getY ());
-	  maxZ = max (maxZ, j->getZ ());
-	}
+	  Residue::const_iterator j;
+	  
+	  float minX, minY, minZ, maxX, maxY, maxZ;
+	  minX = minY = minZ = numeric_limits<float>::max ();
+	  maxX = maxY = maxZ = numeric_limits<float>::min ();
+	  
+	  for (j = i->begin (as_nopse); j != i->end (); ++j)
+	    {
+	      minX = min (minX, j->getX ());
+	      minY = min (minY, j->getY ());
+	      minZ = min (minZ, j->getZ ());
+	      maxX = max (maxX, j->getX ());
+	      maxY = max (maxY, j->getY ());
+	      maxZ = max (maxZ, j->getZ ());
+	    }
 	
-	X_range.push_back (ResidueRange< iter_type > (i, minX, maxX));
-	Y_range.push_back (ResidueRange< iter_type > (i, minY, maxY));
-	Z_range.push_back (ResidueRange< iter_type > (i, minZ, maxZ));
-      }
+	  X_range.push_back (ResidueRange< iter_type > (i, minX, maxX));
+	  Y_range.push_back (ResidueRange< iter_type > (i, minY, maxY));
+	  Z_range.push_back (ResidueRange< iter_type > (i, minZ, maxZ));
+	}
       
       sort (X_range.begin (), X_range.end ());
       sort (Y_range.begin (), Y_range.end ());
@@ -110,19 +141,19 @@ namespace mccore {
       typename map< pair< iter_type, iter_type >, int >::iterator cont_i;
       
       for (cont_i = contact.begin (); cont_i != contact.end (); ++cont_i)
-      {
-	typename map< pair< iter_type, iter_type >, int >::iterator tmp = cont_i;
+	{
+	  typename map< pair< iter_type, iter_type >, int >::iterator tmp = cont_i;
 	  
-	tmp++;
-	if (cont_i->second < 2)
-	  contact.erase (cont_i);
-	// For an unknown reason, when the map is empty, 
-	// cont_i-- does not points to contact.begin (), so this test is added:
-	if (contact.size () == 0)
-	  break;
-	cont_i = tmp;
-	cont_i--;
-      }
+	  tmp++;
+	  if (cont_i->second < 2)
+	    contact.erase (cont_i);
+	  // For an unknown reason, when the map is empty, 
+	  // cont_i-- does not points to contact.begin (), so this test is added:
+	  if (contact.size () == 0)
+	    break;
+	  cont_i = tmp;
+	  cont_i--;
+	}
       
       ExtractContact_OneDim (Z_range, contact, cutoff);
       
@@ -169,51 +200,52 @@ namespace mccore {
       bool overlap (const ResidueRange &r) {
 	if (lower < r.lower)
 	  return upper > r.lower;
-      else
-	return lower <= r.upper;
-    }
+	else
+	  return lower <= r.upper;
+      }
       
       float lowerBound () { return lower; }
-    float upperBound () { return upper; }
+      float upperBound () { return upper; }
       
-    iter_type getResidue () { return res; }
+      iter_type getResidue () { return res; }
     
-    void output (ostream &out)
+      void output (ostream &out)
+      {
+	out << res->getResId () << " : " << lower << "-" << upper;
+      }
+    };
+    
+    /**
+     * Builds a map of contacts in one dimension given that range elements are sorted.     
+     */
+    template< class iter_type >
+    static void ExtractContact_OneDim (vector< ResidueRange< iter_type > > &range, 
+				       map< pair< iter_type, iter_type >, int > &contact,
+				       float cutoff)
     {
-      out << res->getResId () << " : " << lower << "-" << upper;
-    }
-  };
-    
-  /**
-   * Builds a map of contacts in one dimension given that range elements are sorted.     
-   */
-  template< class iter_type >
-  static void ExtractContact_OneDim (vector< ResidueRange< iter_type > > &range, 
-				     map< pair< iter_type, iter_type >, int > &contact,
-				     float cutoff)
-  {
-    typename vector< ResidueRange< iter_type > >::iterator i;
+      typename vector< ResidueRange< iter_type > >::iterator i;
       
-    for (i = range.begin (); i != range.end (); ++i)
-    {
-      typename vector< ResidueRange< iter_type > >::iterator j;
-	  
-      for (j = i; j != range.end (); ++j)
-	if (i != j)
+      for (i = range.begin (); i != range.end (); ++i)
 	{
-	  if (j->lowerBound () - cutoff <= i->upperBound ())
-	  {
-	    if (i->getResidue () < j->getResidue ())
-	      ++contact[make_pair (i->getResidue (), j->getResidue ())];
-	    else
-	      ++contact[make_pair (j->getResidue (), i->getResidue ())];
-	  }
-	  else
-	    break;
+	  typename vector< ResidueRange< iter_type > >::iterator j;
+	  
+	  for (j = i; j != range.end (); ++j)
+	    if (i != j)
+	      {
+		if (j->lowerBound () - cutoff <= i->upperBound ())
+		  {
+		    if (i->getResidue () < j->getResidue ())
+		      ++contact[make_pair (i->getResidue (), j->getResidue ())];
+		    else
+		      ++contact[make_pair (j->getResidue (), i->getResidue ())];
+		  }
+		else
+		  break;
+	      }
 	}
     }
-  }
-};
+
+  };
 }
 
 #endif
