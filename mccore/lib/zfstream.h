@@ -1,28 +1,28 @@
-/* This is part of mcsym library, providing -*- C++ -*- zipped input/output.
-Copyright (C) 1993 Free Software Foundation
-
-This library is free software; you can redistribute it and/or modify it
-under the terms of the GNU General Public License as published by the Free
-Software Foundation; either version 2, or (at your option) any later
-version.
-
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this library; see the file COPYING.  If not, write to the Free
-Software Foundation, 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-
-As a special exception, if you link this file compiled with a GNU compiler
-to produce an executable, this does not cause the resulting executable to be
-covered by the GNU General Public License.  This exception does not however
-invalidate any other reasons why the executable file might be covered by the
-GNU General Public License.
-
-Written by Martin Larose <larosem@acm.org>
-*/
+//                              -*- Mode: C++ -*- 
+// zfstream.h
+// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+// Author           : Martin Larose <larosem@iro.umontreal.ca
+// Created On       : Fri May 11 17:58:03 2001
+// Last Modified By : Martin Larose
+// Last Modified On : Fri May 11 18:04:59 2001
+// Update Count     : 1
+// Status           : Unknown.
+// 
+//  This file is part of mccore.
+//  
+//  mccore is free software; you can redistribute it and/or
+//  modify it under the terms of the GNU Lesser General Public
+//  License as published by the Free Software Foundation; either
+//  version 2.1 of the License, or (at your option) any later version.
+//  
+//  mccore is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+//  Lesser General Public License for more details.
+//  
+//  You should have received a copy of the GNU Lesser General Public
+//  License along with mccore; if not, write to the Free Software
+//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifndef _zfstream_h_
