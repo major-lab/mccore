@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
-// $Revision: 1.6 $
-// $Id: RnamlReader.cc,v 1.6 2005-01-25 15:00:41 thibaup Exp $
+// $Revision: 1.7 $
+// $Id: RnamlReader.cc,v 1.7 2005-01-25 15:23:00 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -61,9 +61,8 @@
 namespace mccore
 {
   
-  RnamlReader::RnamlReader (const char *name, const ResidueFactoryMethod *fm)
+  RnamlReader::RnamlReader (const char *name, const ModelFactoryMethod *fm)
     : is (0),
-      residueFM (0 == fm ? new ExtendedResidueFM () : fm->clone ()),
       rnaml (0)
   {
     if (0 != name)
@@ -80,15 +79,28 @@ namespace mccore
 	else
 	  is = (rnaml::InputStream*) new rnaml::GZIPInputStream ((rnaml::FileInputStream*) is);
       }
+
+    if (0 == fm)
+    {
+      ExtendedResidueFM rfm;
+      this->modelFM = new GraphModelFM (&rfm);
+    }
+    else
+      this->modelFM = fm->clone ();
   }
   
   
-  RnamlReader::RnamlReader (rnaml::InputStream *is, const ResidueFactoryMethod *fm)
+  RnamlReader::RnamlReader (rnaml::InputStream *is, const ModelFactoryMethod *fm)
     : is (is),
-      residueFM (0 == fm ? new ExtendedResidueFM () : fm->clone ()),
       rnaml (0)
   {
-
+    if (0 == fm)
+    {
+      ExtendedResidueFM rfm;
+      this->modelFM = new GraphModelFM (&rfm);
+    }
+    else
+      this->modelFM = fm->clone ();
   }
   
   
@@ -96,7 +108,7 @@ namespace mccore
   {
     if (0 != is)
       delete is;
-    delete residueFM;
+    delete this->modelFM;
     if (0 != rnaml)
       delete rnaml;
   }
@@ -126,7 +138,7 @@ namespace mccore
     const vector< rnaml::Atom* > &atoms = ((rnaml::Base&) base).getAtoms ();
     vector< rnaml::Atom* >::const_iterator cit;
 
-    r = residueFM->createResidue ();
+    r = this->modelFM->getResidueFactoryMethod ()->createResidue ();
     str = base.getStrand ();
     if (0 != str)
       id.setChainId (str[0]);
@@ -156,7 +168,7 @@ namespace mccore
     const vector< rnaml::Base* > &bases = ((rnaml::Model&) model).getBases ();
     vector< rnaml::Base* >::const_iterator cit;
     
-    m = new GraphModel ();
+    m = this->modelFM->createModel ();
     for (cit = bases.begin (); bases.end () != cit; ++cit)
       {
 	Residue *r;
@@ -175,10 +187,8 @@ namespace mccore
     Molecule *m;
     const char *str;
     rnaml::Structure *structure;
-    ExtendedResidueFM rFM;
-    GraphModelFM mFM (&rFM);
     
-    m = new Molecule (&mFM);
+    m = new Molecule (this->modelFM);
     m->setProperty ("id", molecule.getId ());
     m->setProperty ("type", molecule.getType ());
     str = molecule.getComment ();

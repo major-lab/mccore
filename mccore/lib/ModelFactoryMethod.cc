@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Wed Jan  5 17:20:53 2005
-// $Revision: 1.1 $
-// $Id: ModelFactoryMethod.cc,v 1.1 2005-01-06 21:07:55 larosem Exp $
+// $Revision: 1.2 $
+// $Id: ModelFactoryMethod.cc,v 1.2 2005-01-25 15:23:00 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -52,6 +52,21 @@ namespace mccore
   ModelFactoryMethod::~ModelFactoryMethod ()
   {
     delete rFM;
+  }
+
+
+  const ResidueFactoryMethod* 
+  ModelFactoryMethod::getResidueFactoryMethod () const
+  {
+    return this->rFM;
+  }
+
+
+  void 
+  ModelFactoryMethod::setResidueFactoryMethod (const ResidueFactoryMethod* fm)
+  {
+    delete this->rFM;
+    this->rFM = 0 == fm ? new ExtendedResidueFM () : fm->clone ();
   }
 
   

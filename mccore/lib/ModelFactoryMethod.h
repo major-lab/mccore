@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Jan  5 17:12:54 2005
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 //
 // This file is part of mccore.
 // 
@@ -42,7 +42,7 @@ namespace mccore
    * methods.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ModelFactoryMethod.h,v 1.2 2005-01-10 16:47:06 thibaup Exp $
+   * @version $Id: ModelFactoryMethod.h,v 1.3 2005-01-25 15:23:00 thibaup Exp $
    */
   class ModelFactoryMethod
   {
@@ -83,6 +83,18 @@ namespace mccore
 
     // ACCESS ---------------------------------------------------------------
 
+    /**
+     * Gets the residue factory method.
+     * @return the residue factory method.
+     */
+    const ResidueFactoryMethod* getResidueFactoryMethod () const;
+
+    /**
+     * Sets the residue factory method.
+     * @param fm the new residue factory method (default is @ref ExtendedResidueFM)
+     */
+    void setResidueFactoryMethod (const ResidueFactoryMethod* fm = 0);
+
     // METHODS --------------------------------------------------------------
 
     // I/O  -----------------------------------------------------------------
@@ -102,7 +114,7 @@ namespace mccore
    * This is the model factory method implementation for the Model class.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ModelFactoryMethod.h,v 1.2 2005-01-10 16:47:06 thibaup Exp $
+   * @version $Id: ModelFactoryMethod.h,v 1.3 2005-01-25 15:23:00 thibaup Exp $
    */
   class ModelFM : public ModelFactoryMethod
   {
@@ -157,7 +169,7 @@ namespace mccore
    * This is the model factory method implementation for the GraphModel class.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ModelFactoryMethod.h,v 1.2 2005-01-10 16:47:06 thibaup Exp $
+   * @version $Id: ModelFactoryMethod.h,v 1.3 2005-01-25 15:23:00 thibaup Exp $
    */
   class GraphModelFM : public ModelFactoryMethod
   {

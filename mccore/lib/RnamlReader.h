@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 // 
 // This file is part of mccore.
 // 
@@ -48,7 +48,7 @@ namespace mccore
   class AbstractModel;
   class Molecule;
   class Residue;
-  class ResidueFactoryMethod;
+  class ModelFactoryMethod;
 
   
 
@@ -59,7 +59,7 @@ namespace mccore
    * molecule.
    *
    * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: RnamlReader.h,v 1.4 2005-01-25 15:00:40 thibaup Exp $
+   * @version $Id: RnamlReader.h,v 1.5 2005-01-25 15:22:53 thibaup Exp $
    */
   class RnamlReader
   {
@@ -72,10 +72,9 @@ namespace mccore
     rnaml::InputStream *is;
     
     /**
-     * The residue factory method.  It is set to the default residue fm of the
-     * model.
+     * The model factory method. Defaults to GraphModelFM with ExtendedResidueFM.
      */
-    ResidueFactoryMethod *residueFM;
+    ModelFactoryMethod *modelFM;
     
     /**
      * The rnaml object.
@@ -101,14 +100,14 @@ namespace mccore
      * @param name the file name.
      * @param fm the residue factory method optionnal parameter.
      */
-    RnamlReader (const char *name, const ResidueFactoryMethod *fm = 0);
+    RnamlReader (const char *name, const ModelFactoryMethod *fm = 0);
     
     /**
      * Inintializes the reader with a input stream.
      * @param is the input stream.
      * @param fm the residue factory method optionnal parameter.
      */
-    RnamlReader (rnaml::InputStream *is, const ResidueFactoryMethod *fm = 0);
+    RnamlReader (rnaml::InputStream *is, const ModelFactoryMethod *fm = 0);
     
     /**
      * Destroys the object.
