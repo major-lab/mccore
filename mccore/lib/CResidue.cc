@@ -378,6 +378,8 @@ CResidue::CResidue (t_Residue *type, const vector< CAtom > &vec,
       AddHydrogens ();
       AddLP ();
     }
+
+  mAtomRes.reserve (mAtomRes.size ());
 }
 
 
@@ -394,6 +396,7 @@ CResidue::CResidue (const CResidue& right)
       mResName = new char[strlen (right.mResName) + 1];
       strcpy (mResName, right.mResName);
     }
+  mAtomRes.reserve (mAtomRes.size ());
 }
 
 
@@ -428,6 +431,7 @@ CResidue::operator= (const CResidue &right)
       mAtomResPos = right.mAtomResPos;
       mAtomIndex = right.mAtomIndex;
       mAtomRes = right.mAtomRes;
+      mAtomRes.reserve (mAtomRes.size ());
       mTfo = right.mTfo;
     }
   return *this;
@@ -548,6 +552,10 @@ CResidue::Place (int pos) const
 {
   int &new_pos = mAtomResPos[pos];
 
+  if (mAtomRes.capacity () < mAtomRef.size ()) {
+    mAtomRes.reserve (mAtomRef.size ());
+  }
+  
   if (new_pos == -1)
     {
       mAtomRes.push_back (mAtomRef[pos]);

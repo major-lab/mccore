@@ -586,7 +586,7 @@ public:
   // METHODS --------------------------------------------------------------
 
 private:
-  
+
   /**
    * Gets the atom at pos index if it is in local referential.  Transforms
    * it if it is not.
