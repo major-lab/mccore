@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 //
 //  This file is part of mccore.
 //  
@@ -55,7 +55,7 @@ namespace mccore
    * </pre>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: HomogeneousTransfo.h,v 1.11 2004-05-14 14:58:01 thibaup Exp $
+   * @version $Id: HomogeneousTransfo.h,v 1.12 2004-07-05 18:34:10 thibaup Exp $
    */
   class HomogeneousTransfo
   {
@@ -66,6 +66,8 @@ namespace mccore
     
     
   public:
+
+    static const HomogeneousTransfo identity;
     
     // LIFECYCLE ------------------------------------------------------------
     

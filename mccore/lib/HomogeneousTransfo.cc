@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.12 $
+// $Revision: 1.13 $
 //
 //  This file is part of mccore.
 //  
@@ -47,6 +47,9 @@ namespace mccore
       return 1;
     return 2;
   }
+
+
+  const HomogeneousTransfo HomogeneousTransfo::identity;
   
 
   // LIFECYCLE ------------------------------------------------------------
