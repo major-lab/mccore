@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Dec 10 19:09:13 2004
-// $Revision: 1.12.2.1 $
+// $Revision: 1.12.2.2 $
 // 
 // This file is part of mccore.
 // 
@@ -43,7 +43,7 @@ namespace mccore
    * Undirected graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: UndirectedGraph.h,v 1.12.2.1 2004-12-11 01:35:13 larosem Exp $
+   * @version $Id: UndirectedGraph.h,v 1.12.2.2 2004-12-13 04:34:26 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -73,7 +73,7 @@ namespace mccore
     /**
      * The map between a vertex and its index.
      */
-    map< V, size_type > vertex2ind;
+    map< V, size_type, Vertex_Comparator > vertex2ind;
     
     /**
      * The map between a vertex id and a map of vertex id to edge entry index.
