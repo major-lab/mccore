@@ -4,9 +4,9 @@
 //                           Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 16:27:35 1999
-// Last Modified By : Patrick Gendron
-// Last Modified On : Fri Jul 11 17:24:30 2003
-// Update Count     : 21
+// Last Modified By : Philippe Thibault
+// Last Modified On : Wed Oct  1 11:45:15 2003
+// Update Count     : 22
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -31,8 +31,9 @@
 
 #include <iostream>
 
-using namespace std;
+#include "ResId.h"
 
+using namespace std;
 
 /**
  * @short General class of exceptions.
@@ -159,6 +160,15 @@ public:
    */
   CException& operator<< (char theChar);
 
+  /**
+   * Concatenates the current message with a ResId string representation.
+   * Be careful when using this operator, the returned exception is a
+   * CException type NOT a derived type. 
+   * @param theChar the character to concatenate.
+   * @return itself.
+   */
+  CException& operator<< (const mccore::ResId& resid);
+  
   /** 
    * Outputs the message to the stream.
    * @param os the output stream.

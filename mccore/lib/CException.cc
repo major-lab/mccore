@@ -4,9 +4,9 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Patrick Gendron
-// Last Modified On : Fri Jul 11 17:24:25 2003
-// Update Count     : 25
+// Last Modified By : Philippe Thibault
+// Last Modified On : Wed Oct  1 11:45:08 2003
+// Update Count     : 26
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -33,6 +33,7 @@
 #include <iostream>
 #include <cstdio>
 #include <string>
+
 
 #include "CException.h"
 
@@ -201,6 +202,20 @@ CException::operator<< (char theChar)
   strcat (tmp, a);
   delete[] mMessage;
   mMessage = tmp;
+  return *this;
+}
+
+
+CException&
+CException::operator<< (const mccore::ResId& resid)
+{
+  if (resid.getChainId () == ' ') *this << resid.getResNo ();
+  else if (! isalpha (resid.getChainId ())) 
+    *this << '\'' << resid.getChainId () << '\'' << resid.getResNo ();
+  else *this << resid.getChainId () << resid.getResNo ();
+
+  if (resid.getInsertionCode () != ' ') *this << '.' << resid.getInsertionCode ();
+  
   return *this;
 }
 
