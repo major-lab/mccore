@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.33 $
-// $Id: Pdbstream.h,v 1.33 2004-12-06 21:38:17 thibaup Exp $
+// $Revision: 1.34 $
+// $Id: Pdbstream.h,v 1.34 2004-12-09 19:55:58 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -147,7 +147,7 @@ namespace mccore
    * </pre>
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Pdbstream.h,v 1.33 2004-12-06 21:38:17 thibaup Exp $
+   * @version $Id: Pdbstream.h,v 1.34 2004-12-09 19:55:58 thibaup Exp $
    */
   class iPdbstream : public istream
   {
@@ -189,6 +189,11 @@ namespace mccore
      */
     unsigned int pdbType;
 
+    /**
+     * The alternate location marker
+     */
+    char altloc;
+    
     /**
      * The current parse table for atom types.
      */

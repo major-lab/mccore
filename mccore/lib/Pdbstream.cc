@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.48 $
-// $Id: Pdbstream.cc,v 1.48 2004-12-06 21:38:09 thibaup Exp $
+// $Revision: 1.49 $
+// $Id: Pdbstream.cc,v 1.49 2004-12-09 19:55:52 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -153,7 +153,8 @@ namespace mccore
       ratom (0),
       modelNb (1),
       eomFlag (false),
-      pdbType (Pdbstream::PDB)
+      pdbType (Pdbstream::PDB),
+      altloc (' ')
   {
     Pdbstream::init ();
     atomTypeParseTable = Pdbstream::pdbAtomTypeParseTable;
@@ -168,7 +169,8 @@ namespace mccore
       ratom (0),
       modelNb (1),
       eomFlag (false),
-      pdbType (Pdbstream::PDB)
+      pdbType (Pdbstream::PDB),
+      altloc (' ')
   {
     Pdbstream::init ();
     atomTypeParseTable = Pdbstream::pdbAtomTypeParseTable;
@@ -221,6 +223,7 @@ namespace mccore
     ratom = 0;
     modelNb = 1;
     eomFlag = false;
+    altloc = ' ';
   }
 
 
@@ -253,87 +256,98 @@ namespace mccore
     if (ratom)
       delete ratom;
     ratom = 0;
-
+    
     while (! eof ())
-      {
-	string tag;
-	string field;
-	string copy;
+    {
+      string tag;
+      string field;
+      string copy;
 	
-	while ((std::getline (*this, line), line.length ()) == 0 && ! eof ());
-	if (0 == line.length () && eof ())
-	  break;
+      while ((std::getline (*this, line), line.length ()) == 0 && ! eof ());
+      if (0 == line.length () && eof ())
+	break;
 
-	if (LINELENGTH > line.length ())
-	  line.resize (LINELENGTH, ' ');
-
-	tag = line.substr (0, 6);
-	if ("HEADER" == tag)
-	  {
-	    header.setClassification (trim (copy = line.substr (10, 40)));
-	    header.setDate (trim (copy = line.substr (50, 9)));
-	    header.setPdbId (trim (copy = line.substr (62, 4)));
-	  }
-	else if ("TITLE" == tag)
-	  {
-	    header.setTitle (header.getTitle () + " " + trim (copy = line.substr (10, 60)));
-	  }
-	else if ("COMPND" == tag)
-	  {
-	  }
-	else if ("EXPDTA" == tag)
-	  {
-	    header.setMethod (header.getMethod () + " " + trim (copy = line.substr (10, 60)));
-	  }
-	else if ("REMARK" == tag
-		 && '2' == line[9]
-		 && 0 == line.compare (11, 11, "RESOLUTION.")
-		 && 0 != line.compare (11, 27, "RESOLUTION. NOT APPLICABLE."))
-	  {
-	    header.setResolution (atof (trim (copy = line.substr (22, 5)).c_str ()));
-	  }
-	else if ("MODEL" == tag)
-	  {
-	    // The eomFlag is reset to false o
-	  }
-	else if ("ENDMDL" == tag)
-	  {
-	    modelNb++;
-	    eomFlag = true;
-	  }
-	else if ("TER   " == tag)
-	  {
-	    
-	  }
-	else if ("END   " == tag)
-	  {
-	    eomFlag = true;
-	  }
-	else if ("ATOM  " == tag || "HETATM" == tag)
-	  {
-	    float x, y, z;
-	    const AtomType *at;
-
-	    x = atof (trim (copy = line.substr (30, 8)).c_str ());
-	    y = atof (trim (copy = line.substr (38, 8)).c_str ());	    
-	    z = atof (trim (copy = line.substr (46, 8)).c_str ());
-
-// 	    at = atomTypeParseTable->parseType (trim (copy = line.substr (12, 4)));
-	    copy = line.substr (12, 4);
-	    trim (copy);
-	    at = atomTypeParseTable->parseType (copy);
-
-	    rtype = residueTypeParseTable->parseType (trim (copy = line.substr (17, 3)));
-	    
-	    rid = new ResId (line[21],
-			     atoi (trim (copy = line.substr (22, 4)).c_str ()),
-			     line[26]);
-	    
-	    ratom = new Atom (x, y, z, at);
-	    break;
-	  }
+      if (LINELENGTH > line.length ())
+	line.resize (LINELENGTH, ' ');
+	
+      tag = line.substr (0, 6);
+      if ("HEADER" == tag)
+      {
+	header.setClassification (trim (copy = line.substr (10, 40)));
+	header.setDate (trim (copy = line.substr (50, 9)));
+	header.setPdbId (trim (copy = line.substr (62, 4)));
       }
+      else if ("TITLE" == tag)
+      {
+	header.setTitle (header.getTitle () + " " + trim (copy = line.substr (10, 60)));
+      }
+      else if ("COMPND" == tag)
+      {
+      }
+      else if ("EXPDTA" == tag)
+      {
+	header.setMethod (header.getMethod () + " " + trim (copy = line.substr (10, 60)));
+      }
+      else if ("REMARK" == tag
+	       && '2' == line[9]
+	       && 0 == line.compare (11, 11, "RESOLUTION.")
+	       && 0 != line.compare (11, 27, "RESOLUTION. NOT APPLICABLE."))
+      {
+	header.setResolution (atof (trim (copy = line.substr (22, 5)).c_str ()));
+      }
+      else if ("MODEL" == tag)
+      {
+	// The eomFlag is reset to false o
+      }
+      else if ("ENDMDL" == tag)
+      {
+	modelNb++;
+	eomFlag = true;
+      }
+      else if ("TER   " == tag)
+      {
+	    
+      }
+      else if ("END   " == tag)
+      {
+	eomFlag = true;
+      }
+      else if ("ATOM  " == tag || "HETATM" == tag)
+      {
+	if (' ' == this->altloc || ' ' == line[16] || line[16] == this->altloc)
+	{
+	  float x, y, z;
+	  const AtomType *at;
 
+	  this->altloc = line[16];
+	      
+	  x = atof (trim (copy = line.substr (30, 8)).c_str ());
+	  y = atof (trim (copy = line.substr (38, 8)).c_str ());	    
+	  z = atof (trim (copy = line.substr (46, 8)).c_str ());
+
+	  // 	    at = atomTypeParseTable->parseType (trim (copy = line.substr (12, 4)));
+	  copy = line.substr (12, 4);
+	  trim (copy);
+	  at = atomTypeParseTable->parseType (copy);
+	      
+	  rtype = residueTypeParseTable->parseType (trim (copy = line.substr (17, 3)));
+	      
+	  rid = new ResId (line[21],
+			   atoi (trim (copy = line.substr (22, 4)).c_str ()),
+			   line[26]);
+	      
+	  ratom = new Atom (x, y, z, at);
+	    
+	  break;
+	}
+	else
+	  gOut (3) << "Warning: ignoring atom with alternate location \'"
+		   << line[16] << "\' at line:" << endl
+		   << '[' << line << ']' << endl;
+      }
+    }
+      
+    
     return ratom;
   }
 
@@ -386,7 +400,7 @@ namespace mccore
     // No atom was found, return.
     if (ratom)
       {
-	ResId previd (*rid);
+	ResId previd = *rid;
 	const ResidueType* prevtype = rtype;
 
 	eomFlag = false;
@@ -436,7 +450,7 @@ namespace mccore
 	    r.finalize ();
 	  }
       }
-
+    
     gOut (6) << "> Read residue " << r << endl;
   }
   
