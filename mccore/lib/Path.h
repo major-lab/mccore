@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // Path.h
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 24 21:31:52 2003
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 // 
 // This file is part of mccore.
 // 
@@ -37,10 +37,10 @@ namespace mccore
 {
 
   /**
-   * @short A path in a graph.
+   * A path in a graph.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Path.h,v 1.7 2005-01-03 22:58:03 larosem Exp $
+   * @version $Id: Path.h,v 1.8 2005-02-01 16:36:11 larosem Exp $
    */
   template< class node_type, class valuetype >
   class Path : public vector< node_type >
@@ -60,16 +60,16 @@ namespace mccore
     /**
      * Initializes the object.
      */
-    Path ()
-      : vector< node_type > (),
-	value (valuetype ())
-    { }
+    Path () : value (valuetype ()) { }
 
     /**
      * Initializes the object with the other's content.
      * @param other the object to copy.
      */
-    Path (const Path &other) : vector< node_type > (other), value (other.value) { }
+    Path (const Path &other)
+      : vector< node_type > (other),
+	value (other.value)
+    { }
 
     /**
      * Destroys the object.
@@ -104,7 +104,7 @@ namespace mccore
 	      || (value == other.value
 		  && (size () < other.size ()
 		      || (size () == other.size ()
-			  && (const vector< node_type >&) *this < (const vector< node_type >&) other))));
+			  && vector< node_type >::operator< (other)))));
     }
 
     /**
@@ -118,26 +118,32 @@ namespace mccore
 	  && size () == other.size ())
 	{
 	  if (empty ())
-	    return true;
+	    {
+	      return true;
+	    }
 	  else
 	    {
 	      const Path &a = *this;
 	      Path b = other;
-	      int i;
+	      unsigned int i;
 	      
-	      for (i = 0; i <(int) a.size (); ++i)
+	      for (i = a.size (); 0 != i; --i)
 		{
 		  if ((const vector< node_type >&) a == (vector< node_type >&) b)
-		    return true;
+		    {
+		      return true;
+		    }
 		  b.rotate ();
 		}
 	      
 	      b.reverse ();
 	      
-	      for (i = 0; i < (int) a.size (); ++i)
+	      for (i = a.size (); 0 != i; --i)
 		{
 		  if ((vector< node_type >&) a == (vector< node_type >&) b)
-		    return true;
+		    {
+		      return true;
+		    }
 		  b.rotate ();
 		}
 	    }
@@ -145,39 +151,60 @@ namespace mccore
       return false;
     }
       
-
-    bool operator!= (const Path &other) const { return ! (*this == other); }
+    /**
+     * Compares two paths to determine if they differs.  They are
+     * compared in both directions and are rotated, i.e. it is to be
+     * used with cycles.
+     * @param other the Path to compare with this.
+     * @return whether the Paths differs.
+     */
+    bool operator!= (const Path &other) const { return ! operator== (other); }
      
     // ACCESS ---------------------------------------------------------------
 
-    void setValue (const valuetype &v) { value = v; }
+    /**
+     * Gets the value of the Path.
+     * @return the Path value.
+     */
+    valuetype getValue () const { return value; }
 
-    valuetype getValue (void) const { return value; }
+    /**
+     * Sets the value of the Path.
+     * @param the Path value.
+     */
+    void setValue (const valuetype &v) { value = v; }
 
     // METHODS --------------------------------------------------------------
 
+    /**
+     * Rotates the path.  It pushes the front element to the back of the Path.
+     */
     void rotate ()
     {
-      this->push_back (this->front ());
-      this->pop_front ();
+      push_back (front ());
+      pop_front ();
     }
     
     // I/O  -----------------------------------------------------------------
 
-    virtual ostream &output (ostream &out) const {
-      out << "[ " << flush;
+    /**
+     * Writes the Path to the output stream.
+     * @param os the output stream.
+     * @return the output stream.
+     */
+    virtual ostream& write (ostream &os) const
+    {
       const_iterator i;
-      for (i=begin (); i!=end (); ++i) {
-	out << *i << " ";
-      }
-      out << "] " << value << flush;
-      return out;
+
+      os << "[ ";
+      for (i = begin (); end () != i; ++i)
+	{
+	  os << *i << " ";
+	}
+      os << "] " << value << flush;
+      return os;
     }
     
-    friend ostream &operator<< (ostream &out, const Path &path)
-    {
-      return path.output (out);
-    }
   };
 
 }
@@ -188,14 +215,14 @@ namespace std
 
   /**
    * Writes the path to the output stream.
-   * @param out the output stream.
+   * @param os the output stream.
    * @param path the Path to write.
    * @return the output stream.
    */
   template < class node_type, class valuetype >
-  ostream &operator<< (ostream &out, const mccore::Path< node_type, valuetype > &path)
+  ostream& operator<< (ostream &os, const mccore::Path< node_type, valuetype > &path)
   {
-    return path.output (out);
+    return path.write (os);
   }
   
 }
