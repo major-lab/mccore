@@ -4,9 +4,9 @@
 ##                     Université de Montréal.
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:57:11 2000
-## Last Modified By : Patrick Gendron
-## Last Modified On : Fri Mar 15 14:12:45 2002
-## Update Count     : 23
+## Last Modified By : Labo Lbit
+## Last Modified On : Tue Apr  2 14:34:07 2002
+## Update Count     : 24
 ## Status           : Ok.
 ###############################################################################
 #
@@ -95,13 +95,12 @@ SOURCES = zfstream.cc \
           CHBond.cc \
           CTransfo.cc \
 	  Model.cc \
-	  McCore.cc \
-	  Graph.cc
+	  McCore.cc
 
 
-HEADERS = $(SOURCES:.cc=.h) Algo.h AtomType.h Messagestream.h \
-ResidueFactoryMethod.h ResidueType.h SocketCommand.h fBinstream.h \
-fPdbstream.h fstreambase.h oMessagestream.h sBinstream.h \
+HEADERS = $(SOURCES:.cc=.h) Algo.h AtomType.h Graph.h Graph.cc \
+Messagestream.h ResidueFactoryMethod.h ResidueType.h SocketCommand.h \
+fBinstream.h fPdbstream.h fstreambase.h oMessagestream.h sBinstream.h \
 zfBinstream.h zfPdbstream.h
 
 OBJECTS = $(SOURCES:.cc=.o)
@@ -110,7 +109,7 @@ SHOBJECTS = $(SOURCES:.cc=.lo)
 
 LIBRARY = lib$(PACKAGE)
 
-DISTFILES = Makefile.in $(SOURCES) $(HEADERS) 
+DISTFILES = Makefile.in $(SOURCES) $(HEADERS)
 
 
 all: $(LIBRARY).so.$(VERSION) TAGS
