@@ -3,9 +3,9 @@
 // Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : Thu Oct 26 10:24:02 2000
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Nov  9 10:45:06 2000
-// Update Count     : 2
+// Last Modified By : Labo Lbit
+// Last Modified On : Fri Nov 10 18:36:21 2000
+// Update Count     : 3
 // Status           : Unknown.
 // 
 
@@ -17,6 +17,7 @@
 
 #include "CResIdSet.h"
 
+#include "McCore.h"
 #include "CException.h"
 
 
