@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Apr  7 18:28:55 2003
-// $Revision: 1.10.4.5 $
+// $Revision: 1.10.4.6 $
 // 
 // This file is part of mccore.
 // 
@@ -48,7 +48,7 @@ namespace mccore
    * </pre>
    * for flow calculation.
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: MaximumFlowGraph.h,v 1.10.4.5 2004-12-23 22:43:13 larosem Exp $
+   * @version $Id: MaximumFlowGraph.h,v 1.10.4.6 2004-12-24 08:35:04 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -162,6 +162,19 @@ namespace mccore
     
   public:
     
+    /**
+     * Connects two vertices labels of the graph with an edge and weight.
+     * @param h the head vertex label of the edge.
+     * @param t the tail vertex label of the edge.
+     * @param e the edge.
+     * @param w the weight of this edge.
+     * @return true if the connect operation succeeded.
+     */
+    virtual bool internalConnect (label h, label t, const E &e, const float w)
+    {
+      return OrientedGraph< V, E, VW, float, Vertex_Comparator >::internalConnect (h, t, e, w);
+    }
+
     /**
      * Pre Flow Push algorithm for solving the Maximum Flow problem.
      * Adapted by Sebastien to minimize each individual flow and avoid

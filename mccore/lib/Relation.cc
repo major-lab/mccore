@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.32.2.4 $
+// $Revision: 1.32.2.5 $
 // 
 // This file is part of mccore.
 // 
@@ -31,6 +31,7 @@
 #include <iterator>
 #include <limits>
 #include <string>
+#include <utility>
 
 #include "Atom.h"
 #include "AtomSet.h"
@@ -411,20 +412,21 @@ namespace mccore
     static const float PAIRING_CUTOFF = 0.8f;
     static const float TWO_BONDS_CUTOFF = 1.5f;
     static const float THREE_BONDS_CUTOFF = 2.1f;
-    typedef MaximumFlowGraph< int, HBond > HBondFlowGraph;
+    typedef MaximumFlowGraph< unsigned int, HBond > HBondFlowGraph;
+    typedef map< Residue::const_iterator, unsigned int > AtomToInt;
 
     try
       {
 	Residue::const_iterator i, j, k, l;
-	map< Residue::const_iterator, int > atomToInt; 
-	int node;
+	AtomToInt atomToInt;
+	unsigned int node;
 	HBondFlowGraph graph;
 	vector< Residue::const_iterator > ref_at;
 	vector< Residue::const_iterator > refn_at;
 	vector< Residue::const_iterator > res_at;
 	vector< Residue::const_iterator > resn_at;
-	int x;
-	int y;
+	vector< Residue::const_iterator >::size_type x;
+	vector< Residue::const_iterator >::size_type y;
 	AtomSetAnd da (new AtomSetSideChain (), 
 		       new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M), 
 						      new AtomSetAtom (AtomType::a3H5M))));
@@ -471,11 +473,11 @@ namespace mccore
 	      }
 	  }
 	
-	for (x = 0; x < (int) ref_at.size (); ++x)
+	for (x = 0; x < ref_at.size (); ++x)
 	  {
 	    i = ref_at[x];
 	    j = refn_at[x];
-	    for (y = 0; y < (int) res_at.size (); ++y)
+	    for (y = 0; y < res_at.size (); ++y)
 	      {
 		k = res_at[y];
 		l = resn_at[y];
@@ -487,21 +489,24 @@ namespace mccore
 		    h.evalStatistically (*ref, *res);
 		    if (h.getValue () > 0.01)
 		      {
-			HBond hb;
-			    
-			if (atomToInt.find (i) == atomToInt.end ())
+			HBond fake;
+			pair< AtomToInt::iterator, bool > iIt = atomToInt.insert (make_pair (i, node));
+
+			fake.setInitialValue (1);
+			if (iIt.second)
 			  {
 			    graph.insert (node, 1);
-			    graph.connect (0, node, hb, 0);
-			    atomToInt[i] = node++;
+			    graph.internalConnect (0, node, fake, 0);
+			    ++node;
 			  }
-			if (atomToInt.find (k) == atomToInt.end ())
+			pair< AtomToInt::iterator, bool > kIt = atomToInt.insert (make_pair (k, node));
+			if (kIt.second)
 			  {
 			    graph.insert (node, 1);
-			    graph.connect (node, 1, hb, 0);
-			    atomToInt[k] = node++;
+			    graph.internalConnect (node, 1, fake, 0);
+			    ++node;
 			  }
-			graph.connect (atomToInt[i], atomToInt[k], h, 0);
+			graph.internalConnect (iIt.first->second, kIt.first->second, h, 0);
 		      }
 		  }
 		else if (k->getType ()->isHydrogen () && i->getType ()->isLonePair ())
@@ -511,21 +516,24 @@ namespace mccore
 		    h.evalStatistically (*res, *ref);
 		    if (h.getValue () > 0.01)
 		      {
-			HBond hb;
+			HBond fake;
+			pair< AtomToInt::iterator, bool > kIt = atomToInt.insert (make_pair (k, node));
 			
-			if (atomToInt.find (k) == atomToInt.end ())
+			fake.setInitialValue (1);
+			if (kIt.second)
 			  {
 			    graph.insert (node, 1);
-			    graph.connect (0, node, hb, 0);
-			    atomToInt[k] = node++;
+			    graph.internalConnect (0, node, fake, 0);
+			    ++node;
 			  }
-			if (atomToInt.find (i) == atomToInt.end ())
+			pair< AtomToInt::iterator, bool > iIt = atomToInt.insert (make_pair (i, node));
+			if (iIt.second)
 			  {
 			    graph.insert (node, 1);
-			    graph.connect (node, 1, hb, 0);
-			    atomToInt[i] = node++;
+			    graph.internalConnect (node, 1, fake, 0);
+			    ++node;
 			  }
-			graph.connect (atomToInt[k], atomToInt[i], h, 0);
+			graph.internalConnect (kIt.first->second, iIt.first->second, h, 0);
 		      }
 		  }
 	      }
@@ -535,28 +543,26 @@ namespace mccore
 	
 	if (graph.size () >= 3)
 	  {
-	    map< Residue::const_iterator, int >::iterator m;
-	    map< Residue::const_iterator, int >::iterator n;
+	    HBondFlowGraph::size_type label;
 
 	    graph.preFlowPush (0, 1);
 	    
 	    gOut (5) << graph << endl;
-	    
-	    for (m = atomToInt.begin (); m != atomToInt.end (); ++m)
-	      {
-		for (n = atomToInt.begin (); n != atomToInt.end (); ++n)
-		  {
-		    if (graph.areConnected (m->second, n->second))
-		      {
-			float flow;
 
-			flow = graph.getEdgeWeight (m->second, n->second);
-			sum_flow += flow;
-			hbonds.push_back (HBondFlow (graph.getEdge (m->second, n->second), flow));
-		      }
+	    for (label = 0; label < graph.edgeSize (); ++label)
+	      {
+		HBond &hbond = graph.internalGetEdge (label);
+
+		if (0 != hbond.getDonorType ())
+		  {
+		    float flow;
+
+		    flow = graph.internalGetEdgeWeight (label);
+		    sum_flow += flow;
+		    hbonds.push_back (HBondFlow (hbond, flow));
 		  }
 	      }
-	
+
 	    gOut (3) << "Sum flow = " << sum_flow << endl;
 	    
 	    if (sum_flow >= PAIRING_CUTOFF)
@@ -565,7 +571,8 @@ namespace mccore
 		Vector3D pb;
 		Vector3D pva;
 		Vector3D pvb;
-		list< HBondFlow > hbf;
+		list< HBondFlow > hbf (hbonds.begin (), hbonds.end ());
+		vector< HBondFlow >::iterator hbIt;
 	  
 		labels.insert (PropertyType::pPairing);
 		
@@ -574,38 +581,27 @@ namespace mccore
 		    labels.insert (PropertyType::pOneHbond);
 		  }
 		
-		
 		// Compute contact points and visual contact points
-		for (m = atomToInt.begin (); m != atomToInt.end (); ++m)
+		for (hbIt = hbonds.begin (); hbonds.end () != hbIt; ++hbIt)
 		  {
-		    for (n = atomToInt.begin (); n != atomToInt.end (); ++n)
+		    HBondFlow &fl = *hbIt;
+		    
+		    if (fl.hbond.getDonorResidue () == ref)
 		      {
-			if (graph.areConnected (m->second, n->second))
-			  {
-			    HBondFlow fl;
-			    
-			    fl.hbond = graph.getEdge (m->second, n->second);
-			    fl.flow = graph.getEdgeWeight (m->second, n->second);
-			    hbf.push_back (fl);
-		      
-			    if (fl.hbond.getDonorResidue () == ref)
-			      {
-				pa = pa + (fl.hbond.getHydrogen () * fl.flow);
-				pb = pb + (fl.hbond.getLonePair () * fl.flow);
-				pva = pva + (fl.hbond.getHydrogen () * fl.flow);
-				pvb = pvb + (fl.hbond.getAcceptor () * fl.flow);
-			      }
-			    else
-			      {
-				pa = pa + (fl.hbond.getLonePair () * fl.flow);
-				pb = pb + (fl.hbond.getHydrogen () * fl.flow);
-				pva = pva + (fl.hbond.getAcceptor () * fl.flow);
-				pvb = pvb + (fl.hbond.getHydrogen () * fl.flow);
-			      }
-			  }
+			pa = pa + (fl.hbond.getHydrogen () * fl.flow);
+			pb = pb + (fl.hbond.getLonePair () * fl.flow);
+			pva = pva + (fl.hbond.getHydrogen () * fl.flow);
+			pvb = pvb + (fl.hbond.getAcceptor () * fl.flow);
+		      }
+		    else
+		      {
+			pa = pa + (fl.hbond.getLonePair () * fl.flow);
+			pb = pb + (fl.hbond.getHydrogen () * fl.flow);
+			pva = pva + (fl.hbond.getAcceptor () * fl.flow);
+			pvb = pvb + (fl.hbond.getHydrogen () * fl.flow);
 		      }
 		  }
-	      
+			
 		pa = pa / sum_flow;
 		pb = pb / sum_flow;
 		pva = pva / sum_flow;
