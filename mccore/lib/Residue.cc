@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.48 $
-// $Id: Residue.cc,v 1.48 2004-09-10 14:32:37 thibaup Exp $
+// $Revision: 1.49 $
+// $Id: Residue.cc,v 1.49 2004-09-16 13:46:44 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -1662,17 +1662,18 @@ namespace mccore {
   }
 
   
-  void
+  float
   Residue::buildRibose (const PropertyType* pucker, const PropertyType* glycosyl,
 			bool build5p, bool build3p)
   {
     float p0 = Residue::getMinRho (pucker), p1 = Residue::getMaxRho (pucker);
     float g0 = Residue::getMinChi (glycosyl), g1 = Residue::getMaxChi (glycosyl);
     this->buildRibose (p0 + (p1 - p0) / 2.0, g0 + (g1 - g0) / 2.0, 1, M_PI, build5p, build3p);
+    return 0.0;
   }
 
   
-  void
+  float
   Residue::buildRibose (float rho, float chi, float gamma, float beta,
 			bool build5p, bool build3p)
   {
@@ -1685,6 +1686,7 @@ namespace mccore {
     this->_build_ribose (rho, chi, gamma, beta, build5p, build3p);
     this->_build_ribose_postprocess (tfo, build5p, build3p);
     this->rib_built_valid = true;
+    return 0.0;
   }
 
   

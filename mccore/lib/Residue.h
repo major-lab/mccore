@@ -3,8 +3,8 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.22 $
-// $Id: Residue.h,v 1.22 2004-07-12 19:34:23 thibaup Exp $
+// $Revision: 1.23 $
+// $Id: Residue.h,v 1.23 2004-09-16 13:46:50 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -63,7 +63,7 @@ namespace mccore
    * the atom types.
    *
    * @author Patrick Gendron <gendrop@iro.umontreal.ca>
-   * @version $Id: Residue.h,v 1.22 2004-07-12 19:34:23 thibaup Exp $
+   * @version $Id: Residue.h,v 1.23 2004-09-16 13:46:50 thibaup Exp $
    */
   class Residue
   {
@@ -886,9 +886,10 @@ namespace mccore
      * @param glycosyl Glycosyl torsion type.
      * @param build5p Flag to enable 5' branch construction (O5' and P atoms).
      * @param build3p Flag to enable 3' branch construction (O3' atom).
+     * @return Zero value.
      */
-    void buildRibose (const PropertyType* pucker, const PropertyType* glycosyl,
-		      bool build5p, bool build3p);
+    float buildRibose (const PropertyType* pucker, const PropertyType* glycosyl,
+		       bool build5p, bool build3p);
 
     /**
      * Builds a theoretical ribose onto a nucleic acid's nitrogen base.
@@ -900,10 +901,11 @@ namespace mccore
      * @param beta Beta torsion (rad).
      * @param build5p Flag to enable 5' branch construction (O5' and P atoms).
      * @param build3p Flag to enable 3' branch construction (O3' atom).
+     * @return Zero value.
      */
-    void buildRibose (float rho, float chi,
-		      float gamma, float beta,
-		      bool build5p, bool build3p);
+    float buildRibose (float rho, float chi,
+		       float gamma, float beta,
+		       bool build5p, bool build3p);
 
     /**
      * Builds a theoretical ribose onto a nucleic acid's nitrogen base that fits the global
