@@ -3,8 +3,8 @@
 // Copyright © 2002-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Mon Feb 18 16:07:09 2002
-// $Revision: 1.11 $
-// $Id: Graph.cc,v 1.11 2003-12-23 14:48:04 larosem Exp $
+// $Revision: 1.12 $
+// $Id: Graph.cc,v 1.12 2003-12-23 14:52:11 larosem Exp $
 // 
 // This file is part of mccore.
 // 

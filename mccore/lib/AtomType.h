@@ -3,7 +3,7 @@
 // Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
-// $Revision: 1.18 $
+// $Revision: 1.19 $
 // 
 //  This file is part of mccore.
 //  
@@ -55,7 +55,7 @@ namespace mccore {
    *   - The charge and van der Waals radius<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: AtomType.h,v 1.18 2003-12-23 14:46:53 larosem Exp $ 
+   * @version $Id: AtomType.h,v 1.19 2003-12-23 14:52:06 larosem Exp $ 
    */
   class AtomType 
   {

@@ -1048,6 +1048,7 @@ namespace mccore {
     virtual bool operator() (const Atom &atom) const
     { return atom.getType () == type; }
 
+
     // METHODS --------------------------------------------------------------
 
   protected: 
