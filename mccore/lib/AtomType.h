@@ -3,7 +3,7 @@
 // Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
-// $Revision: 1.24 $
+// $Revision: 1.25 $
 // 
 //  This file is part of mccore.
 //  
@@ -29,6 +29,7 @@
 #include <typeinfo>
 #include <set>
 
+#include "Pdbstream.h"
 #include "Vector3D.h"
 
 using namespace std;
@@ -57,7 +58,7 @@ namespace mccore
    *   - The charge and van der Waals radius<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: AtomType.h,v 1.24 2004-08-26 15:20:43 thibaup Exp $ 
+   * @version $Id: AtomType.h,v 1.25 2004-09-24 22:16:19 larosem Exp $ 
    */
   class AtomType 
   {
@@ -65,6 +66,8 @@ namespace mccore
      * Container for string to type associations.
      */
     static AtomTypeStore atstore;
+
+  protected:
     
     /**
      * The type.
@@ -150,14 +153,21 @@ namespace mccore
     bool operator< (const AtomType &other) const
     { return strcmp (type, other.type) < 0; }
 
-    // METHODS -----------------------------------------------------------------
-    
     /**
      * Converts the atomtype into a string.
      * @return the string.
      */
     virtual operator const char* () const { return type; }
         
+    // METHODS -----------------------------------------------------------------
+
+    /**
+     * Converts the atom type into a PDB compliant string.
+     * @return the string.
+     */
+    virtual const char* toPdbString (unsigned int i = oPdbstream::PDB) const
+    { return type; }
+
     /**
      * Identifies the type of atom stored in a string.
      * @param s the string.

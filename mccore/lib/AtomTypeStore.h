@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 12:30:39 2003
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 // 
 //  This file is part of mccore.
 //  
@@ -33,8 +33,11 @@
 #include <string>
 
 #include "AtomType.h"
+#include "Pdbstream.h"
 
 using namespace std;
+
+
 
 namespace mccore { 
 
@@ -44,7 +47,7 @@ namespace mccore {
    * @short Repository of atomtypes.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: AtomTypeStore.h,v 1.7 2004-08-26 15:21:00 thibaup Exp $
+   * @version $Id: AtomTypeStore.h,v 1.8 2004-09-24 22:17:09 larosem Exp $
    */
   class AtomTypeStore
   {
@@ -697,6 +700,15 @@ namespace mccore {
 	return dynamic_cast< const AO2p* > (t);
       }
       
+      /**
+       * Converts the atom type into a PDB compliant string.
+       * @return the string.
+       */
+      virtual const char* toPdbString (unsigned int i = oPdbstream::PDB) const
+      {
+	return (i == oPdbstream::AMBER) ? "O2'" : type;
+      }
+
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param res the residue that contains the atom.
