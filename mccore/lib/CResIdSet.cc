@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // CResIdSet.cc
-// Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : Thu Oct 26 10:24:02 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Dec  4 15:41:26 2000
-// Update Count     : 4
+// Last Modified On : Fri Feb  9 16:08:24 2001
+// Update Count     : 5
 // Status           : Unknown.
 // 
 
@@ -96,34 +96,31 @@ CResIdSet::_parse_and_insert (const char *str)
 	  lower = strsep (&token, "-");
 	  upper = strsep (&token, "-");
 	  
+	  CResId low (lower);
+	  insert (low);
 	  if (upper)
 	    {
-	      if (isalpha (lower[0]) && isalpha (upper[0])
-		  && lower[0] == upper[0])
+	      CResId upp (upper);
+
+	      if (low.GetChainId () == upp.GetChainId ()
+		  && low.GetResNo () < upp.GetResNo ())
 		{
-		  char chain = lower[0];
-		  int start = atoi (++lower); 
-		  int end = atoi (++upper);
-		  int i;
+		  char chain = low.GetChainId ();
+		  int start = low.GetResNo () + 1;
+		  int end = upp.GetResNo ();
 		  
-		  for (i = start; i <= end; i++)
-		    insert (i, chain);
-		}
-	      else if (isdigit (lower[0]) && isdigit (upper[0]))
-		{
-		  int start = atoi (lower); 
-		  int end = atoi (upper);
-		  int i;
-		  
-		  for (i = start; i <= end; i++)
-		    insert (i);
+		  for (; start <= end; ++start)
+		    insert (start, chain);
 		}
 	      else
-		throw CIntLibException ("Malformed residue id range",
+		{
+		  CIntLibException exc ("Malformed residue id range",
 					__FILE__, __LINE__);
+
+		  exc << str;
+		  throw exc;
+		}
 	    }
-	  else
-	    insert (CResId (lower));
 	  token = strsep (&str_copy, ",");
 	}
       delete str_copy_ptr;

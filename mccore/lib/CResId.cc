@@ -4,8 +4,8 @@
 // Author           : Martin Larose
 // Created On       : Thu Sep 28 15:55:29 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Jan 23 15:01:51 2001
-// Update Count     : 4
+// Last Modified On : Fri Feb  9 16:08:22 2001
+// Update Count     : 5
 // Status           : Ok.
 // 
 
@@ -14,15 +14,30 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <string.h>
 
-#include "CResId.h"
 #include "Binstream.h"
+#include "CMessageQueue.h"
+#include "CResId.h"
+#include "McCore.h"
 
 
   
 CResId::CResId (const char *str)
 {
-  if (isalpha (str[0]))
+  if (str[0] == '\'')
+    {
+      if (strlen (str) < 4 || str[2] != '\'')
+	{
+	  gOut (3) << "Malformed residue id " << str << endl;
+	  chain = ' ';
+	  no = -1;
+	  return;
+	}
+      chain = str[1];
+      str += 3;
+    }
+  else if (isalpha (str[0]))
     chain = *str++;
   else
     chain = ' ';
