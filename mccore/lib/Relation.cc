@@ -827,4 +827,9 @@ namespace mccore {
   {
     return r.output (os);
   }
+
+  ostream& operator<< (ostream &os, const Relation *r)
+  {
+    return r->output (os);
+  }
 }

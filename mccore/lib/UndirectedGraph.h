@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 24 21:30:26 2003
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 // 
 //  This file is part of mccore.
 //  
@@ -41,7 +41,7 @@ namespace mccore {
  * a node ordering determined by the node_comparator function object.
  *
  * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
- * @version $Id: UndirectedGraph.h,v 1.4 2003-05-30 16:48:18 gendrop Exp $
+ * @version $Id: UndirectedGraph.h,v 1.5 2003-07-08 20:01:44 gendrop Exp $
  */
 template< class node_type, 
 	  class edge_type = bool, 
@@ -562,21 +562,21 @@ public:
     typename UndirectedGraph::const_iterator ki, kj;
     
     for (ki=begin (); ki!=end (); ++ki) {      
-      os << *ki << " : ";      
+      os << *ki << "(" << getWeight (*ki) << ")" << " : ";      
       for (kj=begin (); kj!=end (); ++kj) {
-    	if (areConnected (*ki, *kj)) os << *kj << "("
-					<< getEdge (*ki, *kj) << ") ";
+    	if (areConnected (*ki, *kj)) 
+	  os << *kj << "(" << getEdge (*ki, *kj) << ") ";
       }
       os << endl;
     }
     
     for (ki=begin (); ki!=end (); ++ki) {     
+      if (ki!=begin ()) os << endl;
       os << *ki << " ";      
       for (kj=begin (); kj!=end (); ++kj) {
     	if (areConnected (*ki, *kj)) os << "x ";
-    	else os << "- ";
+    	else os << "- ";	
       }
-      os << endl;
     }
     
     return os;

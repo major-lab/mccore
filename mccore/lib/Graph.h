@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Apr 30 16:04:32 2003
-// $Revision: 1.12 $
+// $Revision: 1.13 $
 // 
 //  This file is part of mccore.
 //  
@@ -41,7 +41,7 @@ namespace mccore {
    * @short A templated directed graph class.  Graphs are always weighted using floats!
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: Graph.h,v 1.12 2003-05-30 16:47:35 gendrop Exp $
+   * @version $Id: Graph.h,v 1.13 2003-07-08 20:01:34 gendrop Exp $
    */
   template< class node_type, 
 	    class edge_type = bool, 
@@ -684,7 +684,7 @@ namespace mccore {
       for (i=graph.begin (); i!=graph.end (); ++i) {
 	cout << *i->first << " : ";
 	for (j=i->second.begin (); j!=i->second.end (); ++j) {
-	  cout << *j->first << "(" << *j->second << ") ";
+	  cout << *j->first << " "; // << "(" << *j->second << ") ";
 	}
 	cout << endl;
       }

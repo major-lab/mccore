@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Patrick Gendron
-// Last Modified On : Tue Jun  3 10:04:15 2003
-// Update Count     : 235
+// Last Modified On : Tue Jul  8 16:01:37 2003
+// Update Count     : 238
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -482,7 +482,7 @@ namespace mccore {
     *this << ' ';  // ALTLOC
     
     setf (ios::right, ios::adjustfield);
-    *this << setw (3) << rtype->toLongString ();
+    *this << setw (3) << rtype->toString ();
 
     *this << ' ';
 
