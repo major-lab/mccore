@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Thu May 31 08:17:56 2001
-// $Revision: 1.10 $
-// $Id: PairingPattern.cc,v 1.10 2004-09-19 03:37:22 larosem Exp $
+// $Revision: 1.11 $
+// $Id: PairingPattern.cc,v 1.11 2004-09-19 03:59:49 larosem Exp $
 
 
 #ifdef HAVE_CONFIG_H
@@ -85,7 +85,7 @@ namespace mccore {
 
     // One direction...
 
-    gOut (3) << "Testing " << *this << endl
+    gOut (5) << "Testing " << *this << endl
 	     << "  " << *ra->getType () << " " << *rb->getType () << endl;
 
     if (ra->getType ()->is (typeA) && rb->getType ()->is (typeB))
@@ -94,7 +94,7 @@ namespace mccore {
 
 	for (descIt = descriptions.begin (); descriptions.end () != descIt; ++descIt)
 	  {
-	    gOut (3) << descIt->direction << descIt->hbond << "   " << flush;
+	    gOut (5) << descIt->direction << descIt->hbond << "   " << flush;
 	    if (! descIt->ignored)
 	      {
 		list< HBondFlow >::reverse_iterator k;
@@ -115,16 +115,16 @@ namespace mccore {
 		if (! found)
 		  {
 		    ab = false;
-		    gOut (3) << "ANot found " << endl;
+		    gOut (5) << "ANot found " << endl;
 		    break;
 		  }
 		else
 		  {
 		    if (k->hbond.getDonorResidue () == rb)
-		      gOut (3) << '>';
+		      gOut (5) << '>';
 		    else
-		      gOut (3) << '<';
-		    gOut (3) << k->hbond << " " << k->flow << endl;
+		      gOut (5) << '<';
+		    gOut (5) << k->hbond << " " << k->flow << endl;
 		  }
 	      }
 	  }
@@ -141,7 +141,7 @@ namespace mccore {
 
 	for (descIt = descriptions.begin (); descriptions.end () != descIt; ++descIt)
 	  {
-	    gOut (3) << descIt->direction << descIt->hbond << "   ";
+	    gOut (5) << descIt->direction << descIt->hbond << "   ";
 	    if (! descIt->ignored)
 	      {
 		list< HBondFlow >::reverse_iterator k;
@@ -161,17 +161,17 @@ namespace mccore {
 		  }
 		if (! found)
 		  {
-		    gOut (3) << "BNot found " << endl;
+		    gOut (5) << "BNot found " << endl;
 		    ba = false;
 		    break;
 		  }
 		else
 		  {
 		    if (k->hbond.getDonorResidue () == rb)
-		      gOut (3) << '>';
+		      gOut (5) << '>';
 		    else
-		      gOut (3) << '<';
-		    gOut (3) << k->hbond << " " << k->flow << endl;
+		      gOut (5) << '<';
+		    gOut (5) << k->hbond << " " << k->flow << endl;
 		  }
 	      }
 	  }
