@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Nov  5 11:39:15 2001
-// Update Count     : 3
+// Last Modified On : Fri Nov 16 13:31:15 2001
+// Update Count     : 4
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -30,7 +30,6 @@
 #define _Residue_h_
 
 #include <vector.h>
-#include <map.h>
 
 #include "AbstractResidue.h"
 #include "CAtom.h"
@@ -63,23 +62,12 @@ class t_Residue;
 class Residue : public AbstractResidue
 {
 
-public:
-
-//    typedef vector< CAtom* >::size_type size_type;
-  typedef map< const t_Atom*, size_type > ResMap;
-
 private:
   
   /**
    * The atom container in global referential.
    */
   vector< CAtom* > mAtomRef;
-
-  /**
-   * The associative container between atom types and atom position in
-   * mAtomRef and mAtomRes.
-   */
-  ResMap mAtomIndex;
 
   /**
    * The atom container in local referential.
@@ -171,28 +159,28 @@ public:
    * @return the iterator over the first element.
    */
   virtual iterator begin (AtomSet *atomset = 0)
-  { return iterator (this, 0, atomset); }
+  { return iterator (this, mAtomIndex.begin (), atomset); }
 
   /**
    * Gets the end iterator.
    * @return the iterator past the last element.
    */
   virtual iterator end ()
-  { return iterator (this, mAtomRef.size ()); }
+  { return iterator (this, mAtomIndex.end ()); }
 
   /**
    * Gets the begin const_iterator.
    * @return the const_iterator over the first element.
    */
   virtual const_iterator begin (AtomSet *atomset = 0) const
-  { return const_iterator (this, 0, atomset); }
+  { return const_iterator (this, mAtomIndex.begin (), atomset); }
 
   /**
    * Gets the end const_iterator.
    * @return the const_iterator past the last element.
    */
   virtual const_iterator end () const
-  { return const_iterator (this, mAtomRef.size ()); }
+  { return const_iterator (this, mAtomIndex.end ()); }
 
   /**
    * Finds an element whose key is k.

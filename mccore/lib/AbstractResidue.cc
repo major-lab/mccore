@@ -4,8 +4,8 @@
 // Author           : Martin Larose
 // Created On       : Fri Oct 12 18:21:12 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Nov 14 16:42:16 2001
-// Update Count     : 3
+// Last Modified On : Fri Nov 16 13:30:40 2001
+// Update Count     : 4
 // Status           : Unknown.
 // 
 
@@ -37,7 +37,6 @@ int AbstractResidue::count = 0;
 
 AbstractResidue::ResidueIterator::ResidueIterator ()
   : res (0),
-    pos (0),
     filter (new all_atom_set ())
 {
 }
@@ -45,17 +44,17 @@ AbstractResidue::ResidueIterator::ResidueIterator ()
 
 
 AbstractResidue::ResidueIterator::ResidueIterator (AbstractResidue *r,
-						   size_type p,
+						   ResMap::iterator p,
 						   AtomSet *f)
   : res (r),
     pos (p),
     filter (f)
 {
-  AbstractResidue::size_type last = res->size ();
+  ResMap::iterator last = res->mAtomIndex.end ();
 
   if (filter == 0)
     filter = new all_atom_set ();
-  while (pos < last && ! (*filter) (res->ref (pos)))
+  while (pos != last && ! (*filter) (res->ref (pos->second)))
     ++pos;
 }
   
@@ -95,10 +94,10 @@ AbstractResidue::ResidueIterator::operator= (const ResidueIterator &right)
 AbstractResidue::ResidueIterator&
 AbstractResidue::ResidueIterator::operator+= (difference_type k)
 {
-  AbstractResidue::size_type size = res->size ();
+  ResMap::iterator last = res->mAtomIndex.end ();
 
-  while (k > 0 && pos < size)
-    if (++pos < size && (*filter) (res->ref (pos)))
+  while (k > 0 && pos != last)
+    if (++pos != last && (*filter) (res->ref (pos->second)))
       --k;
   return *this;
 }
@@ -108,10 +107,10 @@ AbstractResidue::ResidueIterator::operator+= (difference_type k)
 AbstractResidue::iterator&
 AbstractResidue::ResidueIterator::operator++ ()
 {
-  AbstractResidue::size_type last = res->size ();
+  ResMap::iterator last = res->mAtomIndex.end ();
 
-  while (pos < last)
-    if (++pos == last || (*filter) (res->ref (pos)))
+  while (pos != last)
+    if (++pos == last || (*filter) (res->ref (pos->second)))
       break;
   return *this;
 }
@@ -122,10 +121,10 @@ AbstractResidue::iterator
 AbstractResidue::ResidueIterator::operator++ (int ign)
 {
   ResidueIterator ret = *this;
-  AbstractResidue::size_type last = res->size ();
+  ResMap::iterator last = res->mAtomIndex.end ();
 
-  while (pos < last)
-    if (++pos == last || (*filter) (res->ref (pos)))
+  while (pos != last)
+    if (++pos == last || (*filter) (res->ref (pos->second)))
       break;
   return ret;
 }
@@ -134,24 +133,23 @@ AbstractResidue::ResidueIterator::operator++ (int ign)
 
 AbstractResidue::ResidueConstIterator::ResidueConstIterator ()
   : res (0),
-    pos (0),
     filter (new all_atom_set ())
 { }
 
 
 
 AbstractResidue::ResidueConstIterator::ResidueConstIterator (const AbstractResidue *r,
-							     AbstractResidue::size_type p,
+							     ResMap::const_iterator p,
 							     AtomSet *f)
   : res (r),
     pos (p),
     filter (f)
 {
-  AbstractResidue::size_type last = res->size ();
+  ResMap::const_iterator last = res->mAtomIndex.end ();
 
   if (filter == 0)
     filter = new all_atom_set ();
-  while (pos < last && ! (*filter) (res->ref (pos)))
+  while (pos != last && ! (*filter) (res->ref (pos->second)))
     ++pos;
 }
 
@@ -190,10 +188,10 @@ AbstractResidue::ResidueConstIterator::operator= (const AbstractResidue::const_i
 AbstractResidue::const_iterator&
 AbstractResidue::ResidueConstIterator::operator+= (difference_type k)
 {
-  AbstractResidue::size_type last = res->size ();
+  ResMap::const_iterator last = res->mAtomIndex.end ();
 
-  while (k > 0 && pos < last)
-    if (++pos < last && (*filter) (res->ref (pos)))
+  while (k > 0 && pos != last)
+    if (++pos != last && (*filter) (res->ref (pos->second)))
       --k;
   return *this;
 }
@@ -203,10 +201,10 @@ AbstractResidue::ResidueConstIterator::operator+= (difference_type k)
 AbstractResidue::const_iterator&
 AbstractResidue::ResidueConstIterator::operator++ ()
 {
-  AbstractResidue::size_type last = res->size ();
+  ResMap::const_iterator last = res->mAtomIndex.end ();
 
-  while (pos < last)
-    if (++pos == last || (*filter) (res->ref (pos)))
+  while (pos != last)
+    if (++pos == last || (*filter) (res->ref (pos->second)))
       break;
   return *this;
 }
@@ -217,10 +215,10 @@ AbstractResidue::const_iterator
 AbstractResidue::ResidueConstIterator::operator++ (int ign)
 {
   ResidueConstIterator ret = *this;
-  AbstractResidue::size_type last = res->size ();
+  ResMap::const_iterator last = res->mAtomIndex.end ();
   
-  while (pos < last)
-    if (++pos == last || (*filter) (res->ref (pos)))
+  while (pos != last)
+    if (++pos == last || (*filter) (res->ref (pos->second)))
       break;
   return ret;
 }
@@ -926,7 +924,7 @@ AbstractResidue::validate ()
 	    mType = new rt_Misc ((const char*)*mType);
 	  else
 	    mType = i->second;
-	  gOut (3) << 'i';
+	  gOut (3) << 'm';
 	  return;
 	}
       
@@ -940,11 +938,12 @@ AbstractResidue::validate ()
 	{
 	  map< const char *, t_Residue*, less_string >::iterator i
 	    = gMiscResidueString.find ((const char*)*mType);
-	  
+
 	  if (i == gMiscResidueString.end ())
 	    mType = new rt_Misc ((const char*)*mType);
 	  else
 	    mType = i->second;
+	  gOut (3) << 'i';
 	}
       else
 	{

@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Nov  5 11:38:36 2001
-// Update Count     : 30
+// Last Modified On : Fri Nov 16 13:30:56 2001
+// Update Count     : 31
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -63,7 +63,6 @@ CResidue::CResidue (t_Residue *type,
 CResidue::CResidue (const CResidue& right)
   : AbstractResidue (right),
     mAtomRef (right.mAtomRef),
-    mAtomIndex (right.mAtomIndex),
     mAtomRes (right.mAtomRes),
     isPlaced (right.isPlaced),
     isIdentity (right.isIdentity)
@@ -79,7 +78,6 @@ CResidue::operator= (const CResidue &right)
     {
       AbstractResidue::operator= (right);
       mAtomRef = right.mAtomRef;
-      mAtomIndex = right.mAtomIndex;
       mAtomRes = right.mAtomRes;
       isPlaced = right.isPlaced;
       isIdentity = right.isIdentity;
@@ -133,12 +131,12 @@ CResidue::operator[] (const t_Atom *type) const
 CResidue::iterator
 CResidue::find (const t_Atom *k)
 {
-  ResMap::const_iterator cit = mAtomIndex.find (k);
+  ResMap::iterator it = mAtomIndex.find (k);
 
-  if (cit == mAtomIndex.end ())
+  if (it == mAtomIndex.end ())
     return end ();
   else
-    return iterator (this, cit->second);
+    return iterator (this, it);
 }
 
 
@@ -151,7 +149,7 @@ CResidue::find (const t_Atom *k) const
   if (cit == mAtomIndex.end ())
     return end ();
   else
-    return const_iterator (this, cit->second);
+    return const_iterator (this, cit);
 }
 
 
@@ -182,7 +180,6 @@ CResidue::init ()
 	  ++it;
 	}
     }
-
   mAtomRes.reserve (size ());
   mAtomRes.resize (size ());
 
@@ -331,7 +328,6 @@ CResidue::init ()
       addHydrogens ();
       addLP ();
     }
-
   isIdentity = mTfo.isIdentity ();
 }  
 
@@ -412,10 +408,11 @@ CResidue::erase (t_Atom *type)
   if (i != mAtomIndex.end ())
     {
       vector< CAtom >::const_iterator cit;
-      t_Atom *next;
+      const t_Atom *next;
       size_type index;
       
-      next = mAtomRef.erase (mAtomRef.begin () + i->second)->GetType ();
+      mAtomRef.erase (mAtomRef.begin () + i->second);
+      next = ++i == mAtomIndex.end () ? 0 : i->first;
       mAtomIndex.clear ();
       for (cit = mAtomRef.begin (), index = 0;
 	   cit != mAtomRef.end ();
@@ -636,7 +633,6 @@ CResidue::read (iPdbstream &ips)
       for (it = vec.begin (); it != vec.end (); ++it)
 	if (filter (*it))
 	  mAtomRef.push_back (*it);
-
       resId = ips.GetPrevResId ();
       mType = ips.GetPrevResType ();
       init ();

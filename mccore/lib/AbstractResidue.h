@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct 12 18:21:13 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Nov  5 11:38:27 2001
-// Update Count     : 4
+// Last Modified On : Fri Nov 16 13:30:46 2001
+// Update Count     : 5
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -29,6 +29,8 @@
 #ifndef _AbstractResidue_h_
 #define _AbstractResidue_h_
 
+
+#include <map.h>
 
 #include "CResId.h"
 #include "CTransfo.h"
@@ -67,6 +69,15 @@ public:
    */
   typedef unsigned int size_type;
 
+protected:
+
+  /**
+   * Definition of the sorted mapping.
+   */
+  typedef map< const t_Atom*, size_type > ResMap;
+
+public:
+  
   /**
    * @short Iterators for residues.
    *
@@ -96,9 +107,9 @@ public:
     AbstractResidue *res;
     
     /**
-     * The position of the iterator.
+     * The position of the iterator.  It is given by the ResMap iterator.
      */
-    AbstractResidue::size_type pos;
+    ResMap::iterator pos;
     
     /**
      * The filter function over the atom types.
@@ -120,8 +131,7 @@ public:
      * @param p the position of the iterator.
      * @param f the filter function.
      */
-    ResidueIterator (AbstractResidue *r, AbstractResidue::size_type p,
-		     AtomSet *f = 0);
+    ResidueIterator (AbstractResidue *r, ResMap::iterator p, AtomSet *f = 0);
 
     /**
      * Initializes the iterator with the right's contents.
@@ -154,13 +164,13 @@ public:
      * Gets the atom pointed by the current iterator.
      * @return a pointer over the atom placed by the transfo.
      */
-    pointer operator-> () const { return &(res->place (pos)); }
+    pointer operator-> () const { return &(res->place (pos->second)); }
   
     /**
      * Dereferences the iterator.
      * @return an atom reference.
      */
-    reference operator* () const { return res->place (pos); }
+    reference operator* () const { return res->place (pos->second); }
   
     /**
      * Pre-advances the iterator to the next atom.
@@ -213,7 +223,7 @@ public:
      */
     bool operator< (const ResidueIterator &right) const
     {
-      return res == right.res && pos < right.pos;
+      return res == right.res && pos->first < right.pos->first;
     }
     
     /**
@@ -260,7 +270,7 @@ public:
     /**
      * The residue index where the const_residue_iterator points to.
      */
-    AbstractResidue::size_type pos;
+    ResMap::const_iterator pos;
     
     /**
      * The filter function over the atom types.
@@ -283,7 +293,7 @@ public:
      * @param f the filter function.
      */
     ResidueConstIterator (const AbstractResidue *r,
-			  AbstractResidue::size_type p,
+			  ResMap::const_iterator p,
 			  AtomSet *f = 0);
 
     /**
@@ -317,13 +327,13 @@ public:
      * Gets the atom pointed by the current iterator.
      * @return the atom pointer.
      */
-    pointer operator-> () const { return &(res->res (pos)); }
+    pointer operator-> () const { return &(res->res (pos->second)); }
     
     /**
      * Dereferences the iterator.
      * @return an atom reference.
      */
-    reference operator* () const { return res->res (pos); }
+    reference operator* () const { return res->res (pos->second); }
     
     /**
      * Pre-advances the iterator to the next atom.
@@ -376,7 +386,7 @@ public:
      */
     bool operator< (const ResidueConstIterator &right) const
     {
-      return res == right.res && pos < right.pos;
+      return res == right.res && pos->first < right.pos->first;
     }
     
     /**
@@ -414,6 +424,12 @@ protected:
    */
   CTransfo mTfo;
 
+  /**
+   * The associative container between atom types and atom position in
+   * the atom container(s).
+   */
+  ResMap mAtomIndex;
+
 public:
 
   /**
@@ -434,14 +450,17 @@ public:
    * @param type the residue type.
    */
   AbstractResidue (const CResId &id, t_Residue *type)
-    : resId (id), mType (type) { ++count; } 
+    : resId (id), mType (type)
+  { ++count; } 
   
   /**
    * Initializes the object with the right's content.
    * @param right the object to copy.
    */
   AbstractResidue (const AbstractResidue &right)
-    : resId (right.resId), mType (right.mType), mTfo (right.mTfo) { ++count; }
+    : resId (right.resId), mType (right.mType), mTfo (right.mTfo),
+      mAtomIndex (right.mAtomIndex)
+  { ++count; }
 
 
   /**
@@ -521,24 +540,6 @@ public:
    */
   virtual const CAtom& operator[] (const t_Atom *type) const = 0;
 
-//  protected:
-
-//    /**
-//     * Gets the atom at position nth.
-//     * @param n the nth position of the component.
-//     * @return an atom reference.
-//     */
-//    virtual CAtom& operator[] (size_type n) = 0;
-
-//    /**
-//     * Gets the atom at position nth.
-//     * @param n the nth position of the component.
-//     * @return a const atom reference.
-//     */
-//    virtual const CAtom& operator[] (size_type n) const = 0;
-
-public:
-  
   /**
    * Gets the const reference to the residue id.
    * @return the residue id reference.

@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Mon Nov  5 11:39:06 2001
-// Update Count     : 3
+// Last Modified On : Fri Nov 16 13:31:09 2001
+// Update Count     : 4
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -67,7 +67,6 @@ Residue::Residue (t_Residue *type,
 
 Residue::Residue (const Residue& right)
   : AbstractResidue (right),
-    mAtomIndex (right.mAtomIndex),
     isPlaced (right.isPlaced),
     isIdentity (right.isIdentity)
 {
@@ -107,7 +106,6 @@ Residue::operator= (const Residue &right)
       mAtomRef.clear ();
       for (cit = right.mAtomRef.begin (); cit != right.mAtomRef.end (); ++cit)
 	mAtomRef.push_back ((*cit)->clone ());
-      mAtomIndex = right.mAtomIndex;
       for (it = mAtomRes.begin (); it != mAtomRes.end (); ++it)
 	delete *it;
       mAtomRes.clear ();
@@ -170,12 +168,12 @@ Residue::operator[] (const t_Atom *type) const
 Residue::iterator
 Residue::find (const t_Atom *k)
 {
-  ResMap::const_iterator cit = mAtomIndex.find (k);
+  ResMap::iterator it = mAtomIndex.find (k);
 
-  if (cit == mAtomIndex.end ())
+  if (it == mAtomIndex.end ())
     return end ();
   else
-    return iterator (this, cit->second);
+    return iterator (this, it);
 }
 
 
@@ -188,7 +186,7 @@ Residue::find (const t_Atom *k) const
   if (cit == mAtomIndex.end ())
     return end ();
   else
-    return const_iterator (this, cit->second);
+    return const_iterator (this, cit);
 }
 
 
@@ -381,11 +379,6 @@ Residue::init ()
       addLP ();
     }
 
-//    vector< CAtom* >::iterator shit;
-//    cout << resId << " " << *mType << endl;
-//    for (shit = mAtomRef.begin (); shit != mAtomRef.end (); ++shit)
-//      cout << **shit << endl;
-//    cout << endl;
   isIdentity = mTfo.isIdentity ();
 }
 
@@ -467,11 +460,12 @@ Residue::erase (t_Atom *type)
   if (i != mAtomIndex.end ())
     {
       vector< CAtom* >::const_iterator cit;
-      t_Atom *next;
+      const t_Atom *next;
       size_type index;
 
       delete mAtomRef[i->second];
-      next = (*mAtomRef.erase (mAtomRef.begin () + i->second))->GetType ();
+      mAtomRef.erase (mAtomRef.begin () + i->second);
+      next = ++i == mAtomIndex.end () ? 0 : i->first;
       mAtomIndex.clear ();
       for (cit = mAtomRef.begin (), index = 0;
 	   cit != mAtomRef.end ();

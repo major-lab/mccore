@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Thu Sep 28 16:59:32 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Nov 14 16:42:52 2001
-// Update Count     : 23
+// Last Modified On : Fri Nov 16 13:31:02 2001
+// Update Count     : 24
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -29,7 +29,6 @@
 #ifndef _CResidue_h_
 #define _CResidue_h_
 
-#include <map.h>
 #include <vector.h>
 
 #include "AbstractResidue.h"
@@ -61,7 +60,6 @@ class CResidue : public AbstractResidue
 protected:
   
   typedef vector< CAtom >::size_type size_type;
-  typedef map< const t_Atom*, size_type > ResMap;
   
 private:
   
@@ -69,12 +67,6 @@ private:
    * The atom container in global referential.
    */
   vector< CAtom > mAtomRef;
-
-  /**
-   * The associative container between atom types and atom position in
-   * mAtomRef and mAtomRes.
-   */
-  ResMap mAtomIndex;
 
   /**
    * The atom container in local referential.
@@ -166,28 +158,28 @@ public:
    * @return the iterator over the first element.
    */
   virtual iterator begin (AtomSet *atomset = 0)
-  { return iterator (this, 0, atomset); }
+  { return iterator (this, mAtomIndex.begin (), atomset); }
 
   /**
    * Gets the end iterator.
    * @return the iterator past the last element.
    */
   virtual iterator end ()
-  { return iterator (this, mAtomRef.size ()); }
+  { return iterator (this, mAtomIndex.end ()); }
 
   /**
    * Gets the begin const_iterator.
    * @return the const_iterator over the first element.
    */
   const_iterator begin (AtomSet *atomset = 0) const
-  { return const_iterator (this, 0, atomset); }
+  { return const_iterator (this, mAtomIndex.begin (), atomset); }
 
   /**
    * Gets the end const_iterator.
    * @return the const_iterator past the last element.
    */
   const_iterator end () const
-  { return const_iterator (this, mAtomRef.size ()); }
+  { return const_iterator (this, mAtomIndex.end ()); }
 
   /**
    * Finds an element whose key is k.
