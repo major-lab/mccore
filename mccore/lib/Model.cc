@@ -4,9 +4,9 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Wed Dec 19 10:01:45 2001
-// Update Count     : 7
+// Last Modified By : Patrick Gendron
+// Last Modified On : Tue Apr  9 14:40:46 2002
+// Update Count     : 8
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -32,18 +32,22 @@
 
 #include <string.h>
 #include <list.h>
+#include <algo.h>
 
 #include "AbstractResidue.h"
 #include "Binstream.h"
-#ifndef HAVE_STRSEP
 #include "McCore.h"
-#endif
 #include "CResidueFM.h"
 #include "Model.h"
 #include "Pdbstream.h"
 #include "ResidueFM.h"
 #include "ResidueType.h"
 
+
+bool less_deref_func (AbstractResidue *x, AbstractResidue *y)
+{
+  return *x < *y;
+}
 
 
 //  Model::model_iterator&
@@ -59,10 +63,10 @@
 unsigned int
 Model::model_iterator::operator- (const Model::model_iterator &right) const
 {
-  model_iterator it = right;
+  model_iterator it = *this;
   unsigned int dist = 0;
 
-  while (it != *this)
+  while (it != right)
     {
       --it;
       ++dist;
@@ -94,10 +98,10 @@ Model::model_iterator::operator- (const Model::model_iterator &right) const
 unsigned int
 Model::model_const_iterator::operator- (const Model::model_const_iterator &right) const
 {
-  model_const_iterator it = right;
+  model_const_iterator it = *this;
   unsigned int dist = 0;
 
-  while (it != *this)
+  while (it != right)
     {
       --it;
       ++dist;
@@ -279,6 +283,12 @@ Model::find (const CResId &id) const
   return it;
 }
 
+
+void
+Model::sort ()
+{
+  list< AbstractResidue* >::sort (less_deref_func);
+}
 
 
 void

@@ -4,9 +4,9 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Wed Dec 19 10:03:36 2001
-// Update Count     : 6
+// Last Modified By : Patrick Gendron
+// Last Modified On : Tue Apr  9 14:41:01 2002
+// Update Count     : 7
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -405,15 +405,20 @@ public:
    * Inserts a new element at the end.
    * &param res the residue to push back.
    */
-  void push_back(AbstractResidue &res)
+  void push_back (AbstractResidue &res)
   { list< AbstractResidue* >::push_back (&res); }
 
   /**
    * Inserts a new element at the end.
    * &param res the residue to push back.
    */
-  void push_back(AbstractResidue *res)
+  void push_back (AbstractResidue *res)
   { list< AbstractResidue* >::push_back (res); }
+
+  /**
+   * Sorts the model according to the AbstractResidue::operator<
+   */ 
+  void sort ();
 
   // METHODS --------------------------------------------------------------
 
