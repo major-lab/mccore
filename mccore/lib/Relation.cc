@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.37 $
-// $Id: Relation.cc,v 1.37 2005-02-25 19:11:39 thibaup Exp $
+// $Revision: 1.38 $
+// $Id: Relation.cc,v 1.38 2005-03-14 21:19:18 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -647,18 +647,19 @@ namespace mccore
 	  }
 	}
 
-	gOut (3) << "Sum flow = " << sum_flow << endl;
+	gOut (4) << "Sum flow = " << sum_flow << endl;
 	    
-
 	if (sum_flow >= PAIRING_CUTOFF)
 	{
+	  this->type_asp |= Relation::pairing_mask;
 	  addPairingLabels ();
 	}
+
       }
       else
       {
 	hbonds.clear ();
-	gOut (3) << "MaximumFlowGraph.size () = " << graph.size () << endl;
+	gOut (4) << "MaximumFlowGraph.size () = " << graph.size () << endl;
       }
     }
     catch (IntLibException& ex)
@@ -682,7 +683,7 @@ namespace mccore
     float rad;
     unsigned int size_hint;
     const PropertyType *pp;
-    
+
     labels.insert (PropertyType::pPairing);
     if (sum_flow < TWO_BONDS_CUTOFF)
     {
@@ -757,6 +758,7 @@ namespace mccore
     {
       labels.insert (pp);
     }
+
   }
   
   
