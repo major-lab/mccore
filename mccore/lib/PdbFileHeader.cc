@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // PdbFileHeader.cc
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Tue Mar 11 18:45:58 2003
-// $Revision: 1.7 $
-// $Id: PdbFileHeader.cc,v 1.7 2005-03-10 19:18:36 thibaup Exp $
+// $Revision: 1.8 $
+// $Id: PdbFileHeader.cc,v 1.8 2005-03-29 23:41:25 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -54,7 +54,7 @@ namespace mccore
 
   PdbFileHeader::PdbFileHeader (bool reset)
   {
-    this->clear (reset);
+    clear (reset);
   }
 
 
@@ -78,14 +78,14 @@ namespace mccore
   {
     if (this != &other) 
     {
-      this->classification = other.classification;
-      this->date = other.date;
-      this->pdbId = other.pdbId;
-      this->title = other.title;
-      this->methods = other.methods;
-      this->authors = other.authors;
-      this->resolution = other.resolution;
-      this->unclassified = other.unclassified;
+      classification = other.classification;
+      date = other.date;
+      pdbId = other.pdbId;
+      title = other.title;
+      methods = other.methods;
+      authors = other.authors;
+      resolution = other.resolution;
+      unclassified = other.unclassified;
     }
     return *this;
   }
@@ -95,8 +95,8 @@ namespace mccore
   void 
   PdbFileHeader::setClassification (const string &s) 
   { 
-    this->classification = Pdbstream::trim (s);
-    this->classification.resize (40, ' ');
+    classification = Pdbstream::trim (s);
+    classification.resize (40, ' ');
   }
 
 
@@ -127,30 +127,30 @@ namespace mccore
     oss << day << "-" << mnames[month]  << "-";
     oss.width (4);
     oss << year;
-    this->date = oss.str ();
+    date = oss.str ();
   }
 
 
   void 
   PdbFileHeader::setDate (const string &s) 
   { 
-    this->date = Pdbstream::trim (s);
-    this->date.resize (11, ' ');
+    date = Pdbstream::trim (s);
+    date.resize (11, ' ');
   }
 
 
   void 
   PdbFileHeader::setPdbId (const string &s) 
   { 
-    this->pdbId = Pdbstream::trim (s);
-    this->pdbId.resize (4, ' ');
+    pdbId = Pdbstream::trim (s);
+    pdbId.resize (4, ' ');
   }
 
 
   void 
   PdbFileHeader::setTitle (const string &s)
   { 
-    this->title = s;
+    title = s;
   }
    
 
@@ -159,11 +159,11 @@ namespace mccore
   {
 //     map< string, string >::const_iterator it;
 
-//     this->methods.clear ();
+//     methods.clear ();
 //     for (it = mlist.begin (); it != mlist.end (); ++it)
-//       this->addMethod (it->first, it->second);
+//       addMethod (it->first, it->second);
 
-    this->methods = mlist;
+    methods = mlist;
   }
 
 
@@ -172,18 +172,18 @@ namespace mccore
   {
 //     list< string >::const_iterator it;
 
-//     this->authors.clear ();
+//     authors.clear ();
 //     for (it = alist.begin (); it != alist.end (); ++it)
-//       this->addAuthor (*it);
+//       addAuthor (*it);
 
-    this->authors = alist;
+    authors = alist;
   }
 
 
   void 
   PdbFileHeader::setResolution (float f)
   {
-    this->resolution = f > 99.94 ? 99.94 : f;
+    resolution = f > 99.94 ? 99.94 : f;
   }
 
 
@@ -192,11 +192,11 @@ namespace mccore
   {
 //     list< string >::const_iterator it;
 
-//     this->unclassified.clear ();
+//     unclassified.clear ();
 //     for (it = ulist.begin (); it != ulist.end (); ++it)
-//       this->addUnclassified (*it);
+//       addUnclassified (*it);
 
-    this->unclassified = ulist;
+    unclassified = ulist;
   }
 
  
@@ -206,7 +206,7 @@ namespace mccore
   PdbFileHeader::addMethod (const string& n)
   {
     string es;
-    this->addMethod (n, es);
+    addMethod (n, es);
   }
 
 
@@ -214,7 +214,7 @@ namespace mccore
   PdbFileHeader::addMethod (const string& n, const string& c)
   {
     pair< map< string, string >::iterator, bool > inserted = 
-      this->methods.insert (make_pair (Pdbstream::trim (n), c));
+      methods.insert (make_pair (Pdbstream::trim (n), c));
 
     if (!inserted.second)
       inserted.first->second += ", " + c;
@@ -226,8 +226,8 @@ namespace mccore
   {
     //string cut = Pdbstream::trim (a);
 //     if (!cut.empty ())
-//       this->authors.push_back (cut);
-    this->authors.push_back (a);
+//       authors.push_back (cut);
+    authors.push_back (a);
   }
 
 
@@ -235,25 +235,25 @@ namespace mccore
   {
     //string cut = Pdbstream::trim (str);
 //     if (!cut.empty ())
-//       this->unclassified.push_back (cut);
-    this->unclassified.push_back (str);
+//       unclassified.push_back (cut);
+    unclassified.push_back (str);
   }
 
 
   void 
   PdbFileHeader::clear (bool reset)
   {
-    this->title.clear ();
-    this->methods.clear ();
-    this->authors.clear ();
-    this->unclassified.clear ();
-    this->resolution = -1.0;
+    title.clear ();
+    methods.clear ();
+    authors.clear ();
+    unclassified.clear ();
+    resolution = -1.0;
 
     if (reset)
     {
-      this->setClassification ("Unclassified");
-      this->setDate ();
-      this->setPdbId ("Void");
+      setClassification ("Unclassified");
+      setDate ();
+      setPdbId ("Void");
       
       string com = "File generated using ";
       com += PACKAGE;
@@ -265,14 +265,14 @@ namespace mccore
       cs = getenv ("HOST");
       com += "@";
       com += 0 == cs ? "nohost" : cs;
-      this->addUnclassified (com);
+      addUnclassified (com);
     }
     else
     {
       string es;
-      this->setClassification (es);
-      this->setDate (es);
-      this->setPdbId (es);
+      setClassification (es);
+      setDate (es);
+      setPdbId (es);
     }
   }
 
@@ -284,24 +284,24 @@ namespace mccore
     map< string, string >::const_iterator psit;
     list< string >::const_iterator sit;
 
-    os << "Classification: " << this->classification << endl
-       << "PDB ID: " << this->pdbId <<  endl
-       << "Date: " << this->date <<  endl
-       << "Title: " << this->title << endl
+    os << "Classification: " << classification << endl
+       << "PDB ID: " << pdbId <<  endl
+       << "Date: " << date <<  endl
+       << "Title: " << title << endl
        << "Methods:" << endl;
 
-    for (psit = this->methods.begin (); psit != this->methods.end (); ++psit)
+    for (psit = methods.begin (); psit != methods.end (); ++psit)
       os << "\t- " << psit->first << ", " << psit->second << endl; 
     
     os << "Authors: ";
 
-    for (sit = this->authors.begin (); sit != this->authors.end (); ++sit)
+    for (sit = authors.begin (); sit != authors.end (); ++sit)
       os << *sit << ", ";
 
-    os << endl << "Resolution: " << this->resolution << endl
+    os << endl << "Resolution: " << resolution << endl
        << "Unclassified remarks:" << endl;
 
-    for (sit = this->unclassified.begin (); sit != this->unclassified.end (); ++sit)
+    for (sit = unclassified.begin (); sit != unclassified.end (); ++sit)
       os << "\t- " << *sit << endl;
 
     return os;
@@ -315,25 +315,25 @@ namespace mccore
     string es, rectext;
 
     // -- header
-    if (!Pdbstream::trim (this->classification).empty ())
+    if (!Pdbstream::trim (classification).empty ())
     {
       ops.setf (ios::left, ios::adjustfield);
       ops.width (10);
       //        10               40                  11         1         4       = 66
-      ops << "HEADER" << this->classification << this->date << ' ' << this->pdbId;
+      ops << "HEADER" << classification << date << ' ' << pdbId;
       ops.width (Pdbstream::LINELENGTH - 66);
       ops << ' ' << endl;
     }
 
     // -- title
-    if (!this->title.empty ())
-      ops.writeRecord ("TITLE", this->title);
+    if (!title.empty ())
+      ops.writeRecord ("TITLE", title);
 
     // -- methods
-    if (!this->methods.empty ())
+    if (!methods.empty ())
     {
       rectext.clear ();
-      psit = this->methods.begin ();
+      psit = methods.begin ();
 
       while (true)
       {
@@ -341,7 +341,7 @@ namespace mccore
 				  psit->second : 
 				  (psit->second[0] == ' ' ? "," : ", ") + psit->second);
 
-	if (this->methods.end () == ++psit)
+	if (methods.end () == ++psit)
 	  break;
 
 	rectext += "; ";
@@ -351,16 +351,16 @@ namespace mccore
     }
 
     // -- authors
-    if (!this->authors.empty ())
+    if (!authors.empty ())
     {
       rectext.clear ();
-      sit = this->authors.begin ();
+      sit = authors.begin ();
 
       while (true)
       {
 	rectext += *sit; 
 
-	if (this->authors.end () == ++sit)
+	if (authors.end () == ++sit)
 	  break;
 
 	rectext += sit->empty () || (*sit)[0] == ' ' ? "," : ", ";
@@ -376,12 +376,12 @@ namespace mccore
     
     rs << "RESOLUTION.";
 
-    if (this->resolution > 0.0)
+    if (resolution > 0.0)
     {
       rs.setf (ios::fixed);
       rs.width (5);
       rs.precision (2);
-      rs << this->resolution << " Angstroms.";
+      rs << resolution << " Angstroms.";
     }
     else
       rs << " NOT APPLICABLE.";
@@ -391,7 +391,7 @@ namespace mccore
 		       
     // -- unclassified remarks
     
-    for (sit = this->unclassified.begin (); sit != this->unclassified.end (); ++sit)
+    for (sit = unclassified.begin (); sit != unclassified.end (); ++sit)
       ops.writeRemark (*sit, 99);
 
     return ops;
@@ -404,16 +404,16 @@ namespace mccore
     map< string, string >::const_iterator mit;
     list< string >::const_iterator lit;
 
-    obs << this->classification << this->date << this->pdbId << this->title 
-	<< this->resolution
-	<< this->methods.size ();
-    for (mit = this->methods.begin (); this->methods.end () != mit; ++mit)
+    obs << classification << date << pdbId << title 
+	<< resolution
+	<< methods.size ();
+    for (mit = methods.begin (); methods.end () != mit; ++mit)
       obs << mit->first << mit->second;
-    obs << this->authors.size ();
-    for (lit = this->authors.begin (); this->authors.end () != lit; ++lit)
+    obs << authors.size ();
+    for (lit = authors.begin (); authors.end () != lit; ++lit)
       obs << *lit;
-    obs << this->unclassified.size ();
-    for (lit = this->unclassified.begin (); this->unclassified.end () != lit; ++lit)
+    obs << unclassified.size ();
+    for (lit = unclassified.begin (); unclassified.end () != lit; ++lit)
       obs << *lit;
     return obs;
   }
@@ -428,7 +428,7 @@ namespace mccore
     list< pair< string, int > >::iterator it;
     istringstream iss;
 
-    this->clear ();
+    clear ();
 
     //while (getline (ips, line).good ())
     while (!ips.readLine (line).eof ())
@@ -446,9 +446,9 @@ namespace mccore
       {
 	if ("HEADER" == rectype)
 	{
-	  this->setClassification (line.substr (10, 40));
-	  this->setDate (line.substr (50, 11));
-	  this->setPdbId (line.substr (62, 4));
+	  setClassification (line.substr (10, 40));
+	  setDate (line.substr (50, 11));
+	  setPdbId (line.substr (62, 4));
 	}
 	else if ("OBSLTE" == rectype)
 	{
@@ -456,8 +456,8 @@ namespace mccore
 	}
 	else if ("TITLE" == rectype)
 	{
-	  this->title += 
-	    (this->title.empty () ? "" : "\n") + Pdbstream::trim (line.substr (10));
+	  title += 
+	    (title.empty () ? "" : "\n") + Pdbstream::trim (line.substr (10));
 	}
 	else if ("CAVEAT" == rectype)
 	{
@@ -498,24 +498,28 @@ namespace mccore
 	  gErr (4) << "skipped JRNL record in PDB header" << endl;
 	}
 	else if ("REMARK" == rectype)
-	{
-	  string remline = Pdbstream::trim (line.substr (11));
-
-	  if (remline.empty ()) // new remark
 	  {
-	    if (!remtext.empty ()) // save if not first remark read
-	    {
-	      remholder.push_back (make_pair (remtext, remid));
-	      remtext.clear ();
-	    }
+	    string remline = Pdbstream::trim (line.substr (11, 59));
 
-	    iss.clear ();
-	    iss.str (line.substr (7, 3));
-	    iss >> remid;
+	    if (remline.empty ()) // new remark
+	      {
+		if (! remtext.empty ()) // save if not first remark read
+		  {
+		    remholder.push_back (make_pair (remtext, remid));
+		  }
+
+		iss.clear ();
+		iss.str (line.substr (7, 3));
+		remtext.clear ();
+		iss >> remid;
+	      }
+	    else
+	      {
+		// concatenate remark line to current remark text (assumed
+		// same id)
+		remtext += (remtext.empty () ? "" : "\n") + remline;
+	      }
 	  }
-	  else // concatenate remark line to current remark text (assumed same id)
-	    remtext += (remtext.empty () ? "" : "\n") + remline;
-	}
 	else
 	{
 	  ips.unreadLine ();
@@ -538,10 +542,10 @@ namespace mccore
     {
       end = methodtext.find_first_of (';', beg);
       if ((com_beg = methodtext.find_first_of (',', beg)) < end)
-	this->addMethod (methodtext.substr (beg, com_beg - beg),
+	addMethod (methodtext.substr (beg, com_beg - beg),
 			 methodtext.substr (com_beg + 1, end - com_beg - 1));
       else
-	this->addMethod (methodtext.substr (beg, end - beg));
+	addMethod (methodtext.substr (beg, end - beg));
       beg = end + 1;
     }
     while (string::npos != end);
@@ -553,7 +557,7 @@ namespace mccore
     do
     {
       end = authortext.find_first_of (',', beg);
-      this->addAuthor (Pdbstream::trim (authortext.substr (beg, end - beg)));
+      addAuthor (Pdbstream::trim (authortext.substr (beg, end - beg)));
       beg = end + 1;
     }
     while (string::npos != end);
@@ -563,24 +567,25 @@ namespace mccore
     //    for now only #2 is handled
 
     for (it = remholder.begin (); it != remholder.end (); ++it)
-      switch (it->second)
       {
-      case 2: // resolution: 000000000111111111122222222223
-	      //             123456789012345678901234567890 
-	      // -> record:  REMARK   2 RESOLUTION.xx.xx Angstroms 
-	      // -> string:             01234567890123456789
-	      //                        00000000001111111111
-	iss.clear ();
-	iss.str (it->first.substr (11, 5));
-	if ((iss >> this->resolution).fail ())
-	  this->resolution = -1.0;
-	break;
+	switch (it->second)
+	  {
+	  case 2: // resolution: 000000000111111111122222222223
+	    //             123456789012345678901234567890 
+	    // -> record:  REMARK   2 RESOLUTION.xx.xx Angstroms 
+	    // -> string:             01234567890123456789
+	    //                        00000000001111111111
+	    iss.clear ();
+	    iss.str (it->first.substr (11, 5));
+	    if ((iss >> resolution).fail ())
+	      resolution = -1.0;
+	    break;
 
-      default:
-	this->addUnclassified (it->first);
-	break;
-      }
-    
+	  default:
+	    addUnclassified (it->first);
+	    break;
+	  }
+      }    
     return ips;
   }
 
@@ -591,23 +596,23 @@ namespace mccore
     size_t qty;
     string s1, s2;
     
-    this->clear ();
-    ibs >> this->classification >> this->date >> this->pdbId >> this->title 
-	>> this->resolution;
+    clear ();
+    ibs >> classification >> date >> pdbId >> title 
+	>> resolution;
     for (ibs >> qty; ibs.good () && qty > 0; --qty) 
     {
       ibs >> s1 >> s2;
-      this->methods.insert (make_pair (s1, s2));
+      methods.insert (make_pair (s1, s2));
     }
     for (ibs >> qty; ibs.good () && qty > 0; --qty)
     {
       ibs >> s1;
-      this->authors.push_back (s1);
+      authors.push_back (s1);
     }
     for (ibs >> qty; ibs.good () && qty > 0; --qty)
     {
       ibs >> s1;
-      this->unclassified.push_back (s1);
+      unclassified.push_back (s1);
     }
     return ibs;
   }
