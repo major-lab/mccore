@@ -3,8 +3,8 @@
 // Copyright © 2003, 2004 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Apr 30 16:04:32 2003
-// $Revision: 1.22 $
-// $Id: Graph.h,v 1.22 2004-06-15 18:39:06 thibaup Exp $
+// $Revision: 1.23 $
+// $Id: Graph.h,v 1.23 2004-11-25 16:22:34 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -26,27 +26,18 @@
 #ifndef _Graph_h_
 #define _Graph_h_
 
+#include <cassert>
 #include <iomanip>
 #include <iostream>
 #include <map>
 #include <utility>
 #include <vector>
 #include <set>
-#include <assert.h>
 
 #include "GraphAlgo.h"
 #include "Path.h"
 
 using namespace std;
-
-#ifndef HAVE_NUMERIC_LIMITS
-#include <values.h>
-#else
-#undef MAXFLOAT
-#undef MAXINT
-#define MAXFLOAT numeric_limits< float > ().max ()
-#define MAXINT numeric_limits< int > ().max ()
-#endif
 
 
 
@@ -62,7 +53,7 @@ namespace mccore {
    * correct node comparator if needed.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: Graph.h,v 1.22 2004-06-15 18:39:06 thibaup Exp $
+   * @version $Id: Graph.h,v 1.23 2004-11-25 16:22:34 larosem Exp $
    */
   template< class node_type, 
 	    class edge_type = bool,
