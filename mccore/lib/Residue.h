@@ -207,8 +207,8 @@ public:
   /**
    * Vraiment pas cool
    */
-  virtual const vector< CAtom >& getAtomRef () const { return vector< CAtom > (); }
-  virtual const vector< CAtom* >& getAtompRef () const { return mAtomRef; }
+//   virtual const vector< CAtom >& getAtomRef () const { return vector< CAtom > (); }
+//   virtual const vector< CAtom* >& getAtompRef () const { return mAtomRef; }
   
   // METHODS --------------------------------------------------------------
 

@@ -657,8 +657,8 @@ public:
   /**
    * Vraiment pas cool
    */
-  virtual const vector< CAtom >& getAtomRef () const = 0;
-  virtual const vector< CAtom* >& getAtompRef () const = 0;
+//   virtual const vector< CAtom >& getAtomRef () const = 0;
+//   virtual const vector< CAtom* >& getAtompRef () const = 0;
   
   // METHODS --------------------------------------------------------------
 

@@ -266,8 +266,8 @@ public:
   /**
    * Vraiment pas cool
    */
-  virtual const vector< CAtom >& getAtomRef () const { return mAtomRef; }
-  virtual const vector< CAtom* >& getAtompRef () const { return vector< CAtom* > (); }
+//   virtual const vector< CAtom >& getAtomRef () const { return mAtomRef; }
+//   virtual const vector< CAtom* >& getAtompRef () const { return vector< CAtom* > (); }
   
   /**
    * Gets the number of atoms contained in the residue.
