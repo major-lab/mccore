@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -108,44 +108,44 @@ namespace mccore {
     stringType["VAL"] = ResidueType::rVAL = new VAL ("V", "VAL");	
     stringType["PV"] = ResidueType::rVAL;
 
-    stringType["N"] = ResidueType::rNucleicAcid = new NucleicAcid ("(N)", "(N)");
-    stringType["RN"] = ResidueType::rNucleicAcid = new NucleicAcid ("(RN)", "(RN)");
-    stringType["DN"] = ResidueType::rNucleicAcid = new NucleicAcid ("(DN)", "(DN)");
-    stringType["W"] = ResidueType::rW = new W ("(W)", "(W)");
-    stringType["RW"] = ResidueType::rRW = new RW ("(RW)", "(RW)");
-    stringType["DW"] = ResidueType::rDW = new DW ("(DW)", "(DW)");
-    stringType["S"] = ResidueType::rS = new S ("(S)", "(S)");
-    stringType["RS"] = ResidueType::rRS = new RS ("(RS)", "(RS)");
-    stringType["DS"] = ResidueType::rDS = new DS ("(DS)", "(DS)");
-    stringType["M"] = ResidueType::rM = new M ("(M)", "(M)");
-    stringType["RM"] = ResidueType::rRM = new RM ("(RM)", "(RM)");
-    stringType["DM"] = ResidueType::rDM = new DM ("(DM)", "(DM)");
-    stringType["K"] = ResidueType::rK = new K ("(K)", "(K)");
-    stringType["RK"] = ResidueType::rRK = new RK ("(RK)", "(RK)");
-    stringType["DK"] = ResidueType::rDK = new DK ("(DK)", "(DK)");
-    stringType["B"] = ResidueType::rB = new B ("(B)", "(B)");
-    stringType["RB"] = ResidueType::rRB = new RB ("(RB)", "(RB)");
-    stringType["DB"] = ResidueType::rDB = new DB ("(DB)", "(DB)");
-    stringType["D"] = ResidueType::rD = new D ("(D)", "(D)");
-    stringType["RD"] = ResidueType::rRD = new RD ("(RD)", "(RD)");
-    stringType["DD"] = ResidueType::rDD = new DD ("(DD)", "(DD)");
-    stringType["H"] = ResidueType::rH = new H ("(H)", "(H)");
-    stringType["RH"] = ResidueType::rRH = new RH ("(RH)", "(RH)");
-    stringType["DH"] = ResidueType::rDH = new DH ("(DH)", "(DH)");
-    stringType["V"] = ResidueType::rV = new V ("(V)", "(V)");
-    stringType["RV"] = ResidueType::rRV = new RV ("(RV)", "(RV)");
-    stringType["DV"] = ResidueType::rDV = new DV ("(DV)", "(DV)");
+    stringType["_N"] = ResidueType::rNucleicAcid = new NucleicAcid ("(N)", "(N)");
+    stringType["_RN"] = ResidueType::rNucleicAcid = new NucleicAcid ("(RN)", "(RN)");
+    stringType["_DN"] = ResidueType::rNucleicAcid = new NucleicAcid ("(DN)", "(DN)");
+    stringType["_W"] = ResidueType::rW = new W ("(W)", "(W)");
+    stringType["_RW"] = ResidueType::rRW = new RW ("(RW)", "(RW)");
+    stringType["_DW"] = ResidueType::rDW = new DW ("(DW)", "(DW)");
+    stringType["_S"] = ResidueType::rS = new S ("(S)", "(S)");
+    stringType["_RS"] = ResidueType::rRS = new RS ("(RS)", "(RS)");
+    stringType["_DS"] = ResidueType::rDS = new DS ("(DS)", "(DS)");
+    stringType["_M"] = ResidueType::rM = new M ("(M)", "(M)");
+    stringType["_RM"] = ResidueType::rRM = new RM ("(RM)", "(RM)");
+    stringType["_DM"] = ResidueType::rDM = new DM ("(DM)", "(DM)");
+    stringType["_K"] = ResidueType::rK = new K ("(K)", "(K)");
+    stringType["_RK"] = ResidueType::rRK = new RK ("(RK)", "(RK)");
+    stringType["_DK"] = ResidueType::rDK = new DK ("(DK)", "(DK)");
+    stringType["_B"] = ResidueType::rB = new B ("(B)", "(B)");
+    stringType["_RB"] = ResidueType::rRB = new RB ("(RB)", "(RB)");
+    stringType["_DB"] = ResidueType::rDB = new DB ("(DB)", "(DB)");
+    stringType["_D"] = ResidueType::rD = new D ("(D)", "(D)");
+    stringType["_RD"] = ResidueType::rRD = new RD ("(RD)", "(RD)");
+    stringType["_DD"] = ResidueType::rDD = new DD ("(DD)", "(DD)");
+    stringType["_H"] = ResidueType::rH = new H ("(H)", "(H)");
+    stringType["_RH"] = ResidueType::rRH = new RH ("(RH)", "(RH)");
+    stringType["_DH"] = ResidueType::rDH = new DH ("(DH)", "(DH)");
+    stringType["_V"] = ResidueType::rV = new V ("(V)", "(V)");
+    stringType["_RV"] = ResidueType::rRV = new RV ("(RV)", "(RV)");
+    stringType["_DV"] = ResidueType::rDV = new DV ("(DV)", "(DV)");
     
     stringType["RNA"] = ResidueType::rRNA = new RNA ("(RNA)", "(RNA)");
     stringType["DNA"] = ResidueType::rDNA = new DNA ("(DNA)", "(DNA)");
-    stringType["PO4"] = ResidueType::rPhosphate = new Phosphate ("PO4", "(Phosphate)");
-    stringType["RIB"] = ResidueType::rRibose = new Ribose ("RIB", "(Ribose)");
-    stringType["R"] = ResidueType::rPurine = new Purine ("(R)", "(R)");
-    stringType["RR"] = ResidueType::rRPurine = new RPurine ("(RR)", "(RR)");
-    stringType["DR"] = ResidueType::rDPurine = new DPurine ("(DR)", "(DR)");
-    stringType["Y"] = ResidueType::rPyrimidine = new Pyrimidine ("(Y)", "(Y)");
-    stringType["RY"] = ResidueType::rRPyrimidine = new RPyrimidine ("(RY)", "(RY)");
-    stringType["DY"] = ResidueType::rDPyrimidine = new DPyrimidine ("(DY)", "(DY)");
+    stringType["PO4"] = ResidueType::rPhosphate = new Phosphate ("(PO4)", "(Phosphate)");
+    stringType["RIB"] = ResidueType::rRibose = new Ribose ("(RIB)", "(Ribose)");
+    stringType["_R"] = ResidueType::rPurine = new Purine ("(R)", "(R)");
+    stringType["_RR"] = ResidueType::rRPurine = new RPurine ("(RR)", "(RR)");
+    stringType["_DR"] = ResidueType::rDPurine = new DPurine ("(DR)", "(DR)");
+    stringType["_Y"] = ResidueType::rPyrimidine = new Pyrimidine ("(Y)", "(Y)");
+    stringType["_RY"] = ResidueType::rRPyrimidine = new RPyrimidine ("(RY)", "(RY)");
+    stringType["_DY"] = ResidueType::rDPyrimidine = new DPyrimidine ("(DY)", "(DY)");
 
 
   }
