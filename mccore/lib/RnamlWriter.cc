@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.7 $
-// $Id: RnamlWriter.cc,v 1.7 2005-01-05 01:51:36 larosem Exp $
+// $Revision: 1.8 $
+// $Id: RnamlWriter.cc,v 1.8 2005-01-14 23:58:07 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -245,13 +245,17 @@ namespace mccore
   {
     if (0 != ps)
       {
-	rnaml::Molecule *m;
 	rnaml::Rnaml rnaml ("1.1");
 	rnaml::Marshaller marshaller;
-	
-	m = toRnaml (molecule);
-	m->setId ("molecule1");
-	rnaml.addChild (m);
+
+	if (! molecule.empty ())
+	  {
+	    rnaml::Molecule *m;
+	    
+	    m = toRnaml (molecule);
+	    m->setId ("molecule1");
+	    rnaml.addChild (m);
+	  }
 	marshaller.setValidating (true);
 	marshaller.setFormatted (true);
 	marshaller.marshall (rnaml, *ps);
