@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct  6 08:21:55 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Fri Sep 28 13:12:31 2001
-// Update Count     : 9
+// Last Modified On : Mon Oct  1 14:45:08 2001
+// Update Count     : 10
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -88,14 +88,14 @@ public:
    * @param nth the position of the reference to get.
    * @return the nth reference.
    */
-  reference operator[] (unsigned int nth);
+  reference operator[] (size_type nth);
 
   /**
    * Gets the model const_reference at nth position.
    * @param nth the position of the const_reference to get.
    * @return the nth const_reference.
    */
-  const_reference operator[] (unsigned int nth) const;
+  const_reference operator[] (size_type nth) const;
 
   // ACCESS ---------------------------------------------------------------
 
