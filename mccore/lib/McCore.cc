@@ -4,9 +4,9 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Philippe Thibault
-// Last Modified On : Tue Jun 25 10:01:06 2002
-// Update Count     : 21
+// Last Modified By : Patrick Gendron
+// Last Modified On : Thu Jul 11 14:42:15 2002
+// Update Count     : 22
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -403,27 +403,27 @@ setAtomSets ()
 		       &a_CD1,  &a_CD2,  &a_CE1,  &a_CE2,  &a_CZ,   &a_OH };
   t_Atom** VAL[7]  = { &a_N,    &a_C,    &a_O,    &a_CA,   &a_CB,   &a_CG1,
 		       &a_CG2 };
-  t_Atom** odA[17] = { &a_H2,   &a_H8,   &a_1H6,  &a_2H6,  &a_LP1,  &a_LP3,
+  t_Atom** odA[18] = { &a_H2,   &a_H8,   &a_1H6,  &a_2H6,  &a_LP1,  &a_LP3,
 		       &a_LP7,  &a_H1p,  &a_H2p,  &a_H3p,  &a_H4p,  &a_1H5p,
-		       &a_2H5p, &a_HO2p, &a_HO3p, &a_1H2p, &a_H5p };
+		       &a_2H5p, &a_HO2p, &a_HO3p, &a_1H2p, &a_2H2p, &a_H5p };
   t_Atom** orA[17] = { &a_H2,   &a_H8,   &a_1H6,  &a_2H6,  &a_LP1,  &a_LP3,
 		       &a_LP7,  &a_H1p,  &a_H2p,  &a_H3p,  &a_H4p,  &a_1H5p,
 		       &a_2H5p, &a_HO2p, &a_HO3p, &a_1H2p, &a_H5p, };
-  t_Atom** odC[17] = { &a_H5,   &a_H6,   &a_1H4,  &a_2H4,  &a_LP3,  &a_1LP2,
+  t_Atom** odC[18] = { &a_H5,   &a_H6,   &a_1H4,  &a_2H4,  &a_LP3,  &a_1LP2,
 		       &a_2LP2, &a_H1p,  &a_H2p,  &a_H3p,  &a_H4p,  &a_1H5p,
-		       &a_2H5p, &a_HO2p, &a_HO3p, &a_1H2p, &a_H5p };
+		       &a_2H5p, &a_HO2p, &a_HO3p, &a_1H2p, &a_2H2p, &a_H5p };
   t_Atom** orC[17] = { &a_H5,   &a_H6,   &a_1H4,  &a_2H4,  &a_LP3,  &a_1LP2,
 		       &a_2LP2, &a_H1p,  &a_H2p,  &a_H3p,  &a_H4p,  &a_1H5p,
 		       &a_2H5p, &a_HO2p, &a_HO3p, &a_1H2p, &a_H5p };
-  t_Atom** odG[18] = { &a_H1,   &a_H8,   &a_1H2,  &a_2H2,  &a_LP3,  &a_LP7,
+  t_Atom** odG[19] = { &a_H1,   &a_H8,   &a_1H2,  &a_2H2,  &a_LP3,  &a_LP7,
 		       &a_1LP6, &a_2LP6, &a_H1p,  &a_H2p,  &a_H3p,  &a_H4p,
-		       &a_1H5p, &a_2H5p, &a_HO2p, &a_HO3p, &a_1H2p, &a_H5p };
+		       &a_1H5p, &a_2H5p, &a_HO2p, &a_HO3p, &a_1H2p, &a_2H2p , &a_H5p };
   t_Atom** orG[18] = { &a_H1,   &a_H8,   &a_1H2,  &a_2H2,  &a_LP3,  &a_LP7,
 		       &a_1LP6, &a_2LP6, &a_H1p,  &a_H2p,  &a_H3p,  &a_H4p,
 		       &a_1H5p, &a_2H5p, &a_HO2p, &a_HO3p, &a_1H2p, &a_H5p };
-  t_Atom** odT[19] = { &a_1LP2, &a_2LP2, &a_1LP4, &a_2LP4, &a_H3,   &a_H6,
+  t_Atom** odT[20] = { &a_1LP2, &a_2LP2, &a_1LP4, &a_2LP4, &a_H3,   &a_H6,
 		       &a_1H5M, &a_2H5M, &a_3H5M, &a_H1p,  &a_H2p,  &a_H3p,
-		       &a_H4p,  &a_1H5p, &a_2H5p, &a_HO2p, &a_HO3p, &a_1H2p,
+		       &a_H4p,  &a_1H5p, &a_2H5p, &a_HO2p, &a_HO3p, &a_1H2p, &a_2H2p,
 		       &a_H5p };
   t_Atom** orU[17] = { &a_H3,   &a_H5,   &a_H6,   &a_1LP2, &a_2LP2, &a_1LP4,
 		       &a_2LP4, &a_H1p,  &a_H2p,  &a_H3p,  &a_H4p,  &a_1H5p,
