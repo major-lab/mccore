@@ -4,9 +4,9 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu Mar 13 13:03:07 2003
-// Last Modified By : Patrick Gendron
-// Last Modified On : Thu Aug 21 19:33:23 2003
-// Update Count     : 44
+// Last Modified By : Philippe Thibault
+// Last Modified On : Wed Sep 29 16:30:49 2004
+// Update Count     : 45
 // Status           : Unknown.
 // 
 
@@ -78,6 +78,15 @@ namespace mccore {
      */
     virtual ~AtomSet () {}
 
+    /**
+     * Create a new AtomSet based on a string representation. Throws an exception if
+     * representation is unknown.
+     * @param str string representation.
+     * @return a newly created AtomSet.
+     * @exception IntLibException.
+     */
+    static AtomSet* create (const char* str);
+    
     // OPERATORS ------------------------------------------------------------
 
     /**
@@ -161,6 +170,8 @@ namespace mccore {
   {
   public:
 
+    static const char* representation;
+    
     // LIFECYCLE ------------------------------------------------------------
 
     /**
@@ -250,8 +261,14 @@ namespace mccore {
      */
     AtomSet *op;
 
+  public:
+    
+    static const char* representation;
+    
     // LIFECYCLE ------------------------------------------------------------
 
+  private:
+    
     /**
      * Initializes the object. Must not be used.
      */
@@ -355,8 +372,14 @@ namespace mccore {
      */
     AtomSet *op2;  
 
+  public:
+
+    static const char* representation;
+    
     // LIFECYCLE ------------------------------------------------------------
 
+  private:
+    
     /**
      * Initializes the object. Must not be used.
      */
@@ -461,8 +484,14 @@ namespace mccore {
      */
     AtomSet *op2;  
 
+  public:
+
+    static const char* representation;
+    
     // LIFECYCLE ------------------------------------------------------------
 
+  private:
+    
     /**
      * Initializes the object. Must not be used.
      */
@@ -561,6 +590,8 @@ namespace mccore {
   {
   public:
 
+    static const char* representation;
+    
     // LIFECYCLE ------------------------------------------------------------
 
     /**
@@ -648,6 +679,8 @@ namespace mccore {
   {
   public:
 
+    static const char* representation;
+    
     // LIFECYCLE ------------------------------------------------------------
 
     /**
@@ -733,6 +766,8 @@ namespace mccore {
   {
   public:
 
+    static const char* representation;
+    
     // LIFECYCLE ------------------------------------------------------------
 
     /**
@@ -818,6 +853,8 @@ namespace mccore {
   {
   public:
 
+    static const char* representation;
+    
     // LIFECYCLE ------------------------------------------------------------
 
     /**
@@ -905,6 +942,8 @@ namespace mccore {
   {
   public:
 
+    static const char* representation;
+    
     // LIFECYCLE ------------------------------------------------------------
 
     /**
@@ -990,6 +1029,8 @@ namespace mccore {
   {
   public:
 
+    static const char* representation;
+    
     // LIFECYCLE ------------------------------------------------------------
 
     /**

@@ -16,9 +16,13 @@
 #include <config.h>
 #endif
 
+#include <ctype.h>
+#include <string.h>
+
 #include "AtomSet.h"
 #include "AtomType.h"
 #include "Binstream.h"
+#include "Exception.h"
 
 namespace mccore {
   
@@ -33,6 +37,17 @@ namespace mccore {
   const int AtomSet::ATOMSET_HYDROGEN  =  8;
   const int AtomSet::ATOMSET_LP        =  9;
   const int AtomSet::ATOMSET_ATOM      = 10;
+
+  const char* AtomSetAll::representation       = "all";
+  const char* AtomSetAnd::representation       = "and";
+  const char* AtomSetNot::representation       = "not";
+  const char* AtomSetOr::representation        = "or";
+  const char* AtomSetBackbone::representation  = "backbone";
+  const char* AtomSetHydrogen::representation  = "hydrogen";
+  const char* AtomSetLP::representation        = "lp";
+  const char* AtomSetPhosphate::representation = "phosphate";
+  const char* AtomSetPSE::representation       = "pse";
+  const char* AtomSetSideChain::representation = "sidechain";
   
   ostream&
   operator<< (ostream &os, const AtomSet &as)
@@ -103,6 +118,41 @@ namespace mccore {
   }
 
 
+  AtomSet*
+  AtomSet::create (const char* str)
+  {
+    unsigned int i, sz = strlen (str);
+    char lstr[sz + 1];
+
+    for (i = 0; i < sz; ++i)
+      lstr[i] = tolower (str[i]);
+    lstr[i] = '\0';
+    
+    if (0 == strcmp (lstr, AtomSetAll::representation))
+      return new AtomSetAll ();
+    else if (0 == strcmp (lstr, AtomSetBackbone::representation))
+      return new AtomSetBackbone ();
+    else if (0 == strcmp (lstr, AtomSetPhosphate::representation))
+      return new AtomSetPhosphate ();
+    else if (0 == strcmp (lstr, AtomSetSideChain::representation))
+      return new AtomSetSideChain ();
+    else if (0 == strcmp (lstr, AtomSetPSE::representation))
+      return new AtomSetPSE ();
+    else if (0 == strcmp (lstr, AtomSetLP::representation))
+      return new AtomSetLP ();
+    else if (0 == strcmp (lstr, AtomSetHydrogen::representation))
+      return new AtomSetHydrogen ();
+    else
+    {
+      IntLibException ex ("", __FILE__, __LINE__);
+      ex << "Unknown AtomSet string representation \"" << lstr << "\"";
+      throw ex;
+    }
+    
+    return 0;
+  }
+  
+
   AtomSetAll&
   AtomSetAll::operator= (const AtomSetAll &other)
   {
@@ -117,7 +167,7 @@ namespace mccore {
   ostream& 
   AtomSetAll::output (ostream &os) const
   {
-    os << "all";
+    os << AtomSetAll::representation;
     return os;
   }
 
@@ -145,7 +195,7 @@ namespace mccore {
   ostream& 
   AtomSetNot::output (ostream &os) const
   {
-    os << "not (" << *op << ")";
+    os << AtomSetNot::representation << " (" << *op << ")";
     return os;
   }
 
@@ -175,7 +225,9 @@ namespace mccore {
   ostream& 
   AtomSetAnd::output (ostream &os) const
   {
-    os << "(" << *op1 << " && " << *op2 << ")";
+    os << "(" << *op1 << " "
+       << AtomSetAnd::representation
+       << " " << *op2 << ")";
     return os;
   }
 
@@ -204,7 +256,9 @@ namespace mccore {
   ostream& 
   AtomSetOr::output (ostream &os) const
   {
-    os << "(" << *op1 << " || " << *op2 << ")";
+    os << "(" << *op1 << " "
+       << AtomSetOr::representation
+       << " " << *op2 << ")";
     return os;
   }
 
@@ -229,7 +283,7 @@ namespace mccore {
   ostream& 
   AtomSetSideChain::output (ostream &os) const
   {
-    os << "sidechain";
+    os << AtomSetSideChain::representation;
     return os;
   }
 
@@ -254,7 +308,7 @@ namespace mccore {
   ostream& 
   AtomSetBackbone::output (ostream &os) const
   {
-    os << "backbone";
+    os << AtomSetBackbone::representation;
     return os;
   }
 
@@ -280,7 +334,7 @@ namespace mccore {
   ostream& 
   AtomSetPhosphate::output (ostream &os) const
   {
-    os << "phosphate";
+    os << AtomSetPhosphate::representation;
     return os;
   }
 
@@ -306,7 +360,7 @@ namespace mccore {
   ostream& 
   AtomSetPSE::output (ostream &os) const
   {
-    os << "pse";
+    os << AtomSetPSE::representation;
     return os;
   }
 
@@ -331,7 +385,7 @@ namespace mccore {
   ostream& 
   AtomSetLP::output (ostream &os) const
   {
-    os << "lp";
+    os << AtomSetLP::representation;
     return os;
   }
 
@@ -357,7 +411,7 @@ namespace mccore {
   ostream& 
   AtomSetHydrogen::output (ostream &os) const
   {
-    os << "hydrogen";
+    os << AtomSetHydrogen::representation;
     return os;
   }
 
