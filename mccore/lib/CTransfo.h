@@ -4,8 +4,8 @@
 // Author           : Patrick Gendron <gendrop@IRO.UMontreal.CA>
 // Created On       : Fri Oct  1 18:22:41 1999
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Nov  9 10:45:22 2000
-// Update Count     : 2
+// Last Modified On : Wed Nov 22 15:20:22 2000
+// Update Count     : 3
 // Status           : Ok.
 // 
 
@@ -287,18 +287,6 @@ public:
   CTransfo& Referentiel (const CPoint3D *p1, const CPoint3D *p2,
 			 const CPoint3D *p3, const CPoint3D *p4,
 			 const CPoint3D *p5, const CPoint3D *p6);
-
-  /**
-   * Generates the transfo that aligns the theTo atom vector over the
-   * theFrom atom vector.
-   * @param theTo the to atom vector.
-   * @param theFrom the from atom vector.
-   * @return the rmsd value.
-   * Replaced by it's contents.
-   */
-//    float RMS_align (const vector< CResidue::iterator > &theTo,
-//    		   const vector< CResidue::iterator > &theFrom)
-//    { return rmsd_with_align (theTo, theFrom, this); }
 
   // I/O  -----------------------------------------------------------------
 };
