@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
-// $Revision: 1.5 $
-// $Id: RnamlReader.cc,v 1.5 2005-01-06 21:08:28 larosem Exp $
+// $Revision: 1.6 $
+// $Id: RnamlReader.cc,v 1.6 2005-01-25 15:00:41 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -61,9 +61,9 @@
 namespace mccore
 {
   
-  RnamlReader::RnamlReader (const char *name, ResidueFactoryMethod *fm)
+  RnamlReader::RnamlReader (const char *name, const ResidueFactoryMethod *fm)
     : is (0),
-      residueFM (fm),
+      residueFM (0 == fm ? new ExtendedResidueFM () : fm->clone ()),
       rnaml (0)
   {
     if (0 != name)
@@ -80,18 +80,15 @@ namespace mccore
 	else
 	  is = (rnaml::InputStream*) new rnaml::GZIPInputStream ((rnaml::FileInputStream*) is);
       }
-    if (0 == fm)
-      residueFM = new ExtendedResidueFM ();
   }
   
   
-  RnamlReader::RnamlReader (rnaml::InputStream *is, ResidueFactoryMethod *fm)
+  RnamlReader::RnamlReader (rnaml::InputStream *is, const ResidueFactoryMethod *fm)
     : is (is),
-      residueFM (fm),
+      residueFM (0 == fm ? new ExtendedResidueFM () : fm->clone ()),
       rnaml (0)
   {
-    if (0 == fm)
-      residueFM = new ExtendedResidueFM ();
+
   }
   
   

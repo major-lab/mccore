@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 // 
 // This file is part of mccore.
 // 
@@ -59,7 +59,7 @@ namespace mccore
    * molecule.
    *
    * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: RnamlReader.h,v 1.3 2005-01-03 23:05:05 larosem Exp $
+   * @version $Id: RnamlReader.h,v 1.4 2005-01-25 15:00:40 thibaup Exp $
    */
   class RnamlReader
   {
@@ -101,14 +101,14 @@ namespace mccore
      * @param name the file name.
      * @param fm the residue factory method optionnal parameter.
      */
-    RnamlReader (const char *name, ResidueFactoryMethod *fm = 0);
+    RnamlReader (const char *name, const ResidueFactoryMethod *fm = 0);
     
     /**
      * Inintializes the reader with a input stream.
      * @param is the input stream.
      * @param fm the residue factory method optionnal parameter.
      */
-    RnamlReader (rnaml::InputStream *is, ResidueFactoryMethod *fm = 0);
+    RnamlReader (rnaml::InputStream *is, const ResidueFactoryMethod *fm = 0);
     
     /**
      * Destroys the object.
