@@ -4,6 +4,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
+#include <stdlib.h>
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -18,7 +19,7 @@ sockbuf::sockbuf ()
   if ((socket_id = ::socket (AF_INET, SOCK_STREAM, 0)) < 0) {
     // put exceptions!!!
     cerr << "could not create socket" << endl;
-    abort ();
+    exit (EXIT_FAILURE);
   }
 }
 
@@ -72,11 +73,13 @@ sockbuf::sys_read (char* buf, streamsize size)
 
   while (nleft > 0) {
     if ((nread = ::recv (socket_id, ptr, nleft, MSG_NOSIGNAL)) < 0) {
-      if (errno == EINTR)
+      if (errno == EINTR) {
 	nread = 0;
-      else return -1;
-    } else if (nread == 1) {
-      break;
+      } else {
+	return -1;
+      }
+    } else if (nread == 1) { // Weird!!
+      //break; 
     }
     nleft -= nread;
     ptr += nread;
@@ -111,7 +114,13 @@ sockbuf::sys_write (const char *buf, streamsize size)
 int
 sockbuf::sys_close ()
 {
-  return ::close (socket_id);
+  overflow (EOF);
+  ::shutdown (socket_id, SHUT_RDWR);
+  
+  if (::close (socket_id) == -1) {
+    cout << "Error on close" << endl;
+  }
+  return true;
 }
 
 
@@ -144,15 +153,27 @@ sockbuf::sys_close ()
 streamsize sockbuf::xsgetn (char* s, streamsize n)
 {
   // More things to do if the read is incomplete
+
+  streamsize r = sys_read (s, n);
   
-  return sys_read (s, n);
+  if (r!=n) {
+    cerr << "Warning: incomplete read (" << r << "/" << n << " bytes)" << endl;
+  }
+
+  return r;
 }
 
 streamsize sockbuf::xsputn (const char* s, streamsize n)
 {
   // More things to do if the write is incomplete
 
-  return sys_write (s, n);
+  streamsize w = sys_write (s, n);
+
+  if (w!=n) {
+    cerr << "Warning: incomplete write (" << w << "/" << n << " bytes)" << endl;
+  }
+
+  return w;
 }
 
 

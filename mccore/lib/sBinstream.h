@@ -188,7 +188,6 @@ public:
    */
   sBinstream (int s) : Binstream (), buf (s) { 
     init (rdbuf ());
-    cout << "sBinstream created on " << s << endl;
   }
 
   /**

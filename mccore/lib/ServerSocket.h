@@ -5,7 +5,7 @@
 
 #include "sBinstream.h"
 
-#define MAX_QUEUE_LEN 5
+#define MAX_QUEUE_LEN 0
 
 /**
  * @short Implementation of a server socket.

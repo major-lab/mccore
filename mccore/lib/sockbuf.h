@@ -31,12 +31,12 @@ public:
    * Initializes the socket buffer with a socket.
    * @param s a socket created by accept(2) or socket(2).
    */
-  sockbuf (int s) : streambuf (), socket_id (s) {  }
+  sockbuf (int s) : streambuf (), socket_id (s) {}
 
   /**
    * Destructor.
    */
-  virtual ~sockbuf () { close (); }
+  virtual ~sockbuf () { }
 
   
 /**

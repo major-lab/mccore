@@ -3,6 +3,7 @@
 #include <iostream.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -18,7 +19,7 @@ ServerSocket::ServerSocket (int port)
   if ((socket_id = ::socket (AF_INET, SOCK_STREAM, 0)) < 0) {
     // put exceptions!!!
     cerr << "could not create socket" << endl;
-    abort ();
+    exit (EXIT_FAILURE);
   }
 
   // Binding a name to the socket ---
@@ -29,13 +30,12 @@ ServerSocket::ServerSocket (int port)
 
   if (::bind (socket_id, (sockaddr*)&sin, sizeof (sin)) < 0) {
     cerr << "bind failed" << endl;
-    abort ();
+    exit (EXIT_FAILURE);
   }
 }
 
 ServerSocket::~ServerSocket ()
 {
-  close ();
 }
 
 
@@ -66,5 +66,8 @@ ServerSocket::accept ()
 void
 ServerSocket::close ()
 {
-  ::close (socket_id);
+  ::shutdown (socket_id, SHUT_RDWR);
+  if (::close (socket_id) == -1) {
+    cout << "Error on close" << endl;
+  }
 }
