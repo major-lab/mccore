@@ -1,12 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // Residue.h
-// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Fri Nov 16 13:31:15 2001
-// Update Count     : 4
+// Last Modified By : Patrick Gendron
+// Last Modified On : Fri Mar 15 14:11:47 2002
+// Update Count     : 5
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -386,5 +386,54 @@ public:
   virtual ostream& write (ostream &os) const;
 
 };
+
+/**
+ * Inputs a residue from an input binary stream
+ * @param ibs the input binary stream.
+ * @param res the residue.
+ * @return the used input binary stream.
+ */
+iBinstream& operator>> (iBinstream &ibs, Residue &res);
+
+
+
+/**
+ * Outputs the residue to the binary stream.
+ * @param obs the output binary stream.
+ * @param res the residue.
+ * @return the used output binary stream.
+ */
+oBinstream& operator<< (oBinstream &obs, const Residue &res);
+
+
+
+/**
+ * Reads the residue from a pdb file.
+ * @param ips the input pdb stream.
+ * @param res the residue.
+ * @return the used input pdb stream.
+ */
+iPdbstream& operator>> (iPdbstream &ips, Residue &res);
+
+
+
+/**
+ * Writes the residue to a pdb format file.
+ * @param ops the ouput pdb stream.
+ * @param the residue to output.
+ * @return the used output pdb stream.
+ */
+oPdbstream& operator<< (oPdbstream &ops, const Residue &res);
+
+
+
+/**
+ * Writes the residue in text format.
+ * @param ops the ouput stream.
+ * @param the residue to output.
+ * @return the used output stream.
+ */
+ostream& operator<< (ostream &ops, const Residue &res);
+
 
 #endif

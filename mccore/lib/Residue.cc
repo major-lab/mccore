@@ -1,12 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // Residue.cc
-// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001, 2002 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// Last Modified By : Martin Larose
-// Last Modified On : Fri Nov 16 13:31:09 2001
-// Update Count     : 4
+// Last Modified By : Patrick Gendron
+// Last Modified On : Fri Mar 15 14:11:41 2002
+// Update Count     : 5
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -274,10 +274,11 @@ Residue::init ()
     {
       const CPoint3D *p1 = 0, *p2 = 0, *p3 = 0;
       
-      if ((p1 = clonedAtom = ref (a_CA)->clone ())
+      if ((p1 = ref (a_CA))
 	  && (p2 = ref (a_N))
 	  && (p3 = ref (a_C)))
 	{
+	  clonedAtom = ref (a_CA)->clone ();
 	  CPoint3D a = (*p2 - *p1).Normalize ();
 	  CPoint3D b = (*p3 - *p1).Normalize ();
 	  CPoint3D Z = *p1 + b.Cross (a).Normalize ();
@@ -631,12 +632,11 @@ Residue::read (iPdbstream &ips)
   while (! (ips.eof () || ips.eop ()))
     {
       CAtom atom;
-      
       ips >> atom;
+
       if (atom.GetType () && ips.GetResType ())
 	{
 	  // Found an atom.
-
 	  if (ips.GetPrevResType () == 0)
 	    // This is the first residue found in the model.
 	    ips.NewRes ();
@@ -692,6 +692,7 @@ Residue::read (iPdbstream &ips)
 
       resId = ips.GetPrevResId ();
       mType = ips.GetPrevResType ();
+
       init ();
       ips.NewRes ();
     }
@@ -724,4 +725,44 @@ Residue::write (ostream &os) const
   for (cit = begin (); cit != end (); ++cit)
     os << *cit << endl;
   return os;
+}
+
+
+
+iBinstream&
+operator>> (iBinstream &ibs, Residue &res)
+{
+  return res.read (ibs);
+}
+
+
+
+oBinstream&
+operator<< (oBinstream &obs, const Residue &res)
+{
+  return res.write (obs);
+}
+
+
+
+iPdbstream&
+operator>> (iPdbstream &ips, Residue &res)
+{
+  return res.read (ips);
+}
+
+
+
+oPdbstream&
+operator<< (oPdbstream &ops, const Residue &res)
+{
+  return res.write (ops);
+}
+
+
+
+ostream&
+operator<< (ostream &os, const Residue &res)
+{
+  return res.write (os);
 }

@@ -4,9 +4,9 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Wed Jan  9 10:49:55 2002
-// Update Count     : 32
+// Last Modified By : Patrick Gendron
+// Last Modified On : Fri Mar 15 14:11:27 2002
+// Update Count     : 33
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -576,19 +576,18 @@ CResidue::read (iPdbstream &ips)
   while (! (ips.eof () || ips.eop ()))
     {
       CAtom atom;
-      
       ips >> atom;
+
       if (atom.GetType () && ips.GetResType ())
 	{
 	  // Found an atom.
-
 	  if (ips.GetPrevResType () == 0)
 	    // This is the first residue found in the model.
 	    ips.NewRes ();
 	  else if (ips.GetResType () != ips.GetPrevResType ()
 		   || ips.GetResId () != ips.GetPrevResId ())
 	    {
-	      // The residue is complete.
+	       // The residue is complete.
 	      ips.KeepAtom (atom);
 	      break;
 	    }
@@ -669,4 +668,44 @@ CResidue::write (ostream &os) const
   for (cit = begin (); cit != end (); ++cit)
     os << *cit << endl;
   return os;
+}
+
+
+
+iBinstream&
+operator>> (iBinstream &ibs, CResidue &res)
+{
+  return res.read (ibs);
+}
+
+
+
+oBinstream&
+operator<< (oBinstream &obs, const CResidue &res)
+{
+  return res.write (obs);
+}
+
+
+
+iPdbstream&
+operator>> (iPdbstream &ips, CResidue &res)
+{
+  return res.read (ips);
+}
+
+
+
+oPdbstream&
+operator<< (oPdbstream &ops, const CResidue &res)
+{
+  return res.write (ops);
+}
+
+
+
+ostream&
+operator<< (ostream &os, const CResidue &res)
+{
+  return res.write (os);
 }
