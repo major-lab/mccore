@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 // 
 //  This file is part of mccore.
 //  
@@ -56,7 +56,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: ExtendedResidue.h,v 1.11 2004-10-08 13:06:48 thibaup Exp $
+   * @version $Id: ExtendedResidue.h,v 1.12 2004-12-06 21:37:18 thibaup Exp $
    */
   class ExtendedResidue : public Residue
   {
@@ -131,40 +131,7 @@ namespace mccore {
     ExtendedResidue& operator= (const ExtendedResidue &other);
 
     // ACCESS ---------------------------------------------------------------
-
-    /**
-     * Gets the iterator begin.
-     * @param atomset the atom filter.
-     * @return the iterator over the first element.
-     */
-    virtual iterator begin (AtomSet *atomset = 0);
-    
-    /**
-     * Gets the end iterator.
-     * @return the iterator past the last element.
-     */
-    virtual iterator end ();
-
-    /**
-     * Gets the const_iterator begin.
-     * @param atomset the atom filter.
-     * @return the const_iterator over the first element.
-     */
-    virtual const_iterator begin (AtomSet *atomset = 0) const;
-    
-    /**
-     * Gets the end const_iterator.
-     * @return the const_iterator past the last element.
-     */
-    virtual const_iterator end () const;
-
-    /**
-     * Check if an element with key k exists in this residue.
-     * @param k the atom type key.
-     * @return the presence of an element with key k.
-     */
-    virtual bool contains (const AtomType *k) const;
-    
+ 
     // METHODS -----------------------------------------------------------------
 
     /**
@@ -181,25 +148,11 @@ namespace mccore {
     virtual void setReferential (const HomogeneousTransfo& m);
     
     /**
-     * Applies a tfo over each atoms.  Only the internal transfo is modified.
-     * @param aTransfo the transfo to apply.
-     * @return itself.
-     */
-    virtual void transform (const HomogeneousTransfo &aTransfo);
-    
-    /**
      * Inserts an atom in the residue.  It crushes the existing atom if it
      * exists.  
      * @param atom the atom to insert.
      */
     virtual void insert (const Atom &atom);
-
-    /**
-     * Erases an atom from the residue.
-     * @param type the atom type to remove.
-     * @return the iterator to the atom that follows the one that was erased.
-     */
-    virtual iterator erase (const AtomType* atype);
     
     /**
      * Erases the atom at position pos.
@@ -207,18 +160,6 @@ namespace mccore {
      * @return the iterator to the atom that follows the one that was erased.
      */
     virtual iterator erase (const iterator& rit);
-
-    /**
-     * Returns the number of atoms in the residue.
-     * @return the number of residues.
-     */
-    virtual int size () const;
-  
-    /**
-     * Tells if there is no atoms in the residue.
-     * @return whether the residue is empty.
-     */
-    virtual bool empty () const;
 
     /**
      * Removes all of the atoms from the residue.  
@@ -233,6 +174,7 @@ namespace mccore {
     virtual void finalize ();
 
     /**
+     * @deprecated
      * DEPRECATED
      * Copies the atom of other into *this without verification.  It
      * is implied that both residues ar of the same type and contain
@@ -250,6 +192,7 @@ namespace mccore {
   protected:
     
     /**
+     * @internal
      * Fetches the atom specified by its type. If the atom is missing, a new
      * atom of the given type is created and placed at the global origin.
      * Internal method used for ribose building.
@@ -257,16 +200,9 @@ namespace mccore {
      * @return A pointer to the atom in the internal container.
      */
     virtual Atom* _get_or_create (const AtomType *aType);
-
-   /**
-     * Overwrites an atom's coordinates in local referential. The overwritten
-     * atom is pointed by an AtomMap iterator.
-     * @param coord The atom's new coordinates.
-     * @param posit The AtomMap iterator.
-     */
-    virtual void _insert_local (const Vector3D& coord, AtomMap::iterator posit);
     
     /**
+     * @internal
      * Postprocesses ribose building. Places ribose's atoms back in global referential.
      * Internal method used for ribose building. Assumes that the ribose's atom pointers are set!
      * @param referential Residue's saved referential.
@@ -277,25 +213,20 @@ namespace mccore {
 					    bool build5p, bool build3p);
     
     /**
-     *  Updates the atom containers so that the residue is placed in space.
+     * @internal
+     * Updates the atom containers so that the residue is placed in space.
      */
-    void place () const;
-    
-    void displace () const;
+    void _place () const;
 
-    bool isPlaced () const { return (placed == true); }
-
+    /**
+     * @internal
+     * Updates the atom containers so that the residue is placed in space, if needed.
+     */
+    void _displace () const;
 
   public:
     
     // I/O  -----------------------------------------------------------------
-    
-    /**
-     * Ouputs the residue to the stream.
-     * @param os the output stream.
-     * @return the used output stream.
-     */
-    virtual ostream& output (ostream &os) const;
     
   };
 

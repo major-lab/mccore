@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
-# $Revision: 1.33 $
-# $Id: configure.in,v 1.33 2004-12-06 19:22:13 larosem Exp $
+# $Revision: 1.34 $
+# $Id: configure.in,v 1.34 2004-12-06 21:35:58 thibaup Exp $
 # 
 # This file is part of mccore.
 # 
@@ -30,7 +30,7 @@ AC_INIT(lib/Atom.h)
 AC_CONFIG_HEADER(config.h)
 
 PACKAGE=mccore
-VERSION=1.4
+VERSION=1.5
 AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE")
 AC_DEFINE_UNQUOTED(VERSION, "$VERSION")
 

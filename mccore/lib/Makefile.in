@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.54 $
-# $Id: Makefile.in,v 1.54 2004-11-22 20:58:33 larosem Exp $
+# $Revision: 1.55 $
+# $Id: Makefile.in,v 1.55 2004-12-06 21:37:32 thibaup Exp $
 # 
 # This file is part of mccore.
 # 
@@ -169,7 +169,7 @@ TAGS: $(SOURCES) $(HEADERS)
 doc: html texi docbook
 
 html: $(HEADERS)
-	@- kdoc -f html -d ../docs/html -p --strip-h-path -n $(LIBRARY) -u "$(LIBRARY)" -z $^
+	@- kdoc -f html -d ../docs/html -p --strip-h-path -n "$(PACKAGE) v$(VERSION)" -u "$(LIBRARY)" -z $^
 
 texi: $(HEADERS)
 	@- kdoc -f texinfo -d ../docs/texinfo -p --strip-h-path $^

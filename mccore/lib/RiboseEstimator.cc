@@ -315,7 +315,7 @@ namespace mccore
       anchor_xrot - built_xrot :
       two_pi + anchor_xrot - built_xrot;
   
-    ribose.transform (rotation1.rotate (xrot1, 0.0, 0.0));
+    ribose.transform (rotation1.rotateX (xrot1));
     value1 = (*qfct) ();
 
     // save this ribose
@@ -346,7 +346,7 @@ namespace mccore
       anchor_xrot - built_xrot :
       two_pi + anchor_xrot - built_xrot;
   
-    ribose.transform (rotation2.rotate (xrot2, 0.0, 0.0));
+    ribose.transform (rotation2.rotateX (xrot2));
     value2 = (*qfct) ();
 
     if (value1 < value2)

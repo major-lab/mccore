@@ -3,8 +3,8 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.24 $
-// $Id: Residue.h,v 1.24 2004-10-08 13:06:58 thibaup Exp $
+// $Revision: 1.25 $
+// $Id: Residue.h,v 1.25 2004-12-06 21:38:43 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -63,7 +63,7 @@ namespace mccore
    * the atom types.
    *
    * @author Patrick Gendron <gendrop@iro.umontreal.ca>
-   * @version $Id: Residue.h,v 1.24 2004-10-08 13:06:58 thibaup Exp $
+   * @version $Id: Residue.h,v 1.25 2004-12-06 21:38:43 thibaup Exp $
    */
   class Residue
   {
@@ -223,6 +223,13 @@ namespace mccore
        * Initializes the iterator.
        */
       ResidueIterator ();
+
+      /**
+       * Initializes the iterator.
+       * @param r the residue owning the iterator.
+       * @param p the position of the iterator.
+       */
+      ResidueIterator (Residue *r, AtomMap::iterator p);
       
       /**
        * Initializes the iterator.
@@ -230,7 +237,7 @@ namespace mccore
        * @param p the position of the iterator.
        * @param f the filter function.
        */
-      ResidueIterator (Residue *r, AtomMap::iterator p, AtomSet *f = 0);
+      ResidueIterator (Residue *r, AtomMap::iterator p, const AtomSet& f);
       
       /**
        * Initializes the iterator with the right's contents.
@@ -332,17 +339,6 @@ namespace mccore
        */
       operator Residue* () { return res; }
 
-      
-      // METHODS -----------------------------------------------------------------
-
-      
-      /**
-       * Overwrites currently pointed atom's coordinates in local referential
-       * @param coord The atom's new coordinates.
-       */
-      void setLocal (const Vector3D& coord) { res->_insert_local (coord, pos); }
-
-
     };
     friend class Residue::ResidueIterator;
 
@@ -395,6 +391,13 @@ namespace mccore
        * Initializes the iterator.
        */
       ResidueConstIterator ();
+
+      /**
+       * Initializes the iterator.
+       * @param r the residue owning the iterator.
+       * @param p the position of the iterator.
+       */
+      ResidueConstIterator (const Residue *r, AtomMap::const_iterator p);
       
       /**
        * Initializes the iterator.
@@ -402,9 +405,7 @@ namespace mccore
        * @param p the position of the iterator.
        * @param f the filter function.
        */
-      ResidueConstIterator (const Residue *r,
-			    AtomMap::const_iterator p,
-			    AtomSet *f = 0);
+      ResidueConstIterator (const Residue *r, AtomMap::const_iterator p, const AtomSet& f);
 
       /**
        * Initializes the ResidueConstIterator with the right's contents.
@@ -575,7 +576,7 @@ namespace mccore
      * Sets all atoms according to standard coordinates as defined by
      * G.Parkinson et al., ACTA CRYST.D (1996) v. 52, 57-64.
      * Handled types are nitrogen bases (nucleic acid types), phosphates and riboses.
-     * @exception IntLibException is thrown if type isn't handled.
+     * @exception IntLibException
      */
     void setTheoretical ();
 
@@ -583,7 +584,7 @@ namespace mccore
      * Sets all atoms according to standard coordinates as defined by
      * G.Parkinson et al., ACTA CRYST.D (1996) v. 52, 57-64.
      * A full nucleic acid residue is created.
-     * @exception IntLibException is thrown if type isn't handled.
+     * @exception IntLibException
      */
     void setFullTheoretical ();
 				 
@@ -649,10 +650,16 @@ namespace mccore
         
     /**
      * Gets the iterator begin.
+     * @return the iterator over the first element.
+     */
+    virtual iterator begin ();
+
+    /**
+     * Gets the iterator begin.
      * @param atomset the atom filter.
      * @return the iterator over the first element.
      */
-    virtual iterator begin (AtomSet *atomset = 0);
+    virtual iterator begin (const AtomSet& atomset);
     
     /**
      * Gets the end iterator.
@@ -665,7 +672,14 @@ namespace mccore
      * @param atomset the atom filter.
      * @return the const_iterator over the first element.
      */
-    virtual const_iterator begin (AtomSet *atomset = 0) const;
+    virtual const_iterator begin () const;
+    
+    /**
+     * Gets the const_iterator begin.
+     * @param atomset the atom filter.
+     * @return the const_iterator over the first element.
+     */
+    virtual const_iterator begin (const AtomSet& atomset) const;
     
     /**
      * Gets the end const_iterator.
@@ -689,9 +703,10 @@ namespace mccore
 
     /**
      * Finds an element whose key is k.
+     * Throws an @ref NoSuchAtomException is thrown is atom is not found.
      * @param k the atom type key.
      * @return the iterator to the element (always valid).
-     * @exception NoSuchAtomException is thrown is atom is not found.
+     * @exception NoSuchAtomException
      */
     iterator safeFind (const AtomType *k);
     
@@ -743,8 +758,9 @@ namespace mccore
      * @param aTransfo the transfo to apply.
      * @return itself.
      */
-    virtual void transform (const HomogeneousTransfo &aTransfo) {
-      setReferential(aTransfo * getReferential());
+    virtual void transform (const HomogeneousTransfo &aTransfo)
+    {
+      this->setReferential(aTransfo * this->getReferential());
     }
 
     /**
@@ -803,23 +819,26 @@ namespace mccore
      * stable and some PDB files have been found to contain weird
      * deviation in their positions.  Backbone hydrogens will only be
      * placed if they do not already exist.
+     * @param overwrite Flag used to force the placing of an hydrogen even if it's already there (default: true)
      */
     virtual void addHydrogens (bool overwrite = true);
 
     /**
      * Adds the HO3' hydrogen. Mandatory if the residue ends a strand.
+     * @param overwrite Flag used to force the placing of an hydrogen even if it's already there (default: true)
      */
     void addHO3p (bool overwrite = true);
 
     /**
      * Adds the lone pairs to the residue.
+     * @param overwrite Flag used to force the placing of a lone pair even if it's already there (default: true)
      */
     virtual void addLonePairs (bool overwrite = true);
 
     /**
      * Determines the pucker pseudorotation (rho) of the NucleicAcid backbone.
      * @return The pseudorotation value (rad).
-     * @exception LibException thrown if type isn't a nucleic acid.
+     * @exception LibException
      */
     virtual float getRho () const;
     
@@ -832,7 +851,7 @@ namespace mccore
     /**
      * Determines the glycosyl torsion (chi) of the NucleicAcid backbone.
      * @return The glycosyl torsion value (rad).
-     * @exception LibException thrown if type isn't a nucleic acid.
+     * @exception LibException
      */
     virtual float getChi () const;
     
@@ -844,23 +863,24 @@ namespace mccore
     
     /**
      * Finalizes the residue. Computes the referential's pseudo-atoms.
-     * @exception LibException is thrown if a needed atom is missing.
      */
     virtual void finalize ();
 
     /**
      * Computes the distance between two residues by first aligning
-     * the residues and computing the RMSD on the backbone atoms.  For
-     * more details, see a discussion of the metric used in
+     * the residues and computing the RMSD on the backbone atoms.
+     * For more details, see a discussion of the metric used in
      * P. Gendron, S. Lemieuxs and F. Major (2001) Quantitative
      * analysis of nucleic acid three-dimensional structures,
      * J. Mol. Biol. 308(5):919-936 
      * @param m the other residue.
      * @return the computed distance.
+     * @throws IntLibException NoSuchAtomException
      */
     float distance (const Residue &r) const;
 
     /**
+     * @deprecated
      * DEPRECATED
      * Copies the atom of other into *this without verification.  It
      * is implied that both residues ar of the same type and contain
@@ -984,7 +1004,7 @@ namespace mccore
      * Throws an exception if residue type is neither a purine nor a pyrimide.
      * @param rtype The residue type to analyze.
      * @return The appropriate nitrogen atom type.
-     * @throws IntLibException
+     * @throws IntLibException NoSuchAtomException
      */
     static const AtomType* nitrogenType19 (const ResidueType* rtype);
 
@@ -994,7 +1014,7 @@ namespace mccore
      * Throws an exception if residue type is neither a purine nor a pyrimide.
      * @param rtype The residue type to analyze.
      * @return The appropriate carbon atom type.
-     * @throws IntLibException
+     * @throws IntLibException NoSuchAtomException
      */
     static const AtomType* carbonType24 (const ResidueType* rtype);
 
@@ -1004,7 +1024,7 @@ namespace mccore
      * Throws an exception if residue type is neither a purine nor a pyrimide.
      * @param rtype The residue type to analyze.
      * @return The appropriate carbon atom type.
-     * @throws IntLibException
+     * @throws IntLibException NoSuchAtomException
      */
     static const AtomType* carbonType68 (const ResidueType* rtype);
     
@@ -1024,18 +1044,20 @@ namespace mccore
 
     /**
      * Gets the range of pseudorotation (rho) values associated with the specified pucker type.
+     * A @ref LibException is thrown if pucker type is unknown.
      * @param pucker The pucker type.
      * @return The minimal or maximal pseudorotation (rho) value (rad).
-     * @exception LibException is thrown if pucker type is unknown.
+     * @exception LibException
      */
     static float getMinRho (const PropertyType* pucker);
     static float getMaxRho (const PropertyType* pucker);
 
     /**
      * Gets the range of glycosyl torsion (chi) values associated with the specified glycosyl torsion type.
+     * A @ref LibException is thrown if pucker type is unknown.
      * @param pucker The pucker type.
      * @return The minimal or maximal glycosyl torsion (chi) value (rad).
-     * @exception LibException is thrown if glycosyl torsion type is unknown.
+     * @exception LibException
      */
     static float getMinChi (const PropertyType* glycosyl);
     static float getMaxChi (const PropertyType* glycosyl);
@@ -1046,6 +1068,7 @@ namespace mccore
     // PRIVATE METHODS ------------------------------------------------------
 
     /**
+     * @internal
      * Gets the atom of given type.  It is private since no atom
      * pointers should be used outside the residue; these pointers are
      * not guaranteed to be valid.
@@ -1055,16 +1078,18 @@ namespace mccore
     Atom* _get (const AtomType* type) const;
 
     /**
+     * @internal
      * Gets the atom of given type.  It is private since no atom
      * pointers should be used outside the residue; these pointers are
      * not guaranteed to be valid.
      * @param type the atom type.
      * @return the atom.
-     * @exception LibException is thrown if atom is missing.
+     * @exception LibException
      */
     Atom* _safe_get (const AtomType* type) const;
 
     /**
+     * @internal
      * Fetches the atom specified by its type. If the atom is missing, a new
      * atom of the given type is created and placed at the global origin.
      * Internal method used for ribose building.
@@ -1074,14 +1099,7 @@ namespace mccore
     virtual Atom* _get_or_create (const AtomType *aType);
 
     /**
-     * Overwrites an atom's coordinates in local referential. The overwritten
-     * atom is pointed by an AtomMap iterator.
-     * @param coord The atom's new coordinates.
-     * @param posit The AtomMap iterator.
-     */
-    virtual void _insert_local (const Vector3D& coord, AtomMap::iterator posit);
-
-    /**
+     * @internal
      * Compute the residue's referential transfo.
      * @return The residue's referential transfo.
      * @exception LibException is thrown if an atom is missing or type isn't handled.
@@ -1089,11 +1107,13 @@ namespace mccore
     HomogeneousTransfo _compute_referential () const;
     
     /**
+     * @internal
      * Adds backbone's hydrogens only if they aren't already in the residue.
      */
     void _add_ribose_hydrogens (bool overwrite = true);
     
     /**
+     * @internal
      * Preprocesses ribose building. Setups atom pointers if needed. Fetches, copies
      * and align in the residue's referential the anchor atoms from the phosphates.
      * Internal method used for ribose building.
@@ -1112,6 +1132,7 @@ namespace mccore
 				   const HomogeneousTransfo& referential);
 
     /**
+     * @internal
      * Builds ribose atom-wise according to the given torsion parameters. Uses idealized
      * geometries as defined by G.Parkinson et al., ACTA CRYST.D (1996) v. 52, 57-64.
      * Internal method used for ribose building. Assumes that the ribose's atom pointers are set!
@@ -1122,6 +1143,7 @@ namespace mccore
 			bool build5p, bool build3p);
 
     /**
+     * @internal
      * Builds ribose atom-wise according to the given torsion parameters. Uses idealized
      * geometries as defined by G.Parkinson et al., ACTA CRYST.D (1996) v. 52, 57-64.
      * Internal method used for ribose building. Assumes that the ribose's atom pointers are set!
@@ -1133,6 +1155,7 @@ namespace mccore
 				   bool build5p, bool build3p);
 
     /**
+     * @internal
      * Transforms ribose's atoms directly.
      * Internal method used for ribose building. Assumes that the ribose's atom pointers are set!
      * @param tfo Transfo applied.
@@ -1143,6 +1166,7 @@ namespace mccore
 			    bool build5p, bool build3p);
     
     /**
+     * @internal
      * Computes the sum of the implicit C5'-O5' and C3'-O3' squared bond lengths.
      * Internal method used for ribose building. Assumes that the ribose's atom pointers are set!
      * @param o5p Anchoring O5' atom.
@@ -1155,6 +1179,7 @@ namespace mccore
 			    bool build5p, bool build3p) const;
 
     /**
+     * @internal
      * Postprocesses ribose building. Places ribose's atoms back in global referential.
      * Internal method used for ribose building. Assumes that the ribose's atom pointers are set!
      * @param referential Residue's saved referential.

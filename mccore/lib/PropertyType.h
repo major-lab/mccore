@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 // 
 // This file is part of mccore.
 // 
@@ -46,7 +46,7 @@ namespace mccore
    * General property types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: PropertyType.h,v 1.11 2004-10-15 20:34:50 thibaup Exp $
+   * @version $Id: PropertyType.h,v 1.12 2004-12-06 21:38:25 thibaup Exp $
    */
   class PropertyType
   {
@@ -388,6 +388,26 @@ namespace mccore
      * Global pairing type.
      */
     static PropertyType* pStack;
+
+    /**
+     * Global reverse type.
+     */
+    static PropertyType* pStraigth;
+
+    /**
+     * Global reverse type.
+     */
+    static PropertyType* pReverse;
+
+    /**
+     * Global reverse type.
+     */
+    static PropertyType* pUpward;
+
+    /**
+     * Global reverse type.
+     */
+    static PropertyType* pDownward;
     
     /**
      * Global cis type.
@@ -398,11 +418,6 @@ namespace mccore
      * Global trans type.
      */
     static PropertyType* pTrans;
-    
-    /**
-     * Global reverse type.
-     */
-    static PropertyType* pReverse;
     
     /**
      * Global adjacent type.

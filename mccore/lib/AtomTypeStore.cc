@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Tue Mar 11 13:56:50 2003
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -79,6 +79,7 @@ namespace mccore
     AtomType::a2H5M = *this->repository.insert (new A2H5M (string ("2H5M"))).first;
     AtomType::a2H6 = *this->repository.insert (new A2H6 (string ("2H6"))).first;
     AtomType::a3H5M = *this->repository.insert (new A3H5M (string ("3H5M"))).first;
+    AtomType::aPSX = *this->repository.insert (new APSX (string ("PSX"))).first;
     AtomType::aPSY = *this->repository.insert (new APSY (string ("PSY"))).first;
     AtomType::aPSZ = *this->repository.insert (new APSZ (string ("PSZ"))).first;
     AtomType::aLP1 = *this->repository.insert (new ALP1 (string ("LP1"))).first;

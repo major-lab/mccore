@@ -3,7 +3,7 @@
 // Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.23 $
+// $Revision: 1.24 $
 // 
 //  This file is part of mccore.
 //  
@@ -60,10 +60,10 @@ namespace mccore {
     vector< Atom* >::const_iterator cit;
     
     for (cit = other.atomLocal.begin (); cit != other.atomLocal.end (); ++cit)
-      atomLocal.push_back ((*cit)->clone ());
+      this->atomLocal.push_back ((*cit)->clone ());
 
-    tfo = other.tfo;
-    placed = other.placed;
+    this->tfo = other.tfo;
+    this->placed = other.placed;
   }
 
 
@@ -76,12 +76,7 @@ namespace mccore {
   
   ExtendedResidue::~ExtendedResidue () 
   {
-    vector< Atom* >::iterator it;
-    for (it = atomLocal.begin (); it != atomLocal.end (); ++it) {
-      delete *it;
-    }
-    atomLocal.clear ();
-    tfo.setIdentity ();
+    this->clear ();
   }
 
 
@@ -93,14 +88,15 @@ namespace mccore {
   {
     vector< Atom* >::const_iterator cit;
 
-    if (this != &other) {
-      clear ();
-      Residue::operator= (other);
+    if (this != &other)
+    {
+      this->clear ();
+      this->Residue::operator= (other);
 
       for (cit = other.atomLocal.begin (); cit != other.atomLocal.end (); ++cit)
-	atomLocal.push_back ((*cit)->clone ());
-      tfo = other.tfo;
-      placed = other.placed;
+	this->atomLocal.push_back ((*cit)->clone ());
+      this->tfo = other.tfo;
+      this->placed = other.placed;
     }
     return *this;
   }
@@ -108,95 +104,47 @@ namespace mccore {
 
   // ACCESS --------------------------------------------------------------------
 
-
-  ExtendedResidue::iterator 
-  ExtendedResidue::begin (AtomSet *atomset) 
-  {
-    return iterator (this, atomIndex.begin (), atomset);
-  }
   
   
-  ExtendedResidue::iterator 
-  ExtendedResidue::end () 
-  {
-    return iterator (this, atomIndex.end ()); 
-  }
-  
-
-  ExtendedResidue::const_iterator 
-  ExtendedResidue::begin (AtomSet *atomset) const 
-  {
-    return const_iterator (this, atomIndex.begin (), atomset);
-  }
-
-
-  ExtendedResidue::const_iterator 
-  ExtendedResidue::end () const 
-  {
-    return const_iterator (this, atomIndex.end ()); 
-  }
-  
-  
-  bool 
-  ExtendedResidue::contains (const AtomType *k) const 
-  { 
-    return find (k) != end (); 
-  }
-  
-
   // METHODS -------------------------------------------------------------------
 
 
   const HomogeneousTransfo
   ExtendedResidue::getReferential () const
   {
-    return tfo; 
+    return this->tfo; 
   }
 
 
   void 
   ExtendedResidue::setReferential (const HomogeneousTransfo& m) 
   { 
-    tfo = m; 
-    displace ();
+    this->tfo = m; 
+    this->_displace ();
   }
   
-
-  void
-  ExtendedResidue::transform (const HomogeneousTransfo &aTransfo) 
-  {
-    setReferential (aTransfo * getReferential());
-  }
-
 
   void 
   ExtendedResidue::insert (const Atom &atom)
   {
-    int pos = size ();
+    int pos = this->size ();
     pair< AtomMap::iterator, bool > inserted =
-      atomIndex.insert (make_pair (atom.getType (), pos));
+      this->atomIndex.insert (make_pair (atom.getType (), pos));
 
     if (inserted.second)
       {
-	atomLocal.push_back (atom.clone ());
-	atomGlobal.push_back (atom.clone ());
-	rib_dirty_ref = true;
+	this->atomLocal.push_back (atom.clone ());
+	this->atomGlobal.push_back (atom.clone ());
+	this->rib_dirty_ref = true;
       }
     else
       {
-	*atomLocal[inserted.first->second] = atom;
-	*atomGlobal[inserted.first->second] = atom;
+	*this->atomLocal[inserted.first->second] = atom;
+	*this->atomGlobal[inserted.first->second] = atom;
       }
 
-    if (!tfo.isIdentity ())
-      (*atomLocal[inserted.first->second]).transform (tfo.invert ());
-  }
-
-
-  ExtendedResidue::iterator 
-  ExtendedResidue::erase (const AtomType *atype)
-  {
-    return this->erase (this->find (atype));
+    if (!this->tfo.isIdentity ())
+      (*this->atomLocal[inserted.first->second]).transform (this->tfo.invert ());
   }
 
 
@@ -244,29 +192,15 @@ namespace mccore {
   }
 
 
-  int 
-  ExtendedResidue::size () const 
-  { 
-    return atomIndex.size (); 
-  }
-
-
-  bool 
-  ExtendedResidue::empty () const 
-  { 
-    return size () == 0; 
-  }
-
-
   void 
   ExtendedResidue::clear()
   {
-    Residue::clear ();
+    this->Residue::clear ();
     vector< Atom* >::iterator it;
     for (it = atomLocal.begin (); it != atomLocal.end (); ++it)
       delete *it;
-    atomLocal.clear ();
-    tfo.setIdentity ();
+    this->atomLocal.clear ();
+    this->tfo.setIdentity ();
   }
 
   
@@ -326,10 +260,11 @@ namespace mccore {
 
 	HomogeneousTransfo tfoi = tfo.invert ();
 	unsigned int i;
-	for (i=0; i<atomLocal.size (); ++i) {
-	  *atomGlobal[i] = *(other.atomGlobal[i]);
-	  *atomLocal[i] = *(other.atomGlobal[i]);
-	  atomLocal[i]->transform (tfoi);
+	for (i = 0; i < this->atomLocal.size (); ++i)
+	{
+	  *this->atomGlobal[i] = *(other.atomGlobal[i]);
+	  *this->atomLocal[i] = *(other.atomGlobal[i]);
+	  this->atomLocal[i]->transform (tfoi);
 	}
 	
       } 
@@ -343,56 +278,47 @@ namespace mccore {
   {
     // ribose pointers to local container!
     
-    int pos = size ();
+    int pos = this->size ();
     pair< AtomMap::iterator, bool > inserted =
-      atomIndex.insert (make_pair (aType, pos));
+      this->atomIndex.insert (make_pair (aType, pos));
 
     if (inserted.second)
       {
-	atomLocal.push_back (new Atom (0.0, 0.0, 0.0, aType));
-	atomGlobal.push_back (new Atom (0.0, 0.0, 0.0, aType));
-	rib_dirty_ref = true;
+	this->atomLocal.push_back (new Atom (0.0, 0.0, 0.0, aType));
+	this->atomGlobal.push_back (new Atom (0.0, 0.0, 0.0, aType));
+	this->rib_dirty_ref = true;
 	return atomLocal[pos];
       }
     else
       {
-	return atomLocal[inserted.first->second];
+	return this->atomLocal[inserted.first->second];
       }
   }
 
   
   void
-  ExtendedResidue::_insert_local (const Vector3D& coord, AtomMap::iterator posit)
+  ExtendedResidue::_place () const
   {
-    atomLocal[posit->second]->set (coord.getX (), coord.getY (), coord.getZ ());
-    atomGlobal[posit->second]->set (coord.getX (), coord.getY (), coord.getZ ());
-    atomGlobal[posit->second]->transform (tfo);
-  }
-
-  
-  void
-  ExtendedResidue::place () const
-  {
-    if (!isPlaced ()) {
-
+    if (false == this->placed)
+    {
       vector< Atom* >::const_iterator cit;
       vector< Atom* >::iterator it;
     
-      for (cit = atomLocal.begin (), it = atomGlobal.begin ();
-	   cit != atomLocal.end ();
+      for (cit = this->atomLocal.begin (), it = this->atomGlobal.begin ();
+	   cit != this->atomLocal.end ();
 	   ++cit, ++it)
 	{
 	  **it = **cit;
 	  (*it)->transform (tfo);
 	}      
-      placed = true;
+      this->placed = true;
     }
   }
   
-  void ExtendedResidue::displace () const
+  void ExtendedResidue::_displace () const
   {
-    placed=false;
-    place ();
+    this->placed = false;
+    this->_place ();
   }
 
   void
@@ -402,29 +328,10 @@ namespace mccore {
     // place built ribose's atoms back in referential
 
     // TODO: place only ribose atoms...
-    displace (); // -> place all atoms :(
-    _add_ribose_hydrogens (true);
+    this->_displace (); // -> place all atoms :(
+    this->_add_ribose_hydrogens (true);
   }
   
   // I/O -----------------------------------------------------------------------
-
-
-  ostream&
-  ExtendedResidue::output (ostream &os) const 
-  {    
-//     os << &resId << endl;
-    os << resId << type;
-//     os << endl << tfo;
-//     os << endl;
-//     AtomMap::const_iterator cit;
-//     os << "\n\tLocal coordinates\t\tGlobal coordinates";
-//     for (cit=atomIndex.begin (); cit!=atomIndex.end (); ++cit) {
-//       os << "\n\t" 
-// 	 << atomLocal[cit->second] << " " << *(atomLocal[cit->second]) << " \t " 
-// 	 << atomGlobal[cit->second] << " " << *(atomGlobal[cit->second]) 
-// 	 << ((!isPlaced ())?" [invalid]":"") << flush;
-//     }
-    return os;
-  }
   
 }

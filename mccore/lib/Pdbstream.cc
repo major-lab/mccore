@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.47 $
-// $Id: Pdbstream.cc,v 1.47 2004-12-03 20:54:24 sebastienl Exp $
+// $Revision: 1.48 $
+// $Id: Pdbstream.cc,v 1.48 2004-12-06 21:38:09 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -495,18 +495,19 @@ namespace mccore
 
   oPdbstream::~oPdbstream () 
   { 
-    if (atomCounter != 1) close ();
-
-    if (rid) delete rid;
+    if (atomCounter != 1)
+      close ();
+    if (rid)
+      delete rid;
     delete atomset; 
   }
   
   
   void
-  oPdbstream::setAtomSet (AtomSet *s)
+  oPdbstream::setAtomSet (const AtomSet& as)
   {
     delete this->atomset;
-    atomset = 0 == s ? new AtomSetAll () : s;
+    atomset = as.clone ();
   }
 
   
@@ -782,15 +783,15 @@ namespace mccore
   void
   oPdbstream::write (const Residue& r)
   {
+    Residue::const_iterator it;
+    
     if (!headerdone)
       writeHeader ();
 
     setResidueType (r.getType ());
     setResId (r.getResId ());
     
-    for (Residue::const_iterator i=r.begin (atomset->clone ()); i!=r.end (); ++i) {
-    //    for (Residue::const_iterator i=r.begin (); i!=r.end (); ++i) {
-      *this << *i << endl;
-    }
+    for (it = r.begin (*atomset); it != r.end (); ++it)
+      *this << *it << endl;
   }
 }

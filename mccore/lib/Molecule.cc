@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:35 2003
-// $Revision: 1.5 $
-// $Id: Molecule.cc,v 1.5 2003-12-23 14:57:49 larosem Exp $
+// $Revision: 1.6 $
+// $Id: Molecule.cc,v 1.6 2004-12-06 21:37:50 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -28,164 +28,276 @@
 #include <config.h>
 #endif
 
-#include <string.h>
 
 #include "Model.h"
-#include "Molecule.h"
+#include "ResidueFactoryMethod.h"
 #include "Pdbstream.h"
+#include "Binstream.h"
+#include "Exception.h"
+#include "Molecule.h"
 
 
 
-namespace mccore {
+namespace mccore
+{
 
+  unsigned int
+  Molecule::molecule_iterator::operator- (const Molecule::molecule_iterator &right) const
+  {
+    molecule_iterator it = *this;
+    unsigned int dist = 0;
+
+    while (it != right)
+      {
+	--it;
+	++dist;
+      }
+    return dist;
+  }
+
+
+  unsigned int
+  Molecule::molecule_const_iterator::operator- (const Molecule::molecule_const_iterator &right) const
+  {
+    molecule_const_iterator it = *this;
+    unsigned int dist = 0;
+
+    while (it != right)
+      {
+	--it;
+	++dist;
+      }
+    return dist;
+  }
+  
+  
+  Molecule::Molecule (const ResidueFactoryMethod *fm)
+    : residueFM (0 == fm ? new ExtendedResidueFM () : fm->clone ())
+  {
+
+  }
 
   
   Molecule::Molecule (const Molecule &right)
+    : models (right.models),
+      properties (right.properties),
+      residueFM (right.residueFM->clone ())
   {
-    Molecule::const_iterator mcit;
-    map< const char*, char* >::const_iterator cit;
-    
-    for (mcit = right.begin (); right.end () != mcit; ++mcit)
-      push_back ((*mcit)->clone ());
-    for (cit = right.properties.begin (); right.properties.end () != cit; ++cit)
-      properties[strdup (cit->first)] = strdup (cit->second);
+    // retrieve ownership
+    list< Model* >::iterator it;
+    for (it = this->models.begin (); it != this->models.end (); ++it)
+      *it = (*it)->clone ();
   }
-  
   
   
   Molecule::~Molecule ()
   {
-    Molecule::iterator mit;
-    map< const char*, char* >::iterator it;
-    
-    for (mit = begin (); end () != mit; ++mit)
-      delete (*mit);
-    for (it = properties.begin (); properties.end () != it; ++it)
-      {
-	delete it->first;
-	delete it->second;
-      }
+    this->clear ();
+    delete this->residueFM;
   }
-  
   
   
   Molecule&
   Molecule::operator= (const Molecule &right)
   {
     if (&right != this)
-      {
-	Molecule::iterator it;
-	Molecule::const_iterator cit;
-	map< const char*, char* >::iterator pit;
-	map< const char*, char* >::const_iterator cpit;
-	
-	for (it = begin (); end () != it; ++it)
-	  delete (*it);
-	clear ();
-	for (pit = properties.begin (); properties.end () != pit; ++pit)
-	  {
-	    delete pit->first;
-	    delete pit->second;
-	  }
-	properties.clear ();
-	for (cit = right.begin (); right.end () != cit; ++cit)
-	  push_back ((*cit)->clone ());
-	for (cpit = right.properties.begin (); right.properties.end () != cpit; ++cpit)
-	  properties[strdup (cpit->first)] = strdup (cpit->second);
-      }
+    {
+      list< Model* >::iterator it;
+
+      // clear all
+      this->clear ();
+      delete this->residueFM;
+
+      // copy 
+      this->models = right.models;
+      this->properties = right.properties;
+      this->residueFM = right.residueFM->clone ();
+
+      // retrieve ownership
+      for (it = this->models.begin (); it != this->models.end (); ++it)
+	*it = (*it)->clone ();
+    }
     return *this;
   }
-  
   
   
   const char*
   Molecule::getProperty (const char *key) const
   {
-    map< const char*, char* >::const_iterator cit;
+    map< string, string >::const_iterator it;
+    string ks (key);
+
+    if (this->properties.end () == (it = this->properties.find (ks)))
+    {
+      IntLibException ex ("", __FILE__, __LINE__);
+      ex << "property key \"" << key << "\" not found in molecule";
+      throw ex;
+    }
     
-    return properties.end () != (cit = properties.find (key)) ? cit->second : 0;
+    return it->second.c_str ();
   }
-  
   
   
   void
   Molecule::setProperty (const char *key, const char *value)
   {
-    map< const char*, char* >::iterator it;
-    
-    if (properties.end () != (it = properties.find (key)))
-      {
-	delete it->second;
-	it->second = strdup (value);
-      }
-    else
-      properties[strdup (key)] = strdup (value);
+    string ks (key), vs (value);
+    pair< map< string, string >::iterator, bool > inserted =
+      this->properties.insert (make_pair (ks, vs));
+
+    if (!inserted.second)
+      inserted.first->second = vs;
+  }
+
+  
+  void
+  Molecule::setResidueFM (const ResidueFactoryMethod *fm)
+  {
+    delete this->residueFM;
+    this->residueFM = 0 == fm ? new ExtendedResidueFM () : fm->clone ();
   }
   
   
+  void
+  Molecule::clear ()
+  {
+    list< Model* >::const_iterator mit;
+    for (mit = this->models.begin (); mit != this->models.end (); ++mit)
+      delete *mit;
+    this->models.clear ();
+    this->properties.clear ();
+  }
+
   
   ostream&
-  operator<< (ostream &obs, const Molecule &obj)
+  Molecule::write (ostream &os) const
   {
-    const map< const char*, char* > &properties = ((Molecule&) obj).getProperties ();
-    map< const char*, char* >::const_iterator cit;
-    list< Model* >::const_iterator cmit;
+    map< string, string >::const_iterator pit;
+    list< Model* >::const_iterator mit;
     
-    obs << "MOLECULE: " << endl;
-    for (cit = properties.begin (); properties.end () != cit; ++cit)
-      obs << "  " << cit->first << " = " << cit->second << endl;
-    for (cmit = obj.begin (); obj.end () != cmit; ++cmit)
-      obs << **cmit << endl;
-    return obs;
+    os << "MOLECULE:" << endl;
+    for (pit = this->properties.begin (); pit != this->properties.end (); ++pit)
+      os << "  " << pit->first.c_str () << " = " << pit->second.c_str () << endl;
+    for (mit = this->models.begin (); mit != this->models.end (); ++mit)
+      os << **mit << endl;
+    return os;
   }
+
   
-  
-  
-  iPdbstream&
-  operator>> (iPdbstream &ips, Molecule &obj)
+  oPdbstream&
+  Molecule::write (oPdbstream &ops) const
   {
-    Molecule::iterator it;
-    map< const char*, char* > &properties = obj.getProperties ();
-    map< const char*, char* >::iterator pit;
+    list< Model* >::const_iterator mit;
+    bool modelHeaders = this->size () > 1;
+
+    for (mit = this->models.begin (); mit != this->models.end (); ++mit)
+    {
+      if (modelHeaders)
+	ops.startModel ();
+      ops << **mit;
+      if (modelHeaders)
+	ops.endModel ();
+    }
     
-    for (it = obj.begin (); obj.end () != it; ++it)
-      delete (*it);
-    obj.clear ();
-    for (pit = properties.begin (); properties.end () != pit; ++pit)
-      {
-	delete pit->first;
-	delete pit->second;
-      }
-    properties.clear ();
-    while (! ips.eof ())
-      {
-	Model *model;
-	
-	model = new Model ();
-	ips >> *model;
-	if (! model->empty ())
-	  obj.push_back (model);
-      }
+    return ops;
+  }
+
+  iPdbstream&
+  Molecule::read (iPdbstream& ips)
+  {
+    this->clear ();
+
+    while (!ips.eof ())
+    {
+      Model* model = new Model (this->residueFM);
+      ips >> *model;
+      if (!model->empty ())
+	this->models.push_back (model);
+      
+//       this->models.push_back (new Model (this->residueFM));
+//       ips >> *this->models.back ();
+    }
+    
     return ips;
   }
+
+  oBinstream&
+  Molecule::write (oBinstream &obs) const
+  {
+    list< Model* >::const_iterator mit;
+    map< string, string >::const_iterator pit;
+
+    obs << (unsigned int)this->models.size ();
+    for (mit = this->models.begin (); mit != this->models.end (); ++mit)
+      obs << **mit;
+
+    obs << (unsigned int)this->properties.size ();
+    for (pit = this->properties.begin (); pit != this->properties.end (); ++pit)
+      obs << pit->first.c_str () << pit->second.c_str ();
+
+    return obs;
+  }
+
+
+  iBinstream&
+  Molecule::read (iBinstream &ibs)
+  {
+    unsigned int qty;
+    char *kcs, *vcs;
+
+    this->clear ();
+    
+    for (ibs >> qty; qty > 0; --qty)
+    {
+      this->models.push_back (new Model (this->residueFM));
+      ibs >> *this->models.back ();
+    }
+
+    for (ibs >> qty; qty > 0; --qty)
+    {
+      ibs >> &kcs >> &vcs;
+      this->setProperty (kcs, vcs);
+      delete[] kcs;
+      delete[] vcs;
+    }
+
+    return ibs;
+  }
+
   
+  ostream&
+  operator<< (ostream &os, const Molecule &obj)
+  {
+    return obj.write (os);
+  }
   
   
   oPdbstream&
   operator<< (oPdbstream &ops, const Molecule &obj)
   {
-    Molecule::const_iterator cit;
-    bool modelHeaders;
-    
-    modelHeaders = 1 < obj.size ();
-    for (cit = obj.begin (); obj.end () != cit; ++cit)
-      {
-	if (modelHeaders)
-	  ops.startModel ();
-	ops << **cit;
-	if (modelHeaders)
-	  ops.endModel ();
-      }
-    return ops;
+    return obj.write (ops);
   }
+
+  
+  iPdbstream&
+  operator>> (iPdbstream &ips, Molecule &obj)
+  {
+    return obj.read (ips);
+  }
+
+
+  oBinstream&
+  operator<< (oBinstream &obs, const Molecule &obj)
+  {
+    return obj.write (obs);
+  }
+
+  
+  iBinstream&
+  operator>> (iBinstream &ibs, Molecule &obj)
+  {
+    return obj.read (ibs);
+  }
+  
+
 }

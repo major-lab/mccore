@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 12:30:39 2003
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 // 
 //  This file is part of mccore.
 //  
@@ -43,7 +43,7 @@ namespace mccore
    * @short Repository of atomtypes.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: AtomTypeStore.h,v 1.11 2004-12-03 16:08:37 sebastienl Exp $
+   * @version $Id: AtomTypeStore.h,v 1.12 2004-12-06 21:37:06 thibaup Exp $
    */
   class AtomTypeStore
   {
@@ -2486,6 +2486,49 @@ namespace mccore
       
     };
 
+    
+    /**
+     * Global PSX atom type class.
+     */
+    class APSX : public virtual NucleicAcid, public virtual Pseudo, public virtual SideChain
+    { 
+    public:
+      APSX () {}
+      APSX (const string& ks) : AtomType (ks) {}
+      
+      virtual bool describe (const AtomType* t) const {
+	return dynamic_cast< const APSX* > (t);
+      }
+
+      /**
+       * Gets the Van Waals radius value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the Pseudo atom value.
+       */
+      virtual float getVDWR (const ResidueType *r) const
+      { return Pseudo::getVDWR (r); }
+
+      /**
+       * Gets the Amber epsilon value for the atom.
+       * @param res the residue that contains the atom.
+       * @return the Pseudo atom value.
+       */
+      virtual float getAmberEpsilon (const ResidueType *r) const
+      { return Pseudo::getAmberEpsilon (r); }
+
+      /**
+       * Gets the Amber charge value for the atom in the given residue type.
+       * @param res the residue type.
+       * @return the Amber charge.
+       */
+      virtual float getAmberCharge (const ResidueType *r) const
+      { return Pseudo::getAmberCharge (r); }
+
+
+      
+    };
+
+    
     /**
      * Global PSY atom type class.
      */

@@ -4,8 +4,8 @@
 //                     Univesité de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 15:00:09 2003
-// $Revision: 1.16 $
-// $Id: AtomType.cc,v 1.16 2004-12-02 20:14:24 larosem Exp $
+// $Revision: 1.17 $
+// $Id: AtomType.cc,v 1.17 2004-12-06 21:36:29 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -96,6 +96,7 @@ namespace mccore
   AtomType* AtomType::a2H5M = 0;
   AtomType* AtomType::a2H6 = 0;
   AtomType* AtomType::a3H5M = 0;
+  AtomType* AtomType::aPSX = 0;
   AtomType* AtomType::aPSY = 0;
   AtomType* AtomType::aPSZ = 0;
   AtomType* AtomType::aLP1 = 0;

@@ -4,8 +4,8 @@
 //                  UniversitÅÈ de MontrÅÈal.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
-// $Revision: 1.2 $
-// $Id: RnamlReader.cc,v 1.2 2003-12-23 14:57:49 larosem Exp $
+// $Revision: 1.3 $
+// $Id: RnamlReader.cc,v 1.3 2004-12-06 21:38:52 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -206,7 +206,11 @@ namespace mccore {
 	vector< rnaml::Model* >::const_iterator cit;
 	
 	for (cit = models.begin (); models.end () != cit; ++cit)
-	  m->push_back (toMccore (**cit));
+	{
+	  Model* mdl = toMccore (**cit);
+	  m->insert (*mdl);
+	  delete mdl;
+	}
       }
     return m;
   }

@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.19 $
+// $Revision: 1.20 $
 //
 // This file is part of mccore.
 // 
@@ -61,7 +61,7 @@ namespace mccore {
    * details).
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Model.h,v 1.19 2004-08-26 15:18:24 thibaup Exp $
+   * @version $Id: Model.h,v 1.20 2004-12-06 21:37:45 thibaup Exp $
    */
   class Model
   {
@@ -198,9 +198,9 @@ namespace mccore {
 
     /**
      * Initializes the object.
-     * @param fm the residue factory methods that will instanciate new residues.
+     * @param fm the residue factory methods that will instanciate new residues (default is @ref ExtendedResidueFM).
      */
-    Model (ResidueFactoryMethod *fm = 0);
+    Model (const ResidueFactoryMethod *fm = 0);
 
     /**
      * Initializes the object with the right's content.
@@ -254,7 +254,7 @@ namespace mccore {
      * Sets the residue factory method.
      * @param fm the new factory method to use.
      */
-    void setResidueFM (ResidueFactoryMethod *fm);
+    void setResidueFM (const ResidueFactoryMethod *fm = 0);
   
     /**
      * Gets the iterator pointing to the beginning of the model.
@@ -286,8 +286,7 @@ namespace mccore {
     // METHODS -------------------------------------------------------------
 
     /**
-     * Inserts a residue.  It calls the list<> method.
-     * @param pos the iterator where the residue will be placed.
+     * Inserts a residue at the end.  It calls the list<> method.
      * @param res the residue to insert.
      * @return the position where the residue was inserted.
      */
@@ -298,7 +297,6 @@ namespace mccore {
      * @param pos the iterator where the residue will be placed.
      * @param f the first iterator in the range.
      * @param l the last iterator in the range.
-     * @return the position where the residue was inserted.
      */
     template <class InputIterator>
     void insert(InputIterator f, InputIterator l)
@@ -311,13 +309,13 @@ namespace mccore {
     }
 
     /**
-     * Erase a residue from the model.
-     * @param 
+     * Erases a residue from the model.
+     * @param pos the position to erase.
      * @return an iterator on the next residue.
      */ 
-    iterator erase (iterator &i) 
+    iterator erase (iterator pos) 
     {
-      return residues.erase (i);
+      return residues.erase (pos);
     }
     
     //   /**
@@ -383,10 +381,11 @@ namespace mccore {
     void validate ();
 
     /**
-     * Adds hydrogen and lone pairs to each nucleic acid residue. The terminal HO3'
+     * Adds hydrogens and lone pairs to each nucleic acid residue. The terminal HO3'
      * is not added by this method.
+     * @param overwrite Flag used to force the placing of an atom even if it's already there (default: true)
      */
-    void addHLP ();
+    void addHLP (bool overwrite = true);
     
     /**
      * Removes the optional atoms within the residues.

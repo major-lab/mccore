@@ -50,7 +50,7 @@ namespace mccore {
    * the functions may be called with const_iterator and iterator types.
    *
    * @author Sebastien Lemieux
-   * @version $Id: Algo.h,v 1.19 2004-11-25 16:17:07 larosem Exp $
+   * @version $Id: Algo.h,v 1.20 2004-12-06 21:36:07 thibaup Exp $
    */
   class Algo
   {
@@ -73,28 +73,31 @@ namespace mccore {
       vector< ResidueRange< iter_type > > Y_range;
       vector< ResidueRange< iter_type > > Z_range;
       iter_type i;
+      AtomSetNot as_nopse (new AtomSetPSE ());
       
       for (i = begin; i != end; ++i) 
+      {
+	Residue::const_iterator j;
+	  
+	float minX, minY, minZ, maxX, maxY, maxZ;
+	minX = minY = minZ = numeric_limits<float>::max ();
+	maxX = maxY = maxZ = numeric_limits<float>::min ();
+	  
+	for (j = i->begin (as_nopse); j != i->end (); ++j)
 	{
-	  Residue::const_iterator j;
-	  
-	  float minX, minY, minZ, maxX, maxY, maxZ;
-	  minX = minY = minZ = numeric_limits<float>::max ();
-	  maxX = maxY = maxZ = numeric_limits<float>::min ();
-	  
-	  for (j = i->begin (new AtomSetNot (new AtomSetPSE ())); j != i->end (); ++j)
-	    {
-	      minX = min (minX, j->getX ());
-	      minY = min (minY, j->getY ());
-	      minZ = min (minZ, j->getZ ());
-	      maxX = max (maxX, j->getX ());
-	      maxY = max (maxY, j->getY ());
-	      maxZ = max (maxZ, j->getZ ());
-	    }
-	  X_range.push_back (ResidueRange< iter_type > (i, minX, maxX));
+	  minX = min (minX, j->getX ());
+	  minY = min (minY, j->getY ());
+	  minZ = min (minZ, j->getZ ());
+	  maxX = max (maxX, j->getX ());
+	  maxY = max (maxY, j->getY ());
+	  maxZ = max (maxZ, j->getZ ());
+	}
+	
+	X_range.push_back (ResidueRange< iter_type > (i, minX, maxX));
 	Y_range.push_back (ResidueRange< iter_type > (i, minY, maxY));
 	Z_range.push_back (ResidueRange< iter_type > (i, minZ, maxZ));
-	}
+      }
+      
       sort (X_range.begin (), X_range.end ());
       sort (Y_range.begin (), Y_range.end ());
       sort (Z_range.begin (), Z_range.end ());
@@ -107,19 +110,19 @@ namespace mccore {
       typename map< pair< iter_type, iter_type >, int >::iterator cont_i;
       
       for (cont_i = contact.begin (); cont_i != contact.end (); ++cont_i)
-	{
-	  typename map< pair< iter_type, iter_type >, int >::iterator tmp = cont_i;
+      {
+	typename map< pair< iter_type, iter_type >, int >::iterator tmp = cont_i;
 	  
-	  tmp++;
-	  if (cont_i->second < 2)
-	    contact.erase (cont_i);
-	  // For an unknown reason, when the map is empty, 
-	  // cont_i-- does not points to contact.begin (), so this test is added:
-	  if (contact.size () == 0)
-	    break;
-	  cont_i = tmp;
-	  cont_i--;
-	}
+	tmp++;
+	if (cont_i->second < 2)
+	  contact.erase (cont_i);
+	// For an unknown reason, when the map is empty, 
+	// cont_i-- does not points to contact.begin (), so this test is added:
+	if (contact.size () == 0)
+	  break;
+	cont_i = tmp;
+	cont_i--;
+      }
       
       ExtractContact_OneDim (Z_range, contact, cutoff);
       
@@ -166,19 +169,19 @@ namespace mccore {
       bool overlap (const ResidueRange &r) {
 	if (lower < r.lower)
 	  return upper > r.lower;
-        else
-	  return lower <= r.upper;
-      }
+      else
+	return lower <= r.upper;
+    }
       
       float lowerBound () { return lower; }
-      float upperBound () { return upper; }
+    float upperBound () { return upper; }
       
-      iter_type getResidue () { return res; }
+    iter_type getResidue () { return res; }
     
-      void output (ostream &out)
-      {
-	out << res->getResId () << " : " << lower << "-" << upper;
-      }
+    void output (ostream &out)
+    {
+      out << res->getResId () << " : " << lower << "-" << upper;
+    }
   };
     
   /**
@@ -188,29 +191,29 @@ namespace mccore {
   static void ExtractContact_OneDim (vector< ResidueRange< iter_type > > &range, 
 				     map< pair< iter_type, iter_type >, int > &contact,
 				     float cutoff)
-    {
-      typename vector< ResidueRange< iter_type > >::iterator i;
+  {
+    typename vector< ResidueRange< iter_type > >::iterator i;
       
-      for (i = range.begin (); i != range.end (); ++i)
-	{
-	  typename vector< ResidueRange< iter_type > >::iterator j;
+    for (i = range.begin (); i != range.end (); ++i)
+    {
+      typename vector< ResidueRange< iter_type > >::iterator j;
 	  
-	  for (j = i; j != range.end (); ++j)
-	    if (i != j)
-	      {
-		if (j->lowerBound () - cutoff <= i->upperBound ())
-		  {
-		    if (i->getResidue () < j->getResidue ())
-		      ++contact[make_pair (i->getResidue (), j->getResidue ())];
-		    else
-		      ++contact[make_pair (j->getResidue (), i->getResidue ())];
-		  }
-		else
-		  break;
-	      }
+      for (j = i; j != range.end (); ++j)
+	if (i != j)
+	{
+	  if (j->lowerBound () - cutoff <= i->upperBound ())
+	  {
+	    if (i->getResidue () < j->getResidue ())
+	      ++contact[make_pair (i->getResidue (), j->getResidue ())];
+	    else
+	      ++contact[make_pair (j->getResidue (), i->getResidue ())];
+	  }
+	  else
+	    break;
 	}
     }
-  };
+  }
+};
 }
 
 #endif

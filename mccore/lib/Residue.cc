@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.51 $
-// $Id: Residue.cc,v 1.51 2004-11-25 16:34:33 larosem Exp $
+// $Revision: 1.52 $
+// $Id: Residue.cc,v 1.52 2004-12-06 21:38:36 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -324,14 +324,6 @@ namespace mccore {
 
     this->finalize ();
     this->setReferential (HomogeneousTransfo::identity);
-
-    // every atoms are present: inhibits warning
- //    int vlv = gOut.getVerboseLevel ();
-//     gOut.setVerboseLevel (2);
-//     this->addHydrogens ();
-//     this->addLonePairs ();
-//     gOut.setVerboseLevel (vlv);
-    
   }
 
   void
@@ -359,7 +351,8 @@ namespace mccore {
   {
     vector< Atom* >::const_iterator cit;
 
-    if (this != &other) {
+    if (this != &other)
+    {
       type = other.type;
       resId = other.resId;
       clear ();
@@ -428,9 +421,15 @@ namespace mccore {
     type = t == 0 ? ResidueType::rNull : t; 
   }
 
+  Residue::iterator 
+  Residue::begin () 
+  {
+    AtomSetAll all;
+    return iterator (this, atomIndex.begin (), all);
+  }
   
   Residue::iterator 
-  Residue::begin (AtomSet *atomset) 
+  Residue::begin (const AtomSet& atomset) 
   {
     return iterator (this, atomIndex.begin (), atomset);
   }
@@ -444,7 +443,7 @@ namespace mccore {
   
 
   Residue::const_iterator 
-  Residue::begin (AtomSet *atomset) const 
+  Residue::begin (const AtomSet& atomset) const 
   {
     return const_iterator (this, atomIndex.begin (), atomset);
   }
@@ -510,7 +509,7 @@ namespace mccore {
   bool 
   Residue::contains (const AtomType *k) const 
   { 
-    return find (k) != end (); 
+    return this->find (k) != this->end (); 
   }
   
 
@@ -547,88 +546,6 @@ namespace mccore {
       this->atomGlobal[i]->transform (t);
   }
 
-  //   const HomogeneousTransfo
-  //   Residue::getReferential () const
-  //   {
-  //     Vector3D *pivot[3];
-  //     HomogeneousTransfo t;
-
-  //     /* Set the pivots */
-  //     if ((this->_get (AtomType::aN9) != 0 || this->_get (AtomType::aN1) != 0) 
-  // 	&& this->_get (AtomType::aPSY) != 0
-  // 	&& this->_get (AtomType::aPSZ) != 0) {
-  //       pivot[0] = this->_get (AtomType::aN9) != 0 ? this->_get (AtomType::aN9) : this->_get (AtomType::aN1);
-  //       pivot[1] = this->_get (AtomType::aPSY);
-  //       pivot[2] = this->_get (AtomType::aPSZ);	   
-  //     } else if (type->isAminoAcid ()) {
-  //       pivot[0] = this->_get (AtomType::aCA);
-  //       pivot[1] = this->_get (AtomType::aN);
-  //       pivot[2] = this->_get (AtomType::aPSAZ);
-  //     } else if (type->isPhosphate ()) {
-  //       pivot[0] = this->_get (AtomType::aP);
-  //       pivot[1] = this->_get (AtomType::aO3p);
-  //       pivot[2] = this->_get (AtomType::aO5p);
-  //     } else if (size() >= 3) {
-  //       pivot[0] = (Atom*) atomGlobal[0];
-  //       pivot[1] = (Atom*) atomGlobal[1];
-  //       pivot[2] = (Atom*) atomGlobal[2];
-  //     } else {
-  //       pivot[0] = 0;
-  //       pivot[1] = 0;
-  //       pivot[2] = 0;
-  //       gOut (4) << "Residue " << *getType () << " " << getResId () 
-  // 	       << " has less than 3 atoms and cannot be moved: " << endl;
-  //     }
-    
-  //     if (pivot[0] != 0 && pivot[1] != 0 && pivot[2] != 0) {
-  //       t = HomogeneousTransfo::align (*pivot[0], *pivot[1], *pivot[2]);
-  //     }
-  //     return t; 
-  //   }
-
-
-  //   void 
-  //   Residue::setReferential (const HomogeneousTransfo& m) 
-  //   {
-  //     Vector3D *pivot[3];
-  //     HomogeneousTransfo curr;
-
-  //     if ((this->_get (AtomType::aN9) != 0 || this->_get (AtomType::aN1) != 0) 
-  // 	&& this->_get (AtomType::aPSY) != 0
-  // 	&& this->_get (AtomType::aPSZ) != 0) {
-  //       pivot[0] = this->_get (AtomType::aN9) != 0 ? this->_get (AtomType::aN9) : this->_get (AtomType::aN1);
-  //       pivot[1] = this->_get (AtomType::aPSY);
-  //       pivot[2] = this->_get (AtomType::aPSZ);	   
-  //     } else if (type->isAminoAcid ()) {
-  //       pivot[0] = this->_get (AtomType::aCA);
-  //       pivot[1] = this->_get (AtomType::aN);
-  //       pivot[2] = this->_get (AtomType::aPSAZ);
-  //     } else if (type->isPhosphate ()) {
-  //       pivot[0] = this->_get (AtomType::aP);
-  //       pivot[1] = this->_get (AtomType::aO3p);
-  //       pivot[2] = this->_get (AtomType::aO5p);      
-  //     } else if (size() >= 3) {
-  //       pivot[0] = (Atom*) atomGlobal[0];
-  //       pivot[1] = (Atom*) atomGlobal[1];
-  //       pivot[2] = (Atom*) atomGlobal[2];
-  //     } else {
-  //       pivot[0] = 0;
-  //       pivot[1] = 0;
-  //       pivot[2] = 0;
-  //       gOut (4) << "Residue " << *getType () << " " << getResId () 
-  // 	       << " has less than 3 atoms and cannot be moved: " << endl;
-  //     }
-  //     curr = HomogeneousTransfo::align (*pivot[0], *pivot[1], *pivot[2]);
-
-  //     /* Align the residue to the origin and transform. */
-  //     unsigned int i;
-  //     HomogeneousTransfo inv = curr.invert ();
-  //     inv = m * inv;
-  //     for (i=0; i<atomGlobal.size (); ++i) {
-  //       atomGlobal[i]->transform (inv);
-  //     }
-  //   }
-
 
   void 
   Residue::insert (const Atom &atom)
@@ -646,7 +563,6 @@ namespace mccore {
     {
       *this->atomGlobal[inserted.first->second] = atom;
     }
-
   }
 
 
@@ -698,20 +614,6 @@ namespace mccore {
   }
 
 
-  int 
-  Residue::size () const 
-  { 
-    return atomIndex.size (); 
-  }
-
-
-  bool 
-  Residue::empty () const 
-  { 
-    return size () == 0; 
-  }
-
-
   void 
   Residue::clear () 
   {
@@ -737,9 +639,9 @@ namespace mccore {
       return;
     }
 
-    if (!type->isNucleicAcid () && !type->isAminoAcid ())
+    if (!(type->isNucleicAcid () || type->isAminoAcid ()))
     {
-      gOut (6) << "\tCannot validate unknown residue type: " << *type << endl;
+      gOut (6) << "\tCannot validate unhandled residue type: " << *type << endl;
       return;
     }
 
@@ -844,10 +746,13 @@ namespace mccore {
     const AtomType* t;
 
     i = begin ();
-    while (i != end ()) {
+    while (i != end ())
+    {
       t = i->getType ();
-      if (oblset.find (t) == oblset.end ()) i = erase (i);
-      else ++i;
+      if (oblset.find (t) == oblset.end ())
+	i = erase (i);
+      else
+	++i;
     }
   }
 
@@ -1580,7 +1485,7 @@ namespace mccore {
     catch (IntLibException& ex)
     {
       gOut (3) << "Failed to compute pseudorotation: " << ex << endl;
-      return PropertyType::parseType ("undefined");
+      return PropertyType::pUnknown;
     }
     return Residue::getPuckerType (rho);
   }
@@ -1598,7 +1503,7 @@ namespace mccore {
       c1p = this->_safe_get (AtomType::aC1p);
       o4p = this->_safe_get (AtomType::aO4p);
     }
-    catch (Exception& iex)
+    catch (IntLibException& iex)
     {
       IntLibException ex ("", __FILE__, __LINE__);
       ex << "cannot evaluate glycosyl torsion for " << *this <<  "\n\t"
@@ -1621,7 +1526,7 @@ namespace mccore {
     catch (IntLibException& ex)
     {
       gOut (3) << "Failed to compute glycosyl torsion: " << ex << endl;
-      return PropertyType::parseType ("undefined");
+      return PropertyType::pUnknown;
     }
     return Residue::getGlycosylType (chi);
   }
@@ -1631,7 +1536,7 @@ namespace mccore {
   Residue::finalize ()
   {
     Vector3D *v1, *v2, *v3;
-    Vector3D a, b, y, z;
+    Vector3D a, b, i, j, k;
 
     try
     {
@@ -1645,10 +1550,12 @@ namespace mccore {
 	// compute and insert pseudo-atoms
 	a = (*v2-*v1).normalize();
 	b = (*v3-*v1).normalize();
-	y = *v1 + (a + b).normalize();
-	z = *v1 + (b.cross(a)).normalize();
-	this->insert (Atom (y, AtomType::aPSY));
-	this->insert (Atom (z, AtomType::aPSZ));
+	j = *v1 + (a + b).normalize();
+	k = *v1 + (b.cross(a)).normalize();
+	i = *v1 + j.cross (k);
+	this->insert (Atom (i, AtomType::aPSX));
+	this->insert (Atom (j, AtomType::aPSY));
+	this->insert (Atom (k, AtomType::aPSZ));
       }
       else if (this->type->isPyrimidine ())
       {
@@ -1660,10 +1567,12 @@ namespace mccore {
 	// compute and insert pseudo-atoms
 	a = (*v2-*v1).normalize();
 	b = (*v3-*v1).normalize();
-	y = *v1 + (a + b).normalize();
-	z = *v1 + (b.cross(a)).normalize();
-	this->insert (Atom (y, AtomType::aPSY));
-	this->insert (Atom (z, AtomType::aPSZ));
+	j = *v1 + (a + b).normalize();
+	k = *v1 + (b.cross(a)).normalize();
+	i = *v1 + j.cross (k);
+	this->insert (Atom (i, AtomType::aPSX));
+	this->insert (Atom (j, AtomType::aPSY));
+	this->insert (Atom (k, AtomType::aPSZ));
       }
       else if (this->type->isPhosphate ())
       {
@@ -1683,8 +1592,8 @@ namespace mccore {
 	// compute and insert pseudo-atoms
 	a = (*v2 - *v1).normalize ();
 	b = (*v3 - *v1).normalize ();
-	z = *v1 + (b.cross (a)).normalize ();
-	this->insert (Atom (z, AtomType::aPSAZ));
+	k = *v1 + (b.cross (a)).normalize ();
+	this->insert (Atom (k, AtomType::aPSAZ));
       }
       else
       {
@@ -1702,30 +1611,32 @@ namespace mccore {
   float 
   Residue::distance (const Residue &r) const
   {
-    if (getType ()->isAminoAcid ()) {
+    if (this->getType ()->isAminoAcid ())
+    {
       float deltaPseudoPhi =
-	find (AtomType::aN)->torsionAngle (*find (AtomType::aH),
-					   *find (AtomType::aCA),
-					   *find (AtomType::aC))
-	- r.find (AtomType::aN)->torsionAngle (*r.find (AtomType::aH),
-					       *r.find (AtomType::aCA),
-					       *r.find (AtomType::aC));
+	this->safeFind (AtomType::aN)->torsionAngle (*this->safeFind (AtomType::aH),
+						     *this->safeFind (AtomType::aCA),
+						     *this->safeFind (AtomType::aC))
+	- r.safeFind (AtomType::aN)->torsionAngle (*r.safeFind (AtomType::aH),
+						   *r.safeFind (AtomType::aCA),
+						   *r.safeFind (AtomType::aC));
       
       float deltaPseudoPsi =
-	find (AtomType::aCA)->torsionAngle (*find (AtomType::aN),
-					    *find (AtomType::aC),
-					    *find (AtomType::aO))
-	- r.find (AtomType::aCA)->torsionAngle (*r.find (AtomType::aN),
-						*r.find (AtomType::aC),
-						*r.find (AtomType::aO));
+	this->safeFind (AtomType::aCA)->torsionAngle (*this->safeFind (AtomType::aN),
+						      *this->safeFind (AtomType::aC),
+						      *this->safeFind (AtomType::aO))
+	- r.safeFind (AtomType::aCA)->torsionAngle (*r.safeFind (AtomType::aN),
+						    *r.safeFind (AtomType::aC),
+						    *r.safeFind (AtomType::aO));
       
       return (min ((float) abs (deltaPseudoPhi), (float)(2 * M_PI - abs (deltaPseudoPhi)))
 	      + min ((float) abs (deltaPseudoPsi), (float)(2 * M_PI - abs (deltaPseudoPsi))));
-    } else if (getType ()->isNucleicAcid ()) {
+    }
+    else if (this->getType ()->isNucleicAcid ())
+    {
       // nucleic acid
-      Residue *tmpRef = clone ();
+      Residue *tmpRef = this->clone ();
       Residue *tmpRes = r.clone ();
-      AtomSet *as;
       float result;
       
       tmpRes->setReferential (tmpRef->getReferential ());
@@ -1733,20 +1644,21 @@ namespace mccore {
       // This supposes that the atoms are in the same order in the two 
       // residues, which is the case since we iterate on sorted residues 
       // by definition of a residue iterator
-      as = new AtomSetAnd (new AtomSetBackbone (),
-			   new AtomSetNot (new AtomSetOr (new AtomSetHydrogen (), 
-							  new AtomSetAtom (AtomType::aO2p))));
-      result = Rmsd::rmsd (tmpRef->begin (as->clone ()), 
-			   tmpRef->end (),
-			   tmpRes->begin (as),
-			   tmpRes->end ());
+      AtomSetAnd as (new AtomSetBackbone (),
+		     new AtomSetNot (new AtomSetOr (new AtomSetHydrogen (), 
+						    new AtomSetAtom (AtomType::aO2p))));
+      
+      result = Rmsd::rmsd (tmpRef->begin (as), tmpRef->end (),
+			   tmpRes->begin (as), tmpRes->end ());
       delete tmpRef;
       delete tmpRes;
       return result;
     }
-    gOut (2) << "Distance metric is not defined for residues " 
-	     << *getType () << " and " << *r.getType () << endl;
-    return MAXFLOAT;
+
+    IntLibException ex ("", __FILE__, __LINE__);
+    ex << "Distance metric is not defined for residues "
+       << this->getType () << " and " << r.getType ();
+    throw ex;
   }
   
 
@@ -2356,15 +2268,6 @@ namespace mccore {
     {
       return atomGlobal[inserted.first->second];
     }
-  }
-
-  
-  void
-  Residue::_insert_local (const Vector3D& coord, AtomMap::iterator posit)
-  {
-    // no local atom container
-    atomGlobal[posit->second]->set (coord.getX (), coord.getY (), coord.getZ ());
-    atomGlobal[posit->second]->transform (getReferential ());
   }
 
   
@@ -3059,20 +2962,27 @@ namespace mccore {
       filter (new AtomSetAll ())
   {
   }
-  
 
+  
+  Residue::ResidueIterator::ResidueIterator (Residue *r, AtomMap::iterator p)
+    : res (r),
+      pos (p),
+      filter (new AtomSetAll ())
+  {
+    AtomMap::iterator last = res->atomIndex.end ();
+    while (pos != last && ! (*filter) (res->_get (pos->second)))
+      ++pos;
+  }
+  
 
   Residue::ResidueIterator::ResidueIterator (Residue *r,
 					     AtomMap::iterator p,
-					     AtomSet *f)
+					     const AtomSet& f)
     : res (r),
       pos (p),
-      filter (f)
+      filter (f.clone ())
   {
     AtomMap::iterator last = res->atomIndex.end ();
-
-    if (filter == 0)
-      filter = new AtomSetAll ();
     while (pos != last && ! (*filter) (res->_get (pos->second)))
       ++pos;
   }
@@ -3159,15 +3069,24 @@ namespace mccore {
 
   Residue::ResidueConstIterator::ResidueConstIterator (const Residue *r,
 						       AtomMap::const_iterator p,
-						       AtomSet *f)
+						       const AtomSet& f)
     : res (r),
       pos (p),
-      filter (f)
+      filter (f.clone ())
   {
     AtomMap::const_iterator last = res->atomIndex.end ();
+    while (pos != last && ! (*filter) (res->_get (pos->second)))
+      ++pos;
+  }
 
-    if (filter == 0)
-      filter = new AtomSetAll ();
+  
+  Residue::ResidueConstIterator::ResidueConstIterator (const Residue *r,
+						       AtomMap::const_iterator p)
+    : res (r),
+      pos (p),
+      filter (new AtomSetAll ())
+  {
+    AtomMap::const_iterator last = res->atomIndex.end ();
     while (pos != last && ! (*filter) (res->_get (pos->second)))
       ++pos;
   }

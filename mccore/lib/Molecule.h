@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:36 2003
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 // 
 // This file is part of mccore.
 // 
@@ -29,18 +29,21 @@
 #include <iostream>
 #include <list>
 #include <map>
+#include <string>
 
 using namespace std;
 
 
 
-namespace mccore {
+namespace mccore
+{
 
   class Model;
+  class ResidueFactoryMethod;
   class iPdbstream;
   class oPdbstream;
-  
-  
+  class iBinstream;
+  class oBinstream;
   
   /**
    * @short Container for a collection of Models.
@@ -48,23 +51,149 @@ namespace mccore {
    * This is a collection of mccore Models in a simple STL list.
    *
    * @author Martin Larose (<larosem@iro.umontreal.ca>)
-   * @version $Id: Molecule.h,v 1.2 2003-12-23 14:58:09 larosem Exp $
+   * @version $Id: Molecule.h,v 1.3 2004-12-06 21:38:01 thibaup Exp $
    */
-  class Molecule : public list< Model* >
+  class Molecule
   {
+  public:
+    
+    typedef unsigned int size_type;
+
+  protected:
+    
+    /**
+     * Container for Models.
+     */
+    list< Model* > models;
+
     /**
      * Properties for the molecule class.
      */
-    map< const char*, char* > properties;
+    map< string, string > properties;
+    
+    /**
+     * Factory method for creating new residues within new models.
+     */
+    ResidueFactoryMethod *residueFM;
     
   public:
     
+    // ITERATORS -----------------------------------------------------------------
+
+    /**
+     * @short Iterator class for Molecule.
+     *
+     * @author Martin Larose <larosem@iro.umontreal.ca>
+     */
+    class molecule_iterator : public list< Model* >::iterator
+    {
+    public:
+
+      // LIFECYCLE ------------------------------------------------------------
+
+      /**
+       * Initializes the iterator.
+       */
+      molecule_iterator () : list< Model* >::iterator () { }
+    
+      /**
+       * Initializes the iterator with the list iterator.
+       * @param lIt the list iterator.
+       */
+      molecule_iterator (const list< Model* >::iterator &lIt)
+	: list< Model* >::iterator (lIt)
+      { }
+
+      // OPERATORS ------------------------------------------------------------
+
+      /**
+       * Defines a difference operator for Molecule iterators.
+       * @param right the right iterator value in the difference.
+       * @return the distance between the iterators.
+       */
+      unsigned int operator- (const molecule_iterator &right) const;
+    
+      /**
+       * Redefines the access operator* to get the dereferenced residue.
+       * @return the referenced residue.
+       */
+      Model& operator* () const
+      { 
+	return *list< Model* >::iterator::operator* (); 
+      }
+
+      /**
+       * Redefines the access operator-> to get the dereferenced residue.
+       * @return the pointed residue.
+       */
+      Model* operator-> () const { return &(operator* ()); }
+    };
+  
+    /**
+     * @short Const iterator class for Molecule.
+     *
+     * @author Martin Larose <larosem@iro.umontreal.ca>
+     */
+    class molecule_const_iterator : public list< Model* >::const_iterator
+    {
+    public:
+
+      /**
+       * Initializes the const iterator.
+       */
+      molecule_const_iterator () : list< Model* >::const_iterator () { }
+    
+      /**
+       * Initializes the iterator with the list iterator.
+       * @param lIt the list iterator.
+       */
+      molecule_const_iterator (const list< Model* >::const_iterator &lIt)
+	: list< Model* >::const_iterator (lIt)
+      { }
+
+      /**
+       * Initializes the iterator with a non const molecule_iterator.
+       * @param it the molecule iterator.
+       */
+      molecule_const_iterator (const molecule_iterator& it)
+	: list< Model* >::const_iterator (it)
+      { }
+
+      // OPERATORS ------------------------------------------------------------
+      
+      /**
+       * Defines a difference operator for Molecule const_iterators.
+       * @param right the right iterator value in the difference.
+       * @return the distance between the iterators.
+       */
+      unsigned int operator- (const molecule_const_iterator &right) const;
+
+      /**
+       * Redefines the access operator* to get the dereferenced residue.
+       * @return the referenced residue.
+       */
+      const Model& operator* () const
+      { return *list< Model* >::const_iterator::operator* (); }
+
+      /**
+       * Redefines the access operator-> to get the dereferenced residue.
+       * @return the pointed residue.
+       */
+      const Model* operator-> () const { return &(operator* ()); }
+    };
+
+  public:
+
+    typedef molecule_iterator iterator;
+    typedef molecule_const_iterator const_iterator;
+      
     // LIFECYCLE ------------------------------------------------------------
     
     /**
      * Initializes the object.
+     * @param fm the residue factory methods that will instanciate new residues (default is @ref ExtendedResidueFM).
      */
-    Molecule () { }
+    Molecule (const ResidueFactoryMethod *fm = 0);
     
     /**
      * Initializes the object with the right's content.
@@ -91,13 +220,29 @@ namespace mccore {
      * @return itself.
      */
     Molecule& operator= (const Molecule &right);
+
+    /**
+     * Gets the model reference at nth position.
+     * @param nth the position of the reference to get.
+     * @return the nth reference.
+     */
+    Model& operator[] (size_type nth);
+
+    /**
+     * Gets the model const_reference at nth position.
+     * @param nth the position of the const_reference to get.
+     * @return the nth const_reference.
+     */
+    const Model& operator[] (size_type nth) const;
     
     // ACCESS ---------------------------------------------------------------
     
     /**
-     * Gets the property value of the key.
+     * Gets the property value of the key. Throws an @ref IntLibException
+     * if key isn't found.
      * @param key the key.
      * @return the value of the key.
+     * @throws IntLibException
      */
     const char* getProperty (const char *key) const;
     
@@ -112,12 +257,160 @@ namespace mccore {
      * Gets the property map.
      * @return the property map.
      */
-    map< const char*, char* >& getProperties () { return properties; }
+    const map< string, string >& getProperties () const
+    {
+      return this->properties;
+    }
+
+   /**
+     * Gets the residue factory method.
+     * @return the residue factory method.
+     */
+    const ResidueFactoryMethod* getResidueFM () const
+    {
+      return this->residueFM;
+    }
+  
+    /**
+     * Sets the residue factory method.
+     * @param fm the new factory method to use (default is @ref ExtendedResidueFM).
+     */
+    void setResidueFM (const ResidueFactoryMethod *fm = 0);
+
+    /**
+     * Gets the iterator pointing to the beginning of the molecule.
+     * @return the iterator.
+     */
+    iterator begin ()
+    {
+      return iterator (models.begin ());
+    }
+
+    /**
+     * Gets the iterator pointing to the end of the molecule.
+     * @return the iterator.
+     */
+    iterator end ()
+    {
+      return iterator (models.end ());
+    }
+
+    /**
+     * Gets the const iterator pointing to the beginning of the molecule.
+     * @return the iterator.
+     */
+    const_iterator begin () const
+    {
+      return const_iterator (models.begin ());
+    }
+
+    /**
+     * Gets the const iterator pointing to the end of the molecule.
+     * @return the iterator.
+     */
+    const_iterator end () const
+    {
+      return const_iterator (models.end());
+    }
     
     // METHODS --------------------------------------------------------------
+
+    /**
+     * Inserts a model at the end.
+     * @param model the model to insert.
+     * @return the position where the residue was inserted.
+     */
+    iterator insert (const Model& model)
+    {
+      return this->models.insert (models.end (), model.clone ());
+    }
+    
+    /**
+     * Inserts the model range before pos.  It calls the list<> method.
+     * @param pos the iterator where the model will be placed.
+     * @param f the first iterator in the range.
+     * @param l the last iterator in the range.
+     */
+    template <class InputIterator>
+    void insert(InputIterator f, InputIterator l)
+    {
+      while (f != l)
+	{
+	  this->insert (*f);
+	  ++f;
+	}
+    }
+
+    /**
+     * Erases a model from the molecule.
+     * @param pos the position to erase.
+     * @return an iterator on the next model.
+     */ 
+    iterator erase (iterator pos) 
+    {
+      return this->models.erase (pos);
+    }
+    
+    /**
+     * Returns the number of models present in the molecule.
+     * @return a number of models.
+     */
+    size_type size () const
+    {
+      return this->models.size ();
+    }
+
+    /**
+     * Tells if there is no model in the molecule.
+     * @return whether the molecule is empty.
+     */
+    bool empty () const
+    {
+      return this->models.empty ();
+    }
+
+    /**
+     * Removes all of the models from the molecule.  
+     */
+    virtual void clear();
     
     // I/O  -----------------------------------------------------------------
+
+    /**
+     * Ouputs the molecule to the stream.
+     * @param os the output stream.
+     * @return the used output stream.
+     */
+    ostream& write (ostream &os) const;
+
+    /**
+     * Writes the molecule to a pdb output stream.
+     * @param ops the pdb data stream.
+     * @return the consumed pdb stream.
+     */
+    oPdbstream& write (oPdbstream &ops) const;
+
+    /**
+     * Reads the molecule from a pdb input stream.
+     * @param ips the pdb data stream.
+     * @return the consumed pdb stream.
+     */
+    iPdbstream& read (iPdbstream &ips);
   
+    /**
+     * Writes the molecule to a binary output stream.
+     * @param obs the binary data stream.
+     * @return the consumed binary stream.
+     */
+    oBinstream& write (oBinstream &obs) const;
+
+    /**
+     * Reads the molecule from a binary input stream.
+     * @param obs the binary data stream.
+     * @return the consumed binary stream.
+     */
+    iBinstream& read (iBinstream &ibs);
+    
   };
   
   // NON-MEMBER FUNCTION -------------------------------------------------------
@@ -133,7 +426,7 @@ namespace mccore {
   /**
    * Inputs the molecule from a pdb stream.
    * @param ips the input pdb stream.
-   * @param obj the molecule where to put the models.
+   * @param obj the molecule where to put the molecules.
    * @return the input pdb stream.
    */
   iPdbstream& operator>> (iPdbstream &ips, Molecule &obj);

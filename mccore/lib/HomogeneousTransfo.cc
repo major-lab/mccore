@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 //
 //  This file is part of mccore.
 //  
@@ -50,6 +50,7 @@ namespace mccore
 
 
   const HomogeneousTransfo HomogeneousTransfo::identity;
+  const float HomogeneousTransfo::alpha_square = 2.25;
   
 
   // LIFECYCLE ------------------------------------------------------------
@@ -387,28 +388,40 @@ namespace mccore
   }
 
 
-  HomogeneousTransfo 
-  HomogeneousTransfo::rotate(float theta_x, float theta_y, float theta_z) const 
+  HomogeneousTransfo
+  HomogeneousTransfo::rotateX (float theta) const
   {
-    HomogeneousTransfo copy = *this;
+    return (*this * HomogeneousTransfo::rotationX (theta));
+  }
 
-    if (0 != theta_x)
-      copy = copy * HomogeneousTransfo::rotationX (theta_x);
-    if (0 != theta_y)
-      copy = copy * HomogeneousTransfo::rotationY (theta_y);
-    if (0 != theta_z)
-      copy = copy * HomogeneousTransfo::rotationZ (theta_z);
 
-    return copy;
+  HomogeneousTransfo
+  HomogeneousTransfo::rotateY (float theta) const
+  {
+    return (*this * HomogeneousTransfo::rotationY (theta));
+  }
+
+
+  HomogeneousTransfo
+  HomogeneousTransfo::rotateZ (float theta) const
+  {
+    return (*this * HomogeneousTransfo::rotationZ (theta));
+  }
+
+  
+  HomogeneousTransfo 
+  HomogeneousTransfo::translation (const Vector3D &t) 
+  {
+    return HomogeneousTransfo::translation (t.getX (), t.getY (), t.getZ ());
   }
 
 
   HomogeneousTransfo 
-  HomogeneousTransfo::translation (const Vector3D &t) 
+  HomogeneousTransfo::translation (float x, float y, float z) 
   {
-    return HomogeneousTransfo(1, 0, 0, t.getX (),
-			      0, 1, 0, t.getY (),
-			      0, 0, 1, t.getZ (),
+    return HomogeneousTransfo(1, 0, 0, x,
+			      0, 1, 0, y,
+			      0, 0, 1, z,
 			      0, 0, 0, 1);
   }
 
@@ -416,17 +429,14 @@ namespace mccore
   HomogeneousTransfo 
   HomogeneousTransfo::translate (const Vector3D &t) const 
   {
-    return (*this * HomogeneousTransfo::translation(t));
+    return (*this * HomogeneousTransfo::translation (t));
   }
 
 
   HomogeneousTransfo 
   HomogeneousTransfo::translate (float x, float y, float z) const 
   {
-    return (*this * HomogeneousTransfo(1, 0, 0, x,
-				       0, 1, 0, y,
-				       0, 0, 1, z,
-				       0, 0, 0, 1));
+    return (*this *HomogeneousTransfo::translation (x, y, z));
   }
   
 
@@ -451,7 +461,7 @@ namespace mccore
 
 
   float 
-  HomogeneousTransfo::strength () const 
+  HomogeneousTransfo::strength_old () const 
   {
     Vector3D trans (matrix[12], matrix[13], matrix[14]);
     
@@ -464,13 +474,30 @@ namespace mccore
     a *= a;
     b *= b;
     c *= c;
-    theta = (float) atan2 (sqrt (a + b + c), diag) * 180 / (float) M_PI;	
+    theta = (float) atan2 (sqrt (a + b + c), diag) * 180 / (float) M_PI;
+    
     return (float) sqrt (trans.length () * trans.length () + theta * theta / 900);
   }
-  
+
   
   float 
-  HomogeneousTransfo::distance (const HomogeneousTransfo &m) const 
+  HomogeneousTransfo::strength () const 
+  {
+    float l2 = matrix[12]*matrix[12] + matrix[13]*matrix[13] + matrix[14]*matrix[14];
+    
+    float a = matrix[6] - matrix[9];
+    float b = matrix[8] - matrix[2];
+    float c = matrix[1] - matrix[4];
+    float diag = matrix[0] + matrix[5] + matrix[10] - 1;
+    
+    float theta_rad = (float) atan2 (sqrt (a*a + b*b + c*c), diag);
+
+    return (float) sqrt (l2 + HomogeneousTransfo::alpha_square * theta_rad * theta_rad);
+  }
+
+  
+  float 
+  HomogeneousTransfo::distance_old (const HomogeneousTransfo &m) const 
   {
     HomogeneousTransfo a = *this;
     HomogeneousTransfo bi = m;
@@ -478,9 +505,16 @@ namespace mccore
     
     HomogeneousTransfo a_bi = a * bi;
     HomogeneousTransfo bi_a = bi * a;
-    return (a_bi.strength () + bi_a.strength ()) / 2;
+    return (a_bi.strength_old () + bi_a.strength_old ()) / 2;
   }
-  
+
+
+  float
+  HomogeneousTransfo::distance (const HomogeneousTransfo &m) const 
+  {
+    return (this->invert () * m).strength ();
+  }
+
   
   float
   HomogeneousTransfo::squareDistance (const HomogeneousTransfo &m) const
@@ -490,7 +524,26 @@ namespace mccore
     val = distance (m);
     return val * val;
   }
+
   
+  float
+  HomogeneousTransfo::rmsd () const
+  {
+    Vector3D u1 (1.0, 0.0, 0.0), v1 (0.0, 1.0, 0.0), w1 (0.0, 0.0, 1.0);
+    Vector3D u2 = u1, v2 = v1, w2 = w1;
+
+    return sqrt ((u2.transform (*this).squareDistance (u1) +
+		  v2.transform (*this).squareDistance (v1) +
+		  w2.transform (*this).squareDistance (w1)) / 3.0);
+  }
+
+  
+  float
+  HomogeneousTransfo::rmsd (const HomogeneousTransfo &m) const
+  {
+    return (this->invert () * m).rmsd ();
+  }
+
   
   HomogeneousTransfo 
   HomogeneousTransfo::align (const Vector3D &p1, const Vector3D &p2, const Vector3D &p3) 

@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.24 $
-// $Id: Model.cc,v 1.24 2004-05-27 17:34:03 thibaup Exp $
+// $Revision: 1.25 $
+// $Id: Model.cc,v 1.25 2004-12-06 21:37:39 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -32,6 +32,7 @@
 #include <string.h>
 
 #include "Binstream.h"
+#include "Messagestream.h"
 #include "ExtendedResidue.h"
 #include "Model.h"
 #include "Pdbstream.h"
@@ -54,32 +55,30 @@ namespace mccore {
   // LIFECYCLE -----------------------------------------------------------------
 
   
-  Model::Model (ResidueFactoryMethod *fm)
+  Model::Model (const ResidueFactoryMethod *fm)
+    : residueFM (0 == fm ? new ExtendedResidueFM () : fm->clone ())
   {
-    residueFM = (fm == 0) ? new ExtendedResidueFM () : fm;
+
   }
 
 
   
   Model::Model (const Model &right)
+    : residueFM (right.residueFM->clone ())
   {
     const_iterator cit;
-    
-    residueFM = right.residueFM->clone ();
     for (cit = right.begin (); cit != right.end (); ++cit)
-      insert (*cit);
+      this->insert (*cit);
   }
 
 
 
   Model::~Model ()
   {
-    delete residueFM;
+    delete this->residueFM;
     list< Residue* >::iterator it;
-    for (it = residues.begin (); it != residues.end (); ++it) {
+    for (it = this->residues.begin (); it != this->residues.end (); ++it) 
       delete *it;      
-    }
-    residues.clear ();    
   }
 
 
@@ -96,9 +95,9 @@ namespace mccore {
 	delete residueFM;
 	residueFM = right.residueFM->clone ();
 	
-	clear ();	
+	this->clear ();	
 	for (cit = right.begin (); cit != right.end (); ++cit)
-	  insert (*cit);
+	  this->insert (*cit);
       }
     return *this;
   }
@@ -140,10 +139,10 @@ namespace mccore {
 
 
   void
-  Model::setResidueFM (ResidueFactoryMethod *fm)
+  Model::setResidueFM (const ResidueFactoryMethod *fm)
   {
-    delete residueFM;
-    residueFM = fm;
+    delete this->residueFM;
+    this->residueFM = 0 == fm ? new ExtendedResidueFM () : fm->clone ();
   }
 
 
@@ -263,9 +262,8 @@ namespace mccore {
   Model::clear()
   {
     list< Residue* >::iterator it;
-    for (it = residues.begin (); it != residues.end (); ++it) {
+    for (it = residues.begin (); it != residues.end (); ++it) 
       delete *it;      
-    }
     residues.clear ();    
   }
 
@@ -274,7 +272,7 @@ namespace mccore {
   Model::validate ()
   {
     iterator it = begin ();
-
+    
     while (it != end ())
       {
 	it->validate ();
@@ -287,19 +285,19 @@ namespace mccore {
 	    it = erase (it);
 	  }
       }
+
   }
 
   
   void
-  Model::addHLP ()
+  Model::addHLP (bool overwrite)
   {
     iterator it;
-
     for (it = begin (); it != end (); ++it)
-      {
-	it->addHydrogens ();
-	it->addLonePairs ();
-      }
+    {
+      it->addHydrogens (overwrite);
+      it->addLonePairs (overwrite);
+    }
   }
 
   

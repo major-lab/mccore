@@ -87,17 +87,17 @@ namespace mccore
   Relation::operator= (const Relation &other)
   {
     if (this != &other)
-      {
-	ref = other.ref;
-	res = other.res;
-	tfo = other.tfo;
-	po4_tfo = other.po4_tfo;
-	refFace = other.refFace;
-	resFace = other.resFace;
-	labels = other.labels;
-	hbonds = other.hbonds;
-	sum_flow = other.sum_flow;
-      }
+    {
+      ref = other.ref;
+      res = other.res;
+      tfo = other.tfo;
+      po4_tfo = other.po4_tfo;
+      refFace = other.refFace;
+      resFace = other.resFace;
+      labels = other.labels;
+      hbonds = other.hbonds;
+      sum_flow = other.sum_flow;
+    }
     return *this;
   }
   
@@ -112,68 +112,68 @@ namespace mccore
     areStacked ();
     arePaired ();
 
-//     TODO: fix areHBonded method
-//
-//     if (! is (PropertyType::pPairing))
-//       areHBonded ();
+    //     TODO: fix areHBonded method
+    //
+    //     if (! is (PropertyType::pPairing))
+    //       areHBonded ();
     
     if (!is (PropertyType::pAdjacent)
 	&& (is (PropertyType::pPairing) || is (PropertyType::pStack)))
-      {
-	labels.insert (PropertyType::pDIR_ANY);
-      }
+    {
+      labels.insert (PropertyType::pDIR_ANY);
+    }
     
     if (ref->getType ()->isNucleicAcid ()
 	&& res->getType ()->isNucleicAcid ()
 	&& is (PropertyType::pAdjacent))
+    {
+      // compute transfo from 5' base to phosphate
+      vector< Atom > pVec;
+      const Residue *r5, *r3;
+
+      if (is (PropertyType::pDIR_5p))
       {
-	// compute transfo from 5' base to phosphate
-	vector< Atom > pVec;
-	const Residue *r5, *r3;
-
-	if (is (PropertyType::pDIR_5p))
-	  {
-	    r5 = ref;
-	    r3 = res;
-	  }
-	else if (is (PropertyType::pDIR_3p))
-	  {
-	    r5 = res;
-	    r3 = ref;
-	  }
-	else
-	{
-	  IntLibException ex ("adjacent relation should be either in direction 5' or 3'.");
-	  throw ex;
-	}
-
-	try
-	{
-	  pVec.push_back (*r5->safeFind (AtomType::aO3p));
-	  pVec.push_back (*r3->safeFind (AtomType::aP));
-	  pVec.push_back (*r3->safeFind (AtomType::aO1P));
-	  pVec.push_back (*r3->safeFind (AtomType::aO2P));
-	  pVec.push_back (*r3->safeFind (AtomType::aO5p));
-
-	  Residue pRes (ResidueType::rPhosphate, r5->getResId (), pVec);
-	  pRes.finalize ();
-	
-	  po4_tfo = r5->getReferential ().invert () * pRes.getReferential ();
-	  
-	  if (r5 == res)
-	    po4_tfo = tfo * po4_tfo;
-	}
-	catch (NoSuchAtomException& ex)
-	{
-	  gOut (3) << "unable to compute phosphate transfo: " << ex << endl;
-	  po4_tfo.setIdentity ();
-	}
-	
+	r5 = ref;
+	r3 = res;
       }
-    else 
+      else if (is (PropertyType::pDIR_3p))
       {
+	r5 = res;
+	r3 = ref;
+      }
+      else
+      {
+	IntLibException ex ("adjacent relation should be either in direction 5' or 3'.");
+	throw ex;
+      }
+
+      try
+      {
+	pVec.push_back (*r5->safeFind (AtomType::aO3p));
+	pVec.push_back (*r3->safeFind (AtomType::aP));
+	pVec.push_back (*r3->safeFind (AtomType::aO1P));
+	pVec.push_back (*r3->safeFind (AtomType::aO2P));
+	pVec.push_back (*r3->safeFind (AtomType::aO5p));
+
+	Residue pRes (ResidueType::rPhosphate, r5->getResId (), pVec);
+	pRes.finalize ();
+	
+	po4_tfo = r5->getReferential ().invert () * pRes.getReferential ();
+	  
+	if (r5 == res)
+	  po4_tfo = tfo * po4_tfo;
+      }
+      catch (NoSuchAtomException& ex)
+      {
+	gOut (3) << "unable to compute phosphate transfo: " << ex << endl;
 	po4_tfo.setIdentity ();
       }
+	
+    }
+    else 
+    {
+      po4_tfo.setIdentity ();
+    }
     
     return !empty ();
   }
@@ -228,173 +228,173 @@ namespace mccore
     vector< Residue::const_iterator > refn_at;
     vector< Residue::const_iterator > res_at;
     vector< Residue::const_iterator > resn_at;
+    AtomSetSideChain as_sidechain;
 
-
-    for (i = ref->begin (new AtomSetSideChain ()); i != ref->end (); ++i)
+    for (i = ref->begin (as_sidechain); i != ref->end (); ++i)
+    {
+      if (i->getType ()->isNitrogen () || i->getType ()->isOxygen ())
       {
-	if (i->getType ()->isNitrogen () || i->getType ()->isOxygen ())
+	for (j = res->begin (as_sidechain); j != res->end (); ++j)
+	{
+	  if (j->getType ()->isNitrogen () || j->getType ()->isOxygen ())
 	  {
-	    for (j = res->begin (new AtomSetSideChain ()); j != res->end (); ++j)
-	      {
-		if (j->getType ()->isNitrogen () || j->getType ()->isOxygen ())
-		  {
-		    if (i->distance (*j) > 1.7 && i->distance (*j) < 3.2)
-		      {
-			string str;
+	    if (i->distance (*j) > 1.7 && i->distance (*j) < 3.2)
+	    {
+	      string str;
 			
-			labels.insert (PropertyType::parseType ("unclassified"));
-			labels.insert (PropertyType::pPairing);
-			str.append ((const char*) *(i->getType ()));
-			str.append ("-");
-			str.append ((const char*) *(j->getType ()));
-			labels.insert (PropertyType::parseType (str.c_str ()));
-		      }
-		  }
-	      }
+	      labels.insert (PropertyType::parseType ("unclassified"));
+	      labels.insert (PropertyType::pPairing);
+	      str.append ((const char*) *(i->getType ()));
+	      str.append ("-");
+	      str.append ((const char*) *(j->getType ()));
+	      labels.insert (PropertyType::parseType (str.c_str ()));
+	    }
 	  }
+	}
       }
+    }
     
 
-// TODO: This is experimental and is a tentative to identify as
-// precisely as possible the presence of H-bonds on unindentified
-// residues, between amino-nucleic acids, or when hydrogens are
-// missing and their position is unknown (modified bases).
+    // TODO: This is experimental and is a tentative to identify as
+    // precisely as possible the presence of H-bonds on unindentified
+    // residues, between amino-nucleic acids, or when hydrogens are
+    // missing and their position is unknown (modified bases).
     
-//     if (ref->getType ()->isNucleicAcid () && res->getType ()->isNucleicAcid ())
-//       {
-// 	AtomSet* hl = new AtomSetOr (new AtomSetHydrogen (), new AtomSetLP ());
-// 	AtomSet* da = new AtomSetNot (hl->clone ());
+    //     if (ref->getType ()->isNucleicAcid () && res->getType ()->isNucleicAcid ())
+    //       {
+    // 	AtomSet* hl = new AtomSetOr (new AtomSetHydrogen (), new AtomSetLP ());
+    // 	AtomSet* da = new AtomSetNot (hl->clone ());
 
-// 	for (i=ref->begin (hl->clone ()); i!=ref->end (); ++i) {
-// 	  for (j=ref->begin (da->clone ()); j!=ref->end (); ++j) {
-// 	    if (i->distance (*j) < 1.7) {
-// 	      ref_at.push_back (i);
-// 	      refn_at.push_back (j);	  
-// 	    }
-// 	  }
-// 	}
-// 	for (i=res->begin (hl->clone ()); i!=res->end (); ++i) {
-// 	  for (j=res->begin (da->clone ()); j!=res->end (); ++j) {
-// 	    if (i->distance (*j) < 1.7) {
-// 	      res_at.push_back (i);
-// 	      resn_at.push_back (j);
-// 	    }
-// 	  }
-// 	}    
+    // 	for (i=ref->begin (hl->clone ()); i!=ref->end (); ++i) {
+    // 	  for (j=ref->begin (da->clone ()); j!=ref->end (); ++j) {
+    // 	    if (i->distance (*j) < 1.7) {
+    // 	      ref_at.push_back (i);
+    // 	      refn_at.push_back (j);	  
+    // 	    }
+    // 	  }
+    // 	}
+    // 	for (i=res->begin (hl->clone ()); i!=res->end (); ++i) {
+    // 	  for (j=res->begin (da->clone ()); j!=res->end (); ++j) {
+    // 	    if (i->distance (*j) < 1.7) {
+    // 	      res_at.push_back (i);
+    // 	      resn_at.push_back (j);
+    // 	    }
+    // 	  }
+    // 	}    
 	
-// 	delete hl; 
-// 	delete da;
+    // 	delete hl; 
+    // 	delete da;
 
 	
-// 	for (x=0; x<(int)ref_at.size (); ++x) {
-// 	  i = ref_at[x];
-// 	  j = refn_at[x];
-// 	  for (y=0; y<(int)res_at.size (); ++y) {
-// 	    k = res_at[y];
-// 	    l = resn_at[y];
+    // 	for (x=0; x<(int)ref_at.size (); ++x) {
+    // 	  i = ref_at[x];
+    // 	  j = refn_at[x];
+    // 	  for (y=0; y<(int)res_at.size (); ++y) {
+    // 	    k = res_at[y];
+    // 	    l = resn_at[y];
 	    
-// 	    if (i->getType ()->isHydrogen () && k->getType ()->isLonePair ()) {
-// 	      HBond h (j->getType (), i->getType (), l->getType (), k->getType ());
-// 	      h.eval (*ref, *res);
-// 	      if (h.getValue () > 0.01) {
-// // 		cout << h << endl;
-// 	      }
-// 	    } else if (k->getType ()->isHydrogen () && i->getType ()->isLonePair ()) {
-// 	      HBond h (l->getType (), k->getType (), j->getType (), i->getType ());
-// 	      h.eval (*res, *ref);
-// 	      if (h.getValue () > 0.01) {
-// // 		cout << h << endl;
-// 	      }	
-// 	    } 
-// 	  }
-// 	}
+    // 	    if (i->getType ()->isHydrogen () && k->getType ()->isLonePair ()) {
+    // 	      HBond h (j->getType (), i->getType (), l->getType (), k->getType ());
+    // 	      h.eval (*ref, *res);
+    // 	      if (h.getValue () > 0.01) {
+    // // 		cout << h << endl;
+    // 	      }
+    // 	    } else if (k->getType ()->isHydrogen () && i->getType ()->isLonePair ()) {
+    // 	      HBond h (l->getType (), k->getType (), j->getType (), i->getType ());
+    // 	      h.eval (*res, *ref);
+    // 	      if (h.getValue () > 0.01) {
+    // // 		cout << h << endl;
+    // 	      }	
+    // 	    } 
+    // 	  }
+    // 	}
 	      
-//       }
+    //       }
 
-//     if (ref->getType ()->isAminoAcid () && res->getType ()->isAminoAcid ())
-//       {	
-// 	for (i=ref->begin (); i!=ref->end (); ++i) {
-// 	  if (i->getType ()->isNitrogen () 
-// 	      || i->getType () == AtomType::aOG || i->getType () == AtomType::aOH) {
-// 	    for (j=res->begin (); j!=res->end (); ++j) {
-// 	      if (j->getType ()->isOxygen ()) {
+    //     if (ref->getType ()->isAminoAcid () && res->getType ()->isAminoAcid ())
+    //       {	
+    // 	for (i=ref->begin (); i!=ref->end (); ++i) {
+    // 	  if (i->getType ()->isNitrogen () 
+    // 	      || i->getType () == AtomType::aOG || i->getType () == AtomType::aOH) {
+    // 	    for (j=res->begin (); j!=res->end (); ++j) {
+    // 	      if (j->getType ()->isOxygen ()) {
 		
-// 		if (i->distance (*j) > 1.7 && i->distance (*j) < 3.5) {
-// 		  bool reject = false;
-// 		  if (i->getType () == AtomType::aN) {  // N donor
-// 		    Vector3D u, v, w;
-// 		    u = (*res->find (AtomType::aCA) - *i).normalize ();
-// 		    w = (*j - *i).normalize ();
-// 		    float theta = v.angle (u, w) * 180 / M_PI;
-// 		    float theta_ideal = 115;
-// 		    float theta_diff = fabs (theta - theta_ideal);
-// 		    if (theta_diff > 40) reject = true;
-// 		  }
+    // 		if (i->distance (*j) > 1.7 && i->distance (*j) < 3.5) {
+    // 		  bool reject = false;
+    // 		  if (i->getType () == AtomType::aN) {  // N donor
+    // 		    Vector3D u, v, w;
+    // 		    u = (*res->find (AtomType::aCA) - *i).normalize ();
+    // 		    w = (*j - *i).normalize ();
+    // 		    float theta = v.angle (u, w) * 180 / M_PI;
+    // 		    float theta_ideal = 115;
+    // 		    float theta_diff = fabs (theta - theta_ideal);
+    // 		    if (theta_diff > 40) reject = true;
+    // 		  }
 
-// 		  if (j->getType () == AtomType::aO) { // O acceptor
-// 		    Vector3D u, v, w;
-// 		    u = (*ref->find (AtomType::aC) - *j).normalize ();
-// 		    w = (*i - *j).normalize ();
-// 		    float theta = v.angle (u, w) * 180 / M_PI;
-// 		    float theta_ideal = 106;
-// 		    float theta_diff = fabs (theta - theta_ideal);
-// 		    if (theta_diff > 40) reject = true;
-// 		  }		  
+    // 		  if (j->getType () == AtomType::aO) { // O acceptor
+    // 		    Vector3D u, v, w;
+    // 		    u = (*ref->find (AtomType::aC) - *j).normalize ();
+    // 		    w = (*i - *j).normalize ();
+    // 		    float theta = v.angle (u, w) * 180 / M_PI;
+    // 		    float theta_ideal = 106;
+    // 		    float theta_diff = fabs (theta - theta_ideal);
+    // 		    if (theta_diff > 40) reject = true;
+    // 		  }		  
 		  
-// 		  if (!reject) {
-// // 		    cout << *ref << " " << *res << " : " <<  *i << " -> " << *j << " \t " << i->distance (*j) << endl;
-// 		    labels.insert (PropertyType::parseType ("amino-pair"));
-// 		  }
-// 		}
-// 	      }
-// 	    }
-// 	  }
-// 	}
+    // 		  if (!reject) {
+    // // 		    cout << *ref << " " << *res << " : " <<  *i << " -> " << *j << " \t " << i->distance (*j) << endl;
+    // 		    labels.insert (PropertyType::parseType ("amino-pair"));
+    // 		  }
+    // 		}
+    // 	      }
+    // 	    }
+    // 	  }
+    // 	}
 	
-// 	for (i=res->begin (); i!=res->end (); ++i) {
-// 	  if (i->getType ()->isNitrogen () 
-// 	      || i->getType () == AtomType::aOG || i->getType () == AtomType::aOH) {
-// 	    for (j=ref->begin (); j!=ref->end (); ++j) {
-// 	      if (j->getType ()->isOxygen ()) {
+    // 	for (i=res->begin (); i!=res->end (); ++i) {
+    // 	  if (i->getType ()->isNitrogen () 
+    // 	      || i->getType () == AtomType::aOG || i->getType () == AtomType::aOH) {
+    // 	    for (j=ref->begin (); j!=ref->end (); ++j) {
+    // 	      if (j->getType ()->isOxygen ()) {
 		
-// 		if (i->distance (*j) > 1.7 && i->distance (*j) < 3.5) {
-// 		   bool reject = false;
+    // 		if (i->distance (*j) > 1.7 && i->distance (*j) < 3.5) {
+    // 		   bool reject = false;
 
-// 		  if (i->getType () == AtomType::aN) {  // N donor
-// 		    Vector3D u, v, w;
-// 		    u = (*res->find (AtomType::aCA) - *i).normalize ();
-// 		    w = (*j - *i).normalize ();
-// 		    float theta = v.angle (u, w) * 180 / M_PI;
-// 		    float theta_ideal = 115;
-// 		    float theta_diff = fabs (theta - theta_ideal);
-// // 		    cout << theta << endl;
-// // 		    cout << theta_diff << endl;
-// 		    if (theta_diff > 40) reject = true;
-// 		  }
+    // 		  if (i->getType () == AtomType::aN) {  // N donor
+    // 		    Vector3D u, v, w;
+    // 		    u = (*res->find (AtomType::aCA) - *i).normalize ();
+    // 		    w = (*j - *i).normalize ();
+    // 		    float theta = v.angle (u, w) * 180 / M_PI;
+    // 		    float theta_ideal = 115;
+    // 		    float theta_diff = fabs (theta - theta_ideal);
+    // // 		    cout << theta << endl;
+    // // 		    cout << theta_diff << endl;
+    // 		    if (theta_diff > 40) reject = true;
+    // 		  }
 
 
-// 		  if (j->getType () == AtomType::aO) { // O acceptor
-// 		    Vector3D u, v, w;
-// 		    u = (*ref->find (AtomType::aC) - *j).normalize ();
-// 		    w = (*i - *j).normalize ();
-// 		    float theta = v.angle (u, w) * 180 / M_PI;
-// 		    float theta_ideal = 106;
-// 		    float theta_diff = fabs (theta - theta_ideal);
-// // 		    cout << theta << endl;
-// // 		    cout << theta_diff << endl;
-// 		    if (theta_diff > 40) reject = true;
-// 		  }
+    // 		  if (j->getType () == AtomType::aO) { // O acceptor
+    // 		    Vector3D u, v, w;
+    // 		    u = (*ref->find (AtomType::aC) - *j).normalize ();
+    // 		    w = (*i - *j).normalize ();
+    // 		    float theta = v.angle (u, w) * 180 / M_PI;
+    // 		    float theta_ideal = 106;
+    // 		    float theta_diff = fabs (theta - theta_ideal);
+    // // 		    cout << theta << endl;
+    // // 		    cout << theta_diff << endl;
+    // 		    if (theta_diff > 40) reject = true;
+    // 		  }
 
-// 		  if (!reject) {
-// //  		    cout << *ref << " " << *res << " : " <<  *j << " <- " << *i << " \t " << i->distance (*j) << endl;		    
-// 		    ts.insert (PropertyType::parseType ("amino-pair"));
-// 		  }
-// 		}
-// 	      }
-// 	    }
-// 	  }
-// 	}
-//       }
+    // 		  if (!reject) {
+    // //  		    cout << *ref << " " << *res << " : " <<  *j << " <- " << *i << " \t " << i->distance (*j) << endl;		    
+    // 		    ts.insert (PropertyType::parseType ("amino-pair"));
+    // 		  }
+    // 		}
+    // 	      }
+    // 	    }
+    // 	  }
+    // 	}
+    //       }
   }
   
 
@@ -446,16 +446,16 @@ namespace mccore
       //     delete da;
       //     delete hl;
     
-      AtomSet* da = new AtomSetAnd (new AtomSetSideChain (), 
-				    new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M), 
-								   new AtomSetAtom (AtomType::a3H5M))));
-      for (i=ref->begin (da->clone ()); i!=ref->end (); ++i)
+      AtomSetAnd da (new AtomSetSideChain (), 
+		     new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M), 
+						    new AtomSetAtom (AtomType::a3H5M))));
+      for (i=ref->begin (da); i!=ref->end (); ++i)
       {
 	if ((i->getType ()->isCarbon ()
 	     || i->getType ()->isNitrogen ()
 	     || i->getType ()->isOxygen ()))
 	{
-	  for (j=ref->begin (da->clone ()); j!=ref->end (); ++j)
+	  for (j=ref->begin (da); j!=ref->end (); ++j)
 	  {
 	    if ((j->getType ()->isHydrogen ()
 		 || j->getType ()->isLonePair ())
@@ -468,13 +468,13 @@ namespace mccore
 	}
       }
         
-      for (i=res->begin (da->clone ()); i!=res->end (); ++i)
+      for (i=res->begin (da); i!=res->end (); ++i)
       {
 	if ((i->getType ()->isCarbon ()
 	     || i->getType ()->isNitrogen ()
 	     || i->getType ()->isOxygen ()))
 	{
-	  for (j=res->begin (da->clone ()); j!=res->end (); ++j)
+	  for (j=res->begin (da); j!=res->end (); ++j)
 	  {
 	    if ((j->getType ()->isHydrogen ()
 		 || j->getType ()->isLonePair ())
@@ -486,7 +486,6 @@ namespace mccore
 	  }
 	}
       }
-      delete da;
 	
       for (x = 0; x < (int) ref_at.size (); ++x)
       {

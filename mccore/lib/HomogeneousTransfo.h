@@ -3,7 +3,7 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.12 $
+// $Revision: 1.13 $
 //
 //  This file is part of mccore.
 //  
@@ -55,7 +55,7 @@ namespace mccore
    * </pre>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: HomogeneousTransfo.h,v 1.12 2004-07-05 18:34:10 thibaup Exp $
+   * @version $Id: HomogeneousTransfo.h,v 1.13 2004-12-06 21:37:27 thibaup Exp $
    */
   class HomogeneousTransfo
   {
@@ -64,10 +64,18 @@ namespace mccore
      */
     float *matrix;
     
-    
+
   public:
 
+    /**
+     * The 4x4 identity matrix.
+     */
     static const HomogeneousTransfo identity;
+
+    /**
+     * The squared scale ratio between angle and distance (Ang^2 / rad^2)
+     */
+    static const float alpha_square;
     
     // LIFECYCLE ------------------------------------------------------------
     
@@ -295,22 +303,42 @@ namespace mccore
     HomogeneousTransfo rotate (const Vector3D &axis, float theta) const;
     
     /**
-     * Calculates the rotation of the homogeneous matrix given three
-     * rotation angles.
-     * @param theta_x the x rotation angle (in radians).
-     * @param theta_y the y rotation angle (in radians).
-     * @param theta_z the z rotation angle (in radians).
-     * @return the new HomogeneousTransfo.
+     * Rotates this transfo by a given angle about the X axis.
+     * @param theta the angle to rotate by (in radians).
+     * @return the new rotated HomogeneousTransfo.
      */
-    HomogeneousTransfo rotate(float theta_x, float theta_y, float theta_z) const;
+    HomogeneousTransfo rotateX (float theta) const;
+
+    /**
+     * Rotates this transfo by a given angle about the Y axis.
+     * @param theta the angle to rotate by (in radians).
+     * @return the new rotated HomogeneousTransfo.
+     */
+    HomogeneousTransfo rotateY (float theta) const;
+
+    /**
+     * Rotates this transfo by a given angle about the Z axis.
+     * @param theta the angle to rotate by (in radians).
+     * @return the new rotated HomogeneousTransfo.
+     */
+    HomogeneousTransfo rotateZ (float theta) const;
     
     /**
-     * Translates the homogeneous translation matrix by a given
-     * vector.
+     * Translates the homogeneous translation matrix by a given vector.
      * @param t the vector representing normalised translation.
      * @return the new HomogeneousTransfo with the given translation.
      */
     static HomogeneousTransfo translation (const Vector3D &t);
+
+    /**
+     * Translates the homogeneous translation matrix by a given
+     * vector specified by its 3D components.
+     * @param x X axis component.
+     * @param y Y axis component.
+     * @param z Z axis component.
+     * @return the new HomogeneousTransfo with the given translation.
+     */
+    static HomogeneousTransfo translation (float x, float y, float z);
     
     /**
      * Translates the homogeneous matrix given a translation vector.
@@ -335,13 +363,28 @@ namespace mccore
     HomogeneousTransfo invert () const;
     
     /**
+     * [DEPRECATED]
      * Calculates the distance from the homogeneous matrix to origin.  The
      * rotation factor is also included.
      * @return the distance.
      */
+    float strength_old () const;
+
+    /**
+     * Computes the strength of this transfo, which is relative to both
+     * the translation and rotation components.
+     * @return the strength (Angstroms).
+     */
     float strength () const;
+
+    /**
+     * Computes the rms of <i,j,k> moved by this transfo from the global referential.
+     * @return the rmsd (Angstroms).
+     */
+    float rmsd () const;
     
     /**
+     * [DEPRECATED]
      * Computes the distance between two transfo.  For more details,
      * see a discussion of the metric used in P. Gendron, S. Lemieuxs
      * and F. Major (2001) Quantitative analysis of nucleic acid
@@ -349,10 +392,32 @@ namespace mccore
      * @param m the other transfo.
      * @return the computed distance.
      */
+    float distance_old (const HomogeneousTransfo &m) const;
+
+    /**
+     * M: m -> m'
+     * N: n -> n'
+     * Computes the strength of the transfo that represents n' in m''s
+     * referential when m and n are both aligned to the global referential
+     * (This transfo is M^-1 * N).
+     * @param m the transfo to compare to.
+     * @return the computed distance (Angstroms).
+     */
     float distance (const HomogeneousTransfo &m) const;
+
+    /**
+     * M: m -> m'
+     * N: n -> n'
+     * Computes the rmsd of the transfo that represents n' in m''s
+     * referential when m and n are both aligned to the global referential
+     * (This transfo is M^-1 * N).
+     * @param m the transfo to compare to.
+     * @return the computed rmsd (Angstroms).
+     */
+    float rmsd (const HomogeneousTransfo &m) const;
     
     /**
-     * Computes the distance between two transfo.  For more details,
+     * Computes the squared distance between two transfo.  For more details,
      * see a discussion of the metric used in P. Gendron, S. Lemieuxs
      * and F. Major (2001) Quantitative analysis of nucleic acid
      * three-dimensional structures, J. Mol. Biol. 308(5):919-936

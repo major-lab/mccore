@@ -1267,7 +1267,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 PACKAGE=mccore
-VERSION=1.4
+VERSION=1.5
 cat >>confdefs.h <<_ACEOF
 #define PACKAGE "$PACKAGE"
 _ACEOF
@@ -4462,7 +4462,7 @@ fi
 
 	    HAVE_LIBMYSQL=1
 fi;
-	CXXFLAGS="$CXXFLAGS -Wall -Wno-deprecated"
+	CXXFLAGS="$CXXFLAGS -Wall"
 	DEPFLAGS="-MM"
 	case "$host" in
 	    *-darwin*)

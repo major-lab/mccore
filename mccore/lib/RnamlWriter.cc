@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.4 $
-// $Id: RnamlWriter.cc,v 1.4 2004-10-15 20:38:55 thibaup Exp $
+// $Revision: 1.5 $
+// $Id: RnamlWriter.cc,v 1.5 2004-12-06 21:38:56 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -119,6 +119,7 @@ namespace mccore {
     Residue::const_iterator it;
     const char *type;
     const ResId &id = residue.getResId ();
+    AtomSetNot filter (new AtomSetOr (new AtomSetPSE (), new AtomSetLP ()));
     
     base = new rnaml::Base ();
     if (' ' != id.getChainId ())
@@ -138,7 +139,7 @@ namespace mccore {
 	insertionCode = id.getInsertionCode ();
 	base->setInsertion (insertionCode.c_str ()[0]);
       }
-    for (it = residue.begin (new AtomSetNot (new AtomSetOr (new AtomSetPSE (), new AtomSetLP ()))); residue.end () != it; ++it)
+    for (it = residue.begin (filter); residue.end () != it; ++it)
       base->addAtom (RnamlWriter::toRnaml (*it));
     return base;
   }
@@ -198,7 +199,7 @@ namespace mccore {
 	    // 	  ostringstream oss;
 	    char *id;
 	    
-	    model = RnamlWriter::toRnaml (**cit);
+	    model = RnamlWriter::toRnaml (*cit);
 	    // 	  oss << (string) "model" << ++i;
 	    // 	  model->setId (oss.str ().c_str ());
 	    id = new char[256];
