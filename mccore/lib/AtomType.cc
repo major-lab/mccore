@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*-
 // AtomType.cc
-// Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Nov 22 14:35:16 2000
-// Update Count     : 2
+// Last Modified On : Mon Jan 22 15:08:14 2001
+// Update Count     : 3
 // Status           : Ok.
 // 
 
@@ -140,9 +140,6 @@
 #define AT_HG2_BIN         116
 #define AT_HH_BIN          117
 #define AT_HH2_BIN         118
-#define AT_HN1_BIN         119
-#define AT_HN2_BIN         120
-#define AT_HN3_BIN         121
 #define AT_HXT_BIN         122
 #define AT_HZ_BIN          123
 #define AT_HZ1_BIN         124
@@ -191,6 +188,7 @@
 #define AT_1H_BIN          167
 #define AT_2H_BIN          168
 #define AT_3H_BIN          169
+#define AT_H5T_BIN         170
 
 
 
@@ -589,15 +587,6 @@ operator>> (iBinstream &ibs, t_Atom *&t)
     case AT_HH2_BIN:
       t = a_HH2;
       break;
-    case AT_HN1_BIN:
-      t = a_HN1;
-      break;
-    case AT_HN2_BIN:
-      t = a_HN2;
-      break;
-    case AT_HN3_BIN:
-      t = a_HN3;
-      break;
     case AT_HXT_BIN:
       t = a_HXT;
       break;
@@ -741,6 +730,9 @@ operator>> (iBinstream &ibs, t_Atom *&t)
       break;
     case AT_3H_BIN:
       t = a_3H;
+      break;
+    case AT_H5T_BIN:
+      t = a_H5T;
       break;
     default:
       t = 0;
@@ -1554,7 +1546,7 @@ at_O5p::operator= (const at_O5p &right)
 bool
 at_O5p::is_connected (const t_Atom *type, const t_Residue *res) const
 {
-  return type->is_C5p () || type->is_P ();
+  return type->is_C5p () || type->is_P () || type->is_H5T ();
 }
 
 
@@ -3375,6 +3367,36 @@ at_H3T::Binoutput (oBinstream &obs) const
 
 
 
+const at_H5T&
+at_H5T::operator= (const at_H5T &right)
+{
+  if (this != &right)
+    {
+      at_NucleicAcid::operator= (right);
+      at_Hydrogen::operator= (right);
+      at_Backbone::operator= (right);
+    }
+  return *this;
+}
+
+
+
+bool
+at_H5T::is_connected (const t_Atom *type, const t_Residue *res) const
+{
+  return type->is_O5p ();
+}
+
+
+
+void
+at_H5T::Binoutput (oBinstream &obs) const
+{
+  obs << (unsigned char) AT_H5T_BIN;
+}
+
+
+
 const at_C&
 at_C::operator= (const at_C &right)
 {
@@ -4491,95 +4513,6 @@ at_HH2::Binoutput (oBinstream &obs) const
 
 
 
-const at_HN1&
-at_HN1::operator= (const at_HN1 &right)
-{
-  if (this != &right)
-    {
-      at_AminoAcid::operator= (right);
-      at_Hydrogen::operator= (right);
-      at_Backbone::operator= (right);
-    }
-  return *this;
-}
-
-
-
-bool
-at_HN1::is_connected (const t_Atom *type, const t_Residue *res) const
-{
-  return type->is_N ();
-}
-
-
-
-void
-at_HN1::Binoutput (oBinstream &obs) const
-{
-  obs << (unsigned char) AT_HN1_BIN;
-}
-
-
-
-const at_HN2&
-at_HN2::operator= (const at_HN2 &right)
-{
-  if (this != &right)
-    {
-      at_AminoAcid::operator= (right);
-      at_Hydrogen::operator= (right);
-      at_Backbone::operator= (right);
-    }
-  return *this;
-}
-
-
-bool
-at_HN2::is_connected (const t_Atom *type, const t_Residue *res) const
-{
-  return type->is_N ();
-}
-
-
-
-void
-at_HN2::Binoutput (oBinstream &obs) const
-{
-  obs << (unsigned char) AT_HN2_BIN;
-}
-
-
-
-const at_HN3&
-at_HN3::operator= (const at_HN3 &right)
-{
-  if (this != &right)
-    {
-      at_AminoAcid::operator= (right);
-      at_Hydrogen::operator= (right);
-      at_Backbone::operator= (right);
-    }
-  return *this;
-}
-
-
-
-bool
-at_HN3::is_connected (const t_Atom *type, const t_Residue *res) const
-{
-  return type->is_N ();
-}
-
-
-
-void
-at_HN3::Binoutput (oBinstream &obs) const
-{
-  obs << (unsigned char) AT_HN3_BIN;
-}
-
-
-
 const at_HXT&
 at_HXT::operator= (const at_HXT &right)
 {
@@ -4747,8 +4680,7 @@ at_N::operator= (const at_N &right)
 bool
 at_N::is_connected (const t_Atom *type, const t_Residue *res) const
 {
-  return (type->is_CA () || type->is_HN1 () || type->is_HN2 ()
-	  || type->is_HN3 () || (res->is_PRO () && type->is_CD ())
+  return (type->is_CA () || (res->is_PRO () && type->is_CD ())
 	  || type->is_H () || type->is_1H () || type->is_2H ()
 	  || type->is_3H ());
 }
