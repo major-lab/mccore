@@ -3,9 +3,9 @@
 ## Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 ## Author           : Martin Larose
 ## Created On       : Tue Sep 19 18:57:11 2000
-## Last Modified By : Martin Larose
-## Last Modified On : Fri Feb  9 11:13:31 2001
-## Update Count     : 5
+## Last Modified By : Sebastien Lemieux
+## Last Modified On : Wed Feb 14 16:16:36 2001
+## Update Count     : 7
 ## Status           : Ok.
 ###############################################################################
 
@@ -67,6 +67,7 @@ SOURCES = AtomType.cc \
 	  McCore.cc \
 	  Pdbstream.cc \
           ResidueType.cc \
+          Algo.cc \
           zfstreambase.cc
 
 HEADERS = $(SOURCES:.cc=.h) CGraph.h fBinstream.h fPdbstream.h \
