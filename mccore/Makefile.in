@@ -1,11 +1,11 @@
 ############################ -*- Mode: Makefile -*- ###########################
 ## Makefile.in
-## Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
-## Author           : Martin Larose
+## Copyright © 2000, 2001 Laboratoire de Biologie Informatique et Théorique.
+## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:10:38 2000
 ## Last Modified By : Martin Larose
-## Last Modified On : Thu Nov  9 10:46:20 2000
-## Update Count     : 2
+## Last Modified On : Fri May 11 17:59:14 2001
+## Update Count     : 3
 ## Status           : Ok.
 ###############################################################################
 
@@ -32,7 +32,7 @@ SUBDIRS = lib docs
 
 RELEASESUBDIRS = $(SUBDIRS)
 
-DISTFILES = ChangeLog INSTALL Makefile.in NEWS README config.guess \
+DISTFILES = COPYING ChangeLog INSTALL Makefile.in NEWS README config.guess \
 config.sub configure.in configure install-sh mkinstalldirs
 
 
