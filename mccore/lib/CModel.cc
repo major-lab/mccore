@@ -3,9 +3,9 @@
 // Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : Fri Oct  6 08:21:55 2000
-// Last Modified By : Labo Lbit
-// Last Modified On : Mon Mar 26 16:48:42 2001
-// Update Count     : 8
+// Last Modified By : Patrick Gendron
+// Last Modified On : Mon May 28 16:29:07 2001
+// Update Count     : 9
 // Status           : Unknown.
 // 
 
@@ -92,19 +92,6 @@ CModel::RemoveOptionals () const
 
   for (it = begin (); it != end (); ++it)
     model.push_back (it->RemoveOptionals ());
-  return model;
-}
-
-
-
-CModel
-CModel::SortAtoms () const
-{
-  const_iterator cit;
-  CModel model;
-
-  for (cit = begin (); cit != end (); ++cit)
-    model.push_back (cit->sort ());
   return model;
 }
 

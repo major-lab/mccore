@@ -3,9 +3,9 @@
 // Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Wed Mar  7 13:47:37 2001
-// Update Count     : 10
+// Last Modified By : Patrick Gendron
+// Last Modified On : Mon May 28 16:29:26 2001
+// Update Count     : 11
 // Status           : Ok.
 // 
 
@@ -577,6 +577,32 @@ rmsd (const CResidue::iterator &begin_a, const CResidue::iterator &end_a,
     
   return sqrt (rmsd / (float)count);
 }
+
+
+
+float 
+rmsd (const CResidue::const_iterator &begin_a, const CResidue::const_iterator &end_a,
+      const CResidue::const_iterator &begin_b, const CResidue::const_iterator &end_b)
+{
+  float rmsd = 0.0;
+  int count = 0;
+  CResidue::const_iterator i,j;
+  
+  for (i=begin_a, j=begin_b; (i!=end_a || j!=end_b); ++i, ++j) {
+    if (i->GetType () != j->GetType ())
+      throw CFatalIntLibException ("Mismatch atom in rmsd computation.", 
+				   __FILE__, __LINE__);
+    rmsd += *i || *j;
+    count ++;
+  }
+  
+  if (i!=end_a || j!=end_b)
+    throw CFatalIntLibException ("One residue is missing some atoms", 
+				 __FILE__, __LINE__);
+    
+  return sqrt (rmsd / (float)count);
+}
+
 
 
 

@@ -3,9 +3,9 @@
 // Copyright © 2000-01 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : Fri Oct  6 08:21:55 2000
-// Last Modified By : Martin Larose
-// Last Modified On : Tue Jan 23 15:01:43 2001
-// Update Count     : 5
+// Last Modified By : Patrick Gendron
+// Last Modified On : Mon May 28 16:29:14 2001
+// Update Count     : 6
 // Status           : Unknown.
 // 
 
@@ -97,12 +97,6 @@ public:
    * @return the new model.
    */
   CModel RemoveOptionals () const;
-
-  /**
-   * Creates a new model with atoms sorted in residues.
-   * @return the new model.
-   */
-  CModel SortAtoms () const;
 
   /**
    * Finds an atom given it's text representation of the form residue:atom.
