@@ -513,10 +513,6 @@ namespace mccore
     Residue* po4 = fm ? fm->createResidue () : new ExtendedResidue ();
     po4->setType (ResidueType::rPhosphate);
     po4->setTheoretical ();
-    po4->setReferential (HomogeneousTransfo ());
-      
-    po4->setType (ResidueType::rPhosphate);
-    po4->setTheoretical ();
 
     p5p_it = po4->find (AtomType::aP);
     o5p_it = po4->find (AtomType::aO5p);

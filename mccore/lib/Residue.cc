@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.40 $
-// $Id: Residue.cc,v 1.40 2004-06-30 18:16:02 thibaup Exp $
+// $Revision: 1.41 $
+// $Id: Residue.cc,v 1.41 2004-07-05 18:35:50 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -257,7 +257,7 @@ namespace mccore {
       }
 
     this->finalize ();
-    this->setReferential (HomogeneousTransfo ());
+    this->setReferential (HomogeneousTransfo::identity);
     this->addHydrogens ();
     this->addLonePairs ();
   }
@@ -2019,7 +2019,7 @@ namespace mccore {
     po4->setType (ResidueType::rPhosphate);
     po4->setResId (ResId ("p0"));
     po4->setTheoretical ();
-    po4->setReferential (HomogeneousTransfo ());
+    po4->setReferential (HomogeneousTransfo::identity);
       
     phos_it = po4->find (AtomType::aP);
     oxy_it = po4->find (AtomType::aO5p);
@@ -2296,13 +2296,13 @@ namespace mccore {
       else
       {
 	gOut (3) << "no referential for residue type " << *this << endl;
-	return HomogeneousTransfo ();
+	return HomogeneousTransfo::identity;
       }
     }
     catch (Exception& ex)
     {
       gOut (3) << "no referential for residue " << *this << ": " << ex << endl;
-      return HomogeneousTransfo ();
+      return HomogeneousTransfo::identity;
     }
 
     return HomogeneousTransfo::align (*pivot[0], *pivot[1], *pivot[2]);

@@ -1001,8 +1001,6 @@ namespace mccore {
 
     ExtendedResidue A (ResidueType::rRA, ResId ('A', 1));
     A.setTheoretical ();
-    A.setupHLP ();
-    A.setReferential (HomogeneousTransfo ());
 
     ta = *A.find (AtomType::aH8);	
     faces_A.push_back (make_pair (ta, PropertyType::parseType ("C8")));
@@ -1029,8 +1027,6 @@ namespace mccore {
 
     ExtendedResidue C (ResidueType::rRC, ResId ('C', 1));
     C.setTheoretical ();
-    C.setupHLP ();
-    C.setReferential (HomogeneousTransfo ());
 
     ta = *C.find (AtomType::aH6);
     faces_C.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
@@ -1055,8 +1051,6 @@ namespace mccore {
 
     ExtendedResidue G (ResidueType::rRG, ResId ('G', 1));
     G.setTheoretical ();
-    G.setupHLP ();
-    G.setReferential (HomogeneousTransfo ());
 
     ta = *G.find (AtomType::aH8);
     faces_G.push_back (make_pair (ta, PropertyType::parseType ("C8")));
@@ -1085,8 +1079,6 @@ namespace mccore {
     
     ExtendedResidue U (ResidueType::rRU, ResId ('U', 1));
     U.setTheoretical ();
-    U.setupHLP ();
-    U.setReferential (HomogeneousTransfo ());
 	
     ta = *U.find (AtomType::aH6);
     faces_U.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
@@ -1113,8 +1105,6 @@ namespace mccore {
     
     ExtendedResidue T (ResidueType::rDT, ResId ('T', 1));
     T.setTheoretical ();
-    T.setupHLP ();
-    T.setReferential (HomogeneousTransfo ());
     
     ta = *T.find (AtomType::aH6);
     faces_T.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
