@@ -4,7 +4,7 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Fri Apr 20 17:07:36 2001
+// Last Modified On : Tue May  1 15:59:50 2001
 // Update Count     : 6
 // Status           : Ok.
 // 
@@ -205,7 +205,7 @@ t_Atom::get_charge (const t_Residue *res) const
 void
 t_Atom::Binoutput (oBinstream &obs) const
 {
-  obs << int (T_ATOM_BIN);
+  obs << char (T_ATOM_BIN);
 }
 
 
@@ -222,13 +222,13 @@ operator<< (oBinstream &obs, const t_Atom *t)
 iBinstream&
 operator>> (iBinstream &ibs, t_Atom *&t)
 {
-  int id;
+  unsigned char id;
   char buf[256];
   char buf2[8];
   map< const char *, t_Atom*, less_string >::iterator pos;
   
   ibs >> id;
-  switch (id)
+  switch (int (id))
     {
     case AT_NUCLEICACID_BIN:
       t = a_NucleicAcid;
@@ -791,7 +791,7 @@ at_Misc::operator= (const at_Misc &right)
 void
 at_Misc::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_MISC_BIN << mSName << mName;
+  obs << (unsigned char) AT_MISC_BIN << mSName << mName;
 }
 
 
@@ -808,7 +808,7 @@ at_NucleicAcid::operator= (const at_NucleicAcid &right)
 void
 at_NucleicAcid::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_NUCLEICACID_BIN;
+  obs << (unsigned char) AT_NUCLEICACID_BIN;
 }
 
 
@@ -826,7 +826,7 @@ at_AminoAcid::operator= (const at_AminoAcid &right)
 void
 at_AminoAcid::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_AMINOACID_BIN;
+  obs << (unsigned char) AT_AMINOACID_BIN;
 }
 
 
@@ -844,7 +844,7 @@ at_Backbone::operator= (const at_Backbone &right)
 void
 at_Backbone::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_BACKBONE_BIN;
+  obs << (unsigned char) AT_BACKBONE_BIN;
 }
 
 
@@ -862,7 +862,7 @@ at_SideChain::operator= (const at_SideChain &right)
 void
 at_SideChain::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_SIDECHAIN_BIN;
+  obs << (unsigned char) AT_SIDECHAIN_BIN;
 }
 
 
@@ -880,7 +880,7 @@ at_Carbon::operator= (const at_Carbon &right)
 void
 at_Carbon::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_CARBON_BIN;
+  obs << (unsigned char) AT_CARBON_BIN;
 }
 
 
@@ -898,7 +898,7 @@ at_Hydrogen::operator= (const at_Hydrogen &right)
 void
 at_Hydrogen::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HYDROGEN_BIN;
+  obs << (unsigned char) AT_HYDROGEN_BIN;
 }
 
 
@@ -916,7 +916,7 @@ at_Nitrogen::operator= (const at_Nitrogen &right)
 void
 at_Nitrogen::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_NITROGEN_BIN;
+  obs << (unsigned char) AT_NITROGEN_BIN;
 }
 
 
@@ -934,7 +934,7 @@ at_Phosphate::operator= (const at_Phosphate &right)
 void
 at_Phosphate::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_PHOSPHATE_BIN;
+  obs << (unsigned char) AT_PHOSPHATE_BIN;
 }
 
 
@@ -952,7 +952,7 @@ at_Oxygen::operator= (const at_Oxygen &right)
 void
 at_Oxygen::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_OXYGEN_BIN;
+  obs << (unsigned char) AT_OXYGEN_BIN;
 }
 
 
@@ -970,7 +970,7 @@ at_Sulfur::operator= (const at_Sulfur &right)
 void
 at_Sulfur::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_SULFUR_BIN;
+  obs << (unsigned char) AT_SULFUR_BIN;
 }
 
 
@@ -988,7 +988,7 @@ at_Magnesium::operator= (const at_Magnesium &right)
 void
 at_Magnesium::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_MAGNESIUM_BIN;
+  obs << (unsigned char) AT_MAGNESIUM_BIN;
 }
 
 
@@ -1006,7 +1006,7 @@ at_LonePair::operator= (const at_LonePair &right)
 void
 at_LonePair::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_LONEPAIR_BIN;
+  obs << (unsigned char) AT_LONEPAIR_BIN;
 }
 
 
@@ -1024,7 +1024,7 @@ at_Pseudo::operator= (const at_Pseudo &right)
 void
 at_Pseudo::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_PSEUDO_BIN;
+  obs << (unsigned char) AT_PSEUDO_BIN;
 }
 
 
@@ -1068,7 +1068,7 @@ at_C1p::get_charge (const t_Residue *r) const
 void
 at_C1p::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_C1p_BIN;
+  obs << (unsigned char) AT_C1p_BIN;
 }
 
 
@@ -1099,7 +1099,7 @@ at_C2p::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_C2p::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_C2p_BIN;
+  obs << (unsigned char) AT_C2p_BIN;
 }
 
 
@@ -1130,7 +1130,7 @@ at_C3p::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_C3p::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_C3p_BIN;
+  obs << (unsigned char) AT_C3p_BIN;
 }
 
 
@@ -1161,7 +1161,7 @@ at_C4p::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_C4p::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_C4p_BIN;
+  obs << (unsigned char) AT_C4p_BIN;
 }
 
 
@@ -1192,7 +1192,7 @@ at_C5p::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_C5p::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_C5p_BIN;
+  obs << (unsigned char) AT_C5p_BIN;
 }
 
 
@@ -1222,7 +1222,7 @@ at_H1p::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_H1p::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_H1p_BIN;
+  obs << (unsigned char) AT_H1p_BIN;
 }
 
 
@@ -1252,7 +1252,7 @@ at_H2p::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_H2p::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_H2p_BIN;
+  obs << (unsigned char) AT_H2p_BIN;
 }
 
 
@@ -1282,7 +1282,7 @@ at_H3p::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_H3p::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_H3p_BIN;
+  obs << (unsigned char) AT_H3p_BIN;
 }
 
 
@@ -1312,7 +1312,7 @@ at_H4p::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_H4p::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_H4p_BIN;
+  obs << (unsigned char) AT_H4p_BIN;
 }
 
 
@@ -1342,7 +1342,7 @@ at_H5p::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_H5p::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_H5p_BIN;
+  obs << (unsigned char) AT_H5p_BIN;
 }
 
 
@@ -1372,7 +1372,7 @@ at_O1P::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_O1P::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_O1P_BIN;
+  obs << (unsigned char) AT_O1P_BIN;
 }
 
 
@@ -1402,7 +1402,7 @@ at_O2p::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_O2p::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_O2p_BIN;
+  obs << (unsigned char) AT_O2p_BIN;
 }
 
 
@@ -1432,7 +1432,7 @@ at_O2P::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_O2P::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_O2P_BIN;
+  obs << (unsigned char) AT_O2P_BIN;
 }
 
 
@@ -1463,7 +1463,7 @@ at_O3p::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_O3p::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_O3p_BIN;
+  obs << (unsigned char) AT_O3p_BIN;
 }
 
 
@@ -1493,7 +1493,7 @@ at_O3P::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_O3P::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_O3P_BIN;
+  obs << (unsigned char) AT_O3P_BIN;
 }
 
 
@@ -1523,7 +1523,7 @@ at_O4p::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_O4p::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_O4p_BIN;
+  obs << (unsigned char) AT_O4p_BIN;
 }
 
 
@@ -1553,7 +1553,7 @@ at_O5p::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_O5p::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_O5p_BIN;
+  obs << (unsigned char) AT_O5p_BIN;
 }
 
 
@@ -1584,7 +1584,7 @@ at_P::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_P::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_P_BIN;
+  obs << (unsigned char) AT_P_BIN;
 }
 
 
@@ -1614,7 +1614,7 @@ at_1H2p::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_1H2p::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_1H2p_BIN;
+  obs << (unsigned char) AT_1H2p_BIN;
 }
 
 
@@ -1644,7 +1644,7 @@ at_1H5p::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_1H5p::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_1H5p_BIN;
+  obs << (unsigned char) AT_1H5p_BIN;
 }
 
 
@@ -1674,7 +1674,7 @@ at_2H2p::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_2H2p::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_2H2p_BIN;
+  obs << (unsigned char) AT_2H2p_BIN;
 }
 
 
@@ -1704,7 +1704,7 @@ at_2H5p::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_2H5p::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_2H5p_BIN;
+  obs << (unsigned char) AT_2H5p_BIN;
 }
 
 
@@ -1734,7 +1734,7 @@ at_HO2p::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HO2p::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HO2p_BIN;
+  obs << (unsigned char) AT_HO2p_BIN;
 }
 
 
@@ -1764,7 +1764,7 @@ at_HO3p::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HO3p::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HO3p_BIN;
+  obs << (unsigned char) AT_HO3p_BIN;
 }
 
 
@@ -1807,7 +1807,7 @@ at_C2::get_charge (const t_Residue *r) const
 void
 at_C2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_C2_BIN;
+  obs << (unsigned char) AT_C2_BIN;
 }
 
 
@@ -1850,7 +1850,7 @@ at_C4::get_charge (const t_Residue *r) const
 void
 at_C4::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_C4_BIN;
+  obs << (unsigned char) AT_C4_BIN;
 }
 
 
@@ -1893,7 +1893,7 @@ at_C5::get_charge (const t_Residue *r) const
 void
 at_C5::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_C5_BIN;
+  obs << (unsigned char) AT_C5_BIN;
 }
 
 
@@ -1924,7 +1924,7 @@ at_C5M::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_C5M::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_C5M_BIN;
+  obs << (unsigned char) AT_C5M_BIN;
 }
 
 
@@ -1967,7 +1967,7 @@ at_C6::get_charge (const t_Residue *r) const
 void
 at_C6::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_C6_BIN;
+  obs << (unsigned char) AT_C6_BIN;
 }
 
 
@@ -2007,7 +2007,7 @@ at_C8::get_charge (const t_Residue *r) const
 void
 at_C8::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_C8_BIN;
+  obs << (unsigned char) AT_C8_BIN;
 }
 
 
@@ -2046,7 +2046,7 @@ at_H1::get_charge (const t_Residue *r) const
 void
 at_H1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_H1_BIN;
+  obs << (unsigned char) AT_H1_BIN;
 }
 
 
@@ -2085,7 +2085,7 @@ at_H2::get_charge (const t_Residue *r) const
 void
 at_H2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_H2_BIN;
+  obs << (unsigned char) AT_H2_BIN;
 }
 
 
@@ -2124,7 +2124,7 @@ at_H3::get_charge (const t_Residue *r) const
 void
 at_H3::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_H3_BIN;
+  obs << (unsigned char) AT_H3_BIN;
 }
 
 
@@ -2164,7 +2164,7 @@ at_H5::get_charge (const t_Residue *r) const
 void
 at_H5::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_H5_BIN;
+  obs << (unsigned char) AT_H5_BIN;
 }
 
 
@@ -2204,7 +2204,7 @@ at_H6::get_charge (const t_Residue *r) const
 void
 at_H6::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_H6_BIN;
+  obs << (unsigned char) AT_H6_BIN;
 }
 
 
@@ -2234,7 +2234,7 @@ at_H7::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_H7::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_H7_BIN;
+  obs << (unsigned char) AT_H7_BIN;
 }
 
 
@@ -2274,7 +2274,7 @@ at_H8::get_charge (const t_Residue *r) const
 void
 at_H8::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_H8_BIN;
+  obs << (unsigned char) AT_H8_BIN;
 }
 
 
@@ -2317,7 +2317,7 @@ at_N1::get_charge (const t_Residue *r) const
 void
 at_N1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_N1_BIN;
+  obs << (unsigned char) AT_N1_BIN;
 }
 
 
@@ -2356,7 +2356,7 @@ at_N2::get_charge (const t_Residue *r) const
 void
 at_N2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_N2_BIN;
+  obs << (unsigned char) AT_N2_BIN;
 }
 
 
@@ -2399,7 +2399,7 @@ at_N3::get_charge (const t_Residue *r) const
 void
 at_N3::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_N3_BIN;
+  obs << (unsigned char) AT_N3_BIN;
 }
 
 
@@ -2438,7 +2438,7 @@ at_N4::get_charge (const t_Residue *r) const
 void
 at_N4::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_N4_BIN;
+  obs << (unsigned char) AT_N4_BIN;
 }
 
 
@@ -2477,7 +2477,7 @@ at_N6::get_charge (const t_Residue *r) const
 void
 at_N6::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_N6_BIN;
+  obs << (unsigned char) AT_N6_BIN;
 }
 
 
@@ -2518,7 +2518,7 @@ at_N7::get_charge (const t_Residue *r) const
 void
 at_N7::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_N7_BIN;
+  obs << (unsigned char) AT_N7_BIN;
 }
 
 
@@ -2558,7 +2558,7 @@ at_N9::get_charge (const t_Residue *r) const
 void
 at_N9::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_N9_BIN;
+  obs << (unsigned char) AT_N9_BIN;
 }
 
 
@@ -2599,7 +2599,7 @@ at_O2::get_charge (const t_Residue *r) const
 void
 at_O2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_O2_BIN;
+  obs << (unsigned char) AT_O2_BIN;
 }
 
 
@@ -2638,7 +2638,7 @@ at_O4::get_charge (const t_Residue *r) const
 void
 at_O4::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_O4_BIN;
+  obs << (unsigned char) AT_O4_BIN;
 }
 
 
@@ -2677,7 +2677,7 @@ at_O6::get_charge (const t_Residue *r) const
 void
 at_O6::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_O6_BIN;
+  obs << (unsigned char) AT_O6_BIN;
 }
 
 
@@ -2716,7 +2716,7 @@ at_1H2::get_charge (const t_Residue *r) const
 void
 at_1H2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_1H2_BIN;
+  obs << (unsigned char) AT_1H2_BIN;
 }
 
 
@@ -2755,7 +2755,7 @@ at_1H4::get_charge (const t_Residue *r) const
 void
 at_1H4::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_1H4_BIN;
+  obs << (unsigned char) AT_1H4_BIN;
 }
 
 
@@ -2785,7 +2785,7 @@ at_1H5M::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_1H5M::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_1H5M_BIN;
+  obs << (unsigned char) AT_1H5M_BIN;
 }
 
 
@@ -2824,7 +2824,7 @@ at_1H6::get_charge (const t_Residue *r) const
 void
 at_1H6::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_1H6_BIN;
+  obs << (unsigned char) AT_1H6_BIN;
 }
 
 
@@ -2863,7 +2863,7 @@ at_2H2::get_charge (const t_Residue *r) const
 void
 at_2H2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_2H2_BIN;
+  obs << (unsigned char) AT_2H2_BIN;
 }
 
 
@@ -2902,7 +2902,7 @@ at_2H4::get_charge (const t_Residue *r) const
 void
 at_2H4::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_2H4_BIN;
+  obs << (unsigned char) AT_2H4_BIN;
 }
 
 
@@ -2932,7 +2932,7 @@ at_2H5M::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_2H5M::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_2H5M_BIN;
+  obs << (unsigned char) AT_2H5M_BIN;
 }
 
 
@@ -2971,7 +2971,7 @@ at_2H6::get_charge (const t_Residue *r) const
 void
 at_2H6::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_2H6_BIN;
+  obs << (unsigned char) AT_2H6_BIN;
 }
 
 
@@ -3001,7 +3001,7 @@ at_3H5M::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_3H5M::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_3H5M_BIN;
+  obs << (unsigned char) AT_3H5M_BIN;
 }
 
 
@@ -3031,7 +3031,7 @@ at_PSY::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_PSY::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_PSY_BIN;
+  obs << (unsigned char) AT_PSY_BIN;
 }
 
 
@@ -3061,7 +3061,7 @@ at_PSZ::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_PSZ::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_PSZ_BIN;
+  obs << (unsigned char) AT_PSZ_BIN;
 }
 
 
@@ -3091,7 +3091,7 @@ at_LP1::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_LP1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_LP1_BIN;
+  obs << (unsigned char) AT_LP1_BIN;
 }
 
 
@@ -3121,7 +3121,7 @@ at_LP3::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_LP3::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_LP3_BIN;
+  obs << (unsigned char) AT_LP3_BIN;
 }
 
 
@@ -3151,7 +3151,7 @@ at_LP7::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_LP7::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_LP7_BIN;
+  obs << (unsigned char) AT_LP7_BIN;
 }
 
 
@@ -3181,7 +3181,7 @@ at_1LP2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_1LP2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_1LP2_BIN;
+  obs << (unsigned char) AT_1LP2_BIN;
 }
 
 
@@ -3211,7 +3211,7 @@ at_1LP4::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_1LP4::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_1LP4_BIN;
+  obs << (unsigned char) AT_1LP4_BIN;
 }
 
 
@@ -3241,7 +3241,7 @@ at_1LP6::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_1LP6::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_1LP6_BIN;
+  obs << (unsigned char) AT_1LP6_BIN;
 }
 
 
@@ -3271,7 +3271,7 @@ at_2LP2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_2LP2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_2LP2_BIN;
+  obs << (unsigned char) AT_2LP2_BIN;
 }
 
 
@@ -3301,7 +3301,7 @@ at_2LP4::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_2LP4::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_2LP4_BIN;
+  obs << (unsigned char) AT_2LP4_BIN;
 }
 
 
@@ -3331,7 +3331,7 @@ at_2LP6::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_2LP6::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_2LP6_BIN;
+  obs << (unsigned char) AT_2LP6_BIN;
 }
 
 
@@ -3361,7 +3361,7 @@ at_H3T::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_H3T::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_H3T_BIN;
+  obs << (unsigned char) AT_H3T_BIN;
 }
 
 
@@ -3391,7 +3391,7 @@ at_H5T::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_H5T::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_H5T_BIN;
+  obs << (unsigned char) AT_H5T_BIN;
 }
 
 
@@ -3419,7 +3419,7 @@ at_C::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_C::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_C_BIN;
+  obs << (unsigned char) AT_C_BIN;
 }
 
 
@@ -3448,7 +3448,7 @@ at_CA::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_CA::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_CA_BIN;
+  obs << (unsigned char) AT_CA_BIN;
 }
 
 
@@ -3479,7 +3479,7 @@ at_CB::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_CB::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_CB_BIN;
+  obs << (unsigned char) AT_CB_BIN;
 }
 
 
@@ -3510,7 +3510,7 @@ at_CD::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_CD::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_CD_BIN;
+  obs << (unsigned char) AT_CD_BIN;
 }
 
 
@@ -3540,7 +3540,7 @@ at_CD1::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_CD1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_CD1_BIN;
+  obs << (unsigned char) AT_CD1_BIN;
 }
 
 
@@ -3570,7 +3570,7 @@ at_CD2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_CD2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_CD2_BIN;
+  obs << (unsigned char) AT_CD2_BIN;
 }
 
 
@@ -3599,7 +3599,7 @@ at_CE::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_CE::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_CE_BIN;
+  obs << (unsigned char) AT_CE_BIN;
 }
 
 
@@ -3628,7 +3628,7 @@ at_CE1::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_CE1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_CE1_BIN;
+  obs << (unsigned char) AT_CE1_BIN;
 }
 
 
@@ -3657,7 +3657,7 @@ at_CE2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_CE2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_CE2_BIN;
+  obs << (unsigned char) AT_CE2_BIN;
 }
 
 
@@ -3685,7 +3685,7 @@ at_CE3::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_CE3::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_CE3_BIN;
+  obs << (unsigned char) AT_CE3_BIN;
 }
 
 
@@ -3716,7 +3716,7 @@ at_CG::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_CG::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_CG_BIN;
+  obs << (unsigned char) AT_CG_BIN;
 }
 
 
@@ -3745,7 +3745,7 @@ at_CG1::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_CG1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_CG1_BIN;
+  obs << (unsigned char) AT_CG1_BIN;
 }
 
 
@@ -3774,7 +3774,7 @@ at_CG2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_CG2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_CG2_BIN;
+  obs << (unsigned char) AT_CG2_BIN;
 }
 
 
@@ -3802,7 +3802,7 @@ at_CH2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_CH2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_CH2_BIN;
+  obs << (unsigned char) AT_CH2_BIN;
 }
 
 
@@ -3832,7 +3832,7 @@ at_CZ::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_CZ::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_CZ_BIN;
+  obs << (unsigned char) AT_CZ_BIN;
 }
 
 
@@ -3860,7 +3860,7 @@ at_CZ2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_CZ2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_CZ2_BIN;
+  obs << (unsigned char) AT_CZ2_BIN;
 }
 
 
@@ -3888,7 +3888,7 @@ at_CZ3::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_CZ3::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_CZ3_BIN;
+  obs << (unsigned char) AT_CZ3_BIN;
 }
 
 
@@ -3916,7 +3916,7 @@ at_H::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_H::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_H_BIN;
+  obs << (unsigned char) AT_H_BIN;
 }
 
 
@@ -3944,7 +3944,7 @@ at_1H::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_1H::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_1H_BIN;
+  obs << (unsigned char) AT_1H_BIN;
 }
 
 
@@ -3972,7 +3972,7 @@ at_2H::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_2H::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_2H_BIN;
+  obs << (unsigned char) AT_2H_BIN;
 }
 
 
@@ -4001,7 +4001,7 @@ at_3H::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_3H::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_3H_BIN;
+  obs << (unsigned char) AT_3H_BIN;
 }
 
 
@@ -4029,7 +4029,7 @@ at_HA::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HA::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HA_BIN;
+  obs << (unsigned char) AT_HA_BIN;
 }
 
 
@@ -4057,7 +4057,7 @@ at_HA1::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HA1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HA1_BIN;
+  obs << (unsigned char) AT_HA1_BIN;
 }
 
 
@@ -4085,7 +4085,7 @@ at_HA2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HA2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HA2_BIN;
+  obs << (unsigned char) AT_HA2_BIN;
 }
 
 
@@ -4113,7 +4113,7 @@ at_HB::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HB::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HB_BIN;
+  obs << (unsigned char) AT_HB_BIN;
 }
 
 
@@ -4141,7 +4141,7 @@ at_HB1::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HB1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HB1_BIN;
+  obs << (unsigned char) AT_HB1_BIN;
 }
 
 
@@ -4169,7 +4169,7 @@ at_HB2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HB2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HB2_BIN;
+  obs << (unsigned char) AT_HB2_BIN;
 }
 
 
@@ -4197,7 +4197,7 @@ at_HB3::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HB3::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HB3_BIN;
+  obs << (unsigned char) AT_HB3_BIN;
 }
 
 
@@ -4225,7 +4225,7 @@ at_HD1::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HD1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HD1_BIN;
+  obs << (unsigned char) AT_HD1_BIN;
 }
 
 
@@ -4253,7 +4253,7 @@ at_HD2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HD2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HD2_BIN;
+  obs << (unsigned char) AT_HD2_BIN;
 }
 
 
@@ -4281,7 +4281,7 @@ at_HE::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HE::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HE_BIN;
+  obs << (unsigned char) AT_HE_BIN;
 }
 
 
@@ -4309,7 +4309,7 @@ at_HE1::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HE1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HE1_BIN;
+  obs << (unsigned char) AT_HE1_BIN;
 }
 
 
@@ -4337,7 +4337,7 @@ at_HE2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HE2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HE2_BIN;
+  obs << (unsigned char) AT_HE2_BIN;
 }
 
 
@@ -4365,7 +4365,7 @@ at_HE3::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HE3::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HE3_BIN;
+  obs << (unsigned char) AT_HE3_BIN;
 }
 
 
@@ -4393,7 +4393,7 @@ at_HG::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HG::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HG_BIN;
+  obs << (unsigned char) AT_HG_BIN;
 }
 
 
@@ -4421,7 +4421,7 @@ at_HG1::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HG1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HG1_BIN;
+  obs << (unsigned char) AT_HG1_BIN;
 }
 
 
@@ -4449,7 +4449,7 @@ at_HG2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HG2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HG2_BIN;
+  obs << (unsigned char) AT_HG2_BIN;
 }
 
 
@@ -4477,7 +4477,7 @@ at_HH::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HH::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HH_BIN;
+  obs << (unsigned char) AT_HH_BIN;
 }
 
 
@@ -4507,7 +4507,7 @@ at_HH2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HH2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HH2_BIN;
+  obs << (unsigned char) AT_HH2_BIN;
 }
 
 
@@ -4537,7 +4537,7 @@ at_HXT::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HXT::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HXT_BIN;
+  obs << (unsigned char) AT_HXT_BIN;
 }
 
 
@@ -4567,7 +4567,7 @@ at_HZ::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HZ::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HZ_BIN;
+  obs << (unsigned char) AT_HZ_BIN;
 }
 
 
@@ -4597,7 +4597,7 @@ at_HZ1::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HZ1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HZ1_BIN;
+  obs << (unsigned char) AT_HZ1_BIN;
 }
 
 
@@ -4627,7 +4627,7 @@ at_HZ2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HZ2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HZ2_BIN;
+  obs << (unsigned char) AT_HZ2_BIN;
 }
 
 
@@ -4657,7 +4657,7 @@ at_HZ3::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_HZ3::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_HZ3_BIN;
+  obs << (unsigned char) AT_HZ3_BIN;
 }
 
 
@@ -4689,7 +4689,7 @@ at_N::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_N::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_N_BIN;
+  obs << (unsigned char) AT_N_BIN;
 }
 
 
@@ -4719,7 +4719,7 @@ at_ND1::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_ND1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_ND1_BIN;
+  obs << (unsigned char) AT_ND1_BIN;
 }
 
 
@@ -4749,7 +4749,7 @@ at_ND2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_ND2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_ND2_BIN;
+  obs << (unsigned char) AT_ND2_BIN;
 }
 
 
@@ -4779,7 +4779,7 @@ at_NE::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_NE::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_NE_BIN;
+  obs << (unsigned char) AT_NE_BIN;
 }
 
 
@@ -4809,7 +4809,7 @@ at_NE1::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_NE1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_NE1_BIN;
+  obs << (unsigned char) AT_NE1_BIN;
 }
 
 
@@ -4840,7 +4840,7 @@ at_NE2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_NE2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_NE2_BIN;
+  obs << (unsigned char) AT_NE2_BIN;
 }
 
 
@@ -4870,7 +4870,7 @@ at_NH1::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_NH1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_NH1_BIN;
+  obs << (unsigned char) AT_NH1_BIN;
 }
 
 
@@ -4900,7 +4900,7 @@ at_NH2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_NH2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_NH2_BIN;
+  obs << (unsigned char) AT_NH2_BIN;
 }
 
 
@@ -4931,7 +4931,7 @@ at_NZ::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_NZ::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_NZ_BIN;
+  obs << (unsigned char) AT_NZ_BIN;
 }
 
 
@@ -4961,7 +4961,7 @@ at_O::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_O::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_O_BIN;
+  obs << (unsigned char) AT_O_BIN;
 }
 
 
@@ -4991,7 +4991,7 @@ at_OD1::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_OD1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_OD1_BIN;
+  obs << (unsigned char) AT_OD1_BIN;
 }
 
 
@@ -5021,7 +5021,7 @@ at_OD2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_OD2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_OD2_BIN;
+  obs << (unsigned char) AT_OD2_BIN;
 }
 
 
@@ -5051,7 +5051,7 @@ at_OE1::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_OE1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_OE1_BIN;
+  obs << (unsigned char) AT_OE1_BIN;
 }
 
 
@@ -5081,7 +5081,7 @@ at_OE2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_OE2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_OE2_BIN;
+  obs << (unsigned char) AT_OE2_BIN;
 }
 
 
@@ -5111,7 +5111,7 @@ at_OG::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_OG::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_OG_BIN;
+  obs << (unsigned char) AT_OG_BIN;
 }
 
 
@@ -5141,7 +5141,7 @@ at_OG1::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_OG1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_OG1_BIN;
+  obs << (unsigned char) AT_OG1_BIN;
 }
 
 
@@ -5171,7 +5171,7 @@ at_OH::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_OH::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_OH_BIN;
+  obs << (unsigned char) AT_OH_BIN;
 }
 
 
@@ -5201,7 +5201,7 @@ at_OXT::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_OXT::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_OXT_BIN;
+  obs << (unsigned char) AT_OXT_BIN;
 }
 
 
@@ -5231,7 +5231,7 @@ at_SD::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_SD::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_SD_BIN;
+  obs << (unsigned char) AT_SD_BIN;
 }
 
 
@@ -5261,7 +5261,7 @@ at_SG::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_SG::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_SG_BIN;
+  obs << (unsigned char) AT_SG_BIN;
 }
 
 
@@ -5291,7 +5291,7 @@ at_1HD1::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_1HD1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_1HD1_BIN;
+  obs << (unsigned char) AT_1HD1_BIN;
 }
 
 
@@ -5321,7 +5321,7 @@ at_1HD2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_1HD2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_1HD2_BIN;
+  obs << (unsigned char) AT_1HD2_BIN;
 }
 
 
@@ -5351,7 +5351,7 @@ at_1HE2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_1HE2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_1HE2_BIN;
+  obs << (unsigned char) AT_1HE2_BIN;
 }
 
 
@@ -5381,7 +5381,7 @@ at_1HG1::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_1HG1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_1HG1_BIN;
+  obs << (unsigned char) AT_1HG1_BIN;
 }
 
 
@@ -5411,7 +5411,7 @@ at_1HG2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_1HG2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_1HG2_BIN;
+  obs << (unsigned char) AT_1HG2_BIN;
 }
 
 
@@ -5441,7 +5441,7 @@ at_1HH1::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_1HH1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_1HH1_BIN;
+  obs << (unsigned char) AT_1HH1_BIN;
 }
 
 
@@ -5471,7 +5471,7 @@ at_1HH2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_1HH2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_1HH2_BIN;
+  obs << (unsigned char) AT_1HH2_BIN;
 }
 
 
@@ -5501,7 +5501,7 @@ at_2HD1::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_2HD1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_2HD1_BIN;
+  obs << (unsigned char) AT_2HD1_BIN;
 }
 
 
@@ -5531,7 +5531,7 @@ at_2HD2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_2HD2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_2HD2_BIN;
+  obs << (unsigned char) AT_2HD2_BIN;
 }
 
 
@@ -5561,7 +5561,7 @@ at_2HE2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_2HE2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_2HE2_BIN;
+  obs << (unsigned char) AT_2HE2_BIN;
 }
 
 
@@ -5591,7 +5591,7 @@ at_2HG1::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_2HG1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_2HG1_BIN;
+  obs << (unsigned char) AT_2HG1_BIN;
 }
 
 
@@ -5621,7 +5621,7 @@ at_2HG2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_2HG2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_2HG2_BIN;
+  obs << (unsigned char) AT_2HG2_BIN;
 }
 
 
@@ -5651,7 +5651,7 @@ at_2HH1::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_2HH1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_2HH1_BIN;
+  obs << (unsigned char) AT_2HH1_BIN;
 }
 
 
@@ -5681,7 +5681,7 @@ at_2HH2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_2HH2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_2HH2_BIN;
+  obs << (unsigned char) AT_2HH2_BIN;
 }
 
 
@@ -5711,7 +5711,7 @@ at_3HD1::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_3HD1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_3HD1_BIN;
+  obs << (unsigned char) AT_3HD1_BIN;
 }
 
 
@@ -5741,7 +5741,7 @@ at_3HD2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_3HD2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_3HD2_BIN;
+  obs << (unsigned char) AT_3HD2_BIN;
 }
 
 
@@ -5771,7 +5771,7 @@ at_3HG1::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_3HG1::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_3HG1_BIN;
+  obs << (unsigned char) AT_3HG1_BIN;
 }
 
 
@@ -5801,7 +5801,7 @@ at_3HG2::is_connected (const t_Atom *type, const t_Residue *res) const
 void
 at_3HG2::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_3HG2_BIN;
+  obs << (unsigned char) AT_3HG2_BIN;
 }
 
 
@@ -5819,5 +5819,5 @@ at_MG::operator= (const at_MG &right)
 void
 at_MG::Binoutput (oBinstream &obs) const
 {
-  obs << (int) AT_MG_BIN;
+  obs << (unsigned char) AT_MG_BIN;
 }
