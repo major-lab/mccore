@@ -4,7 +4,7 @@
 //                  Université de Montréal
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 00:05:15 2004
-// $Revision: 1.23.4.14 $
+// $Revision: 1.23.4.15 $
 // 
 // This file is part of mccore.
 // 
@@ -47,7 +47,7 @@ namespace mccore
    * costly.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Graph.h,v 1.23.4.14 2004-12-27 01:36:42 larosem Exp $
+   * @version $Id: Graph.h,v 1.23.4.15 2004-12-27 04:24:19 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -63,6 +63,10 @@ namespace mccore
     typedef typename vector< V >::const_iterator const_iterator;
     typedef typename vector< V >::size_type size_type;
     typedef typename vector< V >::size_type label;
+    typedef typename vector< E >::iterator edge_iterator;
+    typedef typename vector< E >::const_iterator edge_const_iterator;
+    typedef typename vector< E >::size_type edge_size_type;
+    typedef typename vector< E >::size_type edge_label;
     
   public:
     
@@ -699,7 +703,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    E& internalGetEdge (Graph::label l) throw (NoSuchElementException)
+    E& internalGetEdge (Graph::edge_label l) throw (NoSuchElementException)
     {
       if (edges.size () <= l)
 	{
@@ -715,7 +719,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    const E& internalGetEdge (Graph::label l) const throw (NoSuchElementException)
+    const E& internalGetEdge (Graph::edge_label l) const throw (NoSuchElementException)
     {
       if (edges.size () <= l)
 	{
@@ -754,7 +758,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * labels or the vertices are not connected.
      */
-    Graph::label internalGetEdgeLabel (Graph::label h, Graph::label t) const throw (NoSuchElementException)
+    Graph::edge_label internalGetEdgeLabel (Graph::label h, Graph::label t) const throw (NoSuchElementException)
     {
       typename EV2ELabel::const_iterator evit;
       EndVertices ev (h, t);
@@ -819,7 +823,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    EW& internalGetEdgeWeight (Graph::label l) throw (NoSuchElementException)
+    EW& internalGetEdgeWeight (Graph::edge_label l) throw (NoSuchElementException)
     {
       if (edgeWeights.size () <= l)
 	{
@@ -835,7 +839,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    const EW& internalGetEdgeWeight (Graph::label l) const throw (NoSuchElementException)
+    const EW& internalGetEdgeWeight (Graph::edge_label l) const throw (NoSuchElementException)
     {
       if (edgeWeights.size () <= l)
 	{
@@ -917,6 +921,30 @@ namespace mccore
      * @return the iterator.
      */
     Graph::const_iterator end () const { return vertices.end (); }
+
+    /**
+     * Gets the iterator pointing to the beginning of the graph edges.
+     * @return the iterator.
+     */
+    Graph::edge_iterator edge_begin () { return edges.begin (); }
+
+    /**
+     * Gets the iterator pointing to the end of the graph edges.
+     * @return the iterator.
+     */
+    Graph::edge_iterator edge_end () { return edges.end (); }
+
+    /**
+     * Gets the const_iterator pointing to the beginning of the graph edges.
+     * @return the iterator.
+     */
+    Graph::edge_const_iterator edge_begin () const { return edges.begin (); }
+
+    /**
+     * Gets the const_iterator pointing to the end of the graph edges.
+     * @return the iterator.
+     */
+    Graph::edge_const_iterator edge_end () const { return edges.end (); }
 
     // METHODS --------------------------------------------------------------
 
@@ -1069,7 +1097,7 @@ namespace mccore
      * Gets the number of edges in this graph.
      * @return the number of edges in the graph.
      */
-    Graph::size_type edgeSize () const { return edges.size (); }
+    Graph::edge_size_type edgeSize () const { return edges.size (); }
     
     /**
      * Determines if the graph is empty.
