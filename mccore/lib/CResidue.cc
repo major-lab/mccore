@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Sep 13 09:58:20 2001
-// Update Count     : 25
+// Last Modified On : Thu Sep 13 14:08:02 2001
+// Update Count     : 26
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -256,7 +256,7 @@ CResidue::CResidue (t_Residue *type,
   vector< CAtom >::const_iterator cit;
   size_type i;
   
-  for (cit = vec.begin (), i = 0; cit != vec.end (); ++cit, ++i)
+  for (cit = vec.begin (), i = 0; cit != vec.end (); ++cit)
     {
       t_Atom *type = cit->GetType ();
       ResMap::iterator pos = mAtomIndex.find (type);
@@ -266,7 +266,7 @@ CResidue::CResidue (t_Residue *type,
 		<< "] in residue " << nId << "." << endl;
       else
 	{
-	  mAtomIndex[type] = i;
+	  mAtomIndex[type] = i++;
 	  mAtomRef.push_back (*cit);
 	}
     }
