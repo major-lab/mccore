@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.36 $
-// $Id: Relation.cc,v 1.36 2005-01-10 16:47:09 thibaup Exp $
+// $Revision: 1.37 $
+// $Id: Relation.cc,v 1.37 2005-02-25 19:11:39 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -661,7 +661,7 @@ namespace mccore
 	gOut (3) << "MaximumFlowGraph.size () = " << graph.size () << endl;
       }
     }
-    catch (NoSuchAtomException& ex)
+    catch (IntLibException& ex)
     {
       gOut (3) << "An error occured during pairing annotation: " << ex << endl;
     }

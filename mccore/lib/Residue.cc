@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.67 $
-// $Id: Residue.cc,v 1.67 2005-02-10 18:49:44 thibaup Exp $
+// $Revision: 1.68 $
+// $Id: Residue.cc,v 1.68 2005-02-25 19:11:39 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -1108,6 +1108,11 @@ namespace mccore
 	this->insert (atom.set (v, AtomType::aH1p));
       }
       catch (NoSuchAtomException& ex)
+      {
+	gOut (3) << "Failed to add hydrogen " << AtomType::aH1p << " in "
+		 << *this << ": " << ex << endl;
+      }
+      catch (TypeException& ex)
       {
 	gOut (3) << "Failed to add hydrogen " << AtomType::aH1p << " in "
 		 << *this << ": " << ex << endl;
