@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.1.2.1 $
-# $Id: Makefile.in,v 1.1.2.1 2004-12-21 19:47:46 larosem Exp $
+# $Revision: 1.1.2.2 $
+# $Id: Makefile.in,v 1.1.2.2 2004-12-21 22:49:25 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -88,13 +88,13 @@ PROGRAMS = $(SOURCES:%.cc=%)
 DISTFILES = Makefile.in $(SOURCES) $(HEADERS)
 
 
-all:
-
-static:
-
-doc:
+all static doc:
 
 test: $(PROGRAMS)
+	@ for program in $(PROGRAMS); do \
+	    ./$$program > $$program.out; \
+	    diff $$program.good $$program.out || echo "Errors in " $(PROGRAMS); \
+	  done
 
 install install-static uninstall:
 
@@ -102,9 +102,8 @@ mostlyclean:
 	@ $(RM) *~
 
 clean: mostlyclean
-	@ echo "Cleaning project"
 	@ $(RM) $(OBJECTS) $(PROGRAMS)
-	@ $(RM) *.d
+	@ $(RM) *.d *.out
 
 distclean: clean
 	@ $(RM) Makefile

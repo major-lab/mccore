@@ -4,7 +4,7 @@
 //                  Université de Montréal
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 00:05:15 2004
-// $Revision: 1.23.4.11 $
+// $Revision: 1.23.4.12 $
 // 
 // This file is part of mccore.
 // 
@@ -26,7 +26,6 @@
 #ifndef _mccore_Graph_h_
 #define _mccore_Graph_h_
 
-#include <exception>
 #include <functional>
 #include <iomanip>
 #include <iostream>
@@ -34,6 +33,8 @@
 #include <map>
 #include <utility>
 #include <vector>
+
+#include "Exception.h"
 
 using namespace std;
 
@@ -47,13 +48,19 @@ namespace mccore
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
    */
-  class NoSuchElementException : public exception
+  class NoSuchElementException : public Exception
   {
     
   public:
 
     NoSuchElementException () { }
     virtual ~NoSuchElementException () throw () { }
+    virtual ostream& output (ostream &os) const
+    {
+      os << "NoSuchElementException: ";
+      Exception::output (os);
+      return os;
+    }
   };
 
 
@@ -80,7 +87,7 @@ namespace mccore
    * costly.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Graph.h,v 1.23.4.11 2004-12-21 07:10:36 larosem Exp $
+   * @version $Id: Graph.h,v 1.23.4.12 2004-12-21 22:48:53 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -1345,11 +1352,6 @@ namespace mccore
 namespace std
 {
 
-  ostream& operator<< (ostream &os, const mccore::NoSuchElementException &e)
-  {
-    return os << "NoSuchElementException";
-  }
-  
   template < class V, class E, class VW, class EW, class VC >
   ostream& operator<< (ostream &os, const mccore::Graph< V, E, VW, EW, VC > &obj)
   {

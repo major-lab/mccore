@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.56.2.3 $
-# $Id: Makefile.in,v 1.56.2.3 2004-12-14 02:51:38 larosem Exp $
+# $Revision: 1.56.2.4 $
+# $Id: Makefile.in,v 1.56.2.4 2004-12-21 22:49:06 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -159,6 +159,7 @@ $(LIBRARY).a: $(OBJECTS)
 TAGS: $(SOURCES) $(HEADERS)
 	@- etags --c++ $^
 
+test:
 
 doc: html texi docbook
 

@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.3 $
-// $Id: Exception.cc,v 1.3 2004-07-12 19:24:03 thibaup Exp $
+// $Revision: 1.3.2.1 $
+// $Id: Exception.cc,v 1.3.2.1 2004-12-21 22:48:45 larosem Exp $
 //
 // This file is part of mccore.
 //
@@ -28,49 +28,20 @@
 #include <config.h>
 #endif
 
-#include <stdio.h>
-#include <string.h>
+#include <sstream>
 
-#include "ResId.h"
 #include "Exception.h"
 
 
 namespace mccore
 {
 
-  
-  Exception::Exception ()
-  { 
-    mMessage = new char[1];
-    mMessage[0] = '\0';
-  }
-
-
-
-  Exception::Exception (const char *message)
-  {
-    mMessage = new char[strlen (message) + 1];
-    strcpy (mMessage, message);
-  }
-
-
-
-  Exception::Exception (const Exception &right)
-  {
-    mMessage = new char[strlen (right.mMessage) + 1];
-    strcpy (mMessage, right.mMessage);
-  }
-
-
-
   Exception&
   Exception::operator= (const Exception &right)
   {
     if (this != &right)
       {
-	delete[] mMessage;
-	mMessage = new char[strlen (right.mMessage) + 1];
-	strcpy (mMessage, right.mMessage);
+	mMessage = right.mMessage;
       }
     return *this;
   }
@@ -80,13 +51,7 @@ namespace mccore
   Exception&
   Exception::operator<< (const char *message)
   {
-    char *tmp;
-
-    tmp = new char[strlen (mMessage) + strlen (message) + 1];
-    strcpy (tmp, mMessage);
-    strcat (tmp, message);
-    delete[] mMessage;
-    mMessage = tmp;
+    mMessage += message;
     return *this;
   }
 
@@ -95,15 +60,10 @@ namespace mccore
   Exception&
   Exception::operator<< (int integer)
   {
-    char str[256];
-    char *tmp;
+    ostringstream oss;
 
-    sprintf (str, "%d", integer);
-    tmp = new char[strlen (mMessage) + strlen (str) + 1];
-    strcpy (tmp, mMessage);
-    strcat (tmp, str);
-    delete[] mMessage;
-    mMessage = tmp;
+    oss << mMessage << integer;
+    mMessage = oss.str ();
     return *this;
   }
 
@@ -112,15 +72,10 @@ namespace mccore
   Exception&
   Exception::operator<< (unsigned int integer)
   {
-    char str[256];
-    char *tmp;
+    ostringstream oss;
 
-    sprintf (str, "%u", integer);
-    tmp = new char[strlen (mMessage) + strlen (str) + 1];
-    strcpy (tmp, mMessage);
-    strcat (tmp, str);
-    delete[] mMessage;
-    mMessage = tmp;
+    oss << mMessage << integer;
+    mMessage = oss.str ();
     return *this;
   }
 
@@ -129,15 +84,10 @@ namespace mccore
   Exception&
   Exception::operator<< (long int integer)
   {
-    char str[256];
-    char *tmp;
+    ostringstream oss;
 
-    sprintf (str, "%ld", integer);
-    tmp = new char[strlen (mMessage) + strlen (str) + 1];
-    strcpy (tmp, mMessage);
-    strcat (tmp, str);
-    delete[] mMessage;
-    mMessage = tmp;
+    oss << mMessage << integer;
+    mMessage = oss.str ();
     return *this;
   }
 
@@ -146,15 +96,10 @@ namespace mccore
   Exception&
   Exception::operator<< (unsigned long int integer)
   {
-    char str[256];
-    char *tmp;
+    ostringstream oss;
 
-    sprintf (str, "%lu", integer);
-    tmp = new char[strlen (mMessage) + strlen (str) + 1];
-    strcpy (tmp, mMessage);
-    strcat (tmp, str);
-    delete[] mMessage;
-    mMessage = tmp;
+    oss << mMessage << integer;
+    mMessage = oss.str ();
     return *this;
   }
 
@@ -163,15 +108,10 @@ namespace mccore
   Exception&
   Exception::operator<< (float float_val)
   {
-    char str[256];
-    char *tmp;
+    ostringstream oss;
 
-    sprintf (str, "%f", float_val);
-    tmp = new char[strlen (mMessage) + strlen (str) + 1];
-    strcpy (tmp, mMessage);
-    strcat (tmp, str);
-    delete[] mMessage;
-    mMessage = tmp;
+    oss << mMessage << float_val;
+    mMessage = oss.str ();
     return *this;
   }
 
@@ -180,16 +120,10 @@ namespace mccore
   Exception&
   Exception::operator<< (char theChar)
   {
-    char a[2];
-    char *tmp;
+    ostringstream oss;
 
-    a[0] = theChar;
-    a[1] = '\0';
-    tmp = new char[strlen (mMessage) + 2];
-    strcpy (tmp, mMessage);
-    strcat (tmp, a);
-    delete[] mMessage;
-    mMessage = tmp;
+    oss << mMessage << theChar;
+    mMessage = oss.str ();
     return *this;
   }
 

@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Dec 17 15:20:36 2004
-// $Revision: 1.1.2.1 $
-// $Id: OrientedGraph.cc,v 1.1.2.1 2004-12-21 19:47:46 larosem Exp $
+// $Revision: 1.1.2.2 $
+// $Id: OrientedGraph.cc,v 1.1.2.2 2004-12-21 22:49:28 larosem Exp $
 // 
 
 
@@ -51,27 +51,17 @@ main (int argc, char *argv[])
 	   << endl << graph << endl;
 
   // Add a few nodes
-  retval1 = graph.insert (1);
-  retval2 = graph.insert (123);
-  retval3 = graph.insert (1);
-  gOut (0) << "Adding vertices 1, 123 and 1" << endl;
-  gOut (0) << "   with return values " << retval1 << " " << retval2 << " " << retval3 << endl;
-  gOut (0) << graph << endl;
-
-  gOut (0) << "Adding vertices 3, 4, 5 with weights 1000, 1001, 1002" << endl;
-  retval1 = graph.insert (3, 1000);
-  retval2 = graph.insert (4, 1001);
-  retval3 = graph.insert (5, 1002);
-  gOut (0) << "   with return values " << retval1 << " " << retval2 << " " << retval3 << endl;
-  gOut (0) << graph << endl;
-
-  gOut (0) << "Adding edges (3, 1, 50, 2000), (4, 5, 51, 2001), (5, 5, 52, 2002), (5, 4, 53, 2003)" << endl;
-  retval1 = graph.connect (3, 1, 50, 2000);
-  retval2 = graph.connect (4, 5, 51, 2001);
-  retval3 = graph.connect (5, 5, 52, 2002);
-  retval4 = graph.connect (5, 4, 53, 2003);
-  gOut (0) << "   with return values " << retval1 << " " << retval2 << " " << retval3 << " " << retval4 << endl;
-  gOut (0) << graph << endl;
+  graph.insert (1);
+  graph.insert (123);
+  graph.insert (1);
+  graph.insert (3, 1000);
+  graph.insert (4, 1001);
+  graph.insert (5, 1002);
+  graph.connect (3, 1, 50, 2000);
+  graph.connect (4, 5, 51, 2001);
+  graph.connect (5, 5, 52, 2002);
+  graph.connect (5, 4, 53, 2003);
+  gOut (0) << "Initial state" << endl << graph << endl;
   
   // Testing copy constructor.
   OGraph other (graph);
@@ -84,45 +74,97 @@ main (int argc, char *argv[])
   gOut (0) << *clone << endl;
 
   // Testing operator==
-  gOut (0) << "Testing operator== on copy constructed graph" << endl
-	   << "    with return value " << (graph == other) << endl;
-  gOut (0) << "Testing operator== on cloned graph" << endl
-	   << "    with return value " << (graph == *clone) << endl;
-
+  try
+    {
+      gOut (0) << "operator== on copy constructed graph with return value "
+	       << flush;
+      gOut (0) << (graph == other)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }  
+  try
+    {
+      gOut (0) << "operator== on cloned graph with return value "
+	       << flush;
+      gOut (0) << (graph == *clone)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
   delete clone;
 
   // Testing operator=
-  other = graph;
-  gOut (0) << "Testing operator== on assigned graph" << endl
-	   << "    with return value " << (graph == other) << endl;
+  try
+    {
+      other = graph;
+      gOut (0) << "operator== on assigned graph with return value "
+	       << flush;
+      gOut (0) << (graph == other)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
+      
+  
+  // Testing operator!=
+  try
+    {
+      gOut (0) << "operator!= on assigned graph with return value "
+	       << flush;
+      gOut (0) << (graph != other)
+	       << endl << graph endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
   
   // Adding an int Collection.
-  gOut (0) << "Adding an range of vertices 2, 124 and 124" << endl;
-
-  c.push_back (2);
-  c.push_back (124);
-  c.push_back (124);
-  graph.insertRange (c.begin (), c.end ());
-  gOut (0) << graph << endl;
+  try
+    {
+      gOut (0) << "insert (2, 124, 124) " << flush;
+      c.push_back (2);
+      c.push_back (124);
+      c.push_back (124);
+      graph.insertRange (c.begin (), c.end ());
+      gOut (0) << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
 	
   // Testing insert with weight
-  gOut (0) << "Adding 125 with weight 1000" << endl;
-  retval1 = graph.insert (125, 1000);
-  gOut (0) << "     with return value " << retval1 << endl;
-  gOut (0) << graph << endl;
+  try
+    {
+      v1 = 125;
+      v2 = 1000;
+      gOut (0) << "insert (" << v1 << ", " << v2 << ") with return value "
+	       << flush;
+      gOut (0) << graph.insert (v1, v2)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
 
   // Testing getVertexWeight
   const OGraph constGraph (graph);
-  
-  gOut (0) << "Getting vertex weight (125, 1000)" << endl;
-  gOut (0) << "     with return value " << graph.getVertexWeight (125) << endl;
   try
     {
-      v1 = 43233;
-      gOut (0) << "Getting vertex weight (43233)" << endl
-	       << "     with return value " << flush
-	       << graph.getVertexWeight (v1) << endl;
-      gOut (0) << graph << endl;
+      v1 = 125;
+      gOut (0) << "getVertexWeight (" << v1 << ") with return value "
+	       << flush;
+      gOut (0) << graph.getVertexWeight (v1)
+	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
     {
@@ -131,36 +173,69 @@ main (int argc, char *argv[])
   try
     {
       v1 = 43233;
-      gOut (0) << "Getting vertex weight (43233) on const graph" << endl
-	       << "     with return value " << flush
-	       << constGraph.getVertexWeight (v1)
-	       << endl;
-      gOut (0) << graph << endl;
+      gOut (0) << "getVertexWeight (" << v1 << ") with return value " << flush;
+      gOut (0) << graph.getVertexWeight (v1)
+	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
     {
       gOut (0) << e << endl;
     }
-  v1 = 125;
-  gOut (0) << "Getting vertex weight (" << v1 << ")" << endl
-	   << "     with return value " << graph.getVertexWeight (v1)
-	   << endl;
-  gOut (0) << graph << endl;
-  gOut (0) << "Getting vertex weight (125, 1000) on const graph" << endl;
-  gOut (0) << "     with return value " << constGraph.getVertexWeight (125)
-	   << endl;
+  try
+    {
+      v1 = 43233;
+      gOut (0) << "getVertexWeight (" << v1 << ") on const graph with return value "
+	       << flush;
+      gOut (0) << constGraph.getVertexWeight (v1)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
+  try
+    {
+      v1 = 125;
+      gOut (0) << "getVertexWeight (" << v1 << ") on const graph with return value "
+	       << flush;
+      gOut (0) << graph.getVertexWeight (v1)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
+  try
+    {
+      v1 = 125;
+      gOut (0) << "getVertexWeight (" << v1 << ") on const graph with return value "
+	       << flush;
+      gOut (0) << constGraph.getVertexWeight (v1)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
 
   // Testing setVertexWeight
-  v1 = 125;
-  v2 = 1001;
-  gOut (0) << "Setting vertex weight (" << v1 << ", " << v2 << ")" << endl;
-  graph.setVertexWeight (125, 1001);
-  gOut (0) << graph << endl;
+  try
+    {
+      v1 = 125;
+      v2 = 1001;
+      gOut (0) << "setVertexWeight (" << v1 << ", " << v2 << ") " << flush;
+      graph.setVertexWeight (v1, v2);
+      gOut (0) << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
   try
     {
       v1 = 43233;
       v2 = 1006;
-      gOut (0) << "Setting vertex weight (" << v1 << ", " << v2 << ") " << flush;
+      gOut (0) << "setVertexWeight (" << v1 << ", " << v2 << ") " << flush;
       graph.setVertexWeight (v1, v2);
       gOut (0) << endl << graph << endl;
     }
@@ -168,16 +243,23 @@ main (int argc, char *argv[])
     {
       gOut (0) << e << endl;
     }
-  v1 = 125;
-  v2 = 1006;
-      gOut (0) << "Setting vertex weight (" << v1 << ", " << v2 << ")" << endl;
+  try
+    {
+      v1 = 125;
+      v2 = 1006;
+      gOut (0) << "setVertexWeight (" << v1 << ", " << v2 << ")" << flush;
       graph.setVertexWeight (v1, v2);
-      gOut (0) << graph << endl;
+      gOut (0) << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
   try
     {
       v1 = graph.size ();
       v2 = 1007;
-      gOut (0) << "Setting vertex weight (" << v1 << ", " << v2 << ") " << flush;
+      gOut (0) << "setVertexWeight (" << v1 << ", " << v2 << ") " << flush;
       graph.setVertexWeight (v1, v2);
       gOut (0) << endl << graph << endl;
     }
@@ -189,7 +271,7 @@ main (int argc, char *argv[])
     {
       v1 = 43233;
       v2 = 1007;
-      gOut (0) << "Setting vertex weight (" << v1 << ", " << v2 << ") " << flush;
+      gOut (0) << "setVertexWeight (" << v1 << ", " << v2 << ") " << flush;
       graph.setVertexWeight (v1, v2);
       gOut (0) << endl << graph << endl;
     }
@@ -203,8 +285,8 @@ main (int argc, char *argv[])
     {
       v1 = 123;
       v2 = 123;
-      gOut (0) << "Getting edge (" << v1 << ", " << v2 << ")" << endl
-	       << "     with return value " << flush;
+      gOut (0) << "getEdge (" << v1 << ", " << v2 << ") with return value "
+	       << flush;
       gOut (0) << graph.getEdge (v1, v2)
 	       << endl << graph << endl;
     }
@@ -216,8 +298,8 @@ main (int argc, char *argv[])
     {
       v1 = 202;
       v2 = 200;
-      gOut (0) << "Getting edge (" << v1 << ", " << v2 << ")" << endl
-	       << "     with return value " << flush;
+      gOut (0) << "getEdge (" << v1 << ", " << v2 << ") with return value "
+	       << flush;
       gOut (0) << graph.getEdge (v1, v2)
 	       << endl << graph << endl;
     }
@@ -229,8 +311,8 @@ main (int argc, char *argv[])
     {
       v1 = 3;
       v2 = 1;
-      gOut (0) << "Getting edge (" << v1 << ", " << v2 << ")" << endl
-	       << "     with return value " << flush;
+      gOut (0) << "getEdge (" << v1 << ", " << v2 << ") with return value "
+	       << flush;
       gOut (0) << graph.getEdge (v1, v2)
 	       << endl << graph << endl;
     }
@@ -242,8 +324,8 @@ main (int argc, char *argv[])
     {
       v1 = 4;
       v2 = 5;
-      gOut (0) << "Getting edge (" << v1 << ", " << v2 << ")" << endl
-	       << "     with return value " << flush;
+      gOut (0) << "getEdge (" << v1 << ", " << v2 << ") with return value "
+	       << flush;
       gOut (0) << graph.getEdge (v1, v2)
 	       << endl << graph << endl;
     }
@@ -255,8 +337,8 @@ main (int argc, char *argv[])
     {
       v1 = 5;
       v2 = 5;
-      gOut (0) << "Getting edge (" << v1 << ", " << v2 << ")" << endl
-	       << "     with return value " << flush;
+      gOut (0) << "getEdge (" << v1 << ", " << v2 << ") with return value "
+	       << flush;
       gOut (0) << graph.getEdge (v1, v2)
 	       << endl << graph << endl;
     }
@@ -268,8 +350,8 @@ main (int argc, char *argv[])
     {
       v1 = 5;
       v2 = 5;
-      gOut (0) << "Getting edge (" << v1 << ", " << v2 << ") on const graph" << endl
-	       << "     with return value " << flush;
+      gOut (0) << "getEdge (" << v1 << ", " << v2 << ") on const graph with return value "
+	       << flush;
       gOut (0) << constGraph.getEdge (v1, v2)
 	       << endl << constGraph << endl;
     }
@@ -281,8 +363,8 @@ main (int argc, char *argv[])
     {
       v1 = 5;
       v2 = 4;
-      gOut (0) << "Getting edge (" << v1 << ", " << v2 << ") on const graph" << endl
-	       << "     with return value " << flush;
+      gOut (0) << "getEdge (" << v1 << ", " << v2 << ") on const graph with return value "
+	       << flush;
       gOut (0) << constGraph.getEdge (v1, v2)
 	       << endl << constGraph << endl;
     }
@@ -294,8 +376,8 @@ main (int argc, char *argv[])
     {
       v1 = 124;
       v2 = 1;
-      gOut (0) << "Getting edge (" << v1 << ", " << v2 << ") on const graph" << endl
-	       << "     with return value " << flush;
+      gOut (0) << "getEdge (" << v1 << ", " << v2 << ") on const graph with return value "
+	       << flush;
       gOut (0) << constGraph.getEdge (v1, v2)
 	       << endl << constGraph << endl;
     }
@@ -309,8 +391,8 @@ main (int argc, char *argv[])
     {
       v1 = 123;
       v2 = 123;
-      gOut (0) << "Getting edge weight (" << v1 << ", " << v2 << ")" << endl
-	       << "     with return value " << flush;
+      gOut (0) << "getEdgeWeight (" << v1 << ", " << v2 << ") with return value "
+	       << flush;
       gOut (0) << graph.getEdgeWeight (v1, v2)
 	       << endl << graph << endl;
     }
@@ -322,8 +404,8 @@ main (int argc, char *argv[])
     {
       v1 = 202;
       v2 = 200;
-      gOut (0) << "Getting edge weight (" << v1 << ", " << v2 << ")" << endl
-	       << "     with return value " << flush;
+      gOut (0) << "getEdgeWeight (" << v1 << ", " << v2 << ") with return value "
+	       << flush;
       gOut (0) << graph.getEdgeWeight (v1, v2)
 	       << endl << graph << endl;
     }
@@ -335,10 +417,10 @@ main (int argc, char *argv[])
     {
       v1 = 5;
       v2 = 4;
-      gOut (0) << "Getting edge weight (" << v1 << ", " << v2 << ") on const graph" << endl
-	       << "     with return value " << flush;
-      gOut (0) << constGraph.getEdgeWeight (v1, v2)
-	       << endl << constGraph << endl;
+      gOut (0) << "getEdgeWeight (" << v1 << ", " << v2 << ") with return value "
+	       << flush;
+      gOut (0) << graph.getEdgeWeight (v1, v2)
+	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
     {
@@ -348,8 +430,8 @@ main (int argc, char *argv[])
     {
       v1 = 123;
       v2 = 123;
-      gOut (0) << "Getting edge weight (" << v1 << ", " << v2 << ") on const graph" << endl
-	       << "     with return value " << flush;
+      gOut (0) << "getEdgeWeight (" << v1 << ", " << v2 << ") on const graph with return value "
+	       << flush;
       gOut (0) << constGraph.getEdgeWeight (v1, v2)
 	       << endl << constGraph << endl;
     }
@@ -361,8 +443,8 @@ main (int argc, char *argv[])
     {
       v1 = 202;
       v2 = 200;
-      gOut (0) << "Getting edge weight (" << v1 << ", " << v2 << ") on const graph" << endl
-	       << "     with return value " << flush;
+      gOut (0) << "getEdgeWeight (" << v1 << ", " << v2 << ") on const graph with return value "
+	       << flush;
       gOut (0) << constGraph.getEdgeWeight (v1, v2)
 	       << endl << constGraph << endl;
     }
@@ -374,8 +456,8 @@ main (int argc, char *argv[])
     {
       v1 = 5;
       v2 = 4;
-      gOut (0) << "Getting edge weight (" << v1 << ", " << v2 << ") on const graph" << endl
-	       << "     with return value " << flush;
+      gOut (0) << "getEdgeWeight (" << v1 << ", " << v2 << ") on const graph with return value "
+	       << flush;
       gOut (0) << constGraph.getEdgeWeight (v1, v2)
 	       << endl << constGraph << endl;
     }
@@ -390,7 +472,8 @@ main (int argc, char *argv[])
       v1 = 123;
       v2 = 123;
       v4 = 5.1;
-      gOut (0) << "Setting edge weight (" << v1 << ", " << v2 << ", " << v4 << ") " << flush;
+      gOut (0) << "setEdgeWeight (" << v1 << ", " << v2 << ", " << v4 << ") "
+	       << flush;
       graph.setEdgeWeight (v1, v2, v4);
       gOut (0) << endl << graph << endl;
     }
@@ -403,7 +486,8 @@ main (int argc, char *argv[])
       v1 = 123;
       v2 = 1;
       v4 = 5.2;
-      gOut (0) << "Setting edge weight (" << v1 << ", " << v2 << ", " << v4 << ") " << flush;
+      gOut (0) << "setEdgeWeight (" << v1 << ", " << v2 << ", " << v4 << ") "
+	       << flush;
       graph.setEdgeWeight (v1, v2, v4);
       gOut (0) << endl << graph << endl;
     }
@@ -416,7 +500,8 @@ main (int argc, char *argv[])
       v1 = 4;
       v2 = 5;
       v4 = 5.3;
-      gOut (0) << "Setting edge weight (" << v1 << ", " << v2 << ", " << v4 << ") " << flush;
+      gOut (0) << "setEdgeWeight (" << v1 << ", " << v2 << ", " << v4 << ") "
+	       << flush;
       graph.setEdgeWeight (v1, v2, v4);
       gOut (0) << endl << graph << endl;
     }
@@ -429,8 +514,7 @@ main (int argc, char *argv[])
   try
     {
       v1 = 43233;
-      gOut (0) << "Getting vertex label (" << v1 << ")" << endl
-	       << "     with return value " << flush;
+      gOut (0) << "getVertexLabel (" << v1 << ") with return value " << flush;
       gOut (0) << graph.getVertexLabel (v1)
 	       << endl << graph << endl;
     }
@@ -441,8 +525,7 @@ main (int argc, char *argv[])
   try
     {
       v1 = 124;
-      gOut (0) << "Getting vertex label (" << v1 << ")" << endl
-	       << "     with return value " << flush;
+      gOut (0) << "getVertexLabel (" << v1 << ") with return value " << flush;
       gOut (0) << graph.getVertexLabel (v1)
 	       << endl << graph << endl;
     }
@@ -456,8 +539,9 @@ main (int argc, char *argv[])
     {
       v1 = 231553;
       v2 = 125;
-      gOut (0) << "Are connected (" << v1 << ", " << v2 << ")" << endl
-	       << "     with return value " << graph.areConnected (v1, v2)
+      gOut (0) << "areConnected (" << v1 << ", " << v2 << ") with return value "
+	       << flush;
+      gOut (0) << graph.areConnected (v1, v2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -468,8 +552,9 @@ main (int argc, char *argv[])
     {
       v1 = 125;
       v2 = 231553;
-      gOut (0) << "Are connected (" << v1 << ", " << v2 << ")" << endl
-	       << "     with return value " << graph.areConnected (v1, v2)
+      gOut (0) << "areConnected (" << v1 << ", " << v2 << ") with return value "
+	       << flush;
+      gOut (0) << graph.areConnected (v1, v2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -480,8 +565,9 @@ main (int argc, char *argv[])
     {
       v1 = 1;
       v2 = 125;
-      gOut (0) << "Are connected (" << v1 << ", " << v2 << ")" << endl
-	       << "     with return value " << graph.areConnected (v1, v2)
+      gOut (0) << "areConnected (" << v1 << ", " << v2 << ") with return value "
+	       << flush;
+      gOut (0) << graph.areConnected (v1, v2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -492,8 +578,9 @@ main (int argc, char *argv[])
     {
       v1 = 125;
       v2 = 1;
-      gOut (0) << "Are connected (" << v1 << ", " << v2 << ")" << endl
-	       << "     with return value " << graph.areConnected (v1, v2)
+      gOut (0) << "areConnected (" << v1 << ", " << v2 << ") with return value "
+	       << flush;
+      gOut (0) << graph.areConnected (v1, v2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -504,8 +591,9 @@ main (int argc, char *argv[])
     {
       v1 = 5;
       v2 = 5;
-      gOut (0) << "Are connected (" << v1 << ", " << v2 << ")" << endl
-	       << "     with return value " << graph.areConnected (v1, v2)
+      gOut (0) << "areConnected (" << v1 << ", " << v2 << ") with return value "
+	       << flush;
+      gOut (0) << graph.areConnected (v1, v2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -516,8 +604,9 @@ main (int argc, char *argv[])
     {
       v1 = 5;
       v2 = 4;
-      gOut (0) << "Are connected (" << v1 << ", " << v2 << ")" << endl
-	       << "     with return value " << graph.areConnected (v1, v2)
+      gOut (0) << "areConnected (" << v1 << ", " << v2 << ") with return value "
+	       << flush;
+      gOut (0) << graph.areConnected (v1, v2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -528,8 +617,9 @@ main (int argc, char *argv[])
     {
       v1 = 4;
       v2 = 5;
-      gOut (0) << "Are connected (" << v1 << ", " << v2 << ")" << endl
-	       << "     with return value " << graph.areConnected (v1, v2)
+      gOut (0) << "areConnected (" << v1 << ", " << v2 << ") with return value "
+	       << flush;
+      gOut (0) << graph.areConnected (v1, v2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -537,52 +627,271 @@ main (int argc, char *argv[])
       gOut (0) << e << endl;
     }
 
+  try
+    {
+      v1 = 124;
+      v2 = 5;
+      v3 = 2000;
+      gOut (0) << "connect (" << v1 << ", " << v2 << ", " << v3 << ") with return value "
+	       << flush;
+      gOut (0) << graph.connect (v1, v2, v3)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
+  try
+    {
+      v1 = 5;
+      v2 = 2;
+      v3 = 2000;
+      gOut (0) << "connect (" << v1 << ", " << v2 << ", " << v3 << ") with return value "
+	       << flush;
+      gOut (0) << graph.connect (v1, v2, v3)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
+  
   // Testing neighborhood
-  v1 = 1200;
-  gOut (0) << "Getting neighborhood (" << v1 << ")" << endl
-	   << "     with return value " << graph.neighborhood (v1)
-	   << endl << graph << endl;
-  v1 = 201;
-  gOut (0) << "Getting neighborhood (" << v1 << ")" << endl
-	   << "     with return value " << graph.neighborhood (v1)
-	   << endl << graph << endl;
-  v1 = 5;
-  gOut (0) << "Getting neighborhood (" << v1 << ")" << endl
-	   << "     with return value " << graph.neighborhood (v1)
-	   << endl << graph << endl;
-  v1 = 202;
-  gOut (0) << "Getting neighborhood (" << v1 << ")" << endl
-	   << "     with return value " << graph.neighborhood (v1)
-	   << endl << graph << endl;
+  try
+    {
+      v1 = 1200;
+      gOut (0) << "neighborhood (" << v1 << ") with return value "
+	       << flush;
+      gOut (0) << graph.neighborhood (v1)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
+  try
+    {
+      v1 = 201;
+      gOut (0) << "neighborhood (" << v1 << ") with return value "
+	       << flush;
+      gOut (0) << graph.neighborhood (v1)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
+  try
+    {
+      v1 = 5;
+      gOut (0) << "neighborhood (" << v1 << ") with return value "
+	       << flush;
+      gOut (0) << graph.neighborhood (v1)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
+  try
+    {
+      v1 = 202;
+      gOut (0) << "neighborhood (" << v1 << ") with return value "
+	       << flush;
+      gOut (0) << graph.neighborhood (v1)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
 
   // Testing neighborhood Index (int)
   i1 = graph.size ();
-  gOut (0) << "Getting internalNeighborhood (" << i1 << ")" << endl
-	   << "     with return value " << graph.internalNeighborhood (i1)
+  gOut (0) << "Getting internalNeighborhood (" << i1 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalNeighborhood (i1)
 	   << endl << graph << endl;
   i1 = 324324;
-  gOut (0) << "Getting internalNeighborhood (" << i1 << ")" << endl
-	   << "     with return value " << graph.internalNeighborhood (i1)
+  gOut (0) << "Getting internalNeighborhood (" << i1 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalNeighborhood (i1)
 	   << endl << graph << endl;
   i1 = 6;
-  gOut (0) << "Getting internalNeighborhood (" << i1 << ")" << endl
-	   << "     with return value " << graph.internalNeighborhood (i1)
+  gOut (0) << "Getting internalNeighborhood (" << i1 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalNeighborhood (i1)
 	   << endl << graph << endl;
   i1 = 4;
-  gOut (0) << "Getting internalNeighborhood (" << i1 << ")" << endl
-	   << "     with return value " << graph.internalNeighborhood (i1)
+  gOut (0) << "Getting internalNeighborhood (" << i1 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalNeighborhood (i1)
 	   << endl << graph << endl;
   i1 = 7;
-  gOut (0) << "Getting internalNeighborhood (" << i1 << ")" << endl
-	   << "     with return value " << graph.internalNeighborhood (i1)
+  gOut (0) << "Getting internalNeighborhood (" << i1 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalNeighborhood (i1)
 	   << endl << graph << endl;
+
+  // Testing inNeighborhood
+  try
+    {
+      v1 = 12432;
+      gOut (0) << "Getting inNeighborhood (" << v1 << ") with return value "
+	       << flush;
+      gOut (0) << graph.inNeighborhood (v1)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
+  try
+    {
+      v1 = 5;
+      gOut (0) << "Getting inNeighborhood (" << v1 << ") with return value "
+	       << flush;
+      gOut (0) << graph.inNeighborhood (v1)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
+  try
+    {
+      v1 = 4;
+      gOut (0) << "Getting inNeighborhood (" << v1 << ") with return value "
+	       << flush;
+      gOut (0) << graph.inNeighborhood (v1)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
+
+  // Testing outNeighborhood
+  try
+    {
+      v1 = 12432;
+      gOut (0) << "Getting outNeighborhood (" << v1 << ") with return value "
+	       << flush;
+      gOut (0) << graph.outNeighborhood (v1)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
+  try
+    {
+      v1 = 5;
+      gOut (0) << "Getting outNeighborhood (" << v1 << ") with return value "
+	       << flush;
+      gOut (0) << graph.outNeighborhood (v1)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
+  try
+    {
+      v1 = 4;
+      gOut (0) << "Getting outNeighborhood (" << v1 << ") with return value "
+	       << flush;
+      gOut (0) << graph.outNeighborhood (v1)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }  
+
+  // Testing internalInNeighborhood
+  try
+    {
+      v1 = 12432;
+      gOut (0) << "Getting internalInNeighborhood (" << v1 << ") with return value "
+	       << flush;
+      gOut (0) << graph.internalInNeighborhood (v1)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
+  try
+    {
+      v1 = 5;
+      gOut (0) << "Getting internalInNeighborhood (" << v1 << ") with return value "
+	       << flush;
+      gOut (0) << graph.internalInNeighborhood (v1)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
+  try
+    {
+      v1 = 4;
+      gOut (0) << "Getting internalInNeighborhood (" << v1 << ") with return value "
+	       << flush;
+      gOut (0) << graph.internalInNeighborhood (v1)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
+
+  // Testing internalOutNeighborhood
+  try
+    {
+      v1 = 12432;
+      gOut (0) << "Getting internalOutNeighborhood (" << v1 << ") with return value "
+	       << flush;
+      gOut (0) << graph.internalOutNeighborhood (v1)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
+  try
+    {
+      v1 = 5;
+      gOut (0) << "Getting internalOutNeighborhood (" << v1 << ") with return value "
+	       << flush;
+      gOut (0) << graph.internalOutNeighborhood (v1)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }
+  try
+    {
+      v1 = 4;
+      gOut (0) << "Getting internalOutNeighborhood (" << v1 << ") with return value "
+	       << flush;
+      gOut (0) << graph.internalOutNeighborhood (v1)
+	       << endl << graph << endl;
+    }
+  catch (NoSuchElementException &e)
+    {
+      gOut (0) << e << endl;
+    }  
 
   // Testing internalGetVertex
   try
     {
       i1 = graph.size ();
-      gOut (0) << "Getting vertex from label (" << i1 << ")" << endl
-	       << "     with return value " << flush;
+      gOut (0) << "Getting vertex from label (" << i1 << ") with return value "
+      << flush;
+      gOut (0) << flush;
       gOut (0) << graph.internalGetVertex (i1)
 	       << endl << graph << endl;
     }
@@ -593,8 +902,9 @@ main (int argc, char *argv[])
   try
     {
       i1 = 324324;
-      gOut (0) << "Getting vertex from label (" << i1 << ")" << endl
-	       << "     with return value " << flush;
+      gOut (0) << "Getting vertex from label (" << i1 << ") with return value "
+      << flush;
+      gOut (0) << flush;
       gOut (0) << graph.internalGetVertex (i1)
 	       << endl << graph << endl;
     }
@@ -605,8 +915,9 @@ main (int argc, char *argv[])
   try
     {
       i1 = 4;
-      gOut (0) << "Getting vertex from label (" << i1 << ")" << endl
-	       << "     with return value " << graph.internalGetVertex (i1)
+      gOut (0) << "Getting vertex from label (" << i1 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalGetVertex (i1)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -616,8 +927,9 @@ main (int argc, char *argv[])
   try
     {
       i1 = graph.size ();
-      gOut (0) << "Getting vertex from label (" << i1 << ") on const graph" << endl
-	       << "     with return value " << constGraph.internalGetVertex (i1)
+      gOut (0) << "Getting vertex from label (" << i1 << ") on const graph with return value "
+      << flush;
+      gOut (0) << constGraph.internalGetVertex (i1)
 	       << endl << constGraph << endl;
     }
   catch (NoSuchElementException &e)
@@ -627,8 +939,9 @@ main (int argc, char *argv[])
   try
     {
       i1 = 324324;
-      gOut (0) << "Getting vertex from label (" << i1 << ") on const graph" << endl
-	       << "     with return value " << constGraph.internalGetVertex (i1)
+      gOut (0) << "Getting vertex from label (" << i1 << ") on const graph with return value "
+      << flush;
+      gOut (0) << constGraph.internalGetVertex (i1)
 	       << endl << constGraph << endl;
     }
   catch (NoSuchElementException &e)
@@ -638,8 +951,9 @@ main (int argc, char *argv[])
   try
     {
       i1 = 4;
-      gOut (0) << "Getting vertex from label (" << i1 << ") on const graph" << endl
-	       << "     with return value " << constGraph.internalGetVertex (i1)
+      gOut (0) << "Getting vertex from label (" << i1 << ") on const graph with return value "
+      << flush;
+      gOut (0) << constGraph.internalGetVertex (i1)
 	       << endl << constGraph << endl;
     }
   catch (NoSuchElementException &e)
@@ -651,8 +965,9 @@ main (int argc, char *argv[])
   try
     {
       i1 = graph.size ();
-      gOut (0) << "Getting vertex weight from label (" << i1 << ")" << endl
-	       << "     with return value " << graph.internalGetVertexWeight (i1)
+      gOut (0) << "Getting vertex weight from label (" << i1 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalGetVertexWeight (i1)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -662,8 +977,9 @@ main (int argc, char *argv[])
   try
     {
       i1 = 43233;
-      gOut (0) << "Getting vertex weight from label (" << i1 << ")" << endl
-	       << "     with return value " << graph.internalGetVertexWeight (i1)
+      gOut (0) << "Getting vertex weight from label (" << i1 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalGetVertexWeight (i1)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -673,8 +989,9 @@ main (int argc, char *argv[])
   try
     {
       i1 = 6;
-      gOut (0) << "Getting vertex weight from label (" << i1 << ")" << endl
-	       << "     with return value " << graph.internalGetVertexWeight (i1)
+      gOut (0) << "Getting vertex weight from label (" << i1 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalGetVertexWeight (i1)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -684,8 +1001,9 @@ main (int argc, char *argv[])
   try
     {
       i1 = constGraph.size ();
-      gOut (0) << "Getting vertex weight from label (" << i1 << ") on const graph" << endl
-	       << "     with return value " << constGraph.internalGetVertexWeight (i1)
+      gOut (0) << "Getting vertex weight from label (" << i1 << ") on const graph with return value "
+      << flush;
+      gOut (0) << constGraph.internalGetVertexWeight (i1)
 	       << endl << constGraph << endl;
     }
   catch (NoSuchElementException &e)
@@ -695,8 +1013,9 @@ main (int argc, char *argv[])
   try
     {
       i1 = 43233;
-      gOut (0) << "Getting vertex weight from label (" << i1 << ") on const graph" << endl
-	       << "     with return value " << constGraph.internalGetVertexWeight (i1)
+      gOut (0) << "Getting vertex weight from label (" << i1 << ") on const graph with return value "
+      << flush;
+      gOut (0) << constGraph.internalGetVertexWeight (i1)
 	       << endl << constGraph << endl;
     }
   catch (NoSuchElementException &e)
@@ -706,8 +1025,9 @@ main (int argc, char *argv[])
   try
     {
       i1 = 6;
-      gOut (0) << "Getting vertex weight from label (" << i1 << ") on const graph" << endl
-	       << "     with return value " << constGraph.internalGetVertexWeight (i1)
+      gOut (0) << "Getting vertex weight from label (" << i1 << ") on const graph with return value "
+      << flush;
+      gOut (0) << constGraph.internalGetVertexWeight (i1)
 	       << endl << constGraph << endl;
     }
   catch (NoSuchElementException &e)
@@ -722,7 +1042,9 @@ main (int argc, char *argv[])
       v1 = 1007;
       gOut (0) << "Setting vertex weight from label (" << i1 << ", " << v1 << ")" << endl;
       graph.internalSetVertexWeight (i1, v1);
-      gOut (0) << "     with return value " << graph.internalGetVertexWeight (i1)
+      gOut (0) << "     with return value "
+      << flush;
+      gOut (0) << graph.internalGetVertexWeight (i1)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -735,7 +1057,9 @@ main (int argc, char *argv[])
       v1 = 1008;
       gOut (0) << "Setting vertex weight from label (" << i1 << ", " << v1 << ")" << endl;
       graph.internalSetVertexWeight (i1, v1);
-      gOut (0) << "     with return value " << graph.internalGetVertexWeight (i1)
+      gOut (0) << "     with return value "
+      << flush;
+      gOut (0) << graph.internalGetVertexWeight (i1)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -748,7 +1072,9 @@ main (int argc, char *argv[])
       v1 = 1009;
       gOut (0) << "Setting vertex weight from label (" << i1 << ", " << v1 << ")" << endl;
       graph.internalSetVertexWeight (i1, v1);
-      gOut (0) << "     with return value " << graph.internalGetVertexWeight (i1)
+      gOut (0) << "     with return value "
+      << flush;
+      gOut (0) << graph.internalGetVertexWeight (i1)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -762,7 +1088,9 @@ main (int argc, char *argv[])
       i1 = graph.size ();
       i2 = 8; 
       gOut (0) << "Getting edge of endvertices (" << i1 << ", " << i2 << ")"
-	       << "     with return value " << graph.internalGetEdge (i1, i2)
+	       << "     with return value "
+      << flush;
+      gOut (0) << graph.internalGetEdge (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -774,7 +1102,9 @@ main (int argc, char *argv[])
       i1 = 2;
       i2 = 8; 
       gOut (0) << "Getting edge of endvertices (" << i1 << ", " << i2 << ")"
-	       << "     with return value " << graph.internalGetEdge (i1, i2)
+	       << "     with return value "
+      << flush;
+      gOut (0) << graph.internalGetEdge (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -784,9 +1114,11 @@ main (int argc, char *argv[])
   try
     {
       i1 = 2;
-      i2 = 4;
+      i2 = 0;
       gOut (0) << "Getting edge of endvertices (" << i1 << ", " << i2 << ")"
-	       << "     with return value " << graph.internalGetEdge (i1, i2)
+	       << "     with return value "
+      << flush;
+      gOut (0) << graph.internalGetEdge (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -795,10 +1127,12 @@ main (int argc, char *argv[])
     }
   try
     {
-      i1 = 7;
-      i2 = 7;
+      i1 = 4;
+      i2 = 5;
       gOut (0) << "Getting edge of endvertices (" << i1 << ", " << i2 << ")"
-	       << "     with return value " << graph.internalGetEdge (i1, i2)
+	       << "     with return value "
+      << flush;
+      gOut (0) << graph.internalGetEdge (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -810,7 +1144,9 @@ main (int argc, char *argv[])
       i1 = constGraph.size ();
       i2 = 8; 
       gOut (0) << "Getting edge of endvertices (" << i1 << ", " << i2 << ") on const graph"
-	       << "     with return value " << constGraph.internalGetEdge (i1, i2)
+	       << "     with return value "
+      << flush;
+      gOut (0) << constGraph.internalGetEdge (i1, i2)
 	       << endl << constGraph << endl;
     }
   catch (NoSuchElementException &e)
@@ -822,7 +1158,9 @@ main (int argc, char *argv[])
       i1 = 2;
       i2 = 8; 
       gOut (0) << "Getting edge of endvertices (" << i1 << ", " << i2 << ") on const graph"
-	       << "     with return value " << constGraph.internalGetEdge (i1, i2)
+	       << "     with return value "
+      << flush;
+      gOut (0) << constGraph.internalGetEdge (i1, i2)
 	       << endl << constGraph << endl;
     }
   catch (NoSuchElementException &e)
@@ -832,9 +1170,11 @@ main (int argc, char *argv[])
   try
     {
       i1 = 2;
-      i2 = 4;
+      i2 = 0;
       gOut (0) << "Getting edge of endvertices (" << i1 << ", " << i2 << ") on const graph"
-	       << "     with return value " << constGraph.internalGetEdge (i1, i2)
+	       << "     with return value "
+      << flush;
+      gOut (0) << constGraph.internalGetEdge (i1, i2)
 	       << endl << constGraph << endl;
     }
   catch (NoSuchElementException &e)
@@ -843,10 +1183,12 @@ main (int argc, char *argv[])
     }
   try
     {
-      i1 = 7;
-      i2 = 7;
+      i1 = 6;
+      i2 = 4;
       gOut (0) << "Getting edge of endvertices (" << i1 << ", " << i2 << ") on const graph"
-	       << "     with return value " << constGraph.internalGetEdge (i1, i2)
+	       << "     with return value "
+      << flush;
+      gOut (0) << constGraph.internalGetEdge (i1, i2)
 	       << endl << constGraph << endl;
     }
   catch (NoSuchElementException &e)
@@ -860,7 +1202,9 @@ main (int argc, char *argv[])
       i1 = graph.size ();
       i2 = 8; 
       gOut (0) << "Getting edge label of endvertices (" << i1 << ", " << i2 << ")"
-	       << "     with return value " << graph.internalGetEdgeLabel (i1, i2)
+	       << "     with return value "
+      << flush;
+      gOut (0) << graph.internalGetEdgeLabel (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -872,7 +1216,9 @@ main (int argc, char *argv[])
       i1 = 2;
       i2 = 8; 
       gOut (0) << "Getting edge label of endvertices (" << i1 << ", " << i2 << ")"
-	       << "     with return value " << graph.internalGetEdgeLabel (i1, i2)
+	       << "     with return value "
+      << flush;
+      gOut (0) << graph.internalGetEdgeLabel (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -884,7 +1230,9 @@ main (int argc, char *argv[])
       i1 = 2;
       i2 = 4;
       gOut (0) << "Getting edge label of endvertices (" << i1 << ", " << i2 << ")"
-	       << "     with return value " << graph.internalGetEdgeLabel (i1, i2)
+	       << "     with return value "
+      << flush;
+      gOut (0) << graph.internalGetEdgeLabel (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -896,7 +1244,9 @@ main (int argc, char *argv[])
       i1 = 7;
       i2 = 7;
       gOut (0) << "Getting edge label of endvertices (" << i1 << ", " << i2 << ")"
-	       << "     with return value " << graph.internalGetEdgeLabel (i1, i2)
+	       << "     with return value "
+      << flush;
+      gOut (0) << graph.internalGetEdgeLabel (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -909,8 +1259,9 @@ main (int argc, char *argv[])
     {
       i1 = graph.size ();
       i2 = 8;
-      gOut (0) << "Getting edge weight of endvertices (" << i1 << ", " << i2 << ")" << endl
-	       << "     with return value " << graph.internalGetEdgeWeight (i1, i2)
+      gOut (0) << "Getting edge weight of endvertices (" << i1 << ", " << i2 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalGetEdgeWeight (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -921,8 +1272,9 @@ main (int argc, char *argv[])
     {
       i1 = 2;
       i2 = 8;
-      gOut (0) << "Getting edge weight of endvertices (" << i1 << ", " << i2 << ")" << endl
-	       << "     with return value " << graph.internalGetEdgeWeight (i1, i2)
+      gOut (0) << "Getting edge weight of endvertices (" << i1 << ", " << i2 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalGetEdgeWeight (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -933,8 +1285,9 @@ main (int argc, char *argv[])
     {
       i1 = 2;
       i2 = 4;
-      gOut (0) << "Getting edge weight of endvertices (" << i1 << ", " << i2 << ")" << endl
-	       << "     with return value " << graph.internalGetEdgeWeight (i1, i2)
+      gOut (0) << "Getting edge weight of endvertices (" << i1 << ", " << i2 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalGetEdgeWeight (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -945,8 +1298,9 @@ main (int argc, char *argv[])
     {
       i1 = 7;
       i2 = 7;
-      gOut (0) << "Getting edge weight of endvertices (" << i1 << ", " << i2 << ")" << endl
-	       << "     with return value " << graph.internalGetEdgeWeight (i1, i2)
+      gOut (0) << "Getting edge weight of endvertices (" << i1 << ", " << i2 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalGetEdgeWeight (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -957,8 +1311,9 @@ main (int argc, char *argv[])
     {
       i1 = constGraph.size ();
       i2 = 8;
-      gOut (0) << "Getting edge weight of endvertices (" << i1 << ", " << i2 << ") on const graph" << endl
-	       << "     with return value " << constGraph.internalGetEdgeWeight (i1, i2)
+      gOut (0) << "Getting edge weight of endvertices (" << i1 << ", " << i2 << ") on const graph with return value "
+      << flush;
+      gOut (0) << constGraph.internalGetEdgeWeight (i1, i2)
 	       << endl << constGraph << endl;
     }
   catch (NoSuchElementException &e)
@@ -969,8 +1324,9 @@ main (int argc, char *argv[])
     {
       i1 = 2;
       i2 = 8;
-      gOut (0) << "Getting edge weight of endvertices (" << i1 << ", " << i2 << ") on const graph" << endl
-	       << "     with return value " << constGraph.internalGetEdgeWeight (i1, i2)
+      gOut (0) << "Getting edge weight of endvertices (" << i1 << ", " << i2 << ") on const graph with return value "
+      << flush;
+      gOut (0) << constGraph.internalGetEdgeWeight (i1, i2)
 	       << endl << constGraph << endl;
     }
   catch (NoSuchElementException &e)
@@ -981,8 +1337,9 @@ main (int argc, char *argv[])
     {
       i1 = 2;
       i2 = 4;
-      gOut (0) << "Getting edge weight of endvertices (" << i1 << ", " << i2 << ") on const graph" << endl
-	       << "     with return value " << constGraph.internalGetEdgeWeight (i1, i2)
+      gOut (0) << "Getting edge weight of endvertices (" << i1 << ", " << i2 << ") on const graph with return value "
+      << flush;
+      gOut (0) << constGraph.internalGetEdgeWeight (i1, i2)
 	       << endl << constGraph << endl;
     }
   catch (NoSuchElementException &e)
@@ -993,8 +1350,9 @@ main (int argc, char *argv[])
     {
       i1 = 7;
       i2 = 7;
-      gOut (0) << "Getting edge weight of endvertices (" << i1 << ", " << i2 << ") on const graph" << endl
-	       << "     with return value " << constGraph.internalGetEdgeWeight (i1, i2)
+      gOut (0) << "Getting edge weight of endvertices (" << i1 << ", " << i2 << ") on const graph with return value "
+      << flush;
+      gOut (0) << constGraph.internalGetEdgeWeight (i1, i2)
 	       << endl << constGraph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1006,8 +1364,9 @@ main (int argc, char *argv[])
   try
     {
       i1 = graph.size ();
-      gOut (0) << "Getting edge weight of edge label (" << i1 << ")" << endl
-	       << "     with return value " << graph.internalGetEdgeWeight (i1)
+      gOut (0) << "Getting edge weight of edge label (" << i1 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalGetEdgeWeight (i1)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1017,8 +1376,9 @@ main (int argc, char *argv[])
   try
     {
       i1 = 0;
-      gOut (0) << "Getting edge weight of edge label (" << i1 << ")" << endl
-	       << "     with return value " << graph.internalGetEdgeWeight (i1)
+      gOut (0) << "Getting edge weight of edge label (" << i1 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalGetEdgeWeight (i1)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1028,8 +1388,9 @@ main (int argc, char *argv[])
   try
     {
       i1 = 5;
-      gOut (0) << "Getting edge weight of edge label (" << i1 << ")" << endl
-	       << "     with return value " << graph.internalGetEdgeWeight (i1)
+      gOut (0) << "Getting edge weight of edge label (" << i1 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalGetEdgeWeight (i1)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1039,8 +1400,9 @@ main (int argc, char *argv[])
   try
     {
       i1 = constGraph.size ();
-      gOut (0) << "Getting edge weight of edge label (" << i1 << ") on const graph" << endl
-	       << "     with return value " << constGraph.internalGetEdgeWeight (i1)
+      gOut (0) << "Getting edge weight of edge label (" << i1 << ") on const graph with return value "
+      << flush;
+      gOut (0) << constGraph.internalGetEdgeWeight (i1)
 	       << endl << constGraph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1050,8 +1412,9 @@ main (int argc, char *argv[])
   try
     {
       i1 = 0;
-      gOut (0) << "Getting edge weight of edge label (" << i1 << ") on const graph" << endl
-	       << "     with return value " << constGraph.internalGetEdgeWeight (i1)
+      gOut (0) << "Getting edge weight of edge label (" << i1 << ") on const graph with return value "
+      << flush;
+      gOut (0) << constGraph.internalGetEdgeWeight (i1)
 	       << endl << constGraph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1061,8 +1424,9 @@ main (int argc, char *argv[])
   try
     {
       i1 = 5;
-      gOut (0) << "Getting edge weight of edge label (" << i1 << ") on const graph" << endl
-	       << "     with return value " << constGraph.internalGetEdgeWeight (i1)
+      gOut (0) << "Getting edge weight of edge label (" << i1 << ") on const graph with return value "
+      << flush;
+      gOut (0) << constGraph.internalGetEdgeWeight (i1)
 	       << endl << constGraph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1078,7 +1442,9 @@ main (int argc, char *argv[])
       v4 = 5.6;
       gOut (0) << "Setting edge weight of edge endvertices labels (" << i1 << ", " << i2 << ", " << v4 << ")" << endl;
       graph.internalSetEdgeWeight (i1, i2, v4);
-      gOut (0) << "     with return value " << graph.internalGetEdgeWeight (i1, i2)
+      gOut (0) << "     with return value "
+      << flush;
+      gOut (0) << graph.internalGetEdgeWeight (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1092,7 +1458,9 @@ main (int argc, char *argv[])
       v4 = 5.7;
       gOut (0) << "Setting edge weight of edge endvertices labels (" << i1 << ", " << i2 << ", " << v4 << ")" << endl;
       graph.internalSetEdgeWeight (i1, i2, v4);
-      gOut (0) << "     with return value " << graph.internalGetEdgeWeight (i1, i2)
+      gOut (0) << "     with return value "
+      << flush;
+      gOut (0) << graph.internalGetEdgeWeight (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1106,7 +1474,9 @@ main (int argc, char *argv[])
       v4 = 5.8;
       gOut (0) << "Setting edge weight of edge endvertices labels (" << i1 << ", " << i2 << ", " << v4 << ")" << endl;
       graph.internalSetEdgeWeight (i1, i2, v4);
-      gOut (0) << "     with return value " << graph.internalGetEdgeWeight (i1, i2)
+      gOut (0) << "     with return value "
+      << flush;
+      gOut (0) << graph.internalGetEdgeWeight (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1118,8 +1488,9 @@ main (int argc, char *argv[])
   try
     {
       i1 = graph.size ();
-      gOut (0) << "Contains vertex label (" << i1 << ")" << endl
-	       << "     with return value " << graph.internalContains (i1)
+      gOut (0) << "Contains vertex label (" << i1 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalContains (i1)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1129,8 +1500,9 @@ main (int argc, char *argv[])
   try
     {
       i1 = 234;
-      gOut (0) << "Contains vertex label (" << i1 << ")" << endl
-	       << "     with return value " << graph.internalContains (i1)
+      gOut (0) << "Contains vertex label (" << i1 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalContains (i1)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1140,8 +1512,9 @@ main (int argc, char *argv[])
   try
     {
       i1 = 5;
-      gOut (0) << "Contains vertex label (" << i1 << ")" << endl
-	       << "     with return value " << graph.internalContains (i1)
+      gOut (0) << "Contains vertex label (" << i1 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalContains (i1)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1154,8 +1527,9 @@ main (int argc, char *argv[])
     {
       i1 = graph.size ();
       i2 = 7;
-      gOut (0) << "Vertices labels are connected (" << i1 << ", " << i2 << ")" << endl
-	       << "     with return value " << graph.internalAreConnected (i1, i2)
+      gOut (0) << "Vertices labels are connected (" << i1 << ", " << i2 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalAreConnected (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1166,8 +1540,9 @@ main (int argc, char *argv[])
     {
       i1 = 7;
       i2 = graph.size ();
-      gOut (0) << "Vertices labels are connected (" << i1 << ", " << i2 << ")" << endl
-	       << "     with return value " << graph.internalAreConnected (i1, i2)
+      gOut (0) << "Vertices labels are connected (" << i1 << ", " << i2 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalAreConnected (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1178,8 +1553,9 @@ main (int argc, char *argv[])
     {
       i1 = 1;
       i2 = 2144321;
-      gOut (0) << "Vertices labels are connected (" << i1 << ", " << i2 << ")" << endl
-	       << "     with return value " << graph.internalAreConnected (i1, i2)
+      gOut (0) << "Vertices labels are connected (" << i1 << ", " << i2 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalAreConnected (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1190,8 +1566,9 @@ main (int argc, char *argv[])
     {
       i1 = 2;
       i2 = 4;
-      gOut (0) << "Vertices labels are connected (" << i1 << ", " << i2 << ")" << endl
-	       << "     with return value " << graph.internalAreConnected (i1, i2)
+      gOut (0) << "Vertices labels are connected (" << i1 << ", " << i2 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalAreConnected (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1202,8 +1579,9 @@ main (int argc, char *argv[])
     {
       i1 = 4;
       i2 = 2;
-      gOut (0) << "Vertices labels are connected (" << i1 << ", " << i2 << ")" << endl
-	       << "     with return value " << graph.internalAreConnected (i1, i2)
+      gOut (0) << "Vertices labels are connected (" << i1 << ", " << i2 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalAreConnected (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1214,8 +1592,9 @@ main (int argc, char *argv[])
     {
       i1 = 5;
       i2 = 0;
-      gOut (0) << "Vertices labels are connected (" << i1 << ", " << i2 << ")" << endl
-	       << "     with return value " << graph.internalAreConnected (i1, i2)
+      gOut (0) << "Vertices labels are connected (" << i1 << ", " << i2 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalAreConnected (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1226,8 +1605,9 @@ main (int argc, char *argv[])
     {
       i1 = 7;
       i2 = 7;
-      gOut (0) << "Vertices labels are connected (" << i1 << ", " << i2 << ")" << endl
-	       << "     with return value " << graph.internalAreConnected (i1, i2)
+      gOut (0) << "Vertices labels are connected (" << i1 << ", " << i2 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalAreConnected (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1252,8 +1632,9 @@ main (int argc, char *argv[])
   try
     {
       v1 = 125;
-      gOut (0) << "Erasing (" << v1 << ")" << endl
-	       << "     with return value " << *(clone->erase (v1))
+      gOut (0) << "Erasing (" << v1 << ") with return value "
+      << flush;
+      gOut (0) << *(clone->erase (v1))
 	       << endl << *clone
 	       << endl << graph;
     }
@@ -1264,8 +1645,9 @@ main (int argc, char *argv[])
   try
     {
       v1 = 321532432;
-      gOut (0) << "Erasing (" << v1 << ")" << endl
-	       << "     with return value " << *(clone->erase (v1))
+      gOut (0) << "Erasing (" << v1 << ") with return value "
+      << flush;
+      gOut (0) << *(clone->erase (v1))
 	       << endl << *clone
 	       << endl << graph;
     }
@@ -1278,8 +1660,9 @@ main (int argc, char *argv[])
   try
     {
       i1 = 1;
-      gOut (0) << "Erasing vertex label (" << i1 << ")" << endl
-	       << "     with return value " << *(clone->internalErase (i1))
+      gOut (0) << "Erasing vertex label (" << i1 << ") with return value "
+      << flush;
+      gOut (0) << *(clone->internalErase (i1))
 	       << endl << *clone
 	       << endl << graph;
     }
@@ -1290,8 +1673,9 @@ main (int argc, char *argv[])
   try
     {
       i1 = 321532432;
-      gOut (0) << "Erasing vertex label (" << i1 << ")" << endl
-	       << "     with return value " << *(clone->internalErase (i1))
+      gOut (0) << "Erasing vertex label (" << i1 << ") with return value "
+      << flush;
+      gOut (0) << *(clone->internalErase (i1))
 	       << endl << *clone
 	       << endl << graph;
     }
@@ -1304,8 +1688,9 @@ main (int argc, char *argv[])
   try
     {
       v1 = graph.size ();
-      gOut (0) << "Finding vertex (" << v1 << ")" << endl
-	       << "     with return value " << *(graph.find (v1))
+      gOut (0) << "Finding vertex (" << v1 << ") with return value "
+      << flush;
+      gOut (0) << *(graph.find (v1))
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1315,8 +1700,9 @@ main (int argc, char *argv[])
   try
     {
       v1 = 5;
-      gOut (0) << "Finding vertex (" << v1 << ")" << endl
-	       << "     with return value " << *(graph.find (v1))
+      gOut (0) << "Finding vertex (" << v1 << ") with return value "
+      << flush;
+      gOut (0) << *(graph.find (v1))
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1326,8 +1712,9 @@ main (int argc, char *argv[])
   try
     {
       v1 = constGraph.size ();
-      gOut (0) << "Finding vertex (" << v1 << ")" << endl
-	       << "     with return value " << *(constGraph.find (v1))
+      gOut (0) << "Finding vertex (" << v1 << ") with return value "
+      << flush;
+      gOut (0) << *(constGraph.find (v1))
 	       << endl << constGraph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1337,8 +1724,9 @@ main (int argc, char *argv[])
   try
     {
       v1 = 5;
-      gOut (0) << "Finding vertex (" << v1 << ")" << endl
-	       << "     with return value " << *(constGraph.find (v1))
+      gOut (0) << "Finding vertex (" << v1 << ") with return value "
+      << flush;
+      gOut (0) << *(constGraph.find (v1))
 	       << endl << constGraph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1348,28 +1736,35 @@ main (int argc, char *argv[])
 
   // Testing size
   gOut (0) << "Size of vertices"
-	   << "     with return value " << graph.size ()
+	   << "     with return value "
+      << flush;
+      gOut (0) << graph.size ()
 	   << endl << graph << endl;
 
   // Testing edgeSize
   gOut (0) << "Size of edges"
-	   << "     with return value " << graph.edgeSize ()
+	   << "     with return value "
+      << flush;
+      gOut (0) << graph.edgeSize ()
 	   << endl << graph << endl;
 
   // Testing empty 
   gOut (0) << "empty"
-	   << "     with return value " << graph.empty ()
+	   << "     with return value "
+      << flush;
+      gOut (0) << graph.empty ()
 	   << endl << graph << endl;
 
   // Testing clear
-  gOut (0) << "clear" << endl
-	   << "     with return value ";
+  gOut (0) << "clear with return value ";
   clone->clear ();
   gOut (0) << endl << *clone << endl;
   
   // Testing empty 
   gOut (0) << "empty"
-	   << "     with return value " << clone->empty ()
+	   << "     with return value "
+      << flush;
+      gOut (0) << clone->empty ()
 	   << endl << *clone << endl;
 
   // Testing connect
@@ -1378,8 +1773,9 @@ main (int argc, char *argv[])
       v1 = 1;
       v2 = 5;
       v3 = 2000;
-      gOut (0) << "Connecting vertices (" << v1 << ", " << v2 << ", " << v3 << ")" << endl
-	   << "     with return value " << graph.connect (v1, v2, v3)
+      gOut (0) << "connect (" << v1 << ", " << v2 << ", " << v3 << ") with return value "
+      << flush;
+      gOut (0) << graph.connect (v1, v2, v3)
 	   << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1391,8 +1787,9 @@ main (int argc, char *argv[])
       v1 = 5;
       v2 = 1;
       v3 = 2001;
-      gOut (0) << "Connecting vertices (" << v1 << ", " << v2 << ", " << v3 << ")" << endl
-	   << "     with return value " << graph.connect (v1, v2, v3)
+      gOut (0) << "connect (" << v1 << ", " << v2 << ", " << v3 << ") with return value "
+      << flush;
+      gOut (0) << graph.connect (v1, v2, v3)
 	   << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1404,8 +1801,9 @@ main (int argc, char *argv[])
       v1 = 125;
       v2 = 2;
       v3 = 2002;
-      gOut (0) << "Connecting vertices (" << v1 << ", " << v2 << ", " << v3 << ")" << endl
-	   << "     with return value " << graph.connect (v1, v2, v3)
+      gOut (0) << "connect (" << v1 << ", " << v2 << ", " << v3 << ") with return value "
+      << flush;
+      gOut (0) << graph.connect (v1, v2, v3)
 	   << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1417,8 +1815,9 @@ main (int argc, char *argv[])
       v1 = 1;
       v2 = 200;
       v3 = 2003;
-      gOut (0) << "Connecting vertices (" << v1 << ", " << v2 << ", " << v3 << ")" << endl
-	   << "     with return value " << graph.connect (v1, v2, v3)
+      gOut (0) << "connect (" << v1 << ", " << v2 << ", " << v3 << ") with return value "
+      << flush;
+      gOut (0) << graph.connect (v1, v2, v3)
 	   << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1430,8 +1829,9 @@ main (int argc, char *argv[])
       v1 = 2;
       v2 = 125;
       v3 = 2004;
-      gOut (0) << "Connecting vertices (" << v1 << ", " << v2 << ", " << v3 << ")" << endl
-	   << "     with return value " << graph.connect (v1, v2, v3)
+      gOut (0) << "connect (" << v1 << ", " << v2 << ", " << v3 << ") with return value "
+      << flush;
+      gOut (0) << graph.connect (v1, v2, v3)
 	   << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1443,8 +1843,9 @@ main (int argc, char *argv[])
       v1 = 1;
       v2 = 123;
       v3 = 2005;
-      gOut (0) << "Connecting vertices (" << v1 << ", " << v2 << ", " << v3 << ")" << endl
-	   << "     with return value " << graph.connect (v1, v2, v3)
+      gOut (0) << "connect (" << v1 << ", " << v2 << ", " << v3 << ") with return value "
+      << flush;
+      gOut (0) << graph.connect (v1, v2, v3)
 	   << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1458,8 +1859,9 @@ main (int argc, char *argv[])
       i1 = graph.size ();
       i2 = 7;
       v1 = 2006;
-      gOut (0) << "Connecting vertices labels (" << i1 << ", " << i2 << ", " << v1 << ")" << endl
-	   << "     with return value " << graph.internalConnect (i1, i2, v1)
+      gOut (0) << "connect labels (" << i1 << ", " << i2 << ", " << v1 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalConnect (i1, i2, v1)
 	   << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1471,8 +1873,9 @@ main (int argc, char *argv[])
       i1 = 7;
       i2 = graph.size ();
       v1 = 2006;
-      gOut (0) << "Connecting vertices labels (" << i1 << ", " << i2 << ", " << v1 << ")" << endl
-	   << "     with return value " << graph.internalConnect (i1, i2, v1)
+      gOut (0) << "connect labels (" << i1 << ", " << i2 << ", " << v1 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalConnect (i1, i2, v1)
 	   << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1484,8 +1887,9 @@ main (int argc, char *argv[])
       i1 = 7;
       i2 = 7;
       v1 = 2007;
-      gOut (0) << "Connecting vertices labels (" << i1 << ", " << i2 << ", " << v1 << ")" << endl
-	   << "     with return value " << graph.internalConnect (i1, i2, v1)
+      gOut (0) << "connect labels (" << i1 << ", " << i2 << ", " << v1 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalConnect (i1, i2, v1)
 	   << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1497,8 +1901,9 @@ main (int argc, char *argv[])
       i1 = 1;
       i2 = 7;
       v1 = 2008;
-      gOut (0) << "Connecting vertices labels (" << i1 << ", " << i2 << ", " << v1 << ")" << endl
-	   << "     with return value " << graph.internalConnect (i1, i2, v1)
+      gOut (0) << "connect labels (" << i1 << ", " << i2 << ", " << v1 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalConnect (i1, i2, v1)
 	   << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1513,8 +1918,9 @@ main (int argc, char *argv[])
       i2 = 7;
       v1 = 2004;
       v4 = 5.7;
-      gOut (0) << "Connecting vertices labels (" << i1 << ", " << i2 << ", " << v1 << ", " << v4 << ")" << endl
-	       << "     with return value " << graph.internalConnect (i1, i2, v1, v4)
+      gOut (0) << "connect labels (" << i1 << ", " << i2 << ", " << v1 << ", " << v4 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalConnect (i1, i2, v1, v4)
 	   << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1527,8 +1933,9 @@ main (int argc, char *argv[])
       i2 = graph.size ();
       v1 = 2004;
       v4 = 5.7;
-      gOut (0) << "Connecting vertices labels (" << i1 << ", " << i2 << ", " << v1 << ", " << v4 << ")" << endl
-	       << "     with return value " << graph.internalConnect (i1, i2, v1, v4)
+      gOut (0) << "connect labels (" << i1 << ", " << i2 << ", " << v1 << ", " << v4 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalConnect (i1, i2, v1, v4)
 	   << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1541,8 +1948,9 @@ main (int argc, char *argv[])
       i2 = 7;
       v1 = 2004;
       v4 = 5.7;
-      gOut (0) << "Connecting vertices labels (" << i1 << ", " << i2 << ", " << v1 << ", " << v4 << ")" << endl
-	       << "     with return value " << graph.internalConnect (i1, i2, v1, v4)
+      gOut (0) << "connect labels (" << i1 << ", " << i2 << ", " << v1 << ", " << v4 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalConnect (i1, i2, v1, v4)
 	   << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1555,8 +1963,9 @@ main (int argc, char *argv[])
       i2 = 4;
       v1 = 2005;
       v4 = 5.8;
-      gOut (0) << "Connecting vertices labels (" << i1 << ", " << i2 << ", " << v1 << ", " << v4 << ")" << endl
-	       << "     with return value " << graph.internalConnect (i1, i2, v1, v4)
+      gOut (0) << "connect labels (" << i1 << ", " << i2 << ", " << v1 << ", " << v4 << ") with return value "
+      << flush;
+      gOut (0) << graph.internalConnect (i1, i2, v1, v4)
 	   << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1570,7 +1979,9 @@ main (int argc, char *argv[])
       v1 = 200;
       v2 = 202;
       gOut (0) << "Disconnecting (" << v1 << ", " << v2 << ")"
-	       << "     with return value " << graph.disconnect (v1, v2)
+	       << "     with return value "
+      << flush;
+      gOut (0) << graph.disconnect (v1, v2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1582,7 +1993,9 @@ main (int argc, char *argv[])
       v1 = 200;
       v2 = 200;
       gOut (0) << "Disconnecting (" << v1 << ", " << v2 << ")"
-	       << "     with return value " << graph.disconnect (v1, v2)
+	       << "     with return value "
+      << flush;
+      gOut (0) << graph.disconnect (v1, v2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1594,7 +2007,9 @@ main (int argc, char *argv[])
       v1 = 1;
       v2 = 123;
       gOut (0) << "Disconnecting (" << v1 << ", " << v2 << ")"
-	       << "     with return value " << graph.disconnect (v1, v2)
+	       << "     with return value "
+      << flush;
+      gOut (0) << graph.disconnect (v1, v2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1606,7 +2021,9 @@ main (int argc, char *argv[])
       v1 = 1;
       v2 = 123;
       gOut (0) << "Disconnecting (" << v1 << ", " << v2 << ")"
-	       << "     with return value " << graph.disconnect (v1, v2)
+	       << "     with return value "
+      << flush;
+      gOut (0) << graph.disconnect (v1, v2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1620,7 +2037,9 @@ main (int argc, char *argv[])
       i1 = graph.size ();
       i2 = 8;
       gOut (0) << "Disconnecting labels (" << i1 << ", " << i2 << ")"
-	       << "     with return value " << graph.internalDisconnect (i1, i2)
+	       << "     with return value "
+      << flush;
+      gOut (0) << graph.internalDisconnect (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1632,7 +2051,9 @@ main (int argc, char *argv[])
       i1 = 2;
       i2 = 8;
       gOut (0) << "Disconnecting labels (" << i1 << ", " << i2 << ")"
-	       << "     with return value " << graph.internalDisconnect (i1, i2)
+	       << "     with return value "
+      << flush;
+      gOut (0) << graph.internalDisconnect (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1644,7 +2065,9 @@ main (int argc, char *argv[])
       i1 = 2;
       i2 = 4;
       gOut (0) << "Disconnecting labels (" << i1 << ", " << i2 << ")"
-	       << "     with return value " << graph.internalDisconnect (i1, i2)
+	       << "     with return value "
+      << flush;
+      gOut (0) << graph.internalDisconnect (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)
@@ -1656,7 +2079,9 @@ main (int argc, char *argv[])
       i1 = 7;
       i2 = 7;
       gOut (0) << "Disconnecting labels (" << i1 << ", " << i2 << ")"
-	       << "     with return value " << graph.internalDisconnect (i1, i2)
+	       << "     with return value "
+      << flush;
+      gOut (0) << graph.internalDisconnect (i1, i2)
 	       << endl << graph << endl;
     }
   catch (NoSuchElementException &e)

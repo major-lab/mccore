@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 16:27:35 1999
-// $Revision: 1.4 $
-// $Id: Exception.h,v 1.4 2004-07-12 19:24:07 thibaup Exp $
+// $Revision: 1.4.2.1 $
+// $Id: Exception.h,v 1.4.2.1 2004-12-21 22:48:48 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -30,6 +30,7 @@
 
 #include <iostream>
 #include <exception>
+#include <string>
 
 
 using namespace std;
@@ -38,8 +39,6 @@ using namespace std;
 namespace mccore
 {
   
-  class ResId;
-
   /**
    * @short General class of exceptions.
    *
@@ -53,7 +52,7 @@ namespace mccore
     /**
      * The information message about the exception.
      */
-    char *mMessage;
+    string mMessage;
 
   public:
 
@@ -62,24 +61,24 @@ namespace mccore
     /**
      * Initializes the exeption.  mMessage contains "".
      */
-    Exception ();
+    Exception () { }
 
     /**
      * Initializes the exeption with a message.
      * @param message the message string.
      */
-    Exception (const char *message);
+    Exception (const char *message) : mMessage (message) { }
 
     /**
      * Initializes the exeption with the right's content.
      * @param right the exception to copy.
      */
-    Exception (const Exception &right);
+    Exception (const Exception &right) : mMessage (right.mMessage) { }
 
     /**
      * Destructs the exception.
      */
-    virtual ~Exception () throw () { delete[] mMessage; }
+    virtual ~Exception () throw () { }
 
     // OPERATORS ------------------------------------------------------------
 
@@ -97,13 +96,13 @@ namespace mccore
      * @return the message string.
      * @deprecated Use the what method instead.
      */
-    const char* GetMessage () const { return mMessage; }
+    const char* GetMessage () const { return mMessage.c_str (); }
 
     /**
      * Gets the message.
      * @return the message string.
      */
-    virtual const char* what () const throw () { return mMessage; }
+    virtual const char* what () const throw () { return mMessage.c_str (); }
 
     // METHODS --------------------------------------------------------------
 
