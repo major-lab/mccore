@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Nov 14 16:43:56 2001
-// Update Count     : 5
+// Last Modified On : Wed Dec 19 10:03:36 2001
+// Update Count     : 6
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -56,7 +56,15 @@ class Model : public list< AbstractResidue* >
    * Factory method for creating new residues.
    */
   ResidueFactoryMethod *residueFM;
-  
+
+public:
+
+  typedef AbstractResidue* value_type;
+  typedef value_type* pointer;
+  typedef value_type& reference;
+  typedef const value_type* const_pointer;
+  typedef const value_type& const_reference;
+
 protected:
 
   /**
@@ -323,6 +331,73 @@ public:
    * @return a Model iterator.
    */
   const_iterator find (const CResId &id) const;
+
+  /**
+   * Inserts a residue before pos.  It calls the list<> method.
+   * @param pos the iterator where the residue will be placed.
+   * @param res the residue to insert.
+   * @return the position where the residue was inserted.
+   */
+  iterator insert (iterator pos, AbstractResidue &res)
+  { return list< AbstractResidue* >::insert (pos, &res); }
+
+  /**
+   * Inserts a residue before pos.  It calls the list<> method.
+   * @param pos the iterator where the residue will be placed.
+   * @param res the residue to insert.
+   * @return the position where the residue was inserted.
+   */
+  iterator insert (iterator pos, AbstractResidue *res)
+  { return list< AbstractResidue* >::insert (pos, res); }
+
+  /**
+   * Inserts the residue range before pos.  It calls the list<> method.
+   * @param pos the iterator where the residue will be placed.
+   * @param f the first iterator in the range.
+   * @param l the last iterator in the range.
+   * @return the position where the residue was inserted.
+   */
+  template <class InputIterator>
+  void insert(iterator pos, InputIterator f, InputIterator l)
+  {
+    while (f != l)
+      {
+	insert (pos, *f);
+	++f;
+      }
+  }
+
+  /**
+   * Insert n copies of res before pos.  It calls the list<> method.
+   * @param pos the iterator where the residue will be placed.
+   * @param n the number of copies to make.
+   * @param res the residue to insert.
+   */
+  void insert (iterator pos, size_type n, AbstractResidue *res)
+  { list< AbstractResidue* >::insert (pos, n, res); }
+
+  /**
+   * Insert n copies of res before pos.  It calls the list<> method.
+   * @param pos the iterator where the residue will be placed.
+   * @param n the number of copies to make.
+   * @param res the residue to insert.
+   */
+  void insert (iterator pos, size_type n, AbstractResidue &res)
+  { list< AbstractResidue* >::insert (pos, n, &res); }
+
+  /**
+   * Inserts a new element at the end.
+   * &param res the residue to push back.
+   */
+  void push_back(AbstractResidue &res)
+  { list< AbstractResidue* >::push_back (&res); }
+
+  /**
+   * Inserts a new element at the end.
+   * &param res the residue to push back.
+   */
+  void push_back(AbstractResidue *res)
+  { list< AbstractResidue* >::push_back (res); }
 
   // METHODS --------------------------------------------------------------
 
