@@ -3,9 +3,9 @@
 // Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Thu Sep 28 16:59:32 2000
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Nov  9 17:54:03 2000
-// Update Count     : 4
+// Last Modified By : Labo Lbit
+// Last Modified On : Fri Nov 10 08:56:42 2000
+// Update Count     : 5
 // Status           : Ok.
 // 
 
@@ -14,7 +14,6 @@
 #define _CResidue_h_
 
 #include <map.h>
-#include <set.h>
 #include <vector.h>
 
 #include "CAtom.h"
@@ -38,13 +37,14 @@ class oBinstream;
  */
 class residue_iterator
 {
+public:
   typedef random_access_iterator_tag iterator_category;
   typedef CAtom value_type;
   typedef ptrdiff_t difference_type;
   typedef CAtom* pointer;
   typedef CAtom& reference;
-  
-  typedef vector< CAtom >::size_type size_type;
+  typedef size_t size_type;
+private:
   
   /**
    * The pointer over the residue.
@@ -202,14 +202,14 @@ public:
  */
 class const_residue_iterator
 {
+public:
   typedef random_access_iterator_tag iterator_category;
   typedef const CAtom value_type;
   typedef ptrdiff_t difference_type;
   typedef const CAtom* pointer;
   typedef const CAtom& reference;
-  
-  typedef vector< const CAtom >::size_type size_type;
-  
+  typedef size_t size_type;
+private:
   /**
    * The pointer over the residue.
    */
