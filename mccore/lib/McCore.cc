@@ -4,9 +4,9 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Wed Jan 16 16:43:22 2002
-// Update Count     : 19
+// Last Modified By : Patrick Gendron
+// Last Modified On : Thu Jun 20 13:35:04 2002
+// Update Count     : 20
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -839,21 +839,23 @@ __rmsd_with_align_aux (CPoint3D &center_a, CPoint3D &center_b,
 
   // Construction de U
 
-  double u[3*3];
-  for (i = 0; i < 3; ++i)
-    for (j = 0; j < 3; ++j)
-      {
-	u[i*3+j] = 0;
-	for (k = 0; k < 3; ++k)
-	  u[i*3+j] += b[i*3+k] * a[j*3+k];
-      }
-  
-  CTransfo rot (u[0*3+0], u[0*3+1], u[0*3+2], 0,
-		u[1*3+0], u[1*3+1], u[1*3+2], 0,
-		u[2*3+0], u[2*3+1], u[2*3+2], 0);
-
-  *t = (CTransfo ().SetTranslation (center_b) * rot *
-        CTransfo ().SetTranslation (-center_a));
+  if (t) {
+    double u[3*3];
+    for (i = 0; i < 3; ++i)
+      for (j = 0; j < 3; ++j)
+	{
+	  u[i*3+j] = 0;
+	  for (k = 0; k < 3; ++k)
+	    u[i*3+j] += b[i*3+k] * a[j*3+k];
+	}
+    
+    CTransfo rot (u[0*3+0], u[0*3+1], u[0*3+2], 0,
+		  u[1*3+0], u[1*3+1], u[1*3+2], 0,
+		  u[2*3+0], u[2*3+1], u[2*3+2], 0);
+    
+    *t = (CTransfo ().SetTranslation (center_b) * rot *
+	  CTransfo ().SetTranslation (-center_a));
+  }
 
   return rmsd;
 }

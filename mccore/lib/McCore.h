@@ -4,9 +4,9 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Martin Larose
-// Last Modified On : Thu Oct 25 11:18:55 2001
-// Update Count     : 14
+// Last Modified By : Patrick Gendron
+// Last Modified On : Thu Jun 20 13:35:22 2002
+// Update Count     : 15
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -2109,7 +2109,7 @@ float rmsd_with_align (T x_begin, T x_end,
 
 
 float __rmsd_with_align_aux (CPoint3D &center_a, CPoint3D &center_b, 
-			     double *r, double e0, int n, CTransfo *t);
+			     double *r, double e0, int n, CTransfo *t = 0);
 
 
 /**
