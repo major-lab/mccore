@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:17:09 2001
-// Update Count     : 39
+// Last Modified On : Mon Aug 27 16:17:15 2001
+// Update Count     : 40
 // Status           : 
 // 
 //  This file is part of mccore.
@@ -33,11 +33,10 @@
 #include <iostream.h>
 #include <math.h>
 
+#include "AtomType.h"
 #include "CHBond.h"
-
-#include <mccore/AtomType.h>
-#include <mccore/CResidue.h>
-#include <mccore/McCore.h>
+#include "CResidue.h"
+#include "McCore.h"
 
 
 HBond::HBond ()
