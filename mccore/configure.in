@@ -5,8 +5,8 @@
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
 # Last Modified By : Martin Larose
-# Last Modified On : Wed Sep 26 15:49:20 2001
-# Update Count     : 8
+# Last Modified On : Thu Oct 25 11:28:18 2001
+# Update Count     : 9
 # Status           : Ok.
 # 
 #  This file is part of mccore.
@@ -33,7 +33,7 @@ AC_INIT(lib/McCore.h)
 AC_CONFIG_HEADER(config.h)
 
 PACKAGE=mccore
-VERSION=1.1.1
+VERSION=1.2
 AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE")
 AC_DEFINE_UNQUOTED(VERSION, "$VERSION")
 

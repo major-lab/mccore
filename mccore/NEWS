@@ -5,9 +5,24 @@
 ;; Author           : Martin Larose
 ;; Created On       : Tue Sep 19 18:15:25 2000
 ;; Last Modified By : Martin Larose
-;; Last Modified On : Tue Aug 14 12:33:06 2001
-;; Update Count     : 2
+;; Last Modified On : Thu Oct 25 11:28:13 2001
+;; Update Count     : 3
 ;; Status           : Ok.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
+* Version 1.2
+
+New Residue classes.  An abstract residue has been created to get the
+possibility to use different kind of models.  The abstract class contains a
+CResId, a residue type, a CTransfo and the iterators.  To implement a new
+residue and use it in a model, create an implementation of
+ResidueFactoryMethod and set it in the model constructor.
+
+New Model class.  It stores pointers over AbstractResidues.  Its methods
+and iterators returns AbstractResidues pointers and references.
+
+New ResidueFactoryMethod abstract class.  It defines an interface for
+creating residues of a given type inside models.  It's only method,
+createResidue returns a new residue pointer for the implemented residue
+class.  It is mainly used in the Model read methods.
