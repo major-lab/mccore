@@ -1,3 +1,181 @@
+2005-01-03  Martin Larose  <larosem@onyx.glyphe.net>
+
+	* lib/zstream.h, lib/zstream.cc, lib/Vector3D.h, lib/Vector3D.cc, lib/UndirectedGraph.h, lib/TypeRepresentationTables.h, lib/SymmetricalMatrix.h, lib/stlio.h, lib/SqlReader.h, lib/SqlReader.cc, lib/SqlExtrac.h, lib/SqlExtrac.cc, lib/sockstream.h, lib/sockstream.cc, lib/SocketCommand.h, lib/ServerSocket.h, lib/ServerSocket.cc, lib/Sequence.h, lib/Sequence.cc, lib/RnamlWriter.h, lib/RnamlWriter.cc, lib/RnamlReader.h, lib/RnamlReader.cc, lib/Rmsd.h, lib/Rmsd.cc, lib/ResidueTypeStore.h, lib/ResidueTypeStore.cc, lib/ResidueType.h, lib/ResidueType.cc, lib/ResidueTopology.h, lib/ResidueTopology.cc, lib/Residue.h, lib/ResidueFactoryMethod.h, lib/ResidueFactoryMethod.cc, lib/Residue.cc, lib/ResIdSet.h, lib/ResIdSet.cc, lib/ResId.h, lib/ResId.cc, lib/Relation.h, lib/Relation.cc, lib/PropertyTypeStore.h, lib/PropertyTypeStore.cc, lib/PropertyType.h, lib/PropertyType.cc, lib/Pdbstream.h, lib/PdbFileHeader.h, lib/PdbFileHeader.cc, lib/Path.h, lib/PairingPattern.h, lib/PairingPattern.cc, lib/Molecule.h, lib/Molecule.cc, lib/Model.h, lib/Model.cc, lib/Messagestream.h, lib/Messagestream.cc, lib/MaximumFlowGraph.h, lib/Makefile.in, lib/HomogeneousTransfo.h, lib/HomogeneousTransfo.cc, lib/HBond.h, lib/HBond.cc, lib/Graph.h, lib/GraphAlgo.h, lib/Genbankstream.h, lib/Genbankstream.cc, lib/Fastastream.h, lib/Fastastream.cc, lib/ExtendedResidue.h, lib/ExtendedResidue.cc, lib/Exception.h, lib/Exception.cc, lib/Binstream.h, lib/AtomTypeStore.h, lib/AtomTypeStore.cc, lib/AtomType.h, lib/AtomType.cc, lib/AtomSet.h, lib/AtomSet.cc, lib/Atom.h, lib/Atom.cc, lib/Algo.h, lib/AdjacencyMatrix.h, lib/AbstractModel.h, lib/AbstractModel.cc, docs/Makefile.in, Makefile.in, configure.in, configure, config.h.in, ChangeLog:
+	Merge from GraphModel branch.
+
+	* lib/OrientedGraph.h, lib/GraphModel.cc, lib/GraphModel.h: New files.
+
+	* lib/AbstractGraph.h, lib/ArrayGraph.h, lib/DirectedGraph.cc, lib/DirectedGraph.h, lib/Graph.cc, lib/SymmetricalMatrix.cc, lib/UndirectedArrayGraph.h:
+	Unneeded file.
+
+2004-12-29  Martin Larose  <larosem@onyx.glyphe.net>
+
+	* lib/Model.h, lib/Model.cc [GraphModel]: Copy constructor and
+	assignment are with AbstractModel instead of only GraphModel.  erase
+	deletes the Residue pointer.
+
+	* lib/Messagestream.h [GraphModel]: bool operator<< added.  The
+	std::operator<< is specifically called on template
+	Messagestream::operator<<.
+
+	* lib/GraphModel.h, lib/GraphModel.cc [GraphModel]: Copy constructor
+	and assignment are with AbstractModel instead of only GraphModel.
+	Vertex and edge weights are int (for now).
+
+	* lib/Exception.cc [GraphModel]: File and line output is made only
+	when they exists :-)
+
+	* lib/AtomSet.h, lib/AtomSet.cc [GraphModel]: ostream output moved
+	to namespace std with the others.
+
+	* lib/AbstractModel.cc [GraphModel]: Bug correction.  Residue
+	pointers are erased by specialized model classes.
+
+2004-12-27  Martin Larose  <larosem@onyx.glyphe.net>
+
+	* lib/GraphModel.h, lib/GraphModel.cc [GraphModel]: GraphModel
+	should be complete and ready now.
+
+	* lib/Graph.h [GraphModel]: Added iterators on edges and their
+	typedefs.
+
+	* lib/Exception.h, lib/Exception.cc [GraphModel]:
+	NoSuchElementException parent is now IntLibException.
+
+	* lib/UndirectedGraph.h [GraphModel]: Certain typedef moved to
+	protected access (they concerned internal structures).
+
+	* lib/Residue.h, lib/Residue.cc [GraphModel]: ostream operator<< put
+	in global namespace.
+
+	* lib/Relation.h, lib/Relation.cc [GraphModel]:
+	reassignResiduePointers method added to re-adjust Residue pointers
+	when Relation is cloned.  New addPairingLabels method; it seperates
+	the labeling from the maximum flow code.
+
+	* lib/OrientedGraph.h [GraphModel]: Certain typedef moved to
+	protected access (they concerned internal structures).
+
+	* lib/Model.h, lib/Model.cc [GraphModel]: Bug correction on clone
+	and copy construction methods.  Exceptions added.
+
+	* lib/HBond.h, lib/HBond.cc [GraphModel]: ostream operator<< put in
+	global namespace.  Added clone method.  Added
+	reassignResiduePointers to re-adjust residue pointer from cloned
+	GraphModel.  Exceptions added.
+
+	* lib/GraphModel.h, lib/GraphModel.cc [GraphModel]: More complete
+	GraphModel class.  Still not completed.
+
+	* lib/Graph.h [GraphModel]: less_deref moved to Algo header file.
+	NoSuchElementException moved to Exception header file.
+
+	* lib/Exception.h, lib/Exception.cc [GraphModel]: ostream operator<<
+	put in global namespace.  NoSuchElementException&,
+	ArrayIndexOutOfBoundsException and NullPointerException added.
+	Messages types replaced with string.
+
+	* lib/Algo.h [GraphModel]: less_deref binary operator moved in Algo.
+
+	* lib/AbstractModel.h [GraphModel]: ostream operator<< put in global
+	namespace.  Exception ArrayIndexOutOfBoundsException added on
+	operator[].
+
+	* lib/AbstractModel.cc [GraphModel]: ostream operator<< put in
+	global namespace.
+
+2004-12-25  Martin Larose  <larosem@onyx.glyphe.net>
+
+	* lib/zstream.h, lib/zstream.cc, lib/Vector3D.h, lib/Vector3D.cc, lib/TypeRepresentationTables.h, lib/SymmetricalMatrix.h, lib/stlio.h, lib/SqlReader.h, lib/SqlReader.cc, lib/SqlExtrac.h, lib/SqlExtrac.cc, lib/sockstream.h, lib/sockstream.cc, lib/SocketCommand.h, lib/ServerSocket.h, lib/ServerSocket.cc, lib/Sequence.h, lib/Sequence.cc, lib/RnamlWriter.h, lib/RnamlWriter.cc, lib/RnamlReader.h, lib/RnamlReader.cc, lib/Rmsd.h, lib/Rmsd.cc, lib/ResidueTypeStore.h, lib/ResidueTypeStore.cc, lib/ResidueType.h, lib/ResidueType.cc, lib/ResidueTopology.cc, lib/Residue.h, lib/ResidueFactoryMethod.h, lib/ResidueFactoryMethod.cc, lib/Residue.cc, lib/ResIdSet.h, lib/ResIdSet.cc, lib/ResId.h, lib/ResId.cc, lib/Relation.h, lib/Relation.cc, lib/PropertyTypeStore.h, lib/PropertyTypeStore.cc, lib/PropertyType.h, lib/PropertyType.cc, lib/Pdbstream.h, lib/PdbFileHeader.h, lib/PdbFileHeader.cc, lib/Path.h, lib/PairingPattern.h, lib/PairingPattern.cc, lib/Molecule.h, lib/Molecule.cc, lib/Model.h, lib/Messagestream.h, lib/Messagestream.cc, lib/MaximumFlowGraph.h, lib/Makefile.in, lib/HomogeneousTransfo.h, lib/HomogeneousTransfo.cc, lib/HBond.cc, lib/GraphModel.h, lib/Graph.h, lib/GraphAlgo.h, lib/Genbankstream.h, lib/Genbankstream.cc, lib/Fastastream.h, lib/Fastastream.cc, lib/ExtendedResidue.h, lib/ExtendedResidue.cc, lib/Exception.h, lib/Exception.cc, lib/Binstream.h, lib/AtomTypeStore.h, lib/AtomTypeStore.cc, lib/AtomType.h, lib/AtomType.cc, lib/AtomSet.h, lib/AtomSet.cc, lib/Atom.h, lib/Atom.cc, lib/Algo.h, lib/AdjacencyMatrix.h, lib/AbstractModel.h [GraphModel]:
+	Header updates.
+
+	* lib/UndirectedArrayGraph.h [GraphModel]: Replaced with
+	UndirectedGraph
+
+	* lib/SymmetricalMatrix.cc [GraphModel]: Included in
+	SymmetricalMatrix.h.
+
+2004-12-24  Martin Larose  <larosem@onyx.glyphe.net>
+
+	* lib/Relation.cc, lib/MaximumFlowGraph.h [GraphModel]: Working
+	version of MaximumFlowGraph and Relation based on new graph
+	representation.
+
+	* lib/HBond.h, lib/HBond.cc [GraphModel]: Initial value of HBond can
+	be set.
+
+2004-12-23  Martin Larose  <larosem@onyx.glyphe.net>
+
+	* lib/UndirectedGraph.h, lib/Relation.cc, lib/MaximumFlowGraph.h [GraphModel]:
+	UndirectedGraph tested.  Unstable release.
+
+	* lib/Exception.h, lib/Exception.cc [GraphModel]: string operations
+	optimized.
+
+	* lib/Exception.h, lib/Exception.cc [GraphModel]: Messagestream
+	string outpout operator added.
+
+2004-12-22  Martin Larose  <larosem@onyx.glyphe.net>
+
+	* lib/OrientedGraph.h [GraphModel]: OrientedGraph tested.  Unstable
+	release.
+
+2004-12-21  Martin Larose  <larosem@onyx.glyphe.net>
+
+	* lib/Makefile.in, lib/Graph.h, lib/Exception.h, lib/Exception.cc, docs/Makefile.in, configure.in, Makefile.in [GraphModel]:
+	Exceptions uses strings.  Bugs corrected in OrientedGraph and Graph.
+	Remodeling of test/OrientedGraph.cc.  Unstable release.
+
+	* lib/UndirectedGraph.h, lib/Relation.cc, lib/OrientedGraph.h, lib/GraphModel.h, lib/Graph.h [GraphModel]:
+	Bug corrections on test suite.
+
+2004-12-16  Martin Larose  <larosem@onyx.glyphe.net>
+
+	* lib/UndirectedGraph.h, lib/Relation.h, lib/OrientedGraph.h, lib/MaximumFlowGraph.h, lib/Graph.h, lib/GraphAlgo.h [GraphModel]:
+	Corrections, corrections, corrections.
+
+	* lib/UndirectedGraph.h, lib/ResidueType.h, lib/ResidueType.cc, lib/ResidueTopology.h, lib/ResidueTopology.cc, lib/Residue.cc, lib/Relation.h, lib/Relation.cc, lib/PropertyType.h, lib/PropertyType.cc, lib/OrientedGraph.h, lib/MaximumFlowGraph.h, lib/HBond.h, lib/HBond.cc, lib/Graph.h, lib/AtomType.h, lib/AtomType.cc [GraphModel]:
+	AtomType, ResidueType, PropertyTypes pointers made const.  General
+	debug on Graph classes.  Updates on HBond and Relation classes for
+	new Graph design.
+
+2004-12-15  Martin Larose  <larosem@onyx.glyphe.net>
+
+	* lib/Relation.h, lib/Relation.cc [GraphModel]: Unstable revision.
+
+	* lib/MaximumFlowGraph.h, lib/Graph.h [GraphModel]: MaximumFlowGraph
+	design completed. Unstable release.
+
+2004-12-14  Martin Larose  <larosem@onyx.glyphe.net>
+
+	* lib/UndirectedGraph.h, lib/OrientedGraph.h, lib/MaximumFlowGraph.h, lib/Makefile.in, lib/GraphModel.h, lib/GraphModel.cc, lib/Graph.h	[GraphModel]:
+	Corrections on Graph, UndirectedGraph, OrientedGraph,
+	MaximumFlowGraph and GraphModel.  Unstable release.
+
+	* lib/DirectedGraph.h, lib/OrientedGraph.h [GraphModel]:
+	DirectedGraph renamed to OrientedGraph.
+
+	* lib/OrientedGraph.h [GraphModel]: New file.
+
+2004-12-13  Martin Larose  <larosem@onyx.glyphe.net>
+
+	* lib/ArrayGraph.h [GraphModel]: Unneeded file.
+
+	* lib/UndirectedGraph.h, lib/Graph.h, lib/DirectedGraph.h [GraphModel]:
+	Corrections on Graph.h and UndirectedGraph.h. New DirectedGraph.h
+	design.
+
+	* lib/DirectedGraph.cc, lib/AbstractGraph.h, lib/UndirectedGraph.cc [GraphModel]:
+	Unneeded file.
+
+	* lib/UndirectedGraph.h, lib/Makefile.in, lib/Graph.h [GraphModel]:
+	Corrections on Graph.h.  New UndirectedGraph.h design.
+
+	* lib/UndirectedGraph.h, lib/Graph.h: Unstable revision.  Graph
+	class designed but not tested.
+
+	* lib/Graph.cc: Unneeded file.
+
 2004-12-11  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* UndirectedGraph.h, Graph.h[GraphModel]: Unstable modifications.
