@@ -1,9 +1,9 @@
 //                              -*- Mode: C++ -*- 
 // Relation.h
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 //
 //  This file is part of mccore.
 //  
@@ -26,12 +26,13 @@
 #define _Relation_h_
 
 #include <iostream>
+#include <list>
 #include <set>
 #include <vector>
-#include <list>
 
 #include "HomogeneousTransfo.h"
 #include "HBond.h"
+#include "MaximumFlowGraph.h"
 
 using namespace std;
 
@@ -52,7 +53,9 @@ namespace mccore {
   struct HBondFlow {
     HBond hbond;
     float flow;
-    
+
+    HBondFlow () { }
+    HBondFlow (const HBond &hbond, float flow) : hbond (hbond), flow (flow) { }
     bool operator< (const HBondFlow& other) const { return flow < other.flow; }
   };
   
@@ -61,7 +64,7 @@ namespace mccore {
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.10 2003-12-23 14:58:09 larosem Exp $
+   * @version $Id: Relation.h,v 1.11 2004-03-17 20:45:27 larosem Exp $
    */
   class Relation
   {
@@ -102,6 +105,16 @@ namespace mccore {
      */
     set< const PropertyType* > labels;
 
+    /**
+     * The collection of hbond.  Empty if not a pairing.
+     */
+    vector< HBondFlow > hbonds;
+
+    /**
+     * The pairing flow sum, on other cases 0.
+     */
+    float sum_flow;
+
     // STATIC MEMBERS -------------------------------------------------------
 
     static vector< pair< Vector3D, const PropertyType* > > faces_A;
@@ -137,7 +150,7 @@ namespace mccore {
     /**
      * Destroys the object.
      */
-    ~Relation ();
+    ~Relation () { }
 
     // OPERATORS ------------------------------------------------------------
 
@@ -186,7 +199,18 @@ namespace mccore {
      */
     HomogeneousTransfo getPhosphateTransfo () const { return po4_tfo; }
 
-    void addLabel (const PropertyType* l) { labels.insert (l); }
+    /**
+     * Gets the hbonds flow collection.  Empty in case of a non pairing
+     * relation.
+     * @return the HBondFlow vector.
+     */
+    const vector< HBondFlow >& getHBondFlows () const { return hbonds; }
+
+    /**
+     * Gets the pairing flow sum.  0 in case of a non pairing relation.
+     * @return the flow sum.
+     */
+    float getFlowSum () const { return sum_flow; }
 
     // METHODS --------------------------------------------------------------
 
@@ -199,7 +223,31 @@ namespace mccore {
      * @return true if there is indeed a relation between the bases.
      */
     bool annotate ();
-        
+
+  private:
+    
+    /**
+     * Tests for adjacency relation.
+     */
+    void areAdjacent ();
+
+    /**
+     * Tests for h-bonded relation.
+     */
+    void areHBonded ();
+
+    /**
+     * Test for pairing relation.
+     */
+    void arePaired ();
+
+    /**
+     * Tests for stacking relation.
+     */
+    void areStacked ();
+
+  public:
+    
     /**
      * Inverts the relation.
      */
