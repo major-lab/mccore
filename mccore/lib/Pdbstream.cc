@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.39 $
-// $Id: Pdbstream.cc,v 1.39 2004-09-07 15:12:55 thibaup Exp $
+// $Revision: 1.40 $
+// $Id: Pdbstream.cc,v 1.40 2004-09-24 22:21:08 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -329,7 +329,8 @@ namespace mccore {
       rtype (ResidueType::parseType ("UNK")),
       rid (new ResId ()),
       modelnb (1),
-      atomCounter (1)
+      atomCounter (1),
+      pdbType (oPdbstream::PDB)
   { }
   
 
@@ -342,7 +343,8 @@ namespace mccore {
       rtype (ResidueType::parseType ("UNK")),
       rid (new ResId ()),
       modelnb (1),
-      atomCounter (1)
+      atomCounter (1),
+      pdbType (oPdbstream::PDB)
   { }
 
 
@@ -354,7 +356,8 @@ namespace mccore {
       rtype (ResidueType::parseType ("UNK")),
       rid (new ResId ()),
       modelnb (1),
-      atomCounter (1)
+      atomCounter (1),
+      pdbType (oPdbstream::PDB)
   { }
 
 
@@ -497,20 +500,23 @@ namespace mccore {
   void
   oPdbstream::ter () 
   {
-    setf (ios::left, ios::adjustfield);
-    *this << setw (6) << "TER";
-    setf (ios::right, ios::adjustfield);
-    *this << setw (5) << atomCounter++;
-    *this << "      ";  // EMPTY SPACE.
-    setf (ios::right, ios::adjustfield);
-    *this << setw (3) << rtype->toPdbString ();
-    *this << ' ';
-    *this << rid->getChainId ();
-    setf (ios::right, ios::adjustfield);
-    *this << setw (4) << rid->getResNo ();
-    *this << rid->getInsertionCode ();
-    pad (53);
-    *this << endl;
+    if (oPdbstream::PDB == pdbType)
+      {
+	setf (ios::left, ios::adjustfield);
+	*this << setw (6) << "TER";
+	setf (ios::right, ios::adjustfield);
+	*this << setw (5) << atomCounter++;
+	*this << "      ";  // EMPTY SPACE.
+	setf (ios::right, ios::adjustfield);
+	*this << setw (3) << rtype->toPdbString ();
+	*this << ' ';
+	*this << rid->getChainId ();
+	setf (ios::right, ios::adjustfield);
+	*this << setw (4) << rid->getResNo ();
+	*this << rid->getInsertionCode ();
+	pad (53);
+	*this << endl;
+      }
   }
 
 
@@ -563,11 +569,12 @@ namespace mccore {
   void
   oPdbstream::write (const Atom& at)
   {
-    if (!headerdone)
+    if (! headerdone)
       writeHeader ();
 
     setf (ios::left, ios::adjustfield);
-    if (rtype->isUnknown ())
+    if (rtype->isUnknown ()
+	&& pdbType != oPdbstream::AMBER)
       *this << setw (6) << "HETATM";
     else
       *this << setw (6) << "ATOM";
@@ -577,10 +584,11 @@ namespace mccore {
     *this << ' ';
 
     setf (ios::left, ios::adjustfield);
-    if (isdigit (((const char*)*at.getType ())[0]) || strlen ((const char*)*at.getType ()) == 4)
-      *this << setw (4) << *at.getType ();
+    if (isdigit (at.getType ()->toPdbString (pdbType)[0])
+	|| 4 == strlen (at.getType ()->toPdbString (pdbType)))
+      *this << setw (4) << at.getType ()->toPdbString (pdbType);
     else 
-      *this << ' ' << setw (3) << *at.getType ();
+      *this << ' ' << setw (3) << at.getType ()->toPdbString (pdbType);
 	
     *this << ' ';  // ALTLOC
     
@@ -605,9 +613,13 @@ namespace mccore {
     *this << setw (8) << at.getY ();
     *this << setw (8) << at.getZ ();
 
-    *this << "  1.00  0.00";  // DUMMY VALUES
-
-    pad (14);
+    if (oPdbstream::PDB == pdbType)
+      {
+	*this << "  1.00  0.00";  // DUMMY VALUES
+	pad (14);
+      }
+    else
+      pad (26);
 
     at.setSerialNo (atomCounter);
 

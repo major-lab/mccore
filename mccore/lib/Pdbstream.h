@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.27 $
-// $Id: Pdbstream.h,v 1.27 2004-06-30 18:18:34 thibaup Exp $
+// $Revision: 1.28 $
+// $Id: Pdbstream.h,v 1.28 2004-09-24 22:21:24 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -82,7 +82,7 @@ namespace mccore {
    * </pre>
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Pdbstream.h,v 1.27 2004-06-30 18:18:34 thibaup Exp $
+   * @version $Id: Pdbstream.h,v 1.28 2004-09-24 22:21:24 larosem Exp $
    */
   class iPdbstream : public istream
   {
@@ -215,6 +215,13 @@ namespace mccore {
    */
   class oPdbstream : public ostream
   {
+  public:
+
+    static const unsigned int PDB   = 0;
+    static const unsigned int AMBER = 1;
+
+  private:
+    
     static const int LINELENGTH;
 
     /**
@@ -253,9 +260,10 @@ namespace mccore {
     int atomCounter;    
 
     /**
-     * Nb of bytes written on the current line
+     * The output type.  Possible values are: oPdbstream::PDB (default) and
+     * oPdbstream::AMBER.
      */
-    
+    unsigned int pdbType;    
     
   public:
 
@@ -317,8 +325,18 @@ namespace mccore {
     /**
      * Sets the header for the file.
      */
-    void setHeader (const PdbFileHeader &h) { header = h; } 
+    void setHeader (const PdbFileHeader &h) { header = h; }
 
+    /**
+     * Sets the PDB type.
+     * @param type the PDB type.
+     */
+    void setPDBType (unsigned int type)
+    {
+      pdbType = type;
+      if (oPdbstream::AMBER == type)
+	headerdone = true;
+    }
 
     // METHODS -------------------------------------------------------------
     
