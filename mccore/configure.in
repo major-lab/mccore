@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
-# $Revision: 1.27 $
-# $Id: configure.in,v 1.27 2004-09-01 20:47:28 larosem Exp $
+# $Revision: 1.28 $
+# $Id: configure.in,v 1.28 2004-09-03 15:43:28 boisgona Exp $
 # 
 # This file is part of mccore.
 # 
@@ -88,6 +88,12 @@ if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
 	    AC_CHECK_LIB(rnamlc++,xmlcpginit)
 	    HAVE_LIBRNAML=1,
 	)
+	AC_ARG_WITH(mysql,
+	    [  --with-mysql            include mysql classes],
+            AC_CHECK_LIB(mysqlclient,main)
+            AC_CHECK_LIB(sqlplus,main)
+	    HAVE_LIBMYSQL=1,
+	)
 	LIBALLFLAGSTART="-all"
 	LIBALLFLAGSTOP="-notall"
 	ARXX="$CXX"
@@ -115,6 +121,12 @@ if eval "test -z \"`echo $GXX`\""; then # not gnu compiler
 	    AC_CHECK_LIB(rnamlc++,xmlcpginit)
 	    HAVE_LIBRNAML=1,
 	)
+	AC_ARG_WITH(mysql,
+	    [  --with-mysql            include mysql classes],
+            AC_CHECK_LIB(mysqlclient,main)
+            AC_CHECK_LIB(sqlplus,main)
+	    HAVE_LIBMYSQL=1,
+	)
 	LIBALLFLAGSTART="-z allextract"
 	LIBALLFLAGSTOP="-z defaultextract"
 	ARXX="$CXX"
@@ -128,7 +140,13 @@ elif eval "test \"`echo $GXX`\" = yes"; then     # gnu compiler
 	    AC_CHECK_LIB(rnamlc++,main)
 	    HAVE_LIBRNAML=1,
 	)
-	CXXFLAGS="$CXXFLAGS -Wall"
+	AC_ARG_WITH(mysql,
+	    [  --with-mysql            include mysql classes],
+            AC_CHECK_LIB(mysqlclient,main)
+            AC_CHECK_LIB(sqlplus,main)
+	    HAVE_LIBMYSQL=1,
+	)
+	CXXFLAGS="$CXXFLAGS -Wall -Wno-deprecated"
 	DEPFLAGS="-MM"
 	LINKOPTIONS="-shared"
 	LDNAMEPARAM="-Wl,-soname,"
@@ -156,5 +174,6 @@ AC_SUBST(LIBALLFLAGSTOP)
 AC_SUBST(ARXX)
 AC_SUBST(AROPTIONS)
 AC_SUBST(HAVE_LIBRNAML)
+AC_SUBST(HAVE_LIBMYSQL)
 
 AC_OUTPUT( Makefile docs/Makefile lib/Makefile, echo timestamp > stamp-h )

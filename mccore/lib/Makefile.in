@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.50 $
-# $Id: Makefile.in,v 1.50 2004-09-01 19:53:21 larosem Exp $
+# $Revision: 1.51 $
+# $Id: Makefile.in,v 1.51 2004-09-03 15:43:28 boisgona Exp $
 # 
 # This file is part of mccore.
 # 
@@ -57,6 +57,7 @@ INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 
 HAVE_LIBRNAML = @HAVE_LIBRNAML@
+HAVE_LIBMYSQL = @HAVE_LIBMYSQL@
 
 
 .SUFFIXES:
@@ -81,7 +82,15 @@ else
 	RNAML_SOURCES = 
 endif
 
+ifeq ($(HAVE_LIBMYSQL),1)
+        MYSQL_SOURCES = SqlReader.cc \
+		   	 SqlExtrac.cc	
+else
+	MYSQL_SOURCES = 
+endif
+
 SOURCES = $(RNAML_SOURCES) \
+	  $(MYSQL_SOURCES) \
 	  Binstream.cc \
 	  Exception.cc \
 	  Fastastream.cc \

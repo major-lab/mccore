@@ -271,7 +271,7 @@ PACKAGE_STRING=
 PACKAGE_BUGREPORT=
 
 ac_unique_file="lib/Atom.h"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS SET_MAKE CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CXX CXXFLAGS ac_ct_CXX build build_cpu build_vendor build_os host host_cpu host_vendor host_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA AR PACKAGE VERSION DEPFLAGS LINKOPTIONS LDNAMEPARAM LIBALLFLAGSTART LIBALLFLAGSTOP ARXX AROPTIONS HAVE_LIBRNAML LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS SET_MAKE CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CXX CXXFLAGS ac_ct_CXX build build_cpu build_vendor build_os host host_cpu host_vendor host_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA AR PACKAGE VERSION DEPFLAGS LINKOPTIONS LDNAMEPARAM LIBALLFLAGSTART LIBALLFLAGSTOP ARXX AROPTIONS HAVE_LIBRNAML HAVE_LIBMYSQL LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -811,6 +811,7 @@ Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-rnaml            include rnaml reader and writer classes
+  --with-mysql            include mysql classes
   --with-malloc           replace STL allocator with malloc
 
 Some influential environment variables:
@@ -3429,6 +3430,128 @@ fi
 
 	    HAVE_LIBRNAML=1
 fi;
+
+# Check whether --with-mysql or --without-mysql was given.
+if test "${with_mysql+set}" = set; then
+  withval="$with_mysql"
+
+echo "$as_me:$LINENO: checking for main in -lmysqlclient" >&5
+echo $ECHO_N "checking for main in -lmysqlclient... $ECHO_C" >&6
+if test "${ac_cv_lib_mysqlclient_main+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lmysqlclient  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+
+int
+main ()
+{
+main ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_lib_mysqlclient_main=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+ac_cv_lib_mysqlclient_main=no
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+echo "$as_me:$LINENO: result: $ac_cv_lib_mysqlclient_main" >&5
+echo "${ECHO_T}$ac_cv_lib_mysqlclient_main" >&6
+if test $ac_cv_lib_mysqlclient_main = yes; then
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBMYSQLCLIENT 1
+_ACEOF
+
+  LIBS="-lmysqlclient $LIBS"
+
+fi
+
+
+echo "$as_me:$LINENO: checking for main in -lsqlplus" >&5
+echo $ECHO_N "checking for main in -lsqlplus... $ECHO_C" >&6
+if test "${ac_cv_lib_sqlplus_main+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lsqlplus  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+
+int
+main ()
+{
+main ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_lib_sqlplus_main=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+ac_cv_lib_sqlplus_main=no
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+echo "$as_me:$LINENO: result: $ac_cv_lib_sqlplus_main" >&5
+echo "${ECHO_T}$ac_cv_lib_sqlplus_main" >&6
+if test $ac_cv_lib_sqlplus_main = yes; then
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBSQLPLUS 1
+_ACEOF
+
+  LIBS="-lsqlplus $LIBS"
+
+fi
+
+	    HAVE_LIBMYSQL=1
+fi;
 	LIBALLFLAGSTART="-all"
 	LIBALLFLAGSTOP="-notall"
 	ARXX="$CXX"
@@ -3584,6 +3707,128 @@ fi
 
 	    HAVE_LIBRNAML=1
 fi;
+
+# Check whether --with-mysql or --without-mysql was given.
+if test "${with_mysql+set}" = set; then
+  withval="$with_mysql"
+
+echo "$as_me:$LINENO: checking for main in -lmysqlclient" >&5
+echo $ECHO_N "checking for main in -lmysqlclient... $ECHO_C" >&6
+if test "${ac_cv_lib_mysqlclient_main+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lmysqlclient  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+
+int
+main ()
+{
+main ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_lib_mysqlclient_main=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+ac_cv_lib_mysqlclient_main=no
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+echo "$as_me:$LINENO: result: $ac_cv_lib_mysqlclient_main" >&5
+echo "${ECHO_T}$ac_cv_lib_mysqlclient_main" >&6
+if test $ac_cv_lib_mysqlclient_main = yes; then
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBMYSQLCLIENT 1
+_ACEOF
+
+  LIBS="-lmysqlclient $LIBS"
+
+fi
+
+
+echo "$as_me:$LINENO: checking for main in -lsqlplus" >&5
+echo $ECHO_N "checking for main in -lsqlplus... $ECHO_C" >&6
+if test "${ac_cv_lib_sqlplus_main+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lsqlplus  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+
+int
+main ()
+{
+main ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_lib_sqlplus_main=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+ac_cv_lib_sqlplus_main=no
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+echo "$as_me:$LINENO: result: $ac_cv_lib_sqlplus_main" >&5
+echo "${ECHO_T}$ac_cv_lib_sqlplus_main" >&6
+if test $ac_cv_lib_sqlplus_main = yes; then
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBSQLPLUS 1
+_ACEOF
+
+  LIBS="-lsqlplus $LIBS"
+
+fi
+
+	    HAVE_LIBMYSQL=1
+fi;
 	LIBALLFLAGSTART="-z allextract"
 	LIBALLFLAGSTOP="-z defaultextract"
 	ARXX="$CXX"
@@ -3713,7 +3958,129 @@ fi
 
 	    HAVE_LIBRNAML=1
 fi;
-	CXXFLAGS="$CXXFLAGS -Wall"
+
+# Check whether --with-mysql or --without-mysql was given.
+if test "${with_mysql+set}" = set; then
+  withval="$with_mysql"
+
+echo "$as_me:$LINENO: checking for main in -lmysqlclient" >&5
+echo $ECHO_N "checking for main in -lmysqlclient... $ECHO_C" >&6
+if test "${ac_cv_lib_mysqlclient_main+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lmysqlclient  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+
+int
+main ()
+{
+main ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_lib_mysqlclient_main=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+ac_cv_lib_mysqlclient_main=no
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+echo "$as_me:$LINENO: result: $ac_cv_lib_mysqlclient_main" >&5
+echo "${ECHO_T}$ac_cv_lib_mysqlclient_main" >&6
+if test $ac_cv_lib_mysqlclient_main = yes; then
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBMYSQLCLIENT 1
+_ACEOF
+
+  LIBS="-lmysqlclient $LIBS"
+
+fi
+
+
+echo "$as_me:$LINENO: checking for main in -lsqlplus" >&5
+echo $ECHO_N "checking for main in -lsqlplus... $ECHO_C" >&6
+if test "${ac_cv_lib_sqlplus_main+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lsqlplus  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+
+int
+main ()
+{
+main ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_lib_sqlplus_main=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+ac_cv_lib_sqlplus_main=no
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+echo "$as_me:$LINENO: result: $ac_cv_lib_sqlplus_main" >&5
+echo "${ECHO_T}$ac_cv_lib_sqlplus_main" >&6
+if test $ac_cv_lib_sqlplus_main = yes; then
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBSQLPLUS 1
+_ACEOF
+
+  LIBS="-lsqlplus $LIBS"
+
+fi
+
+	    HAVE_LIBMYSQL=1
+fi;
+	CXXFLAGS="$CXXFLAGS -Wall -Wno-deprecated"
 	DEPFLAGS="-MM"
 	LINKOPTIONS="-shared"
 	LDNAMEPARAM="-Wl,-soname,"
@@ -3733,6 +4100,7 @@ if test "${with_malloc+set}" = set; then
 _ACEOF
 
 fi;
+
 
 
 
@@ -4399,6 +4767,7 @@ s,@LIBALLFLAGSTOP@,$LIBALLFLAGSTOP,;t t
 s,@ARXX@,$ARXX,;t t
 s,@AROPTIONS@,$AROPTIONS,;t t
 s,@HAVE_LIBRNAML@,$HAVE_LIBRNAML,;t t
+s,@HAVE_LIBMYSQL@,$HAVE_LIBMYSQL,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t
 s,@LTLIBOBJS@,$LTLIBOBJS,;t t
 CEOF
