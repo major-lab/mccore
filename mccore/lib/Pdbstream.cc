@@ -963,10 +963,10 @@ oPdbstream::putatom (const CAtom &atom)
   if (atomset->operator() (atom))
     {
       setf (ios::left, ios::adjustfield);
-      if (restype->is_NucleicAcid () || restype->is_AminoAcid ())
-	*this << setw (6) << "ATOM";
-      else
-	*this << setw (6) << "HETATM";
+//        if (restype->is_NucleicAcid () || restype->is_AminoAcid ())
+      *this << setw (6) << "ATOM";
+//        else
+//  	*this << setw (6) << "HETATM";
       setf (ios::right, ios::adjustfield);
       setf (ios::fixed, ios::floatfield);
       precision (3);
