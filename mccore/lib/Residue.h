@@ -3,8 +3,8 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.25 $
-// $Id: Residue.h,v 1.25 2004-12-06 21:38:43 thibaup Exp $
+// $Revision: 1.26 $
+// $Id: Residue.h,v 1.26 2004-12-07 15:57:28 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -63,7 +63,7 @@ namespace mccore
    * the atom types.
    *
    * @author Patrick Gendron <gendrop@iro.umontreal.ca>
-   * @version $Id: Residue.h,v 1.25 2004-12-06 21:38:43 thibaup Exp $
+   * @version $Id: Residue.h,v 1.26 2004-12-07 15:57:28 thibaup Exp $
    */
   class Residue
   {
@@ -788,7 +788,7 @@ namespace mccore
      * Returns the number of atoms in the residue.
      * @return the number of atoms.
      */
-    virtual int size () const;
+    virtual unsigned int size () const;
   
     /**
      * Tells if there is no atoms in the residue.

@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.53 $
-// $Id: Residue.cc,v 1.53 2004-12-07 15:46:24 thibaup Exp $
+// $Revision: 1.54 $
+// $Id: Residue.cc,v 1.54 2004-12-07 15:57:21 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -620,6 +620,20 @@ namespace mccore {
   }
 
 
+  unsigned int
+  Residue::size () const
+  {
+    return atomIndex.size ();
+  }
+  
+
+  bool
+  Residue::empty () const
+  {
+    return atomIndex.empty ();
+  }
+
+  
   void 
   Residue::clear () 
   {
