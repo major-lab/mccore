@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 16:27:35 1999
-// $Revision: 1.4.2.1 $
-// $Id: Exception.h,v 1.4.2.1 2004-12-21 22:48:48 larosem Exp $
+// $Revision: 1.4.2.2 $
+// $Id: Exception.h,v 1.4.2.2 2004-12-23 15:51:49 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -32,8 +32,8 @@
 #include <exception>
 #include <string>
 
-
 using namespace std;
+
 
 
 namespace mccore
@@ -116,6 +116,15 @@ namespace mccore
      * @return itself.
      */
     Exception& operator<< (const char *message);
+
+    /**
+     * Concatenates the current message with a string.  Be careful when using
+     * this operator, the returned exception is a Exception type NOT a
+     * derived type.
+     * @param message the string to concatenate.
+     * @return itself.
+     */
+    Exception& operator<< (const string &message);
 
     /**
      * Concatenates the current message with an integer.  Be careful when using
