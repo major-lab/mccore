@@ -36,9 +36,9 @@
 #include "CPoint3D.h"
 #include "AtomType.h"
 
-extern "C"{
-#include "xmlcpg/xmlcpg.h"
-}
+// extern "C"{
+// #include "xmlcpg/xmlcpg.h"
+// }
 class ostream;
 class iBinstream;
 class oBinstream;
