@@ -3,9 +3,9 @@
 // Copyright © 2002 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Mon Feb 18 16:07:09 2002
-// Last Modified By : Patrick Gendron
-// Last Modified On : Tue May  7 11:25:48 2002
-// Update Count     : 3
+// Last Modified By : Philippe Thibault
+// Last Modified On : Tue May 14 16:38:43 2002
+// Update Count     : 4
 // Status           : Unknown.
 // 
 
@@ -26,7 +26,7 @@ template< class Node, class Edge >
 Graph< Node, Edge >::Graph (const Graph &other)
   : adjgraph (other)
 {
-  if (other.mNode.size() > 0) 
+  if (other.mNodes.size() > 0) 
     {
       mNodes = other.mNodes;  
       mNodeValues = other.mNodeValues;
