@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.8 $
-# $Id: Makefile.in,v 1.8 2005-01-14 20:35:42 larosem Exp $
+# $Revision: 1.9 $
+# $Id: Makefile.in,v 1.9 2005-01-14 20:43:27 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -110,7 +110,7 @@ mostlyclean:
 	@ $(RM) *~ core.*
 
 clean: mostlyclean
-	@ $(RM) $(OBJECTS) $(PROGRAMS) $(REFDATA)
+	@ $(RM) $(OBJECTS) $(PROGRAMS)
 	@ $(RM) *.d *.out
 
 distclean: clean
