@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.3.2.6 $
-// $Id: Exception.cc,v 1.3.2.6 2004-12-27 04:23:26 larosem Exp $
+// $Revision: 1.3.2.7 $
+// $Id: Exception.cc,v 1.3.2.7 2004-12-29 21:08:16 larosem Exp $
 //
 // This file is part of mccore.
 //
@@ -179,9 +179,11 @@ namespace mccore
   ostream& 
   IntLibException::output (ostream &os) const
   {
-    os << getFileName () << ":" << getLine () << ": ";
-    Exception::output (os);
-    return os << endl;
+    if ("" != getFileName ())
+      {
+	os << getFileName () << ":" << getLine () << ": ";
+      }
+    return Exception::output (os);
   }
 
   
