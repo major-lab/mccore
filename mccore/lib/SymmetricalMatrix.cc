@@ -3,8 +3,8 @@
 // Author           : Philippe Thibault
 // Created On       : Wed Oct 16 09:28:54 2002
 // Last Modified By : Philippe Thibault
-// Last Modified On : Thu Oct 17 08:45:33 2002
-// Update Count     : 1
+// Last Modified On : Wed Oct 23 08:14:02 2002
+// Update Count     : 2
 // Status           : Ok.
 // 
 
@@ -68,6 +68,9 @@ SymmetricalMatrix< Type >::operator= (const SymmetricalMatrix< Type >& right)
     {
       oneSize = right.oneSize;
       twoSize = right.twoSize;
+      if (cleanup)
+	for (int i = 0; i < oneSize; ++i)
+	  (*cleanup) (matrix[i]);
       delete[] matrix;
       matrix = new Type[oneSize];
       for (int i = 0; i < oneSize; ++i)
@@ -88,6 +91,19 @@ SymmetricalMatrix< Type >::operator[] (int i) const
       throw ex;
     }
   return matrix[i];
+}
+
+
+template< class Type >
+void
+SymmetricalMatrix< Type >::clear ()
+{
+  if (cleanup)
+    for (int i = 0; i < oneSize; ++i)
+      (*cleanup) (matrix[i]);
+  delete[] matrix;
+  oneSize = 0;
+  twoSize = 0;
 }
 
 

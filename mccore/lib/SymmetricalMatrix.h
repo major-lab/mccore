@@ -3,8 +3,8 @@
 // Author           : Philippe Thibault
 // Created On       : Wed Oct 16 09:28:54 2002
 // Last Modified By : Philippe Thibault
-// Last Modified On : Thu Oct 17 08:45:44 2002
-// Update Count     : 1
+// Last Modified On : Wed Oct 23 08:13:55 2002
+// Update Count     : 2
 // Status           : Ok.
 // 
 
@@ -35,15 +35,15 @@ class SymmetricalMatrix
   Type* matrix;
 
   /**
+   * Size of the one-dimensional matrix.
+   */
+  int oneSize;
+
+  /**
    * Size of the emulated nxn matrix
    */
   int twoSize;
 
-  /**
-   * Size of the one-dimensional matrix.
-   */
-  int oneSize;
-  
   /**
    * User-defined data cleanup method.
    */
@@ -130,6 +130,8 @@ public:
   int size (int d = 2) { return d == 2 ? twoSize : oneSize; } 
 
   // METHODS --------------------------------------------------------------
+
+  void clear ();
 
   // I/O  -----------------------------------------------------------------
 
