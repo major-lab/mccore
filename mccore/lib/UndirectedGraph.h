@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 24 21:30:26 2003
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 // 
 //  This file is part of mccore.
 //  
@@ -41,7 +41,7 @@ namespace mccore {
  * a node ordering determined by the node_comparator function object.
  *
  * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
- * @version $Id: UndirectedGraph.h,v 1.3 2003-05-13 18:19:51 gendrop Exp $
+ * @version $Id: UndirectedGraph.h,v 1.4 2003-05-30 16:48:18 gendrop Exp $
  */
 template< class node_type, 
 	  class edge_type = bool, 
@@ -49,7 +49,9 @@ template< class node_type,
 class UndirectedGraph : public Graph< node_type, edge_type, node_comparator >
 {
   
+
   // LIFECYCLE ------------------------------------------------------------
+
 
 public:
 
@@ -58,6 +60,7 @@ public:
    */
   UndirectedGraph () : Graph< node_type, edge_type, node_comparator > () {}
 
+
   /**
    * Initializes the object with the other's content.
    * @param other the object to copy.
@@ -65,12 +68,14 @@ public:
   UndirectedGraph (const UndirectedGraph &other) 
     : Graph< node_type, edge_type, node_comparator > (other) {}
 
+
   /**
    * Destroys the object.
    */
   virtual ~UndirectedGraph () {
     clear ();
   }
+
 
   // OPERATORS ------------------------------------------------------------
 
@@ -89,6 +94,31 @@ public:
 
   // ACCESS ---------------------------------------------------------------
 
+
+  /**
+   * Sets the weight of this node.
+   * @param n the node.
+   * @return the weight.
+   */
+  virtual void setWeight (const node_type& n, float w)
+  {
+    assert (contains (n));
+    nodeWeights.find (nodeToPtr (n))->second = w;
+  }
+  
+  
+  /**
+   * Gets the weight of this node.
+   * @param n the node.
+   * @return the weight.
+   */
+  virtual float getWeight (const node_type& n) const 
+  {
+    assert (contains (n));
+    return nodeWeights.find (nodeToPtr (n))->second;
+  }
+  
+
   /**
    * Gets the weight of this edge.
    * @param o the origin node.
@@ -104,6 +134,13 @@ public:
     }
   }
   
+
+  /**
+     * Gets the edge that exists between nodes o and p.
+     * @param o an extremity of the edge.
+     * @param p an extremity of the edge.
+     * @return the edge.
+     */
   virtual const edge_type& getEdge (const node_type& o, const node_type& p) const {
     assert (areConnected (o, p));
     if (node_comparator () (o, p)) {
@@ -116,7 +153,10 @@ public:
 
   // METHODS --------------------------------------------------------------
 
+  
+  
   // GRAPH RELATED METHODS ------------------------------------------------
+
   
   /**
    * Connect two nodes of the graph by a directed edge.
@@ -143,6 +183,7 @@ public:
   
     return true;
   }
+
   
   /**
    * Disconnect two nodes of the graph.
@@ -268,13 +309,16 @@ public:
     return edgeNodes;
   }
 
+
   /**
    * Horton's algorithm for the minimum cycle basis.
    */
   vector< Path< node_type, float > > cycleBase () { return cycleBaseHorton (); }
   vector< Path< node_type, float > > cycleBaseUnion () { return cycleBaseHorton (true); }
+
   
 private:
+
   
   vector< Path< node_type, float > > cycleBaseHorton (bool minimum_basis_union = false)
   {
@@ -509,7 +553,9 @@ private:
 
   // I/O  -----------------------------------------------------------------
 
+
 public:
+
 
   virtual ostream& output (ostream& os) const
   {

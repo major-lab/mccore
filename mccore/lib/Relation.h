@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 //
 //  This file is part of mccore.
 //  
@@ -45,7 +45,7 @@ namespace mccore {
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.2 2003-05-13 18:19:51 gendrop Exp $
+   * @version $Id: Relation.h,v 1.3 2003-05-30 16:48:06 gendrop Exp $
    */
   class Relation
   {
@@ -136,6 +136,22 @@ namespace mccore {
      * Returns the destination residue of the relation.
      */
     const BasicResidue* getRes () const { return res; }
+    
+    /**
+     * Returns the face interacting in the relation, if any.
+     */
+    const PropertyType* getRefFace () const { return refFace; }
+
+    /**
+     * Returns the face interacting in the relation, if any.
+     */
+    const PropertyType* getResFace () const { return resFace; }
+
+    /**
+     * Returns the properties of the relation.
+     */
+    const set< const PropertyType* >& getLabels () const { return labels; }
+
 
     // METHODS --------------------------------------------------------------
 

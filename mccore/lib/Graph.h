@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Apr 30 16:04:32 2003
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 // 
 //  This file is part of mccore.
 //  
@@ -41,7 +41,7 @@ namespace mccore {
    * @short A templated directed graph class.  Graphs are always weighted using floats!
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: Graph.h,v 1.11 2003-05-13 18:19:50 gendrop Exp $
+   * @version $Id: Graph.h,v 1.12 2003-05-30 16:47:35 gendrop Exp $
    */
   template< class node_type, 
 	    class edge_type = bool, 
@@ -67,16 +67,6 @@ namespace mccore {
      * The size type of the abstract residue container.
      */
     typedef unsigned int size_type;
-
-    
-    /**
-     * Forward declaration of iterators classes.
-     */
-    class graph_iterator;
-    typedef graph_iterator iterator;
-    class graph_const_iterator;
-    typedef graph_const_iterator const_iterator;
-
 
     /**
      * The type of a mapping node/edge.
@@ -131,6 +121,20 @@ namespace mccore {
      * Edge weights.
      */
     edge_adapter edgeWeights;
+
+    
+    // PUBLIC TYPEDEFS ---------------------------------------------------------
+
+
+  public:
+
+    /**
+     * Forward declaration of iterators classes.
+     */
+    class graph_iterator;
+    typedef graph_iterator iterator;
+    class graph_const_iterator;
+    typedef graph_const_iterator const_iterator;
 
 
 
@@ -239,6 +243,18 @@ namespace mccore {
      * @return the iterator.
      */
     const_iterator end () const { return const_iterator (graph.end ()); }
+
+
+    /**
+     * Sets the weight of this node.
+     * @param n the node.
+     * @return the weight.
+     */
+    virtual void setWeight (const node_type& n, float w)
+    {
+      assert (contains (n));
+      nodeWeights.find (nodeToPtr (n))->second = w;
+    }
 
 
     /**
@@ -710,7 +726,7 @@ namespace mccore {
     class graph_const_iterator : public gtciterator
     {
     public:
-
+      
       graph_const_iterator () : gtciterator () { }
 
       graph_const_iterator (const gtciterator &it) 

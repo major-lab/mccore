@@ -4,8 +4,8 @@
 // Author           : Patrick Gendron
 // Created On       : Fri Jan 25 15:17:28 2002
 // Last Modified By : Patrick Gendron
-// Last Modified On : Mon Mar 10 16:27:18 2003
-// Update Count     : 2
+// Last Modified On : Tue May 13 15:26:33 2003
+// Update Count     : 3
 // Status           : Unknown.
 // 
 // 
@@ -33,6 +33,8 @@
 // We want to keep the version that's implemented in the libstdc++ 
 // when available...
 #ifndef HAVE_FSTREAMBASE
+
+using namespace std;
 
 /**
  * @short Implementation of base class for file i/o streams.

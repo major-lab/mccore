@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr 25 10:12:06 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 // 
 //  This file is part of mccore.
 //  
@@ -30,6 +30,8 @@
 
 class iBinstream;
 class oBinstream;
+
+using namespace std;
 
 namespace mccore 
 {
@@ -191,4 +193,5 @@ namespace mccore
   iGenbankstream& operator>> (iGenbankstream &is, Sequence &seq);
   
 }
+
 #endif

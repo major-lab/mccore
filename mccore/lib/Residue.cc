@@ -43,6 +43,10 @@ namespace mccore {
   {
   } 
   
+  Residue::Residue (const ResidueType *t, const ResId &i, vector< Atom > &vec)
+    : BasicResidue (t, i, vec) , placed (true)
+  {
+  }
 
   Residue::Residue (const Residue &other)
     : BasicResidue (other)
@@ -197,15 +201,6 @@ namespace mccore {
     if (!tfo.isIdentity ()) {
       (*atomLocal[it->second]).transform (tfo.invert ());
     }
-  }
-
-
-  Atom& 
-  Residue::get (size_type pos) const
-  {
-    assert (pos < atomGlobal.size ());
-    place ();
-    return *atomGlobal[pos];
   }
 
 
@@ -380,6 +375,15 @@ namespace mccore {
 	atomLocal[i]->transform (inv);
       }
     }	
+  }
+
+
+  Atom& 
+  Residue::get (size_type pos) const
+  {
+    assert (pos < atomGlobal.size ());
+    place ();
+    return *atomGlobal[pos];
   }
 
 

@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 
 
 #ifndef _HomogeneousTransfo_h_
@@ -34,7 +34,7 @@ namespace mccore
  * </pre>
  *
  * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
- * @version $Id: HomogeneousTransfo.h,v 1.2 2003-04-11 01:34:06 gendrop Exp $
+ * @version $Id: HomogeneousTransfo.h,v 1.3 2003-05-30 16:47:47 gendrop Exp $
  */
 class HomogeneousTransfo
 {
@@ -203,7 +203,7 @@ public:
    * @param v the original point.
    * @return the transformed point.
    */
-  inline Vector3D operator* (const Vector3D &v) const;
+  Vector3D operator* (const Vector3D &v) const;
   
   
   /**

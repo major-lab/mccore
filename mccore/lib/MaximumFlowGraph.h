@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Apr  7 18:28:55 2003
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 // 
 //  This file is part of mccore.
 //  
@@ -43,7 +43,7 @@ namespace mccore {
    * only been tested when nodes are int.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: MaximumFlowGraph.h,v 1.2 2003-05-13 18:19:51 gendrop Exp $
+   * @version $Id: MaximumFlowGraph.h,v 1.3 2003-05-30 16:47:53 gendrop Exp $
    */
   template < class node_type,
 	     class edge_type = bool, 
@@ -79,15 +79,6 @@ namespace mccore {
      */
     typedef typename Graph< node_type, edge_type, node_comparator >::edge_adapter edge_adapter;
     
-    /**
-     * iterator
-     */
-    typedef typename Graph< node_type, edge_type, node_comparator >::iterator iterator;
-
-    /**
-     * const iterator
-     */ 
-    typedef typename Graph< node_type, edge_type, node_comparator >::const_iterator const_iterator;
 
     // MEMBERS -----------------------------------------------------------------
 
@@ -99,6 +90,7 @@ namespace mccore {
      */
     graph_type reverseGraph;
 
+
     /**
      * The flow on edges.  The capacity will be given by the
      * edgeWeights Map inherited from Graph< int >.
@@ -106,6 +98,25 @@ namespace mccore {
     edge_adapter edgeFlows;
 
     bool verbose;
+
+
+    // PUBLIC TYPEDEFS ---------------------------------------------------------
+
+
+  public:
+
+
+    /**
+     * iterator
+     */
+    typedef typename Graph< node_type, edge_type, node_comparator >::iterator iterator;
+
+    /**
+     * const iterator
+     */ 
+    typedef typename Graph< node_type, edge_type, node_comparator >::const_iterator const_iterator;
+
+
 
     // LIFECYCLE ---------------------------------------------------------------
 
@@ -155,6 +166,30 @@ namespace mccore {
 
     // ACCESS ------------------------------------------------------------------
 
+    /**
+     * Sets the weight of this node.
+     * @param n the node.
+     * @return the weight.
+     */
+    virtual void setWeight (const node_type& n, float w)
+    {
+      assert (contains (n));
+      nodeWeights.find (nodeToPtr (n))->second = w;
+    }
+    
+    
+    /**
+     * Gets the weight of this node.
+     * @param n the node.
+     * @return the weight.
+     */
+    virtual float getWeight (const node_type& n) const 
+    {
+      assert (contains (n));
+      return nodeWeights.find (nodeToPtr (n))->second;
+    }
+    
+    
     /**
      * Gets the weight of this edge.
      * @param o the origin node.
@@ -284,7 +319,7 @@ namespace mccore {
       edgeWeights.find (nodeToPtr (o))->second.erase (nodeToPtr (p));
       edgeFlows.find (nodeToPtr (o))->second.erase (nodeToPtr (p));
 
-      edges.erase (::find (edges.begin (), edges.end (), *ep));
+      edges.erase (std::find (edges.begin (), edges.end (), *ep));
 
       return true;
     }
@@ -353,7 +388,7 @@ namespace mccore {
       int distance = 0;
       label[sourcep] = distance;
 
-      if (verbose) cout << label << endl;
+//       if (verbose) cout << label << endl;
 
       while (q.size () > 0) {
 	distance = label[q.front ()] + 1;
@@ -373,7 +408,7 @@ namespace mccore {
 	q.pop_front ();
       }
 
-      if (verbose) cout << label << endl;
+//       if (verbose) cout << label << endl;
 
       // Flood from the source      
       list< const node_type* > active;
@@ -384,8 +419,8 @@ namespace mccore {
 	active.push_back (j->first);
       }
 
-      if (verbose) cout << active << endl;
-      if (verbose) cout << excess << endl;
+//       if (verbose) cout << active << endl;
+//       if (verbose) cout << excess << endl;
 
       while (active.size () > 0) {
 	pushRelabel (active.front (), active, excess, label, source, sink);

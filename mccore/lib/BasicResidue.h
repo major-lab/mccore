@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 //
 //  This file is part of mccore.
 //  
@@ -56,7 +56,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Patrick Gendron <gendrop@iro.umontreal.ca>
-   * @version $Id: BasicResidue.h,v 1.3 2003-05-15 19:10:51 thibaup Exp $
+   * @version $Id: BasicResidue.h,v 1.4 2003-05-30 16:47:30 gendrop Exp $
    */
   class BasicResidue
   {
@@ -122,6 +122,14 @@ namespace mccore {
      */
     BasicResidue (const ResidueType *t, const ResId &i);
     
+    /**
+     * Initializes the residue with type, atom container and id.
+     * @param type the residue type.
+     * @param i the residue id.
+     * @param vec the atom container.
+     */
+    BasicResidue (const ResidueType *t, const ResId &i, const vector< Atom > &vec);
+
     /**
      * Initializes the object with the other's content.
      * @param other the object to copy.
@@ -288,8 +296,6 @@ namespace mccore {
      * @param atom the atom to insert.
      */
     virtual void insert (const Atom &atom);
-
-  public:
 
     /**
      * Erases an atom from the residue.

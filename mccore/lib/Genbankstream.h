@@ -24,7 +24,7 @@
 #ifndef _Genbankstream_h_
 #define _Genbankstream_h_
 
-#include <iostream.h>
+#include <iostream>
 
 #include <fstream>
 #include <vector>

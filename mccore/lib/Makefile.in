@@ -5,8 +5,8 @@
 ## Author           : Martin Larose <larosem@iro.umontreal.ca>
 ## Created On       : Tue Sep 19 18:57:11 2000
 ## Last Modified By : Patrick Gendron
-## Last Modified On : Mon Apr 28 14:59:54 2003
-## Update Count     : 76
+## Last Modified On : Fri May 16 14:15:46 2003
+## Update Count     : 91
 ## Status           : Ok.
 ###############################################################################
 #
@@ -70,13 +70,20 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 	$(CXX) $(CXXSHFLAGS) $(DEFS) -I.. -I$(srcdir) -c $< -o $@
 
 
-SOURCES = Vector3D.cc \
+SOURCES = Binstream.cc \
+	  zfstream.cc \
+	  CException.cc \
+\
+	  Vector3D.cc \
 	  HomogeneousTransfo.cc \
 \
 	  AtomType.cc \
 	  AtomTypeStore.cc \
 	  Atom.cc \
 	  AtomSet.cc \
+\
+	  PropertyType.cc \
+	  PropertyTypeStore.cc \
 \
 	  ResId.cc \
 	  ResIdSet.cc \
@@ -87,21 +94,17 @@ SOURCES = Vector3D.cc \
 	  ResidueFactoryMethod.cc \
 	  ResidueTopology.cc \
 \
-	  CException.cc \
-	  zfstream.cc \
-	  sockstream.cc \
-	  ServerSocket.cc \
-	  Binstream.cc \
 	  PdbFileHeader.cc \
 	  Pdbstream.cc \
-\
-	  Rmsd.cc \
 	  HBond.cc \
 	  Model.cc \
-	  PropertyType.cc \
-	  PropertyTypeStore.cc \
+\
+	  Rmsd.cc \
 	  Relation.cc \
 	  PairingPattern.cc \
+\
+	  sockstream.cc \
+	  ServerSocket.cc \
 \
 	  Sequence.cc \
 	  Fastastream.cc \

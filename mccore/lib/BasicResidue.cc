@@ -52,6 +52,16 @@ namespace mccore {
   }
 
 
+  BasicResidue::BasicResidue (const ResidueType *t, const ResId &i, const vector< Atom > &vec)
+    : type (t), resId (i) 
+  {
+    vector< Atom >::const_iterator j;
+    for (j=vec.begin (); j!=vec.end (); ++j) {
+      insert (*j);
+    }
+  }
+
+
   BasicResidue::BasicResidue (const BasicResidue &other)
   {
     vector< Atom* >::const_iterator cit;

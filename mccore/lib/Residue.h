@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 // 
 //  This file is part of mccore.
 //  
@@ -52,7 +52,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Residue.h,v 1.7 2003-04-11 01:35:31 gendrop Exp $
+   * @version $Id: Residue.h,v 1.8 2003-05-30 16:48:12 gendrop Exp $
    */
   class Residue : public virtual BasicResidue
   {
@@ -92,11 +92,12 @@ namespace mccore {
     Residue (const ResidueType *t, const ResId &i); 
     
     /**
-     * Initializes the residue with a type, atom array and id.
-     * @param t the residue type.
+     * Initializes the residue with type, atom container and id.
+     * @param type the residue type.
      * @param i the residue id.
-     * @param v the atom container.
+     * @param vec the atom container.
      */
+    Residue (const ResidueType *t, const ResId &i, vector< Atom > &vec);
     
     /**
      * Initializes the object with the other's content.
@@ -203,25 +204,6 @@ namespace mccore {
      */
     virtual void insert (const Atom &atom);
 
-    
-  protected:
-    
-    //     /**
-    //      * Gets the atom of given type.  
-    //      * @param type the atom type.
-    //      * @return the atom.
-    //      */
-    //     virtual Atom& get (const AtomType* type) const;
-    
-    /**
-     * Gets the atom at a position given by an index.  This is used by the iterators.
-     * @param pos the position of the atom in the atom vector;
-     * @return the atom.
-     */
-    virtual Atom& get (size_type pos) const;
-    
-  public:
-
     /**
      * Erases an atom from the residue.
      * @param type the atom type to remove.
@@ -261,10 +243,31 @@ namespace mccore {
     virtual void clear();
 
 
-    //  private:
-
     // PRIVATE METHODS ------------------------------------------------------
 
+    /**
+     *  Initializes all the internals of the residue.  It aligns the
+     *  residue to the origin of the global coordinate and stores the
+     *  transformation internally.  
+     */
+    void finalize ();
+
+  protected:
+    
+    /**
+     * Gets the atom at a position given by an index.  This is used by the iterators.
+     * @param pos the position of the atom in the atom vector;
+     * @return the atom.
+     */
+    virtual Atom& get (size_type pos) const;
+    
+    /**
+     * Gets the atom of given type.  
+     * @param type the atom type.
+     * @return the atom.
+     */
+    virtual Atom* get (const AtomType* type) const;
+    
     /**
      *  Updates the atom containers so that the residue is placed in space.
      */
@@ -274,20 +277,6 @@ namespace mccore {
 
     bool isPlaced () const { return (placed == true); }
 
-    /**
-     *  Initializes all the internals of the residue.  It aligns the
-     *  residue to the origin of the global coordinate and stores the
-     *  transformation internally.  
-     */
-    void finalize ();
-
-    /**
-     * Gets the atom of given type.  
-     * @param type the atom type.
-     * @return the atom.
-     */
-    virtual Atom* get (const AtomType* type) const;
-    
 
   public:
     

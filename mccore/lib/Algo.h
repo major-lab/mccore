@@ -41,7 +41,7 @@ namespace mccore {
  * with const_iterator and iterator types.
  *
  * @author Sebastien Lemieux
- * @version $Id: Algo.h,v 1.15 2003-04-03 21:42:55 gendrop Exp $
+ * @version $Id: Algo.h,v 1.16 2003-05-30 16:47:23 gendrop Exp $
  */
 class Algo
 {
@@ -96,11 +96,11 @@ public:
     ExtractContact_OneDim (X_range, contact, cutoff);
     ExtractContact_OneDim (Y_range, contact, cutoff);
 
-    map< pair< iter_type, iter_type >, int >::iterator cont_i;
+    typename map< pair< iter_type, iter_type >, int >::iterator cont_i;
 
     for (cont_i = contact.begin (); cont_i != contact.end (); ++cont_i)
       {
-	map< pair< iter_type, iter_type >, int >::iterator tmp = cont_i;
+	typename map< pair< iter_type, iter_type >, int >::iterator tmp = cont_i;
 	
 	tmp++;
 	if (cont_i->second < 2)
@@ -177,11 +177,11 @@ private:
 				     map< pair< iter_type, iter_type >, int > &contact,
 				     float cutoff)
   {
-    vector< ResidueRange< iter_type > >::iterator i;
+    typename vector< ResidueRange< iter_type > >::iterator i;
     
     for (i = range.begin (); i != range.end (); ++i)
       {
-	vector< ResidueRange< iter_type > >::iterator j;
+	typename vector< ResidueRange< iter_type > >::iterator j;
 	
 	for (j = i; j != range.end (); ++j)
 	  if (i != j)
