@@ -1,9 +1,9 @@
 //                              -*- Mode: C++ -*- 
 // ResidueTypeStore.cc
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.13 $
+// $Revision: 1.14 $
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -204,7 +204,7 @@ namespace mccore {
     if (inserted.second) // unique insertion => new atom type
       inserted.first->second = new ResidueType (inserted.first->first, inserted.first->first);
     else                 // key exists => delete key copy
-      delete[] key_copy;
+      free (key_copy);
 
     return inserted.first->second;
   } 

@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:42:25 2003
-// $Revision: 1.8 $
-// $Id: PropertyTypeStore.cc,v 1.8 2004-08-26 20:18:06 thibaup Exp $
+// $Revision: 1.9 $
+// $Id: PropertyTypeStore.cc,v 1.9 2004-09-19 03:36:46 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -266,7 +266,7 @@ namespace mccore {
     if (inserted.second) // unique insertion => new property type
       inserted.first->second = new PropertyType (inserted.first->first);
     else                 // key exists => delete key copy
-      delete[] key_copy;
+      free (key_copy);
 
     return inserted.first->second;
   }
