@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Nov  9 17:54:01 2000
-// Update Count     : 4
+// Last Modified On : Tue Nov 14 17:22:54 2000
+// Update Count     : 5
 // Status           : Ok.
 // 
 
@@ -121,10 +121,11 @@ residue_iterator&
 residue_iterator::operator++ ()
 {
   size_type size = mRes->mAtomRef.size ();
-  
-  while (++mPos < size
-	 && ! (mSet->operator() (mRes->mAtomRef[mPos])
-	       && mOption->operator() (mRes->mAtomRef[mPos])));
+
+  if (mPos < size)
+    while (++mPos < size
+	   && ! (mSet->operator() (mRes->mAtomRef[mPos])
+		 && mOption->operator() (mRes->mAtomRef[mPos])));
   return *this;
 }
 
@@ -136,9 +137,10 @@ residue_iterator::operator++ (int ign)
   residue_iterator ret = *this;
   size_type size = mRes->mAtomRef.size ();
 
-  while (++mPos < size
-	 && ! (mSet->operator() (mRes->mAtomRef[mPos])
-	       && mOption->operator() (mRes->mAtomRef[mPos])));
+  if (mPos < size)
+    while (++mPos < size
+	   && ! (mSet->operator() (mRes->mAtomRef[mPos])
+		 && mOption->operator() (mRes->mAtomRef[mPos])));
   return ret;
 }
 
@@ -249,10 +251,11 @@ const_residue_iterator&
 const_residue_iterator::operator++ ()
 {
   size_type size = mRes->mAtomRef.size ();
-  
-  while (++mPos < size
-	 && ! (mSet->operator() (mRes->mAtomRef[mPos])
-	       && mOption->operator() (mRes->mAtomRef[mPos])));
+
+  if (mPos < size)
+    while (++mPos < size
+	   && ! (mSet->operator() (mRes->mAtomRef[mPos])
+		 && mOption->operator() (mRes->mAtomRef[mPos])));
   return *this;
 }
 
@@ -264,9 +267,10 @@ const_residue_iterator::operator++ (int ign)
   const_residue_iterator ret = *this;
   size_type size = mRes->mAtomRef.size ();
   
-  while (++mPos < size
-	 && ! (mSet->operator() (mRes->mAtomRef[mPos])
-	       && mOption->operator() (mRes->mAtomRef[mPos])));
+  if (mPos < size)
+    while (++mPos < size
+	   && ! (mSet->operator() (mRes->mAtomRef[mPos])
+		 && mOption->operator() (mRes->mAtomRef[mPos])));
   return ret;
 }
 
