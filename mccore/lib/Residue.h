@@ -3,8 +3,8 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.19 $
-// $Id: Residue.h,v 1.19 2004-05-27 15:40:57 thibaup Exp $
+// $Revision: 1.20 $
+// $Id: Residue.h,v 1.20 2004-06-25 14:46:47 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -37,21 +37,22 @@
 #include "ResidueType.h"
 #include "HomogeneousTransfo.h"
 
+
 using namespace std;
 
 
-
-namespace mccore {
+namespace mccore
+{
 
   class PropertyType;
   class ResidueFactoryMethod;
+  class CException;
   class iBinstream;
   class iPdbstream;
   class oBinstream;
   class oPdbstream;
 
   
-
   /**
    * @short A basic residue.
    *
@@ -62,7 +63,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Patrick Gendron <gendrop@iro.umontreal.ca>
-   * @version $Id: Residue.h,v 1.19 2004-05-27 15:40:57 thibaup Exp $
+   * @version $Id: Residue.h,v 1.20 2004-06-25 14:46:47 thibaup Exp $
    */
   class Residue
   {
@@ -166,7 +167,7 @@ namespace mccore {
      * @param pos the position of the atom in the atom vector;
      * @return the atom.
      */
-    Atom& get (size_type pos) const;
+    Atom& _get (size_type pos) const;
 
   public:
 
@@ -259,13 +260,13 @@ namespace mccore {
        * Gets the atom pointed by the current iterator.
        * @return a pointer over the atom placed by the transfo.
        */
-      pointer operator-> () const { return &(res->get (pos->second)); }
+      pointer operator-> () const { return &(res->_get (pos->second)); }
       
       /**
        * Dereferences the iterator.
        * @return an atom reference.
        */
-      reference operator* () const { return res->get (pos->second); }
+      reference operator* () const { return res->_get (pos->second); }
   
       /**
        * Pre-advances the iterator to the next atom.
@@ -445,13 +446,13 @@ namespace mccore {
        * Gets the atom pointed by the current iterator.
        * @return the atom pointer.
        */
-      pointer operator-> () const { return &(res->get (pos->second)); }
+      pointer operator-> () const { return &(res->_get (pos->second)); }
     
       /**
        * Dereferences the iterator.
        * @return an atom reference.
        */
-      reference operator* () const { return res->get (pos->second); }
+      reference operator* () const { return res->_get (pos->second); }
     
       /**
        * Pre-advances the iterator to the next atom.
@@ -564,13 +565,20 @@ namespace mccore {
     virtual ~Residue ();
 
     /**
-     * Creates a complete residue containing theoretical coordinates for a
-     * standard residue as defined by G.Parkinson et al., ACTA CRYST.D
-     * (1996) v. 52, 57-64.
-     * @param backbone Flag for full backbone addition (default: false). 
-     * @exception CIntLibException is thrown if type is neither nucleic acid nor phosphate.
+     * Sets all atoms according to standard coordinates as defined by
+     * G.Parkinson et al., ACTA CRYST.D (1996) v. 52, 57-64.
+     * Handled types are nitrogen bases (nucleic acid types), phosphates and riboses.
+     * @exception CIntLibException is thrown if type isn't handled.
      */
-    virtual void setTheoretical (bool backbone = false);
+    void setTheoretical ();
+
+    /**
+     * Sets all atoms according to standard coordinates as defined by
+     * G.Parkinson et al., ACTA CRYST.D (1996) v. 52, 57-64.
+     * A full nucleic acid residue is created.
+     * @exception CIntLibException is thrown if type isn't handled.
+     */
+    void setFullTheoretical ();
 				 
     // OPERATORS ------------------------------------------------------------
 
@@ -824,9 +832,8 @@ namespace mccore {
     virtual const PropertyType* getGlycosyl () const;
     
     /**
-     * Initializes all the internals of the residue.  It aligns the
-     * residue to the origin of the global coordinate and stores the
-     * transformation internally.
+     * Finalizes the residue. Computes the referential's pseudo-atoms.
+     * @exception CLibException is thrown if a needed atom is missing.
      */
     virtual void finalize ();
 
@@ -1051,9 +1058,19 @@ namespace mccore {
      * pointers should be used outside the residue; these pointers are
      * not guaranteed to be valid.
      * @param type the atom type.
-     * @return the atom.
+     * @return the atom (null pointer if atom is missing).
      */
-    Atom* get (const AtomType* type) const;
+    Atom* _get (const AtomType* type) const;
+
+    /**
+     * Gets the atom of given type.  It is private since no atom
+     * pointers should be used outside the residue; these pointers are
+     * not guaranteed to be valid.
+     * @param type the atom type.
+     * @return the atom.
+     * @exception CLibException is thrown if atom is missing.
+     */
+    Atom* _safe_get (const AtomType* type) const;
 
     /**
      * Fetches the atom specified by its type. If the atom is missing, a new
@@ -1073,7 +1090,14 @@ namespace mccore {
     virtual void _insert_local (const Vector3D& coord, AtomMap::iterator posit);
 
     /**
-     * Adds backbone's hydrogens only if they aren't already in the residue. 
+     * Compute the residue's referential transfo.
+     * @return The residue's referential transfo.
+     * @exception CLibException is thrown if an atom is missing or type isn't handled.
+     */
+    HomogeneousTransfo _compute_referential () const;
+    
+    /**
+     * Adds backbone's hydrogens only if they aren't already in the residue.
      */
     void _add_ribose_hydrogens ();
     
@@ -1194,6 +1218,14 @@ namespace mccore {
    * @return the used output stream.
    */
   //ostream& operator<< (ostream &os, const Residue *r);
+
+  /**
+   * Ouputs the residue to the exception stream.
+   * @param ex the exception stream.
+   * @param r the residue.
+   * @return the used exception stream.
+   */
+  CException& operator<< (CException& ex, const Residue &r);
   
   /**
    * Inputs the residue from the binary stream.

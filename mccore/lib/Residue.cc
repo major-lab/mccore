@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.38 $
-// $Id: Residue.cc,v 1.38 2004-06-25 14:11:48 thibaup Exp $
+// $Revision: 1.39 $
+// $Id: Residue.cc,v 1.39 2004-06-25 14:46:47 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -22,8 +22,6 @@
 // License along with mccore; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-
-// test
 
 
 #ifdef HAVE_CONFIG_H
