@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.1.2.2 $
-# $Id: Makefile.in,v 1.1.2.2 2004-12-21 22:49:25 larosem Exp $
+# $Revision: 1.1.2.3 $
+# $Id: Makefile.in,v 1.1.2.3 2004-12-22 21:35:48 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -64,12 +64,12 @@ HAVE_LIBMYSQL = @HAVE_LIBMYSQL@
 .SUFFIXES:
 
 %.d: %.cc
-	@ $(SHELL) -ec '$(CXX) $(DEPFLAGS) $(DEFS) -I.. -I$(srcdir) $< \
+	@ $(SHELL) -ec '$(CXX) $(DEPFLAGS) $(DEFS) -I.. -I$(srcdir) -I$(srcdir)/../lib $< \
 	    | sed '\''s/\($*\)\.o[ :]*/\1.o \1.lo $@ : /g'\'' > $@; \
 	      [ -s $@ ] || rm -f $@'
 
 %.o: %.cc
-	$(CXX) $(CXXFLAGS) $(DEFS) -I.. -I$(srcdir) -c $<
+	$(CXX) $(CXXFLAGS) $(DEFS) -I.. -I$(srcdir) -I$(srcdir)/../lib -c $<
 
 % : %.cc
 % : %.o
@@ -92,8 +92,9 @@ all static doc:
 
 test: $(PROGRAMS)
 	@ for program in $(PROGRAMS); do \
+	    echo "Testing " $$program; \
 	    ./$$program > $$program.out; \
-	    diff $$program.good $$program.out || echo "Errors in " $(PROGRAMS); \
+	    diff $(srcdir)/$$program.good $$program.out || echo "Errors in " $(PROGRAMS); \
 	  done
 
 install install-static uninstall:

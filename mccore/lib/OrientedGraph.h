@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu May 10 14:49:18 2001
-// $Revision: 1.1.2.5 $
+// $Revision: 1.1.2.6 $
 // 
 // This file is part of mccore.
 // 
@@ -43,7 +43,7 @@ namespace mccore
    * Directed graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: OrientedGraph.h,v 1.1.2.5 2004-12-21 07:10:48 larosem Exp $
+   * @version $Id: OrientedGraph.h,v 1.1.2.6 2004-12-22 21:35:44 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -277,45 +277,46 @@ namespace mccore
      */
     virtual iterator uncheckedInternalErase (label l)
     {
-      list< label > neighbors = internalOutNeighborhood (l);
-
-      if (! neighbors.empty ())
+      list< label > outNeighbors = internalOutNeighborhood (l);
+      list< label > inNeighbors = internalInNeighborhood (l);
+      typename list< label >::iterator lit;
+      iterator res;
+      typename EV2ELabel::iterator evit;
+      EV2ELabel newEV2;
+      
+      for (lit = outNeighbors.begin (); outNeighbors.end () != lit; ++lit)
 	{
-	  typename list< label >::iterator lit;
-	  typename EV2ELabel::iterator evit;
-	  EV2ELabel newEV2;
-	  iterator res;
-
-	  for (lit = neighbors.begin (); neighbors.end () != lit; ++lit)
-	    {
-	      uncheckedInternalDisconnect (l, *lit);
-	    }
-	  res = vertices.erase (vertices.begin () + l);
-	  vertexWeights.erase (vertexWeights.begin () + l);
-	  rebuildV2VLabel ();
-	  for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
-	    {
-	      label h;
-	      label t;
-	      
-	      h = evit->first.getHeadLabel ();
-	      t = evit->first.getTailLabel ();
-	      if (h > l)
-		{
-		  --h;
-		}
-	      if (t > l)
-		{
-		  --t;
-		}
-
-	      EndVertices ev (h, t);
-	      newEV2.insert (make_pair (ev, evit->second));
-	    }
-	  ev2elabel = newEV2;
-	  return res;
+	  uncheckedInternalDisconnect (l, *lit);
 	}
-      return end ();
+      for (lit = inNeighbors.begin (); inNeighbors.end () != lit; ++lit)
+	{
+	  uncheckedInternalDisconnect (*lit, l);
+	}
+      res = vertices.erase (vertices.begin () + l);
+      vertexWeights.erase (vertexWeights.begin () + l);
+      rebuildV2VLabel ();
+	  
+      for (evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit)
+	{
+	  label h;
+	  label t;
+	  
+	  h = evit->first.getHeadLabel ();
+	  t = evit->first.getTailLabel ();
+	  if (h > l)
+	    {
+	      --h;
+	    }
+	  if (t > l)
+	    {
+	      --t;
+	    }
+	  
+	  EndVertices ev (h, t);
+	  newEV2.insert (make_pair (ev, evit->second));
+	}
+      ev2elabel = newEV2;
+      return res;
     }
 
     /**
