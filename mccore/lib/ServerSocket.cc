@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // ServerSocket.cc
-// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-04 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:56 2001
-// $Revision: 1.15 $
-// $Id: ServerSocket.cc,v 1.15 2003-12-23 14:57:49 larosem Exp $
+// $Revision: 1.16 $
+// $Id: ServerSocket.cc,v 1.16 2004-04-30 19:23:01 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -47,86 +47,89 @@
 typedef int socklen_t;
 #endif
 
+#include "Binstream.h"
 #include "ServerSocket.h"
-#include "sockstream.h"
 
 
 
-ServerSocket::ServerSocket (int thePort)
-  : port (thePort)
+namespace mccore
 {
-  sockaddr_in sin;
-
-  // Creating socket ---
-  if ((socket_id = socket (AF_INET, SOCK_STREAM, 0)) < 0) {
-//      CFatalSocketException exc ("socket creation failed", __FILE__, __LINE__);
-//      exc << ": " << strerror (errno);
-//      throw exc;
+  ServerSocket::ServerSocket (int thePort)
+    : port (thePort)
+  {
+    sockaddr_in sin;
+    
+    // Creating socket ---
+    if ((socket_id = socket (AF_INET, SOCK_STREAM, 0)) < 0) {
+      //      CFatalSocketException exc ("socket creation failed", __FILE__, __LINE__);
+      //      exc << ": " << strerror (errno);
+      //      throw exc;
+    }
+    
+    // Binding a name to the socket ---
+    bzero (&sin, sizeof (sin));
+    sin.sin_family = AF_INET;
+    sin.sin_addr.s_addr = INADDR_ANY;
+    sin.sin_port = htons (port);
+    
+    if (bind (socket_id, (sockaddr*)&sin, sizeof (sin)) < 0) {
+      //      CFatalSocketException exc ("socket binding failed", __FILE__, __LINE__);
+      //      exc << ": " << strerror (errno);
+      //      throw exc;
+    }
+    
+    if (listen (socket_id, MAX_QUEUE_LEN) < 0) {
+      //      CFatalSocketException exc ("socket listening failed", __FILE__, __LINE__);
+      //      exc << ": " << strerror (errno);
+      //      throw exc;
+    }
+    
   }
-
-  // Binding a name to the socket ---
-  bzero (&sin, sizeof (sin));
-  sin.sin_family = AF_INET;
-  sin.sin_addr.s_addr = INADDR_ANY;
-  sin.sin_port = htons (port);
-
-  if (bind (socket_id, (sockaddr*)&sin, sizeof (sin)) < 0) {
-//      CFatalSocketException exc ("socket binding failed", __FILE__, __LINE__);
-//      exc << ": " << strerror (errno);
-//      throw exc;
+  
+  ServerSocket::~ServerSocket ()
+  {
   }
-
-  if (listen (socket_id, MAX_QUEUE_LEN) < 0) {
-//      CFatalSocketException exc ("socket listening failed", __FILE__, __LINE__);
-//      exc << ": " << strerror (errno);
-//      throw exc;
+  
+  
+  sBinstream*
+  ServerSocket::accept ()
+  {
+    sockaddr_in client;
+    socklen_t clientlen;
+    int cid;
+    sBinstream* stream;
+    
+    if ((cid = ::accept (socket_id, (sockaddr*)&client, 
+			 (socklen_t*)&clientlen)) < 0) {
+      //      CFatalSocketException exc ("socket connection accepting failed",
+      //  			       __FILE__, __LINE__);
+      //      exc << ": " << strerror (errno);
+      //      throw exc;
+    }
+    
+    stream = new sBinstream (cid);
+    
+    return stream;
   }
-
-}
-
-ServerSocket::~ServerSocket ()
-{
-}
-
-
-Sockstream*
-ServerSocket::accept ()
-{
-  sockaddr_in client;
-  socklen_t clientlen;
-  int cid;
-  Sockstream* stream;
-
-  if ((cid = ::accept (socket_id, (sockaddr*)&client, 
-		       (socklen_t*)&clientlen)) < 0) {
-//      CFatalSocketException exc ("socket connection accepting failed",
-//  			       __FILE__, __LINE__);
-//      exc << ": " << strerror (errno);
-//      throw exc;
-  }
-
-  stream = new Sockstream (cid);
-
-  return stream;
-}
-
-void
-ServerSocket::close ()
-{
-
-  /*
-  if (shutdown (socket_id, SHUT_RDWR) == -1 && errno != ENOTCONN) {
-    CFatalSocketException exc ("socket shutdown failed",
-			       __FILE__, __LINE__);
-    exc << ": " << strerror (errno);
-    throw exc;
-  }
-  */
-
-  if (::close (socket_id) == -1) {
-//      CFatalSocketException exc ("socket closing failed",
-//  			       __FILE__, __LINE__);
-//      exc << ": " << strerror (errno);
-//      throw exc;
+  
+  void
+  ServerSocket::close ()
+  {
+    
+    /*
+      if (shutdown (socket_id, SHUT_RDWR) == -1 && errno != ENOTCONN) {
+      CFatalSocketException exc ("socket shutdown failed",
+      __FILE__, __LINE__);
+      exc << ": " << strerror (errno);
+      throw exc;
+      }
+    */
+    
+    if (::close (socket_id) == -1) {
+      //      CFatalSocketException exc ("socket closing failed",
+      //  			       __FILE__, __LINE__);
+      //      exc << ": " << strerror (errno);
+      //      throw exc;
+    }
   }
 }

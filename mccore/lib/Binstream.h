@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:11:41 EDT
-// $Revision: 1.14 $
-// $Id: Binstream.h,v 1.14 2004-01-09 21:15:13 larosem Exp $
+// $Revision: 1.15 $
+// $Id: Binstream.h,v 1.15 2004-04-30 19:22:51 larosem Exp $
 //
 //  This file is part of mccore.
 //
@@ -31,6 +31,7 @@
 #include <fstream>
 #include <zlib.h>
 
+#include "sockstream.h"
 #include "zstream.h"
 
 using namespace std;
@@ -868,6 +869,300 @@ namespace mccore {
     
     // I/O ------------------------------------------------------------------
   };
-}
   
+  
+  /**
+   * @short Input binary socket streams.
+   *
+   * Implementation of binary socket streams.  These streams are used for
+   * binary dumps in sockets.  The general layout is based on fstream while
+   * I/O operators comes from Binstream.
+   *
+   * @author Martin Larose (<a href="mailto:larosem@IRO.UMontreal.CA">larosem@IRO.UMontreal.CA</a>)
+   */
+  class isBinstream : public iBinstream
+  {
+    /**
+     * The stream buffer.
+     */
+    mutable sockstreambuf buf;
+    
+  public:
+    
+    // LIFECYCLE ------------------------------------------------------------
+    
+    /**
+     * Initializes the objet.
+     */
+    isBinstream ()
+      : iBinstream (),
+	buf ()
+    {
+      this->init (&buf);
+    }
+    
+    /**
+     * Initializes a socket stream from an existing (opened) socket id
+     * @param s a socket created by accept(2) or socket(2)
+     */
+    isBinstream (int s)
+      : iBinstream (),
+	buf (s)
+    {
+      this->init (&buf);
+    }
+    
+    /**
+     * Initializes the stream with host name and port.
+     * @param host the host name.
+     * @param port the port number.
+     */
+    isBinstream (const char *host, unsigned int port)
+      : iBinstream (),
+	buf ()
+    {
+      this->init (&buf);
+      this->open (host, port);
+    }
+    
+    // OPERATORS ------------------------------------------------------------
+    
+    // ACCESS ---------------------------------------------------------------
+    
+    // METHODS --------------------------------------------------------------
+    
+    /**
+     * Gets the file buffer.
+     * @return the file buffer.
+     */
+    sockstreambuf* rdbuf () const { return &buf; }
+
+    /**
+     * Tells if the buf is open.
+     * @return whether buf is open.
+     */
+    bool is_open () const { return buf.is_open (); }
+
+    /**
+     * Opens the stream with host name and port.
+     * @param host the host name.
+     * @param port the port number.
+     */
+    void open (const char *host, unsigned int port)
+    {
+      if (! buf.open (host, port))
+	this->setstate (ios::failbit);
+      iBinstream::open ();
+    }
+    
+    /**
+     * Closes the stream.
+     */
+    void close ()
+    {
+      iBinstream::close ();
+      if (! buf.close ())
+	this->setstate (ios::failbit);
+    }
+    
+    // I/O ------------------------------------------------------------------
+  };
+  
+  
+  /**
+   * @short Output binary file stream.
+   *
+   * Implementation of binary socket streams These streams are used for
+   * binary dumps in sockets.  The general layout is based on fstream while
+   * I/O operators comes from Binstream.
+   *
+   * @author Martin Larose (<a href="mailto:larosem@IRO.UMontreal.CA">larosem@IRO.UMontreal.CA</a>)
+   */
+  class osBinstream : public oBinstream
+  {
+    /**
+     * The stream buffer.
+     */
+    mutable sockstreambuf buf;
+    
+  public:
+    
+    // LIFECYCLE ------------------------------------------------------------
+    
+    /**
+     * Initializes the stream.
+     */
+    osBinstream ()
+      : oBinstream (),
+	buf ()
+    {
+      this->init (&buf);
+    }
+    
+    /**
+     * Initializes a socket stream from an existing (opened) socket id
+     * @param s a socket created by accept(2) or socket(2)
+     */
+    osBinstream (int s)
+      : oBinstream (),
+	buf (s)
+    {
+      this->init (&buf);
+    }
+    
+    /**
+     * Initializes the stream with host name and port.
+     * @param host the host name.
+     * @param port the port number.
+     */
+    osBinstream (const char *host, unsigned int port)
+      : oBinstream (),
+	buf ()
+    {
+      this->init (&buf);
+      this->open (host, port);
+    }
+    
+    // OPERATORS ------------------------------------------------------------
+    
+    // ACCESS ---------------------------------------------------------------
+    
+    // METHODS --------------------------------------------------------------
+    
+    /**
+     * Gets the file buffer.
+     * @return the file buffer.
+     */
+    sockstreambuf* rdbuf () const { return &buf; }
+
+    /**
+     * Tells if the buf is open.
+     * @return whether buf is open.
+     */
+    bool is_open () const { return buf.is_open (); }
+
+    /**
+     * Opens the stream with host name and port.
+     * @param host the host name.
+     * @param port the port number.
+     */
+    void open (const char *host, unsigned int port)
+    {
+      if (! buf.open (host, port))
+	this->setstate (ios::failbit);
+      oBinstream::open ();
+    }
+    
+    /**
+     * Closes the stream.
+     */
+    void close ()
+    {
+      oBinstream::close ();
+      if (! buf.close ())
+	this->setstate (ios::failbit);
+    }
+    
+    // I/O ------------------------------------------------------------------
+  };
+  
+  
+  /**
+   * @short General binary socket stream.
+   *
+   * Implementation of binary socket streams.  These streams are used for
+   * binary dumps in sockets.  The general layout is based on fstream while
+   * I/O operators comes from Binstream.
+   *
+   * @author Martin Larose (<a href="mailto:larosem@IRO.UMontreal.CA">larosem@IRO.UMontreal.CA</a>)
+   */
+  class sBinstream : public Binstream
+  {
+    /**
+     * The stream buffer.
+     */
+    mutable sockstreambuf buf;
+    
+  public:
+    
+    // LIFECYCLE ------------------------------------------------------------
+    
+    /**
+     * Initializes the stream.
+     */
+    sBinstream ()
+      : Binstream (),
+	buf ()
+    {
+      this->init (&buf);
+    }
+    
+    /**
+     * Initializes a socket stream from an existing (opened) socket id
+     * @param s a socket created by accept(2) or socket(2)
+     */
+    sBinstream (int s)
+      : Binstream (),
+	buf (s)
+    {
+      this->init (&buf);
+    }
+    
+    /**
+     * Initializes the stream with host name and port.
+     * @param host the host name.
+     * @param port the port number.
+     */
+    sBinstream (const char *host, unsigned int port)
+      : Binstream (),
+	buf ()
+    {
+      this->init (&buf);
+      this->open (host, port);
+    }
+    
+    // OPERATORS ------------------------------------------------------------
+    
+    // ACCESS ---------------------------------------------------------------
+    
+    // METHODS --------------------------------------------------------------
+    
+    /**
+     * Gets the file buffer.
+     * @return the file buffer.
+     */
+    sockstreambuf* rdbuf () const { return &buf; }
+
+    /**
+     * Tells if the buf is open.
+     * @return whether buf is open.
+     */
+    bool is_open () const { return buf.is_open (); }
+
+    /**
+     * Opens the stream with host name and port.
+     * @param host the host name.
+     * @param port the port number.
+     */
+    void open (const char *host, unsigned int port)
+    {
+      if (! buf.open (host, port))
+	this->setstate (ios::failbit);
+      Binstream::open ();
+    }
+    
+    /**
+     * Closes the stream.
+     */
+    virtual void close ()
+    {
+      Binstream::close ();
+      if (! buf.close ())
+	this->setstate (ios::failbit);
+    }
+
+    // I/O ------------------------------------------------------------------
+  };
+}
+
 #endif

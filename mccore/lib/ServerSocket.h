@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // ServerSocket.h
-// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-04 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:51 2001
-// $Revision: 1.8 $
-// $Id: ServerSocket.h,v 1.8 2003-12-23 14:58:09 larosem Exp $
+// $Revision: 1.9 $
+// $Id: ServerSocket.h,v 1.9 2004-04-30 19:23:04 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -29,54 +29,59 @@
 
 #define MAX_QUEUE_LEN 0
 
-class Sockstream;
 
 
-
-/**
- * @short Implementation of a server socket.
- *
- * This class implements a server socket on which we can listen and
- * wait for a connection from a client and returns a socket stream
- * (Sockstream).
- *
- * @author Patrick Gendron <gendrop@iro.umontreal.ca> 
- */
-class ServerSocket
+namespace mccore
 {
-  int socket_id;
-  int port;
-
-  ServerSocket () {}
-
-public:
-
+  class Sockstream;
+  
+  
+  
   /**
-   * Creates a server socket on the specified port.
+   * @short Implementation of a server socket.
+   *
+   * This class implements a server socket on which we can listen and
+   * wait for a connection from a client and returns a socket stream
+   * (Sockstream).
+   *
+   * @author Patrick Gendron <gendrop@iro.umontreal.ca> 
    */
-
-  ServerSocket (int thePort);
-
-  /**
-   * Destructor.
-   */
-  ~ServerSocket ();
-
-  int GetSocketId () { return socket_id; }
-  int GetPort () { return port; }
-
-  /**
-   * Listens for a connection to be made and accepts it.  This is a
-   * blocking call on the listen(2) function.
-   * @return a newly created stream (not destroyed here)
-   */
-  Sockstream* accept ();
-
-  /**
-   * Closes this socket.
-   */
-  void close ();
-
-};
-
+  class ServerSocket
+  {
+    int socket_id;
+    int port;
+    
+    ServerSocket () {}
+    
+  public:
+    
+    /**
+     * Creates a server socket on the specified port.
+     */
+    
+    ServerSocket (int thePort);
+    
+    /**
+     * Destructor.
+     */
+    ~ServerSocket ();
+    
+    int GetSocketId () { return socket_id; }
+    int GetPort () { return port; }
+    
+    /**
+     * Listens for a connection to be made and accepts it.  This is a
+     * blocking call on the listen(2) function.
+     * @return a newly created stream (not destroyed here)
+     */
+    sBinstream* accept ();
+    
+    /**
+     * Closes this socket.
+     */
+    void close ();
+    
+  };
+}
+  
 #endif
