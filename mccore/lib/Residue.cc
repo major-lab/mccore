@@ -144,11 +144,17 @@ Residue::setIdeal ()
     insert (CAtom (0.629, 2.653, 4.755, a_O4)); 
     insert (CAtom (0.329, 0.571, 3.657, a_C5)); 
     insert (CAtom (0.000, 0.000, 0.000, a_C1p));
+  } else if (mType->is_Phosphate ()) {
+      insert (CAtom ( 99.755, 106.228, 6.380, a_O3p));
+      insert (CAtom (100.821, 105.050, 6.479, a_P));
+      insert (CAtom (100.856, 104.272, 5.224, a_O1P));
+      insert (CAtom (100.658, 104.316, 7.746, a_O2P));
+      insert (CAtom (102.198, 105.850, 6.595, a_O5p));
   } else {
     gOut (2) << "Oups, setIdeal erased the residue " 
 	     << "but the ideal confo is unknown.  Go get a coffee!" << endl;
   }
-
+ 
   Align ();
   init ();
 }
@@ -290,7 +296,7 @@ Residue::init ()
 
   if (! mType)
     return;
-  
+
   // PSY and PSZ creation for nucleic acid.
   if (mType->is_Purine () || mType->is_Pyrimidine ())
     {
@@ -396,7 +402,7 @@ Residue::init ()
 
   // Fix res type
   // -- Si le type est déjà spécialisé, il n'y a aucun changement.
-  if (ref (a_C1p))
+  if (ref (a_C2p))
     {
       if (ref (a_O2p))
 	{
@@ -437,6 +443,13 @@ Residue::init ()
     }
   
   isIdentity = mTfo.isIdentity ();
+
+//   if (mAtomRes.capacity () > mAtomRes.size ())
+//     {
+//       cerr << "resizing atomres: " << mAtomRes.capacity () << " -> "
+// 	   << mAtomRes.size () << endl;
+//       mAtomRes.resize (mAtomRes.size ());
+//     }
 }
 
 
@@ -605,6 +618,26 @@ Residue::AtomCopy (const AbstractResidue &right)
     }
 }
 
+
+void
+Residue::AtomInit (const vector< CAtom >& newref)
+{
+  vector< CAtom >::const_iterator ait;
+  // should filter with no_pse_lp_atom_set ?
+  mAtomRef.clear ();
+  for (ait = newref.begin (); ait != newref.end (); ++ait)
+    mAtomRef.push_back (ait->clone ());
+  init ();
+}
+
+
+void
+Residue::AtomInit (const vector< CAtom* >& newref)
+{
+  // should filter with no_pse_lp_atom_set ?
+  mAtomRef = newref;
+  init ();
+}
 
 
 AbstractResidue*
@@ -776,6 +809,13 @@ Residue::read (iPdbstream &ips)
 	if (filter (*it))
 	  mAtomRef.push_back (it->clone ());
 
+//       if (mAtomRef.capacity () > mAtomRef.size ())
+// 	{
+// 	  cerr << "resizing atomref: " << mAtomRef.capacity () << " -> "
+// 	       << mAtomRef.size () << endl;
+// 	  mAtomRef.resize (mAtomRef.size ());
+// 	}
+      
       resId = ips.GetPrevResId ();
       mType = ips.GetPrevResType ();
 

@@ -204,6 +204,12 @@ public:
    */
   virtual const_iterator find (const t_Atom *k) const;
 
+  /**
+   * Vraiment pas cool
+   */
+  virtual const vector< CAtom >& getAtomRef () const { return vector< CAtom > (); }
+  virtual const vector< CAtom* >& getAtompRef () const { return mAtomRef; }
+  
   // METHODS --------------------------------------------------------------
 
 protected:
@@ -297,7 +303,6 @@ public:
    */
   virtual iterator erase (t_Atom *type);
 
-
   // BROKEN!!!  
 //   /**
 //    * Erases a range of atoms from the residue, adjusting all containers and
@@ -346,6 +351,13 @@ public:
    * @param right the residue to copy.
    */
   virtual void AtomCopy (const AbstractResidue &right);
+
+  /**
+   * Overwrite atoms in global referential and re-init the residue.
+   * @param newref New atoms referential.
+   */
+  virtual void AtomInit (const vector< CAtom >& newref);
+  virtual void AtomInit (const vector< CAtom* >& newref);
   
   /**
    * Creates a new residue with the atoms specified in the variable argument

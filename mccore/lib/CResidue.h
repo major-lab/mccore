@@ -264,6 +264,12 @@ protected:
 public:
 
   /**
+   * Vraiment pas cool
+   */
+  virtual const vector< CAtom >& getAtomRef () const { return mAtomRef; }
+  virtual const vector< CAtom* >& getAtompRef () const { return vector< CAtom* > (); }
+  
+  /**
    * Gets the number of atoms contained in the residue.
    * @return the size of the residue.
    */
@@ -336,6 +342,13 @@ public:
    * @param right the residue to copy.
    */
   virtual void AtomCopy (const AbstractResidue &right);
+
+  /**
+   * Overwrite atoms in global referential and re-init the residue.
+   * @param newref New atoms referential.
+   */
+  virtual void AtomInit (const vector< CAtom >& newref);
+  virtual void AtomInit (const vector< CAtom* >& newref);
   
   /**
    * Creates a new residue with the atoms specified in the variable argument
