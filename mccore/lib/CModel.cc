@@ -4,13 +4,13 @@
 // Author           : Martin Larose
 // Created On       : Fri Oct  6 08:21:55 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Nov  9 10:44:51 2000
-// Update Count     : 2
+// Last Modified On : Mon Dec  4 15:38:53 2000
+// Update Count     : 3
 // Status           : Unknown.
 // 
 
 
-#include "algo.h"
+#include <string.h>
 
 #include "CModel.h"
 
@@ -70,6 +70,90 @@ CModel::SortAtoms () const
   for (cit = begin (); cit != end (); ++cit)
     model.push_back (cit->sort ());
   return model;
+}
+
+
+
+CResidue::iterator
+CModel::find (const char *str)
+{
+  char *s = new char[strlen (str) + 1];
+  char *p = s;
+  char *argum;
+  vector< char* > tok;
+  CModel::iterator mit;
+  CResidue::iterator it;
+  
+  strcpy (s, str);
+  argum = strsep (&p, ":");
+  while (argum)
+    {
+      if (strlen (argum) > 0) 
+	tok.push_back (argum);
+      argum = strsep (&p, ":");
+    }
+
+  if (tok.size () == 2
+      && (mit = find (CResId (tok[0]))) != end ()
+      && (it = mit->find (iPdbstream::GetAtomType (tok[1]))) != mit->end ())
+    return it;
+  else
+    return CResidue::iterator ();
+}
+
+
+
+CResidue::const_iterator
+CModel::find (const char *str) const
+{
+  char *s = new char[strlen (str) + 1];
+  char *p = s;
+  char *argum;
+  vector< char* > tok;
+  CModel::const_iterator mit;
+  CResidue::const_iterator it;
+  
+  strcpy (s, str);
+  argum = strsep (&p, ":");
+  while (argum)
+    {
+      if (strlen (argum) > 0) 
+	tok.push_back (argum);
+      argum = strsep (&p, ":");
+    }
+
+  if (tok.size () == 2
+      && (mit = find (CResId (tok[0]))) != end ()
+      && (it = mit->find (iPdbstream::GetAtomType (tok[1]))) != mit->end ())
+    return it;
+  else
+    return CResidue::const_iterator ();
+}
+
+
+
+CModel::iterator
+CModel::find (const CResId &id)
+{
+  iterator it;
+
+  for (it = begin (); it != end (); ++it)
+    if (id == *it)
+      break;
+  return it;
+}
+
+
+
+CModel::const_iterator
+CModel::find (const CResId &id) const
+{
+  const_iterator it;
+
+  for (it = begin (); it != end (); ++it)
+    if (id == *it)
+      break;
+  return it;
 }
 
 

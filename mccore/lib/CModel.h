@@ -4,8 +4,8 @@
 // Author           : Martin Larose
 // Created On       : Fri Oct  6 08:21:55 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Nov  9 10:44:55 2000
-// Update Count     : 2
+// Last Modified On : Mon Dec  4 15:38:55 2000
+// Update Count     : 3
 // Status           : Unknown.
 // 
 
@@ -84,14 +84,44 @@ public:
    */
   CModel SortAtoms () const;
 
+  /**
+   * Finds an atom given it's text representation of the form residue:atom.
+   * Returns a empty iterator if it is not found.
+   * @param str the text representation.
+   * @return the residue iterator over the atom.
+   */
+  CResidue::iterator find (const char *str);
+
+  /**
+   * Finds an atom given it's text representation of the form residue:atom.
+   * Returns a empty iterator if it is not found.
+   * @param str the text representation.
+   * @return the residue iterator over the atom.
+   */
+  CResidue::const_iterator find (const char *str) const;
+
+  /**
+   * Finds a residue given it's residue id.  Returns a CModel iterator
+   * pointing to the residue or the end of the container if the residue was
+   * not found.
+   * @param id the residue id.
+   * @return a CModel iterator.
+   */
+  CModel::iterator find (const CResId &id);
+
+  /**
+   * Finds a residue given it's residue id.  Returns a CModel iterator
+   * pointing to the residue or the end of the container if the residue was
+   * not found.
+   * @param id the residue id.
+   * @return a CModel iterator.
+   */
+  CModel::const_iterator find (const CResId &id) const;
+
   // I/O  -----------------------------------------------------------------
 };
 
-//  ostream& operator<< (ostream &os, const CModel &obj);
-//  istream& operator>> (istream &is, CModel &obj);
 
-//  iBinstream& operator>> (iBinstream &ibs, CModel &obj);
-//  oBinstream& operator<< (oBinstream &obs, const CModel &obj);
 
 iPdbstream& operator>> (iPdbstream &ips, CModel &obj);
 oPdbstream& operator<< (oPdbstream &ops, const CModel &obj);
