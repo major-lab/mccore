@@ -4,24 +4,24 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created on       : jeu 22 jui 1999 18:24:14 EDT
-// $Revision: 1.7.10.2 $
-// $Id: zfBinstream.h,v 1.7.10.2 2003-11-26 17:01:10 larosem Exp $
+// $Revision: 1.7.10.3 $
+// $Id: zfBinstream.h,v 1.7.10.3 2003-12-05 19:59:40 larosem Exp $
+//
+// This file is part of mccore.
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifndef _zfBinstream_h_
@@ -30,9 +30,8 @@
 #include <iostream>
 #include <zlib.h>
 
-#include "fstreambase.h"
-#include "zfstream.h"
 #include "Binstream.h"
+#include "zfstream.h"
 
 using namespace std;
 
@@ -54,17 +53,20 @@ using namespace std;
  *
  * @author Martin Larose <larosem@IRO.UMontreal.CA>
  */
-class izfBinstream : public iBinstream, public zfstreambase
+class izfBinstream : public zfstreambase, public iBinstream
 {
-
-public:
-
+  
+ public:
+  
   // LIFECYCLE ------------------------------------------------------------
-
+  
   /**
    * Initializes the stream.
    */
-  izfBinstream () : iBinstream (zfstreambase::rdbuf ()) { }
+  izfBinstream ()
+    : zfstreambase (),
+      iBinstream (zfstreambase::rdbuf ())
+  { }
   
   /**
    * Initializes the stream with file name and parameters.
@@ -72,7 +74,9 @@ public:
    * @param mode the open mode (default ios::in).
    */
   izfBinstream(const char *name, int mode = ios::in)
-      : iBinstream (zfstreambase::rdbuf ()), zfstreambase (name, mode) { }
+      : zfstreambase (name, mode),
+	iBinstream (zfstreambase::rdbuf ())
+  { }
 
   // OPERATORS ------------------------------------------------------------
 
@@ -90,12 +94,11 @@ public:
     zfstreambase::open (name, mode);
     iBinstream::open ();
   }
-
+  
   /**
    * Closes the stream.
    */
-  virtual void close ()
-  { iBinstream::close (); zfstreambase::close (); }
+  virtual void close () { iBinstream::close (); zfstreambase::close (); }
   
   // I/O ------------------------------------------------------------------
 };
@@ -117,17 +120,20 @@ public:
  *
  * @author Martin Larose <larosem@IRO.UMontreal.CA>
  */
-class ozfBinstream : public oBinstream, public zfstreambase
+class ozfBinstream : public zfstreambase, public oBinstream
 {
-
-public:
-
+  
+ public:
+  
   // LIFECYCLE ------------------------------------------------------------
 
   /**
    * Initializes the stream.
    */
-  ozfBinstream () : oBinstream (zfstreambase::rdbuf()) { }
+  ozfBinstream ()
+    : zfstreambase (),
+      oBinstream (zfstreambase::rdbuf ())
+  { }
 
   /**
    * Initializes the stream with file name and parameters.
@@ -135,9 +141,10 @@ public:
    * @param level the compression level for output.
    * @param mode the open mode (default ios::out).
    */
-  ozfBinstream (const char *name, int level = Z_BEST_SPEED,
-		int mode = ios::out)
-    : oBinstream (zfstreambase::rdbuf()), zfstreambase (name, mode, level) { }
+  ozfBinstream (const char *name, int level = Z_BEST_SPEED, int mode = ios::out)
+    : zfstreambase (name, mode, level),
+      oBinstream (zfstreambase::rdbuf())
+  { }
 
   // OPERATORS ------------------------------------------------------------
 
@@ -152,22 +159,18 @@ public:
    * @param mode the open mode (default ios::out).
    * @param prot the protection (default 0644).
    */
-  void open (const char *name, int level = Z_BEST_SPEED,
-	     int mode = ios::out)
+  void open (const char *name, int level = Z_BEST_SPEED, int mode = ios::out)
   {
     zfstreambase::open (name, mode, level);
     oBinstream::open ();
   }
-
+  
   /**
    * Closes the stream.
    */
   virtual void close () { oBinstream::close (); zfstreambase::close (); }
-
+  
   // I/O ------------------------------------------------------------------
 };
 
-
 #endif
-
-

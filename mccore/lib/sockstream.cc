@@ -3,8 +3,8 @@
 // Copyright © 2002-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Wed Jan 30 19:57:48 2002
-// $Revision: 1.1.8.2 $
-// $Id: sockstream.cc,v 1.1.8.2 2003-11-26 17:01:03 larosem Exp $
+// $Revision: 1.1.8.3 $
+// $Id: sockstream.cc,v 1.1.8.3 2003-12-05 19:59:37 larosem Exp $
 //
 // This file is part of mccore.
 //
@@ -28,7 +28,6 @@
 #include <netdb.h>
 #include <netinet/in.h>
 #include <signal.h>
-#include <stdlib.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

@@ -4,31 +4,30 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>.
 // Created On       : 
-// $Revision: 1.4.8.2 $
-// $Id: fPdbstream.h,v 1.4.8.2 2003-11-26 17:00:49 larosem Exp $
+// $Revision: 1.4.8.3 $
+// $Id: fPdbstream.h,v 1.4.8.3 2003-12-05 19:59:32 larosem Exp $
 //
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifndef _fPdbstream_h_
 #define _fPdbstream_h_
 
 #include <iostream>
-#include <fstream>
 
 #include "fstreambase.h"
 #include "Pdbstream.h"
@@ -42,7 +41,7 @@ using namespace std;
  *
  * @author Martin Larose <larosem@iro.umontreal.ca>.
  */
-class ifPdbstream : public iPdbstream, public fstreambase
+class ifPdbstream : public fstreambase, public iPdbstream
 {
 public:
 
@@ -51,7 +50,10 @@ public:
   /**
    * Initializes the stream.
    */
-  ifPdbstream () : iPdbstream (fstreambase::rdbuf ()) { }
+  ifPdbstream ()
+    : fstreambase (),
+      iPdbstream (fstreambase::rdbuf ())
+  { }
 
   /**
    * Initializes the stream with a file name and optional mode and
@@ -60,7 +62,9 @@ public:
    * @param mode the ios mode (default = ios::in).
    */
   ifPdbstream (const char *name, int mode = ios::in)
-    : iPdbstream (fstreambase::rdbuf ()), fstreambase (name, mode) { }
+    : fstreambase (name, mode),
+      iPdbstream (fstreambase::rdbuf ())
+  { }
 
   // OPERATORS -----------------------------------------------------
 
@@ -75,7 +79,10 @@ public:
    * @param mode the ios mode (default = ios::in).
    */
   void open (const char *name, int mode=ios::in)
-    { fstreambase::open (name, mode); iPdbstream::open (); }
+  {
+    fstreambase::open (name, mode);
+    iPdbstream::open ();
+  }
 
   /**
    * Closes the stream.
@@ -95,7 +102,7 @@ public:
  *
  * @author Martin Larose <larosem@iro.umontreal.ca>.
  */
-class ofPdbstream : public oPdbstream, public fstreambase
+class ofPdbstream : public fstreambase, public oPdbstream
 {
 public:
 
@@ -104,7 +111,10 @@ public:
   /**
    * Initializes the stream.
    */
-  ofPdbstream () : oPdbstream (fstreambase::rdbuf ()) { }
+  ofPdbstream ()
+    : fstreambase (),
+      oPdbstream (fstreambase::rdbuf ())
+  { }
 
   /**
    * Initializes the stream with a file name and an optional mode and
@@ -113,7 +123,9 @@ public:
    * @param mode the ios mode (default = ios::out).
    */
   ofPdbstream (const char *name, int mode = ios::out)
-    : oPdbstream (fstreambase::rdbuf ()), fstreambase (name, mode) { }
+    : fstreambase (name, mode),
+      oPdbstream (fstreambase::rdbuf ())
+  { }
 
   // OPERATORS -----------------------------------------------------
 
@@ -128,7 +140,10 @@ public:
    * @param mode the ios mode (default = ios::out).
    */
   void open (const char *name, int mode = ios::out)
-    { fstreambase::open (name, mode); oPdbstream::open (); }
+  {
+    fstreambase::open (name, mode);
+    oPdbstream::open ();
+  }
 
   /**
    * Closes the stream.

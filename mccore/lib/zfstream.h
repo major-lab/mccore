@@ -3,8 +3,8 @@
 // Copyright © 2002-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Mon Jan 28 16:13:00 2002
-// $Revision: 1.5.8.2 $
-// $Id: zfstream.h,v 1.5.8.2 2003-11-26 17:01:24 larosem Exp $
+// $Revision: 1.5.8.3 $
+// $Id: zfstream.h,v 1.5.8.3 2003-12-05 19:59:45 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -207,38 +207,46 @@ public:
  *
  * @author Patrick Gendron <gendrop@iro.umontreal.ca>
  */
-class izfstream : public istream, public zfstreambase
+class izfstream : public zfstreambase, public istream
 {
-
-public:
+  
+ public:
+  
   /**
    * Initializes the stream.
    */
-  izfstream() : istream(rdbuf ()) {} 
+  izfstream ()
+    : zfstreambase (),
+      istream (this->rdbuf ())
+  { } 
 
   /**
    * Initializes the stream with filename.
    * @param name the file name.
    * @param mode the file mode.
    */
-  izfstream(const char* name, int mode = ios::in)
-    : istream(rdbuf ()), zfstreambase(name, mode) {}  
-
+  izfstream (const char* name, int mode = ios::in)
+    : zfstreambase (name, mode),
+      istream (this->rdbuf ())
+  { }
+  
   /**
    * Opens the stream with file name.
    * @param name the file name.
    * @param mode the file mode.
    */
-  void open(const char* name, int mode = ios::in) {
-    zfstreambase::open(name, mode);
+  void open (const char* name, int mode = ios::in)
+  {
+    zfstreambase::open (name, mode);
   }
 
   /**
    * Gets the buffer.
    * @return the compressed file buffer object.
    */
-  zfstreambuf* rdbuf() { return zfstreambase::rdbuf(); }
+  zfstreambuf* rdbuf () { return zfstreambase::rdbuf (); }
 };
+
 
 
 /**
@@ -248,36 +256,44 @@ public:
  *
  * @author Patrick Gendron <gendrop@iro.umontreal.ca>
  */
-class ozfstream : public ostream, public zfstreambase
+class ozfstream : public zfstreambase, public ostream
 {
-public:
+  
+ public:
+
   /**
    * Initializes the stream.
    */
-  ozfstream() : ostream(rdbuf ()) {}
+  ozfstream ()
+    : zfstreambase (),
+      ostream (this->rdbuf ())
+  { }
 
   /**
    * Initializes the stream with filename.
    * @param name the file name.
    * @param mode the file mode.
    */
-  ozfstream(const char* name, int mode = ios::out)
-    : ostream(rdbuf ()), zfstreambase(name, mode) {}  
+  ozfstream (const char* name, int mode = ios::out)
+    : zfstreambase (name, mode),
+      ostream (this->rdbuf ())
+  { }
 
   /**
    * Opens the stream with file name.
    * @param name the file name.
    * @param mode the file mode.
    */
-  void open(const char* name, int mode = ios::out) {
-    zfstreambase::open(name, mode);
+  void open (const char* name, int mode = ios::out)
+  {
+    zfstreambase::open (name, mode);
   }
 
   /**
    * Gets the buffer.
    * @return the compressed file buffer object.
    */
-  zfstreambuf* rdbuf() { return zfstreambase::rdbuf(); }
+  zfstreambuf* rdbuf () { return zfstreambase::rdbuf (); }
 };
 
 #endif

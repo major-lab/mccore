@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : ven 23 jui 1999 13:54:45 EDT
-// $Revision: 1.6.8.2 $
-// $Id: zfPdbstream.h,v 1.6.8.2 2003-11-26 17:01:12 larosem Exp $
+// $Revision: 1.6.8.3 $
+// $Id: zfPdbstream.h,v 1.6.8.3 2003-12-05 19:59:43 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -29,9 +29,8 @@
 
 #include <iostream>
 
-#include "fstreambase.h"
-#include "zfstream.h"
 #include "Pdbstream.h"
+#include "zfstream.h"
 
 using namespace std;
 
@@ -45,17 +44,20 @@ using namespace std;
  *
  * @author Martin Larose <larosem@iro.umontreal.ca>.
  */
-class izfPdbstream : public iPdbstream, public zfstreambase
+class izfPdbstream : public zfstreambase, public iPdbstream
 {
-
-public:
-
+  
+ public:
+  
   // LIFECYCLE -----------------------------------------------------
-
+  
   /**
    * Initializes the objet.
    */
-  izfPdbstream () : iPdbstream (zfstreambase::rdbuf ()) { }
+  izfPdbstream ()
+    : zfstreambase (),
+      iPdbstream (zfstreambase::rdbuf ())
+  { }
 
   /**
    * Initializes the objet with a file name and optional mode and
@@ -65,8 +67,9 @@ public:
    * @param mode the ios mode (default = ios::in).
    */
   izfPdbstream (const char *name, int mode = ios::in)
-    : iPdbstream (zfstreambase::rdbuf ()), 
-      zfstreambase (name, mode) { }
+    : zfstreambase (name, mode),
+      iPdbstream (zfstreambase::rdbuf ())
+  { }
 
   // OPERATORS -----------------------------------------------------
 
@@ -108,17 +111,20 @@ public:
  *
  * @author Martin Larose <larosem@iro.umontreal.ca>.
  */
-class ozfPdbstream : public oPdbstream, public zfstreambase
+class ozfPdbstream : public zfstreambase, public oPdbstream
 {
-
-public:
-
+  
+ public:
+  
   // LIFECYCLE -----------------------------------------------------
-
+  
   /**
    * Initializes the pdb file stream.
    */
-  ozfPdbstream () : oPdbstream (zfstreambase::rdbuf()) { }
+  ozfPdbstream ()
+    : zfstreambase (),
+      oPdbstream (zfstreambase::rdbuf())
+  { }
 
   /**
    * Initializes the pdb file stream with a file name and optional mode,
@@ -127,10 +133,10 @@ public:
    * @param mode the ios mode (default = ios::out).
    * @param level the compression level (default = Z_BEST_SPEED).
    */
-  ozfPdbstream (const char *name, int mode = ios::out,
-		int level = Z_BEST_SPEED)
-    : oPdbstream (zfstreambase::rdbuf()),
-      zfstreambase (name, mode, level) { }
+  ozfPdbstream (const char *name, int mode = ios::out, int level = Z_BEST_SPEED)
+    : zfstreambase (name, mode, level),
+      oPdbstream (zfstreambase::rdbuf())
+  { }
 
   // OPERATORS -----------------------------------------------------
 
@@ -145,8 +151,7 @@ public:
    * @param mode the ios mode (default = ios::out).
    * @param level the compression level (default = Z_BEST_SPEED).
    */
-  void open (const char *name, int mode = ios::out,
-	     int level = Z_BEST_SPEED)
+  void open (const char *name, int mode = ios::out, int level = Z_BEST_SPEED)
   {
     zfstreambase::open (name, mode, level);
     oPdbstream::open ();

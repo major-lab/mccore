@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.28.8.7 $
-# $Id: Makefile.in,v 1.28.8.7 2003-11-27 16:15:54 larosem Exp $
+# $Revision: 1.28.8.8 $
+# $Id: Makefile.in,v 1.28.8.8 2003-12-05 19:59:09 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -58,14 +58,13 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 
 
 .SUFFIXES:
-.SUFFIXES: .cc .o .d
 
-.cc.d:
+%.d: %.cc
 	@ $(SHELL) -ec '$(CXX) $(DEPFLAGS) $(DEFS) -I.. -I$(srcdir) $< \
 	    | sed '\''s/\($*\)\.o[ :]*/\1.o \1.lo $@ : /g'\'' > $@; \
 	      [ -s $@ ] || rm -f $@'
 
-.cc.o:
+%.o: %.cc
 	$(CXX) $(CXXFLAGS) $(DEFS) -I.. -I$(srcdir) -c $<
 
 % : %.cc

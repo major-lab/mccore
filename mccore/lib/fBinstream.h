@@ -5,7 +5,7 @@
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:20:58 EDT
 // $Revision
-// $Id: fBinstream.h,v 1.5.8.2 2003-11-26 17:00:45 larosem Exp $
+// $Id: fBinstream.h,v 1.5.8.3 2003-12-05 19:59:29 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -28,12 +28,12 @@
 #define _fBinstream_h_
 
 #include <iostream>
-#include <fstream>
 
-#include "fstreambase.h"
 #include "Binstream.h"
+#include "fstreambase.h"
 
 using namespace std;
+
 
 
 /**
@@ -46,7 +46,7 @@ using namespace std;
  *
  * @author Martin Larose <larosem@IRO.UMontreal.CA>
  */
-class ifBinstream : public iBinstream, public fstreambase
+class ifBinstream : public fstreambase, public iBinstream
 {
 
 public:
@@ -56,7 +56,10 @@ public:
   /**
    * Initializes the objet.
    */
-  ifBinstream () : iBinstream (fstreambase::rdbuf ()) { }
+  ifBinstream ()
+    : fstreambase (),
+      iBinstream (fstreambase::rdbuf ())
+  { }
 
   /**
    * Initializes the stream with file name and parameters.
@@ -64,7 +67,9 @@ public:
    * @param mode the open mode (default ios::in).
    */
   ifBinstream (const char *name, int mode=ios::in)
-    : iBinstream (fstreambase::rdbuf ()), fstreambase (name, mode) { }
+    : fstreambase (name, mode),
+      iBinstream (fstreambase::rdbuf ())
+  { }
 
   // OPERATORS ------------------------------------------------------------
 
@@ -78,16 +83,16 @@ public:
    * @param mode the open mode (default ios::in).
    */
   void open (const char *name, int mode=ios::in)
-    {
-      fstreambase::open (name, mode);
-      iBinstream::open ();
-    }
+  {
+    fstreambase::open (name, mode);
+    iBinstream::open ();
+  }
 
   /**
    * Closes the stream.
    */
   virtual void close () { iBinstream::close (); fstreambase::close (); }
-
+  
   // I/O ------------------------------------------------------------------
 };
 
@@ -103,7 +108,7 @@ public:
  *
  * @author Martin Larose <larosem@IRO.UMontreal.CA>
  */
-class ofBinstream : public oBinstream, public fstreambase
+class ofBinstream : public fstreambase, public oBinstream
 {
 
 public:
@@ -113,7 +118,10 @@ public:
   /**
    * Initializes the stream.
    */
-  ofBinstream () : oBinstream (fstreambase::rdbuf ()) { }
+  ofBinstream ()
+    : fstreambase (),
+      oBinstream (fstreambase::rdbuf ())
+  { }
 
   /**
    * Initializes the stream with file name and parameters.
@@ -121,7 +129,9 @@ public:
    * @param mode the open mode (default ios::out).
    */
   ofBinstream (const char *name, int mode = ios::out)
-    : oBinstream (fstreambase::rdbuf ()), fstreambase (name, mode) { }
+    : fstreambase (name, mode),
+      oBinstream (fstreambase::rdbuf ())
+  { }
 
   // OPERATORS ------------------------------------------------------------
 
@@ -160,17 +170,20 @@ public:
  *
  * @author Martin Larose <larosem@IRO.UMontreal.CA>
  */
-class fBinstream : public Binstream, public fstreambase
+class fBinstream : public fstreambase, public Binstream
 {
   
-public:
-
+ public:
+  
   // LIFECYCLE ------------------------------------------------------------
-
+  
   /**
    * Initializes the stream.
    */
-  fBinstream () : Binstream (fstreambase::rdbuf ()) { }
+  fBinstream ()
+    : fstreambase (),
+      Binstream (fstreambase::rdbuf ())
+  { }
 
   /**
    * Initializes the stream with file name and parameters.
@@ -179,7 +192,9 @@ public:
    * @param prot the protection (default 0644).
    */
   fBinstream (const char *name, int mode = ios::in)
-    : Binstream (fstreambase::rdbuf ()), fstreambase(name, mode)  { }
+    : fstreambase (name, mode),
+      Binstream (fstreambase::rdbuf ())
+  { }
 
   // OPERATORS ------------------------------------------------------------
 

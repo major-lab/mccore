@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Mar  6 12:24:34 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Sep  5 16:32:10 2001
-// Update Count     : 4
+// Last Modified On : Fri Dec  5 14:59:20 2003
+// Update Count     : 5
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -86,7 +86,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_Misc& operator= (const rt_Misc &right);
+  const rt_Misc& operator= (const rt_Misc &right);
 
   /**
    * Converts the residue type to a string.
@@ -108,7 +108,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'X'; }
+  virtual char getOneLetterRep () const { return 'X'; }
 
   /**
    * Tells if the residue is a misc type.
@@ -170,7 +170,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_NucleicAcid& operator= (const rt_NucleicAcid &right);
+  const rt_NucleicAcid& operator= (const rt_NucleicAcid &right);
 
   /**
    * Converts the residue type to a string.
@@ -192,7 +192,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'N'; }
+  virtual char getOneLetterRep () const { return 'N'; }
 
   /**
    * Tells if the residue is a NucleicAcid type.
@@ -254,7 +254,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_AminoAcid& operator= (const rt_AminoAcid &right);
+  const rt_AminoAcid& operator= (const rt_AminoAcid &right);
 
   /**
    * Converts the residue type to a string.
@@ -276,7 +276,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return '?'; }
+  virtual char getOneLetterRep () const { return '?'; }
 
   /**
    * Tells if the residue is a AminoAcid type.
@@ -338,7 +338,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_Phosphate& operator= (const rt_Phosphate &right);
+  const rt_Phosphate& operator= (const rt_Phosphate &right);
 
   /**
    * Converts the residue type to a string.
@@ -360,7 +360,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return '?'; }
+  virtual char getOneLetterRep () const { return '?'; }
   
   /**
    * Tells if the residue is a Phosphate type.
@@ -422,7 +422,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_Purine& operator= (const rt_Purine &right);
+  const rt_Purine& operator= (const rt_Purine &right);
 
   /**
    * Converts the residue type to a string.
@@ -500,7 +500,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_Pyrimidine& operator= (const rt_Pyrimidine &right);
+  const rt_Pyrimidine& operator= (const rt_Pyrimidine &right);
 
   /**
    * Converts the residue type to a string.
@@ -578,7 +578,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_DNA& operator= (const rt_DNA &right);
+  const rt_DNA& operator= (const rt_DNA &right);
 
   /**
    * Converts the residue type to a string.
@@ -656,7 +656,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_RNA& operator= (const rt_RNA &right);
+  const rt_RNA& operator= (const rt_RNA &right);
 
   /**
    * Converts the residue type to a string.
@@ -734,7 +734,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_A& operator= (const rt_A &right);
+  const rt_A& operator= (const rt_A &right);
 
   /**
    * Converts the residue type to a string.
@@ -756,7 +756,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'A'; }
+  virtual char getOneLetterRep () const { return 'A'; }
 
   /**
    * Tells if the residue is a A type.
@@ -818,7 +818,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_C& operator= (const rt_C &right);
+  const rt_C& operator= (const rt_C &right);
 
   /**
    * Converts the residue type to a string.
@@ -840,7 +840,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'C'; }
+  virtual char getOneLetterRep () const { return 'C'; }
   
   /**
    * Tells if the residue is a C type.
@@ -902,7 +902,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_G& operator= (const rt_G &right);
+  const rt_G& operator= (const rt_G &right);
 
   /**
    * Converts the residue type to a string.
@@ -924,7 +924,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'G'; }
+  virtual char getOneLetterRep () const { return 'G'; }
 
   /**
    * Tells if the residue is a G type.
@@ -986,7 +986,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_U& operator= (const rt_U &right);
+  const rt_U& operator= (const rt_U &right);
 
   /**
    * Converts the residue type to a string.
@@ -1008,7 +1008,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'U'; }
+  virtual char getOneLetterRep () const { return 'U'; }
   
   /**
    * Tells if the residue is a U type.
@@ -1070,7 +1070,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_T& operator= (const rt_T &right);
+  const rt_T& operator= (const rt_T &right);
 
   /**
    * Converts the residue type to a string.
@@ -1092,7 +1092,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'T'; }
+  virtual char getOneLetterRep () const { return 'T'; }
 
   /**
    * Tells if the residue is a T type.
@@ -1154,7 +1154,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_rA& operator= (const rt_rA &right);
+  const rt_rA& operator= (const rt_rA &right);
 
   /**
    * Converts the residue type to a string.
@@ -1176,7 +1176,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return rt_A::getOneLetterRep (); }
+  virtual char getOneLetterRep () const { return rt_A::getOneLetterRep (); }
 
   /**
    * Tells if the residue is a rA type.
@@ -1238,7 +1238,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_rC& operator= (const rt_rC &right);
+  const rt_rC& operator= (const rt_rC &right);
 
   /**
    * Converts the residue type to a string.
@@ -1260,7 +1260,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return rt_C::getOneLetterRep (); }
+  virtual char getOneLetterRep () const { return rt_C::getOneLetterRep (); }
 
   /**
    * Tells if the residue is a rC type.
@@ -1322,7 +1322,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_rG& operator= (const rt_rG &right);
+  const rt_rG& operator= (const rt_rG &right);
 
   /**
    * Converts the residue type to a string.
@@ -1344,7 +1344,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return rt_G::getOneLetterRep (); }
+  virtual char getOneLetterRep () const { return rt_G::getOneLetterRep (); }
 
   /**
    * Tells if the residue is a rG type.
@@ -1406,7 +1406,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_rU& operator= (const rt_rU &right);
+  const rt_rU& operator= (const rt_rU &right);
 
   /**
    * Converts the residue type to a string.
@@ -1428,7 +1428,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return rt_U::getOneLetterRep (); }
+  virtual char getOneLetterRep () const { return rt_U::getOneLetterRep (); }
 
   /**
    * Tells if the residue is a rU type.
@@ -1490,7 +1490,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_dA& operator= (const rt_dA &right);
+  const rt_dA& operator= (const rt_dA &right);
 
   /**
    * Converts the residue type to a string.
@@ -1512,7 +1512,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return rt_A::getOneLetterRep (); }
+  virtual char getOneLetterRep () const { return rt_A::getOneLetterRep (); }
 
   /**
    * Tells if the residue is a dA type.
@@ -1574,7 +1574,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_dC& operator= (const rt_dC &right);
+  const rt_dC& operator= (const rt_dC &right);
 
   /**
    * Converts the residue type to a string.
@@ -1596,7 +1596,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return rt_C::getOneLetterRep (); }
+  virtual char getOneLetterRep () const { return rt_C::getOneLetterRep (); }
 
   /**
    * Tells if the residue is a dC type.
@@ -1658,7 +1658,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_dG& operator= (const rt_dG &right);
+  const rt_dG& operator= (const rt_dG &right);
 
   /**
    * Converts the residue type to a string.
@@ -1680,7 +1680,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return rt_G::getOneLetterRep (); }
+  virtual char getOneLetterRep () const { return rt_G::getOneLetterRep (); }
 
   /**
    * Tells if the residue is a dG type.
@@ -1742,7 +1742,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_dT& operator= (const rt_dT &right);
+  const rt_dT& operator= (const rt_dT &right);
 
   /**
    * Converts the residue type to a string.
@@ -1764,7 +1764,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return rt_T::getOneLetterRep (); }
+  virtual char getOneLetterRep () const { return rt_T::getOneLetterRep (); }
 
   /**
    * Tells if the residue is a dT type.
@@ -1826,7 +1826,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_ALA& operator= (const rt_ALA &right);
+  const rt_ALA& operator= (const rt_ALA &right);
 
   /**
    * Converts the residue type to a string.
@@ -1848,7 +1848,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'A'; }
+  virtual char getOneLetterRep () const { return 'A'; }
 
   /**
    * Tells if the residue is a alanine type.
@@ -1910,7 +1910,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_ARG& operator= (const rt_ARG &right);
+  const rt_ARG& operator= (const rt_ARG &right);
 
   /**
    * Converts the residue type to a string.
@@ -1932,7 +1932,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'R'; }
+  virtual char getOneLetterRep () const { return 'R'; }
 
   /**
    * Tells if the residue is a arginine type.
@@ -1994,7 +1994,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_ASN& operator= (const rt_ASN &right);
+  const rt_ASN& operator= (const rt_ASN &right);
 
   /**
    * Converts the residue type to a string.
@@ -2016,7 +2016,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'N'; }
+  virtual char getOneLetterRep () const { return 'N'; }
 
   /**
    * Tells if the residue is a asparagine type.
@@ -2078,7 +2078,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_ASP& operator= (const rt_ASP &right);
+  const rt_ASP& operator= (const rt_ASP &right);
 
   /**
    * Converts the residue type to a string.
@@ -2100,7 +2100,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'D'; }
+  virtual char getOneLetterRep () const { return 'D'; }
 
   /**
    * Tells if the residue is a asparticacid type.
@@ -2162,7 +2162,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_CYS& operator= (const rt_CYS &right);
+  const rt_CYS& operator= (const rt_CYS &right);
 
   /**
    * Converts the residue type to a string.
@@ -2184,7 +2184,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'C'; }
+  virtual char getOneLetterRep () const { return 'C'; }
 
   /**
    * Tells if the residue is a cysteine type.
@@ -2246,7 +2246,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_GLN& operator= (const rt_GLN &right);
+  const rt_GLN& operator= (const rt_GLN &right);
 
   /**
    * Converts the residue type to a string.
@@ -2268,7 +2268,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'Q'; }
+  virtual char getOneLetterRep () const { return 'Q'; }
 
   /**
    * Tells if the residue is a glutamine type.
@@ -2330,7 +2330,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_GLU& operator= (const rt_GLU &right);
+  const rt_GLU& operator= (const rt_GLU &right);
 
   /**
    * Converts the residue type to a string.
@@ -2352,7 +2352,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'E'; }
+  virtual char getOneLetterRep () const { return 'E'; }
 
   /**
    * Tells if the residue is a glutamicacid type.
@@ -2414,7 +2414,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_GLY& operator= (const rt_GLY &right);
+  const rt_GLY& operator= (const rt_GLY &right);
 
   /**
    * Converts the residue type to a string.
@@ -2436,7 +2436,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'G'; }
+  virtual char getOneLetterRep () const { return 'G'; }
 
   /**
    * Tells if the residue is a glycine type.
@@ -2498,7 +2498,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_HIS& operator= (const rt_HIS &right);
+  const rt_HIS& operator= (const rt_HIS &right);
 
   /**
    * Converts the residue type to a string.
@@ -2520,7 +2520,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'H'; }
+  virtual char getOneLetterRep () const { return 'H'; }
 
   /**
    * Tells if the residue is a histidine type.
@@ -2582,7 +2582,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_ILE& operator= (const rt_ILE &right);
+  const rt_ILE& operator= (const rt_ILE &right);
 
   /**
    * Converts the residue type to a string.
@@ -2604,7 +2604,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'I'; }
+  virtual char getOneLetterRep () const { return 'I'; }
 
   /**
    * Tells if the residue is a isoleucine type.
@@ -2666,7 +2666,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_LEU& operator= (const rt_LEU &right);
+  const rt_LEU& operator= (const rt_LEU &right);
 
   /**
    * Converts the residue type to a string.
@@ -2688,7 +2688,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'L'; }
+  virtual char getOneLetterRep () const { return 'L'; }
 
   /**
    * Tells if the residue is a leucine type.
@@ -2750,7 +2750,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_LYS& operator= (const rt_LYS &right);
+  const rt_LYS& operator= (const rt_LYS &right);
 
   /**
    * Converts the residue type to a string.
@@ -2772,7 +2772,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'K'; }
+  virtual char getOneLetterRep () const { return 'K'; }
 
   /**
    * Tells if the residue is a lysine type.
@@ -2834,7 +2834,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_MET& operator= (const rt_MET &right);
+  const rt_MET& operator= (const rt_MET &right);
 
   /**
    * Converts the residue type to a string.
@@ -2856,7 +2856,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'M'; }
+  virtual char getOneLetterRep () const { return 'M'; }
 
   /**
    * Tells if the residue is a methionine type.
@@ -2918,7 +2918,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_PHE& operator= (const rt_PHE &right);
+  const rt_PHE& operator= (const rt_PHE &right);
 
   /**
    * Converts the residue type to a string.
@@ -2940,7 +2940,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'F'; }
+  virtual char getOneLetterRep () const { return 'F'; }
 
   /**
    * Tells if the residue is a phenylalanine type.
@@ -3002,7 +3002,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_PRO& operator= (const rt_PRO &right);
+  const rt_PRO& operator= (const rt_PRO &right);
 
   /**
    * Converts the residue type to a string.
@@ -3024,7 +3024,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'P'; }
+  virtual char getOneLetterRep () const { return 'P'; }
 
   /**
    * Tells if the residue is a proline type.
@@ -3086,7 +3086,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_SER& operator= (const rt_SER &right);
+  const rt_SER& operator= (const rt_SER &right);
 
   /**
    * Converts the residue type to a string.
@@ -3108,7 +3108,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'S'; }
+  virtual char getOneLetterRep () const { return 'S'; }
 
   /**
    * Tells if the residue is a serine type.
@@ -3170,7 +3170,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_THR& operator= (const rt_THR &right);
+  const rt_THR& operator= (const rt_THR &right);
 
   /**
    * Converts the residue type to a string.
@@ -3192,7 +3192,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'T'; }
+  virtual char getOneLetterRep () const { return 'T'; }
 
   /**
    * Tells if the residue is a threonine type.
@@ -3254,7 +3254,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_TRP& operator= (const rt_TRP &right);
+  const rt_TRP& operator= (const rt_TRP &right);
 
   /**
    * Converts the residue type to a string.
@@ -3276,7 +3276,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'W'; }
+  virtual char getOneLetterRep () const { return 'W'; }
 
   /**
    * Tells if the residue is a tryptophan type.
@@ -3338,7 +3338,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_TYR& operator= (const rt_TYR &right);
+  const rt_TYR& operator= (const rt_TYR &right);
 
   /**
    * Converts the residue type to a string.
@@ -3360,7 +3360,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'Y'; }
+  virtual char getOneLetterRep () const { return 'Y'; }
 
   /**
    * Tells if the residue is a tyrosine type.
@@ -3422,7 +3422,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const rt_VAL& operator= (const rt_VAL &right);
+  const rt_VAL& operator= (const rt_VAL &right);
 
   /**
    * Converts the residue type to a string.
@@ -3444,7 +3444,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const { return 'V'; }
+  virtual char getOneLetterRep () const { return 'V'; }
 
   /**
    * Tells if the residue is a valine type.

@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.7.8.2 $
-// $Id: ResidueType.h,v 1.7.8.2 2003-11-26 17:00:19 larosem Exp $
+// $Revision: 1.7.8.3 $
+// $Id: ResidueType.h,v 1.7.8.3 2003-12-05 19:59:18 larosem Exp $
 // 
 //  This file is part of mccore.
 //  
@@ -71,7 +71,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const t_Residue& operator= (const t_Residue &right) { return *this; }
+  const t_Residue& operator= (const t_Residue &right) { return *this; }
 
   /**
    * Converts the residue type to a string.
@@ -93,7 +93,7 @@ public:
    * Gets the one letter representation of the type.
    * @return the character representing the residue type.
    */
-  virtual const char getOneLetterRep () const = 0;
+  virtual char getOneLetterRep () const = 0;
 
   /**
    * Tells if the residue is unknown.

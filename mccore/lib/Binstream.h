@@ -4,32 +4,33 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:11:41 EDT
-// Last Modified By : Patrick Gendron
-// Last Modified On : Mon Feb 25 11:36:16 2002
-// Update count     : 0
-// Status           : Ok.
+// $Revision: 1.11.8.2 $
+// $Id: Binstream.h,v 1.11.8.2 2003-12-05 19:58:59 larosem Exp $
 //
 //  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifndef _Binstream_h_
 #define _Binstream_h_
 
 #include <iostream>
+
+using namespace std;
+
 
 
 /**
@@ -50,7 +51,7 @@
  *
  * @author Martin Larose <larosem@iro.umontreal.ca> 
  */
-class iBinstream : public std::istream
+class iBinstream : public istream
 {
   
 public:
@@ -60,13 +61,13 @@ public:
   /**
    * Initializes the stream.  Nothing to be done.
    */
-  iBinstream () : std::istream (std::cin.rdbuf ()) { }
+  iBinstream () : istream (cin.rdbuf ()) { }
 
   /**
    * Initializes the stream with a predefined stream buffer.
    * @param sb the stream buffer.
    */
-  iBinstream (std::streambuf *sb) : std::istream (sb) { }
+  iBinstream (streambuf *sb) : istream (sb) { }
 
   // OPERATORS ------------------------------------------------------------
   
@@ -176,14 +177,14 @@ public:
    * @param f is the ios manip fuction.
    * @return itself.
    */
-  iBinstream& operator>> (std::ios& (*f)(std::ios&));
+  iBinstream& operator>> (ios& (*f)(ios&));
   
   /**
    * Inputs istream manipulation functions.
    * @param f is the istream manip function.
    * @return itself.
    */
-  iBinstream& operator>> (std::istream& (*f)(std::istream&));
+  iBinstream& operator>> (istream& (*f)(istream&));
 
   // ACCESS ---------------------------------------------------------------
 
@@ -222,7 +223,7 @@ public:
  *
  * @author Martin Larose <larosem@iro.umontreal.ca>
  */
-class oBinstream : public std::ostream
+class oBinstream : public ostream
 {
   
 public:
@@ -232,13 +233,13 @@ public:
   /**
    * Initializes the stream.  Nothing to be done.
    */
-  oBinstream () : std::ostream (std::cout.rdbuf ()) { }
+  oBinstream () : ostream (cout.rdbuf ()) { }
 
   /**
    * Initializes the stream with a predefined stream buffer.
    * @param sb the stream buffer.
    */
-  oBinstream (std::streambuf *sb) : std::ostream (sb) { }
+  oBinstream (streambuf *sb) : ostream (sb) { }
 
   // OPERATORS ------------------------------------------------------------
   
@@ -328,14 +329,14 @@ public:
    * @param func is the ios manip fuction.
    * @return itself.
    */
-  oBinstream& operator<< (std::ios& (*func)(std::ios&));
+  oBinstream& operator<< (ios& (*func)(ios&));
   
   /**
    * Manipulates ostream output.
    * @param func is the ostream manip function.
    * @return itself.
    */
-  oBinstream& operator<< (std::ostream& (*func)(std::ostream&));
+  oBinstream& operator<< (ostream& (*func)(ostream&));
 
   // ACCESS ---------------------------------------------------------------
 
@@ -384,7 +385,7 @@ public:
    * Initializes the stream with a predefined stream buffer.
    * @param sb the stream buffer.
    */
-  Binstream (std::streambuf *sb) : iBinstream (sb), oBinstream (sb) { }
+  Binstream (streambuf *sb) : iBinstream (sb), oBinstream (sb) { }
   
   // OPERATORS ------------------------------------------------------------
 

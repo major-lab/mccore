@@ -104,7 +104,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const CPoint3D& operator= (const CPoint3D &right);
+  const CPoint3D& operator= (const CPoint3D &right);
 
   /**
    * Substract the coordinates.

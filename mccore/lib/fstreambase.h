@@ -3,8 +3,8 @@
 // Copyright © 2002-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Fri Jan 25 15:17:28 2002
-// $Revision: 1.1.8.2 $
-// $Id: fstreambase.h,v 1.1.8.2 2003-11-26 17:00:52 larosem Exp $
+// $Revision: 1.1.8.3 $
+// $Id: fstreambase.h,v 1.1.8.3 2003-12-05 19:59:35 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -34,6 +34,9 @@ using namespace std;
 // We want to keep the version that's implemented in the libstdc++ 
 // when available...
 #ifndef HAVE_FSTREAMBASE
+#include <iostream>
+
+
 
 /**
  * @short Implementation of base class for file i/o streams.

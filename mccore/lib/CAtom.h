@@ -306,7 +306,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual AtomSet& operator= (const AtomSet &right) { return *this; }
+  AtomSet& operator= (const AtomSet &right) { return *this; }
   
   /**
    * Tests wheter the atom is within the set.
@@ -430,7 +430,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual atomset_and& operator= (const atomset_and &right);
+  atomset_and& operator= (const atomset_and &right);
 
   /**
    * Tests wheter the atom is within the set.

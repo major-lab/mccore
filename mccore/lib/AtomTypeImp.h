@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // AtomTypeImp.h
-// Copyright © 2001 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
@@ -94,7 +94,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_Misc& operator= (const at_Misc &right);
+  const at_Misc& operator= (const at_Misc &right);
 
   /**
    * Converts the atom type to a string.
@@ -239,7 +239,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_NucleicAcid& operator= (const at_NucleicAcid &right);
+  const at_NucleicAcid& operator= (const at_NucleicAcid &right);
 
   /**
    * Converts the atom type to a string.
@@ -336,7 +336,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_AminoAcid& operator= (const at_AminoAcid &right);
+  const at_AminoAcid& operator= (const at_AminoAcid &right);
 
   /**
    * Converts the atom type to a string.
@@ -433,7 +433,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_Backbone& operator= (const at_Backbone &right);
+  const at_Backbone& operator= (const at_Backbone &right);
 
   /**
    * Converts the atom type to a string.
@@ -530,7 +530,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_SideChain& operator= (const at_SideChain &right);
+  const at_SideChain& operator= (const at_SideChain &right);
 
   /**
    * Converts the atom type to a string.
@@ -627,7 +627,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_Carbon& operator= (const at_Carbon &right);
+  const at_Carbon& operator= (const at_Carbon &right);
 
   /**
    * Converts the atom type to a string.
@@ -724,7 +724,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_Hydrogen& operator= (const at_Hydrogen &right);
+  const at_Hydrogen& operator= (const at_Hydrogen &right);
 
   /**
    * Converts the atom type to a string.
@@ -821,7 +821,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_Nitrogen& operator= (const at_Nitrogen &right);
+  const at_Nitrogen& operator= (const at_Nitrogen &right);
 
   /**
    * Converts the atom type to a string.
@@ -918,7 +918,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_Phosphate& operator= (const at_Phosphate &right);
+  const at_Phosphate& operator= (const at_Phosphate &right);
 
   /**
    * Converts the atom type to a string.
@@ -1015,7 +1015,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_Oxygen& operator= (const at_Oxygen &right);
+  const at_Oxygen& operator= (const at_Oxygen &right);
 
   /**
    * Converts the atom type to a string.
@@ -1112,7 +1112,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_Sulfur& operator= (const at_Sulfur &right);
+  const at_Sulfur& operator= (const at_Sulfur &right);
 
   /**
    * Converts the atom type to a string.
@@ -1209,7 +1209,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_Magnesium& operator= (const at_Magnesium &right);
+  const at_Magnesium& operator= (const at_Magnesium &right);
 
   /**
    * Converts the atom type to a string.
@@ -1306,7 +1306,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_LonePair& operator= (const at_LonePair &right);
+  const at_LonePair& operator= (const at_LonePair &right);
 
   /**
    * Converts the atom type to a string.
@@ -1403,7 +1403,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_Pseudo& operator= (const at_Pseudo &right);
+  const at_Pseudo& operator= (const at_Pseudo &right);
 
   /**
    * Converts the atom type to a string.
@@ -3339,7 +3339,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_P& operator= (const at_P &right);
+  const at_P& operator= (const at_P &right);
 
   /**
    * Converts the atom type to a string.
@@ -7554,7 +7554,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_PSY& operator= (const at_PSY &right);
+  const at_PSY& operator= (const at_PSY &right);
 
   /**
    * Converts the atom type to a string.
@@ -7665,7 +7665,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_PSZ& operator= (const at_PSZ &right);
+  const at_PSZ& operator= (const at_PSZ &right);
 
   /**
    * Converts the atom type to a string.
@@ -8991,7 +8991,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_C& operator= (const at_C &right);
+  const at_C& operator= (const at_C &right);
 
   /**
    * Converts the atom type to a string.
@@ -9099,7 +9099,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_CA& operator= (const at_CA &right);
+  const at_CA& operator= (const at_CA &right);
 
   /**
    * Converts the atom type to a string.
@@ -9207,7 +9207,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_CB& operator= (const at_CB &right);
+  const at_CB& operator= (const at_CB &right);
 
   /**
    * Converts the atom type to a string.
@@ -9315,7 +9315,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_CD& operator= (const at_CD &right);
+  const at_CD& operator= (const at_CD &right);
 
   /**
    * Converts the atom type to a string.
@@ -9639,7 +9639,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_CE& operator= (const at_CE &right);
+  const at_CE& operator= (const at_CE &right);
 
   /**
    * Converts the atom type to a string.
@@ -10071,7 +10071,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_CG& operator= (const at_CG &right);
+  const at_CG& operator= (const at_CG &right);
 
   /**
    * Converts the atom type to a string.
@@ -10503,7 +10503,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_CZ& operator= (const at_CZ &right);
+  const at_CZ& operator= (const at_CZ &right);
 
   /**
    * Converts the atom type to a string.
@@ -10827,7 +10827,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_H& operator= (const at_H &right);
+  const at_H& operator= (const at_H &right);
 
   /**
    * Converts the atom type to a string.
@@ -11259,7 +11259,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_HA& operator= (const at_HA &right);
+  const at_HA& operator= (const at_HA &right);
 
   /**
    * Converts the atom type to a string.
@@ -11583,7 +11583,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_HB& operator= (const at_HB &right);
+  const at_HB& operator= (const at_HB &right);
 
   /**
    * Converts the atom type to a string.
@@ -12231,7 +12231,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_HE& operator= (const at_HE &right);
+  const at_HE& operator= (const at_HE &right);
 
   /**
    * Converts the atom type to a string.
@@ -12663,7 +12663,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_HG& operator= (const at_HG &right);
+  const at_HG& operator= (const at_HG &right);
 
   /**
    * Converts the atom type to a string.
@@ -12987,7 +12987,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_HH& operator= (const at_HH &right);
+  const at_HH& operator= (const at_HH &right);
 
   /**
    * Converts the atom type to a string.
@@ -13203,7 +13203,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_HXT& operator= (const at_HXT &right);
+  const at_HXT& operator= (const at_HXT &right);
 
   /**
    * Converts the atom type to a string.
@@ -13311,7 +13311,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_HZ& operator= (const at_HZ &right);
+  const at_HZ& operator= (const at_HZ &right);
 
   /**
    * Converts the atom type to a string.
@@ -13743,7 +13743,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_N& operator= (const at_N &right);
+  const at_N& operator= (const at_N &right);
 
   /**
    * Converts the atom type to a string.
@@ -14067,7 +14067,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_NE& operator= (const at_NE &right);
+  const at_NE& operator= (const at_NE &right);
 
   /**
    * Converts the atom type to a string.
@@ -14607,7 +14607,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_NZ& operator= (const at_NZ &right);
+  const at_NZ& operator= (const at_NZ &right);
 
   /**
    * Converts the atom type to a string.
@@ -14715,7 +14715,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_O& operator= (const at_O &right);
+  const at_O& operator= (const at_O &right);
 
   /**
    * Converts the atom type to a string.
@@ -15255,7 +15255,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_OG& operator= (const at_OG &right);
+  const at_OG& operator= (const at_OG &right);
 
   /**
    * Converts the atom type to a string.
@@ -15471,7 +15471,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_OH& operator= (const at_OH &right);
+  const at_OH& operator= (const at_OH &right);
 
   /**
    * Converts the atom type to a string.
@@ -15579,7 +15579,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_OXT& operator= (const at_OXT &right);
+  const at_OXT& operator= (const at_OXT &right);
 
   /**
    * Converts the atom type to a string.
@@ -15687,7 +15687,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_SD& operator= (const at_SD &right);
+  const at_SD& operator= (const at_SD &right);
 
   /**
    * Converts the atom type to a string.
@@ -15795,7 +15795,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_SG& operator= (const at_SG &right);
+  const at_SG& operator= (const at_SG &right);
 
   /**
    * Converts the atom type to a string.
@@ -17845,7 +17845,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_MG& operator= (const at_MG &right);
+  const at_MG& operator= (const at_MG &right);
 
   /**
    * Converts the atom type to a string.
@@ -17954,7 +17954,7 @@ public:
    * @param right the object to copy.
    * @return itself.
    */
-  virtual const at_PSAZ& operator= (const at_PSAZ &right);
+  const at_PSAZ& operator= (const at_PSAZ &right);
 
   /**
    * Converts the atom type to a string.
