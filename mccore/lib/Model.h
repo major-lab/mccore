@@ -1,44 +1,48 @@
 //                              -*- Mode: C++ -*- 
 // Model.h
-// Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.15 $
+// $Revision: 1.16 $
+//
+// This file is part of mccore.
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifndef _Model_h_
 #define _Model_h_
 
+#include <iostream>
 #include <list>
-
-#include "Residue.h"
 
 using namespace std;
 
-class iBinstream;
-class oBinstream;
+
 
 namespace mccore {
 
+  class ResId;
+  class Residue; 
   class ResidueFactoryMethod;
+  class iBinstream;
   class iPdbstream;
+  class oBinstream;
   class oPdbstream;
+
 
 
   /**
@@ -57,13 +61,13 @@ namespace mccore {
    * details).
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Model.h,v 1.15 2003-12-04 23:00:55 gendrop Exp $
+   * @version $Id: Model.h,v 1.16 2003-12-23 14:50:16 larosem Exp $
    */
   class Model
   {
-
+    
   public:
-
+    
     typedef unsigned int size_type;
 
   private:
@@ -81,9 +85,113 @@ namespace mccore {
 
   public:
 
-    class model_iterator;
+    // ITERATORS -----------------------------------------------------------------
+
+    /**
+     * @short Iterator class for Model.
+     *
+     * @author Martin Larose <larosem@iro.umontreal.ca>
+     */
+    class model_iterator : public list< Residue* >::iterator
+    {
+    public:
+
+      // LIFECYCLE ------------------------------------------------------------
+
+      /**
+       * Initializes the iterator.
+       */
+      model_iterator () : list< Residue* >::iterator () { }
+    
+      /**
+       * Initializes the iterator with the list iterator.
+       * @param lIt the list iterator.
+       */
+      model_iterator (const list< Residue* >::iterator &lIt)
+	: list< Residue* >::iterator (lIt)
+      { }
+
+      // OPERATORS ------------------------------------------------------------
+
+      /**
+       * Defines a difference operator for Model iterators.
+       * @param right the right iterator value in the difference.
+       * @return the distance between the iterators.
+       */
+      unsigned int operator- (const model_iterator &right) const;
+    
+      /**
+       * Redefines the access operator* to get the dereferenced residue.
+       * @return the referenced residue.
+       */
+      Residue& operator* () const
+      { 
+	return *list< Residue* >::iterator::operator* (); 
+      }
+
+      /**
+       * Redefines the access operator-> to get the dereferenced residue.
+       * @return the pointed residue.
+       */
+      Residue* operator-> () const { return &(operator* ()); }
+    };
+  
+    /**
+     * @short Const iterator class for Model.
+     *
+     * @author Martin Larose <larosem@iro.umontreal.ca>
+     */
+    class model_const_iterator : public list< Residue* >::const_iterator
+    {
+    public:
+
+      /**
+       * Initializes the const iterator.
+       */
+      model_const_iterator () : list< Residue* >::const_iterator () { }
+    
+      /**
+       * Initializes the iterator with the list iterator.
+       * @param lIt the list iterator.
+       */
+      model_const_iterator (const list< Residue* >::const_iterator &lIt)
+	: list< Residue* >::const_iterator (lIt)
+      { }
+
+      /**
+       * Initializes the iterator with a non const model_iterator.
+       * @param it the model iterator.
+       */
+      model_const_iterator (const model_iterator& it)
+	: list< Residue* >::const_iterator (it)
+      { }
+
+      // OPERATORS ------------------------------------------------------------
+      
+      /**
+       * Defines a difference operator for Model const_iterators.
+       * @param right the right iterator value in the difference.
+       * @return the distance between the iterators.
+       */
+      unsigned int operator- (const model_const_iterator &right) const;
+
+      /**
+       * Redefines the access operator* to get the dereferenced residue.
+       * @return the referenced residue.
+       */
+      const Residue& operator* () const
+      { return *list< Residue* >::const_iterator::operator* (); }
+
+      /**
+       * Redefines the access operator-> to get the dereferenced residue.
+       * @return the pointed residue.
+       */
+      const Residue* operator-> () const { return &(operator* ()); }
+    };
+
+  public:
+
     typedef model_iterator iterator;
-    class model_const_iterator;
     typedef model_const_iterator const_iterator;
   
     // LIFECYCLE ------------------------------------------------------------
@@ -245,12 +353,12 @@ namespace mccore {
      * @return a Model iterator.
      */
     const_iterator find (const ResId &id) const;
-
+    
     /**
      * Sorts the model according to the Residue::operator<
      */ 
     void sort ();
-
+    
     /**
      * Returns the number of residues present in the model.
      * @return a number of residues.
@@ -349,118 +457,10 @@ namespace mccore {
      */
     iBinstream& input (iBinstream &ibs);
 
-  protected:
-
-  
-    // ITERATORS -----------------------------------------------------------------
-
-    /**
-     * @short Iterator class for Model.
-     *
-     * @author Martin Larose <larosem@iro.umontreal.ca>
-     */
-    class model_iterator : public list< Residue* >::iterator
-    {
-    public:
-
-      // LIFECYCLE ------------------------------------------------------------
-
-      /**
-       * Initializes the iterator.
-       */
-      model_iterator () : list< Residue* >::iterator () { }
-    
-      /**
-       * Initializes the iterator with the list iterator.
-       * @param lIt the list iterator.
-       */
-      model_iterator (const list< Residue* >::iterator &lIt)
-	: list< Residue* >::iterator (lIt)
-      { }
-
-      // OPERATORS ------------------------------------------------------------
-
-      /**
-       * Defines a difference operator for Model iterators.
-       * @param right the right iterator value in the difference.
-       * @return the distance between the iterators.
-       */
-      unsigned int operator- (const model_iterator &right) const;
-    
-      /**
-       * Redefines the access operator* to get the dereferenced residue.
-       * @return the referenced residue.
-       */
-      Residue& operator* () const
-      { 
-	return *list< Residue* >::iterator::operator* (); 
-      }
-
-      /**
-       * Redefines the access operator-> to get the dereferenced residue.
-       * @return the pointed residue.
-       */
-      Residue* operator-> () const { return &(operator* ()); }
-    };
-  
-    /**
-     * @short Const iterator class for Model.
-     *
-     * @author Martin Larose <larosem@iro.umontreal.ca>
-     */
-    class model_const_iterator : public list< Residue* >::const_iterator
-    {
-    public:
-
-      /**
-       * Initializes the const iterator.
-       */
-      model_const_iterator () : list< Residue* >::const_iterator () { }
-    
-      /**
-       * Initializes the iterator with the list iterator.
-       * @param lIt the list iterator.
-       */
-      model_const_iterator (const list< Residue* >::const_iterator &lIt)
-	: list< Residue* >::const_iterator (lIt)
-      { }
-
-      /**
-       * Initializes the iterator with a non const model_iterator.
-       * @param it the model iterator.
-       */
-      model_const_iterator (const model_iterator& it)
-	: list< Residue* >::const_iterator (it)
-      { }
-
-      // OPERATORS ------------------------------------------------------------
-      
-      /**
-       * Defines a difference operator for Model const_iterators.
-       * @param right the right iterator value in the difference.
-       * @return the distance between the iterators.
-       */
-      unsigned int operator- (const model_const_iterator &right) const;
-
-      /**
-       * Redefines the access operator* to get the dereferenced residue.
-       * @return the referenced residue.
-       */
-      const Residue& operator* () const
-      { return *list< Residue* >::const_iterator::operator* (); }
-
-      /**
-       * Redefines the access operator-> to get the dereferenced residue.
-       * @return the pointed residue.
-       */
-      const Residue* operator-> () const { return &(operator* ()); }
-    };
-
   };
 
 
   // NON-MEMBER FUNCTION -------------------------------------------------------
-
 
   /**
    * Outputs the model to an output stream.
@@ -470,8 +470,6 @@ namespace mccore {
    */
   ostream& operator<< (ostream &obs, const Model &obj);
 
-
-
   /**
    * Inputs the model from a pdb stream.
    * @param ips the input pdb stream.
@@ -479,8 +477,6 @@ namespace mccore {
    * @return the input pdb stream.
    */
   iPdbstream& operator>> (iPdbstream &ips, Model &obj);
-
-
 
   /**
    * Outputs the model to a pdb stream.  Termination between residue
@@ -491,7 +487,6 @@ namespace mccore {
    */
   oPdbstream& operator<< (oPdbstream &ops, const Model &obj);
 
-
   /**
    * Inputs the model from a binary stream.
    * @param ibs the input binary stream.
@@ -499,8 +494,6 @@ namespace mccore {
    * @return the input binary stream.
    */
   iBinstream& operator>> (iBinstream &ibs, Model &obj);
-
-
 
   /**
    * Outputs the model to a binary stream.
@@ -510,8 +503,6 @@ namespace mccore {
    */
   oBinstream& operator<< (oBinstream &obs, const Model &obj);
 
-
-
   /**
    * Test the partial order (Residue order) between model iterators.
    * @param left the left operand.
@@ -519,8 +510,6 @@ namespace mccore {
    * @return wheter the residue pointed by left is less than right.
    */
   bool operator< (const Model::iterator &left, const Model::iterator &right);
-
-
 
   /**
    * Test the partial order (Residue order) between model const_iterators.

@@ -91,14 +91,17 @@ namespace mccore
    * 
    * @author Patrick Gendron 
    */
-  class ifGenbankstream : public iGenbankstream, public fstreambase
+  class ifGenbankstream : public fstreambase, public iGenbankstream
   {
   public:
 
     /**
      * Initializes the object.
      */
-    ifGenbankstream () : iGenbankstream (rdbuf ()) { }
+    ifGenbankstream ()
+      : fstreambase (),
+	iGenbankstream (rdbuf ())
+    { }
 
     /**
      * Initializes the stream with filename.
@@ -106,7 +109,11 @@ namespace mccore
      * @param mode the file mode.
      */
     ifGenbankstream (const char *name, int mode = ios::in)
-      : iGenbankstream (rdbuf ()), fstreambase (name, mode) { }
+      : fstreambase (),
+	iGenbankstream (rdbuf ())
+    {
+      open (name, mode);
+    }
 
     /**
      * Opens the stream with file name.
@@ -129,14 +136,17 @@ namespace mccore
    * 
    * @author Patrick Gendron 
    */
-  class izfGenbankstream : public iGenbankstream, public zfstreambase
+  class izfGenbankstream : public zfstreambase, public iGenbankstream
   {
   public:
 
     /**
      * Initializes the stream.
      */
-    izfGenbankstream () : iGenbankstream (rdbuf ()) { }
+    izfGenbankstream ()
+      : zfstreambase (),
+	iGenbankstream (rdbuf ())
+    { }
   
     /**
      * Initializes the stream with filename.
@@ -144,7 +154,11 @@ namespace mccore
      * @param mode the file mode.
      */
     izfGenbankstream (const char *name, int mode = ios::in)
-      : iGenbankstream (&buf), zfstreambase (name, mode) { }
+      : zfstreambase (),
+	iGenbankstream (rdbuf ())
+    {
+      open (name, mode);
+    }
 
     /**
      * Opens the stream with file name.

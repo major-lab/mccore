@@ -3,29 +3,30 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Apr 30 16:04:32 2003
-// $Revision: 1.17 $
+// $Revision: 1.18 $
+// $Id: Graph.h,v 1.18 2003-12-23 14:48:17 larosem Exp $
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// This file is part of mccore.
+// 
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifndef _Graph_h_
 #define _Graph_h_
 
-
+#include <iomanip>
 #include <iostream>
 #include <map>
 #include <vector>
@@ -39,13 +40,15 @@ using namespace std;
 #ifndef HAVE_NUMERIC_LIMITS
 #include <values.h>
 #else
+#undef MAXFLOAT
+#undef MAXINT
 #define MAXFLOAT numeric_limits< float > ().max ()
 #define MAXINT numeric_limits< int > ().max ()
 #endif
 
 
-namespace mccore {
 
+namespace mccore {
   /**
    * Abstract base class for graphs.  This implementation is not a
    * container for the object of the graph but rather an addition to
@@ -54,7 +57,7 @@ namespace mccore {
    * to object by passing the correct node comparator if needed.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: Graph.h,v 1.17 2003-10-16 21:57:01 gendrop Exp $
+   * @version $Id: Graph.h,v 1.18 2003-12-23 14:48:17 larosem Exp $
    */
   template< class node_type, 
 	    class edge_type = bool,
@@ -109,18 +112,71 @@ namespace mccore {
     vector< float > edgeWeights;
 
 
+    // ITERATORS ------------------------------------------------------------
+
+    
+  public:
+    
+    
+    typedef typename map< node_type, int >::iterator gtiterator;
+    typedef typename map< node_type, int >::const_iterator gtciterator;
+    
+    class graph_iterator : public gtiterator
+    {      
+    public:
+      
+      graph_iterator () : gtiterator () { }
+      
+      graph_iterator (const gtiterator &it) 
+	: gtiterator (it)
+      { }
+      
+      const node_type& operator* () const 
+      {
+	return gtiterator::operator* ().first;
+      }
+      
+      const node_type* operator-> () const 
+      { 
+	return &(operator* ()); 
+      }
+    };
+    
+    
+    class graph_const_iterator : public gtciterator
+    {
+    public:
+      
+      graph_const_iterator () : gtciterator () { }
+      
+      graph_const_iterator (const gtciterator &it) 
+	: gtciterator (it)
+      { }
+      
+      graph_const_iterator (const gtiterator &it) 
+	: gtciterator (it)
+      { }
+      
+      const node_type& operator* () const 
+      {
+	return gtciterator::operator* ().first;
+      }
+      
+      const node_type* operator-> () const 
+      { 
+	return &(operator* ()); 
+      }
+    };
+
 
     // PUBLIC TYPEDEFS ---------------------------------------------------------
-
-
+    
   public:
 
     /**
      * Forward declaration of iterators classes.
      */
-    class graph_iterator;
     typedef graph_iterator iterator;
-    class graph_const_iterator;
     typedef graph_const_iterator const_iterator;
 
         
@@ -176,7 +232,7 @@ namespace mccore {
      * @param other the object to copy.
      * @return itself.
      */
-    virtual Graph& operator= (const Graph &other) {
+    Graph& operator= (const Graph &other) {
       if (this != &other) {
 	clear ();
 	
@@ -699,65 +755,6 @@ namespace mccore {
       return os;
     }
 
-    
-
-    // ITERATORS ------------------------------------------------------------
-
-    
-protected:
-
-    
-    typedef typename map< node_type, int >::iterator gtiterator;
-    typedef typename map< node_type, int >::const_iterator gtciterator;
-    
-    class graph_iterator : public gtiterator
-    {      
-    public:
-
-      graph_iterator () : gtiterator () { }
-      
-      graph_iterator (const gtiterator &it) 
-	: gtiterator (it)
-      { }
-      
-      const node_type& operator* () const 
-      {
-	return gtiterator::operator* ().first;
-      }
-      
-      const node_type* operator-> () const 
-      { 
-	return &(operator* ()); 
-      }
-    };
-
-
-    class graph_const_iterator : public gtciterator
-    {
-    public:
-      
-      graph_const_iterator () : gtciterator () { }
-
-      graph_const_iterator (const gtciterator &it) 
-	: gtciterator (it)
-      { }
-    
-      graph_const_iterator (const gtiterator &it) 
-	: gtciterator (it)
-      { }
-
-      const node_type& operator* () const 
-      {
-	return gtciterator::operator* ().first;
-      }
-
-      const node_type* operator-> () const 
-      { 
-	return &(operator* ()); 
-      }
-    };
-
-    
   };
 
   template< class node_type, 
@@ -770,6 +767,5 @@ protected:
   }  
 
 }
-
 
 #endif

@@ -1,45 +1,51 @@
 //                              -*- Mode: C++ -*- 
 // Model.cc
-// Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.22 $
+// $Revision: 1.23 $
+// $Id: Model.cc,v 1.23 2003-12-23 14:50:13 larosem Exp $
+//
+// This file is part of mccore.
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
-#include <list>
-
-#include "Model.h"
+#include <algorithm>
+#include <string.h>
 
 #include "Binstream.h"
 #include "ExtendedResidue.h"
-#include "ResidueFactoryMethod.h"
+#include "Model.h"
 #include "Pdbstream.h"
+#include "Residue.h"
+#include "ResidueFactoryMethod.h"
+
 
 
 namespace mccore {
 
 
-  bool less_deref (Residue *x, Residue *y)
+  
+  bool
+  less_deref (Residue* const &x, Residue* const &y)
   {
     return *x < *y;
   }
@@ -51,7 +57,6 @@ namespace mccore {
   Model::Model (ResidueFactoryMethod *fm)
   {
     residueFM = (fm == 0) ? new ExtendedResidueFM () : fm;
-    //residueFM = (fm == 0) ? new ResidueFM () : fm;
   }
 
 
@@ -232,15 +237,14 @@ namespace mccore {
 	break;
     return it;
   }
-
-
+  
   void
   Model::sort ()
   {
-    residues.sort (less_deref);
+    residues.sort (&less_deref);
   }
 
-  
+
   Model::size_type
   Model::size () const
   {
@@ -297,7 +301,7 @@ namespace mccore {
   }
 
 
-
+  
   void
   Model::removeAminoAcid ()
   {

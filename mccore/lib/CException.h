@@ -4,26 +4,24 @@
 //                           Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 16:27:35 1999
-// Last Modified By : Philippe Thibault
-// Last Modified On : Wed Oct  1 11:45:15 2003
-// Update Count     : 22
-// Status           : Unknown.
+// $Revision: 1.12 $
+// $Id: CException.h,v 1.12 2003-12-23 14:47:27 larosem Exp $
+//
+// This file is part of mccore.
 // 
-//  This file is part of mccore.
-//  
-//  mccore is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//  
-//  mccore is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//  
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with mccore; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// mccore is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// mccore is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with mccore; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 #ifndef _CException_h_
@@ -31,9 +29,14 @@
 
 #include <iostream>
 
-#include "ResId.h"
+namespace mccore {
+  class ResId;
+}
 
 using namespace std;
+using namespace mccore;
+
+
 
 /**
  * @short General class of exceptions.
@@ -167,7 +170,7 @@ public:
    * @param theChar the character to concatenate.
    * @return itself.
    */
-  CException& operator<< (const mccore::ResId& resid);
+  CException& operator<< (const ResId &resid);
   
   /** 
    * Outputs the message to the stream.
@@ -688,9 +691,5 @@ public:
 
   // I/O ------------------------------------------------------------------
 };
-
-
-
-
 
 #endif

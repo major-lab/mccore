@@ -1,30 +1,27 @@
-############################ -*- Mode: Makefile -*- ###########################
-## Makefile.in
-## Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
-##                     Université de Montréal.
-## Author           : Martin Larose <larosem@iro.umontreal.ca>
-## Created On       : Tue Sep 19 18:57:11 2000
-## Last Modified By : Patrick Gendron
-## Last Modified On : Tue Oct 28 11:15:02 2003
-## Update Count     : 154
-## Status           : Ok.
-###############################################################################
-#
-#  This file is part of mccore.
-#  
-#  mccore is free software; you can redistribute it and/or
-#  modify it under the terms of the GNU Lesser General Public
-#  License as published by the Free Software Foundation; either
-#  version 2.1 of the License, or (at your option) any later version.
-#  
-#  mccore is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-#  Lesser General Public License for more details.
-#  
-#  You should have received a copy of the GNU Lesser General Public
-#  License along with mccore; if not, write to the Free Software
-#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#                            -*- Mode: Makefile -*-
+# Makefile.in
+# Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
+#                     Université de Montréal.
+# Author           : Martin Larose <larosem@iro.umontreal.ca>
+# Created On       : Tue Sep 19 18:57:11 2000
+# $Revision: 1.41 $
+# $Id: Makefile.in,v 1.41 2003-12-23 14:48:23 larosem Exp $
+# 
+# This file is part of mccore.
+# 
+# mccore is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+# 
+# mccore is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+# 
+# You should have received a copy of the GNU Lesser General Public
+# License along with mccore; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 PACKAGE = @PACKAGE@
@@ -41,14 +38,19 @@ libdir = @libdir@
 
 CXX = @CXX@
 CXXFLAGS = @CXXFLAGS@
-CXXSHFLAGS = @CXXSHFLAGS@
 DEPFLAGS = @DEPFLAGS@
 DEFS = @DEFS@
 LD = @CXX@
-LIBS = @LIBS@
 LINKOPTIONS = @LINKOPTIONS@
+LDNAMEPARAM = @LDNAMEPARAM@
+LDFLAGS = @LDFLAGS@
+LIBS = @LIBS@
+LIBALLFLAGSTART = @LIBALLFLAGSTART@
+LIBALLFLAGSTOP = @LIBALLFLAGSTOP@
 
 AR = @AR@
+ARXX = @ARXX@
+AROPTIONS = @AROPTIONS@
 
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
@@ -56,22 +58,23 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 
 
 .SUFFIXES:
-.SUFFIXES: .cc .o .lo .d
 
-.cc.d:
+%.d: %.cc
 	@ $(SHELL) -ec '$(CXX) $(DEPFLAGS) $(DEFS) -I.. -I$(srcdir) $< \
 	    | sed '\''s/\($*\)\.o[ :]*/\1.o \1.lo $@ : /g'\'' > $@; \
 	      [ -s $@ ] || rm -f $@'
 
-.cc.o:
+%.o: %.cc
 	$(CXX) $(CXXFLAGS) $(DEFS) -I.. -I$(srcdir) -c $<
 
-.cc.lo:
-	$(CXX) $(CXXSHFLAGS) $(DEFS) -I.. -I$(srcdir) -c $< -o $@
-
+% : %.cc
+% : %.o
 
 SOURCES = zfstream.cc \
 	  Binstream.cc \
+	  Pdbstream.cc \
+	  RnamlReader.cc \
+	  RnamlWriter.cc \
 	  CException.cc \
 	  Messagestream.cc \
 \
@@ -126,8 +129,6 @@ stlio.h
 
 OBJECTS = $(SOURCES:.cc=.o)
 
-SHOBJECTS = $(SOURCES:.cc=.lo)
-
 LIBRARY = lib$(PACKAGE)
 
 DISTFILES = Makefile.in $(SOURCES) $(HEADERS)
@@ -137,11 +138,11 @@ all: $(LIBRARY).so.$(VERSION) TAGS
 
 static: $(LIBRARY).a TAGS
 
-$(LIBRARY).so.$(VERSION): $(SHOBJECTS)
-	$(LD) $(CXXSHFLAGS) $(LINKOPTIONS) -shared $(LDFLAGS) -o $@ -Wl,-soname,$@ $^
+$(LIBRARY).so.$(VERSION): $(OBJECTS)
+	$(LD) $(LINKOPTIONS) -o $@ $(LDNAMEPARAM)$@ $^ $(LDFLAGS) $(LIBS)
 
 $(LIBRARY).a: $(OBJECTS)
-	$(AR) crs $@ $^
+	$(ARXX) $(AROPTIONS) $@ $^
 
 TAGS: $(SOURCES) $(HEADERS)
 	@- etags --c++ $^
@@ -165,13 +166,13 @@ install: all
 	@ $(srcdir)/../mkinstalldirs $(libdir)
 	@ $(srcdir)/../mkinstalldirs $(includedir)/$(PACKAGE)-$(VERSION)
 	@ $(INSTALL_DATA) $(LIBRARY).so.$(VERSION) $(libdir)/$(LIBRARY).so.$(VERSION)
-	@ rm -f $(libdir)/$(LIBRARY).so
+	@ $(RM) $(libdir)/$(LIBRARY).so
 	@ ln -s $(LIBRARY).so.$(VERSION) $(libdir)/$(LIBRARY).so
 	@ echo Installing headers in $(includedir)/$(PACKAGE)-$(VERSION)
 	@ for file in $(HEADERS); do \
            $(INSTALL_DATA) $(srcdir)/$$file $(includedir)/$(PACKAGE)-$(VERSION)/$$file; \
 	  done
-	@ rm -f $(includedir)/$(PACKAGE)
+	@ $(RM) $(includedir)/$(PACKAGE)
 	@ ln -s $(PACKAGE)-$(VERSION) $(includedir)/$(PACKAGE)
 
 install-static: static
@@ -179,38 +180,38 @@ install-static: static
 	@ $(srcdir)/../mkinstalldirs $(libdir)
 	@ $(srcdir)/../mkinstalldirs $(includedir)/$(PACKAGE)-$(VERSION)
 	@ $(INSTALL_DATA) $(LIBRARY).a $(libdir)/$(LIBRARY)-$(VERSION).a
-	@ rm -f $(libdir)/$(LIBRARY).a
+	@ $(RM) $(libdir)/$(LIBRARY).a
 	@ ln -s $(LIBRARY)-$(VERSION).a $(libdir)/$(LIBRARY).a
 	@ echo Installing headers in $(includedir)/$(PACKAGE)-$(VERSION)
 	@ for file in $(HEADERS); do \
            $(INSTALL_DATA) $(srcdir)/$$file $(includedir)/$(PACKAGE)-$(VERSION)/$$file; \
 	  done;
-	@ rm -f $(includedir)/$(PACKAGE)
+	@ $(RM) $(includedir)/$(PACKAGE)
 	@ ln -s $(PACKAGE)-$(VERSION) $(includedir)/$(PACKAGE)
 
 uninstall:
-	@ rm -f $(libdir)/$(LIBRARY).a
-	@ rm -f $(libdir)/$(LIBRARY)-$(VERSION).a
-	@ rm -f $(libdir)/$(LIBRARY).so
-	@ rm -f $(libdir)/$(LIBRARY).so.$(VERSION)
+	@ $(RM) $(libdir)/$(LIBRARY).a
+	@ $(RM) $(libdir)/$(LIBRARY)-$(VERSION).a
+	@ $(RM) $(libdir)/$(LIBRARY).so
+	@ $(RM) $(libdir)/$(LIBRARY).so.$(VERSION)
 	@ for file in $(HEADERS); do \
-           rm -f $(includedir)/$(PACKAGE)-$(VERSION)/$$file; \
+           $(RM) $(includedir)/$(PACKAGE)-$(VERSION)/$$file; \
           done;
 	@- rmdir $(includedir)/$(PACKAGE)-$(VERSION)
-	@ rm -f $(includedir)/$(PACKAGE)
+	@ $(RM) $(includedir)/$(PACKAGE)
 
 
 mostlyclean:
-	@ rm -f *~
+	@ $(RM) *~
 
 clean: mostlyclean
 	@ echo "Cleaning project"
-	@ rm -f $(LIBRARY).so $(LIBRARY).so.$(VERSION) $(LIBRARY).a
-	@ rm -f $(OBJECTS) $(SHOBJECTS) TAGS
-	@ rm -f *.d
+	@ $(RM) $(LIBRARY).so $(LIBRARY).so.$(VERSION) $(LIBRARY).a
+	@ $(RM) $(OBJECTS) TAGS
+	@ $(RM) *.d
 
 distclean: clean
-	@ rm -f Makefile stamp-h
+	@ $(RM) Makefile stamp-h
 
 topclean: distclean
 	@ echo "The project is getting _top_ clean\!"

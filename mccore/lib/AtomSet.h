@@ -23,6 +23,10 @@
 namespace mccore {
 
   class AtomType;
+  class iBinstream;
+  class oBinstream;
+
+  
 
   /**
    * @short Base unary function for the atomset.
@@ -80,7 +84,7 @@ namespace mccore {
      * @param other the object to copy.
      * @return itself.
      */
-    virtual AtomSet& operator= (const AtomSet &other) { return *this; }
+    AtomSet& operator= (const AtomSet &other) { return *this; }
 
     /**
      * Tests wheter the atom is within the set.
@@ -97,7 +101,7 @@ namespace mccore {
      * Gets the set number of the AtomSet.
      * @return the set number.
      */
-    virtual const int getSetNumber() const = 0;
+    virtual int getSetNumber() const = 0;
 
   public:
 
@@ -191,7 +195,7 @@ namespace mccore {
      * @param other the object to copy.
      * @return itself.
      */
-    virtual AtomSetAll& operator= (const AtomSetAll &other);
+    AtomSetAll& operator= (const AtomSetAll &other);
 
     /**
      * Tests wheter the atom is within the set.
@@ -209,7 +213,7 @@ namespace mccore {
      * Gets the set number of the AtomSet.
      * @return the set number.
      */
-    virtual const int getSetNumber() const { return AtomSet::ATOMSET_NOT; }
+    virtual int getSetNumber() const { return AtomSet::ATOMSET_NOT; }
 
   public:
 
@@ -291,7 +295,7 @@ namespace mccore {
      * @param other the object to copy.
      * @return itself.
      */
-    virtual AtomSetNot& operator= (const AtomSetNot &other);
+    AtomSetNot& operator= (const AtomSetNot &other);
 
     /**
      * Tests wheter the atom is within the set.
@@ -309,7 +313,7 @@ namespace mccore {
      * Gets the set number of the AtomSet.
      * @return the set number.
      */
-    virtual const int getSetNumber() const { return AtomSet::ATOMSET_NOT; }
+    virtual int getSetNumber() const { return AtomSet::ATOMSET_NOT; }
 
   public:
 
@@ -397,7 +401,7 @@ namespace mccore {
      * @param other the object to copy.
      * @return itself.
      */
-    virtual AtomSetAnd& operator= (const AtomSetAnd &other);
+    AtomSetAnd& operator= (const AtomSetAnd &other);
 
     /**
      * Tests wheter the atom is within the set.
@@ -415,7 +419,7 @@ namespace mccore {
      * Gets the set number of the AtomSet.
      * @return the set number.
      */
-    virtual const int getSetNumber() const { return AtomSet::ATOMSET_AND; }
+    virtual int getSetNumber() const { return AtomSet::ATOMSET_AND; }
     
   public:
     
@@ -503,7 +507,7 @@ namespace mccore {
      * @param other the object to copy.
      * @return itself.
      */
-    virtual AtomSetOr& operator= (const AtomSetOr &other);
+    AtomSetOr& operator= (const AtomSetOr &other);
 
     /**
      * Tests wheter the atom is within the set.
@@ -521,7 +525,7 @@ namespace mccore {
      * Gets the set number of the AtomSet.
      * @return the set number.
      */
-    virtual const int getSetNumber() const { return AtomSet::ATOMSET_OR; }
+    virtual int getSetNumber() const { return AtomSet::ATOMSET_OR; }
 
   public:
 
@@ -590,7 +594,7 @@ namespace mccore {
      * @param other the object to copy.
      * @return itself.
      */
-    virtual AtomSetSideChain& operator= (const AtomSetSideChain &other);
+    AtomSetSideChain& operator= (const AtomSetSideChain &other);
 
     /**
      * Tests wheter the atom is within the set.
@@ -608,7 +612,7 @@ namespace mccore {
      * Gets the set number of the AtomSet.
      * @return the set number.
      */
-    virtual const int getSetNumber() const { return AtomSet::ATOMSET_SIDECHAIN; }
+    virtual int getSetNumber() const { return AtomSet::ATOMSET_SIDECHAIN; }
 
   public:
 
@@ -677,7 +681,7 @@ namespace mccore {
      * @param other the object to copy.
      * @return itself.
      */
-    virtual AtomSetBackbone& operator= (const AtomSetBackbone &other);
+    AtomSetBackbone& operator= (const AtomSetBackbone &other);
 
     /**
      * Tests wheter the atom is within the set.
@@ -695,7 +699,7 @@ namespace mccore {
      * Gets the set number of the AtomSet.
      * @return the set number.
      */
-    virtual const int getSetNumber() const { return AtomSet::ATOMSET_BACKBONE; }
+    virtual int getSetNumber() const { return AtomSet::ATOMSET_BACKBONE; }
 
   public:
 
@@ -764,7 +768,7 @@ namespace mccore {
      * @param other the object to copy.
      * @return itself.
      */
-    virtual AtomSetPSE& operator= (const AtomSetPSE &other);
+    AtomSetPSE& operator= (const AtomSetPSE &other);
 
     /**
      * Tests wheter the atom is within the set.
@@ -782,7 +786,7 @@ namespace mccore {
      * Gets the set number of the AtomSet.
      * @return the set number.
      */
-    virtual const int getSetNumber() const { return AtomSet::ATOMSET_PSE; }
+    virtual int getSetNumber() const { return AtomSet::ATOMSET_PSE; }
 
   public:
 
@@ -851,7 +855,7 @@ namespace mccore {
      * @param other the object to copy.
      * @return itself.
      */
-    virtual AtomSetLP& operator= (const AtomSetLP &other);
+    AtomSetLP& operator= (const AtomSetLP &other);
 
     /**
      * Tests wheter the atom is within the set.
@@ -869,7 +873,7 @@ namespace mccore {
      * Gets the set number of the AtomSet.
      * @return the set number.
      */
-    virtual const int getSetNumber() const { return AtomSet::ATOMSET_LP; }
+    virtual int getSetNumber() const { return AtomSet::ATOMSET_LP; }
 
   public:
 
@@ -936,7 +940,7 @@ namespace mccore {
      * @param other the object to copy.
      * @return itself.
      */
-    virtual AtomSetHydrogen& operator= (const AtomSetHydrogen &other);
+    AtomSetHydrogen& operator= (const AtomSetHydrogen &other);
 
     /**
      * Tests wheter the atom is within the set.
@@ -954,7 +958,7 @@ namespace mccore {
      * Gets the set number of the AtomSet.
      * @return the set number.
      */
-    virtual const int getSetNumber() const { return AtomSet::ATOMSET_HYDROGEN; }
+    virtual int getSetNumber() const { return AtomSet::ATOMSET_HYDROGEN; }
 
   public:
 
@@ -1034,7 +1038,7 @@ namespace mccore {
      * @param other the object to copy.
      * @return itself.
      */
-    virtual AtomSetAtom& operator= (const AtomSetAtom &other);
+    AtomSetAtom& operator= (const AtomSetAtom &other);
 
     /**
      * Tests wheter the atom is within the set.
@@ -1052,7 +1056,7 @@ namespace mccore {
      * Gets the set number of the AtomSet.
      * @return the set number.
      */
-    virtual const int getSetNumber() const { return AtomSet::ATOMSET_ATOM; }
+    virtual int getSetNumber() const { return AtomSet::ATOMSET_ATOM; }
 
   public:
 

@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Apr  7 18:28:55 2003
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 // 
 //  This file is part of mccore.
 //  
@@ -41,7 +41,7 @@ namespace mccore {
    * only been tested when nodes are int.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: MaximumFlowGraph.h,v 1.5 2003-08-28 14:29:28 gendrop Exp $
+   * @version $Id: MaximumFlowGraph.h,v 1.6 2003-12-23 14:48:25 larosem Exp $
    */
   template < class node_type,
 	     class edge_type = bool, 
@@ -121,7 +121,7 @@ namespace mccore {
      * @param other the object to copy.
      * @return itself.
      */
-    virtual MaximumFlowGraph& operator= (const MaximumFlowGraph &other) {
+    MaximumFlowGraph& operator= (const MaximumFlowGraph &other) {
       if (this != &other) {
 	Graph< node_type, edge_type, matrix_type, node_comparator >::operator= (other);
  	edgeFlows = other.edgeFlows;

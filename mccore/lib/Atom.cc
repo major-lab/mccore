@@ -11,8 +11,11 @@
 #endif
 
 #include "Atom.h"
-#include "Binstream.h"
 #include "AtomType.h"
+#include "Binstream.h"
+#include "Pdbstream.h"
+
+
 
 namespace mccore {
 
@@ -22,37 +25,37 @@ namespace mccore {
   
   Atom::Atom () : type (0) 
   {}
-
-
+  
+  
   Atom::Atom (float x, float y, float z, const AtomType *aType) 
     : Vector3D (x, y, z), 
       type (aType) 
   {}
-
-
+  
+  
   Atom::Atom (Vector3D aPoint, const AtomType *aType)
     : Vector3D (aPoint.getX(), aPoint.getY(), aPoint.getZ()),
       type (aType) 
   {}
   
-
+  
   Atom::Atom (const Atom &other) 
     : Vector3D (other),
       type (other.type) 
   {
   }
   
-
+  
   Atom* 
   Atom::clone () const 
   { 
     return new Atom (*this); 
   }
   
-
+  
   // OPERATORS ------------------------------------------------------------
-
-
+  
+  
   Atom& 
   Atom::operator= (const Atom &other)
   {
@@ -62,8 +65,8 @@ namespace mccore {
     }
     return *this;
   }
-
-
+  
+  
   bool 
   Atom::operator== (const Atom &other) const
   { 
@@ -83,9 +86,9 @@ namespace mccore {
     return *type < *other.type; 
   }
   
-
-// METHODS --------------------------------------------------------------
-
+  
+  // METHODS --------------------------------------------------------------
+  
   Vector3D 
   Atom::getColor () const 
   {
@@ -93,35 +96,53 @@ namespace mccore {
   }
   
   // I/O -----------------------------------------------------------------------
-
+  
   ostream&
   operator<< (ostream &os, const Atom& atom)
   {
-  return os << (const Vector3D&) atom 
-	    << ' ' << *atom.getType ();
-}
-
-
-
-iBinstream&
-operator>> (iBinstream &ibs, Atom &atom)
-{
-  const AtomType *type;
-
-  ibs >> (Vector3D&)atom;
-  ibs >> type;
+    return os << (const Vector3D&) atom 
+	      << ' ' << *atom.getType ();
+  }
   
-  atom.setType (type);
-  return ibs;
-}
-
-
-
-oBinstream&
-operator<< (oBinstream &obs, const Atom &atom)
-{
   
-  return obs << (const Vector3D&) atom << atom.getType ();
-}
+  
+  iBinstream&
+  operator>> (iBinstream &ibs, Atom &atom)
+  {
+    const AtomType *type;
+    
+    ibs >> (Vector3D&)atom;
+    ibs >> type;
+    
+    atom.setType (type);
+    return ibs;
+  }
+  
+  
+  
+  oBinstream&
+  operator<< (oBinstream &obs, const Atom &atom)
+  {
+    
+    return obs << (const Vector3D&) atom << atom.getType ();
+  }
+  
+
+
+  iPdbstream& 
+  operator>> (iPdbstream &ips, Atom &at)
+  {
+    ips.read (at);
+    return ips;
+  }
+
+
+
+  oPdbstream&
+  operator<< (oPdbstream &ops, const Atom &at)
+  {
+    ops.write (at);
+    return ops;
+  }
 
 }

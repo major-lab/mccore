@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // Genbankstream.cc
-// Copyright © 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2002-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Tue Feb 12 14:40:55 2002
 // 
@@ -65,11 +65,14 @@ namespace mccore
 	*this >> buf;
 	while (!eof () &&
 	       strcmp (buf, "//") != 0) {
-	  if (!isdigit(buf[0])) {
-	    for (int i=0; i<strlen (buf); ++i) {
-	      seq.push_back (toupper (buf[i]));
+	  if (!isdigit(buf[0]))
+	    {
+	      unsigned int i;
+	      
+	      for (i = 0; i < strlen (buf); ++i) {
+		seq.push_back (toupper (buf[i]));
+	      }
 	    }
-	  }
 	  *this >> buf;
 	}
 	break;

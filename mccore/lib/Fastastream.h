@@ -150,14 +150,17 @@ namespace mccore
    * 
    * @author Patrick Gendron 
    */
-  class ifFastastream : public iFastastream, public fstreambase
+  class ifFastastream : public fstreambase, public iFastastream
   {
   public:
 
     /**
      * Initializes the object.
      */
-    ifFastastream () : iFastastream (rdbuf ()) { }
+    ifFastastream ()
+      : fstreambase (),
+	iFastastream (rdbuf ())
+    { }
 
     /**
      * Initializes the stream with filename.
@@ -165,7 +168,11 @@ namespace mccore
      * @param mode the file mode.
      */
     ifFastastream (const char *name, int mode = ios::in)
-      : iFastastream (rdbuf ()), fstreambase (name, mode) { }
+      : fstreambase (),
+	iFastastream (rdbuf ())
+    {
+      open (name, mode);
+    }
 
     /**
      * Opens the stream with file name.
@@ -188,14 +195,17 @@ namespace mccore
    * 
    * @author Patrick Gendron 
    */
-  class ofFastastream : public oFastastream, public fstreambase
+  class ofFastastream : public fstreambase, public oFastastream
   {
   public:
 
     /**
      * Initializes the object.
      */
-    ofFastastream () : oFastastream (rdbuf ()) { }
+    ofFastastream ()
+      : fstreambase (),
+	oFastastream (rdbuf ())
+    { }
 
     /**
      * Initializes the stream with filename.
@@ -203,7 +213,11 @@ namespace mccore
      * @param mode the file mode.
      */
     ofFastastream (const char *name, int mode = ios::out)
-      : oFastastream (rdbuf ()), fstreambase (name, mode) { }
+      : fstreambase (),
+	oFastastream (rdbuf ())
+    {
+      open (name, mode);
+    }
   
     /**
      * Opens the stream with file name.
@@ -226,14 +240,17 @@ namespace mccore
    * 
    * @author Patrick Gendron 
    */
-  class izfFastastream : public iFastastream, public zfstreambase
+  class izfFastastream : public zfstreambase, public iFastastream
   {
   public:
 
     /**
      * Initializes the stream.
      */
-    izfFastastream () : iFastastream (rdbuf ()) { }
+    izfFastastream ()
+      : zfstreambase (),
+	iFastastream (rdbuf ())
+    { }
   
     /**
      * Initializes the stream with filename.
@@ -241,7 +258,11 @@ namespace mccore
      * @param mode the file mode.
      */
     izfFastastream (const char *name, int mode = ios::in)
-      : iFastastream (&buf), zfstreambase (name, mode) { }
+      : zfstreambase (),
+	iFastastream (rdbuf ())
+    {
+      open (name, mode);
+    }
 
     /**
      * Opens the stream with file name.
@@ -264,13 +285,16 @@ namespace mccore
    * 
    * @author Patrick Gendron 
    */
-  class ozfFastastream : public oFastastream, public zfstreambase
+  class ozfFastastream : public zfstreambase, public oFastastream
   {
   public:
     /**
      * Initializes the stream.
      */
-    ozfFastastream () : oFastastream (rdbuf ()) { }
+    ozfFastastream ()
+      : zfstreambase (),
+	oFastastream (rdbuf ())
+    { }
 
     /**
      * Initializes the stream with filename.
@@ -278,7 +302,11 @@ namespace mccore
      * @param mode the file mode.
      */
     ozfFastastream (const char *name, int mode = ios::out)
-      : oFastastream (&buf), zfstreambase (name, mode) { }
+      : zfstreambase (),
+	oFastastream (rdbuf ())
+    {
+      open (name, mode);
+    }
   
     /**
      * Opens the stream with file name.
@@ -294,15 +322,6 @@ namespace mccore
      */
     zfstreambuf* rdbuf () { return zfstreambase::rdbuf(); }
   };
-
 }
 
-
 #endif
-
-
-
-
-
-
-

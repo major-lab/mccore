@@ -1,9 +1,9 @@
 //                              -*- Mode: C++ -*- 
 // AtomType.h
-// Copyright © 2000-01, 03 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-03 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
-// $Revision: 1.17 $
+// $Revision: 1.18 $
 // 
 //  This file is part of mccore.
 //  
@@ -31,19 +31,19 @@
 
 #include "Vector3D.h"
 
-
 using namespace std;
 
-class iBinstream;
-class oBinstream;
 
-namespace mccore { 
 
-  class Residue;
-  class AtomTypeStore;
-
+namespace mccore {
   
-
+  class AtomTypeStore;
+  class Residue;
+  class iBinstream;
+  class oBinstream;
+  
+  
+  
   /**
    * @short Atom types.
    *
@@ -55,7 +55,7 @@ namespace mccore {
    *   - The charge and van der Waals radius<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: AtomType.h,v 1.17 2003-10-03 22:40:55 larosem Exp $ 
+   * @version $Id: AtomType.h,v 1.18 2003-12-23 14:46:53 larosem Exp $ 
    */
   class AtomType 
   {

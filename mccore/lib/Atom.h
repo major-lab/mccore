@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:00:09 2003
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 // 
 //  This file is part of mccore.
 //  
@@ -31,12 +31,15 @@
 
 using namespace std;
 
-class iBinstream;
-class oBinstream;
-
 namespace mccore {
 
   class AtomType;
+  class iBinstream;
+  class iPdbstream;
+  class oBinstream;
+  class oPdbstream;
+
+  
 
   /**
    * @short Derived from Vector3D, this class adds the type of the atom.
@@ -44,7 +47,7 @@ namespace mccore {
    * Derived from Vector3D, this class adds the type of the atom.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Atom.h,v 1.5 2003-09-26 21:16:12 gendrop Exp $
+   * @version $Id: Atom.h,v 1.6 2003-12-23 14:46:18 larosem Exp $
    */
   class Atom : public Vector3D
   {
@@ -154,14 +157,14 @@ namespace mccore {
     
     /**
      * Sets every field of the atom.
-     * @param x the x coordinate.
-     * @param y the y coordinate.
-     * @param z the z coordinate.
+     * @param ax the x coordinate.
+     * @param ay the y coordinate.
+     * @param az the z coordinate.
      * @param type the atom type.
      * @param loc the atom alternate location id (default = ' ').
      */
-    void setAll (float x, float y, float z, const AtomType *t) {
-      set (x, y, z);
+    void setAll (float ax, float ay, float az, const AtomType *t) {
+      set (ax, ay, az);
       type = t;
     }
 
@@ -212,6 +215,20 @@ namespace mccore {
    * @return the output binary stream used.
    */
   oBinstream& operator<< (oBinstream &obs, const Atom &atom);
+
+  /**
+   * Reads an atom from the stream.
+   * @param at the atom to read.
+   * @return the Pdbstream.
+   */
+  iPdbstream& operator>> (iPdbstream &ips, Atom &at);
+    
+  /**
+   * Writes an atom to the pdb stream.
+   * @param at the atom to write.
+   * @return the output pdb stream used.
+   */
+  oPdbstream& operator<< (oPdbstream &ops, const Atom& at);
 
 }
 

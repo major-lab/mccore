@@ -3,7 +3,7 @@
 // Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 // 
 //  This file is part of mccore.
 //  
@@ -213,9 +213,9 @@ namespace mccore {
 
 
   ExtendedResidue::iterator 
-  ExtendedResidue::erase (const AtomType *type)
+  ExtendedResidue::erase (const AtomType *aType)
   {
-    AtomMap::iterator i = atomIndex.find (type);
+    AtomMap::iterator i = atomIndex.find (aType);
     
     if (i!=atomIndex.end ()) {
       vector< Atom* >::const_iterator cit;
@@ -323,7 +323,7 @@ namespace mccore {
 	
 	  insert (Atom(z, AtomType::aPSAZ));
 	} else {
-	  gOut (4) << "Residue " << getResId () << "-" << getType()
+	  gOut (4) << "Residue " << getResId () << "-" << *getType ()
 		   << " is missing one or more critical atoms." << endl;	
 	}	
       }
@@ -353,7 +353,7 @@ namespace mccore {
       pivot[0] = 0;
       pivot[1] = 0;
       pivot[2] = 0;
-      gOut (4) << "Residue " << getType () << " " << getResId () 
+      gOut (4) << "Residue " << *getType () << " " << getResId () 
 	       << " has less than 3 atoms and cannot be moved: " << endl;
     }
     
@@ -427,9 +427,9 @@ namespace mccore {
 
 
   Atom* 
-  ExtendedResidue::get (const AtomType* type) const 
+  ExtendedResidue::get (const AtomType* aType) const 
   {
-    AtomMap::const_iterator it = atomIndex.find (type);
+    AtomMap::const_iterator it = atomIndex.find (aType);
     if (it == atomIndex.end ())
       return 0;
     else

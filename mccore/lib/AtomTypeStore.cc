@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Tue Mar 11 13:56:50 2003
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -1205,9 +1205,9 @@ namespace mccore {
   float
   AtomTypeStore::ACD::getAmberEpsilon (const Residue *res) const
   {
-    const ResidueType *type = res->getType ();
+    const ResidueType *t = res->getType ();
   
-    return type == ResidueType::rGLN || type == ResidueType::rGLU ? 0.0860 : 0.1094;
+    return t == ResidueType::rGLN || t == ResidueType::rGLU ? 0.0860 : 0.1094;
   }
 
 
@@ -1233,11 +1233,11 @@ namespace mccore {
   float
   AtomTypeStore::ACD1::getAmberEpsilon (const Residue *res) const
   {
-    const ResidueType *type = res->getType ();
+    const ResidueType *t = res->getType ();
   
-    return (type == ResidueType::rPHE
-	    || type == ResidueType::rTYR
-	    || type == ResidueType::rTRP
+    return (t == ResidueType::rPHE
+	    || t == ResidueType::rTYR
+	    || t == ResidueType::rTRP
 	    ? 0.0860 : 0.1094);
   }
 
@@ -1336,10 +1336,10 @@ namespace mccore {
   float
   AtomTypeStore::ACG::getAmberEpsilon (const Residue *res) const
   {
-    const ResidueType *type = res->getType ();
+    const ResidueType *t = res->getType ();
   
-    return ((type == ResidueType::rASN || type == ResidueType::rHIS || type == ResidueType::rTRP
-	     || type == ResidueType::rPHE || type == ResidueType::rTYR || type == ResidueType::rASP)
+    return ((t == ResidueType::rASN || t == ResidueType::rHIS || t == ResidueType::rTRP
+	     || t == ResidueType::rPHE || t == ResidueType::rTYR || t == ResidueType::rASP)
 	    ? 0.0860 : 0.1094);
   }
 
@@ -1559,9 +1559,9 @@ namespace mccore {
   float
   AtomTypeStore::AHB2::getVDWR (const Residue *res) const
   {
-    const ResidueType *type = res->getType ();
+    const ResidueType *t = res->getType ();
   
-    return (type == ResidueType::rSER || type == ResidueType::rCYS) ? 1.3870 : 1.4870;
+    return (t == ResidueType::rSER || t == ResidueType::rCYS) ? 1.3870 : 1.4870;
   }
 
 
@@ -1607,9 +1607,9 @@ namespace mccore {
   float
   AtomTypeStore::AHB3::getVDWR (const Residue *res) const
   {
-    const ResidueType *type = res->getType ();
+    const ResidueType *t = res->getType ();
   
-    return type == ResidueType::rSER || type == ResidueType::rCYS ? 1.3870 : 1.4870;
+    return t == ResidueType::rSER || t == ResidueType::rCYS ? 1.3870 : 1.4870;
   }
 
 
@@ -1655,11 +1655,11 @@ namespace mccore {
   float
   AtomTypeStore::AHD1::getVDWR (const Residue *res) const
   {
-    const ResidueType *type = res->getType ();
+    const ResidueType *t = res->getType ();
 
-    if (type == ResidueType::rHIS)
+    if (t == ResidueType::rHIS)
       return 0.6000;
-    else if (type == ResidueType::rTRP)
+    else if (t == ResidueType::rTRP)
       return 1.4090;
     else
       return 1.4590;
@@ -1695,15 +1695,15 @@ namespace mccore {
   float
   AtomTypeStore::AHD2::getVDWR (const Residue *res) const
   {
-    const ResidueType *type = res->getType ();
+    const ResidueType *t = res->getType ();
 
-    if (type == ResidueType::rARG || type == ResidueType::rPRO)
+    if (t == ResidueType::rARG || t == ResidueType::rPRO)
       return 1.3870; // H1
-    else if (type == ResidueType::rHIS)
+    else if (t == ResidueType::rHIS)
       return 1.4090; // H4
-    else if (type == ResidueType::rPHE || type == ResidueType::rTYR)
+    else if (t == ResidueType::rPHE || t == ResidueType::rTYR)
       return 1.4590; // HA
-    else if (type == ResidueType::rLYS)
+    else if (t == ResidueType::rLYS)
       return 1.4870; // HC
     else
       return 0.0000; // HO
@@ -1714,11 +1714,11 @@ namespace mccore {
   float
   AtomTypeStore::AHD2::getAmberEpsilon (const Residue *res) const
   {
-    const ResidueType *type = res->getType ();
+    const ResidueType *t = res->getType ();
 
-    if (type == ResidueType::rARG || type == ResidueType::rPRO || type == ResidueType::rLYS)
+    if (t == ResidueType::rARG || t == ResidueType::rPRO || t == ResidueType::rLYS)
       return 0.0157; // H1 HC
-    else if (type == ResidueType::rHIS || type == ResidueType::rPHE || type == ResidueType::rTYR)
+    else if (t == ResidueType::rHIS || t == ResidueType::rPHE || t == ResidueType::rTYR)
       return 0.0150; // H4 HA
     else
       return 0.0000; // HO
@@ -1759,15 +1759,15 @@ namespace mccore {
   float
   AtomTypeStore::AHE1::getVDWR (const Residue *res) const
   {
-    const ResidueType *type = res->getType ();
+    const ResidueType *t = res->getType ();
 
-    if (type == ResidueType::rHIS)
+    if (t == ResidueType::rHIS)
       return 1.3590; // H5
-    else if (type == ResidueType::rTRP)
+    else if (t == ResidueType::rTRP)
       return 0.6000; // H
-    else if (type == ResidueType::rPHE || type == ResidueType::rTYR)
+    else if (t == ResidueType::rPHE || t == ResidueType::rTYR)
       return 1.4590; // HA
-    else if (type == ResidueType::rMET)
+    else if (t == ResidueType::rMET)
       return 1.3870; // H1
     return 0;
   }
@@ -1777,11 +1777,11 @@ namespace mccore {
   float
   AtomTypeStore::AHE1::getAmberEpsilon (const Residue *res) const
   {
-    const ResidueType *type = res->getType ();
+    const ResidueType *t = res->getType ();
 
-    if (type == ResidueType::rHIS || type == ResidueType::rPHE || type == ResidueType::rTYR)
+    if (t == ResidueType::rHIS || t == ResidueType::rPHE || t == ResidueType::rTYR)
       return 0.0150; // H5 HA
-    else if (type == ResidueType::rTRP || type == ResidueType::rMET)
+    else if (t == ResidueType::rTRP || t == ResidueType::rMET)
       return 0.0157; // H H1
     return 0;
   }
@@ -1809,17 +1809,17 @@ namespace mccore {
   float
   AtomTypeStore::AHE2::getVDWR (const Residue *res) const
   {
-    const ResidueType *type = res->getType ();
+    const ResidueType *t = res->getType ();
 
-    if (type == ResidueType::rHIS)
+    if (t == ResidueType::rHIS)
       return 0.6000; // H
-    else if (type == ResidueType::rPHE || type == ResidueType::rTYR)
+    else if (t == ResidueType::rPHE || t == ResidueType::rTYR)
       return 1.4590; // HA
-    else if (type == ResidueType::rLYS)
+    else if (t == ResidueType::rLYS)
       return 1.1000; // HP
-    else if (type == ResidueType::rMET)
+    else if (t == ResidueType::rMET)
       return 1.3870; // H1
-    else if (type == ResidueType::rGLU)
+    else if (t == ResidueType::rGLU)
       return 0.0000;
     return 0;
   }
@@ -1829,13 +1829,13 @@ namespace mccore {
   float
   AtomTypeStore::AHE2::getAmberEpsilon (const Residue *res) const
   {
-    const ResidueType *type = res->getType ();
+    const ResidueType *t = res->getType ();
 
-    if (type == ResidueType::rHIS || type == ResidueType::rLYS || type == ResidueType::rMET)
+    if (t == ResidueType::rHIS || t == ResidueType::rLYS || t == ResidueType::rMET)
       return 0.0157; // H HP H1
-    else if (type == ResidueType::rPHE || type == ResidueType::rTYR)
+    else if (t == ResidueType::rPHE || t == ResidueType::rTYR)
       return 0.0150; // HA
-    else if (type == ResidueType::rGLU)
+    else if (t == ResidueType::rGLU)
       return 0.0000; // HO
     return 0;
   }
@@ -1862,13 +1862,13 @@ namespace mccore {
   float
   AtomTypeStore::AHE3::getVDWR (const Residue *res) const
   {
-    const ResidueType *type = res->getType ();
+    const ResidueType *t = res->getType ();
 
-    if (type == ResidueType::rTRP)
+    if (t == ResidueType::rTRP)
       return 1.4590; // HA
-    else if (type == ResidueType::rLYS)
+    else if (t == ResidueType::rLYS)
       return 1.1000; // HP
-    else if (type == ResidueType::rMET)
+    else if (t == ResidueType::rMET)
       return 1.3870; // H1
     return 0;
   }
@@ -1878,11 +1878,11 @@ namespace mccore {
   float
   AtomTypeStore::AHE3::getAmberEpsilon (const Residue *res) const
   {
-    const ResidueType *type = res->getType ();
+    const ResidueType *t = res->getType ();
 
-    if (type == ResidueType::rLYS || type == ResidueType::rMET)
+    if (t == ResidueType::rLYS || t == ResidueType::rMET)
       return 0.0157; // HP H1
-    else if (type == ResidueType::rTRP)
+    else if (t == ResidueType::rTRP)
       return 0.0150; // HA
     return 0;
   }
@@ -1931,12 +1931,12 @@ namespace mccore {
   float
   AtomTypeStore::AHG2::getVDWR (const Residue *res) const
   {
-    const ResidueType *type = res->getType ();
+    const ResidueType *t = res->getType ();
 
-    if (type == ResidueType::rGLN || type == ResidueType::rARG || type == ResidueType::rGLU || type == ResidueType::rLYS
-	|| type == ResidueType::rPRO)
+    if (t == ResidueType::rGLN || t == ResidueType::rARG || t == ResidueType::rGLU || t == ResidueType::rLYS
+	|| t == ResidueType::rPRO)
       return 1.4870; // HC
-    else if (type == ResidueType::rMET)
+    else if (t == ResidueType::rMET)
       return 1.3870; // H1
     return 0;
   }
@@ -2003,11 +2003,11 @@ namespace mccore {
   float
   AtomTypeStore::AHZ2::getVDWR (const Residue *res) const
   {
-    const ResidueType *type = res->getType ();
+    const ResidueType *t = res->getType ();
 
-    if (type == ResidueType::rTRP)
+    if (t == ResidueType::rTRP)
       return 1.4590; // HA
-    else if (type == ResidueType::rLYS)
+    else if (t == ResidueType::rLYS)
       return 0.6000; // H
     return 0;
   }
@@ -2017,11 +2017,11 @@ namespace mccore {
   float
   AtomTypeStore::AHZ2::getAmberEpsilon (const Residue *res) const
   {
-    const ResidueType *type = res->getType ();
+    const ResidueType *t = res->getType ();
 
-    if (type == ResidueType::rTRP)
+    if (t == ResidueType::rTRP)
       return 0.0150; // HA
-    else if (type == ResidueType::rLYS)
+    else if (t == ResidueType::rLYS)
       return 0.0157; // H
     return 0;
   }
@@ -2041,11 +2041,11 @@ namespace mccore {
   float
   AtomTypeStore::AHZ3::getVDWR (const Residue *res) const
   {
-    const ResidueType *type = res->getType ();
+    const ResidueType *t = res->getType ();
     
-    if (type == ResidueType::rTRP)
+    if (t == ResidueType::rTRP)
       return 1.4590; // HA
-    else if (type == ResidueType::rLYS)
+    else if (t == ResidueType::rLYS)
       return 0.6000; // H
     return 0;
   }
@@ -2055,11 +2055,11 @@ namespace mccore {
   float
   AtomTypeStore::AHZ3::getAmberEpsilon (const Residue *res) const
   {
-    const ResidueType *type = res->getType ();
+    const ResidueType *t = res->getType ();
 
-    if (type == ResidueType::rTRP)
+    if (t == ResidueType::rTRP)
       return 0.0150; // HA
-    else if (type == ResidueType::rLYS)
+    else if (t == ResidueType::rLYS)
       return 0.0157; // H
     return 0;
   }
