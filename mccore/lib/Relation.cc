@@ -21,6 +21,7 @@
 #include "HBond.h"
 #include "ExtendedResidue.h"
 #include "PairingPattern.h"
+#include "CException.h"
 
 #include "zfPdbstream.h"
 
@@ -115,6 +116,38 @@ namespace mccore {
       labels.insert (PropertyType::pDIR_ANY);
     }
 
+    if (is (PropertyType::pAdjacent))
+      {
+	// compute transfo from 5' base to phosphate
+	
+	vector< Atom > pVec;
+	const Residue *r5, *r3;
+
+	if (is (PropertyType::pDIR_5p))
+	  {
+	    r5 = ref;
+	    r3 = res;
+	  }
+	else if (is (PropertyType::pDIR_3p))
+	  {
+	    r5 = res;
+	    r3 = ref;
+	  }
+	else
+	  throw CIntLibException ("adjacent relation should be either in direction 5' or 3'.");
+
+	pVec.push_back (*r5->find (AtomType::aO3p));
+	pVec.push_back (*r3->find (AtomType::aP));
+	pVec.push_back (*r3->find (AtomType::aO1P));
+	pVec.push_back (*r3->find (AtomType::aO2P));
+	pVec.push_back (*r3->find (AtomType::aO5p));
+
+	Residue pRes (ResidueType::rPhosphate, r5->getResId (), pVec);
+	pRes.finalize ();
+	
+	po4_tfo = r5->getReferential ().invert () * pRes.getReferential ();
+      }
+    
     return !empty ();
   }
 
@@ -194,7 +227,8 @@ namespace mccore {
       {
 	s.insert (PropertyType::pAdjacent);
 	s.insert (PropertyType::pDIR_3p);
-      } 
+      }
+    
     return s;
   }
 

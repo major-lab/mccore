@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 //
 //  This file is part of mccore.
 //  
@@ -59,7 +59,7 @@ namespace mccore {
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.7 2003-09-26 21:17:07 gendrop Exp $
+   * @version $Id: Relation.h,v 1.8 2003-09-30 15:53:18 thibaup Exp $
    */
   class Relation
   {
@@ -79,6 +79,11 @@ namespace mccore {
      */
     HomogeneousTransfo tfo;
 
+    /**
+     * The homogeneous matrix that expresses the transformation from the 5' residue to the phosphate residue.
+     */
+    HomogeneousTransfo po4_tfo;
+    
     /**
      * A property for the interacting face of the ref.
      */
@@ -171,6 +176,11 @@ namespace mccore {
      * Returns the transformation between the residues of the relation.
      */
     HomogeneousTransfo getTransfo () const { return tfo; }
+
+    /**
+     * Returns the transformation between the phosphate and the 5' residue of the relation.
+     */
+    HomogeneousTransfo getPhosphateTransfo () const { return po4_tfo; }
 
     void addLabel (const PropertyType* l) { labels.insert (l); }
 

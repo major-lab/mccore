@@ -1230,6 +1230,10 @@ namespace mccore {
     Vector3D *v1, *v2, *v3;
 
     if (!type || empty ()) return;
+
+    // no pseudo atoms in phosphate residue, nothing to do!
+    if (getType ()->isPhosphate ())
+      return;
     
     if (getType ()->isNucleicAcid ()) {
       removeOptionals ();
@@ -1254,8 +1258,6 @@ namespace mccore {
       insert (Atom (y, AtomType::aPSY));
       insert (Atom (z, AtomType::aPSZ));
 
-    } else if (type->isPhosphate ()) {
-      // no pseudo atoms in phosphate residue, nothing to do!
     } else if (type->isAminoAcid ()) {
       if ((v1 = get (AtomType::aCA)) != 0 &&
 	  (v2 = get (AtomType::aN)) != 0 &&
