@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.54 $
-// $Id: Residue.cc,v 1.54 2004-12-07 15:57:21 thibaup Exp $
+// $Revision: 1.55 $
+// $Id: Residue.cc,v 1.55 2004-12-08 19:24:27 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -1560,39 +1560,22 @@ namespace mccore {
 
     try
     {
-      if (this->type->isPurine ())
+      if (this->type->isNucleicAcid ())
       {
 	// fetch needed atoms
-	v1 = this->_safe_get (AtomType::aN9);
-	v2 = this->_safe_get (AtomType::aC8);
-	v3 = this->_safe_get (AtomType::aC4);
+	v1 = this->_safe_get (Residue::nitrogenType19 (this->type));
+	v2 = this->_safe_get (Residue::carbonType68 (this->type));
+	v3 = this->_safe_get (Residue::carbonType24 (this->type));
 
 	// compute and insert pseudo-atoms
 	a = (*v2-*v1).normalize();
 	b = (*v3-*v1).normalize();
-	j = *v1 + (a + b).normalize();
-	k = *v1 + (b.cross(a)).normalize();
-	i = *v1 + j.cross (k);
-	this->insert (Atom (i, AtomType::aPSX));
-	this->insert (Atom (j, AtomType::aPSY));
-	this->insert (Atom (k, AtomType::aPSZ));
-      }
-      else if (this->type->isPyrimidine ())
-      {
-	// fetch needed atoms
-	v1 = this->_safe_get (AtomType::aN1);
-	v2 = this->_safe_get (AtomType::aC6);
-	v3 = this->_safe_get (AtomType::aC2);
-
-	// compute and insert pseudo-atoms
-	a = (*v2-*v1).normalize();
-	b = (*v3-*v1).normalize();
-	j = *v1 + (a + b).normalize();
-	k = *v1 + (b.cross(a)).normalize();
-	i = *v1 + j.cross (k);
-	this->insert (Atom (i, AtomType::aPSX));
-	this->insert (Atom (j, AtomType::aPSY));
-	this->insert (Atom (k, AtomType::aPSZ));
+	j = (a + b).normalize();
+	k = (b.cross(a)).normalize();
+	i = j.cross (k);
+	this->insert (Atom (*v1 + i, AtomType::aPSX));
+	this->insert (Atom (*v1 + j, AtomType::aPSY));
+	this->insert (Atom (*v1 + k, AtomType::aPSZ));
       }
       else if (this->type->isPhosphate ())
       {
