@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.1.2.2 $
-// $Id: GraphModel.cc,v 1.1.2.2 2004-12-14 02:51:30 larosem Exp $
+// $Revision: 1.1.2.3 $
+// $Id: GraphModel.cc,v 1.1.2.3 2004-12-27 01:37:53 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -28,21 +28,125 @@
 #include <config.h>
 #endif
 
+#include <set>
+#include <vector>
+
 #include "GraphModel.h"
 #include "Relation.h"
 #include "Residue.h"
+
+using namespace std;
 
 
 
 namespace mccore
 {
-  GraphModel::iterator
-  GraphModel::insert (const Residue &res)
-  {
-    Residue *clone;
 
-    clone = res.clone ();
-    UndirectedGraph< Residue*, Relation*, float, float, less_deref< Residue > >::insert (clone);
-    return UndirectedGraph< Residue*, Relation*, float, float, less_deref< Residue > >::find (clone);
+  GraphModel::GraphModel (const GraphModel &right)
+    : AbstractModel (right),
+      annotated (right.annotated)
+  {
+    deepCopy (right);
   }
+  
+
+  GraphModel::~GraphModel ()
+  {
+    vector< Residue* >::iterator resIt;
+    vector< Relation* >::iterator relIt;
+
+    for (resIt = vertices.begin (); vertices.end () != resIt; ++resIt)
+      {
+	delete *resIt;
+      }
+    for (relIt = edges.begin (); edges.end () != relIt; ++relIt)
+      {
+	delete *relIt;
+      }
+  }
+
+
+  void
+  GraphModel::deepCopy (const GraphModel &right)
+  {
+    vector< Residue* >::const_iterator resIt;
+    vector< Relation* >::const_iterator relIt;
+    set< const Residue*, less_deref< Residue > > resSet;
+
+    for (resIt = right.vertices.begin (); right.vertices.end () != resIt; ++resIt)
+      {
+	Residue *res = (*resIt)->clone ();
+	
+	graphsuper::insert (res, 0);
+	resSet.insert (res);	
+      }
+    for (relIt = right.edges.begin (); right.edges.end () != relIt; ++relIt)
+      {
+	Relation *rel;
+
+	rel = (*relIt)->clone ();
+	rel->reassignResiduePointers (resSet);
+	graphsuper::connect (const_cast< Residue* > (rel->getRef ()), const_cast < Residue* > (rel->getRes ()), rel, 0);
+      }
+  }
+  
+  
+  GraphModel&
+  GraphModel::operator= (const GraphModel &right)
+  {
+    if (this != &right)
+      {
+	AbstractModel::operator= (right);
+	annotated = right.annotated;
+	deepCopy (right);
+      }
+    return *this;
+  }
+    
+
+  void
+  GraphModel::sort ()
+  {
+  }
+  
+    
+  void
+  GraphModel::clear ()
+  {
+  }
+
+
+  void
+  GraphModel::annotate ()
+  {
+  }
+    
+
+  ostream&
+  GraphModel::output (ostream &os) const
+  {
+    return os;
+  }
+
+
+  iPdbstream&
+  GraphModel::input (iPdbstream &ips)
+  {
+    return ips;
+  }
+  
+
+  oBinstream&
+  GraphModel::output (oBinstream &obs) const
+  {
+    return obs;
+  }
+  
+  
+  iBinstream&
+  GraphModel::input (iBinstream &ibs)
+  {
+    return ibs;
+  }
+  
 }

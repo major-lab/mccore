@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:31:01 2004
-// $Revision: 1.1.2.4 $
+// $Revision: 1.1.2.5 $
 // 
 // This file is part of mccore.
 // 
@@ -40,26 +40,49 @@ namespace mccore
 
   
   /**
+   * The GraphModel class is a graph container for Residue pointers as
+   * vertices and Relation pointers as edges.  It uses the AbstractModel
+   * iterators.
+   *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.h,v 1.1.2.4 2004-12-25 02:41:14 larosem Exp $
+   * @version $Id: GraphModel.h,v 1.1.2.5 2004-12-27 01:37:55 larosem Exp $
    */
   class GraphModel : public AbstractModel, public UndirectedGraph < Residue*, Relation*, float, float, less_deref< Residue > >
   {
+    typedef UndirectedGraph< Residue*, Relation*, float, float, less_deref< Residue > > graphsuper;
+    
   public:
 
     typedef AbstractModel::iterator iterator;
     typedef AbstractModel::const_iterator const_iterator;
-    typedef UndirectedGraph< Residue*, Relation*, float, float, less_deref< Residue > >::size_type size_type;
+    typedef graphsuper::size_type size_type;
+    typedef graphsuper::label label;
+
+  protected:
+    
+    typedef graphsuper::V2VLabel V2VLabel;
+    typedef graphsuper::EV2ELabel EV2ELabel;
+    typedef graphsuper::EndVertices EndVertices;
+
+  private:
+
+    /**
+     * Annotation flag.
+     */
+    bool annotated;
+    
+  public:
     
     /**
      * Initializes the object.
      * @param fm the residue factory methods that will instanciate new
      * residues (default is @ref ExtendedResidueFM).
      */
-    GraphModel (const ResidueFactoryMethod *fm);
+    GraphModel (const ResidueFactoryMethod *fm = 0)
+      : AbstractModel (fm), annotated (false) { }
 
     /**
-     * Initializes the object with the right's content.
+     * Initializes the object with the right's content (deep copy).
      * @param right the object to copy.
      */
     GraphModel (const GraphModel &right);
@@ -75,10 +98,20 @@ namespace mccore
      */
     virtual ~GraphModel ();
 
-    // OPERATORS ------------------------------------------------------------
+  private:
 
     /**
-     * Assigns the object with the right's content.
+     * Clones and re-assigns the residues and relations into the graph.
+     * @param right the GraphModel to clone.
+     */
+    void deepCopy (const GraphModel &right);
+
+    // OPERATORS ------------------------------------------------------------
+
+  public:
+    
+    /**
+     * Assigns the object with the right's content (deep copy).
      * @param right the object to copy.
      * @return itself.
      */
@@ -88,20 +121,36 @@ namespace mccore
      * Gets the model reference at nth position.
      * @param nth the position of the reference to get.
      * @return the nth reference.
+     * @exception ArrayIndexOutOfBoundsException
      */
-    virtual Residue& operator[] (size_type nth)
+    virtual Residue& operator[] (size_type nth) throw (ArrayIndexOutOfBoundsException)
     {
-      return *internalGetVertex (nth);
+      try
+	{
+	  return *internalGetVertex (nth);
+	}
+      catch (NoSuchElementException &e)
+	{
+	  throw ArrayIndexOutOfBoundsException ("", __FILE__, __LINE__);
+	}
     }
 
     /**
      * Gets the model const_reference at nth position.
      * @param nth the position of the const_reference to get.
      * @return the nth const_reference.
+     * @exception ArrayIndexOutOfBoundsException
      */
-    virtual const Residue& operator[] (size_type nth) const
+    virtual const Residue& operator[] (size_type nth) const throw (ArrayIndexOutOfBoundsException)
     {
-      return *internalGetVertex (nth);
+      try
+	{
+	  return *internalGetVertex (nth);
+	}
+      catch (NoSuchElementException &e)
+	{
+	  throw ArrayIndexOutOfBoundsException ("", __FILE__, __LINE__);
+	}
     }
 
     // ACCESS ---------------------------------------------------------------
@@ -151,7 +200,7 @@ namespace mccore
     template <class InputIterator>
     void insert (InputIterator f, InputIterator l)
     {
-      UndirectedGraph< Residue*, Relation*, float, float, less_deref< Residue > >::insertRange (f, l);
+      graphsuper::insertRange (f, l);
     }
 
     /**
@@ -161,7 +210,31 @@ namespace mccore
      */ 
     virtual iterator erase (iterator pos) 
     {
-      return iterator (UndirectedGraph< Residue*, Relation*, float, float, less_deref< Residue > >::erase (&*pos));
+      return iterator (graphsuper::erase (&*pos));
+    }
+
+    /**
+     * Finds a residue given it's residue id.  Returns an iterator
+     * pointing to the residue or the end of the container if the residue was
+     * not found.
+     * @param id the residue id.
+     * @return a AbstractModel iterator.
+     */
+    iterator find (const ResId &id)
+    {
+      return AbstractModel::find (id);
+    }
+
+    /**
+     * Finds a residue given it's residue id.  Returns a AbstractModel iterator
+     * pointing to the residue or the end of the container if the residue was
+     * not found.
+     * @param id the residue id.
+     * @return a AbstractModel iterator.
+     */
+    const_iterator find (const ResId &id) const
+    {
+      return AbstractModel::find (id);
     }
     
     /**
@@ -190,11 +263,13 @@ namespace mccore
     /**
      * Removes all of the residues from the model.  
      */
-    virtual void clear ()
-    {
-      UndirectedGraph< Residue*, Relation*, float, float, less_deref < Residue > >::clear ();
-    }
+    virtual void clear ();
 
+    /**
+     * Annotates the GraphModel.  It builds edge in the graph.
+     */
+    void annotate ();
+    
     // I/O  -----------------------------------------------------------------
 
     /**
