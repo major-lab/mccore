@@ -3,7 +3,7 @@
 // Copyright © 2001-03 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 // 
 //  This file is part of mccore.
 //  
@@ -73,7 +73,12 @@ namespace mccore {
   
   ExtendedResidue::~ExtendedResidue () 
   {
-    clear ();
+    vector< Atom* >::iterator it;
+    for (it = atomLocal.begin (); it != atomLocal.end (); ++it) {
+      delete *it;
+    }
+    atomLocal.clear ();
+    tfo.setIdentity ();
   }
 
 
@@ -379,11 +384,11 @@ namespace mccore {
 
       AtomMap::const_iterator i, j;
 
-      for (i=atomIndex.begin (), j=resp->atomIndex.end ();
+      for (i=atomIndex.begin (), j=resp->atomIndex.begin ();
 	   i!=atomIndex.end () && j!=resp->atomIndex.end ();
 	   ++i, ++j) {
-	atomLocal[i->second] = resp->atomLocal[j->second];
-	atomGlobal[i->second] = resp->atomGlobal[j->second];
+	*atomLocal[i->second] = *resp->atomLocal[j->second];
+	*atomGlobal[i->second] = *resp->atomGlobal[j->second];
       }
       placed = true;
       tfo = resp->tfo;      
@@ -417,6 +422,7 @@ namespace mccore {
   void ExtendedResidue::place () const
   {
     if (!isPlaced ()) {
+
       vector< Atom* >::const_iterator cit;
       vector< Atom* >::iterator it;
     
@@ -426,7 +432,7 @@ namespace mccore {
 	{
 	  **it = **cit;
 	  (*it)->transform (tfo);
-	}
+	}      
       placed = true;
     }
   }
@@ -443,16 +449,19 @@ namespace mccore {
 
   ostream&
   ExtendedResidue::output (ostream &os) const 
-  {
+  {    
+    os << &resId << endl;
     os << resId << type;
-//     os << endl << tfo;
-//     os << endl;
-//     AtomMap::const_iterator cit;
-//     os << "\n\tLocal coordinates\t\tGlobal coordinates";
-//     for (cit=atomIndex.begin (); cit!=atomIndex.end (); ++cit) {
-//       os << "\n\t" << *(atomLocal[cit->second]) << " \t " << *(atomGlobal[cit->second]) 
-// 	 << ((!isPlaced ())?" [invalid]":"") << flush;
-//     }
+    os << endl << tfo;
+    os << endl;
+    AtomMap::const_iterator cit;
+    os << "\n\tLocal coordinates\t\tGlobal coordinates";
+    for (cit=atomIndex.begin (); cit!=atomIndex.end (); ++cit) {
+      os << "\n\t" 
+	 << atomLocal[cit->second] << " " << *(atomLocal[cit->second]) << " \t " 
+	 << atomGlobal[cit->second] << " " << *(atomGlobal[cit->second]) 
+	 << ((!isPlaced ())?" [invalid]":"") << flush;
+    }
     return os;
   }
   

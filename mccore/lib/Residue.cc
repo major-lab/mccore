@@ -91,7 +91,11 @@ namespace mccore {
 
   Residue::~Residue () 
   {
-    clear ();
+    vector< Atom* >::iterator it;
+    for (it = atomGlobal.begin (); it != atomGlobal.end (); ++it)
+      delete *it;
+    atomGlobal.clear ();
+    atomIndex.clear();
   }
 
 
@@ -228,7 +232,7 @@ namespace mccore {
 
       atomIndex = other.atomIndex;
     }
-   
+
     return *this;
   }
 
@@ -392,6 +396,8 @@ namespace mccore {
     Vector3D *pivot[3];
     HomogeneousTransfo curr;
 
+    cout << ":-|" << endl;
+
     if ((get (AtomType::aN9) != 0 || get (AtomType::aN1) != 0) 
 	&& get (AtomType::aPSY) != 0
 	&& get (AtomType::aPSZ) != 0) {
@@ -510,19 +516,19 @@ namespace mccore {
 
   void Residue::validate () 
   {
-    gOut (5) << "Validating " << resId << " " << type << endl;
+    gOut (6) << "Validating " << resId << " " << type << endl;
 
     if (!type) {
-      gOut (4) << "Validate called on an empty residue" << endl;
+      gOut (6) << "Validate called on an empty residue" << endl;
       return;
     }
 
     if (!type->isNucleicAcid () && !type->isAminoAcid ()) {
-      gOut (4) << "Validate called on a unknown residue: " << type << endl;
+      gOut (6) << "Validate called on a unknown residue: " << type << endl;
       return;
     }
     
-    gOut (5) << "Fixed atom content" << endl;
+    gOut (6) << "Fixed atom content" << endl;
 
     set< const AtomType* > actset;
     set< const AtomType* > diffset;    
@@ -543,7 +549,8 @@ namespace mccore {
       // Add here the removal of non obligatory or optional atoms.
     }     
 
-    gOut (5) << "Validated obligatory atoms" << endl;
+    gOut (6) << "Validated obligatory atoms and type is now " 
+	     << (type->isUnknown ()? "invalid": "valid") << endl;
   }
   
 
@@ -1341,10 +1348,10 @@ namespace mccore {
       
       AtomMap::const_iterator i, j;
       
-      for (i=atomIndex.begin (), j=resp->atomIndex.end ();
+      for (i=atomIndex.begin (), j=resp->atomIndex.begin ();
 	   i!=atomIndex.end () && j!=resp->atomIndex.end ();
 	   ++i, ++j) {
-	atomGlobal[i->second] = resp->atomGlobal[j->second];
+	*atomGlobal[i->second] = *resp->atomGlobal[j->second];
       }
     }
   }
@@ -1433,11 +1440,11 @@ namespace mccore {
     return r.output (os);
   }
 
-  ostream&
-  operator<< (ostream &os, const Residue *r)
-  {
-    return r->output (os);
-  }
+//   ostream&
+//   operator<< (ostream &os, const Residue *r)
+//   {
+//     return r->output (os);
+//   }
 
   iBinstream& operator>> (iBinstream &ibs, Residue &res)
   {
