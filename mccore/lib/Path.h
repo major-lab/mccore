@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // Path.h
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 24 21:31:52 2003
 // 
@@ -35,7 +35,7 @@ namespace mccore {
    * @short A path in a graph.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Path.h,v 1.3 2003-05-13 18:19:51 gendrop Exp $
+   * @version $Id: Path.h,v 1.4 2004-04-02 18:59:52 larosem Exp $
    */
   template< class node_type, class valuetype >
   class Path : public list< node_type >
@@ -55,18 +55,24 @@ namespace mccore {
     /**
      * Initializes the object.
      */
-    Path () : list< node_type >(), value (valuetype ()) { }
+    Path ()
+      : list< node_type > (),
+	value (valuetype ())
+    { }
 
     /**
      * Initializes the object with the other's content.
      * @param other the object to copy.
      */
-    Path (const Path &other) : list< node_type > (other) { value = other.value; }
+    Path (const Path &other)
+      : list< node_type > (other),
+	value (other.value)
+    { }
 
     /**
      * Destroys the object.
      */
-    ~Path () {}
+    ~Path () { }
 
     // OPERATORS ------------------------------------------------------------
 
@@ -77,10 +83,11 @@ namespace mccore {
      */
     Path& operator= (const Path &other)
     {
-      if  (this != &other) {
-	list< node_type >::operator= (other);
-	value = other.value;
-      } 
+      if  (this != &other)
+	{
+	  list< node_type >::operator= (other);
+	  value = other.value;
+	}
       return *this;
     }
 
@@ -98,27 +105,41 @@ namespace mccore {
      * compared in both directions and are rotated, i.e. it is to be
      * used with cycles.
      */
-    bool operator== (const Path &other) const {
-      Path a = *this;
-      Path b = other;
-      int i;
-      
-      if (a.size () != b.size ()) return false;
- 
-      for (i=0;i<(int)a.size (); ++i) {
-	if ((list< node_type > &)a == (list< node_type >&)b) return true;
-	b.rotate ();
-      }
-
-      b.reverse ();
-
-      for (i=0;i<(int)a.size (); ++i) {
-	if ((list< node_type > &)a == (list< node_type >&)b) return true;
-	b.rotate ();
-      }
-
+    bool operator== (const Path &other) const
+    {
+      if (value == other.value
+	  && size () == other.size ())
+	{
+	  if (empty ())
+	    return true;
+	  else
+	    {
+	      const Path &a = *this;
+	      Path b = other;
+	      int i;
+	      
+	      for (i = 0; i <(int) a.size (); ++i)
+		{
+		  if ((const list< node_type >&) a == (list< node_type >&) b)
+		    return true;
+		  b.rotate ();
+		}
+	      
+	      b.reverse ();
+	      
+	      for (i = 0; i < (int) a.size (); ++i)
+		{
+		  if ((list< node_type >&) a == (list< node_type >&) b)
+		    return true;
+		  b.rotate ();
+		}
+	    }
+	}
       return false;
     }
+      
+
+    bool operator!= (const Path &other) const { return ! this->operator== (other); }
      
     // ACCESS ---------------------------------------------------------------
 
