@@ -5,8 +5,8 @@
 // Author           : Sebastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Wed Feb 14 15:33:58 2001
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Aug 29 14:30:51 2001
-// Update Count     : 44
+// Last Modified On : Wed Dec 19 10:01:11 2001
+// Update Count     : 45
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -33,7 +33,7 @@
 #include <map.h>
 #include <algo.h>
 
-#include "CResidue.h"
+#include "AbstractResidue.h"
 #include "ResidueType.h"
 #include "CAtom.h"
 
@@ -115,7 +115,7 @@ public:
     
     for (i = begin; i != end; ++i) 
       {
-	CResidue::iterator j;
+	AbstractResidue::iterator j;
 	ResidueRange< iterator > tmp_X (i, HUGE, -HUGE);
 	ResidueRange< iterator > tmp_Y (i, HUGE, -HUGE);
 	ResidueRange< iterator > tmp_Z (i, HUGE, -HUGE);
