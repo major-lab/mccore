@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // RnamlWriter.h
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.3 $
-// $Id: RnamlWriter.h,v 1.3 2005-01-03 23:05:31 larosem Exp $
+// $Revision: 1.4 $
+// $Id: RnamlWriter.h,v 1.4 2005-03-22 01:10:33 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -31,10 +31,14 @@ namespace rnaml
 {
   class Atom;
   class Base;
+  class BaseId;
   class Model;
+  class ModelId;
   class Molecule;
+  class MoleculeId;
   class PrintStream;
   class Rnaml;
+  class StrAnnotation;
 }
 
 
@@ -43,7 +47,9 @@ namespace mccore
 {
   class Atom;
   class AbstractModel;
+  class GraphModel;
   class Molecule;
+  class ResId;
   class Residue;
   
   
@@ -97,6 +103,15 @@ namespace mccore
      * @return the rnaml Atom.
      */
     static rnaml::Atom* toRnaml (const mccore::Atom &atom);
+
+    /**
+     * Transforms a mccore ResId to a rnaml BaseId.
+     * @param molId optional MoleculeId, 0 when not used.
+     * @param mId optional ModelId, 0 when not used.
+     * @param id the ResId.
+     * @return the rnaml BaseId.
+     */
+    static rnaml::BaseId* toBaseId (rnaml::MoleculeId *molId, rnaml::ModelId *mId, const ResId &id);
     
     /**
      * Transforms a mccore Residue to a rnaml Base.
@@ -104,6 +119,13 @@ namespace mccore
      * @return the rnaml Base.
      */
     static rnaml::Base* toRnaml (const Residue &residue);
+
+    /**
+     * Builds the structure annotation elements for an annotated GraphModel.
+     * @param model the annotated GraphModel.
+     * @return the rnaml structure annotation StrAnnotation.
+     */
+    static rnaml::StrAnnotation* strAnnotate (const GraphModel &model);
     
     /**
      * Transforms a mccore AbstractModel to a rnaml Model.
