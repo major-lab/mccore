@@ -4,7 +4,7 @@
 //                           Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 16:27:35 1999
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 //
 // This file is part of mccore.
 // 
@@ -44,7 +44,7 @@ namespace mccore
    * libraries.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Exception.h,v 1.5 2005-01-03 22:52:27 larosem Exp $
+   * @version $Id: Exception.h,v 1.6 2005-01-11 20:57:05 thibaup Exp $
    */
   class Exception : public exception
   {
@@ -445,7 +445,6 @@ namespace mccore
    */
   class NoSuchAtomException : public IntLibException
   {
-
   public:
 
     // LIFECYCLE ------------------------------------------------------------
@@ -453,7 +452,17 @@ namespace mccore
     /**
      * Initializes the exception.
      */
-    NoSuchAtomException () : IntLibException () { }
+    NoSuchAtomException () 
+      : IntLibException ("NoSuchAtomException: ") 
+    { }
+
+    /**
+     * Initializes the exeption with a message.
+     * @param message the message string.
+     */
+    NoSuchAtomException (const string &message)
+      : IntLibException ("NoSuchAtomException: " + message) 
+    { }
 
     /**
      * Initializes the exception with a message and where it was produced.
@@ -461,8 +470,8 @@ namespace mccore
      * @param file the file where the exception occured (default = "").
      * @param line the line number where the exception occured (default = -1).
      */
-    NoSuchAtomException (const string &theMessage, const string &file = "", int line = -1)
-      : IntLibException (theMessage, file, line)
+    NoSuchAtomException (const string &message, const string &file = "", int line = -1)
+      : IntLibException ("NoSuchAtomException: " + message, file, line)
     { }
 
     /**
@@ -476,7 +485,8 @@ namespace mccore
     /**
      * Destructs the exception.
      */
-    virtual ~NoSuchAtomException () throw () {  }
+    virtual ~NoSuchAtomException () throw () 
+    { }
 
     // OPERATORS ------------------------------------------------------------
 
@@ -500,7 +510,7 @@ namespace mccore
    * Exception for invalid access requests.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Exception.h,v 1.5 2005-01-03 22:52:27 larosem Exp $
+   * @version $Id: Exception.h,v 1.6 2005-01-11 20:57:05 thibaup Exp $
    */
   class NoSuchElementException : public IntLibException
   {
@@ -666,6 +676,76 @@ namespace mccore
      * @return itself.
      */
     ArrayIndexOutOfBoundsException& operator= (const ArrayIndexOutOfBoundsException &right);
+
+    // ACCESS ---------------------------------------------------------------
+
+    // METHODS --------------------------------------------------------------
+
+    // I/O ------------------------------------------------------------------
+
+  };
+
+
+  /**
+   * @short Specialized internal exceptions (yet another)
+   *
+   * Thrown to report any type mismatch (AtomType, ResidueType, PropertyType).
+   *
+   * @author Philippe Thibault <thibaup@iro.umontreal.ca>
+   */
+  class TypeException : public IntLibException
+  {
+  public:
+
+    // LIFECYCLE ------------------------------------------------------------
+
+    /**
+     * Initializes the exception.
+     */
+    TypeException () 
+      : IntLibException ("TypeException: ") 
+    { }
+
+    /**
+     * Initializes the exeption with a message.
+     * @param message the message string.
+     */
+    TypeException (const string &message)
+      : IntLibException ("TypeException: " + message) 
+    { }
+
+    /**
+     * Initializes the exception with a message and where it was produced.
+     * @param theMessage the information string.
+     * @param file the file where the exception occured (default = "").
+     * @param line the line number where the exception occured (default = -1).
+     */
+    TypeException (const string &message, const string &file = "", int line = -1)
+      : IntLibException ("TypeException: " + message, file, line)
+    { }
+
+    /**
+     * Initializes the exception with the right's content.
+     * @param right the exception to copy.
+     */
+    TypeException (const TypeException &right)
+      : IntLibException (right)
+    { }
+
+    /**
+     * Destructs the exception.
+     */
+    virtual ~TypeException () throw () 
+    { }
+
+    // OPERATORS ------------------------------------------------------------
+
+    /**
+     * Assigns the exception with the right's content.
+     * @param right the exception to copy.
+     * @return itself.
+     */
+    TypeException& operator= (const TypeException &right);
 
     // ACCESS ---------------------------------------------------------------
 

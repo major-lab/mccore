@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.5 $
-// $Id: Exception.cc,v 1.5 2005-01-07 16:35:42 thibaup Exp $
+// $Revision: 1.6 $
+// $Id: Exception.cc,v 1.6 2005-01-11 20:57:05 thibaup Exp $
 //
 // This file is part of mccore.
 //
@@ -222,6 +222,17 @@ namespace mccore
 
   ArrayIndexOutOfBoundsException&
   ArrayIndexOutOfBoundsException::operator= (const ArrayIndexOutOfBoundsException &right)
+  {
+    if (this != &right)
+      {
+	IntLibException::operator= (right);
+      }
+    return *this;
+  }
+  
+
+  TypeException&
+  TypeException::operator= (const TypeException &right)
   {
     if (this != &right)
       {
