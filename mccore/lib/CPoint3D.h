@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Jan 23 15:01:48 2001
-// Update Count     : 7
+// Last Modified On : Fri Mar 23 15:16:38 2001
+// Update Count     : 8
 // Status           : Ok.
 // 
 
@@ -172,6 +172,24 @@ public:
    */
   CPoint3D operator- () const;
 
+  /**
+   * Gets the n'th element of the point.  An exception is thrown if the
+   * argument is not in range [0,2].
+   * @param n the index.
+   * @return the n'th element of the point.
+   * @exception CFatalIntLibException.
+   */
+  float& operator[] (unsigned int n);
+
+  /**
+   * Gets the n'th element of the point.  An exception is thrown if the
+   * argument is not in range [0,2].
+   * @param n the index.
+   * @return the n'th element of the point.
+   * @exception CFatalIntLibException.
+   */
+  const float& operator[] (unsigned int n) const;
+  
   // ACCESS --------------------------------------------------------
 
   /**

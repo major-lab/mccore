@@ -4,8 +4,8 @@
 // Author           : 
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Jan 23 15:01:46 2001
-// Update Count     : 7
+// Last Modified On : Fri Mar 23 15:16:32 2001
+// Update Count     : 9
 // Status           : Ok.
 
 
@@ -13,12 +13,11 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "CPoint3D.h"
-
-#include "McCore.h"
-
 #include "Binstream.h"
+#include "CException.h"
+#include "CPoint3D.h"
 #include "CTransfo.h"
+#include "McCore.h"
 
 
 #ifdef  LIMITED_LIBMATH
@@ -151,6 +150,50 @@ CPoint3D
 CPoint3D::operator- () const
 { 
   return CPoint3D (-mX, -mY, -mZ);
+}
+
+
+
+float&
+CPoint3D::operator[] (unsigned int k)
+{
+  if (k < 3)
+    switch (k)
+      {
+      case 0:
+	return mX;
+      case 1:
+	return mY;
+      case 2:
+	return mZ;
+      }
+
+  CFatalIntLibException exc ("Invalid point index", __FILE__, __LINE__);
+  
+  exc << k;
+  throw exc;
+}
+
+
+
+const float&
+CPoint3D::operator[] (unsigned int k) const
+{
+  if (k < 3)
+    switch (k)
+      {
+      case 0:
+	return mX;
+      case 1:
+	return mY;
+      case 2:
+	return mZ;
+      }
+  
+  CFatalIntLibException exc ("Invalid point index", __FILE__, __LINE__);
+  
+  exc << k;
+  throw exc;
 }
 
 
