@@ -4,8 +4,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Tue Nov 14 18:02:05 2000
-// Update Count     : 6
+// Last Modified On : Wed Nov 22 14:38:01 2000
+// Update Count     : 7
 // Status           : Ok.
 // 
 
@@ -92,9 +92,10 @@ CResidue::residue_iterator::operator+= (difference_type k)
 {
   size_type size = mRes->mAtomRef.size ();
 
-  while (k > 0 && ++mPos < size)
-    if (! (mSet->operator() (mRes->mAtomRef[mPos])
-	   && mOption->operator() (mRes->mAtomRef[mPos])))
+  while (k > 0 && mPos < size)
+    if (++mPos != size
+	&& (*mSet) (mRes->mAtomRef[mPos])
+	&& (*mOption) (mRes->mAtomRef[mPos]))
       --k;
   return *this;
 }
@@ -106,10 +107,12 @@ CResidue::residue_iterator::operator++ ()
 {
   size_type size = mRes->mAtomRef.size ();
 
-  if (mPos < size)
-    while (++mPos < size
-	   && ! (mSet->operator() (mRes->mAtomRef[mPos])
-		 && mOption->operator() (mRes->mAtomRef[mPos])));
+  while (mPos < size)
+    if (++mPos == size
+	|| ((*mSet) (mRes->mAtomRef[mPos])
+	    && (*mOption) (mRes->mAtomRef[mPos])))
+      break;
+	
   return *this;
 }
 
@@ -121,10 +124,12 @@ CResidue::residue_iterator::operator++ (int ign)
   residue_iterator ret = *this;
   size_type size = mRes->mAtomRef.size ();
 
-  if (mPos < size)
-    while (++mPos < size
-	   && ! (mSet->operator() (mRes->mAtomRef[mPos])
-		 && mOption->operator() (mRes->mAtomRef[mPos])));
+  while (mPos < size)
+    if (++mPos == size
+	|| ((*mSet) (mRes->mAtomRef[mPos])
+	    && (*mOption) (mRes->mAtomRef[mPos])))
+      break;
+
   return ret;
 }
 
@@ -309,12 +314,19 @@ CResidue::CResidue (t_Residue *type, const vector< CAtom > &vec,
 	}
       else
 	{
-	  // Create an invalid residue.
+	  // Create an invalid residue but keep it in misc residues.
 	  gOut(1) << "Residue " << *type << "-" << nId
 		  << " is missing one or more critical atoms. (1)<br>" 
 		  << endl;
 	  mReadType = type;
-	  mType = 0;
+//  	  mType = 0;
+	  map< const char *, t_Residue*, less_string >::iterator i
+	    = gMiscResidueString.find (mType->operator const char* ());
+	  
+	  if (i == gMiscResidueString.end ())
+	    mType = new rt_Misc (mType->operator const char* ());
+	  else
+	    mType = i->second;
 	  return;
 	}
     }
