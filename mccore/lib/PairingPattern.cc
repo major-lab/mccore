@@ -4,8 +4,8 @@
 // Author           : Patrick Gendron
 // Created On       : Thu May 31 08:17:56 2001
 // Last Modified By : Patrick Gendron
-// Last Modified On : Thu Jul 31 14:07:45 2003
-// Update Count     : 48
+// Last Modified On : Thu Dec  4 19:11:29 2003
+// Update Count     : 51
 // Status           : Unknown.
 // 
 
@@ -813,7 +813,7 @@ namespace mccore {
   {
     os << name << ": " << flush;
     os << typeA << " " << typeB << endl;
-    for (int i=0; i<hbonds.size (); ++i) {
+    for (int i=0; i<(int)hbonds.size (); ++i) {
       if (ignored[i]) os << "! ";
       else os << "  ";
       os << directions[i] << " ";

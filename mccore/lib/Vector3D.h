@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar  5 15:05:43 2003
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 // 
 //  This file is part of mccore.
 //  
@@ -26,7 +26,7 @@
 #define _Vector3D_h_
 
 #include <iostream>
-#include <cmath>
+#include <math.h>
 
 using namespace std;
 
@@ -43,7 +43,7 @@ namespace mccore
  * The 3D vector class represents simultaneously a location in space (a point) as well as a displacement.
  *
  * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
- * @version $Id: Vector3D.h,v 1.2 2003-05-13 18:19:51 gendrop Exp $
+ * @version $Id: Vector3D.h,v 1.3 2003-12-05 00:11:41 gendrop Exp $
  */
 class Vector3D
 {

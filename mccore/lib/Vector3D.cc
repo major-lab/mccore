@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar  5 15:05:43 2003
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 // 
 //  This file is part of mccore.
 //  
@@ -75,7 +75,7 @@ namespace mccore {
     u = a - *this;
     v = c - *this;
     len = u.length() * v.length();
-    return len == 0 ? 0 : (float) acosf (u.dot(v) / len);
+    return len == 0 ? 0 : (float) acos (u.dot(v) / len);
   }
   
   
@@ -117,8 +117,8 @@ namespace mccore {
     
     angleDirection = baVect.cross(cdVect).dot(bcVect);
     return (float) ((angleDirection >= 0)
-		    ? acosf(cosTheta)
-		    : -acosf(cosTheta));
+		    ? acos(cosTheta)
+		    : -acos(cosTheta));
   }
   
 

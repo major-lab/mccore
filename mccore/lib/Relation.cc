@@ -427,42 +427,69 @@ namespace mccore {
       return ts;
     
     Residue::const_iterator i, j, k, l;
-    MaximumFlowGraph< int, HBond > graph;
+    MaximumFlowGraph< int, HBond, MapMatrix > graph;
     map< Residue::const_iterator, int > atomToInt; 
-
+    
     int node = 0;
     graph.insert (node++); // Source
     graph.insert (node++); // Sink
-
+    
     vector< Residue::const_iterator > ra_at;
     vector< Residue::const_iterator > ran_at;
     vector< Residue::const_iterator > rb_at;
     vector< Residue::const_iterator > rbn_at;
     int x, y;
 
-    AtomSet* hl = new AtomSetOr (new AtomSetHydrogen (), new AtomSetLP ());
-    hl = new AtomSetAnd (hl, new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M), 
- 							   new AtomSetAtom (AtomType::a3H5M))));
-    AtomSet* da = new AtomSetNot (hl->clone ());
+//     AtomSet* hl = new AtomSetOr (new AtomSetHydrogen (), new AtomSetLP ());
+//     hl = new AtomSetAnd (hl, new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M), 
+// 							    new AtomSetAtom (AtomType::a3H5M))));
+//     AtomSet* da = new AtomSetNot (hl->clone ());
 
-    for (i=ra->begin (hl->clone ()); i!=ra->end (); ++i) {
-      for (j=ra->begin (da->clone ()); j!=ra->end (); ++j) {
-	if (i->distance (*j) < 1.7) {
-	  ra_at.push_back (i);
-	  ran_at.push_back (j);	  
+//     for (i=ra->begin (hl->clone ()); i!=ra->end (); ++i) {
+//       for (j=ra->begin (da->clone ()); j!=ra->end (); ++j) {
+// 	if (i->distance (*j) < 1.7) {
+// 	  ra_at.push_back (i);
+// 	  ran_at.push_back (j);	  
+// 	}
+//       }
+//     }
+//     for (i=rb->begin (hl->clone ()); i!=rb->end (); ++i) {
+//       for (j=rb->begin (da->clone ()); j!=rb->end (); ++j) {
+// 	if (i->distance (*j) < 1.7) {
+// 	  rb_at.push_back (i);
+// 	  rbn_at.push_back (j);	  
+// 	}
+//       }
+//     }    
+//     delete da;
+//     delete hl;
+    
+    AtomSet* da = new AtomSetAnd (new AtomSetSideChain (), 
+				  new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M), 
+								 new AtomSetAtom (AtomType::a3H5M))));
+    for (i=ra->begin (da->clone ()); i!=ra->end (); ++i) {
+      if ((i->getType ()->isCarbon () || i->getType ()->isNitrogen () || i->getType ()->isOxygen ())) {
+	for (j=ra->begin (da->clone ()); j!=ra->end (); ++j) {	  	  
+	  if ((j->getType ()->isHydrogen () || j->getType ()->isLonePair ()) &&
+	      i->distance (*j) < 1.7) {				       	      
+	    ra_at.push_back (j);
+	    ran_at.push_back (i);	  
+	  }
 	}
       }
     }
-    for (i=rb->begin (hl->clone ()); i!=rb->end (); ++i) {
-      for (j=rb->begin (da->clone ()); j!=rb->end (); ++j) {
-	if (i->distance (*j) < 1.7) {
-	  rb_at.push_back (i);
-	  rbn_at.push_back (j);	  
+        
+    for (i=rb->begin (da->clone ()); i!=rb->end (); ++i) {
+      if ((i->getType ()->isCarbon () || i->getType ()->isNitrogen () || i->getType ()->isOxygen ())) {
+	for (j=rb->begin (da->clone ()); j!=rb->end (); ++j) {	  	  
+	  if ((j->getType ()->isHydrogen () || j->getType ()->isLonePair ()) &&
+	      i->distance (*j) < 1.7) {				       	      
+	    rb_at.push_back (j);
+	    rbn_at.push_back (i);	  
+	  }
 	}
       }
-    }    
-
-    delete hl;
+    }
     delete da;
 
     for (x=0; x<(int)ra_at.size (); ++x) {
@@ -474,6 +501,7 @@ namespace mccore {
 	
 	if (i->getType ()->isHydrogen () && k->getType ()->isLonePair ()) {
 	  HBond h (j->getType (), i->getType (), l->getType (), k->getType ());
+
 	  h.evalStatistically (*ra, *rb);
 	  //h.eval (*ra, *rb);
 	  if (h.getValue () > 0.01) {
@@ -491,6 +519,7 @@ namespace mccore {
 	  }
 	} else if (k->getType ()->isHydrogen () && i->getType ()->isLonePair ()) {
 	  HBond h (l->getType (), k->getType (), j->getType (), i->getType ());
+
 	  h.evalStatistically (*rb, *ra);
 	  //h.eval (*rb, *ra);
 	  if (h.getValue () > 0.01) {
@@ -505,13 +534,13 @@ namespace mccore {
 	      atomToInt[i] = node++;
 	    }
 	    graph.connect (atomToInt[k], atomToInt[i], h, h.getValue ());
-	  }	
+	  }
 	} 
       }
-    }
-
+  }
+    
     if (graph.size () < 3) return ts;
-
+    
 //     {
 //       map< Residue::const_iterator, int >::iterator m, n;
 //       for (m=atomToInt.begin (); m!=atomToInt.end (); ++m) {
@@ -632,166 +661,173 @@ namespace mccore {
     vector< Residue::const_iterator > rbn_at;
 
 
-    if (ra->getType ()->isNucleicAcid () && rb->getType ()->isNucleicAcid ())
-      {
-	AtomSet* hl = new AtomSetOr (new AtomSetHydrogen (), new AtomSetLP ());
-	AtomSet* da = new AtomSetNot (hl->clone ());
-
-	for (i=ra->begin (hl->clone ()); i!=ra->end (); ++i) {
-	  for (j=ra->begin (da->clone ()); j!=ra->end (); ++j) {
-	    if (i->distance (*j) < 1.7) {
-	      ra_at.push_back (i);
-	      ran_at.push_back (j);	  
-	    }
-	  }
-	}
-	for (i=rb->begin (hl->clone ()); i!=rb->end (); ++i) {
-	  for (j=rb->begin (da->clone ()); j!=rb->end (); ++j) {
-	    if (i->distance (*j) < 1.7) {
-	      rb_at.push_back (i);
-	      rbn_at.push_back (j);
-	    }
-	  }
-	}    
-	
-	delete hl; 
-	delete da;
-
-	
-	for (x=0; x<(int)ra_at.size (); ++x) {
-	  i = ra_at[x];
-	  j = ran_at[x];
-	  for (y=0; y<(int)rb_at.size (); ++y) {
-	    k = rb_at[y];
-	    l = rbn_at[y];
-	    
-	    if (i->getType ()->isHydrogen () && k->getType ()->isLonePair ()) {
-	      HBond h (j->getType (), i->getType (), l->getType (), k->getType ());
-	      h.eval (*ra, *rb);
-	      if (h.getValue () > 0.01) {
-// 		cout << h << endl;
-	      }
-	    } else if (k->getType ()->isHydrogen () && i->getType ()->isLonePair ()) {
-	      HBond h (l->getType (), k->getType (), j->getType (), i->getType ());
-	      h.eval (*rb, *ra);
-	      if (h.getValue () > 0.01) {
-// 		cout << h << endl;
-	      }	
-	    } 
-	  }
-	}
-	      
-      }
-
-    if (ra->getType ()->isAminoAcid () && rb->getType ()->isAminoAcid ())
-      {	
-	for (i=ra->begin (); i!=ra->end (); ++i) {
-	  if (i->getType ()->isNitrogen () 
-	      || i->getType () == AtomType::aOG || i->getType () == AtomType::aOH) {
-	    for (j=rb->begin (); j!=rb->end (); ++j) {
-	      if (j->getType ()->isOxygen ()) {
-		
-		if (i->distance (*j) > 1.7 && i->distance (*j) < 3.5) {
-		  bool reject = false;
-		  if (i->getType () == AtomType::aN) {  // N donor
-		    Vector3D u, v, w;
-		    u = (*rb->find (AtomType::aCA) - *i).normalize ();
-		    w = (*j - *i).normalize ();
-		    float theta = v.angle (u, w) * 180 / M_PI;
-		    float theta_ideal = 115;
-		    float theta_diff = fabs (theta - theta_ideal);
-		    if (theta_diff > 40) reject = true;
-		  }
-
-		  if (j->getType () == AtomType::aO) { // O acceptor
-		    Vector3D u, v, w;
-		    u = (*ra->find (AtomType::aC) - *j).normalize ();
-		    w = (*i - *j).normalize ();
-		    float theta = v.angle (u, w) * 180 / M_PI;
-		    float theta_ideal = 106;
-		    float theta_diff = fabs (theta - theta_ideal);
-		    if (theta_diff > 40) reject = true;
-		  }		  
-		  
-		  if (!reject) {
-// 		    cout << *ra << " " << *rb << " : " <<  *i << " -> " << *j << " \t " << i->distance (*j) << endl;
-		    ts.insert (PropertyType::parseType ("amino-pair"));
-		  }
-		}
-	      }
-	    }
-	  }
-	}
-	
-	for (i=rb->begin (); i!=rb->end (); ++i) {
-	  if (i->getType ()->isNitrogen () 
-	      || i->getType () == AtomType::aOG || i->getType () == AtomType::aOH) {
-	    for (j=ra->begin (); j!=ra->end (); ++j) {
-	      if (j->getType ()->isOxygen ()) {
-		
-		if (i->distance (*j) > 1.7 && i->distance (*j) < 3.5) {
-		   bool reject = false;
-
-		  if (i->getType () == AtomType::aN) {  // N donor
-		    Vector3D u, v, w;
-		    u = (*rb->find (AtomType::aCA) - *i).normalize ();
-		    w = (*j - *i).normalize ();
-		    float theta = v.angle (u, w) * 180 / M_PI;
-		    float theta_ideal = 115;
-		    float theta_diff = fabs (theta - theta_ideal);
-// 		    cout << theta << endl;
-// 		    cout << theta_diff << endl;
-		    if (theta_diff > 40) reject = true;
-		  }
-
-
-		  if (j->getType () == AtomType::aO) { // O acceptor
-		    Vector3D u, v, w;
-		    u = (*ra->find (AtomType::aC) - *j).normalize ();
-		    w = (*i - *j).normalize ();
-		    float theta = v.angle (u, w) * 180 / M_PI;
-		    float theta_ideal = 106;
-		    float theta_diff = fabs (theta - theta_ideal);
-// 		    cout << theta << endl;
-// 		    cout << theta_diff << endl;
-		    if (theta_diff > 40) reject = true;
-		  }
-
-		  if (!reject) {
-//  		    cout << *ra << " " << *rb << " : " <<  *j << " <- " << *i << " \t " << i->distance (*j) << endl;		    
-		    ts.insert (PropertyType::parseType ("amino-pair"));
-		  }
-		}
+//     if ((ra->getType ()->isAminoAcid () && rb->getType ()->isNucleicAcid ()) ||
+// 	(ra->getType ()->isNucleicAcid () && rb->getType ()->isAminoAcid ()))
+    {
+      for (i=ra->begin (new AtomSetSideChain ()); i!=ra->end (); ++i) {
+	if (i->getType ()->isNitrogen () || i->getType ()->isOxygen ()) {
+	  for (j=rb->begin (new AtomSetSideChain ()); j!=rb->end (); ++j) {
+	    if (j->getType ()->isNitrogen () || j->getType ()->isOxygen ()) {
+	      if (i->distance (*j) > 1.7 && i->distance (*j) < 3.2) {
+		ts.insert (PropertyType::parseType ("unclassified-hbond"));
+		ts.insert (PropertyType::parseType ("pairing"));
+		char buffer[16];
+		sprintf (buffer, "%s-%s", 
+			 (const char*)*(i->getType ()), 
+			 (const char*)*(j->getType ()));
+		ts.insert (PropertyType::parseType (buffer));
 	      }
 	    }
 	  }
 	}
       }
+    }
+  
 
-    if ((ra->getType ()->isAminoAcid () && rb->getType ()->isNucleicAcid ()) ||
-	(ra->getType ()->isNucleicAcid () && rb->getType ()->isAminoAcid ()))
-      {
-	for (i=ra->begin (); i!=ra->end (); ++i) {
-	  if (i->getType ()->isNitrogen () || i->getType ()->isOxygen ()) {
-	    for (j=rb->begin (); j!=rb->end (); ++j) {
-	      if (j->getType ()->isNitrogen () || j->getType ()->isOxygen ()) {
-		if (i->distance (*j) > 1.7 && i->distance (*j) < 3.5) {
-		  ts.insert (PropertyType::parseType ("amino-nucleic-pair"));
-		  char buffer[16];
-		  sprintf (buffer, "%s-%s", 
-			   (const char*)*(i->getType ()), 
-			   (const char*)*(j->getType ()));
-		  ts.insert (PropertyType::parseType (buffer));
-		}
-	      }
-	    }
-	  }
-	}
-      }
+// TODO: This is experimental and is a tentative to identify as
+// precisely as possible the presence of H-bonds on unindentified
+// residues, between amino-nucleic acids, or when hydrogens are
+// missing and their position is unknown (modified bases).
     
+//     if (ra->getType ()->isNucleicAcid () && rb->getType ()->isNucleicAcid ())
+//       {
+// 	AtomSet* hl = new AtomSetOr (new AtomSetHydrogen (), new AtomSetLP ());
+// 	AtomSet* da = new AtomSetNot (hl->clone ());
+
+// 	for (i=ra->begin (hl->clone ()); i!=ra->end (); ++i) {
+// 	  for (j=ra->begin (da->clone ()); j!=ra->end (); ++j) {
+// 	    if (i->distance (*j) < 1.7) {
+// 	      ra_at.push_back (i);
+// 	      ran_at.push_back (j);	  
+// 	    }
+// 	  }
+// 	}
+// 	for (i=rb->begin (hl->clone ()); i!=rb->end (); ++i) {
+// 	  for (j=rb->begin (da->clone ()); j!=rb->end (); ++j) {
+// 	    if (i->distance (*j) < 1.7) {
+// 	      rb_at.push_back (i);
+// 	      rbn_at.push_back (j);
+// 	    }
+// 	  }
+// 	}    
+	
+// 	delete hl; 
+// 	delete da;
+
+	
+// 	for (x=0; x<(int)ra_at.size (); ++x) {
+// 	  i = ra_at[x];
+// 	  j = ran_at[x];
+// 	  for (y=0; y<(int)rb_at.size (); ++y) {
+// 	    k = rb_at[y];
+// 	    l = rbn_at[y];
+	    
+// 	    if (i->getType ()->isHydrogen () && k->getType ()->isLonePair ()) {
+// 	      HBond h (j->getType (), i->getType (), l->getType (), k->getType ());
+// 	      h.eval (*ra, *rb);
+// 	      if (h.getValue () > 0.01) {
+// // 		cout << h << endl;
+// 	      }
+// 	    } else if (k->getType ()->isHydrogen () && i->getType ()->isLonePair ()) {
+// 	      HBond h (l->getType (), k->getType (), j->getType (), i->getType ());
+// 	      h.eval (*rb, *ra);
+// 	      if (h.getValue () > 0.01) {
+// // 		cout << h << endl;
+// 	      }	
+// 	    } 
+// 	  }
+// 	}
+	      
+//       }
+
+//     if (ra->getType ()->isAminoAcid () && rb->getType ()->isAminoAcid ())
+//       {	
+// 	for (i=ra->begin (); i!=ra->end (); ++i) {
+// 	  if (i->getType ()->isNitrogen () 
+// 	      || i->getType () == AtomType::aOG || i->getType () == AtomType::aOH) {
+// 	    for (j=rb->begin (); j!=rb->end (); ++j) {
+// 	      if (j->getType ()->isOxygen ()) {
+		
+// 		if (i->distance (*j) > 1.7 && i->distance (*j) < 3.5) {
+// 		  bool reject = false;
+// 		  if (i->getType () == AtomType::aN) {  // N donor
+// 		    Vector3D u, v, w;
+// 		    u = (*rb->find (AtomType::aCA) - *i).normalize ();
+// 		    w = (*j - *i).normalize ();
+// 		    float theta = v.angle (u, w) * 180 / M_PI;
+// 		    float theta_ideal = 115;
+// 		    float theta_diff = fabs (theta - theta_ideal);
+// 		    if (theta_diff > 40) reject = true;
+// 		  }
+
+// 		  if (j->getType () == AtomType::aO) { // O acceptor
+// 		    Vector3D u, v, w;
+// 		    u = (*ra->find (AtomType::aC) - *j).normalize ();
+// 		    w = (*i - *j).normalize ();
+// 		    float theta = v.angle (u, w) * 180 / M_PI;
+// 		    float theta_ideal = 106;
+// 		    float theta_diff = fabs (theta - theta_ideal);
+// 		    if (theta_diff > 40) reject = true;
+// 		  }		  
+		  
+// 		  if (!reject) {
+// // 		    cout << *ra << " " << *rb << " : " <<  *i << " -> " << *j << " \t " << i->distance (*j) << endl;
+// 		    ts.insert (PropertyType::parseType ("amino-pair"));
+// 		  }
+// 		}
+// 	      }
+// 	    }
+// 	  }
+// 	}
+	
+// 	for (i=rb->begin (); i!=rb->end (); ++i) {
+// 	  if (i->getType ()->isNitrogen () 
+// 	      || i->getType () == AtomType::aOG || i->getType () == AtomType::aOH) {
+// 	    for (j=ra->begin (); j!=ra->end (); ++j) {
+// 	      if (j->getType ()->isOxygen ()) {
+		
+// 		if (i->distance (*j) > 1.7 && i->distance (*j) < 3.5) {
+// 		   bool reject = false;
+
+// 		  if (i->getType () == AtomType::aN) {  // N donor
+// 		    Vector3D u, v, w;
+// 		    u = (*rb->find (AtomType::aCA) - *i).normalize ();
+// 		    w = (*j - *i).normalize ();
+// 		    float theta = v.angle (u, w) * 180 / M_PI;
+// 		    float theta_ideal = 115;
+// 		    float theta_diff = fabs (theta - theta_ideal);
+// // 		    cout << theta << endl;
+// // 		    cout << theta_diff << endl;
+// 		    if (theta_diff > 40) reject = true;
+// 		  }
+
+
+// 		  if (j->getType () == AtomType::aO) { // O acceptor
+// 		    Vector3D u, v, w;
+// 		    u = (*ra->find (AtomType::aC) - *j).normalize ();
+// 		    w = (*i - *j).normalize ();
+// 		    float theta = v.angle (u, w) * 180 / M_PI;
+// 		    float theta_ideal = 106;
+// 		    float theta_diff = fabs (theta - theta_ideal);
+// // 		    cout << theta << endl;
+// // 		    cout << theta_diff << endl;
+// 		    if (theta_diff > 40) reject = true;
+// 		  }
+
+// 		  if (!reject) {
+// //  		    cout << *ra << " " << *rb << " : " <<  *j << " <- " << *i << " \t " << i->distance (*j) << endl;		    
+// 		    ts.insert (PropertyType::parseType ("amino-pair"));
+// 		  }
+// 		}
+// 	      }
+// 	    }
+// 	  }
+// 	}
+//       }
+
     return ts;
   }
-
+  
   Vector3D 
   Relation::pyrimidineNormal (const Residue *res)
   {
