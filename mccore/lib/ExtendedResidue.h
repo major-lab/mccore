@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 // 
 //  This file is part of mccore.
 //  
@@ -56,7 +56,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: ExtendedResidue.h,v 1.6 2003-12-23 14:47:51 larosem Exp $
+   * @version $Id: ExtendedResidue.h,v 1.7 2004-03-12 14:24:03 thibaup Exp $
    */
   class ExtendedResidue : public Residue
   {
@@ -247,11 +247,12 @@ namespace mccore {
     virtual void clear();
 
     /**
-     *  Initializes all the internals of the residue.  It aligns the
-     *  residue to the origin of the global coordinate and stores the
-     *  transformation internally.  
+     * Initializes all the internals of the residue.  It aligns the
+     * residue to the origin of the global coordinate and stores the
+     * transformation internally.
+     * @param h_lp flag for hydrogens and lone pairs addition.
      */
-    virtual void finalize ();
+    virtual void finalize (bool h_lp = true);
 
     /**
      * Copies the atom of other into *this without verification.  It

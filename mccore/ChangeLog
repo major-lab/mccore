@@ -1,3 +1,763 @@
+2004-03-08  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/PdbFileHeader.h: pdbId is an empty string by default.
+
+	* lib/GraphAlgo.h:
+	cycleBaseHorton and nonSimpleCycleElimination take much less memory footprints.
+
+2004-03-02  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/Makefile.in: Few include file we're not installed.
+
+2004-02-19  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/ResId.h: New method areContiguous.
+
+	* lib/Graph.h:
+	Bug correction: mapping from AbstractGraph must also be cleared.
+
+2004-01-29  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* NEWS, lib/CResidue.cc, ChangeLog: NEWS updated.
+
+	* lib/PropertyType.cc: *** empty log message ***
+
+	* lib/PropertyType.cc, lib/PropertyTypeStore.h, lib/PropertyTypeStore.cc, lib/PropertyType.h, lib/AtomTypeStore.h, lib/AtomType.h:
+	PropertyType B does not exist anymore, Bh and Bs inherits from PropertyType.  is and describe methods added to AtomType.
+
+2004-01-21  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/UndirectedArrayGraph.h, lib/ArrayGraph.h, lib/AbstractGraph.h, configure:
+	Forgotten files.
+
+2004-01-09  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* lib/UndirectedGraph.h, lib/Relation.cc, lib/MaximumFlowGraph.h, lib/Makefile.in, lib/Graph.h:
+	Adaptation for new graphs with external algos...
+
+2004-01-09  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/zstream.h, lib/zstream.cc, lib/Residue.cc, lib/Relation.cc, lib/Pdbstream.h, lib/Makefile.in, lib/HBond.cc, lib/Genbankstream.h, lib/Fastastream.h, lib/Binstream.h, configure.in, config.h.in:
+	C++ standardisation update, fstreambase and zfstreambase are deleted.  Stream buffers are directly integrated in streams.
+
+	* lib/fBinstream.h, lib/fPdbstream.h, lib/fstreambase.h, lib/zfBinstream.h, lib/zfPdbstream.h, lib/zfstream.cc, lib/zfstream.h:
+	C++ standardisation update, all classes relocated in Bin and Pdb streams.
+
+2004-01-09  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* lib/GraphAlgo.h: New file to encapsulate Graph Algorithms
+
+2004-01-06  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/RnamlWriter.cc: String constant causes error on SGI and Sun.
+
+2003-12-23  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/Vector3D.h, lib/fBinstream.h, lib/fPdbstream.h, lib/fstreambase.h, lib/sBinstream.h, lib/sockstream.h, lib/zfBinstream.h, lib/zfPdbstream.h, lib/zfstream.h, lib/Molecule.h, lib/Pdbstream.h, lib/PropertyType.h, lib/PropertyTypeStore.h, lib/Relation.h, lib/ResId.h, lib/ResIdSet.h, lib/Residue.h, lib/ResidueFactoryMethod.h, lib/ResidueType.h, lib/RiboseBuilder.h, lib/RiboseEstimator.h, lib/RiboseOptimizer2D.h, lib/RiboseOptimizer5D.h, lib/Rmsd.h, lib/RnamlReader.h, lib/RnamlWriter.h, lib/Sequence.h, lib/ServerSocket.h, lib/SocketCommand.h, lib/SymmetricalMatrix.h, lib/UndirectedGraph.h, lib/Molecule.cc, lib/PdbFileHeader.cc, lib/Pdbstream.cc, lib/PropertyType.cc, lib/Relation.cc, lib/ResId.cc, lib/ResIdSet.cc, lib/Residue.cc, lib/RnamlReader.cc, lib/RnamlWriter.cc, lib/ServerSocket.cc, lib/SymmetricalMatrix.cc, lib/Vector3D.cc, lib/sockstream.cc, lib/zfstream.cc, lib/MaximumFlowGraph.h, lib/Graph.cc, lib/ExtendedResidue.cc, lib/AtomType.h, lib/AtomSet.h, lib/Model.h, lib/Model.cc, lib/Messagestream.h, lib/Messagestream.cc, lib/Makefile.in, lib/HomogeneousTransfo.h, lib/Graph.h, lib/Genbankstream.h, lib/Genbankstream.cc, lib/Fastastream.h, lib/ExtendedResidue.h, lib/DirectedGraph.h, lib/DirectedGraph.cc, lib/CException.h, lib/CException.cc, lib/Binstream.h, lib/Binstream.cc, lib/AtomTypeStore.cc, lib/Atom.h, lib/Atom.cc, lib/Algo.h, configure.in, configure:
+	Merge between mcsym 3.3.2 patches and main trunk.  Now SunPro CC and MipsPro CC compilers compatible.  It also includes RnamlReader and RnamlWriter classes for rnaml input and output.
+
+2003-12-18  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/RnamlReader.cc: SGI char type is a unsigned char.
+
+2003-12-17  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/zfstream.h, lib/zfstream.cc, lib/zfPdbstream.h, lib/zfBinstream.h, lib/sockstream.h, lib/fstreambase.h, lib/fPdbstream.h, lib/fBinstream.h, configure:
+	Bug in compressed stream corrected.
+
+2003-12-17  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* lib/UndirectedGraph.h, lib/ResidueType.h, lib/ResidueTopology.cc, lib/Residue.h, lib/Residue.cc, lib/Relation.cc, lib/Pdbstream.cc, lib/MaximumFlowGraph.h, lib/Makefile.in, lib/Graph.h, lib/Genbankstream.cc, lib/ExtendedResidue.h:
+	Adaptation of some classes to new graphs.
+
+2003-12-10  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/oMessagestream.h: Class include in MessageStream
+
+	* lib/zfstream.h, lib/zfstream.cc, lib/zfPdbstream.h, lib/zfBinstream.h, lib/sockstream.h, lib/sockstream.cc, lib/sBinstream.h, lib/oMessagestream.h, lib/fstreambase.h, lib/fPdbstream.h, lib/fBinstream.h, lib/SymmetricalMatrix.h, lib/SymmetricalMatrix.cc, lib/SocketCommand.h, lib/ServerSocket.h, lib/ServerSocket.cc, lib/RnamlWriter.h, lib/RnamlWriter.cc, lib/RnamlReader.h, lib/RnamlReader.cc, lib/ResidueTypeImp.h, lib/ResidueTypeImp.cc, lib/ResidueType.h, lib/ResidueFactoryMethod.h, lib/ResidueFM.h, lib/ResidueFM.cc, lib/Residue.h, lib/Residue.cc, lib/Pdbstream.h, lib/Pdbstream.cc, lib/Molecule.h, lib/Molecule.cc, lib/Model.h, lib/Model.cc, lib/Messagestream.h, lib/McCore.h, lib/McCore.cc, lib/Makefile.in, lib/Graph.h, lib/Graph.cc, lib/DirectedGraph.h, lib/DirectedGraph.cc, lib/CTransfo.h, lib/CTransfo.cc, lib/CResidueFM.h, lib/CResidueFM.cc, lib/CResidue.h, lib/CResidue.cc, lib/CResIdSet.h, lib/CResIdSet.cc, lib/CResId.h, lib/CResId.cc, lib/CPoint3D.h, lib/CPoint3D.cc, lib/CHBond.h, lib/CHBond.cc, lib/CGraph.h, lib/CException.h, lib/CException.cc, lib/CAtom.h, lib/CAtom.cc, lib/Binstream.h, lib/Binstream.cc, lib/AtomTypeImp.h, lib/AtomTypeImp.cc, lib/AtomType.h, lib/Algo.h, lib/AbstractResidue.h, lib/AbstractResidue.cc, configure.in:
+	Merge between branches rel-1-3-rnaml-io and mcsym-3-3-2-freeze.
+
+2003-12-09  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/RnamlReader.cc, lib/ResidueFactoryMethod.h, lib/ResidueFM.h, lib/ResidueFM.cc, lib/Residue.h, lib/Residue.cc, lib/CResidueFM.h, lib/CResidueFM.cc, configure:
+	SunOS SUNWspro and SGI MIPSpro compiler compatibility update.  ResidueFactoryMethod has a new method createResidue that initialises the Residues.
+
+2003-12-08  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* configure.in:
+	SunOS SUNWspro and SGI MIPSpro compiler compatibility update.
+
+2003-12-05  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/zfstream.h, lib/zfPdbstream.h, lib/zfBinstream.h, lib/sockstream.cc, lib/fstreambase.h, lib/fPdbstream.h, lib/fBinstream.h, lib/ResidueTypeImp.h, lib/ResidueType.h, lib/Pdbstream.h, lib/Pdbstream.cc, lib/Makefile.in, lib/CPoint3D.h, lib/CAtom.h, lib/Binstream.h, lib/Binstream.cc, lib/AtomTypeImp.h, lib/AtomType.h, configure.in:
+	SunOS SUNWspro and SGI MIPSpro compiler compatibility update.
+
+2003-12-05  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* configure.in, lib/Vector3D.h, lib/Vector3D.cc, lib/Relation.cc, lib/PairingPattern.cc:
+	*** empty log message ***
+
+2003-12-04  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* lib/Model.h, lib/Model.cc:
+	Added a method to remove water from a model.
+
+	* lib/Residue.h, lib/Residue.cc, lib/ExtendedResidue.cc:
+	Corrected a bug with residue placement.
+	Modified constness of getGlycosil and getPucker.
+
+2003-11-27  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/Makefile.in, configure.in, configure:
+	SunOS SUNWspro and SGI MIPSpro compiler compatibility update.
+
+2003-11-26  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/zfstream.h, lib/zfstream.cc, lib/zfPdbstream.h, lib/zfBinstream.h, lib/sockstream.h, lib/sockstream.cc, lib/sBinstream.h, lib/oMessagestream.h, lib/fstreambase.h, lib/fPdbstream.h, lib/fBinstream.h, lib/SymmetricalMatrix.h, lib/SymmetricalMatrix.cc, lib/SocketCommand.h, lib/ServerSocket.h, lib/ServerSocket.cc, lib/ResidueType.h, lib/ResidueFactoryMethod.h, lib/Messagestream.h, lib/Graph.h, lib/Graph.cc, lib/CGraph.h, lib/Algo.h:
+	SunOS SUNWspro and SGI MIPSpro compiler compatibility update.
+
+2003-11-21  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/zfstream.h, lib/zfstream.cc, lib/zfPdbstream.h, lib/zfBinstream.h, lib/sockstream.h, lib/sockstream.cc, lib/oMessagestream.h, lib/fstreambase.h, lib/fPdbstream.h, lib/fBinstream.h, lib/SymmetricalMatrix.h, lib/ServerSocket.h, lib/ServerSocket.cc, lib/RnamlWriter.cc, lib/RnamlReader.h, lib/RnamlReader.cc, lib/ResidueTypeImp.h, lib/ResidueTypeImp.cc, lib/ResidueType.h, lib/ResidueFM.cc, lib/Residue.h, lib/Residue.cc, lib/Pdbstream.h, lib/Pdbstream.cc, lib/Molecule.h, lib/Molecule.cc, lib/Model.h, lib/Model.cc, lib/Messagestream.h, lib/McCore.h, lib/McCore.cc, lib/Makefile.in, lib/Graph.h, lib/Graph.cc, lib/DirectedGraph.h, lib/DirectedGraph.cc, lib/CTransfo.h, lib/CTransfo.cc, lib/CResidue.h, lib/CResidue.cc, lib/CResIdSet.h, lib/CResIdSet.cc, lib/CResId.h, lib/CResId.cc, lib/CPoint3D.h, lib/CPoint3D.cc, lib/CHBond.h, lib/CHBond.cc, lib/CGraph.h, lib/CException.h, lib/CException.cc, lib/CAtom.h, lib/CAtom.cc, lib/Binstream.h, lib/Binstream.cc, lib/AtomTypeImp.cc, lib/Algo.h, lib/AbstractResidue.h, lib/AbstractResidue.cc, configure.in:
+	SunOS SUNWspro compiler compatibility update.
+
+2003-11-19  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/Makefile.in, configure.in, configure:
+	SunOS SUNWspro compiler compatibility update.
+
+2003-11-18  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/RnamlWriter.cc, lib/RnamlReader.h, lib/DirectedGraph.h, lib/CAtom.h, lib/CAtom.cc, lib/RnamlReader.cc, configure.in, configure:
+	IRIX compatibility update.
+
+2003-11-13  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* configure.in, configure: Added the test for library zlib.
+
+2003-11-13  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* lib/ResId.h: minor bug
+
+	* lib/RiboseOptimizer5D.cc, lib/RiboseOptimizer2D.cc, lib/RiboseEstimator.cc, lib/RiboseBuilder.h, lib/RiboseBuilder.cc:
+	modified quality metric
+
+2003-11-11  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/RnamlWriter.h, lib/RnamlWriter.cc, lib/RnamlReader.h, lib/RnamlReader.cc, lib/Makefile.in:
+	Rnaml reader and writer completed.
+
+2003-10-30  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/RnamlWriter.h, lib/RnamlWriter.cc, lib/RnamlReader.h:
+	Minor bug correction.
+
+	* lib/RnamlReader.h: New file.
+
+	* lib/RnamlReader.cc: Minor bug correction.
+
+	* lib/RnamlReader.cc: New file.
+
+	* lib/Molecule.h, lib/Molecule.cc, lib/Makefile.in:
+	Minor bug correction.
+
+2003-10-28  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/Molecule.h, lib/Molecule.cc, lib/Makefile.in, configure.in, configure:
+	Molecule files corrected.
+
+2003-10-28  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* lib/Relation.cc, lib/Pdbstream.cc, lib/Makefile.in, lib/HomogeneousTransfo.h, lib/HomogeneousTransfo.cc:
+	Various modifications to compile under good ol' 2.95.3.
+
+	* lib/Messagestream.h, lib/Messagestream.cc:
+	Added a gErr message stream and switched the Gout one to cout.
+
+	* lib/Residue.h, lib/Residue.cc, lib/ExtendedResidue.h, lib/ExtendedResidue.cc:
+	Modified (optimized) atomCopy and the placing (onn demand) of atoms
+	for ExtendedResidue.
+
+2003-10-28  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* lib/RnamlWriter.h, lib/RnamlWriter.cc, lib/Molecule.h, lib/Molecule.cc, lib/Makefile.in, configure.in, configure:
+	New files.
+
+2003-10-20  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* lib/RiboseBuilder.cc, lib/RiboseBuilder.h:
+	Added relevant default values for gamma, beta and epsilon.\nClass is no longer abstract.
+
+2003-10-20  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* RiboseBuilder.cc, RiboseBuilder.h:
+	Added relevant default values for gamma, beta and epsilon.\nClass is no longer abstract.
+
+2003-10-17  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* Residue.cc: corrected setIdeal() to accept phosphate residue type
+
+2003-10-17  Patrick Gendron  <gendrop@velours.iro.umontreal.ca>
+
+	* CException.cc: Added compiler checks.
+
+2003-10-16  Patrick Gendron  <gendrop@velours.iro.umontreal.ca>
+
+	* Vector3D.cc, UndirectedGraph.h, Pdbstream.cc, HomogeneousTransfo.cc, Graph.h, AdjacencyMatrix.h:
+	Synchronize.
+
+	* RiboseOptimizer2D.cc, RiboseEstimator.h, RiboseBuilder.h, RiboseBuilder.cc:
+	Modified default values for gamma and beta.
+
+	* Residue.h, Model.cc, Messagestream.h:
+	Removed output of residue pointers.
+
+	* Residue.cc, ExtendedResidue.cc:
+	Corrected a serious copy bug in atomCopy.
+
+2003-10-09  Patrick Gendron  <gendrop@velours.iro.umontreal.ca>
+
+	* ResidueTypeStore.h:
+	Placed Phosphate and Ribose type under only ResidueType.
+
+2003-10-06  Patrick Gendron  <gendrop@velours.iro.umontreal.ca>
+
+	* Relation.h, Relation.cc:
+	Modified the definition of the phosphate transfo and related methods
+	(especially invert).
+
+2003-10-03  Martin Larose  <larosem@velours.iro.umontreal.ca>
+
+	* AtomType.h, AtomType.cc, Atom.cc: getColor method moved to AtomType.
+
+2003-10-03  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* ResId.h: corrected operator+/-
+
+2003-10-03  Patrick Gendron  <gendrop@velours.iro.umontreal.ca>
+
+	* ResId.h: oups.
+
+	* ResId.h: Modified constructors to remove ambiguity.
+
+	* ResidueTypeStore.cc: Modified PO4, RIB output.
+
+	* Relation.cc: Added a check so that po4 tfo is computed only on NA.
+
+	* PropertyTypeStore.cc: Added prime aliases for confi pucker types.
+
+2003-10-02  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* RiboseBuilder.cc: *** empty log message ***
+
+	* RiboseOptimizer5D.cc, RiboseOptimizer2D.cc, RiboseEstimator.cc, RiboseBuilder.h:
+	minor corrections.
+
+2003-10-01  Patrick Gendron  <gendrop@velours.iro.umontreal.ca>
+
+	* McCore.cc: Removed old file
+
+	* McCore.h: Removed old header file
+
+2003-10-01  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* ResidueTypeStore.h, ResidueTypeStore.cc, ResidueType.h, ResidueType.cc:
+	added residue type "Ribose" as a child to NucleicAcid
+
+	* ExtendedResidue.cc:
+	finalize() doesn't compute pseudo atoms or do any of removeOptionals(),
+	addHydrogens() and addLonePairs() for phosphate typed residue.
+
+	* CException.h, CException.cc: added operator<< for class ResId.
+
+2003-10-01  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* ResidueTypeStore.h, ResidueTypeStore.cc, ResidueType.h, ResidueType.cc:
+	added residue type "Ribose" as a child to NucleicAcid
+
+	* ExtendedResidue.cc:
+	finalize() doesn't compute pseudo atoms or do any of removeOptionals(),
+	addHydrogens() and addLonePairs() for phosphate typed residue.
+
+	* CException.h, CException.cc: added operator<< for class ResId.
+
+2003-09-30  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* Residue.cc, Relation.h, Relation.cc:
+	added phosphate transfo computation in adjacent relation annotation.
+
+	* RiboseOptimizer5D.h, RiboseOptimizer5D.cc, RiboseOptimizer2D.h, RiboseOptimizer2D.cc, RiboseEstimator.h, RiboseEstimator.cc, RiboseBuilder.h, RiboseBuilder.cc, Makefile.in:
+	new classes
+
+2003-09-29  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* HomogeneousTransfo.h:
+	added default values {0,0,0,1} for matrix 4th line in initializing
+	interfaces.
+
+2003-09-29  Patrick Gendron  <gendrop@velours.iro.umontreal.ca>
+
+	* AdjacencyMatrix.h: Added file
+
+2003-09-29  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* Residue.cc: corrected C1' ideal coordinates
+
+	* Residue.cc, CTransfo.h, CTransfo.cc, CResidue.cc:
+	[with-placer] : corrected C1' and phosphate ideal coordinates and added
+	distance method in CTransfo
+
+2003-09-29  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* Residue.cc: corrected C1' ideal coordinates
+
+	* Residue.cc, CTransfo.h, CTransfo.cc, CResidue.cc:
+	[with-placer] : corrected C1' and phosphate ideal coordinates and added
+	distance method in CTransfo
+
+2003-09-26  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* UndirectedGraph.h, Sequence.h, Sequence.cc, ResidueTypeStore.cc, ResidueType.h, ResidueTopology.cc, Residue.cc, ResId.h, Relation.h, Relation.cc, PropertyTypeStore.h, PropertyTypeStore.cc, PropertyType.h, Pdbstream.h, Pdbstream.cc, Model.h, Model.cc, Makefile.in, HomogeneousTransfo.h, HomogeneousTransfo.cc, Graph.h, ExtendedResidue.cc, Atom.h, Atom.cc:
+	Maintenance.
+
+	* HomogeneousTransfo.h, HomogeneousTransfo.cc:
+	Added rotation vector determination.
+
+2003-08-28  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* stlio.h, UndirectedGraph.h, Rmsd.h, ResidueTypeStore.cc, Residue.h, Residue.cc, Relation.cc, Pdbstream.h, Pdbstream.cc, Model.h, MaximumFlowGraph.h, Makefile.in, HomogeneousTransfo.h, HomogeneousTransfo.cc, HBond.cc, Graph.h, ExtendedResidue.h, ExtendedResidue.cc, AtomTypeStore.h, AtomTypeStore.cc, AtomType.h, AtomSet.h, AtomSet.cc, Atom.h:
+	Lots of modifications.
+
+2003-08-15  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* ResIdSet.cc:
+	Corrected the transformation of ResIdSet when the string is empty.
+
+2003-08-07  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* CHBond.h, CHBond.cc: *** empty log message ***
+
+	* Relation.cc, Pdbstream.cc, HBond.cc:
+	Added Hbond detection for thymine.
+
+2003-08-06  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* ResidueType.h, Pdbstream.cc, PdbFileHeader.h:
+	Updated some header (unistd).
+
+2003-07-31  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* ResidueType.h, Pdbstream.cc, PdbFileHeader.cc:
+	Modified PDB header and residue PDB output so that amino acid are
+	dumped with their long string and nucleic acids with their short strings.
+
+	* Relation.cc:
+	Stopped using ResidueTopology to detect pairing donors and acceptor in
+	order to be more general (when using unknown residues or amino acids).
+
+	* ResidueType.h, ResidueType.cc, Residue.cc:
+	Modified residue type output.
+
+	* Pdbstream.h, Pdbstream.cc: Corrected output of header.
+
+	* PairingPattern.h, PairingPattern.cc:
+	Removed all memory leaks in the static container.
+
+	* Molecule.cc: Modified output of PDB headers.
+
+	* Messagestream.h: Message stream level semantic.
+
+2003-07-30  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* ResIdSet.cc, ResId.cc: Corrected inversion bug in ResIdSet insertion.
+
+2003-07-29  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* zfstream.h, Residue.cc, Model.cc, Makefile.in, ExtendedResidue.cc:
+	Removed trailing output.
+
+	* Messagestream.cc: Added Messagestream.cc
+
+2003-07-15  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* RnamlWriter.h: Comments added.
+
+	* RnamlWriter.h: New file.
+
+	* RnamlWriter.h: New files.
+
+	* RnamlWriter.cc: New file.
+
+	* RnamlWriter.cc: New files.
+
+	* Molecule.cc: New Molecule
+
+	* Residue.h, Residue.cc, Model.h, Model.cc, Atom.h, Atom.cc:
+	Esthetic changes.
+
+2003-07-11  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* zfstream.h, zfstream.cc, ResIdSet.h, Relation.h, Relation.cc, PropertyTypeStore.h, PropertyTypeStore.cc, PropertyType.h, PropertyType.cc, Model.cc, AtomTypeStore.h, AtomTypeStore.cc, AtomType.h, AtomType.cc, Atom.h, Atom.cc:
+	Corrected memory leaks.
+
+	* PairingPattern.h, PairingPattern.cc:
+	Added auto initialise of static member.
+
+	* Residue.h, Residue.cc, ExtendedResidue.h, ExtendedResidue.cc:
+	Modified getReferential and transform so that they are virtual.
+	Corrected memory leaks.
+
+	* ResidueTypeStore.h, ResidueTypeStore.cc, ResidueType.h, ResidueType.cc:
+	Added an invalid type container and corrected memory leaks.
+
+	* CException.h, CException.cc:
+	Added a trap all message in case Exceptions are not caught.
+
+	* Pdbstream.h, Pdbstream.cc: Added eom() to test end of model.
+	Modified operator>> so that EOM and EOF is detected when reading the
+	last atom/residue.
+
+2003-07-09  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* oMessagestream.h, Sequence.cc, Residue.h, Residue.cc, ResIdSet.h, ResIdSet.cc, ResId.h, ResId.cc, PropertyType.h, Messagestream.h, Makefile.in, HomogeneousTransfo.cc, Graph.h, ExtendedResidue.h, ExtendedResidue.cc, Binstream.cc:
+	Added residue distance and many Messagestream use.
+
+2003-07-09  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* Model.cc: Bug corrected
+
+2003-07-08  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* Molecule.h, Molecule.cc, Makefile.in: New files.
+
+	* Model.cc: Minor modifications in pdb output for standardisation.
+
+	* Pdbstream.cc: Minor modifications for standardisation.
+
+2003-07-08  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* Pdbstream.cc: *** empty log message ***
+
+	* UndirectedGraph.h, Relation.cc, Pdbstream.cc, Graph.h:
+	Modified Residue output.
+
+2003-07-08  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* stlio.h: Forgot list template.
+
+	* stlio.h:
+	I/O on templated pointers added.  The operators are in std namespace to be
+	able to link operators.
+
+2003-06-18  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* Residue.cc:
+	Corrected a bug in the copy operator (the atomIndex was not copied...).
+
+	* ResidueTypeStore.cc, ResidueType.h, ResidueType.cc, Residue.cc, Relation.h, Relation.cc, PairingPattern.h, PairingPattern.cc, Model.h, Model.cc, ExtendedResidue.cc:
+	Added Pairing Pattern detection for old Mc-Sym numbering of pairing.
+
+2003-06-09  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* Residue.h, ResidueFactoryMethod.cc, ResidueFactoryMethod.h, ResidueType.cc, ResidueType.h, Rmsd.h, stlio.h, Pdbstream.h, Relation.cc, Relation.h, Residue.cc, Algo.h, HBond.cc, HBond.h, Makefile.in, MaximumFlowGraph.h, Model.cc, Model.h, Pdbstream.cc:
+	Corrected makefile
+
+2003-06-03  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* ExtendedResidue.cc, ExtendedResidue.h: Added ExtendedResidue
+
+	* BasicResidue.cc, BasicResidue.h: Removed BasicResidue
+
+2003-05-30  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* fstreambase.h, UndirectedGraph.h, Sequence.h, Residue.h, Residue.cc, Relation.h, MaximumFlowGraph.h, Makefile.in, HomogeneousTransfo.h, Graph.h, Genbankstream.h, BasicResidue.h, BasicResidue.cc, Algo.h:
+	Lots of modifications.
+
+2003-05-20  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* Residue.cc, CResidue.cc:
+	[with-placer] : Modified phosphate's ideal coordinates
+
+2003-05-15  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* Residue.cc, BasicResidue.h, BasicResidue.cc:
+	Added support for Phosphate residue type (ideal coordinates & referential)
+
+	* ResidueTypeStore.h, ResidueTypeStore.cc, ResidueType.h, ResidueType.cc:
+	Added new residue type "Phosphate"
+
+2003-05-14  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* ResId.h: added operator+ and operator-, which operate on resno.
+
+2003-05-13  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* stlio.h, HBond.cc, Makefile.in, MaximumFlowGraph.h, Model.cc, Model.h, Path.h, Pdbstream.cc, Relation.cc, Relation.h, Residue.cc, Sequence.cc, Sequence.h, UndirectedGraph.h, Vector3D.cc, Vector3D.h, Fastastream.cc, Fastastream.h, Genbankstream.cc, Genbankstream.h, Graph.cc, Graph.h, BasicResidue.cc:
+	Modified Graphs to use pointers to objects in the container
+
+2003-05-09  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* Path.h~: Removed error file
+
+2003-04-30  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* Graph.h:
+	Backup copy of the graph prior to replacing the map with pointers...
+
+2003-04-11  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* UndirectedGraph.h, stlio.h, MaximumFlowGraph.h, PairingPattern.cc, PairingPattern.h, PropertyType.cc, PropertyTypeStore.cc, PropertyTypeStore.h, Relation.cc, Relation.h, ResidueType.h:
+	New files, bug fixes and major rewrite
+
+	* ResidueTopology.h, ResidueTopology.cc, Residue.h, Residue.cc, PropertyType.h, Pdbstream.h, Path.h, Model.cc, Makefile.in, HomogeneousTransfo.h, HomogeneousTransfo.cc, HBond.h, HBond.cc, Graph.h, CHBond.cc, BasicResidue.h, BasicResidue.cc, AtomTypeStore.h, AtomSet.h, AtomSet.cc, Atom.h, Atom.cc:
+	New files, bug fixes and major rewrite.
+
+2003-04-03  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* Atom.cc, Atom.h, AtomSet.cc, AtomSet.h, AtomType.cc, AtomTypeStore.cc, AtomTypeStore.h, BasicResidue.cc, BasicResidue.h, HBond.cc, HBond.h, HomogeneousTransfo.cc, HomogeneousTransfo.h, Path.cc, Path.h, Path.h~, PdbFileHeader.cc, PdbFileHeader.h, ResId.cc, ResId.h, ResIdSet.cc, ResIdSet.h, ResidueFactoryMethod.cc, ResidueTopology.cc, ResidueTopology.h, ResidueType.cc, ResidueTypeStore.cc, ResidueTypeStore.h, Rmsd.cc, Rmsd.h, UndirectedGraph.cc, UndirectedGraph.h, Vector3D.cc, Vector3D.h:
+	Added new files that more closely mimic the java version
+
+	* zfPdbstream.h, zfstream.h, ServerSocket.cc, fBinstream.h, fPdbstream.h, fstreambase.h, sockstream.cc, sockstream.h, ResidueTypeImp.h, ResidueTypeImp.cc, ResidueType.h, ResidueFM.h, ResidueFactoryMethod.h, Residue.h, ResidueFM.cc, Pdbstream.h, Residue.cc, Model.h, Pdbstream.cc, Model.cc, CTransfo.h, Graph.h, Makefile.in, CResidueFM.h, CTransfo.cc, CResidueFM.cc, CResidue.h, CResidue.cc, CResIdSet.h, CResId.h, CResIdSet.cc, CResId.cc, CPoint3D.cc, CPoint3D.h, CGraph.h, CException.h, CAtom.h, CException.cc, CAtom.cc, Binstream.h, Binstream.cc, AtomTypeImp.h, AtomTypeImp.cc, AtomType.h, AbstractResidue.h, Algo.h, AbstractResidue.cc:
+	Removed old files
+
+2003-03-24  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* AbstractResidue.h, CResidue.h, Residue.h:
+	temporarely removed getAtompRef()
+
+2003-03-19  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* Residue.cc, CResidue.cc: [with-placer] corrected setIdeal()
+
+	* ResidueType.h: [with-placer] Added is_Ribose()
+
+	* Model.cc: [with-placer] removeClahes() more verbose.
+
+	* Graph.cc: lib/Graph.cc
+
+	* CPoint3D.h, CPoint3D.cc: *** empty log message ***
+
+	* McCore.h, McCore.cc: [with-placer] o Added entry for r_Ribose.
+	              o Implemented rmsd() for AbstractResidue::const_iterator.
+
+	* ResidueTypeImp.h, ResidueTypeImp.cc:
+	[with-placer] o Added new RNA type r_Ribose.
+	              o Implemented rmsd() for AbstractResidue::const_iterator.
+
+	* CResId.h, CResId.cc:
+	[with-placer] o Implemented operator+ (int) and operator- (int)
+
+	* Residue.h, Residue.cc, CResidue.h, CResidue.cc:
+	*** empty log message ***
+
+	* Residue.h, Residue.cc, CResidue.h, CResidue.cc:
+	[with-placer] o Implemented ideal phosphate coordinates.
+	              o Changed checked atom for nucleic acid test in init() from
+	                C1' to C2'.
+		      o Implemented AtomInit().
+		      o Implemented getAtomRef () (is temporary).
+
+	* AbstractResidue.h, AbstractResidue.cc:
+	[with-placer] o Added interface for AtomInit() and getAtomRef() method.
+	                getAtomRef() is temporary.
+		      o Raised verbose level for residue type output when reading
+	                pdb.
+
+2003-03-07  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* Residue.cc, McCore.cc, Graph.h, Graph.cc, DirectedGraph.h, DirectedGraph.cc, CHBond.cc, Algo.h:
+	Unknown.
+
+2003-02-04  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* AbstractResidue.cc: Corrected positonning of HO3' atom.
+
+2002-11-19  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* CHBond.cc, AbstractResidue.cc: Header modification.
+
+	* ResidueTypeImp.h, Residue.h, Residue.cc, Model.h, Model.cc, McCore.cc, Graph.h, Graph.cc, CTransfo.cc, CResidue.h, CResidue.cc, CResIdSet.cc, CPoint3D.cc, CHBond.h, CHBond.cc, AbstractResidue.h, AbstractResidue.cc:
+	Added CHBond computation involving CH3 on thymine.
+
+2002-11-13  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* CTransfo.h, CTransfo.cc: Deprecated CTransfo::Referentiel.
+
+2002-11-01  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* SymmetricalMatrix.cc, Graph.cc:
+	Minor corrections for Irix CC compilation.
+
+2002-10-23  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* SymmetricalMatrix.cc, SymmetricalMatrix.h: Added method clear()
+
+2002-10-22  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* CAtom.h: *** empty log message ***
+
+2002-10-17  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* SymmetricalMatrix.cc, SymmetricalMatrix.h: added operator(int,int)
+
+	* Makefile.in: updated for new class SymmetricalMatrix
+
+	* SymmetricalMatrix.cc, SymmetricalMatrix.h: new files
+
+2002-09-05  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* CAtom.h: Removed xmlcpg dependencies.
+
+2002-08-28  Melissa Jourdain  <jourdaim@fortrel.iro.umontreal.ca>
+
+	* CAtom.h, Model.cc: *** empty log message ***
+
+2002-07-26  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* Graph.h, Graph.cc:
+	Added the algo for the union of the minimum cycle basis.
+
+2002-07-11  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* McCore.cc: Added 2H2p in DNA backbone optional atom list.
+
+2002-06-25  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* McCore.h, McCore.cc: Added atomic geometry to record bond length.
+
+2002-06-20  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* McCore.h, McCore.cc:
+	Modified rmsd_with_align so that it doesn't set the CTransfo when the
+	value passed is NULL...
+
+2002-06-11  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* Graph.h, Graph.cc, CAtom.h, Algo.h:
+	Modified the Graph class by adding cycle detection algorithm.
+
+2002-05-14  Philippe Thibault  <thibaup@iro.umontreal.ca>
+
+	* Graph.cc: Corrected a tiny little bug.
+
+2002-05-07  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* Graph.h, Graph.cc: Updated graph implementation.
+
+2002-04-15  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* AbstractResidue.cc:
+	Corrected the copy operator in the AbstractResidue.
+
+2002-04-09  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* Model.h, Model.cc:
+	Inversed the operator- so that it works as expected.
+
+2002-04-02  Labo Lbit  <adbit@fortrel.iro.umontreal.ca>
+
+	* Makefile.in:
+	Graph.h and Graph.cc added in headers.  Graph.cc should not be compiled, it
+	only contains template definitions.
+
+	* Graph.h: vector.h added in headers.
+
+	* Graph.cc: Default values removed from definitions.
+
+2002-03-15  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* Makefile.in, Graph.h, Graph.cc:
+	Added a new class for graphs using map< int, map< int, int > >.
+
+	* Residue.h, Residue.cc, CResidue.h, CResidue.cc:
+	Modified Residue parsing from PDB.
+
+2002-02-25  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* Fastastream.cc, Fastastream.h, Makefile.in: Removed Fasta streams
+
+	* zfstream.cc, sockstream.h, sockstream.cc, sBinstream.h, fstreambase.h, Makefile.in, CTransfo.cc, Binstream.h, Binstream.cc:
+	Added new socket streams and zstreams.
+
+2002-02-22  Patrick Gendron  <gendrop@fortrel.iro.umontreal.ca>
+
+	* AbstractResidue.cc, AbstractResidue.h, Algo.h, Binstream.cc, Binstream.h, CAtom.cc, CAtom.h, CException.cc, CException.h, CResId.cc, CResIdSet.h, CResidue.cc, CTransfo.cc, CTransfo.h, DirectedGraph.h, Fastastream.cc, Fastastream.h, Makefile.in, McCore.cc, McCore.h, Messagestream.h, Model.cc, Model.h, Pdbstream.h, ResidueType.h, ResidueTypeImp.h, ServerSocket.cc, ServerSocket.h, fBinstream.h, fPdbstream.h, sBinstream.h, sockbuf.cc, sockbuf.h, zfBinstream.h, zfPdbstream.h, zfilebuf.cc, zfilebuf.h, zfstream.h:
+	Implemented new streams for compatibility with GCC 3
+
+2002-01-16  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* McCore.cc: Copyright 2002.
+
+	* CAtom.cc:
+	Bug corrected, the atom sets were written with an unsigned char but read
+	with an int.
+
+2002-01-09  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* CResidue.cc:
+	The exception should not generate a mcsym bug error message; input errors
+	may be generated by invalid input structure files.
+
+2001-12-19  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* Model.h: Various insert and push_back methods added.
+
+	* Model.cc: Minor corrections.  Leak corrected in find.
+
+	* Algo.h: CResidue replaced with AbstractResidue.
+
+2001-11-16  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* McCore.cc: More explicit exception error messages added.
+
+	* Residue.h, Residue.cc, CResidue.h, CResidue.cc, AbstractResidue.h, AbstractResidue.cc:
+	The residue's type:index map moved to AbstractResidue to be able to keep an
+	equally sorted iteration.
+
+2001-11-14  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* Model.h: ostream output added.
+
+	* Model.cc: Bug in iterator deletion corrected.
+
+	* CResidue.h: virtual added to find method declaration.
+
+	* AbstractResidue.cc: Output misplaced.
+
+2001-11-05  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* Model.h, Model.cc:
+	Iterators follows more closely their normal behaviors.
+
+	* Residue.h, Residue.cc, CResidue.h, CResidue.cc, AbstractResidue.h:
+	operator= for CTransfo added in virtual table.
+
+2001-11-01  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* Model.h, Model.cc: Model iterator operator- added.
+
+2001-10-25  Martin Larose  <larosem@fortrel.iro.umontreal.ca>
+
+	* CModel.cc, CModel.h: Files replaced by Model.
+
+	* Model.cc, AtomTypeImp.cc, AbstractResidue.h:
+	getType changed back to GetType.
+
+	* ResidueFactoryMethod.h, ResidueFM.h, ResidueFM.cc, Residue.h, Residue.cc, Pdbstream.h, Pdbstream.cc, Model.h, Model.cc, McCore.h, McCore.cc, Makefile.in, CResidueFM.h, CResidueFM.cc, CResidue.h, CResidue.cc, CHBond.h, CHBond.cc, CAtom.h, CAtom.cc, AtomTypeImp.h, AtomTypeImp.cc, AtomType.h, AbstractResidue.h, AbstractResidue.cc:
+	New Residue classes.  An abstract residue has been created to get the
+	possibility to use different kind of models.  The abstract class contains a
+	CResId, a residue type, a CTransfo and the iterators.  To implement a new
+	residue and use it in a model, create an implementation of
+	ResidueFactoryMethod and set it in the model constructor.
+
+	New Model class.  It stores pointers over AbstractResidues.  Its methods
+	and iterators returns AbstractResidues pointers and references.
+
+	New ResidueFactoryMethod abstract class.  It defines an interface for
+	creating residues of a given type inside models.  It's only method,
+	createResidue returns a new residue pointer for the implemented residue
+	class.  It is mainly used in the Model read methods.
+
 2001-10-25  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* lib/CModel.cc, lib/CModel.h: Files replaced by Model.

@@ -3,8 +3,8 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.16 $
-// $Id: Residue.h,v 1.16 2003-12-23 14:58:09 larosem Exp $
+// $Revision: 1.17 $
+// $Id: Residue.h,v 1.17 2004-03-12 14:24:03 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -61,7 +61,7 @@ namespace mccore {
    * the atom types.
    *
    * @author Patrick Gendron <gendrop@iro.umontreal.ca>
-   * @version $Id: Residue.h,v 1.16 2003-12-23 14:58:09 larosem Exp $
+   * @version $Id: Residue.h,v 1.17 2004-03-12 14:24:03 thibaup Exp $
    */
   class Residue
   {
@@ -720,11 +720,12 @@ namespace mccore {
     virtual const PropertyType* getGlycosyl () const;
     
     /**
-     *  Initializes all the internals of the residue.  It aligns the
-     *  residue to the origin of the global coordinate and stores the
-     *  transformation internally.  
+     * Initializes all the internals of the residue.  It aligns the
+     * residue to the origin of the global coordinate and stores the
+     * transformation internally.
+     * @param h_lp flag for hydrogens and lone pairs addition.
      */
-    virtual void finalize ();
+    virtual void finalize (bool h_lp = true);
 
     /**
      * Computes the distance between two residues by first aligning

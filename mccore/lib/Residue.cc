@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.28 $
-// $Id: Residue.cc,v 1.28 2004-01-09 21:15:34 larosem Exp $
+// $Revision: 1.29 $
+// $Id: Residue.cc,v 1.29 2004-03-12 14:24:03 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -208,7 +208,7 @@ namespace mccore {
 //       return false;
 //     }
 
-    finalize ();
+    finalize (h_lp);
 
     if (h_lp) {
       addHydrogens();
@@ -1235,7 +1235,7 @@ namespace mccore {
   }
 
   void 
-  Residue::finalize ()
+  Residue::finalize (bool h_lp)
   {
     Vector3D *v1, *v2, *v3;
 
