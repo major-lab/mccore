@@ -234,6 +234,7 @@ namespace mccore
 	anc_O3p = *anc_O3p_it;
 	anc_O3p.transform (tmp);
       }
+
   }
   
 
@@ -250,7 +251,7 @@ namespace mccore
     return (*qfct) ();
   }
 
-
+  /*
   float
   RiboseOptimizer2D::solve ()
   {
@@ -299,13 +300,113 @@ namespace mccore
 
     return eval (x);
   }
+  */
 
+  float
+  RiboseOptimizer2D::solve ()
+  {
+    // [0] -> rho
+    // [1] -> chi
+    
+    int i;
+    float x[2], new_x[2];
+    float p_min[2], p_max[2], p_range[2], p_shift[2];
+    float eval_x, eval_new_x;
+    float def_gamma = 55.0 * M_PI / 180.0;
+    float def_beta = M_PI;
+    bool not_shifted;
 
+    gamma = def_gamma;
+    beta = def_beta;
+    
+    float s_2xpi = 2 * M_PI;
+    PropertyType *pucker = 0, *glycosyl = 0;
+    
+    if (pucker)
+      {
+	p_min[0] = Residue::getMinRho (pucker);
+	p_max[0] = Residue::getMaxRho (pucker);
+      }
+    else
+      {
+	p_min[0] = 0.0;
+	p_max[0] = s_2xpi;
+      }
+
+    if (glycosyl)
+      {
+	p_min[1] = Residue::getMinChi (pucker);
+	p_max[1] = Residue::getMaxChi (pucker);
+      }
+    else
+      {
+	p_min[1] = 0.0;
+	p_max[1] = s_2xpi;
+      }
+    
+    for (i = 0; i < 2; ++i)
+      {
+	p_range[i] = p_max[i] - p_min[i];
+	p_shift[i] = 0.25 * p_range[i];
+	new_x[i] = x[i] = p_min[i] + 0.5 * p_range[i];
+      }
+    
+    built_count = 0;
+    eval_x = eval (x);
+
+    while (p_shift[0] > min_shift || p_shift[1] > min_shift)
+      {
+	not_shifted = true;
+
+	for (i = 0; i < 2; ++i)
+	  {
+	    new_x[i] = x[i] + p_shift[i];
+	    if (new_x[i] > p_max[i])
+	      new_x[i] = p_max[i];
+
+	    eval_new_x = eval (new_x);
+	    
+	    if (eval_new_x < eval_x - min_drop)
+	      {
+		x[i] = new_x[i];
+		eval_x = eval_new_x;
+		not_shifted = false;
+	      }
+	    else
+	      {
+		new_x[i] = x[i] - p_shift[i];
+		if (new_x[i] < p_min[i])
+		  new_x[i] = p_min[i];
+		
+		eval_new_x = eval (new_x);
+		
+		if (eval_new_x < eval_x - min_drop)
+		  {
+		    x[i] = new_x[i];
+		    eval_x = eval_new_x;
+		    not_shifted = false;
+		  }
+		else
+		  new_x[i] = x[i];
+	      }
+	  }
+	if (not_shifted)
+	  {
+	    p_shift[0] *= shift_rate;
+	    p_shift[1] *= shift_rate;
+	  }
+      }
+	
+    return eval (x);
+  }
+    
   float
   RiboseOptimizer2D::eval (float* p)
   {
-    chi = p[0];
-    rho = p[1];
+    //chi = p[0];
+    //rho = p[1];
+    chi = p[1];
+    rho = p[0];
     return build ();
   }
 
@@ -313,6 +414,8 @@ namespace mccore
   float
   RiboseOptimizer2D::evaluate_ptp () const
   {
+    return evaluate_bond2 ();
+    
     float v = 0;
     if (check_O5p)
       v += ribose.O5p.squareDistance (anc_O5p);
@@ -325,6 +428,8 @@ namespace mccore
   float
   RiboseOptimizer2D::evaluate_bond () const
   {
+    return evaluate_bond2 ();
+    
     float v = 0;
     if (check_O5p)
       v += ribose.C5p.distance (anc_O5p);
@@ -334,6 +439,22 @@ namespace mccore
       v += ribose.C3p.distance (anc_O3p);
     else
       v += 1.431;
+    return v;
+  }
+
+  float
+  RiboseOptimizer2D::evaluate_bond2 () const
+  {
+    float v = 0;
+
+    if (check_O5p)
+      v += ribose.C5p.squareDistance (anc_O5p);
+    else
+      v += 2.0736;
+    if (check_O3p)
+      v += ribose.C3p.squareDistance (anc_O3p);
+    else
+      v += 2.047761;
     return v;
   }
 

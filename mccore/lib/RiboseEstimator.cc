@@ -318,6 +318,9 @@ namespace mccore
     ribose.transform (rotation1.rotate (xrot1, 0.0, 0.0));
     value1 = (*qfct) ();
 
+
+    cerr << "found rotation " << xrot1 * 180.0 / M_PI << endl;
+    
     // save this ribose
 
     ribose1 = ribose;

@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Philippe Thibault <thibaup@iro.umontreal.ca> 
 // Created On       : Mon Sep 29 14:59:19 2003
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 //
 //  This file is part of mccore.
 //  
@@ -33,8 +33,10 @@ namespace mccore
 {
 
   /**
-   * @short Builds a theoretical ribose between a RNA base and two phosphates.
+   * @short [DEPRECATED] Builds a theoretical ribose between a RNA base and two phosphates.
    * 
+   * DEPRECATED
+   *
    * Builds a theoretical ribose between a RNA base and two phosphates,
    * toward 5' and 3' branches. Uses a simplified cyclic coordinates method in
    * 5D torsion space < rho, chi, gamma, beta, epsilon >. Base must contains C1'.

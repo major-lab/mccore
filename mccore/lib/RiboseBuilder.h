@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Philippe Thibault <thibaup@iro.umontreal.ca>
 // Created On       : Mon Sep 29 14:59:19 2003
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 //
 //  This file is part of mccore.
 //  
@@ -38,7 +38,9 @@ namespace mccore
 {
 
   /**
-   * @short Interface class. Builds a theoritical ribose.
+   * @short [DEPRECATED] Interface class. Builds a theoritical ribose.
+   *
+   * DEPRECATED
    *
    * Interface class. Builds a theoritical ribose addressed
    * in torsion space < rho, chi, gamma, beta, epsilon >
