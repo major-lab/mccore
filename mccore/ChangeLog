@@ -1,3 +1,113 @@
+2001-08-29  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* CModel.cc, CModel.h: Validate does not remove amino acids from
+	the model.  New methods removeAminoAcid and removeNucleicAcid
+	added.
+
+	* CResidue.h, CResidue.cc: Validate now takes care of amino acids.
+
+	* Pdbstream.cc, McCore.h, McCore.cc, AtomTypeImp.h, AtomTypeImp.cc, AtomType.h:
+	New atom type at_PSAZ added.
+
+2001-08-28  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* Makefile.in: Added -p in INSTALL_DATA variable to preserve
+	time-stamp of copied files.
+
+2001-08-27  Patrick Gendron  <gendrop@mansarde.IRO.UMontreal.CA>
+
+	* Algo.h, CResidue.cc, CResidue.h, Makefile.in, McCore.cc:
+	Corrected operator[] in CResidue
+
+2001-08-27  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* CHBond.cc: Non standard include files using #include <> changed
+	to #include "".
+
+2001-08-24  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* Pdbstream.h, Pdbstream.cc, CResId.h, CResId.cc: The resId
+	contains the insertion code.
+
+2001-08-24  Philippe Thibault  <thibaup@mansarde.IRO.UMontreal.CA>
+
+	* sockbuf.h, sockbuf.cc: Errors are now handled by socket exceptions.
+	Added access method GetSocketId().
+
+	* ServerSocket.h, ServerSocket.cc: Errors are now handled with
+	socket exceptions.  Removed call to shutdown(), which is
+	inappropriate on an unconnected socket.  Added access methods
+	GetSocketId() and GetPort().
+
+	* CException.h, CException.cc: Added new Exceptions
+	CSocketException and CFatalSocketException
+
+2001-08-23  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* SocketCommand.h, Makefile.in, DirectedGraph.h, DirectedGraph.cc, CHBond.h, CHBond.cc:
+	LGPL header added.
+
+	* zfilebuf.h, zfilebuf.cc, zfPdbstream.h, zfBinstream.h, sockbuf.h, sockbuf.cc, sBinstream.h, fBinstream.h, SocketCommand.h, ServerSocket.cc, ResidueTypeImp.cc, Pdbstream.cc, McCore.cc, Makefile.in, DirectedGraph.cc, CTransfo.cc, CResidue.h, CResidue.cc, CResIdSet.cc, CResId.cc, CPoint3D.cc, CModel.cc, CMessageQueue.cc, CHBond.cc, CException.cc, CAtom.cc, Binstream.h, Binstream.cc, AtomTypeImp.cc, Algo.cc:
+	config.h.in added.  Bug corrected in CResidue.  zstreambase
+	wrapper is back. New wrapper class socketstreambase.
+
+2001-08-16  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* SocketCommand.h, Makefile.in: Added the socket commands for
+	transferring objects.
+
+2001-08-14  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* zfstream.h, zfilebuf.h, zfilebuf.cc, zfPdbstream.h, zfBinstream.h, sockbuf.h, sockbuf.cc, sBinstream.h, fPdbstream.h, fBinstream.h, ServerSocket.h, ServerSocket.cc, ResidueTypeImp.h, ResidueTypeImp.cc, ResidueType.h, Pdbstream.h, Pdbstream.cc, McCore.h, McCore.cc, Makefile.in, DirectedGraph.h, DirectedGraph.cc, CTransfo.h, CTransfo.cc, CResidue.h, CResidue.cc, CResIdSet.h, CResIdSet.cc, CResId.h, CResId.cc, CPoint3D.h, CPoint3D.cc, CModel.h, CModel.cc, CMessageQueue.h, CMessageQueue.cc, CHBond.h, CHBond.cc, CGraph.h, CException.h, CException.cc, CAtom.h, CAtom.cc, Binstream.h, Binstream.cc, AtomTypeImp.h, AtomTypeImp.cc, AtomType.h, Algo.h, Algo.cc:
+	Copyright notice includes Université de Montréal.
+
+2001-08-08  Philippe Thibault  <thibaup@mansarde.IRO.UMontreal.CA>
+
+	* CAtom.cc: fixed a minor bug in class constructors
+
+2001-07-25  Sebastien Lemieux  <lemieuxs@mansarde.IRO.UMontreal.CA>
+
+	* CHBond.cc: Reactivated method 'DumpAmberRestraints'.
+
+	* McCore.h, McCore.cc: Modified the function 'rmsd_with_align' to
+	take two pairs of templated iterator.  The only constraint on the
+	iterators is that they should be dereferencable to 'CAtom's.  This
+	allows to compute RMSD on any type of container and both on CAtom*
+	or CResidue::iterator.  The function was split between the .h and
+	.cc to minimize the compilation effort...
+
+	* CHBond.cc, Algo.h, Algo.cc: dummy
+
+	* CResidue.h: Added data member 'mExternalIndex' with Get/Set.
+
+	* Pdbstream.cc: Removed the possibility to write 'HETATM' in
+	function 'putatom'.  Interfer with the use of rt_Misc in 'toleap'
+	package.
+
+2001-07-16  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* Algo.h: FLT_MAX replaced with HUGE.
+
+2001-07-05  Patrick Gendron  <gendrop@mansarde.IRO.UMontreal.CA>
+
+	* CResidue.cc, CResidue.h, sockbuf.h:
+	Corrected the AtomCopy function so that iterators stay valid
+
+2001-06-21  Patrick Gendron  <gendrop@mansarde.IRO.UMontreal.CA>
+
+	* Algo.h, CHBond.cc, CHBond.h, CModel.h, DirectedGraph.h, McCore.cc, McCore.h:
+	Modified CHBond and added an inheritance from HBond, which is a symbolic description only
+
+2001-05-29  Patrick Gendron  <gendrop@mansarde.IRO.UMontreal.CA>
+
+	* CHBond.h, CModel.cc, CModel.h, CResidue.cc, CResidue.h, CTransfo.cc, CTransfo.h, DirectedGraph.cc, DirectedGraph.h, Makefile.in, McCore.cc, McCore.h, CAtom.cc, CAtom.h, CHBond.cc:
+	Corrected some bugs in CResidue due to isIdentity
+
+2001-05-28  Patrick Gendron  <gendrop@mansarde.IRO.UMontreal.CA>
+
+	* McCore.h, McCore.cc, CResidue.h, CResidue.cc, CModel.h, CModel.cc:
+	Modified the rmsd function for const_iterator.
+
 2001-05-28  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* lib/CModel.h, lib/CModel.cc: sortAtoms is no longer needed since
