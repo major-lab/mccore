@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.60 $
-// $Id: Residue.cc,v 1.60 2005-01-10 16:47:18 thibaup Exp $
+// $Revision: 1.61 $
+// $Id: Residue.cc,v 1.61 2005-01-11 16:40:27 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -1524,7 +1524,7 @@ namespace mccore
   void 
   Residue::finalize ()
   {
-    Vector3D *v1, *v2, *v3;
+    Vector3D *p1, *p2, *p3;
     Vector3D a, b, i, j, k;
 
     try
@@ -1532,19 +1532,19 @@ namespace mccore
       if (this->type->isNucleicAcid ())
       {
 	// fetch needed atoms
-	v1 = this->_safe_get (Residue::nitrogenType19 (this->type));
-	v2 = this->_safe_get (Residue::carbonType68 (this->type));
-	v3 = this->_safe_get (Residue::carbonType24 (this->type));
+	p1 = this->_safe_get (Residue::nitrogenType19 (this->type));
+	p2 = this->_safe_get (Residue::carbonType68 (this->type));
+	p3 = this->_safe_get (Residue::carbonType24 (this->type));
 
 	// compute and insert pseudo-atoms
-	a = (*v2-*v1).normalize();
-	b = (*v3-*v1).normalize();
-	j = (a + b).normalize();
-	k = (b.cross(a)).normalize();
-	i = j.cross (k);
-	this->insert (Atom (*v1 + i, AtomType::aPSX));
-	this->insert (Atom (*v1 + j, AtomType::aPSY));
-	this->insert (Atom (*v1 + k, AtomType::aPSZ));
+	a = (*p2-*p1).normalize ();
+	b = (*p3-*p1).normalize ();
+	j = (a + b).normalize ();
+	k = (b.cross (a)).normalize ();
+	i = (j.cross (k)).normalize ();
+	this->insert (Atom (*p1 + i, AtomType::aPSX));
+	this->insert (Atom (*p1 + j, AtomType::aPSY));
+	this->insert (Atom (*p1 + k, AtomType::aPSZ));
       }
       else if (this->type->isPhosphate ())
       {
@@ -1557,14 +1557,14 @@ namespace mccore
       else if (this->type->isAminoAcid ())
       {
 	// fetch needed atoms
-	v1 = this->_safe_get (AtomType::aCA);
-	v2 = this->_safe_get (AtomType::aN);
-	v3 = this->_safe_get (AtomType::aC);
+	p1 = this->_safe_get (AtomType::aCA);
+	p2 = this->_safe_get (AtomType::aN);
+	p3 = this->_safe_get (AtomType::aC);
 
 	// compute and insert pseudo-atoms
-	a = (*v2 - *v1).normalize ();
-	b = (*v3 - *v1).normalize ();
-	k = *v1 + (b.cross (a)).normalize ();
+	a = (*p2 - *p1).normalize ();
+	b = (*p3 - *p1).normalize ();
+	k = *p1 + (b.cross (a)).normalize ();
 	this->insert (Atom (k, AtomType::aPSAZ));
       }
       else
