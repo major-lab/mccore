@@ -5,8 +5,8 @@
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
 // Last Modified By : Patrick Gendron
-// Last Modified On : Fri Aug 22 13:37:42 2003
-// Update Count     : 27
+// Last Modified On : Fri Sep 26 17:14:12 2003
+// Update Count     : 32
 // Status           : Unknown.
 // 
 
@@ -24,6 +24,18 @@
 
 namespace mccore 
 {
+
+#define sgn( x ) ( ( ( x ) >= 0.0 ) ? +1 : -1 )
+
+  inline int min3( float x, float y, float z )
+  {
+    if( ( x >= y ) && ( x >= z ) )
+      return 0;
+    if( ( y >= x ) && ( y >= z ) )
+      return 1;
+    return 2;
+  }
+  
 
   // LIFECYCLE ------------------------------------------------------------
 
@@ -185,6 +197,85 @@ namespace mccore
 			       0, 0, 0, 1);
   }
   
+  
+
+
+
+  pair< Vector3D, float >
+  HomogeneousTransfo::getRotationVector () const
+  {
+    float a = matrix[9] - matrix[6];
+    float b = matrix[2] - matrix[8];
+    float c = matrix[4] - matrix[1];
+    float diag = matrix[0] + matrix[5] + matrix[10] - 1;
+    float theta;
+    
+    theta = atan2( sqrt( a*a + b*b + c*c ), diag );
+    
+    
+    // Robot manipulators : mathematics, programming, and control :
+    //   the computer control of robot manipulators
+    // Paul, Richard P.
+    // Cambridge, Mass. : MIT Press, c1981.
+    // pp 29-34
+    //
+    //HomogeneousTransfo mRot  // = Rot(y,90) * Rot(z,90)
+    // ( 0, 0, 1, 0,
+    //   1, 0, 0, 0,
+    //   0, 1, 0, 0 );
+    // theta = 120o  axe = ( 1/sqrt(3), 1/sqrt(3), 1/sqrt(3) )
+    
+    float Kx = 0.0;
+    float Ky = 0.0;
+    float Kz = 0.0;
+    if (theta >= M_PI/2.0)
+      {
+	float cost = cos (theta);
+	float vers = 1 - cost;
+	Kx = sgn (a) * sqrt ((matrix[ 0] - cost) / vers);
+	Ky = sgn (b) * sqrt ((matrix[ 5] - cost) / vers);
+	Kz = sgn (c) * sqrt ((matrix[10] - cost) / vers);
+	
+	float denom;
+	switch (min3 (Kx, Ky, Kz))
+	  {
+	  case 0:
+	    denom = 2 * Kx * vers;
+	    Ky =  (matrix[4] + matrix[1]) / denom;
+	    Kz =  (matrix[2] + matrix[8]) / denom;
+	    break;
+	    
+	  case 1:
+	    denom = 2 * Ky * vers;
+	    Kx =  (matrix[4] + matrix[1]) / denom;
+	    Kz =  (matrix[9] + matrix[6]) / denom;
+	    break;
+	    
+	  default:
+	    denom = 2 * Kz * vers;
+	    Kx =  (matrix[2] + matrix[8]) / denom;
+	    Ky =  (matrix[9] + matrix[6]) / denom;
+	    break;
+	  }
+      }
+    else
+      if (theta > 0.0)
+	{
+	  float denom = 2.0 * sin (theta);
+	  Kx = a / denom;
+	  Ky = b / denom;
+	  Kz = c / denom;
+	}
+    
+    Vector3D v (Kx, Ky, Kz);
+    if (v.length() > 0.0)
+      v.normalize();
+    
+    return make_pair (v, theta);
+  }
+
+
+
 
   Vector3D
   HomogeneousTransfo::getTranslationVector () const 
