@@ -3,9 +3,9 @@
 // Copyright © 2000 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose
 // Created On       : Thu Oct 26 10:24:02 2000
-// Last Modified By : Labo Lbit
-// Last Modified On : Fri Nov 10 18:36:21 2000
-// Update Count     : 3
+// Last Modified By : Martin Larose
+// Last Modified On : Mon Dec  4 15:41:26 2000
+// Update Count     : 4
 // Status           : Unknown.
 // 
 
@@ -123,17 +123,7 @@ CResIdSet::_parse_and_insert (const char *str)
 					__FILE__, __LINE__);
 	    }
 	  else
-	    {
-	      if (isalpha (lower[0]))
-		{
-		  char chain = lower[0];
-		  int start = atoi (++lower);
-		  
-		  insert (start, chain);
-		}
-	      else
-		insert (atoi (lower));
-	    }
+	    insert (CResId (lower));
 	  token = strsep (&str_copy, ",");
 	}
       delete str_copy_ptr;
