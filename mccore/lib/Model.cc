@@ -4,9 +4,9 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// Last Modified By : Patrick Gendron
-// Last Modified On : Tue Apr  9 14:40:46 2002
-// Update Count     : 8
+// Last Modified By : Philippe Thibault
+// Last Modified On : Wed Mar 19 16:36:52 2003
+// Update Count     : 9
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -437,7 +437,9 @@ Model::removeClashes ()
 	}
 	if (clash) {
 	  gOut (3) << "Rejecting " << (CResId&)*j
-		   << " because of clashes with " << (CResId&)*i << endl;
+		   << " because of clashes with " << (CResId&)*i
+		   << "( " << l->GetType ()->getPDBRep ()
+		   << ',' << k->GetType ()->getPDBRep () << ")." << endl;
 	  toremove.insert (j);
 	}
       }
