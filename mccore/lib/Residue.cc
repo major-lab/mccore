@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.56.2.2 $
-// $Id: Residue.cc,v 1.56.2.2 2004-12-25 02:44:52 larosem Exp $
+// $Revision: 1.56.2.3 $
+// $Id: Residue.cc,v 1.56.2.3 2004-12-27 01:53:36 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -373,13 +373,6 @@ namespace mccore
   }
   
   
-  bool 
-  Residue::operator< (const Residue &other) const
-  { 
-    return resId < other.resId; 
-  }
-
-
   const ResId& 
   Residue::getResId () const 
   { 
@@ -645,7 +638,7 @@ namespace mccore
 
     if (!(type->isNucleicAcid () || type->isAminoAcid ()))
     {
-      gOut (6) << "\tCannot validate unhandled residue type: " << *type << endl;
+      gOut (6) << "\tCannot validate unhandled residue type: " << type << endl;
       return;
     }
 
@@ -3134,7 +3127,7 @@ namespace mccore
 
 namespace std
 {
-  
+
   ostream&
   operator<< (ostream &os, const mccore::Residue &r)
   {

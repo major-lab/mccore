@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.26.2.1 $
+// $Revision: 1.26.2.2 $
 //
 // This file is part of mccore.
 // 
@@ -62,7 +62,7 @@ namespace mccore
    * the atom types.
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: Residue.h,v 1.26.2.1 2004-12-25 02:45:07 larosem Exp $
+   * @version $Id: Residue.h,v 1.26.2.2 2004-12-27 01:53:52 larosem Exp $
    */
   class Residue
   {
@@ -618,8 +618,10 @@ namespace mccore
      * @param other the residue to compare.
      * @return true if this residue is less than the other.
      */
-    virtual bool operator< (const Residue &other) const;
-
+    virtual bool operator< (const Residue &other) const
+    { 
+      return resId < other.resId; 
+    }
 
     // ACCESS ------------------------------------------------------------------
 
@@ -1217,24 +1219,6 @@ namespace mccore
 
   };
 
-  // NON-MEMBER FUNCTIONS ------------------------------------------------------
-  
-  /**
-   * Ouputs the residue to the stream.
-   * @param os the output stream.
-   * @param r the residue.
-   * @return the used output stream.
-   */
-  ostream& operator<< (ostream &os, const Residue &r);
-  
-  /**
-   * Ouputs the residue to the stream.
-   * @param os the output stream.
-   * @param r the residue.
-   * @return the used output stream.
-   */
-  //ostream& operator<< (ostream &os, const Residue *r);
-
   /**
    * Ouputs the residue to the exception stream.
    * @param ex the exception stream.
@@ -1276,6 +1260,21 @@ namespace mccore
    * @return the output pdb stream used.
    */
   oPdbstream& operator<< (oPdbstream &obs, const Residue &res);
+}
+
+
+
+namespace std
+{
+  
+  /**
+   * Ouputs the residue to the stream.
+   * @param os the output stream.
+   * @param r the residue.
+   * @return the used output stream.
+   */
+  ostream& operator<< (ostream &os, const mccore::Residue &r);
+  
 }
   
 #endif
