@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:09:51 2001
-// Update Count     : 21
+// Last Modified On : Wed Aug 29 11:50:12 2001
+// Update Count     : 22
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -313,6 +313,34 @@ CResidue::CResidue (t_Residue *type,
 	  return;
 	}
     }
+  else if (mType->is_AminoAcid ())
+    {
+      const CPoint3D *p1 = 0, *p2 = 0, *p3 = 0;
+      
+      if ((p1 = ref (a_CA)) && (p2 = ref (a_N)) && (p3 = ref (a_C)))
+	{
+	  CPoint3D a = (*p2 - *p1).Normalize ();
+	  CPoint3D b = (*p3 - *p1).Normalize ();
+	  CPoint3D Z = *p1 + b.Cross (a).Normalize ();
+
+	  insert (CAtom (Z.GetX (), Z.GetY (), Z.GetZ (), a_PSAZ));
+	}
+      else
+	{
+	  // Create an invalid residue but keep it in misc residues.
+	  gOut(1) << "Residue " << *type << "-" << nId
+		  << " is missing one or more critical atoms." 
+		  << endl;
+	  map< const char *, t_Residue*, less_string >::iterator i
+	    = gMiscResidueString.find ((const char*)*mType);
+	  
+	  if (i == gMiscResidueString.end ())
+	    mType = new rt_Misc ((const char*)*mType);
+	  else
+	    mType = i->second;
+	  return;
+	}
+    }
   
   // Set Pivot
   if (mType->is_Phosphate ())
@@ -326,6 +354,12 @@ CResidue::CResidue (t_Residue *type,
       pivot[0] = mType->is_Purine () ? ref (a_N9) : ref (a_N1);
       pivot[1] = ref (a_PSY);
       pivot[2] = ref (a_PSZ);
+    }
+  else if (mType->is_AminoAcid ())
+    {
+      pivot[0] = ref (a_CA);
+      pivot[1] = ref (a_N);
+      pivot[2] = ref (a_PSAZ);
     }
   else if (size () >= 3)
     {
@@ -1130,15 +1164,6 @@ CResidue::AtomCopy (const CResidue &right)
 	mAtomRef[i->second] = right.mAtomRef[j->second];
 	mAtomRes[i->second] = right.mAtomRes[j->second];
       }
-
-      // Otherwise, we must do this:
-      // for (i=mAtomIndex.begin (); i!=mAtomIndex.end (); ++i) {
-      // mAtomRef[i->second] = 
-      //   right.mAtomRef[right.mAtomIndex.find (i->first)->second];
-      // mAtomRes[i->second] = 
-      //   right.mAtomRes[right.mAtomIndex.find (i->first)->second];
-      // }
-
       isPlaced = right.isPlaced;
       isIdentity = right.isIdentity;
       mTfo = right.mTfo;
@@ -1220,10 +1245,131 @@ CResidue::Validate () const
 	      optend = grUOptAtomSet.end ();
 	    }
 	}
+      else if (res.mType->is_AminoAcid ())
+	{
+	  if (res.mType->is_ALA ())
+	    {
+	      allset.insert (gALAOblAtomSet.begin (), gALAOblAtomSet.end ());
+	      optbegin = gALAOptAtomSet.begin ();
+	      optend = gALAOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_ARG ())
+	    {
+	      allset.insert (gARGOblAtomSet.begin (), gARGOblAtomSet.end ());
+	      optbegin = gARGOptAtomSet.begin ();
+	      optend = gARGOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_ASN ())
+	    {
+	      allset.insert (gASNOblAtomSet.begin (), gASNOblAtomSet.end ());
+	      optbegin = gASNOptAtomSet.begin ();
+	      optend = gASNOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_ASP ())
+	    {
+	      allset.insert (gASPOblAtomSet.begin (), gASPOblAtomSet.end ());
+	      optbegin = gASPOptAtomSet.begin ();
+	      optend = gASPOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_CYS ())
+	    {
+	      allset.insert (gCYSOblAtomSet.begin (), gCYSOblAtomSet.end ());
+	      optbegin = gCYSOptAtomSet.begin ();
+	      optend = gCYSOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_GLN ())
+	    {
+	      allset.insert (gGLNOblAtomSet.begin (), gGLNOblAtomSet.end ());
+	      optbegin = gGLNOptAtomSet.begin ();
+	      optend = gGLNOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_GLU ())
+	    {
+	      allset.insert (gGLUOblAtomSet.begin (), gGLUOblAtomSet.end ());
+	      optbegin = gGLUOptAtomSet.begin ();
+	      optend = gGLUOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_GLY ())
+	    {
+	      allset.insert (gGLYOblAtomSet.begin (), gGLYOblAtomSet.end ());
+	      optbegin = gGLYOptAtomSet.begin ();
+	      optend = gGLYOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_HIS ())
+	    {
+	      allset.insert (gHISOblAtomSet.begin (), gHISOblAtomSet.end ());
+	      optbegin = gHISOptAtomSet.begin ();
+	      optend = gHISOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_ILE ())
+	    {
+	      allset.insert (gILEOblAtomSet.begin (), gILEOblAtomSet.end ());
+	      optbegin = gILEOptAtomSet.begin ();
+	      optend = gILEOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_LEU ())
+	    {
+	      allset.insert (gLEUOblAtomSet.begin (), gLEUOblAtomSet.end ());
+	      optbegin = gLEUOptAtomSet.begin ();
+	      optend = gLEUOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_LYS ())
+	    {
+	      allset.insert (gLYSOblAtomSet.begin (), gLYSOblAtomSet.end ());
+	      optbegin = gLYSOptAtomSet.begin ();
+	      optend = gLYSOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_MET ())
+	    {
+	      allset.insert (gMETOblAtomSet.begin (), gMETOblAtomSet.end ());
+	      optbegin = gMETOptAtomSet.begin ();
+	      optend = gMETOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_PHE ())
+	    {
+	      allset.insert (gPHEOblAtomSet.begin (), gPHEOblAtomSet.end ());
+	      optbegin = gPHEOptAtomSet.begin ();
+	      optend = gPHEOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_PRO ())
+	    {
+	      allset.insert (gPROOblAtomSet.begin (), gPROOblAtomSet.end ());
+	      optbegin = gPROOptAtomSet.begin ();
+	      optend = gPROOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_SER ())
+	    {
+	      allset.insert (gSEROblAtomSet.begin (), gSEROblAtomSet.end ());
+	      optbegin = gSEROptAtomSet.begin ();
+	      optend = gSEROptAtomSet.end ();
+	    }
+	  else if (res.mType->is_THR ())
+	    {
+	      allset.insert (gTHROblAtomSet.begin (), gTHROblAtomSet.end ());
+	      optbegin = gTHROptAtomSet.begin ();
+	      optend = gTHROptAtomSet.end ();
+	    }
+	  else if (res.mType->is_TRP ())
+	    {
+	      allset.insert (gTRPOblAtomSet.begin (), gTRPOblAtomSet.end ());
+	      optbegin = gTRPOptAtomSet.begin ();
+	      optend = gTRPOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_TYR ())
+	    {
+	      allset.insert (gTYROblAtomSet.begin (), gTYROblAtomSet.end ());
+	      optbegin = gTYROptAtomSet.begin ();
+	      optend = gTYROptAtomSet.end ();
+	    }
+	  else if (res.mType->is_VAL ())
+	    {
+	      allset.insert (gVALOblAtomSet.begin (), gVALOblAtomSet.end ());
+	      optbegin = gVALOptAtomSet.begin ();
+	      optend = gVALOptAtomSet.end ();
+	    }
+	}
       else
 	{
-	  if (res.mType->is_AminoAcid ())
-	    gOut (3) << 'p';
 	  map< const char *, t_Residue*, less_string >::iterator i
 	    = gMiscResidueString.find ((const char*)*res.mType);
 	  
@@ -1233,6 +1379,7 @@ CResidue::Validate () const
 	    res.mType = i->second;
 	  return res;
 	}
+
       
       for (it = res.mAtomRef.begin (); it != res.mAtomRef.end (); ++it)
 	resset.insert ((*it).GetType ());
@@ -1259,7 +1406,10 @@ CResidue::Validate () const
 		      inserter (diffset, diffset.begin ()));
       res.erase (diffset.begin (), diffset.end ());
 
-      gOut (3) << '.';
+      if (res.mType->is_AminoAcid ())
+	gOut (3) << 'p';
+      else
+	gOut (3) << '.';
       return res;
     }
   gOut (3) << 'i';
@@ -1320,6 +1470,109 @@ CResidue::RemoveOptionals () const
 	    {
 	      setbegin = grUOptAtomSet.begin ();
 	      setend = grUOptAtomSet.end ();
+	    }
+	}
+      else if (mType->is_AminoAcid ())
+	{
+	  if (res.mType->is_ALA ())
+	    {
+	      setbegin = gALAOptAtomSet.begin ();
+	      setend = gALAOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_ARG ())
+	    {
+	      setbegin = gARGOptAtomSet.begin ();
+	      setend = gARGOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_ASN ())
+	    {
+	      setbegin = gASNOptAtomSet.begin ();
+	      setend = gASNOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_ASP ())
+	    {
+	      setbegin = gASPOptAtomSet.begin ();
+	      setend = gASPOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_CYS ())
+	    {
+	      setbegin = gCYSOptAtomSet.begin ();
+	      setend = gCYSOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_GLN ())
+	    {
+	      setbegin = gGLNOptAtomSet.begin ();
+	      setend = gGLNOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_GLU ())
+	    {
+	      setbegin = gGLUOptAtomSet.begin ();
+	      setend = gGLUOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_GLY ())
+	    {
+	      setbegin = gGLYOptAtomSet.begin ();
+	      setend = gGLYOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_HIS ())
+	    {
+	      setbegin = gHISOptAtomSet.begin ();
+	      setend = gHISOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_ILE ())
+	    {
+	      setbegin = gILEOptAtomSet.begin ();
+	      setend = gILEOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_LEU ())
+	    {
+	      setbegin = gLEUOptAtomSet.begin ();
+	      setend = gLEUOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_LYS ())
+	    {
+	      setbegin = gLYSOptAtomSet.begin ();
+	      setend = gLYSOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_MET ())
+	    {
+	      setbegin = gMETOptAtomSet.begin ();
+	      setend = gMETOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_PHE ())
+	    {
+	      setbegin = gPHEOptAtomSet.begin ();
+	      setend = gPHEOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_PRO ())
+	    {
+	      setbegin = gPROOptAtomSet.begin ();
+	      setend = gPROOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_SER ())
+	    {
+	      setbegin = gSEROptAtomSet.begin ();
+	      setend = gSEROptAtomSet.end ();
+	    }
+	  else if (res.mType->is_THR ())
+	    {
+	      setbegin = gTHROptAtomSet.begin ();
+	      setend = gTHROptAtomSet.end ();
+	    }
+	  else if (res.mType->is_TRP ())
+	    {
+	      setbegin = gTRPOptAtomSet.begin ();
+	      setend = gTRPOptAtomSet.end ();
+	    }
+	  else if (res.mType->is_TYR ())
+	    {
+	      setbegin = gTYROptAtomSet.begin ();
+	      setend = gTYROptAtomSet.end ();
+	    }
+	  else if (res.mType->is_VAL ())
+	    {
+	      setbegin = gVALOptAtomSet.begin ();
+	      setend = gVALOptAtomSet.end ();
 	    }
 	}
       else

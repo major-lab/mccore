@@ -5,8 +5,8 @@
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Thu Sep 28 16:59:32 2000
 // Last Modified By : Martin Larose
-// Last Modified On : Thu Aug 23 15:09:54 2001
-// Update Count     : 18
+// Last Modified On : Wed Aug 29 11:50:16 2001
+// Update Count     : 19
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -745,8 +745,9 @@ public:
   }
   
   /**
-   * Copies the atoms from the right residue.  This function preserves the validity of 
-   * iterators on the original residue.  Only spatial positions of atoms are modified.
+   * Copies the atoms from the right residue.  This function preserves the
+   * validity of iterators on the original residue.  Only spatial positions
+   * of atoms are modified.
    * @param right the residue to copy.
    */
   void AtomCopy (const CResidue &right);
