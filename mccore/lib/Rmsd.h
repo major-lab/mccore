@@ -1,9 +1,9 @@
 //                              -*- Mode: C++ -*- 
 // Rmsd.h
-// Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003, 2004 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 24 20:17:50 2003
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 // 
 //  This file is part of mccore.
 //  
@@ -38,7 +38,7 @@ namespace mccore {
    * algorithm by Kabsch, 1976.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Rmsd.h,v 1.4 2003-12-23 14:58:09 larosem Exp $
+   * @version $Id: Rmsd.h,v 1.5 2004-05-12 22:53:51 larosem Exp $
    */
   class Rmsd 
   {
@@ -79,7 +79,10 @@ namespace mccore {
 	   cii != end_a && cij != end_b; 
 	   ++cii, ++cij) 
 	{
-	  result += cii->squareDistance (*cij);
+	  float dist;
+
+	  dist = cii->distance (*cij);
+	  result += dist * dist;
 	  count++;
 	}
       return (float) sqrt (result / (float)count);
