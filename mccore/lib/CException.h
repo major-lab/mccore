@@ -5,8 +5,8 @@
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 16:27:35 1999
 // Last Modified By : Patrick Gendron
-// Last Modified On : Thu Mar 27 11:15:09 2003
-// Update Count     : 16
+// Last Modified On : Fri Jul 11 17:24:30 2003
+// Update Count     : 21
 // Status           : Unknown.
 // 
 //  This file is part of mccore.

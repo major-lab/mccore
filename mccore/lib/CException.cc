@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Patrick Gendron
-// Last Modified On : Thu Mar 27 11:32:31 2003
-// Update Count     : 16
+// Last Modified On : Fri Jul 11 17:24:25 2003
+// Update Count     : 25
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -37,9 +37,19 @@
 #include "CException.h"
 
 
+void terminate_func (void)
+{
+  cerr << "An exception was thrown but not caught." << endl
+       << "Please send a bug report to 'bug-mcsym@iro.umontreal.ca'." << endl;
+  exit(EXIT_FAILURE);
+}
+
+
 
 CException::CException ()
 {
+  set_terminate(&terminate_func);
+
   mMessage = new char[1];
   mMessage[0] = '\0';
 }
@@ -48,6 +58,8 @@ CException::CException ()
 
 CException::CException (const char *message)
 {
+  set_terminate(&terminate_func);
+
   mMessage = new char[strlen (message) + 1];
   strcpy (mMessage, message);
 }
