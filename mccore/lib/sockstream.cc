@@ -3,8 +3,8 @@
 // Copyright © 2002-04 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Patrick Gendron
 // Created On       : Wed Jan 30 19:57:48 2002
-// $Revision: 1.7 $
-// $Id: sockstream.cc,v 1.7 2004-06-30 18:17:09 thibaup Exp $
+// $Revision: 1.8 $
+// $Id: sockstream.cc,v 1.8 2004-11-19 21:48:52 larosem Exp $
 //
 // This file is part of mccore.
 //
@@ -254,7 +254,7 @@ namespace mccore
     
     while (nleft > 0)
       {
-#if defined (__sgi) || defined (__sun) || defined (__FreeBSD__)
+#if defined (__sgi) || defined (__sun) || defined (__FreeBSD__) || defined (__APPLE_CC__)
 	signal (SIGPIPE, SIG_IGN);
 	if ((nread = ::recv (socket_id, ptr, nleft, 0)) < 0)
 #else
@@ -265,7 +265,7 @@ namespace mccore
 		nread = 0;
 	      else
 		{
-#if defined (__sgi) || defined (__sun) || defined (__FreeBSD__)
+#if defined (__sgi) || defined (__sun) || defined (__FreeBSD__) || defined (__APPLE_CC__)
 		  signal (SIGPIPE, SIG_DFL);
 #endif
 		  return -1;
@@ -276,7 +276,7 @@ namespace mccore
 	nleft -= nread;
 	ptr += nread;
       }
-#if defined (__sgi) || defined (__sun) || defined (__FreeBSD__)
+#if defined (__sgi) || defined (__sun) || defined (__FreeBSD__) || defined (__APPLE_CC__)
     signal (SIGPIPE, SIG_DFL);
 #endif
     return (size - nleft);
@@ -294,7 +294,7 @@ namespace mccore
     nleft = size;
     while (nleft > 0)
       {
-#if defined (__sgi) || defined (__sun) || defined (__FreeBSD__)
+#if defined (__sgi) || defined (__sun) || defined (__FreeBSD__) || defined (__APPLE_CC__)
 	signal (SIGPIPE, SIG_IGN);
 	if ((nsent = ::send (socket_id, ptr, nleft, 0)) < 0)
 #else
@@ -305,7 +305,7 @@ namespace mccore
 		nsent = 0;
 	      else
 		{
-#if defined (__sgi) || defined (__sun) || defined (__FreeBSD__)
+#if defined (__sgi) || defined (__sun) || defined (__FreeBSD__) || defined (__APPLE_CC__)
 		  signal (SIGPIPE, SIG_DFL);
 #endif
 		  return -1;
@@ -314,7 +314,7 @@ namespace mccore
 	nleft -= nsent;
 	ptr += nsent;
       }
-#if defined (__sgi) || defined (__sun) || defined (__FreeBSD__)
+#if defined (__sgi) || defined (__sun) || defined (__FreeBSD__) || defined (__APPLE_CC__)
     signal (SIGPIPE, SIG_DFL);
 #endif
     return size;
