@@ -3,8 +3,8 @@
 // Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.52 $
-// $Id: Residue.cc,v 1.52 2004-12-06 21:38:36 thibaup Exp $
+// $Revision: 1.53 $
+// $Id: Residue.cc,v 1.53 2004-12-07 15:46:24 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -424,8 +424,7 @@ namespace mccore {
   Residue::iterator 
   Residue::begin () 
   {
-    AtomSetAll all;
-    return iterator (this, atomIndex.begin (), all);
+    return iterator (this, atomIndex.begin ());
   }
   
   Residue::iterator 
@@ -442,6 +441,13 @@ namespace mccore {
   }
   
 
+  Residue::const_iterator 
+  Residue::begin () const 
+  {
+    return const_iterator (this, atomIndex.begin ());
+  }
+
+  
   Residue::const_iterator 
   Residue::begin (const AtomSet& atomset) const 
   {
