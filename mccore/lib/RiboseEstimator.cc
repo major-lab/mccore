@@ -385,8 +385,10 @@ namespace mccore
   {
     float v = 0;
     if (check_O5p)
-      v += fabs (ribose.C5p.squareDistance (anc_O5p) - 2.0736);
-    v += fabs (ribose.C3p.squareDistance (anc_O3p) - 2.047761);
+      v += ribose.C5p.distance (anc_O5p);
+    else
+      v += 1.440;
+    v += ribose.C3p.distance (anc_O3p);
     return v;
   }
 

@@ -538,5 +538,5 @@ namespace mccore
     return po4;
   }
 
-  
+
 }
