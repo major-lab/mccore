@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 16:01:52 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 // 
 //  This file is part of mccore.
 //  
@@ -88,7 +88,7 @@ namespace mccore {
  * </pre>
  *
  * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
- * @version $Id: PdbFileHeader.h,v 1.1 2003-04-03 21:55:55 gendrop Exp $
+ * @version $Id: PdbFileHeader.h,v 1.2 2003-08-06 21:10:04 gendrop Exp $
  *
  */
 class PdbFileHeader
@@ -124,7 +124,7 @@ public:
    */
   PdbFileHeader () : resolution (0) { 
     setDate (); 
-    pdbId = "0000"; 
+    pdbId = "    "; 
     classification = "UNCLASSIFIED";
   }
 

@@ -5,8 +5,8 @@
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
 // Last Modified By : Patrick Gendron
-// Last Modified On : Thu Jul 31 16:42:08 2003
-// Update Count     : 291
+// Last Modified On : Wed Aug  6 17:10:07 2003
+// Update Count     : 294
 // Status           : Ok.
 // 
 //  This file is part of mccore.
@@ -33,6 +33,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cctype>
+#include <unistd.h>
 
 #include "Pdbstream.h"
 #include "Atom.h"
