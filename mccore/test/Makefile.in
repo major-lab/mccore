@@ -1,11 +1,11 @@
 #                            -*- Mode: Makefile -*-
 # Makefile.in
-# Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique.
+# Copyright © 2000-05 Laboratoire de Biologie Informatique et Théorique.
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.3 $
-# $Id: Makefile.in,v 1.3 2005-01-10 16:47:43 thibaup Exp $
+# $Revision: 1.4 $
+# $Id: Makefile.in,v 1.4 2005-01-10 18:38:28 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -97,7 +97,7 @@ test: $(PROGRAMS)
 	  fi
 	@ for program in $(PROGRAMS); do \
 	    echo "Testing " $$program; \
-	    ./$$program > $$program.out; \
+	    LD_LIBRARY_PATH=../lib:$$LD_LIBRARY_PATH ./$$program > $$program.out; \
 	    diff $(srcdir)/$$program.good $$program.out || echo "Errors in " $$program; \
 	  done
 
