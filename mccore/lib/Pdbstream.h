@@ -4,8 +4,8 @@
 // Author           : Martin Larose
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Feb 28 17:13:28 2001
-// Update Count     : 7
+// Last Modified On : Fri Apr 20 17:07:43 2001
+// Update Count     : 8
 // Status           : Ok.
 // 
 
@@ -105,9 +105,10 @@ public:
   /**
    * Gets the atom type given it's string representation.
    * @param s the atom type representation.
+   * @param res_type the residue type.
    * @return the atom type.
    */
-  static t_Atom* GetAtomType (char *s);
+  static t_Atom* GetAtomType (char *s, t_Residue *res_type = 0);
 
   // LIFECYCLE -----------------------------------------------------
 

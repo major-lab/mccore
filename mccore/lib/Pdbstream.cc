@@ -4,8 +4,8 @@
 // Author           : Martin Larose
 // Created On       : 
 // Last Modified By : Martin Larose
-// Last Modified On : Wed Mar  7 13:47:42 2001
-// Update Count     : 10
+// Last Modified On : Fri Apr 20 17:07:39 2001
+// Update Count     : 11
 // Status           : Ok.
 // 
 
@@ -42,7 +42,7 @@ iPdbstream::Strip (char * cp)
 
 
 t_Atom*
-iPdbstream::GetAtomType (char *s)
+iPdbstream::GetAtomType (char *s, t_Residue *res_type)
 {
   int i;
   char tmpstr[5];
@@ -305,7 +305,7 @@ iPdbstream::GetAtomType (char *s)
     return a_NH2;
   if (strcmp (tmpstr, "NZ") == 0)
     return a_NZ;
-  if (strcmp (tmpstr, "O") == 0)
+  if (strcmp (tmpstr, "O") == 0 && res_type->is_AminoAcid ())
     return a_O;
   if (strcmp (tmpstr, "OD1") == 0)
     return a_OD1;
@@ -548,7 +548,7 @@ iPdbstream::GetAtomType () const
 {
   strncpy (buffer, line + 12, 4);
   buffer[4] = '\0';
-  return GetAtomType (buffer);
+  return GetAtomType (buffer, current_res_type);
 }
 
 
