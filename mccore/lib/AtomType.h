@@ -3,7 +3,7 @@
 // Copyright © 2000-01, 03 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
-// $Revision: 1.16 $
+// $Revision: 1.17 $
 // 
 //  This file is part of mccore.
 //  
@@ -55,7 +55,7 @@ namespace mccore {
    *   - The charge and van der Waals radius<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: AtomType.h,v 1.16 2003-10-03 22:32:58 larosem Exp $ 
+   * @version $Id: AtomType.h,v 1.17 2003-10-03 22:40:55 larosem Exp $ 
    */
   class AtomType 
   {
@@ -288,7 +288,7 @@ namespace mccore {
      * @param type the atom type.
      * @return the Vector3D color in RGB format.
      */
-    static Vector3D getColor (const AtomType &type);
+    static Vector3D getColor (const AtomType *type);
     
   private:
 
