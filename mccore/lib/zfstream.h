@@ -4,8 +4,8 @@
 // Author           : Patrick Gendron
 // Created On       : Mon Jan 28 16:13:00 2002
 // Last Modified By : Patrick Gendron
-// Last Modified On : Fri Jul 11 17:28:31 2003
-// Update Count     : 5
+// Last Modified On : Tue Jul 29 12:42:07 2003
+// Update Count     : 8
 // Status           : Unknown.
 // 
 //  This file is part of mccore.
@@ -30,8 +30,6 @@
 
 #include <iostream>
 #include <fstream>
-
-#include "LeakFinder.h"
 
 using namespace std;
 

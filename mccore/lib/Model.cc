@@ -3,7 +3,7 @@
 // Copyright © 2001, 2002, 2003 Laboratoire de Biologie Informatique et Théorique.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.18 $
+// $Revision: 1.19 $
 // 
 //  This file is part of mccore.
 //  
@@ -465,7 +465,6 @@ namespace mccore {
 	Residue *res = getResidueFM ()->createResidue ();
 	
 	ips >> *res;
-	cout << *res;
 	
  	if (res->size () != 0) {
 	  // Optimized insertion that bypasses the copy: 

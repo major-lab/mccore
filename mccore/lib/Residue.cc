@@ -1346,10 +1346,10 @@ namespace mccore {
   Residue::output (ostream &os) const 
   {
     os << resId << type;
-    AtomMap::const_iterator cit;
-    for (cit=atomIndex.begin (); cit!=atomIndex.end (); ++cit) {
-      os << endl << *(atomGlobal[cit->second]);
-    }
+//     AtomMap::const_iterator cit;
+//     for (cit=atomIndex.begin (); cit!=atomIndex.end (); ++cit) {
+//       os << endl << *(atomGlobal[cit->second]);
+//     }
     return os;
   }
   
