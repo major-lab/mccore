@@ -1,13 +1,9 @@
 //                              -*- Mode: C++ -*- 
 // Pdbstream.cc
 // Copyright © 1999, 2000-01, 03 Laboratoire de Biologie Informatique et Théorique.
-//                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// Last Modified By : Patrick Gendron
-// Last Modified On : Fri Sep 26 17:16:40 2003
-// Update Count     : 304
-// Status           : Ok.
+// $Revision: 1.33 $
 // 
 //  This file is part of mccore.
 //  

@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Aug 13 18:24:14 2003
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 // 
 //  This file is part of mccore.
 //  
@@ -39,7 +39,7 @@ namespace mccore {
    * Abstract base clas for an adjacency matrix.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: AdjacencyMatrix.h,v 1.1 2003-09-29 17:06:15 gendrop Exp $
+   * @version $Id: AdjacencyMatrix.h,v 1.2 2003-10-16 21:56:58 gendrop Exp $
    */
   class AdjacencyMatrix 
   {
@@ -144,9 +144,6 @@ namespace mccore {
     int disconnect (int o, int p) { 
       int e = elem (o, p);
       elem (o, p) = -1;
-
-      map< int, map< int, int > >::iterator i;
-      map< int, int >::iterator j;
 
       for (int i=0; i<size ()*size (); ++i) {
 	if (array[i] > e) array[i]--;

@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 //
 //  This file is part of mccore.
 //  
@@ -324,6 +324,7 @@ namespace mccore
     x = naxis.getX ();
     y = naxis.getY ();
     z = naxis.getZ ();
+
     return HomogeneousTransfo (x * x * versTh + cosTh,
 			       x * y * versTh - z * sinTh,
 			       x * z * versTh + y * sinTh,
@@ -497,23 +498,23 @@ namespace mccore
   {
     out.setf (ios::right, ios::adjustfield);
     out.setf (ios::fixed, ios::floatfield);
-    out.precision (3);
-    out << "| " << setw (8) << matrix[0] << " " 
-	<< setw (8) << matrix[4] << " " 
-	<< setw (8) << matrix[8] << " " 
-	<< setw (8) << matrix[12] << " |" << endl;
-    out << "| " << setw (8) << matrix[1] << " " 
-	<< setw (8) << matrix[5] << " " 
-	<< setw (8) << matrix[9] << " " 
-	<< setw (8) << matrix[13] << " |" << endl;
-    out << "| " << setw (8) << matrix[2] << " " 
-	<< setw (8) << matrix[6] << " " 
-	<< setw (8) << matrix[10] << " " 
-	<< setw (8) << matrix[14] << " |" << endl;
-    out << "| " << setw (8) << matrix[3] << " " 
-	<< setw (8) << matrix[7] << " " 
-	<< setw (8) << matrix[11] << " " 
-	<< setw (8) << matrix[15] << " |" << endl;  
+    out.precision (6);
+    out << "| " << setw (11) << matrix[0] << " " 
+	<< setw (11) << matrix[4] << " " 
+	<< setw (11) << matrix[8] << " " 
+	<< setw (11) << matrix[12] << " |" << endl;
+    out << "| " << setw (11) << matrix[1] << " " 
+	<< setw (11) << matrix[5] << " " 
+	<< setw (11) << matrix[9] << " " 
+	<< setw (11) << matrix[13] << " |" << endl;
+    out << "| " << setw (11) << matrix[2] << " " 
+	<< setw (11) << matrix[6] << " " 
+	<< setw (11) << matrix[10] << " " 
+	<< setw (11) << matrix[14] << " |" << endl;
+    out << "| " << setw (11) << matrix[3] << " " 
+	<< setw (11) << matrix[7] << " " 
+	<< setw (11) << matrix[11] << " " 
+	<< setw (11) << matrix[15] << " |" << endl;  
     return out;
   }
   

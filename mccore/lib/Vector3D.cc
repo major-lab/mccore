@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Mar  5 15:05:43 2003
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 // 
 //  This file is part of mccore.
 //  
@@ -138,10 +138,10 @@ namespace mccore {
   {
     out.setf (ios::right, ios::adjustfield);
     out.setf (ios::fixed, ios::floatfield);
-    out.precision (3);
-    out << "(" << setw (8) << getX ()
-	<< setw (8) << getY ()
-	<< setw (8) << getZ ()
+    out.precision (6);
+    out << "(" << setw (11) << getX ()
+	<< setw (11) << getY ()
+	<< setw (11) << getZ ()
 	<< " )";
     return out;
   }

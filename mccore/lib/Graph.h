@@ -3,7 +3,7 @@
 // Copyright © 2003 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Wed Apr 30 16:04:32 2003
-// $Revision: 1.16 $
+// $Revision: 1.17 $
 // 
 //  This file is part of mccore.
 //  
@@ -54,7 +54,7 @@ namespace mccore {
    * to object by passing the correct node comparator if needed.
    *
    * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: Graph.h,v 1.16 2003-09-26 21:16:18 gendrop Exp $
+   * @version $Id: Graph.h,v 1.17 2003-10-16 21:57:01 gendrop Exp $
    */
   template< class node_type, 
 	    class edge_type = bool,
@@ -90,7 +90,7 @@ namespace mccore {
     /**
      * The actual edges.
      */
-    vector< edge_type > edges;
+    vector< edge_type > edges; 
 
     /**
      * The adjacency matrix.
