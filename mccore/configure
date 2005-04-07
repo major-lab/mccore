@@ -4382,7 +4382,7 @@ fi
 
 	    HAVE_LIBMYSQL=1
 fi;
-	DEPFLAGS="-MM"
+	DEPFLAGS="-M"
 	case "$host" in
 	    *-darwin*)
 		CXXFLAGS="$CXXFLAGS -Wall"
