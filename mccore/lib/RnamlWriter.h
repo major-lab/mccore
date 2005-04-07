@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.4 $
-// $Id: RnamlWriter.h,v 1.4 2005-03-22 01:10:33 larosem Exp $
+// $Revision: 1.5 $
+// $Id: RnamlWriter.h,v 1.5 2005-04-07 21:09:33 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -133,13 +133,14 @@ namespace mccore
      * @return the rnaml Model.
      */
     static rnaml::Model* toRnaml (const AbstractModel &model);
-    
+
     /**
-     * Transforms a mccore Molecule to a rnaml Molecule.
-     * @param molecule the mccore Molecule.
-     * @return the rnaml Molecule.
+     * Adds the rnaml sequences from the annotated model to the rnaml
+     * Molecule.
+     * @param m the rnaml Molecule.
+     * @param model the annotated model.
      */
-    static rnaml::Molecule* toRnaml (const Molecule &molecule);
+    static void addSequences (rnaml::Molecule &m, const GraphModel &model);
     
     /**
      * Close the stream. Once a stream has been closed, further write ()

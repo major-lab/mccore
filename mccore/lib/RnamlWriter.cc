@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.11 $
-// $Id: RnamlWriter.cc,v 1.11 2005-04-07 19:20:08 larosem Exp $
+// $Revision: 1.12 $
+// $Id: RnamlWriter.cc,v 1.12 2005-04-07 21:09:28 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -33,6 +33,7 @@
 #include <cstring>
 #include <iostream>
 #include <string>
+#include <sstream>
 
 #include "AbstractModel.h"
 #include "Atom.h"
@@ -287,83 +288,12 @@ namespace mccore
     return m;
   }
   
-  
-  rnaml::Molecule*
-  RnamlWriter::toRnaml (const Molecule &molecule)
-  {
-    rnaml::Molecule *m;
-    
-    m = new rnaml::Molecule ();
-    try
-      {
-	const string &property = molecule.getProperty ("id");
 
-	m->setId (property.c_str ());
-      }
-    catch (NoSuchElementException &e) { }
-    try
-      {
-	const string &property = molecule.getProperty ("type");
-	
-	m->setType (property.c_str ());
-      }
-    catch (NoSuchElementException &e) { }
-    try
-      {
-	const string &property = molecule.getProperty ("comment");
-	
-	m->setComment (property.c_str ());
-      }
-    catch (NoSuchElementException &e) { }
-    try
-      {
-	const string &property = molecule.getProperty ("reference-ids");
-	
-	m->addReferenceId (property.c_str ());
-      }
-    catch (NoSuchElementException &e) { }
-    try
-      {
-	const string &property = molecule.getProperty ("analysis-ids");
-	
-	m->addAnalysisId (property.c_str ());
-      }
-    catch (NoSuchElementException &e) { }
-    try
-      {
-	const string &property = molecule.getProperty ("database-ids");
-	
-	m->addDatabaseId (property.c_str ());
-      }
-    catch (NoSuchElementException &e) { }
-    
-    if (! molecule.empty ())
-      {
-	rnaml::Structure *s;
-	Molecule::const_iterator cit;
-	int i;
-	
-	i = 0;
-	s = new rnaml::Structure ();
-	for (cit = molecule.begin (); molecule.end () != cit; ++cit)
-	  {
-	    rnaml::Model *model;
-	    // 	  ostringstream oss;
-	    char *id;
-	    
-	    model = RnamlWriter::toRnaml (*cit);
-	    // 	  oss << (string) "model" << ++i;
-	    // 	  model->setId (oss.str ().c_str ());
-	    id = new char[256];
-	    sprintf (id, "model%d", ++i);
-	    model->setId (id);
-	    s->addModel (model);
-	  }
-	m->setStructure (s);
-      }
-    return m;
+  void
+  RnamlWriter::addSequences (rnaml::Molecule &m, const GraphModel &graph)
+  {
   }
-  
+
   
   void
   RnamlWriter::close ()
@@ -380,13 +310,79 @@ namespace mccore
       {
 	rnaml::Rnaml rnaml ("1.1");
 	rnaml::Marshaller marshaller;
-
-	if (! molecule.empty ())
+	Molecule::const_iterator molIt;
+	unsigned int moleculeIndex;
+	unsigned int modelIndex;
+	const GraphModel *gModel;
+	
+	for (molIt = molecule.begin (), moleculeIndex = 1, modelIndex = 1;
+	     molecule.end () != molIt;
+	     ++molIt, ++moleculeIndex, ++modelIndex)
 	  {
 	    rnaml::Molecule *m;
+	    rnaml::Structure *s;
+	    rnaml::Model *model;
+	    ostringstream oss;
+	    ostringstream oss2;
+	
+	    m = new rnaml::Molecule ();
+	    try
+	      {
+		const string &property = molecule.getProperty ("id");
+
+		m->setId (property.c_str ());
+	      }
+	    catch (NoSuchElementException &e) { }
+	    try
+	      {
+		const string &property = molecule.getProperty ("type");
+	
+		m->setType (property.c_str ());
+	      }
+	    catch (NoSuchElementException &e) { }
+	    try
+	      {
+		const string &property = molecule.getProperty ("comment");
+	
+		m->setComment (property.c_str ());
+	      }
+	    catch (NoSuchElementException &e) { }
+	    try
+	      {
+		const string &property = molecule.getProperty ("reference-ids");
+	
+		m->addReferenceId (property.c_str ());
+	      }
+	    catch (NoSuchElementException &e) { }
+	    try
+	      {
+		const string &property = molecule.getProperty ("analysis-ids");
+	
+		m->addAnalysisId (property.c_str ());
+	      }
+	    catch (NoSuchElementException &e) { }
+	    try
+	      {
+		const string &property = molecule.getProperty ("database-ids");
+	
+		m->addDatabaseId (property.c_str ());
+	      }
+	    catch (NoSuchElementException &e) { }
 	    
-	    m = toRnaml (molecule);
-	    m->setId ("molecule1");
+	    if (0 != (gModel = dynamic_cast< const GraphModel* > (&*molIt)))
+	      {
+		addSequences (*m, *gModel);
+	      }
+	    s = new rnaml::Structure ();
+	    model = RnamlWriter::toRnaml (*molIt);
+	    oss.str ("");
+	    oss << "model" << modelIndex;
+	    model->setId (oss.str ().c_str ());
+	    s->addModel (model);
+	    m->setStructure (s);
+	    oss.str ("");	    
+	    oss << "molecule" << moleculeIndex;
+	    m->setId (oss.str ().c_str ());
 	    rnaml.addChild (m);
 	  }
 	marshaller.setValidating (true);
