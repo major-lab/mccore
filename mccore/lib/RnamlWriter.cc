@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.10 $
-// $Id: RnamlWriter.cc,v 1.10 2005-03-30 19:01:30 larosem Exp $
+// $Revision: 1.11 $
+// $Id: RnamlWriter.cc,v 1.11 2005-04-07 19:20:08 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -151,7 +151,7 @@ namespace mccore
   {
     rnaml::Base *base;
     Residue::const_iterator it;
-    const char *type;
+    string type;
     const ResId &id = residue.getResId ();
     AtomSetNot filter (new AtomSetOr (new AtomSetPSE (), new AtomSetLP ()));
     
@@ -164,8 +164,13 @@ namespace mccore
 	base->setStrand (chainId.c_str ());
       }
     base->setPosition (id.getResNo ());
-    type = (const char*) *residue.getType ();
-    base->setBaseType (type);
+    type = residue.getType ()->toString ();
+    if (residue.getType ()->isRNA ()
+	|| residue.getType ()->isDNA ())
+      {
+	type = type.substr (2, type.size () - 2);
+      }
+    base->setBaseType (type.c_str ());
     if (' ' != id.getInsertionCode ())
       {
 	string insertionCode;
@@ -218,9 +223,12 @@ namespace mccore
 	      }
 	    if (rel.isPairing ())
 	      {
+		const set< const PropertyType* > &labels = rel.getLabels ();
+		set< const PropertyType* >::const_iterator labelsIt;
 		rnaml::BasePair *bPair = new rnaml::BasePair ();
 		rnaml::BaseId5p *bId5p = new rnaml::BaseId5p ();
 		rnaml::BaseId3p *bId3p = new rnaml::BaseId3p ();
+		string comment;
 
 		bId5p->setBaseId (RnamlWriter::toBaseId (0, 0, rel.getRef ()->getResId ()));
 		bPair->setBaseId5p (bId5p);
@@ -234,6 +242,24 @@ namespace mccore
 		bPair->setStrandOrientation ((rel.is (PropertyType::pStraight)
 					      ? "anti-parallel"
 					      : "parallel"));
+		for (labelsIt = labels.begin (); labels.end () != labelsIt; ++labelsIt)
+		  {
+		    const PropertyType *type = *labelsIt;
+		    
+		    if (type->isPairing ()
+			&& type != PropertyType::pPairing)
+		      {
+			if (! comment.empty ())
+			  {
+			    comment += " ";
+			  }
+			comment += type->toString ();
+		      }
+		  }
+		if (! comment.empty ())
+		  {
+		    bPair->setComment (comment.c_str ());
+		  }
 		annotation->addChild (bPair);
 	      }
 	  }
