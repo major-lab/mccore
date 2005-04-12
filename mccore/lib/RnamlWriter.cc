@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.12 $
-// $Id: RnamlWriter.cc,v 1.12 2005-04-07 21:09:28 larosem Exp $
+// $Revision: 1.13 $
+// $Id: RnamlWriter.cc,v 1.13 2005-04-12 20:14:11 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -32,6 +32,7 @@
 #include <cstdio>
 #include <cstring>
 #include <iostream>
+#include <list>
 #include <string>
 #include <sstream>
 
@@ -65,6 +66,9 @@
 #include "xmlcpg/MoleculeId.h"
 #include "xmlcpg/PrintStream.h"
 #include "xmlcpg/Rnaml.h"
+#include "xmlcpg/Segment.h"
+#include "xmlcpg/SeqAnnotation.h"
+#include "xmlcpg/Sequence.h"
 #include "xmlcpg/StrAnnotation.h"
 #include "xmlcpg/Structure.h"
 
@@ -241,8 +245,8 @@ namespace mccore
 					   ? PropertyType::pCis
 					   : PropertyType::pTrans)->toString ().c_str ());
 		bPair->setStrandOrientation ((rel.is (PropertyType::pStraight)
-					      ? "anti-parallel"
-					      : "parallel"));
+					      ? "parallel"
+					      : "anti-parallel"));
 		for (labelsIt = labels.begin (); labels.end () != labelsIt; ++labelsIt)
 		  {
 		    const PropertyType *type = *labelsIt;
@@ -290,8 +294,160 @@ namespace mccore
   
 
   void
-  RnamlWriter::addSequences (rnaml::Molecule &m, const GraphModel &graph)
+  RnamlWriter::buildStrands (vector< vector< const Residue* > > &sequences, const GraphModel &graph)
   {
+    list< GraphModel::edge_const_iterator > unsorted;
+    GraphModel::edge_const_iterator edgeIt;
+
+    sequences.clear ();
+    for (edgeIt = graph.edge_begin (); graph.edge_end () != edgeIt; ++edgeIt)
+      {
+	if ((*edgeIt)->is (PropertyType::pAdjacent5p))
+	  {
+	    unsorted.push_back (edgeIt);
+	  }
+      }
+    while (! unsorted.empty ())
+      {
+	GraphModel::edge_const_iterator sj;
+	list< GraphModel::edge_const_iterator > sorted;
+	list< GraphModel::edge_const_iterator >::iterator it;
+
+	sj = unsorted.front ();
+	unsorted.pop_front ();
+	sorted.push_back (sj);
+	for (it = unsorted.begin (); unsorted.end () != it;)
+	  {
+	    if ((**it)->getRes ()->getResId () == (*sj)->getRef ()->getResId ())
+	      {
+		sj = *it;
+		sorted.push_front (sj);
+		unsorted.erase (it);
+		it = unsorted.begin ();
+	      }
+	    else
+	      {
+		++it;
+	      }
+	  }
+	sj = sorted.back ();
+	for (it = unsorted.begin (); unsorted.end () != it;)
+	  {
+	    if ((**it)->getRef ()->getResId () == (*sj)->getRes ()->getResId ())
+	      {
+		sj = *it;;
+		sorted.push_back (sj);
+		unsorted.erase (it);
+		it = unsorted.begin ();
+	      }
+	    else
+	      {
+		++it;
+	      }
+	  }
+	sequences.push_back (vector< const Residue* > ());
+	vector< const Residue* > &seq = sequences.back ();
+
+	it = sorted.begin ();
+	seq.push_back ((**it)->getRef ());
+	while (sorted.end () != it)
+	  {
+	    seq.push_back ((**it)->getRes ());
+	    ++it;
+	  }
+      }
+
+    // Verify that the sequences have the same chain id and have consecutive
+    // residue number.
+    vector< vector< const Residue* > >::iterator seqIt;
+
+    for (seqIt = sequences.begin (); sequences.end () != seqIt; ++seqIt)
+      {
+	vector< const Residue* > &resVec = *seqIt;
+	vector< const Residue* >::iterator resVecIt;
+	char chain;
+	int number;
+
+	resVecIt = resVec.begin ();
+	chain = (*resVecIt)->getResId ().getChainId ();
+	number = (*resVecIt)->getResId ().getResNo ();
+	++resVecIt;
+	while (resVec.end () != resVecIt)
+	  {
+	    if ((*resVecIt)->getResId ().getChainId () != chain
+		|| (*resVecIt)->getResId ().getResNo () != number + 1)
+	      {
+		vector < const Residue* > rest;
+		
+		if (++resVec.begin () == resVecIt)
+		  {
+		    rest.insert (rest.end (), resVecIt, resVec.end ());
+		    resVec.erase (++resVecIt, resVec.end ());
+		  }
+		else
+		  {
+		    rest.insert (rest.end (), resVecIt - 1, resVec.end ());
+		    resVec.erase (resVecIt, resVec.end ());
+		  }		
+		++seqIt;
+		if (1 < rest.size ())
+		  {
+		    seqIt = --sequences.insert (seqIt, rest);
+		  }
+		break;
+	      }
+	    else
+	      {
+		number += 1;
+		++resVecIt;
+	      }
+	  }
+      }
+  }
+
+
+  rnaml::Sequence*
+  RnamlWriter::toSequence (const vector< const Residue* > &seq)
+  {
+    rnaml::Sequence *sequence;
+    string chain;
+
+    sequence = new rnaml::Sequence ();
+    chain = seq.front ()->getResId ().getChainId ();
+    sequence->setStrand (chain.c_str ());
+    sequence->setLength (seq.size ());
+    sequence->setCircular (false);
+    sequence->setSeqAnnotation (RnamlWriter::toSeqAnnotation (seq));
+    return sequence;
+  }
+
+
+  rnaml::SeqAnnotation*
+  RnamlWriter::toSeqAnnotation (const vector< const Residue* > &seq)
+  {
+    rnaml::SeqAnnotation *seqA;
+
+    seqA = new rnaml::SeqAnnotation ();
+    seqA->addChild (RnamlWriter::toSegment (seq));
+    return seqA;
+  }
+
+
+  rnaml::Segment*
+  RnamlWriter::toSegment (const vector< const Residue* > &seq)
+  {
+    rnaml::Segment *segment;
+    rnaml::BaseId5p *bId5p;
+    rnaml::BaseId3p *bId3p;
+
+    segment = new rnaml::Segment ();
+    bId5p = new rnaml::BaseId5p ();
+    bId3p = new rnaml::BaseId3p ();
+    bId5p->setBaseId (RnamlWriter::toBaseId (0, 0, seq.front ()->getResId ()));
+    bId3p->setBaseId (RnamlWriter::toBaseId (0, 0, seq.back ()->getResId ()));
+    segment->setBaseId5p (bId5p);
+    segment->setEnd (bId3p);
+    return segment;
   }
 
   
@@ -312,12 +468,11 @@ namespace mccore
 	rnaml::Marshaller marshaller;
 	Molecule::const_iterator molIt;
 	unsigned int moleculeIndex;
-	unsigned int modelIndex;
 	const GraphModel *gModel;
 	
-	for (molIt = molecule.begin (), moleculeIndex = 1, modelIndex = 1;
+	for (molIt = molecule.begin (), moleculeIndex = 1;
 	     molecule.end () != molIt;
-	     ++molIt, ++moleculeIndex, ++modelIndex)
+	     ++molIt, ++moleculeIndex)
 	  {
 	    rnaml::Molecule *m;
 	    rnaml::Structure *s;
@@ -371,13 +526,18 @@ namespace mccore
 	    
 	    if (0 != (gModel = dynamic_cast< const GraphModel* > (&*molIt)))
 	      {
-		addSequences (*m, *gModel);
+		vector< vector< const Residue* > > sequences;
+		vector< vector< const Residue* > >::iterator seqIt;
+		
+		RnamlWriter::buildStrands (sequences, *gModel);
+		for (seqIt = sequences.begin (); sequences.end () != seqIt; ++seqIt)
+		  {
+		    m->addSequence (RnamlWriter::toSequence (*seqIt));
+		  }
 	      }
 	    s = new rnaml::Structure ();
 	    model = RnamlWriter::toRnaml (*molIt);
-	    oss.str ("");
-	    oss << "model" << modelIndex;
-	    model->setId (oss.str ().c_str ());
+	    model->setId ("model1");
 	    s->addModel (model);
 	    m->setStructure (s);
 	    oss.str ("");	    
