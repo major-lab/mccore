@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct  1 14:45:13 2004
-// $Revision: 1.5 $
-// $Id: TypeRepresentationTables.cc,v 1.5 2005-04-06 16:21:22 thibaup Exp $
+// $Revision: 1.6 $
+// $Id: TypeRepresentationTables.cc,v 1.6 2005-04-12 19:55:50 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -777,7 +777,7 @@ namespace mccore
     representationTable[ResidueType::parseType ("DDG3")] = "DG3";
     representationTable[ResidueType::rRU] = "RU ";
     representationTable[ResidueType::parseType ("RRU5")] = "RU5";
-    representationTable[ResidueType::parseType ("RRU33")] = "RU3";
+    representationTable[ResidueType::parseType ("RRU3")] = "RU3";
     representationTable[ResidueType::rDT] = "DT ";
     representationTable[ResidueType::parseType ("DDT5")] = "DT5";
     representationTable[ResidueType::parseType ("DDT3")] = "DT3";
