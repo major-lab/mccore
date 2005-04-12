@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.7 $
-// $Id: GraphModel.cc,v 1.7 2005-02-25 16:48:14 thibaup Exp $
+// $Revision: 1.8 $
+// $Id: GraphModel.cc,v 1.8 2005-04-12 19:55:21 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -375,14 +375,15 @@ namespace mccore
   iPdbstream&
   GraphModel::input (iPdbstream &ips)
   {
-//     int currNb = ips.getModelNb ();
+    int currNb;
 
     clear ();
     if (! ips)
       {
 	return ips;
       }
-    while (! ips.eof ())
+    currNb = ips.getModelNb ();
+    while (! ips.eof () && currNb == ips.getModelNb ())
       {
 	Residue *res = getResidueFM ()->createResidue ();
 	
