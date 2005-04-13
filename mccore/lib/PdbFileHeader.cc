@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Tue Mar 11 18:45:58 2003
-// $Revision: 1.8 $
-// $Id: PdbFileHeader.cc,v 1.8 2005-03-29 23:41:25 larosem Exp $
+// $Revision: 1.9 $
+// $Id: PdbFileHeader.cc,v 1.9 2005-04-13 16:04:14 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -42,6 +42,8 @@
 
 namespace mccore
 {
+  const size_t PdbFileHeader::linelength = 70;
+
   const string PdbFileHeader::ElectronDiffraction = "ELECTRON DIFFRACTION";
   const string PdbFileHeader::FiberDiffraction = "FIBER DIFFRACTION";
   const string PdbFileHeader::FluorescenceTransfer = "FLUORESCENCE TRANSFER";
@@ -327,7 +329,7 @@ namespace mccore
 
     // -- title
     if (!title.empty ())
-      ops.writeRecord ("TITLE", title);
+      ops.writeRecord ("TITLE", title, PdbFileHeader::linelength);
 
     // -- methods
     if (!methods.empty ())
@@ -347,7 +349,7 @@ namespace mccore
 	rectext += "; ";
       }
 
-      ops.writeRecord ("EXPDTA", rectext);
+      ops.writeRecord ("EXPDTA", rectext, PdbFileHeader::linelength);
     }
 
     // -- authors
@@ -366,7 +368,7 @@ namespace mccore
 	rectext += sit->empty () || (*sit)[0] == ' ' ? "," : ", ";
       }
 
-      ops.writeRecord ("AUTHOR", rectext);
+      ops.writeRecord ("AUTHOR", rectext, PdbFileHeader::linelength);
     }
 
 
@@ -439,7 +441,8 @@ namespace mccore
 	throw ex;
       }
 
-      line.resize (Pdbstream::LINELENGTH, ' ');
+      //line.resize (Pdbstream::LINELENGTH, ' ');
+      line.resize (PdbFileHeader::linelength, ' ');
       rectype = Pdbstream::trim (line.substr (0, 6));
       
       if (!rectype.empty ())

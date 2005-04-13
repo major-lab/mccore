@@ -4,7 +4,7 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.36 $
+// $Revision: 1.37 $
 // 
 // This file is part of mccore.
 // 
@@ -58,7 +58,7 @@ namespace mccore
    * Bank (PDB) format.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Pdbstream.h,v 1.36 2005-02-10 18:49:45 thibaup Exp $
+   * @version $Id: Pdbstream.h,v 1.37 2005-04-13 16:04:14 thibaup Exp $
    */
   class Pdbstream
   {
@@ -162,7 +162,7 @@ namespace mccore
    * </pre>
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Pdbstream.h,v 1.36 2005-02-10 18:49:45 thibaup Exp $
+   * @version $Id: Pdbstream.h,v 1.37 2005-04-13 16:04:14 thibaup Exp $
    */
   class iPdbstream : public istream
   {
@@ -364,7 +364,7 @@ namespace mccore
    * This stream is used to output residues to pdb files.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Pdbstream.h,v 1.36 2005-02-10 18:49:45 thibaup Exp $
+   * @version $Id: Pdbstream.h,v 1.37 2005-04-13 16:04:14 thibaup Exp $
    */
   class oPdbstream : public ostream
   {
@@ -522,13 +522,17 @@ namespace mccore
      * at columns 9 to 10.
      * @param name the record type
      * @param text the record text that will be wrapped in multiple lines
+     * @param writable the writable line length, if smaller than @ref Pdbstream::LINELENGTH
      */
-    void writeRecord (const string& name, const string& text);
+    void writeRecord (const string& name, 
+		      const string& text, 
+		      size_t writable = Pdbstream::LINELENGTH);
 
     /**
      * Writes a standard multilined remark.
      * @param remark the remark text that will be wrapped in multiple lines.
      * @param k the remark's ID number for further classification.
+     * @param writable the writable line length, if smaller than @ref Pdbstream::LINELENGTH
      */
     void writeRemark (const string& remark, int k);
 
@@ -704,7 +708,7 @@ namespace mccore
    * @short Input pdb file stream.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Pdbstream.h,v 1.36 2005-02-10 18:49:45 thibaup Exp $
+   * @version $Id: Pdbstream.h,v 1.37 2005-04-13 16:04:14 thibaup Exp $
    */
   class ifPdbstream : public iPdbstream
   {
@@ -793,7 +797,7 @@ namespace mccore
    * is formatted for pdb files.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Pdbstream.h,v 1.36 2005-02-10 18:49:45 thibaup Exp $
+   * @version $Id: Pdbstream.h,v 1.37 2005-04-13 16:04:14 thibaup Exp $
    */
   class ofPdbstream : public oPdbstream
   {
@@ -879,7 +883,7 @@ namespace mccore
    * @short Input pdb socket stream.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Pdbstream.h,v 1.36 2005-02-10 18:49:45 thibaup Exp $
+   * @version $Id: Pdbstream.h,v 1.37 2005-04-13 16:04:14 thibaup Exp $
    */
   class isPdbstream : public iPdbstream
   {
@@ -975,7 +979,7 @@ namespace mccore
    * @short Output pdb socket stream.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Pdbstream.h,v 1.36 2005-02-10 18:49:45 thibaup Exp $
+   * @version $Id: Pdbstream.h,v 1.37 2005-04-13 16:04:14 thibaup Exp $
    */
   class osPdbstream : public oPdbstream
   {
@@ -1071,7 +1075,7 @@ namespace mccore
    * @short Pdb socket stream.
    *
    * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Pdbstream.h,v 1.36 2005-02-10 18:49:45 thibaup Exp $
+   * @version $Id: Pdbstream.h,v 1.37 2005-04-13 16:04:14 thibaup Exp $
    */
   class sPdbstream : public iPdbstream, public oPdbstream
   {
@@ -1176,7 +1180,7 @@ namespace mccore
    * can read compressed files.
    *
    * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Pdbstream.h,v 1.36 2005-02-10 18:49:45 thibaup Exp $
+   * @version $Id: Pdbstream.h,v 1.37 2005-04-13 16:04:14 thibaup Exp $
    */
   class izfPdbstream : public iPdbstream
   {
@@ -1271,7 +1275,7 @@ namespace mccore
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>.
    * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Pdbstream.h,v 1.36 2005-02-10 18:49:45 thibaup Exp $
+   * @version $Id: Pdbstream.h,v 1.37 2005-04-13 16:04:14 thibaup Exp $
    */
   class ozfPdbstream : public oPdbstream
   {

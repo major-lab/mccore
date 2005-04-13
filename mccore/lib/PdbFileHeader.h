@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 16:01:52 2003
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 // 
 // This file is part of mccore.
 // 
@@ -112,7 +112,7 @@ namespace mccore
    * </pre>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: PdbFileHeader.h,v 1.7 2005-03-10 18:36:52 thibaup Exp $
+   * @version $Id: PdbFileHeader.h,v 1.8 2005-04-13 16:04:14 thibaup Exp $
    */
   class PdbFileHeader
   {
@@ -159,6 +159,11 @@ namespace mccore
     list< string > unclassified;
 
   public:
+
+    /**
+     * Maximal length of any line
+     */
+    static const size_t linelength;
 
     /**
      * Official method name strings for EXPDTA record. 

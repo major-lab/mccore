@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.53 $
-// $Id: Pdbstream.cc,v 1.53 2005-04-04 23:08:14 larosem Exp $
+// $Revision: 1.54 $
+// $Id: Pdbstream.cc,v 1.54 2005-04-13 16:04:14 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -583,8 +583,11 @@ namespace mccore
 
 
   void
-  oPdbstream::writeRecord (const string& name, const string& text)
+  oPdbstream::writeRecord (const string& name, const string& text, size_t writable)
   {
+    if (writable > Pdbstream::LINELENGTH)
+      writable = Pdbstream::LINELENGTH;
+
     this->_write_header ();
 
     string line;
@@ -601,7 +604,8 @@ namespace mccore
 
     linebeg = recbeg = 0;
     textlen = text.size ();
-    reclen = Pdbstream::LINELENGTH - 10;
+    //reclen = Pdbstream::LINELENGTH - 10;
+    reclen = writable - 10;
 
     do // wrap using given newlines
     {
@@ -623,7 +627,8 @@ namespace mccore
 	  *this << continuation;
 	  if (line[recbeg] != ' ') 
 	    *this << ' ';
-	  reclen = Pdbstream::LINELENGTH - 11;
+	  //reclen = Pdbstream::LINELENGTH - 11;
+	  reclen = writable - 11;
 	}
 	else
 	  *this << "  ";
@@ -656,7 +661,7 @@ namespace mccore
     rectype_oss.width (3);
     rectype_oss << (k > 999 ? 999 : k) << ' ';
 
-    reclen = Pdbstream::LINELENGTH - rectype_oss.str ().size ();
+    reclen = 70 - rectype_oss.str ().size ();
     
     // -- first remark line is blank
 
