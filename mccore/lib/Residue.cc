@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.70 $
-// $Id: Residue.cc,v 1.70 2005-04-06 16:21:22 thibaup Exp $
+// $Revision: 1.71 $
+// $Id: Residue.cc,v 1.71 2005-04-27 16:44:52 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -121,19 +121,19 @@ namespace mccore
   Residue::Residue (const Residue& res)
     : type (res.type),
       resId (res.resId),
-      atomGlobal (res.atomGlobal),
-      atomIndex (res.atomIndex),
       rib_C1p (0), rib_C2p (0), rib_C3p (0), rib_C4p (0), rib_C5p (0), rib_O2p (0), 
       rib_O3p (0), rib_O4p (0), rib_O5p (0), rib_O1P (0), rib_O2P (0), rib_P (0),
       rib_dirty_ref (true),
       rib_built_valid (res.rib_built_valid),
       rib_built_count (res.rib_built_count)
   {
-    vector< Atom* >::iterator it;
-    
-    // -- deep copy for atomGlobal
-    for (it = this->atomGlobal.begin (); it != this->atomGlobal.end (); ++it)
-      *it = (*it)->clone ();
+    // atoms are copied from "res" using the class interface in case "res"
+    // is an ExtendedResidue and needs to be placed (see class ExtendedResidue) 
+
+    Residue::const_iterator it;
+
+    for (it = res.begin (); it != res.end (); ++it)
+      this->insert (*it);
   }
 
 
