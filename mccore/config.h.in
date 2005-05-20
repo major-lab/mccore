@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Aug 23 11:34:50 2001
-// $Revision: 1.7 $
-// $Id: config.h.in,v 1.7 2005-01-03 22:47:46 larosem Exp $
+// $Revision: 1.8 $
+// $Id: config.h.in,v 1.8 2005-05-20 15:28:46 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -31,6 +31,12 @@
 #undef PACKAGE
 
 #undef VERSION
+
+#undef MACHINE
+
+#undef KERNEL
+
+#undef OSNAME
 
 #undef HAVE_STRSEP
 

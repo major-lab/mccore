@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.61 $
-# $Id: Makefile.in,v 1.61 2005-02-10 18:49:46 thibaup Exp $
+# $Revision: 1.62 $
+# $Id: Makefile.in,v 1.62 2005-05-20 15:28:46 thibaup Exp $
 # 
 # This file is part of mccore.
 # 
@@ -127,6 +127,7 @@ SOURCES = $(RNAML_SOURCES) \
 	  Sequence.cc \
 	  TypeRepresentationTables.cc \
 	  Vector3D.cc \
+          Version.cc \
 	  sockstream.cc \
 	  zstream.cc
 
