@@ -4,8 +4,8 @@
 //                     Univesité de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 15:00:09 2003
-// $Revision: 1.20 $
-// $Id: AtomType.cc,v 1.20 2005-04-06 16:21:25 thibaup Exp $
+// $Revision: 1.21 $
+// $Id: AtomType.cc,v 1.21 2005-05-31 19:55:23 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -225,14 +225,14 @@ namespace mccore
   ostream &
   AtomType::output (ostream &out) const
   {
-    return out << key.c_str();
+    return out << key;
   }
   
 
   oBinstream &
   AtomType::output (oBinstream &out) const
   {
-    return out << key.c_str();
+    return out << key;
   }
 
 
