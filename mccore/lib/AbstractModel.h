@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 16:12:42 2004
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 //
 // This file is part of mccore.
 // 
@@ -51,7 +51,7 @@ namespace mccore
    * Abstract class for Models.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: AbstractModel.h,v 1.4 2005-03-31 22:33:01 larosem Exp $
+   * @version $Id: AbstractModel.h,v 1.5 2005-05-31 19:52:42 thibaup Exp $
    */
   class AbstractModel
   {
@@ -317,6 +317,26 @@ namespace mccore
      * @return a AbstractModel iterator.
      */
     const_iterator find (const ResId &id) const;
+
+    /**
+     * Finds a residue given it's residue id.  Returns an iterator
+     * pointing to the residue or throws an exception if the residue was
+     * not found.
+     * @param id the residue id.
+     * @return a AbstractModel iterator.
+     * @exception NoSuchElementException
+     */
+    iterator safeFind (const ResId &id) throw (NoSuchElementException);
+
+    /**
+     * Finds a residue given it's residue id.  Returns a AbstractModel iterator
+     * pointing to the residue or throws an exception if the residue was
+     * not found.
+     * @param id the residue id.
+     * @return a AbstractModel iterator.
+     * @exception NoSuchElementException
+     */
+    const_iterator safeFind (const ResId &id) const throw (NoSuchElementException);
     
     /**
      * Sorts the model according to the Residue::operator<

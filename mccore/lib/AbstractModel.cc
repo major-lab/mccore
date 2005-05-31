@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 16:46:03 2004
-// $Revision: 1.3 $
-// $Id: AbstractModel.cc,v 1.3 2005-01-05 01:40:06 larosem Exp $
+// $Revision: 1.4 $
+// $Id: AbstractModel.cc,v 1.4 2005-05-31 19:52:43 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -103,6 +103,40 @@ namespace mccore
 	{
 	  return it;
 	}
+    return it;
+  }
+  
+
+  AbstractModel::iterator
+  AbstractModel::safeFind (const ResId &id) throw (NoSuchElementException)
+  {
+    iterator it;
+
+    for (it = begin (); it != end (); ++it)
+      if (id == it->getResId ())
+	return it;
+
+    NoSuchElementException ex ("", __FILE__, __LINE__);
+    ex << "residue \"" << id << "\" not found in model";
+    throw ex;
+
+    return it;
+  }
+
+
+  AbstractModel::const_iterator
+  AbstractModel::safeFind (const ResId &id) const throw (NoSuchElementException)
+  {
+    const_iterator it;
+
+    for (it = begin (); it != end (); ++it)
+      if (id == it->getResId ())
+	return it;
+
+    NoSuchElementException ex ("", __FILE__, __LINE__);
+    ex << "residue \"" << id << "\" not found in model";
+    throw ex;
+
     return it;
   }
   
