@@ -4,7 +4,7 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:11:41 EDT
-// $Revision: 1.18 $
+// $Revision: 1.19 $
 //
 // This file is part of mccore.
 // 
@@ -26,20 +26,55 @@
 #ifndef _mccore_Binstream_h_
 #define _mccore_Binstream_h_
 
-#include <string>
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <zlib.h>
 
+#if defined (__FreeBSD__)
+#include <sys/param.h>
+#else
+#include <netinet/in.h>
+#endif
+
+#include "Exception.h"
 #include "sockstream.h"
 #include "zstream.h"
+
+
+// masks to split 64b in two 32b parts
+#define BS_LS32BM (4294967295ULL)
+#define BS_MS32BM (18446744069414584320ULL)
+
+// extrema value for 16b integers
+#define BS_UMAX16 (255)
+#define BS_MAX16 (127)
+#define BS_MIN16 (-128)
+
+// extrema value for 32b integers
+#define BS_UMAX32 (4294967295ULL)
+#define BS_MAX32 (214748363LL)
+#define BS_MIN32 (-214748364LL)
+
 
 using namespace std;
 
 
 namespace mccore
 {
+
+  typedef short bin_i16;
+  typedef unsigned short bin_ui16;
+
+  typedef int bin_i32;
+  typedef unsigned int bin_ui32;
+
+  typedef long long bin_i64;
+  typedef unsigned long long bin_ui64;
 
   /**
    * @short Input binary stream for database and cache input.
@@ -57,8 +92,17 @@ namespace mccore
    * from little endianness to big on read and write on system that uses
    * this encoding.
    *
+   * Type sizes:
+   *
+   * 16b: char, unsigned char, signed char, short, unsigned short.
+   * 32b: int, unsigned, float.
+   * 64b: long, unsigned long, long long, unsigned long long, double.
+   *
+   * char types are read from 16b data for compatibility with Java.
+   * long types are read from 64b data for compatibility between 32b and 64b architectures. 
+   *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Binstream.h,v 1.18 2005-01-07 16:36:32 thibaup Exp $
+   * @version $Id: Binstream.h,v 1.19 2005-05-31 20:05:40 thibaup Exp $
    */
   class iBinstream : public istream
   {
@@ -82,37 +126,115 @@ namespace mccore
     
     /**
      * Inputs character from binary stream.
+     * Value is read from 16b data.
      * @param c the character to input.
      * @return itself.
      */
-    iBinstream& operator>> (char &c);
-    
+    iBinstream& operator>> (char& c);
+
     /**
      * Inputs unsigned character from binary stream.
-     * @param c the character to intput.
+     * Value is read from 16b data.
+     * @param c the character to input.
      * @return itself.
      */
-    iBinstream& operator>> (unsigned char &c) { return operator>> ((char&)c); }
-    
+    iBinstream& operator>> (unsigned char& c);
+
     /**
-     * Inputs known size strings from the binary stream.  To use with care,
-     * the size of the input must be less than the size of the character
-     * string given as parameter.
-     * @param str the string to put the characters in.
+     * Inputs signed character from binary stream.
+     * Value is read from 16b data.
+     * @param c the character to input.
      * @return itself.
      */
-    iBinstream& operator>> (char *str);
-    
+    iBinstream& operator>> (signed char& c);
+
     /**
-     * Inputs known size unsigned strings from the binary stream.  To use with
-     * care, the size of the input must be less than the size of the character
-     * string given as parameter.
-     * @param str the string to put the characters in.
+     * Inputs short integer from binary stream.
+     * Value is read from 16b data.
+     * @param s the integer to read.
      * @return itself.
      */
-    iBinstream& operator>> (unsigned char *str)
-    { return operator>> ((char*)str); }
-    
+    iBinstream& operator>> (short& s);
+
+    /**
+     * Inputs unsigned short integer from binary stream.
+     * Value is read from 16b data.
+     * @param s the integer to read.
+     * @return itself.
+     */
+    iBinstream& operator>> (unsigned short& s);
+
+    /**
+     * Inputs integer from binary stream.
+     * Value is read from 32b data.
+     * @param i the integer to read.
+     * @return itself.
+     */
+    iBinstream& operator>> (int& i);
+
+    /**
+     * Inputs unsigned integer from binary stream.
+     * Value is read from 32b data.
+     * @param i the integer to read.
+     * @return itself.
+     */
+    iBinstream& operator>> (unsigned int& i);
+
+    /**
+     * Inputs long integer from binary stream.
+     * Value is read from 64b data.
+     * @param li the integer to read.
+     * @return itself.
+     */
+    iBinstream& operator>> (long& li);
+
+    /**
+     * Inputs unsigned long integer from binary stream.
+     * Value is read from 64b data.
+     * @param li the integer to read.
+     * @return itself.
+     */
+    iBinstream& operator>> (unsigned long& li);
+
+    /**
+     * Inputs long long integer from binary stream.
+     * Value is read from 64b data.
+     * @param lli the integer to read.
+     * @return itself.
+     */
+    iBinstream& operator>> (long long& lli);
+
+    /**
+     * Inputs unsigned long long integer from binary stream.
+     * Value is read from 64b data.
+     * @param lli the integer to read.
+     * @return itself.
+     */
+    iBinstream& operator>> (unsigned long long& lli);
+
+    /**
+     * Inputs float from binary stream.
+     * Value is read from 32b data.
+     * @param f the float to read.
+     * @return itself.
+     */
+    iBinstream& operator>> (float& f);
+
+    /**
+     * Inputs double from binary stream.
+     * Value is read from 64b data.
+     * @param d the double to read.
+     * @return itself.
+     */
+    iBinstream& operator>> (double& d);
+
+    /**
+     * Inputs booleans from the binary stream.
+     * @param b the boolean to read.
+     * @return itself.
+     */
+    iBinstream& operator>> (bool& b);
+
     /**
      * Inputs unknown size strings from the binary stream.  This operator read
      * an integer from the stream representing the string size, allocate a
@@ -120,74 +242,60 @@ namespace mccore
      * @param str the string address where the new string will placed.
      * @return itself.
      */
-    iBinstream& operator>> (char **str);
-    
+    iBinstream& operator>> (char** cstr);
+
     /**
-     * Inputs unknown size unsigned strings from the binary stream.  This
-     * operator read an integer from the stream representing the string size,
-     * allocate a space to read in the string.
+     * Inputs unknown size strings from the binary stream.  This operator read
+     * an integer from the stream representing the string size, allocate a
+     * space to read in the string.
      * @param str the string address where the new string will placed.
      * @return itself.
      */
-    iBinstream& operator>> (unsigned char **str)
-    { return operator>> ((char**)str); }
+    iBinstream& operator>> (unsigned char** cstr);
+
+    /**
+     * Inputs unknown size strings from the binary stream.  This operator read
+     * an integer from the stream representing the string size, allocate a
+     * space to read in the string.
+     * @param str the string address where the new string will placed.
+     * @return itself.
+     */
+    iBinstream& operator>> (signed char** cstr);
+
+    /**
+     * Inputs known size strings from the binary stream.  To use with care,
+     * the size of the input must be less than the size of the character
+     * string given as parameter.
+     * @param str the string to put the characters in.
+     * @return itself.
+     */
+    iBinstream& operator>> (char* cstr);
+
+    /**
+     * Inputs known size strings from the binary stream.  To use with care,
+     * the size of the input must be less than the size of the character
+     * string given as parameter.
+     * @param str the string to put the characters in.
+     * @return itself.
+     */
+    iBinstream& operator>> (unsigned char* cstr);
+
+    /**
+     * Inputs known size strings from the binary stream.  To use with care,
+     * the size of the input must be less than the size of the character
+     * string given as parameter.
+     * @param str the string to put the characters in.
+     * @return itself.
+     */
+    iBinstream& operator>> (signed char* cstr);
 
     /**
      * Inputs a strings from the binary stream.
      * @param str the string to put the characters in.
      * @return itself.
      */
-    iBinstream& operator>> (string &str);
-    
-    /**
-     * Inputs booleans from the binary stream.
-     * @param b the boolean to read.
-     * @return itself.
-     */
-    iBinstream& operator>> (bool &b) { return operator>> ((char&)b); }
-    
-    /**
-     * Inputs short integers from the binary stream.
-     * @param n the integer to read.
-     * @return itself.
-     */
-    iBinstream& operator>> (short int &n);
-    
-    /**
-     * Inputs integers from the binary stream.
-     * @param n the integer to read.
-     * @return itself.
-     */
-    iBinstream& operator>> (int &n);
-    
-    /**
-     * Inputs unsigned integers from the binary stream.
-     * @param n the integer to read.
-     * @return itself.
-     */
-    iBinstream& operator>> (unsigned int &n) { return operator>> ((int&)n); }
-    
-    /**
-     * Inputs long integers from the binary stream.
-     * @param n the integer to read.
-     * @return itself.
-     */
-    iBinstream& operator>> (long int &n);
-    
-    /**
-     * Inputs unsigned long integers from the binary stream.
-     * @param n the integer to read.
-     * @return itself.
-     */
-    iBinstream& operator>> (unsigned long int &n) { return operator>> ((long int&)n); }
-    
-    /**
-     * Inputs floats from the binary stream.
-     * @param x the float to read.
-     * @return itself.
-     */
-    iBinstream& operator>> (float &x);
-    
+    iBinstream& operator>> (string& str);
+
     /**
      * Inputs ios manipulation functions.
      * @param f is the ios manip fuction.
@@ -202,6 +310,93 @@ namespace mccore
      */
     iBinstream& operator>> (istream& (*f)(istream&));
     
+  protected:
+
+    /**
+     * @internal
+     * Inputs 16b integer data. Throws an exception if the parameter isn't 16b.
+     * @param data the variable to contain the 16b value read.
+     * @exception FatalIntLibException
+     */
+    template< class t16 >
+    iBinstream& read16 (t16& data) throw (FatalIntLibException)
+    {
+      if (sizeof (data) != 2)
+      {
+	FatalIntLibException ex ("", __FILE__, __LINE__);
+	ex << "trying to read 16 bits data in " 
+	   << sizeof (data) * 8 << " bits variable.";
+	throw ex;
+      }
+
+      uint16_t data16;
+
+      this->read ((char*)&data16, 2);
+      data = ntohs (data16);
+
+      return *this;
+    }
+  
+    /**
+     * @internal
+     * Inputs 32b integer data. Throws an exception if the parameter isn't 32b.
+     * @param data the variable to contain the 32b value read.
+     * @exception FatalIntLibException
+     */
+    template< class t32 >
+    iBinstream& read32 (t32& data) throw (FatalIntLibException)
+    {
+      if (sizeof (data) != 4)
+      {
+	FatalIntLibException ex ("", __FILE__, __LINE__);
+	ex << "trying to read 32 bits data in " 
+	   << sizeof (data) * 8 << " bits variable.";
+	throw ex;
+      }
+
+      uint32_t data32;
+
+      this->read ((char*)&data32, 4);
+      data = ntohl (data32);
+
+      return *this;
+    }
+  
+    /**
+     * @internal
+     * Inputs 64b integer data. Throws an exception if the parameter isn't 64b.
+     * @param data the variable to contain the 64b value read.
+     * @exception FatalIntLibException
+     */
+    template< class t64 >
+    iBinstream& read64 (t64& data) throw (FatalIntLibException)
+    {
+      if (sizeof (data) != 8)
+      {
+	FatalIntLibException ex ("", __FILE__, __LINE__);
+	ex << "trying to read 64 bits data in a " 
+	   << sizeof (data) * 8 << " bits variable.";
+	throw ex;
+      }
+
+      uint32_t data32;
+      mccore::bin_ui64 data64;
+
+      // -- most significant 32 bits
+      this->read ((char*)&data32, 4);
+      data64 = (mccore::bin_ui64)ntohl (data32) << 32;
+
+      // -- least significant 32 bits
+      this->read ((char*)&data32, 4);
+
+      // -- merge
+      data = data64 | (mccore::bin_ui64)ntohl (data32);
+
+      return *this;
+    }
+
+  public:
+
     // ACCESS ---------------------------------------------------------------
     
     // METHODS --------------------------------------------------------------
@@ -237,6 +432,15 @@ namespace mccore
    * from little endianness to big on read and write on system that uses
    * this encoding.
    *
+   * Type sizes:
+   *
+   * 16b: char, unsigned char, signed char, short, unsigned short.
+   * 32b: int, unsigned, float.
+   * 64b: long, unsigned long, long long, unsigned long long, double.
+   *
+   * char types are written as 16b data for compatibility with Java.
+   * long types are written as 64b data for compatibility between 32b and 64b architectures. 
+   *
    * @author Martin Larose <larosem@iro.umontreal.ca>
    */
   class oBinstream : public ostream
@@ -260,92 +464,143 @@ namespace mccore
     // OPERATORS ------------------------------------------------------------
     
     /**
-     * Outputs characters (htons is used since Java uses 16 bit long chars
-     * and we cannot suppose that chars have 8 bit...)
+     * Outputs character to binary stream.
+     * Value is written as 16b data.
      * @param c the character to output.
      * @return itself.
      */
     oBinstream& operator<< (char c);
-    
+
     /**
-     * Outputs unsigned characters.
+     * Outputs unsigned character to binary stream.
+     * Value is written as 16b data.
      * @param c the character to output.
      * @return itself.
      */
-    oBinstream& operator<< (unsigned char c) { return operator<< ((char)c); }
-    
+    oBinstream& operator<< (unsigned char c);
+
+    /**
+     * Outputs signed character to binary stream.
+     * Value is written as 16b data.
+     * @param c the character to output.
+     * @return itself.
+     */
+    oBinstream& operator<< (signed char c);
+
+    /**
+     * Outputs short integer to binary stream.
+     * Value is written as 16b data.
+     * @param s the integer to output.
+     * @return itself.
+     */
+    oBinstream& operator<< (short s);
+
+    /**
+     * Outputs unsigned short integer to binary stream.
+     * Value is written as 16b data.
+     * @param s the integer to output.
+     * @return itself.
+     */
+    oBinstream& operator<< (unsigned short s);
+
+    /**
+     * Outputs integer to binary stream.
+     * Value is written as 32b data.
+     * @param i the integer to output.
+     * @return itself.
+     */
+    oBinstream& operator<< (int i);
+
+    /**
+     * Outputs unsigned integer to binary stream.
+     * Value is written as 32b data.
+     * @param i the integer to output.
+     * @return itself.
+     */
+    oBinstream& operator<< (unsigned int i);
+
+    /**
+     * Outputs long integer to binary stream.
+     * Value is written as 64b data.
+     * @param li the integer to output.
+     * @return itself.
+     */
+    oBinstream& operator<< (long li);
+
+    /**
+     * Outputs unsigned long integer to binary stream.
+     * Value is written as 64b data.
+     * @param li the integer to output.
+     * @return itself.
+     */
+    oBinstream& operator<< (unsigned long li);
+
+    /**
+     * Outputs long long integer to binary stream.
+     * Value is written as 64b data.
+     * @param lli the integer to output.
+     * @return itself.
+     */
+    oBinstream& operator<< (long long lli);
+
+    /**
+     * Outputs unsigned long long integer to binary stream.
+     * Value is written as 64b data.
+     * @param lli the integer to output.
+     * @return itself.
+     */
+    oBinstream& operator<< (unsigned long long lli);
+
+    /**
+     * Outputs float to binary stream.
+     * Value is written as 32b data.
+     * @param f the float to output.
+     * @return itself.
+     */
+    oBinstream& operator<< (float f);
+
+    /**
+     * Outputs double to binary stream.
+     * Value is written as 64b data.
+     * @param d the double to output.
+     * @return itself.
+     */
+    oBinstream& operator<< (double d);
+
     /**
      * Outputs strings.
      * @param str the string to output.
      * @return itself.
      */
-    oBinstream& operator<< (const char *str);
-    
-    /**
-     * Outputs unsigned strings.
-     * @param str the string to output.
-     * @return itself.
-     */
-    oBinstream& operator<< (const unsigned char *str)
-    { 
-      return operator<< ((const char*)str); 
-    }
-    
+    oBinstream& operator<< (const char* cstr);
+
     /**
      * Outputs strings.
      * @param str the string to output.
      * @return itself.
      */
-    oBinstream& operator<< (const string &str);
-    
+    oBinstream& operator<< (const unsigned char* cstr);
+
     /**
-     * Outputs booleans to binary stream.
-     * @param b the boolean to ouput.
+     * Outputs strings.
+     * @param str the string to output.
      * @return itself.
      */
-    oBinstream& operator<< (bool b) { return operator<< ((char)b); }
-    
+    oBinstream& operator<< (const signed char* cstr);
+
     /**
-     * Outputs short integers to binary stream.
-     * @param n the integer to ouput.
+     * Outputs strings.
+     * @param str the string to output.
      * @return itself.
      */
-    oBinstream& operator<< (short int n);
-    
+    oBinstream& operator<< (const string& str);
+
     /**
-     * Outputs integers to binary stream.
-     * @param n the integer to ouput.
+     * Outputs boolean value to binary stream.
+     * @param b the boolean value to write.
      * @return itself.
      */
-    oBinstream& operator<< (int n);
-    
-    /**
-     * Outputs unsigned integers to binary stream.
-     * @param n the integer to ouput.
-     * @return itself.
-     */
-    oBinstream& operator<< (unsigned int n) { return operator<< ((int)n); }
-    
-    /**
-     * Outputs long integers to binary stream.
-     * @param n the integer to ouput.
-     * @return itself.
-     */
-    oBinstream& operator<< (long int n);
-    
-    /**
-     * Outputs unsigned integers to binary stream.
-     * @param n the integer to ouput.
-     * @return itself.
-     */
-    oBinstream& operator<< (unsigned long int n) { return operator<< ((long int)n); }
-    
-    /**
-     * Outputs floats to binary stream.
-     * @param x the float to ouput.
-     * @return itself.
-     */
-    oBinstream& operator<< (float x);
+    oBinstream& operator<< (bool b);
     
     /**
      * Manipulates ios output.
@@ -361,6 +616,78 @@ namespace mccore
      */
     oBinstream& operator<< (ostream& (*func)(ostream&));
     
+  protected:
+
+    /**
+     * @internal
+     * Outputs 16b integer data. Throws an exception if the parameter isn't 16b.
+     * @param data the 16b value to write.
+     * @exception FatalIntLibException
+     */
+    template< class t16 >
+    oBinstream& write16 (t16 data) throw (FatalIntLibException)
+    {
+      if (sizeof (data) != 2)
+      {
+	FatalIntLibException ex ("", __FILE__, __LINE__);
+	ex << "trying to write 16 bits data from " 
+	   << sizeof (data) * 8 << " bits variable.";
+	throw ex;
+      }
+
+      uint16_t data16 = htons (data);
+      this->write ((char*)&data16, 2);
+      return *this;
+    }
+
+    /**
+     * @internal
+     * Outputs 32b integer data. Throws an exception if the parameter isn't 32b.
+     * @param data the 32b value to write.
+     * @exception FatalIntLibException
+     */
+    template< class t32 >
+    oBinstream& write32 (t32 data) throw (FatalIntLibException)
+    {
+      if (sizeof (data) != 4)
+      {
+	FatalIntLibException ex ("", __FILE__, __LINE__);
+	ex << "trying to write 32 bits data from " 
+	   << sizeof (data) * 8 << " bits variable.";
+	throw ex;
+      }
+
+      uint32_t data32 = htonl (data);
+      this->write ((char*)&data32, 4);
+      return *this;
+    }
+  
+    /**
+     * @internal
+     * Outputs 64b integer data. Throws an exception if the parameter isn't 64b.
+     * @param data the 64b value to write.
+     * @exception FatalIntLibException
+     */
+    template< class t64 >
+    oBinstream& write64 (t64 data)
+    {
+      if (sizeof (data) != 8)
+      {
+	FatalIntLibException ex ("", __FILE__, __LINE__);
+	ex << "trying to write 64 bits data from " 
+	   << sizeof (data) * 8 << " bits variable.";
+	throw ex;
+      }
+
+      uint32_t data32 = htonl (((data & BS_MS32BM) >> 32) & BS_LS32BM);
+      this->write ((char*)&data32, 4); // most significant 32 bits
+      data32 = htonl (data & BS_LS32BM); 
+      this->write ((char*)&data32, 4); // least significant 32 bits
+      return *this;
+    }
+  
+  public:
+
     // ACCESS ---------------------------------------------------------------
     
     // METHODS --------------------------------------------------------------
