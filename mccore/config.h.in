@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // config.h.in
-// Copyright © 2001-04 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-05 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Aug 23 11:34:50 2001
-// $Revision: 1.8 $
-// $Id: config.h.in,v 1.8 2005-05-20 15:28:46 thibaup Exp $
+// $Revision: 1.9 $
+// $Id: config.h.in,v 1.9 2005-06-07 22:15:27 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -34,7 +34,7 @@
 
 #undef MACHINE
 
-#undef KERNEL
+#undef KERNEL_VERSION
 
 #undef OSNAME
 

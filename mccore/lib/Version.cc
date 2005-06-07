@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Philippe Thibault <philippe.thibault@umontreal.ca>
 // Created On       : Wed May 11 10:07:28 2005
-// $Revision: 1.1 $
-// $Id: Version.cc,v 1.1 2005-05-20 15:28:46 thibaup Exp $
+// $Revision: 1.2 $
+// $Id: Version.cc,v 1.2 2005-06-07 22:15:46 larosem Exp $
 // 
 
 #ifdef HAVE_CONFIG_H
@@ -21,7 +21,7 @@ namespace mccore
 
   const string Version::version (VERSION);
   const string Version::machine (MACHINE);
-  const string Version::kernel (KERNEL);
+  const string Version::kernel (KERNEL_VERSION);
   const string Version::osname (OSNAME);
 
   ostream&

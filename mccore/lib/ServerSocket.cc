@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // ServerSocket.cc
-// Copyright © 2001-04 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-05 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:56 2001
-// $Revision: 1.19 $
-// $Id: ServerSocket.cc,v 1.19 2005-06-07 19:58:59 larosem Exp $
+// $Revision: 1.20 $
+// $Id: ServerSocket.cc,v 1.20 2005-06-07 22:15:41 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -33,12 +33,12 @@
 #include <cstdlib>
 #include <cstring>
 extern "C" {
+#include <unistd.h>
 #include <netdb.h>
 #include <netinet/in.h>
-#include <sys/socket.h>
 #include <sys/types.h>
+#include <sys/socket.h>
 #include <fcntl.h>
-#include <unistd.h>
 }
 
 #if defined(__sgi) || defined (__sun)
@@ -75,7 +75,7 @@ namespace mccore
     sin.sin_addr.s_addr = INADDR_ANY;
     sin.sin_port = htons (port);
     
-    if (bind (socket_id, (sockaddr*)&sin, sizeof (sin)) < 0) {
+    if (bind (socket_id, (sockaddr*) &sin, (socklen_t) sizeof (sin)) < 0) {
       //      FatalSocketException exc ("socket binding failed", __FILE__, __LINE__);
       //      exc << ": " << strerror (errno);
       //      throw exc;
@@ -98,8 +98,7 @@ namespace mccore
     int cid;
     sBinstream* stream;
     
-    if ((cid = ::accept (socket_id, (sockaddr*)&client, 
-			 (socklen_t*)&clientlen)) < 0) {
+    if ((cid = ::accept (socket_id, (sockaddr*) &client, (socklen_t*) &clientlen)) < 0) {
       //      FatalSocketException exc ("socket connection accepting failed",
       //  			       __FILE__, __LINE__);
       //      exc << ": " << strerror (errno);
