@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Sep  5 17:06:24 2001
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 //
 // This file is part of mccore.
 // 
@@ -50,7 +50,7 @@ namespace mccore
    * 5 : debug
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Messagestream.h,v 1.10 2005-04-04 23:08:00 larosem Exp $
+   * @version $Id: Messagestream.h,v 1.11 2005-06-07 20:42:45 larosem Exp $
    */
   class Messagestream : public ostream
   {
@@ -238,15 +238,8 @@ namespace mccore
     Messagestream& operator<< (float n) { return operator<< ((double)n); }
 
     /**
-     * Writes a long double to the Message stream.
-     * @param n the long double to write.
-     * @return itself.
-     */
-    Messagestream& operator<< (long double n) { return operator<< ((double)n); }
-
-    /**
      * Writes an object to the Message stream.
-     * @param n the long double to write.
+     * @param obj the object to write.
      * @return itself.
      */
     template< class _Object >
@@ -305,7 +298,7 @@ namespace mccore
    * @short Text implementation of Messages.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Messagestream.h,v 1.10 2005-04-04 23:08:00 larosem Exp $
+   * @version $Id: Messagestream.h,v 1.11 2005-06-07 20:42:45 larosem Exp $
    */
   class oMessagestream : public Messagestream
   {
