@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
-# $Revision: 1.39 $
-# $Id: configure.in,v 1.39 2005-05-31 20:28:38 thibaup Exp $
+# $Revision: 1.40 $
+# $Id: configure.in,v 1.40 2005-06-07 19:58:29 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -142,7 +142,9 @@ elif eval "test \"`echo $GXX`\" = yes"; then     # gnu compiler
 		LDNAMEPARAM="-install_name,"
 		LIBEXT="dylib"
 		LIBALLFLAGSTART=""
-		LIBALLFLAGSTOP="";;
+		LIBALLFLAGSTOP=""
+                ARXX="$AR"
+                AROPTIONS="crs";;
 	    *)
 		CXXFLAGS="$CXXFLAGS -Wall -fPIC"
 		LINKOPTIONS="-shared"

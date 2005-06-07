@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 24 21:31:52 2003
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 // 
 // This file is part of mccore.
 // 
@@ -40,7 +40,7 @@ namespace mccore
    * A path in a graph.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Path.h,v 1.9 2005-04-04 23:08:11 larosem Exp $
+   * @version $Id: Path.h,v 1.10 2005-06-07 19:58:56 larosem Exp $
    */
   template< class node_type, class valuetype >
   class Path : public vector< node_type >
@@ -71,6 +71,12 @@ namespace mccore
     { }
 
     /**
+     * Clones the Cycle in a new object.
+     * @return a copy of this.
+     */
+    virtual Path< node_type, valuetype >* clone () const { return new Path (*this); }
+      
+    /**
      * Destroys the object.
      */
     virtual ~Path () { }
@@ -99,11 +105,24 @@ namespace mccore
      */
     bool operator< (const Path &other) const
     {
-      return (value < other.value
-	      || (value == other.value
-		  && (size () < other.size ()
-		      || (size () == other.size ()
-			  && vector< node_type >::operator< (other)))));
+      if (value < other.value
+	  || (value == other.value
+	      && (size () < other.size ()
+		  || (size () == other.size ()))))
+	{
+	  const_iterator cit;
+	  const_iterator ocit;
+
+	  for (cit = begin (), ocit = other.begin (); end () != cit; ++cit, ++ocit)
+	    {
+	      if (*cit >= *ocit)
+		{
+		  return false;
+		}
+	    }
+	  return true;
+	}
+      return false;
     }
 
     /**

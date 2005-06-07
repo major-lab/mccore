@@ -1276,6 +1276,19 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
+cat >>confdefs.h <<_ACEOF
+#define MACHINE "`uname -m`"
+_ACEOF
+
+cat >>confdefs.h <<_ACEOF
+#define KERNEL "`uname -r`"
+_ACEOF
+
+cat >>confdefs.h <<_ACEOF
+#define OSNAME "`uname -s`"
+_ACEOF
+
+
 echo "$as_me:$LINENO: checking whether ${MAKE-make} sets \$(MAKE)" >&5
 echo $ECHO_N "checking whether ${MAKE-make} sets \$(MAKE)... $ECHO_C" >&6
 set dummy ${MAKE-make}; ac_make=`echo "$2" | sed 'y,:./+-,___p_,'`
@@ -4390,7 +4403,9 @@ fi;
 		LDNAMEPARAM="-install_name,"
 		LIBEXT="dylib"
 		LIBALLFLAGSTART=""
-		LIBALLFLAGSTOP="";;
+		LIBALLFLAGSTOP=""
+                ARXX="$AR"
+                AROPTIONS="crs";;
 	    *)
 		CXXFLAGS="$CXXFLAGS -Wall -fPIC"
 		LINKOPTIONS="-shared"

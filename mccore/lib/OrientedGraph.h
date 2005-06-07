@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu May 10 14:49:18 2001
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 // 
 // This file is part of mccore.
 // 
@@ -44,7 +44,7 @@ namespace mccore
    * Directed graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: OrientedGraph.h,v 1.5 2005-04-04 23:08:04 larosem Exp $
+   * @version $Id: OrientedGraph.h,v 1.6 2005-06-07 19:58:52 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -464,6 +464,35 @@ namespace mccore
       return result;
     }
 
+    /**
+     * Adds the reverse path p to this OrientedGraph.  Edges weights are
+     * constant with value val.
+     * @param p the Path to add.
+     * @param val the edge value.
+     */
+    void addReversePath (Path< V, EW > &p, const EW &val)
+    {
+      typename Path< V, EW >::reverse_iterator fit;
+      typename Path< V, EW >::reverse_iterator lit;
+      
+      fit = p.rbegin ();
+      if (! contains (*fit))
+	{
+	  insert (*fit);
+	}
+      for (lit = fit++; p.rend () != fit; ++fit, ++lit)
+	{
+	  if (! contains (*fit))
+	    {
+	      insert (*fit);
+	    }
+	  if (! areConnected (*lit, *fit))
+	    {
+	      connect (*lit, *fit, val);
+	    }
+	}
+    }
+    
     // I/O  -----------------------------------------------------------------
 
     /**

@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Dec 10 19:09:13 2004
-// $Revision: 1.16 $
+// $Revision: 1.17 $
 // 
 // This file is part of mccore.
 // 
@@ -34,10 +34,15 @@
 #include <utility>
 #include <vector>
 
+#include "Cycle.h"
 #include "Graph.h"
 #include "OrientedGraph.h"
 #include "Path.h"
+// <<<<<<< UndirectedGraph.h
+// #include "stlio.h"
+// =======
 #include "Messagestream.h"
+// >>>>>>> 1.16
 
 using namespace std;
 
@@ -49,7 +54,7 @@ namespace mccore
    * Undirected graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: UndirectedGraph.h,v 1.16 2005-04-04 23:08:36 larosem Exp $
+   * @version $Id: UndirectedGraph.h,v 1.17 2005-06-07 19:59:03 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -347,68 +352,68 @@ namespace mccore
       return false;
     }      
 
-    /**
-     * Prim's algorithm for the minimum spanning tree.
-     * @param graph an undirected graph
-     * @param edge_nodes a vector of pairs of node ids.
-     * @return a vector of edges representing a spanning tree of the graph.
-     */
-    static void minimumSpanningTree (const UndirectedGraph< V, E, VW, EW, Vertex_Comparator > &graph, vector< pair< label, label > > &edge_nodes) 
-    {
-      vector< label > nearest (graph.size (), 0);
-      vector< float > mindist (graph.size (), numeric_limits< float >::max ());
-      unsigned int i;
-      unsigned int j;
+//     /**
+//      * Prim's algorithm for the minimum spanning tree.
+//      * @param graph an undirected graph
+//      * @param edge_nodes a vector of pairs of node ids.
+//      * @return a vector of edges representing a spanning tree of the graph.
+//      */
+//     static void minimumSpanningTree (const UndirectedGraph< V, E, VW, EW, Vertex_Comparator > &graph, vector< pair< label, label > > &edge_nodes) 
+//     {
+//       vector< label > nearest (graph.size (), 0);
+//       vector< float > mindist (graph.size (), numeric_limits< float >::max ());
+//       unsigned int i;
+//       unsigned int j;
 
-      if (! graph.empty ())
-	{
-	  // Initialize
-	  for (i = 1; i < graph.size (); ++i)
-	    {
-	      if (graph.internalAreConnected (i, 0))
-		{
-		  mindist[i] = graph.internalGetEdgeWeight (i, 0);
-		}
-	    }
-	  edge_nodes.clear ();
+//       if (! graph.empty ())
+// 	{
+// 	  // Initialize
+// 	  for (i = 1; i < graph.size (); ++i)
+// 	    {
+// 	      if (graph.internalAreConnected (i, 0))
+// 		{
+// 		  mindist[i] = graph.internalGetEdgeWeight (i, 0);
+// 		}
+// 	    }
+// 	  edge_nodes.clear ();
   
-	  // Execute
-	  for (i = 0; i < graph.size () - 1; ++i)
-	    {
-	      float min = numeric_limits< float >::max ();
-	      label k = numeric_limits< unsigned int >::max ();
+// 	  // Execute
+// 	  for (i = 0; i < graph.size () - 1; ++i)
+// 	    {
+// 	      float min = numeric_limits< float >::max ();
+// 	      label k = numeric_limits< unsigned int >::max ();
 	  
-	      for (j = 1; j < graph.size (); ++j)
-		{
-		  if (mindist[j] >= 0 && mindist[j] < min)
-		    {
-		      min = mindist[j];
-		      k = j;
-		    }
-		}
+// 	      for (j = 1; j < graph.size (); ++j)
+// 		{
+// 		  if (mindist[j] >= 0 && mindist[j] < min)
+// 		    {
+// 		      min = mindist[j];
+// 		      k = j;
+// 		    }
+// 		}
 	
-	      // This is a test to see if we stay in the same connected
-	      // component
-	      if (k != numeric_limits< unsigned int >::max ())
-		{
-		  edge_nodes.push_back (make_pair (nearest[k], k));
-		  mindist[k] = numeric_limits< unsigned int >::max ();
+// 	      // This is a test to see if we stay in the same connected
+// 	      // component
+// 	      if (k != numeric_limits< unsigned int >::max ())
+// 		{
+// 		  edge_nodes.push_back (make_pair (nearest[k], k));
+// 		  mindist[k] = numeric_limits< unsigned int >::max ();
 	    
-		  for (j = 1; j < graph.size (); ++j)
-		    {
-		      float val = (graph.internalAreConnected (j, k)
-				   ? graph.internalGetEdgeWeight (j, k)
-				   : numeric_limits< float >::max ());
-		    if (val < mindist[j])
-		      {
-			mindist[j] = val;
-			nearest[j] = k;
-		      }
-		    }
-		}
-	    }
-	}
-    }
+// 		  for (j = 1; j < graph.size (); ++j)
+// 		    {
+// 		      float val = (graph.internalAreConnected (j, k)
+// 				   ? graph.internalGetEdgeWeight (j, k)
+// 				   : numeric_limits< float >::max ());
+// 		    if (val < mindist[j])
+// 		      {
+// 			mindist[j] = val;
+// 			nearest[j] = k;
+// 		      }
+// 		    }
+// 		}
+// 	    }
+// 	}
+//     }
 
   public:
     
@@ -441,31 +446,31 @@ namespace mccore
      *     }
      * }
      * </pre>
-     * @param graph a graph.
      * @param source the source node id of the paths.
      * @param paths a collection of Path to fill with the SPT.
      */
-    template< class Compare >
-    void sptDijkstraTiernan (label source, vector< Path< label, unsigned int > > &paths, const Compare &comparator = less< label > ())
+    template< class Value, class Compare >
+    void sptDijkstraTiernan (label source, vector< Path< label, Value > > &paths)
     {
+      const Value MAXVAL = numeric_limits< Value >::max ();
       label w;
       size_type graphsize;
       vector< label > C;
-      const unsigned int MAXUIVALUE = numeric_limits< unsigned int >::max ();
+      Compare comparator;
       
-      graphsize = this->size ();
+      graphsize = size ();
       paths.clear ();
       paths.resize (graphsize);
       
       // Initialize ---
       for  (w = 0; w < graphsize; ++w)
 	{
-	  int value;
+	  Value value;
 	  
 	  paths[w].push_back (source);
 	  if  (w == source)
 	    {
-	      value = MAXUIVALUE;
+	      value = MAXVAL;
 	    }
 	  else
 	    {
@@ -476,7 +481,7 @@ namespace mccore
 		}
 	      else
 		{
-		  value = MAXUIVALUE;
+		  value = MAXVAL;
 		}
 	      C.push_back (w);
 	    }
@@ -487,8 +492,7 @@ namespace mccore
 	{
 	  typename vector< label >::iterator min_iter;
 	  typename vector< label >::iterator k;
-	  int min_value;
-	  label min_index;
+	  Value min_value;
 	  
 	  min_iter = C.begin ();
 	  min_value = paths[*min_iter].getValue ();
@@ -504,20 +508,141 @@ namespace mccore
 	  
 	  // Break if the elements remaining in C are not connected to the
 	  // source.
-	  if  (min_value == MAXUIVALUE)
+	  if  (min_value == MAXVAL)
 	    {
 	      break;
 	    }
 	  
 	  for (k = C.begin (); C.end () != k; ++k)
 	    {
-	      int new_val;
-	      unsigned int v;
+	      Value new_val;
+	      label v;
 	      
 	      v = *k;
 	      if (comparator (source, w)
 		  && internalAreConnected (w, v)
 		  && (paths[v].getValue () > (new_val = min_value + internalGetEdgeWeight (w, v))))
+	        {
+		  paths[v] = paths[w];
+		  paths[v].push_back (v);
+		  paths[v].setValue (new_val);
+		}
+	    }
+	}
+    }
+    
+    /**
+     * Dijkstra's algorithm for the shortest path in a directed graph.  The
+     * SPT is optimized for graphs with non-negative edge weights.  A path
+     * P(x,y) is pruned if there is a z in P(x,y) so that z < x.  The path's
+     * value is reset to the max value of the Path's value type.  The source
+     * (x) is at the beginning of the path.  The value of the edge weights is
+     * fixed and given by value.
+     * <pre>
+     * NODE v, w;
+     * SET V, S;             both V and S are SETS
+     * int Dist[MAX][MAX];   distance from node v to w
+     * int D[MAX];           current distance from the root
+     * int P[MAX];           backward path towards root
+     * 
+     * S = {ROOT}; 
+     * for (all other nodes w in V-S) {
+     *   if (areConnected (ROOT, w) and ROOT < w) {
+     *     D[w] = Dist[ROOT][w];
+     *     P[w] = ROOT;
+     * }
+     * while (S is not yet V) {
+     *   choose node w in V-S such that D[w] is minimum;
+     *   S = S union {w};
+     *   for (each node v in V-S)
+     *     if (D[v] > D[w] + Dist[w][v] and areConnected (w, v) and ROOT < v) {
+     *       D[v] = D[w] + Dist[w][v];
+     *       P[v] = w;
+     *     }
+     * }
+     * </pre>
+     * @param source the source node id of the paths.
+     * @param paths a collection of Path to fill with the SPT.
+     * @param val the fixed value of edge weights.
+     * @param comparator the node comparator.
+     */
+    template< class FW, class Compare >
+    void sptDijkstraTiernanWithFixedValues (label source, vector< Path< label, FW > > &paths, const FW &val) const
+    {
+      const FW MAXVAL = numeric_limits< FW >::max ();
+      label w;
+      size_type graphsize;
+      vector< label > C;
+// <<<<<<< UndirectedGraph.h
+//       Compare comparator;
+// =======
+      const unsigned int MAXUIVALUE = numeric_limits< unsigned int >::max ();
+// >>>>>>> 1.16
+      
+      graphsize = this->size ();
+      paths.clear ();
+      paths.resize (graphsize);
+      
+      // Initialize ---
+      for  (w = 0; w < graphsize; ++w)
+	{
+	  int value;
+	  
+	  paths[w].push_back (source);
+	  if  (w == source)
+	    {
+	      value = MAXVAL;
+	    }
+	  else
+	    {
+	      if (internalAreConnected (source, w))
+		{
+		  value = val;
+		  paths[w].push_back (w);
+		}
+	      else
+		{
+		  value = MAXVAL;
+		}
+	      C.push_back (w);
+	    }
+	  paths[w].setValue (value);
+	}
+      
+      while (! C.empty ())
+	{
+	  typename vector< label >::iterator min_iter;
+	  typename vector< label >::iterator k;
+	  FW min_value;
+	  
+	  min_iter = C.begin ();
+	  min_value = paths[*min_iter].getValue ();
+	  
+	  for  (k = C.begin (); k != C.end (); ++k)
+	    if  (paths[*k].getValue () < min_value)
+	      {
+		min_value = paths[*k].getValue ();
+		min_iter = k;
+	      }
+	  w = *min_iter;
+	  C.erase (min_iter);
+	  
+	  // Break if the elements remaining in C are not connected to the
+	  // source.
+	  if  (min_value == MAXVAL)
+	    {
+	      break;
+	    }
+	  
+	  for (k = C.begin (); C.end () != k; ++k)
+	    {
+	      FW new_val;
+	      label v;
+	      
+	      v = *k;
+	      if (comparator (source, w)
+		  && internalAreConnected (w, v)
+		  && paths[v].getValue () > (new_val = min_value + val))
 	        {
 		  paths[v] = paths[w];
 		  paths[v].push_back (v);
@@ -534,9 +659,9 @@ namespace mccore
      * @param bag a vector of cycles.
      * @return a linearly independant vector of cycles.
      */
-    vector< mccore::Path< label, int > > gaussianElimination (vector< mccore::Path< label, int > >& bag)
+    vector< Path< label, unsigned int > > gaussianElimination (vector< Path< label, unsigned int > >& bag) const
     {
-      typedef typename vector< mccore::Path< label, int > >::iterator vpiterator;
+      typedef typename vector< Path< label, unsigned int > >::iterator vpiterator;
       
       if (bag.empty ())
 	{
@@ -547,22 +672,24 @@ namespace mccore
       vector< bool* >::iterator n;
       label i;
       label j;
-      vector< mccore::Path< label, int > > newbag;
+      vector< mccore::Path< label, unsigned int > > newbag;
       vpiterator p, q;
-      size_type edgeSize;
+      edge_size_type eSize;
       vector< vpiterator > marked;
       bool *row;
       
-      edgeSize = edgeSize ();
-      row = new bool[edgeSize];    
+      eSize = edgeSize ();
+      row = new bool[eSize];    
       for (p = bag.begin (); p != bag.end (); ++p)
 	{
-	  typename mccore::Path< label, int >::iterator r;
-	  typename mccore::Path< label, int >::iterator s;
+	  typename mccore::Path< label, unsigned int >::iterator r;
+	  typename mccore::Path< label, unsigned int >::iterator s;
 	  bool inserted;
 	  
-	  for (i = 0; i < edgeSize; ++i)
-	    row[i] = false;
+	  for (i = 0; i < eSize; ++i)
+	    {
+	      row[i] = false;
+	    }
 	  
 	  // Let's see if *p is linearly independent to the content of newbag 
 	  //       cout << "Treating " << *p << endl;
@@ -578,11 +705,11 @@ namespace mccore
 	  for (n = matrix.begin (), q = newbag.begin (); q != newbag.end (); ++n, ++q)
 	    {
 	      j = 0;
-	      while (j < edgeSize && row[j] == false && (*n)[j] == false)
+	      while (j < eSize && row[j] == false && (*n)[j] == false)
 		{
 		  ++j;
 		}
-	      if (j == edgeSize)
+	      if (j == eSize)
 		{
 		  continue;
 		}
@@ -598,7 +725,7 @@ namespace mccore
 	      if (row[j] == true && (*n)[j] == true)
 		{
 		  //Reduce the current
-		  for (i = 0; i < edgeSize; ++i)
+		  for (i = 0; i < eSize; ++i)
 		    {
 		      row[i] ^= (*n)[i];
 		    }
@@ -608,7 +735,7 @@ namespace mccore
 	  
 	  if (! inserted)
 	    {
-	      for (j = 0; j < edgeSize; ++j)
+	      for (j = 0; j < eSize; ++j)
 		{
 		  if (true == row[j])
 		    {
@@ -616,7 +743,7 @@ namespace mccore
 		      break;
 		    }
 		}
-	      if (j != edgeSize)
+	      if (j != eSize)
 		{
 		  gOut (4) << "Marking " << *p << endl;
 		  marked.push_back (p);
@@ -631,13 +758,13 @@ namespace mccore
 	      
 	      for (i = 0; i < marked.size (); ++i)
 		{
-		  typename mccore::Path< label, int >::iterator r;
-		  typename mccore::Path< label, int >::iterator s;
+		  typename Path< label, unsigned int >::iterator r;
+		  typename Path< label, unsigned int >::iterator s;
 		  bool *row2;
 		  unsigned int k;
 		  
-		  row2 = new bool[edgeSize];	  
-		  for (k = 0; k < edgeSize; ++k)
+		  row2 = new bool[eSize];	  
+		  for (k = 0; k < eSize; ++k)
 		    {
 		      row2[k] = false;
 		    }		  
@@ -645,17 +772,21 @@ namespace mccore
 		  row2[internalGetEdgeLabel (marked[i]->back (), *s)] = true;
 		  for (r = s++; marked[i]->end () != s; ++r, ++s)
 		    {
+// <<<<<<< UndirectedGraph.h
+// 		      row2[internalGetEdgeLabel (*r, *s)] = true;
+// =======
 		      row2[internalGetEdge (*r, *s)] = true;
+// >>>>>>> 1.16
 		    }		  
 		  inserted = false;	
 		  for (n = matrix.begin (), q = newbag.begin (); q != newbag.end (); ++n, ++q)
 		    {
 		      j = 0;    
-		      while (j < edgeSize && row2[j] == false && (*n)[j] == false)
+		      while (j < eSize && row2[j] == false && (*n)[j] == false)
 			{
 			  ++j;
 			}
-		      if (j == edgeSize)
+		      if (j == eSize)
 			{
 			  continue;
 			}
@@ -672,7 +803,7 @@ namespace mccore
 		      if (row2[j] == true && (*n)[j] == true)
 			{
 			  //Reduce the current
-  			  for (k = 0; k < edgeSize; ++k)
+  			  for (k = 0; k < eSize; ++k)
 			    {
 			      row2[k] ^= (*n)[k];
 			    }
@@ -682,14 +813,14 @@ namespace mccore
 		  
 		  if (! inserted)
 		    {
-		      for (j = 0; j < edgeSize; ++j)
+		      for (j = 0; j < eSize; ++j)
 			{
 			  if (row2[j] == true)
 			    {
 			      break;
 			    }
 			}
-		      if (j != edgeSize)
+		      if (j != eSize)
 			{
 			  gOut (4) << "Accepting " << *marked[i] << endl;
 			  matrix.push_back (row2);
@@ -719,22 +850,33 @@ namespace mccore
      * Horton's algorithm for the minimum cycle basis.  It returns a vector
      * of Paths (cycles where the first and last vertices are connected) in
      * the graph internal numerotation.
-     * @return the minimum cycle basis for this.
+     * @param cycles the minimum cycle basis collection to fill.
      */
-    vector< mccore::Path< label, int > > cycleBaseHorton () const
+    void internalMinimumCycleBasis (vector< Path< label, unsigned int > > &cycles) const
     {
-      vector< mccore::Path< label, int > > bag;
-      typename vector< Path< label, int > >::iterator p;
+      const unsigned int MAXUIVALUE = numeric_limits< unsigned int >::max ();
+      typename vector< Path< label, unsigned int > >::iterator p;
       label i;
+// <<<<<<< UndirectedGraph.h
+
+//       cycles.clear ();
+//       for (i = 0; i < size (); ++i)
+// =======
       const int MAXVALUE = numeric_limits< int >::max ();
       
       for (i = 0; i < this->size (); ++i)
+// >>>>>>> 1.16
 	{
-	  vector< Path< label, int > > tmp;
+	  vector< Path< label, unsigned int > > tmp;
 	  typename EV2ELabel::const_iterator ecIt;
 
+// <<<<<<< UndirectedGraph.h
+// 	  sptDijkstraTiernanWithFixedValues< unsigned int, less< label > > (i, tmp, 1);
+// 	  for (ecIt = ev2elabel.begin (); ev2elabel.end () != ecIt; ++ecIt)
+// =======
 	  sptDijkstraTiernan (i, tmp, less< label > ());
 	  for (ecIt = this->ev2elabel.begin (); this->ev2elabel.end () != ecIt; ++ecIt)
+// >>>>>>> 1.16
 	    {
 	      label j;
 	      label k;
@@ -742,15 +884,15 @@ namespace mccore
 	      j = ecIt->first.getHeadLabel ();
 	      k = ecIt->first.getTailLabel ();
 	      if (j < k
-		  && MAXVALUE != tmp[j].getValue ()
-		  && MAXVALUE != tmp[k].getValue ()
+		  && MAXUIVALUE != tmp[j].getValue ()
+		  && MAXUIVALUE != tmp[k].getValue ()
 		  && *++(tmp[j].begin ()) != *++(tmp[k].begin ()))
 		{
-		  Path< label, int > Pvx = tmp[j];
-		  Path< label, int > Pvy = tmp[k];
-		  Path< label, int > Pvxp = Pvx; 
-		  Path< label, int > Pvyp = Pvy; 
-		  Path< label, int > inter;
+		  Path< label, unsigned int > Pvx = tmp[j];
+		  Path< label, unsigned int > Pvy = tmp[k];
+		  Path< label, unsigned int > Pvxp = Pvx; 
+		  Path< label, unsigned int > Pvyp = Pvy; 
+		  Path< label, unsigned int > inter;
 		  
 		  std::sort (Pvxp.begin (), Pvxp.end ());
 		  std::sort (Pvyp.begin (), Pvyp.end ());
@@ -760,23 +902,22 @@ namespace mccore
 		  
 		  if (inter.size () == 1 && inter.front () == i)
 		    {
-		      mccore::Path< label, int > C = Pvx;
+		      Path< label, unsigned int > C = Pvx;
 		      
 		      C.insert (C.end (), Pvy.rbegin (), Pvy.rend ());
 		      C.pop_back ();
 		      C.setValue (Pvx.getValue () + Pvy.getValue () + internalGetEdgeWeight (ecIt->second));
-		      bag.push_back (C);
+		      cycles.push_back (C);
 		    }
 		}
 	    }
 	}
       
-      sort (bag.begin (), bag.end ());
-      gOut (3) << "Found " << bag.size () << " potential cycles before elimination" << endl;
-      bag = gaussianElimination (bag);
-      sort (bag.begin (), bag.end ());
-      gOut (3) << "Found " << bag.size () << " cycles." << endl;
-      return bag;
+      std::sort (cycles.begin (), cycles.end ());
+      gOut (3) << "Found " << cycles.size () << " potential cycles before elimination" << endl;
+      cycles = gaussianElimination (cycles);
+      std::sort (cycles.begin (), cycles.end ());
+      gOut (3) << "Found " << cycles.size () << " cycles." << endl;
     }
 
   private:
@@ -803,7 +944,7 @@ namespace mccore
 	}
     }
 
-    pair< bool, vector< vector< bool > >::iterator > gElimination (vector< bool > &candidate, vector< vector< bool > > &matrix)
+    pair< bool, vector< vector< bool > >::iterator > gElimination (vector< bool > &candidate, vector< vector< bool > > &matrix) const
     {
       vector< vector< bool > >::iterator row;
       vector< bool >::iterator cIt;
@@ -833,31 +974,33 @@ namespace mccore
 	      continue;
 	    }
 	}
-      return make_pair (candidate.end () == find (candidate.begin (), candidate.end (), true), matrix.end ());
+      return make_pair (candidate.end () == std::find (candidate.begin (), candidate.end (), true), matrix.end ());
     }
 
+  protected:
+    
     /**
      */
-    vector< Path< unsigned int, int > > BElimination (vector< Path< unsigned int, int > >& bag) const
+    vector< Cycle< label, unsigned int > > BElimination (vector< Cycle< label, unsigned int > >& bag) const
     {
       if (bag.empty ())
 	return bag;
       
       vector< vector< bool > > BLess;
       vector< vector< bool > > B;
-      vector< Path< label, int > > newbag;
-      typename vector< Path< label, int > >::iterator p;
-      edge_size_type edgeSize;
+      vector< Cycle< label, unsigned int > > newbag;
+      typename vector< Cycle< label, unsigned int > >::iterator p;
+      edge_size_type eSize;
       label pathSize = 0;
       vector< bool > candidate2;
 
-      edgeSize = edgeSize ();
+      eSize = edgeSize ();
       
       for (p = bag.begin (); p != bag.end (); ++p)
 	{
-	  typename Path< label, int >::iterator r;
-	  typename Path< label, int >::iterator s;
-	  vector< bool > candidate (edgeSize, false);
+	  typename Cycle< label, unsigned int >::iterator r;
+	  typename Cycle< label, unsigned int >::iterator s;
+	  vector< bool > candidate (eSize, false);
 
 	  if (p->size () != pathSize)
 	    {
@@ -866,10 +1009,10 @@ namespace mccore
 	    }
 	  
 	  s = p->begin ();
-	  candidate[internalGetEdge (p->back (), *s)] = true;
+	  candidate[internalGetEdgeLabel (p->back (), *s)] = true;
 	  for (r = s++; p->end () != s; ++r, ++s)
 	    {
-	      candidate[internalGetEdge (*r, *s)] = true;
+	      candidate[internalGetEdgeLabel (*r, *s)] = true;
 	    }
 	  candidate2 = candidate;
 
@@ -887,35 +1030,50 @@ namespace mccore
       return newbag;
     }
     
-  protected:
-    
     /**
      * Vismara's union of minimum cycle bases algorithm.  It returns a
      * vector of Path (cycles where the first and last vertices are
      * connected) in graph numerotation.  We should be able to cast the edge
      * weights to unsigned int.
-     * @return a vector of Path.
+     * @param CR the minimum cycle basis collection to fill.
      */
-    vector< mccore::Path< label, unsigned int > > internalUnionMinimumCycleBases () const
+    void internalUnionMinimumCycleBases (vector< Path< label, unsigned int > > &CR) const
     {
+      const unsigned int MAXUIVALUE = numeric_limits< unsigned int >::max ();
       label r;
+// <<<<<<< UndirectedGraph.h
+//       vector< Cycle< label, unsigned int > > prototypes;
+//       typename vector< Cycle< label, unsigned int > >::iterator protIt;
+//       vector< OrientedGraph< label, bool, bool, unsigned int > > D (size ());
+// =======
       vector< Path< label, unsigned int > > prototypes;
       typename vector< Path< label, unsigned int > >::iterator protIt;
-      vector< Path< label, unsigned int > > CR;
+//       vector< Path< label, unsigned int > > CR;
       typename vector< Path< label, unsigned int > >::iterator it;
       vector< OrientedGraph< label, bool, bool, unsigned int > > D (this->size ());
       const int MAXVALUE = numeric_limits< int >::max ();
+// >>>>>>> 1.16
 
+// <<<<<<< UndirectedGraph.h
+//       CR.clear ();
+//       for (r = 0; size () > r; ++r)
+// =======
       for (r = 0; this->size () > r; ++r)
+// >>>>>>> 1.16
 	{
 	  vector< Path< label, unsigned int > > spt;
 	  label y;
 	  OrientedGraph< label, bool, bool, unsigned int > &Dr = D[r];
 	  
+// <<<<<<< UndirectedGraph.h
+// 	  sptDijkstraTiernanWithFixedValues< unsigned int, greater< unsigned int > > (r, spt, 1);
+// 	  for (y = 0; size () > y && y < r; ++y)
+// =======
 	  sptDijkstraTiernan (r, spt, greater< unsigned int > ());
 	  for (y = 0; this->size () > y && y < r; ++y)
+// >>>>>>> 1.16
 	    {
-	      Path< label, int > &py = spt[y];
+	      Path< label, unsigned int > &py = spt[y];
 	      vector< label > S;
 	      list< label > neighbors;
 	      typename list< label >::iterator z;
@@ -927,19 +1085,19 @@ namespace mccore
 		{
 		  if (*z < r)
 		    {
-		      Path< label, int > &pz = spt[*z];
+		      Path< label, unsigned int > &pz = spt[*z];
 		      
-		      if (MAXVALUE != py.getValue ()
-			  && MAXVALUE != pz.getValue ())
+		      if (MAXUIVALUE != py.getValue ()
+			  && MAXUIVALUE != pz.getValue ())
 			{
-			  if (pz.getValue () + internalGetWeight (y, *z) == py.getValue ())
+			  if (pz.getValue () + 1 == py.getValue ())
 			    {
-			      addSP (py, Dr);
-			      addSP (pz, Dr);
-			      Dr.connect (y, *z, internalGetVertexWeight (y, *z));
+			      Dr.addReversePath (py, 1);
+			      Dr.addReversePath (pz, 1);
+			      Dr.connect (y, *z, 1);
 			      S.push_back (*z);
 			    }
-			  else if (pz.getValue () != py.getValue () + internalGetVertexWeight (y, *z) && *z < y)
+			  else if (pz.getValue () != py.getValue () + 1 && *z < y)
 			    {
 			      set< label > sy;
 			      set< label > sz;
@@ -954,10 +1112,10 @@ namespace mccore
 			      if (1 == inter.size () && inter.front () == r)
 				{
 				  prototypes.push_back (py);
-				  Path< label, int > &cycle = prototypes.back ();
+				  Cycle< label, unsigned int > &cycle = prototypes.back ();
 				  
-				  addSP (py, Dr);
-				  addSP (pz, Dr);
+				  Dr.addReversePath (py, 1);
+				  Dr.addReversePath (pz, 1);
 				  cycle.setP (cycle.size () - 1);
 				  cycle.setQ (cycle.size ());
 				  cycle.insert (cycle.end (), pz.rbegin (), pz.rend () - 1);
@@ -975,8 +1133,8 @@ namespace mccore
 		  {
 		    if (p != q)
 		      {
-			Path< label, int > &pp = spt[*p];
-			Path< label, int > &pq = spt[*q];
+			Path< label, unsigned int > &pp = spt[*p];
+			Path< label, unsigned int > &pq = spt[*q];
 			set< label > sp;
 			set< label > sq;
 			vector< label > inter;
@@ -992,7 +1150,7 @@ namespace mccore
 			    if (*p < *q)
 			      {
 				prototypes.push_back (pp);
-				Path< label, int > &cycle = prototypes.back ();
+				Cycle< label, unsigned int > &cycle = prototypes.back ();
 
 				cycle.setP (cycle.size () - 1);
 				cycle.setQ (cycle.size () + 1);
@@ -1009,8 +1167,9 @@ namespace mccore
 		  }
 	    }
 	}
-      sort (prototypes.begin (), prototypes.end ());
-      gOut (3) << "Found " << prototypes.size () << " potential prototypes before elimination" << endl;
+      std::sort (prototypes.begin (), prototypes.end ());
+      gOut (3) << "Found " << prototypes.size ()
+	       << " potential prototypes before elimination" << endl;
       gOut (4) << prototypes << endl;
       prototypes = BElimination (prototypes);
       gOut (3) << "Found " << prototypes.size () << " prototypes" << endl;
@@ -1019,26 +1178,26 @@ namespace mccore
       // Enumeration of CR.
       for (protIt = prototypes.begin (); prototypes.end () != protIt; ++protIt)
 	{
-	  Path< label, int > &prototype = *protIt;
+	  Cycle< label, unsigned int > &prototype = *protIt;
 	  label p;
 	  label q;
-	  vector< Path< label, int > > pPaths;
-	  vector< Path< label, int > > qPaths;
-	  typename vector< Path< label, int > >::iterator pPathIterator;
-	  typename vector< Path< label, int > >::iterator qPathIterator;
+	  vector< Path< label, unsigned int > > pPaths;
+	  vector< Path< label, unsigned int > > qPaths;
+	  typename vector< Path< label, unsigned int > >::iterator pPathIterator;
+	  typename vector< Path< label, unsigned int > >::iterator qPathIterator;
 
 	  r = prototype.getR ();
 	  p = prototype.getP ();
 	  q = prototype.getQ ();
-	  pPaths = breadthFirstPaths (*D[r], p);
-	  qPaths = breadthFirstPaths (*D[r], q);
+	  pPaths = D[r].breadthFirstPaths (p);
+	  qPaths = D[r].breadthFirstPaths (q);
 	  
 	  for (pPathIterator = pPaths.begin (); pPaths.end () != pPathIterator; ++pPathIterator)
 	    {
 	      for (qPathIterator = qPaths.begin (); qPaths.end () != qPathIterator; ++qPathIterator)
 		{
 		  CR.push_back (*pPathIterator);
-		  Path< label, int > &cycle = CR.back ();
+		  Path< label, unsigned int > &cycle = CR.back ();
 		
 		  if (0 == prototype.size () % 2)
 		    {
@@ -1046,13 +1205,11 @@ namespace mccore
 
 		      y = prototype.getY ();
 		      cycle.push_back (y);
-		      cycle.setValue (cycle.getValue ()
-				      + internalGetVertexWeight (p, y)
-				      + internalGetVertexWeight (y, q));
+		      cycle.setValue (cycle.getValue () + 1 + 1);
 		    }
 		  else
 		    {
-		      cycle.setValue (cycle.getValue () + internalGetVertexWeight (p, q));
+		      cycle.setValue (cycle.getValue () + 1);
 		    }
 		  cycle.insert (cycle.end (), qPathIterator->rbegin (), qPathIterator->rend () - 1);
 		  cycle.setValue (cycle.getValue () + qPathIterator->getValue ());
@@ -1060,7 +1217,6 @@ namespace mccore
 	    }
 	}
       gOut (3) << "Found " << CR.size () << " cycles" << endl;
-      return CR;
     }
     
     /**

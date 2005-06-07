@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron <gendrop@iro.umontreal.ca>
 // Created On       : Tue Apr 24 15:24:56 2001
-// $Revision: 1.18 $
-// $Id: ServerSocket.cc,v 1.18 2005-01-03 23:06:31 larosem Exp $
+// $Revision: 1.19 $
+// $Id: ServerSocket.cc,v 1.19 2005-06-07 19:58:59 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -28,16 +28,18 @@
 #include <config.h>
 #endif
 
-#include <errno.h>
-#include <fcntl.h>
+#include <cerrno>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+extern "C" {
 #include <netdb.h>
 #include <netinet/in.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <fcntl.h>
 #include <unistd.h>
+}
 
 #if defined(__sgi) || defined (__sun)
 #include <strings.h>

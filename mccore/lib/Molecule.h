@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:36 2003
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 // 
 // This file is part of mccore.
 // 
@@ -51,7 +51,7 @@ namespace mccore
    * This is a collection of mccore Models in a simple STL list.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Molecule.h,v 1.10 2005-03-10 19:03:39 thibaup Exp $
+   * @version $Id: Molecule.h,v 1.11 2005-06-07 19:58:45 larosem Exp $
    */
   class Molecule
   {
@@ -350,6 +350,18 @@ namespace mccore
 	  ++f;
 	}
     }
+
+    /**
+     * Gets the last element reference.
+     * @return the las element reference or end.
+     */
+    AbstractModel& back () { return *models.back (); }
+
+    /**
+     * Gets the last element reference.
+     * @return the las element reference or end.
+     */
+    const AbstractModel& back () const { return *models.back (); }
 
     /**
      * Erases a model from the molecule.
