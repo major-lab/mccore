@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 16:12:42 2004
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 //
 // This file is part of mccore.
 // 
@@ -39,6 +39,7 @@ namespace mccore
 {
   class ResId;
   class Residue; 
+  class ResidueType; 
   class ResidueFactoryMethod;
   class iBinstream;
   class iPdbstream;
@@ -51,7 +52,7 @@ namespace mccore
    * Abstract class for Models.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: AbstractModel.h,v 1.5 2005-05-31 19:52:42 thibaup Exp $
+   * @version $Id: AbstractModel.h,v 1.6 2005-06-09 14:41:03 thibaup Exp $
    */
   class AbstractModel
   {
@@ -403,6 +404,22 @@ namespace mccore
      * Removes every residue that is not a nucleic acid.
      */
     void keepNucleicAcid ();
+
+    /**
+     * Removes every residue that is not RNA.
+     */
+    void keepRNA ();
+
+    /**
+     * Removes every residue that is not DNA.
+     */
+    void keepDNA ();
+
+    /**
+     * Removes every residue that is not of the specified type family.
+     * @param rtype type family.
+     */
+    void keep (const ResidueType* rtype);
 
     // I/O  -----------------------------------------------------------------
 

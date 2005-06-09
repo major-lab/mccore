@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 16:46:03 2004
-// $Revision: 1.4 $
-// $Id: AbstractModel.cc,v 1.4 2005-05-31 19:52:43 thibaup Exp $
+// $Revision: 1.5 $
+// $Id: AbstractModel.cc,v 1.5 2005-06-09 14:41:04 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -36,6 +36,7 @@
 #include "ExtendedResidue.h"
 #include "Pdbstream.h"
 #include "Residue.h"
+#include "ResidueType.h"
 #include "ResidueFactoryMethod.h"
 
 
@@ -283,6 +284,46 @@ namespace mccore
 	  }
       }
   }
+
+
+  void
+  AbstractModel::keepRNA ()
+  {
+    iterator modelIt = this->begin ();
+
+    while (modelIt != this->end ())
+      if (modelIt->getType ()->isRNA ())
+	++modelIt;
+      else
+	modelIt = this->erase (modelIt);
+  }
+
+
+  void
+  AbstractModel::keepDNA ()
+  {
+    iterator modelIt = this->begin ();
+
+    while (modelIt != this->end ())
+      if (modelIt->getType ()->isDNA ())
+	++modelIt;
+      else
+	modelIt = this->erase (modelIt);
+  }
+
+
+  void
+  AbstractModel::keep (const ResidueType* rtype)
+  {
+    iterator modelIt = this->begin ();
+
+    while (modelIt != this->end ())
+      if (modelIt->getType ()->is (rtype))
+	++modelIt;
+      else
+	modelIt = this->erase (modelIt);
+  }
+
 
 
   oPdbstream&
