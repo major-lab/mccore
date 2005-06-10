@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 21 15:30:27 2003
-// $Revision: 1.6 $
-// $Id: ResidueTopology.cc,v 1.6 2005-01-03 23:02:22 larosem Exp $
+// $Revision: 1.7 $
+// $Id: ResidueTopology.cc,v 1.7 2005-06-10 18:09:20 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -774,7 +774,7 @@ namespace mccore
   set< const AtomType* >
   ResidueTopology::getOblSet (const ResidueType* type)
   {
-    static const AtomType* DAOblSet[24] =
+    static const AtomType* DAOblSet[25] =
       {
 	(const AtomType*)AtomType::aC1p, (const AtomType*)AtomType::aC2,
 	(const AtomType*)AtomType::aC2p, (const AtomType*)AtomType::aC3p,
@@ -787,10 +787,11 @@ namespace mccore
 	(const AtomType*)AtomType::aO2P, (const AtomType*)AtomType::aO3p,
 	(const AtomType*)AtomType::aO4p, (const AtomType*)AtomType::aO5p,
 	(const AtomType*)AtomType::aP,   (const AtomType*)AtomType::aPSX,
-	(const AtomType*)AtomType::aPSY, (const AtomType*)AtomType::aPSZ
+	(const AtomType*)AtomType::aPSY, (const AtomType*)AtomType::aPSZ,
+	(const AtomType*)AtomType::aPSO
       };
     
-    static const AtomType* RAOblSet[25] =
+    static const AtomType* RAOblSet[26] =
       {
 	(const AtomType*)AtomType::aC1p, (const AtomType*)AtomType::aC2,
 	(const AtomType*)AtomType::aC2p, (const AtomType*)AtomType::aC3p,
@@ -804,10 +805,10 @@ namespace mccore
 	(const AtomType*)AtomType::aO3p, (const AtomType*)AtomType::aO4p,
 	(const AtomType*)AtomType::aO5p, (const AtomType*)AtomType::aP,
 	(const AtomType*)AtomType::aPSX, (const AtomType*)AtomType::aPSY,
-	(const AtomType*)AtomType::aPSZ
+	(const AtomType*)AtomType::aPSZ, (const AtomType*)AtomType::aPSO
       };
 
-    static const AtomType* DCOblSet[22] =
+    static const AtomType* DCOblSet[23] =
       {
 	(const AtomType*)AtomType::aC1p, (const AtomType*)AtomType::aC2,
 	(const AtomType*)AtomType::aC2p, (const AtomType*)AtomType::aC3p,
@@ -819,10 +820,11 @@ namespace mccore
 	(const AtomType*)AtomType::aO2P, (const AtomType*)AtomType::aO3p,
 	(const AtomType*)AtomType::aO4p, (const AtomType*)AtomType::aO5p,
 	(const AtomType*)AtomType::aP,   (const AtomType*)AtomType::aPSX,
-	(const AtomType*)AtomType::aPSY, (const AtomType*)AtomType::aPSZ
+	(const AtomType*)AtomType::aPSY, (const AtomType*)AtomType::aPSZ,
+	(const AtomType*)AtomType::aPSO
       };
 
-    static const AtomType* RCOblSet[23] =
+    static const AtomType* RCOblSet[24] =
       {
 	(const AtomType*)AtomType::aC1p, (const AtomType*)AtomType::aC2,
 	(const AtomType*)AtomType::aC2p, (const AtomType*)AtomType::aC3p,
@@ -835,10 +837,10 @@ namespace mccore
 	(const AtomType*)AtomType::aO3p, (const AtomType*)AtomType::aO4p,
 	(const AtomType*)AtomType::aO5p, (const AtomType*)AtomType::aP,
 	(const AtomType*)AtomType::aPSX, (const AtomType*)AtomType::aPSY,
-	(const AtomType*)AtomType::aPSZ
+	(const AtomType*)AtomType::aPSZ, (const AtomType*)AtomType::aPSO
       };
 
-    static const AtomType* DGOblSet[25] =
+    static const AtomType* DGOblSet[26] =
       {
 	(const AtomType*)AtomType::aC1p, (const AtomType*)AtomType::aC2,  
 	(const AtomType*)AtomType::aC2p, (const AtomType*)AtomType::aC3p, 
@@ -852,10 +854,10 @@ namespace mccore
 	(const AtomType*)AtomType::aO4p, (const AtomType*)AtomType::aO5p, 
 	(const AtomType*)AtomType::aO6,  (const AtomType*)AtomType::aP,   
 	(const AtomType*)AtomType::aPSX, (const AtomType*)AtomType::aPSY,
-	(const AtomType*)AtomType::aPSZ
+	(const AtomType*)AtomType::aPSZ, (const AtomType*)AtomType::aPSO
       };
 
-    static const AtomType* RGOblSet[26] =
+    static const AtomType* RGOblSet[27] =
       {
 	(const AtomType*)AtomType::aC1p, (const AtomType*)AtomType::aC2,
 	(const AtomType*)AtomType::aC2p, (const AtomType*)AtomType::aC3p,
@@ -869,10 +871,11 @@ namespace mccore
 	(const AtomType*)AtomType::aO3p, (const AtomType*)AtomType::aO4p,
 	(const AtomType*)AtomType::aO5p, (const AtomType*)AtomType::aO6,
 	(const AtomType*)AtomType::aP,   (const AtomType*)AtomType::aPSX,
-	(const AtomType*)AtomType::aPSY, (const AtomType*)AtomType::aPSZ
+	(const AtomType*)AtomType::aPSY, (const AtomType*)AtomType::aPSZ,
+	(const AtomType*)AtomType::aPSO
       };
 
-    static const AtomType* DTOblSet[23] =
+    static const AtomType* DTOblSet[24] =
       {
 	(const AtomType*)AtomType::aC1p, (const AtomType*)AtomType::aC2,
 	(const AtomType*)AtomType::aC2p, (const AtomType*)AtomType::aC3p,
@@ -885,10 +888,10 @@ namespace mccore
 	(const AtomType*)AtomType::aO4,  (const AtomType*)AtomType::aO4p,
 	(const AtomType*)AtomType::aO5p, (const AtomType*)AtomType::aP,
 	(const AtomType*)AtomType::aPSX, (const AtomType*)AtomType::aPSY,
-	(const AtomType*)AtomType::aPSZ
+	(const AtomType*)AtomType::aPSZ, (const AtomType*)AtomType::aPSO
       };
 
-    static const AtomType* RUOblSet[23] =
+    static const AtomType* RUOblSet[24] =
       {
 	(const AtomType*)AtomType::aC1p, (const AtomType*)AtomType::aC2,  
 	(const AtomType*)AtomType::aC2p, (const AtomType*)AtomType::aC3p, 
@@ -901,7 +904,7 @@ namespace mccore
 	(const AtomType*)AtomType::aO4,  (const AtomType*)AtomType::aO4p,
 	(const AtomType*)AtomType::aO5p, (const AtomType*)AtomType::aP,   
 	(const AtomType*)AtomType::aPSX, (const AtomType*)AtomType::aPSY,
-	(const AtomType*)AtomType::aPSZ
+	(const AtomType*)AtomType::aPSZ, (const AtomType*)AtomType::aPSO
       };
 
     static const AtomType* ALAOblSet[5]  = { (const AtomType*)AtomType::aN,
