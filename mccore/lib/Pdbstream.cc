@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.54 $
-// $Id: Pdbstream.cc,v 1.54 2005-04-13 16:04:14 thibaup Exp $
+// $Revision: 1.55 $
+// $Id: Pdbstream.cc,v 1.55 2005-06-16 15:55:07 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -789,22 +789,34 @@ namespace mccore
     *this << setw (5) << atomCounter++;
 
     *this << ' ';
-
-    setf (ios::left, ios::adjustfield);
     
     type = atomTypeParseTable->toString (at.getType ());
+    if (type.length () > 4)
+      gErr (0) << "PDB format not respected: atom type \"" << type 
+	       << "\" has more than 4 characters." << endl;
+
+    setf (ios::left, ios::adjustfield);
     if (isdigit (type[0]) || 4 == type.size ())
       *this << setw (4);
     else 
       *this << ' ' << setw (3);
     *this << type << ' ';  // ALTLOC
     
+    type = residueTypeParseTable->toString (rtype);
+    if (type.length () > 3)
+      gErr (0) << "PDB format not respected: residue type \"" << type 
+	       << "\" has more than 3 characters." << endl;
+    
     setf (ios::right, ios::adjustfield);
-    *this << setw (3) << residueTypeParseTable->toString (rtype);
+    *this << setw (3) << type;
 
     *this << ' ';
 
     *this << this->rid.getChainId ();
+
+    if (this->rid.getResNo () > 9999)
+      gErr (0) << "PDB format not respected: residue no \"" << this->rid.getResNo ()
+	       << "\" has more than 4 digits." << endl;      
 
     setf (ios::right, ios::adjustfield);
     *this << setw (4) << this->rid.getResNo ();
