@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.30 $
-// $Id: ExtendedResidue.cc,v 1.30 2005-02-02 18:14:22 thibaup Exp $
+// $Revision: 1.31 $
+// $Id: ExtendedResidue.cc,v 1.31 2005-06-16 15:53:42 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -345,6 +345,36 @@ namespace mccore
 	}      
       placed = true;
     }
+  }
+
+
+  ostream&
+  ExtendedResidue::display (ostream& os) const
+  {
+    return this->_display (os << "### ExtendedResidue status ###" << endl) << "### end ###" << endl;
+  }
+
+
+  ostream&
+  ExtendedResidue::_display (ostream& os) const
+  {
+    vector< Atom* >::const_iterator ait;
+ 
+    this->Residue::_display (os);
+    os << endl
+       << "# placed?: " << this->placed << endl
+       << "# referential: " << endl << this->referential << endl
+       << "# local atoms: " << this->atomLocal.size () << endl;
+
+    for (ait = this->atomLocal.begin (); ait != atomLocal.end (); ++ait)
+    {
+      os << "\t";
+      os.width (3);
+      os.setf (ios::right);
+      os << (ait - this->atomLocal.begin ()) << ": " << **ait << endl;
+    }
+
+    return os;
   }
 
 }

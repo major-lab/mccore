@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.19 $
+// $Revision: 1.20 $
 // 
 // This file is part of mccore.
 // 
@@ -61,7 +61,7 @@ namespace mccore
    *          
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ExtendedResidue.h,v 1.19 2005-02-09 14:25:36 thibaup Exp $
+   * @version $Id: ExtendedResidue.h,v 1.20 2005-06-16 15:53:42 thibaup Exp $
    */
   class ExtendedResidue : public Residue
   {
@@ -289,6 +289,25 @@ namespace mccore
     
     // I/O  -----------------------------------------------------------------
     
+    /**
+     * Displays debugging information to the output stream.
+     * param os the output stream.
+     * @return the written output stream.
+     */
+    virtual ostream& display (ostream &os) const;
+
+  protected:
+
+    /**
+     * @internal
+     * Displays debugging information to the output stream (class specific).
+     * param os the output stream.
+     * @return the written output stream.
+     */
+    ostream& _display (ostream &os) const;
+
+  public:
+
   };
 
 }

@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.33 $
+// $Revision: 1.34 $
 //
 // This file is part of mccore.
 // 
@@ -62,7 +62,7 @@ namespace mccore
    * the atom types.
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: Residue.h,v 1.33 2005-02-02 18:14:21 thibaup Exp $
+   * @version $Id: Residue.h,v 1.34 2005-06-16 15:53:42 thibaup Exp $
    */
   class Residue
   {
@@ -513,6 +513,11 @@ namespace mccore
     typedef ResidueIterator iterator;
     typedef ResidueConstIterator const_iterator;
     
+
+    float omega;
+    unsigned short estrho;
+
+
     // LIFECYCLE ---------------------------------------------------------------
     
     /**
@@ -931,7 +936,7 @@ namespace mccore
      *
      * @param po4_5p Phosphate residue toward 5' (set it to NULL for an unconstrained branch).
      * @param po4_3p Phosphate residue toward 3' (mandatory!)
-     * @return Rms deviation for the implicit C5'-O5' and C3'-O3' bond lengths (Angstroms).
+     * @return RMS of the implicit C5'-O5' and C3'-O3' bond lengths (Angstroms).
      * @exception LibException is thrown if 3' phosphate is unspecified.
      */
     float buildRiboseByEstimation (const Residue* po4_5p,
@@ -955,7 +960,7 @@ namespace mccore
      * @param po4_3p Phosphate residue toward 3' (set it to NULL for an unconstrained branch).
      * @param pucker Optional pucker type restriction.
      * @param glycosyl Optional glycosyl torsion type restriction.
-     * @return Rms deviation for the implicit C5'-O5' and C3'-O3' bond lengths (Angstroms).
+     * @return RMS of the implicit C5'-O5' and C3'-O3' bond lengths (Angstroms).
      * @exception LibException is thrown if both phosphates are unspecified.
      */
     float buildRiboseByCCM (const Residue* po4_5p, const Residue* po4_3p,
@@ -982,7 +987,7 @@ namespace mccore
      * @param shiftrate Torsion shift reduction rate during optimization (assumed < 1).
      * @param pucker Optional pucker type restriction.
      * @param glycosyl Optional glycosyl torsion type restriction.
-     * @return Rms deviation for the implicit C5'-O5' and C3'-O3' bond lengths (Angstroms).
+     * @return RMS of the implicit C5'-O5' and C3'-O3' bond lengths (Angstroms).
      * @exception LibException is thrown if both phosphates are unspecified.
      */
     float buildRiboseByCCM (const Residue* po4_5p, const Residue* po4_3p,
@@ -1217,6 +1222,26 @@ namespace mccore
      */
     virtual ostream& output (ostream &os) const;
     
+
+    /**
+     * Displays debugging information to the output stream.
+     * param os the output stream.
+     * @return the written output stream.
+     */
+    virtual ostream& display (ostream &os) const;
+
+  protected:
+
+    /**
+     * @internal
+     * Displays debugging information to the output stream (class specific).
+     * param os the output stream.
+     * @return the written output stream.
+     */
+    ostream& _display (ostream &os) const;
+
+  public:
+
     /**
      * Inputs the residue from the stream. All residues binary I/O
      * should be compatible for all inherited classes.

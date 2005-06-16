@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.71 $
-// $Id: Residue.cc,v 1.71 2005-04-27 16:44:52 thibaup Exp $
+// $Revision: 1.72 $
+// $Id: Residue.cc,v 1.72 2005-06-16 15:53:42 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -1794,10 +1794,10 @@ namespace mccore
     xz_len = sqrt (x*x + z*z);
 
     // rho estimation with respect to O3'
-    erho1 = (xz_len - Residue::s_cosf_vshift) / Residue::s_cosf_amplitude;
+    omega = erho1 = (xz_len - Residue::s_cosf_vshift) / Residue::s_cosf_amplitude;
     
     // +/- 0.2 tolerance on cos amplitude
-    if (erho1 < -1.2 || erho1 > 1.2)
+    if (erho1 < -1.25 || erho1 > 1.25)
     {
       this->rib_built_valid = false;
       return numeric_limits< float >::max ();
@@ -1833,26 +1833,25 @@ namespace mccore
     built_yrot = z < 0 ? acos (x / xz_len) : Residue::s_2xpi - acos (x / xz_len);
 
     // compute estimated chi and apply Y rotation
-    //this->_transform_ribose (rotation.rotate (0.0, anchor_yrot - built_yrot, 0.0), build5p, false);
     this->_transform_ribose (HomogeneousTransfo::rotationY (anchor_yrot - built_yrot), build5p, false);
     value1 = this->_evaluate_ribose (anchor_O5p, anchor_O3p, build5p, false);
 
     // back up this ribose
-    vector< Atom > saved_rib;
-    saved_rib.push_back (*this->rib_C1p);
-    saved_rib.push_back (*this->rib_C2p);
-    saved_rib.push_back (*this->rib_C3p);
-    saved_rib.push_back (*this->rib_C4p);
-    saved_rib.push_back (*this->rib_C5p);
+    Atom sO2p, sO5p, sO1P, sO2P, sP;
+    Atom sC1p = *this->rib_C1p;
+    Atom sC2p = *this->rib_C2p;
+    Atom sC3p = *this->rib_C3p;
+    Atom sC4p = *this->rib_C4p;
+    Atom sC5p = *this->rib_C5p;
     if (this->rib_O2p)
-      saved_rib.push_back (*this->rib_O2p);
-    saved_rib.push_back (*this->rib_O4p);
+      sO2p = *this->rib_O2p;
+    Atom sO4p = *this->rib_O4p;
     if (build5p)
     {
-      saved_rib.push_back (*this->rib_O5p);
-      saved_rib.push_back (*this->rib_O1P);
-      saved_rib.push_back (*this->rib_O2P);
-      saved_rib.push_back (*this->rib_P);
+      sO5p = *this->rib_O5p;
+      sO1P = *this->rib_O1P;
+      sO2P = *this->rib_O2P;
+      sP = *this->rib_P;
     }
     
     // build with second rho. Must build O3'!
@@ -1865,34 +1864,37 @@ namespace mccore
     built_yrot = z < 0 ? acos (x / xz_len) : Residue::s_2xpi - acos (x / xz_len);
   
     // compute estimated chi and apply Y rotation
-    //this->_transform_ribose (rotation.rotate (0.0, anchor_yrot - built_yrot, 0.0), build5p, false);
     this->_transform_ribose (HomogeneousTransfo::rotationY (anchor_yrot - built_yrot), build5p, false);
     value2 = this->_evaluate_ribose (anchor_O5p, anchor_O3p, build5p, false);
     
     if (value1 < value2)
     {
-      // set as first estimation: retrieve back upped ribose.
-      int i = -1;
-      *this->rib_C1p = saved_rib[++i];
-      *this->rib_C2p = saved_rib[++i];
-      *this->rib_C3p = saved_rib[++i];
-      *this->rib_C4p = saved_rib[++i];
-      *this->rib_C5p = saved_rib[++i];
+      // set as first estimation: retrieve backup ribose.
+      *this->rib_C1p = sC1p;
+      *this->rib_C2p = sC2p;
+      *this->rib_C3p = sC3p;
+      *this->rib_C4p = sC4p;
+      *this->rib_C5p = sC5p;
       if (this->rib_O2p)
-	*this->rib_O2p = saved_rib[++i];
-      *this->rib_O4p = saved_rib[++i];
+	*this->rib_O2p = sO2p;
+      *this->rib_O4p = sO4p;
       if (build5p)
       {
-	*this->rib_O5p = saved_rib[++i];
-	*this->rib_O1P = saved_rib[++i];
-	*this->rib_O2P = saved_rib[++i];	
-	*this->rib_P = saved_rib[++i];
+	*this->rib_O5p = sO5p;
+	*this->rib_O1P = sO1P;
+	*this->rib_O2P = sO1P;	
+	*this->rib_P = sP;
       }
       final_value = value1;
+      this->estrho = 1;
     }
-    
-    // set as second estimation: keep current ribose.
-    final_value = value2;
+    else
+    {
+      // set as second estimation: keep current ribose.
+      final_value = value2;
+      this->estrho = 2;
+    }
+
     this->_build_ribose_postprocess (ref_override, build5p, false);
     this->rib_O3p = 0;
     
@@ -2877,6 +2879,43 @@ namespace mccore
     return os;
   }
   
+
+  
+  ostream&
+  Residue::display (ostream& os) const
+  {
+    return this->_display (os << "### Residue status ###" << endl) << "### end ###" << endl;
+  }
+
+
+  ostream&
+  Residue::_display (ostream& os) const
+  {
+    AtomMap::const_iterator mit;
+    vector< Atom* >::const_iterator ait;
+
+    os << "# ID:" << this->resId << endl
+       << "# type: " << this->type << endl
+       << "# dirty backbone?: " << this->rib_dirty_ref << endl
+       << "# valid backbone?: " << this->rib_built_valid << endl
+       << "# backbone count:  " << this->rib_built_count << endl
+       << "# atoms mapping: " << this->atomIndex.size () << " entries" << endl;
+       
+    for (mit = this->atomIndex.begin (); mit != atomIndex.end (); ++mit)
+      os << "\t[" << mit->first << "]\t" << mit->second << endl;
+
+    os << "# global atoms: " << this->atomGlobal.size () << " entries" << endl;
+
+    for (ait = this->atomGlobal.begin (); ait != atomGlobal.end (); ++ait)
+    {
+      os << "\t";
+      os.width (3);
+      os.setf (ios::right);
+      os << (ait - this->atomGlobal.begin ()) << ": " << **ait << endl;
+    }
+
+    return os;
+  }
   
   iBinstream& 
   Residue::input (iBinstream &ibs)
