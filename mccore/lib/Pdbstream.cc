@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.55 $
-// $Id: Pdbstream.cc,v 1.55 2005-06-16 15:55:07 thibaup Exp $
+// $Revision: 1.56 $
+// $Id: Pdbstream.cc,v 1.56 2005-06-20 15:14:00 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -814,7 +814,7 @@ namespace mccore
 
     *this << this->rid.getChainId ();
 
-    if (this->rid.getResNo () > 9999)
+    if (this->rid.getResNo () > 9999 || this->rid.getResNo () < -999)
       gErr (0) << "PDB format not respected: residue no \"" << this->rid.getResNo ()
 	       << "\" has more than 4 digits." << endl;      
 
