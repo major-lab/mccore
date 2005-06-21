@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.72 $
-// $Id: Residue.cc,v 1.72 2005-06-16 15:53:42 thibaup Exp $
+// $Revision: 1.73 $
+// $Id: Residue.cc,v 1.73 2005-06-21 13:48:04 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -1585,6 +1585,89 @@ namespace mccore
     return Residue::getGlycosylType (chi);
   }
 
+
+  float
+  Residue::getFuranoseAmplitude () const throw (IntLibException)
+  {
+    try
+    {
+      return
+	this->_safe_get (AtomType::aC2p)->torsionAngle (*this->_safe_get (AtomType::aC1p),
+							*this->_safe_get (AtomType::aC3p),
+							*this->_safe_get (AtomType::aC4p)) 
+	/
+	cos (this->getRho ());
+    }
+    catch (Exception& iex)
+    {
+      IntLibException ex ("", __FILE__, __LINE__);
+      ex << "cannot evaluate pucker amplitude for " << *this <<  "\n\t"
+	 << iex.what ();
+      throw ex;
+    }
+  }
+
+
+  unsigned short
+  Residue::getFuranoseType () const throw (IntLibException)
+  {
+    /*
+      4 bits unsigned value:
+                             [1] C5'                   N1(N9)
+         __ O4'__                |                     |
+        /        \     --->      C4'---C3'-[O4']-C2'---C1'    == 0101 (5)
+      C4'-C3'-C2'-C1'                  |         |
+      b2  b1  b3  b0         [0]       O3'       O2'
+    */
+
+    unsigned short ftype = 0, b3m = 8, b2m = 4, b1m = 2, b0m = 1;
+
+    try
+    {
+      Atom* c1p = this->_safe_get (AtomType::aC1p);
+      Atom* c2p = this->_safe_get (AtomType::aC2p);
+      Atom* c3p = this->_safe_get (AtomType::aC3p);
+      Atom* c4p = this->_safe_get (AtomType::aC4p);
+      Atom* o4p = this->_safe_get (AtomType::aO4p);
+      Vector3D ext;
+
+      // b0: N1(N9)
+      ext = *this->_safe_get (Residue::nitrogenType19 (this->type));
+      if (ext.transform (HomogeneousTransfo::align (*c1p, *c2p, *o4p).invert ()).getX () < 0.0)
+	ftype |= b0m;
+
+      // b1: O3'
+      ext = *this->_safe_get (AtomType::aO3p);
+      if (ext.transform (HomogeneousTransfo::align (*c3p, *c4p, *c2p).invert ()).getX () < 0.0)
+	ftype |= b1m;
+
+      // b2: C5'
+      ext = *this->_safe_get (AtomType::aC5p);
+      if (ext.transform (HomogeneousTransfo::align (*c4p, *o4p, *c1p).invert ()).getX () < 0.0)
+	ftype |= b2m;
+
+      // b3: O2' => only if exists
+      try
+      {
+	ext = *this->_safe_get (AtomType::aO2p);
+	if (ext.transform (HomogeneousTransfo::align (*c2p, *c3p, *c1p).invert ()).getX () < 0.0)
+	  ftype |= b3m;
+      }
+      catch (NoSuchAtomException& ex)
+      {
+      }
+    }
+    catch (Exception& iex)
+    {
+      IntLibException ex ("", __FILE__, __LINE__);
+      ex << "cannot evaluate furanose type for " << *this <<  "\n\t"
+	 << iex.what ();
+      throw ex;
+    }
+
+    return ftype;
+  }
+  
   
   void 
   Residue::finalize ()
@@ -2361,7 +2444,9 @@ namespace mccore
   {
     // set reference to ribose's atoms
     
-    if (this->rib_dirty_ref)
+    if (this->rib_dirty_ref ||
+	(build5p && 0 == this->rib_O5p) || 
+	(build3p && 0 == this->rib_O3p))
     {
       // check residue type (DNA doesn't have a O2')
       if (this->type->isRNA ())

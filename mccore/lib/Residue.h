@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.34 $
+// $Revision: 1.35 $
 //
 // This file is part of mccore.
 // 
@@ -62,7 +62,7 @@ namespace mccore
    * the atom types.
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: Residue.h,v 1.34 2005-06-16 15:53:42 thibaup Exp $
+   * @version $Id: Residue.h,v 1.35 2005-06-21 13:48:04 thibaup Exp $
    */
   class Residue
   {
@@ -872,6 +872,31 @@ namespace mccore
      */
     virtual const PropertyType* getGlycosyl () const;
     
+    /**
+     * Returns the amplitude of the furanose as the maximal torsion value for
+     * any of the furanose's five torsions. Throws an exception if needed atoms
+     * are missing.
+     * @return furanose's maximal torsion value (rad).
+     * @throws IntLibException
+     */
+    float getFuranoseAmplitude () const throw (IntLibException);
+
+    /**
+     * Returns the furanose's type as labeled to the 16 possible stereochemical 
+     * arrangments of the four composites linked to the ring:
+     *
+     * bit #3: O2' (only in RNA)
+     * bit #2: C5'
+     * bit #1: O3'
+     * bit #0: N1 (or N9)
+     *
+     * the canonical arrangment (alpha-D-ribofuranoside) is 0101 (5) 
+     *
+     * @return furanose's type value from 0 to 15 (0 to 7 in DNA)
+     * @throws IntLibException
+     */
+    unsigned short getFuranoseType () const throw (IntLibException);
+
     /**
      * Finalizes the residue. Computes the referential's pseudo-atoms.
      */
