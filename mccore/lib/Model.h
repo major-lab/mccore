@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.25 $
+// $Revision: 1.26 $
 //
 // This file is part of mccore.
 // 
@@ -59,7 +59,7 @@ namespace mccore
    *   iterators yields object.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Model.h,v 1.25 2005-01-27 19:12:53 larosem Exp $
+   * @version $Id: Model.h,v 1.26 2005-06-23 19:06:06 larosem Exp $
    */
   class Model : public AbstractModel
   {
@@ -158,7 +158,6 @@ namespace mccore
      */
     virtual const_iterator end () const
     { return const_iterator (residues.end()); }
-
 
     // METHODS -------------------------------------------------------------
 

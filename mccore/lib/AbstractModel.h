@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 16:12:42 2004
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 //
 // This file is part of mccore.
 // 
@@ -52,7 +52,7 @@ namespace mccore
    * Abstract class for Models.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: AbstractModel.h,v 1.6 2005-06-09 14:41:03 thibaup Exp $
+   * @version $Id: AbstractModel.h,v 1.7 2005-06-23 19:05:54 larosem Exp $
    */
   class AbstractModel
   {
@@ -268,6 +268,30 @@ namespace mccore
      * @return the iterator.
      */
     virtual const_iterator end () const = 0;
+
+    /**
+     * Gets the first element of the model or end if the model is empty.
+     * @return the first element of the model or end if the model is empty.
+     */
+    Residue& front () { return *begin (); }
+    
+    /**
+     * Gets the first element of the model or end if the model is empty.
+     * @return the first element of the model or end if the model is empty.
+     */
+    const Residue& front () const { return *begin (); }
+
+    /**
+     * Gets the last element of the model or end if the model is empty.
+     * @return the last element of the model or end if the model is empty.
+     */
+    Residue& back () { return *((iterator) --end ()); }
+
+    /**
+     * Gets the last element of the model or end if the model is empty.
+     * @return the last element of the model or end if the model is empty.
+     */
+    const Residue& back () const { return *((const_iterator) --end ()); }
 
     // METHODS -------------------------------------------------------------
 
