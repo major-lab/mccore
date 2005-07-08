@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.9 $
-// $Id: GraphModel.cc,v 1.9 2005-06-07 19:58:34 larosem Exp $
+// $Revision: 1.10 $
+// $Id: GraphModel.cc,v 1.10 2005-07-08 00:25:24 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -158,32 +158,16 @@ namespace mccore
   GraphModel::insert (const Residue &res, int w)
   {
     iterator found;
+    Residue *r;
 
-    if (end () == (found = find (res.getResId ())))
+    if (end () != (found = find (res.getResId ())))
       {
-	Residue *r;
-	
-	r = residueFM->createResidue (res);
-
-	graphsuper::insert (r, w);
-	found = graphsuper::find (r);
+	erase (found);
       }
-    else
-      {
-	GraphModel::label lab;
-	list< label > neighboors;
-	list< label >::const_iterator it;
-
-	lab = getVertexLabel (&*found);
-	neighboors = internalNeighborhood (lab);
-	for (it = neighboors.begin (); neighboors.end () != it; ++it)
-	  {
-	    uncheckedInternalDisconnect (lab, *it);
-	  }
-	*found = res;
-      }
+    r = residueFM->createResidue (res);
+    graphsuper::insert (r, w);
     annotated = false;
-    return found;
+    return graphsuper::find (r);
   }
 
   
@@ -283,7 +267,12 @@ namespace mccore
 
 	    if (rel->annotate ())
 	      {
+		Relation *inv;
+
+		inv = rel->clone ();
+		inv->invert ();
 		connect (i, j, rel, 0);
+		connect (j, i, inv, 0);
 	      }
 	    else
 	      {

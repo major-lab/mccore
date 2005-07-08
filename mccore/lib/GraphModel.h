@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:31:01 2004
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 // 
 // This file is part of mccore.
 // 
@@ -30,7 +30,7 @@
 #include "Algo.h"
 #include "Path.h"
 #include "Residue.h"
-#include "UndirectedGraph.h"
+#include "OrientedGraph.h"
 
 
 
@@ -48,14 +48,14 @@ namespace mccore
    * iterators.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.h,v 1.9 2005-06-07 19:58:38 larosem Exp $
+   * @version $Id: GraphModel.h,v 1.10 2005-07-08 00:25:29 larosem Exp $
    */
-  class GraphModel : public AbstractModel, public UndirectedGraph< Residue*, Relation*, int, int, less_deref< Residue > >
+  class GraphModel : public AbstractModel, public OrientedGraph< Residue*, Relation*, int, int, less_deref< Residue > >
   {
 
   protected:
     
-    typedef UndirectedGraph< Residue*, Relation*, int, int, less_deref< Residue > > graphsuper;
+    typedef OrientedGraph< Residue*, Relation*, int, int, less_deref< Residue > > graphsuper;
     
   public:
 
