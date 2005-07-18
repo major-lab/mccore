@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.73 $
-// $Id: Residue.cc,v 1.73 2005-06-21 13:48:04 thibaup Exp $
+// $Revision: 1.74 $
+// $Id: Residue.cc,v 1.74 2005-07-18 20:17:56 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -1517,12 +1517,44 @@ namespace mccore
       throw ex;
     }
     
-    double nu0 = o4p->torsionAngle (*c4p, *c1p, *c2p);
-    double nu1 = c1p->torsionAngle (*o4p, *c2p, *c3p);
-    double nu2 = c2p->torsionAngle (*c1p, *c3p, *c4p);
-    double nu3 = c3p->torsionAngle (*c2p, *c4p, *o4p);
-    double nu4 = c4p->torsionAngle (*c3p, *o4p, *c1p);
-    double rho = atan2 (nu4 + nu1 - nu3 - nu0, nu2 * 3.07768354);
+    double theta3 = o4p->torsionAngle (*c4p, *c1p, *c2p); // nu0
+    double theta4 = c1p->torsionAngle (*o4p, *c2p, *c3p); // nu1
+    double theta0 = c2p->torsionAngle (*c1p, *c3p, *c4p); // nu2
+    double theta1 = c3p->torsionAngle (*c2p, *c4p, *o4p); // nu3
+    double theta2 = c4p->torsionAngle (*c3p, *o4p, *c1p); // nu4
+    double rho = atan2 (theta2 + theta4 - theta1 - theta3, theta0 * 3.077684f);
+
+    return rho > 0 ? rho : s_2xpi + rho;
+  }
+
+
+  float
+  Residue::getRho (float& theta0, float& theta1, float& theta2, float& theta3, float& theta4) const
+  {
+    Atom *c1p, *c2p, *c3p, *c4p, *o4p;
+
+    try
+    {
+      c1p = this->_safe_get (AtomType::aC1p);
+      c2p = this->_safe_get (AtomType::aC2p);
+      c3p = this->_safe_get (AtomType::aC3p);
+      c4p = this->_safe_get (AtomType::aC4p);
+      o4p = this->_safe_get (AtomType::aO4p);
+    }
+    catch (Exception& iex)
+    {
+      IntLibException ex ("", __FILE__, __LINE__);
+      ex << "cannot evaluate pseudorotation for " << *this <<  "\n\t"
+	 << iex.what ();
+      throw ex;
+    }
+    
+    theta3 = o4p->torsionAngle (*c4p, *c1p, *c2p); // nu0
+    theta4 = c1p->torsionAngle (*o4p, *c2p, *c3p); // nu1
+    theta0 = c2p->torsionAngle (*c1p, *c3p, *c4p); // nu2
+    theta1 = c3p->torsionAngle (*c2p, *c4p, *o4p); // nu3
+    theta2 = c4p->torsionAngle (*c3p, *o4p, *c1p); // nu4
+    float rho = atan2 (theta2 + theta4 - theta1 - theta3, theta0 * 3.077684f);
 
     return rho > 0 ? rho : s_2xpi + rho;
   }
@@ -1845,7 +1877,6 @@ namespace mccore
     float x, z, xz_len;
     float anchor_yrot, built_yrot;
     float value1 = 0, value2 = 0, final_value;
-    //HomogeneousTransfo rotation;
     
     if (po4_3p == 0)
     {
@@ -1879,27 +1910,30 @@ namespace mccore
     // rho estimation with respect to O3'
     omega = erho1 = (xz_len - Residue::s_cosf_vshift) / Residue::s_cosf_amplitude;
     
-    // +/- 0.2 tolerance on cos amplitude
-    if (erho1 < -1.25 || erho1 > 1.25)
+    // +/- 0.25 tolerance on cos amplitude
+    if (erho1 < -1.25)
     {
       this->rib_built_valid = false;
       return numeric_limits< float >::max ();
     }
-    if (erho1 < -1)
-      erho1 = -1;
-    else if (erho1 > 1)
-      erho1 = 1;
+    else if (erho1 < -1.0)   // -1.25 <= omega < -1.0   
+      erho1 = -1.0;
+    else if (erho1 > 1.25)   
+    {
+      this->rib_built_valid = false;
+      return numeric_limits< float >::max ();
+    }
+    else if (erho1 > 1.0)    // 1.00 <= omega < 1.25
+      erho1 = 1.0;
+
+//     if (erho1 < -1)
+//       erho1 = -1.0;
+//     else if (erho1 > 1)
+//       erho1 = 1.0;
 
     erho1 = acos (erho1) - Residue::s_cosf_phase;
+    erho2 = Residue::s_2xpi - 2 * Residue::s_cosf_phase - erho1;
 
-    // get mirror rho
-    if  (erho1 > 0)
-      erho2 = Residue::s_2xpi - 2 * Residue::s_cosf_phase - erho1;
-    else
-    {
-      erho1 = Residue::s_2xpi + erho1;
-      erho2 = Residue::s_4xpi - Residue::s_cosf_phase - erho1;
-    }
 
     /** glycosyl torsion estimation **/
 
@@ -1981,7 +2015,8 @@ namespace mccore
     this->_build_ribose_postprocess (ref_override, build5p, false);
     this->rib_O3p = 0;
     
-    return sqrt (final_value / 2.0);
+//     return sqrt (final_value / 2.0);
+    return final_value;
   }
 
   
@@ -2127,7 +2162,8 @@ namespace mccore
     this->_build_ribose_postprocess (ref_override, build5p, build3p);
     this->rib_built_valid = true;
     
-    return sqrt (eval_x / 2.0);
+    //return sqrt (eval_x / 2.0);
+    return eval_x;
   }
 
 
@@ -2937,9 +2973,9 @@ namespace mccore
   Residue::_evaluate_ribose (const Atom& o5p, const Atom& o3p,
 			     bool build5p, bool build3p) const
   {
-    return
-      (build5p ? 2.0736 : this->rib_C5p->squareDistance (o5p)) +
-      (build3p ? 2.047761 : this->rib_C3p->squareDistance (o3p));
+    float e5p = build5p ? 0.0 : this->rib_C5p->distance (o5p) - 1.440;
+    float e3p = build3p ? 0.0 : this->rib_C3p->distance (o3p) - 1.431;
+    return sqrt ((e5p*e5p + e3p*e3p) / 2.0);
   }
   
   void

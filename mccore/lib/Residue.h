@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.35 $
+// $Revision: 1.36 $
 //
 // This file is part of mccore.
 // 
@@ -62,7 +62,7 @@ namespace mccore
    * the atom types.
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: Residue.h,v 1.35 2005-06-21 13:48:04 thibaup Exp $
+   * @version $Id: Residue.h,v 1.36 2005-07-18 20:17:56 thibaup Exp $
    */
   class Residue
   {
@@ -851,26 +851,38 @@ namespace mccore
      * @return The pseudorotation value (rad).
      * @exception LibException
      */
-    virtual float getRho () const;
+    float getRho () const;
+
+    /**
+     * Determines the pucker pseudorotation (rho) of the NucleicAcid backbone.
+     * @param theta0 will contain computed theta0 (rad).
+     * @param theta1 will contain computed theta1 (rad).
+     * @param theta2 will contain computed theta2 (rad).
+     * @param theta3 will contain computed theta3 (rad).
+     * @param theta4 will contain computed theta4 (rad).
+     * @return The pseudorotation value (rad).
+     * @exception LibException
+     */
+    float getRho (float& theta0, float& theta1, float& theta2, float& theta3, float& theta4) const;
     
     /**
      * Determines the pucker mode of the NucleicAcid backbone.
      * @return The property type label.
      */
-    virtual const PropertyType* getPucker () const;
+    const PropertyType* getPucker () const;
 
     /**
      * Determines the glycosyl torsion (chi) of the NucleicAcid backbone.
      * @return The glycosyl torsion value (rad).
      * @exception LibException
      */
-    virtual float getChi () const;
+    float getChi () const;
     
     /**
      * Determines the glycosidic angle classification.
      * @return The property type label.
      */
-    virtual const PropertyType* getGlycosyl () const;
+    const PropertyType* getGlycosyl () const;
     
     /**
      * Returns the amplitude of the furanose as the maximal torsion value for
@@ -923,12 +935,23 @@ namespace mccore
      * @param glycosyl Glycosyl torsion type.
      * @param build5p Flag to enable 5' branch construction (O5' and P atoms).
      * @param build3p Flag to enable 3' branch construction (O3' atom).
+     * @param ref_override Override local referential (so it won't be computed here).
      * @return Zero value.
      */
-
     float buildRibose (const PropertyType* pucker, const PropertyType* glycosyl,
 		       bool build5p, bool build3p);
-    
+
+    /**
+     * Builds a theoretical ribose onto a nucleic acid's nitrogen base.
+     * The ribose's conformation is parameterized by symbolic types, while
+     * its 5' branch is optionnaly parameterized by gamma and beta torsion values. 
+     * @param pucker Pucker conformation type.
+     * @param glycosyl Glycosyl torsion type.
+     * @param build5p Flag to enable 5' branch construction (O5' and P atoms).
+     * @param build3p Flag to enable 3' branch construction (O3' atom).
+     * @param ref_override Override local referential (so it won't be computed here).
+     * @return Zero value.
+     */
     float buildRibose (const PropertyType* pucker, const PropertyType* glycosyl,
 		       bool build5p, bool build3p,
 		       const HomogeneousTransfo& ref_override);
@@ -943,6 +966,7 @@ namespace mccore
      * @param beta Beta torsion (rad).
      * @param build5p Flag to enable 5' branch construction (O5' and P atoms).
      * @param build3p Flag to enable 3' branch construction (O3' atom).
+     * @param ref_override Override local referential (so it won't be computed here).
      * @return Zero value.
      */
     float buildRibose (float rho, float chi,
@@ -954,19 +978,32 @@ namespace mccore
      * Builds a theoretical ribose onto a nucleic acid's nitrogen base that fits the global
      * position of two adjacent phosphates (toward 5' and 3'). The optimal value for rho
      * and chi are estimated in constant time using 3' phosphate position (which is therefore
-     * mandatory). Fitting is quantified by the rms deviation for the implicit C5'-O5'
-     * and C3'-O3' bond lengths. Only the 5' phosphate can be ommited (set to NULL) resulting
+     * mandatory). Only the 5' phosphate can be ommited (set to NULL) resulting
      * in the unconstrained building of the corresponding ribose branch. No conformation
      * restriction is allowed with this building method.
      *
      * @param po4_5p Phosphate residue toward 5' (set it to NULL for an unconstrained branch).
      * @param po4_3p Phosphate residue toward 3' (mandatory!)
-     * @return RMS of the implicit C5'-O5' and C3'-O3' bond lengths (Angstroms).
+     * @return RMSD between length of implicit C5'-O5' and C3'-O3' bonds and their theoretical length (1.440 and 1.431 respectively) (Angstroms).
      * @exception LibException is thrown if 3' phosphate is unspecified.
      */
     float buildRiboseByEstimation (const Residue* po4_5p,
 				   const Residue* po4_3p);
 
+    /**
+     * Builds a theoretical ribose onto a nucleic acid's nitrogen base that fits the global
+     * position of two adjacent phosphates (toward 5' and 3'). The optimal value for rho
+     * and chi are estimated in constant time using 3' phosphate position (which is therefore
+     * mandatory). Only the 5' phosphate can be ommited (set to NULL) resulting
+     * in the unconstrained building of the corresponding ribose branch. No conformation
+     * restriction is allowed with this building method.
+     *
+     * @param po4_5p Phosphate residue toward 5' (set it to NULL for an unconstrained branch).
+     * @param po4_3p Phosphate residue toward 3' (mandatory!)
+     * @param ref_override Override local referential (so it won't be computed here).
+     * @return RMSD between length of implicit C5'-O5' and C3'-O3' bonds and their theoretical length (1.440 and 1.431 respectively) (Angstroms).
+     * @exception LibException is thrown if 3' phosphate is unspecified.
+     */
     float buildRiboseByEstimation (const Residue* po4_5p,
 				   const Residue* po4_3p,
 				   const HomogeneousTransfo& ref_override);
@@ -976,21 +1013,41 @@ namespace mccore
      * position of two adjacent phosphates (toward 5' and 3'). A constant step cyclic
      * coordinates method solves the optimization problem in the 2D torsion space created
      * by rho and chi. Both pucker and glycosyl types can be forced, otherwise
-     * the best geometrical fit is favored. Fitting is quantified by the rms deviation for
-     * the implicit C5'-O5' and C3'-O3' bond lengths. Any of the two phosphates can be ommited
-     * (set to NULL) resulting in the unconstrained building of the corresponding ribose branch.
-     * Default optimization paramaters are used.
+     * the best geometrical fit is favored. Fitting is quantified by the rms deviation between 
+     * length of implicit C5'-O5' and C3'-O3' bonds and their theoretical length (1.440 and 
+     * 1.431 Angstroms respectively). Any of the two phosphates can be ommited by setting them 
+     * to NULL, resulting in the unconstrained building of the corresponding ribose branch.
+     * Default optimization parameters are used.
      *
      * @param po4_5p Phosphate residue toward 5' (set it to NULL for an unconstrained branch).
      * @param po4_3p Phosphate residue toward 3' (set it to NULL for an unconstrained branch).
      * @param pucker Optional pucker type restriction.
      * @param glycosyl Optional glycosyl torsion type restriction.
-     * @return RMS of the implicit C5'-O5' and C3'-O3' bond lengths (Angstroms).
+     * @return RMSD between length of implicit C5'-O5' and C3'-O3' bonds and their theoretical length (1.440 and 1.431 respectively) (Angstroms).
      * @exception LibException is thrown if both phosphates are unspecified.
      */
     float buildRiboseByCCM (const Residue* po4_5p, const Residue* po4_3p,
 			    const PropertyType* pucker = 0, const PropertyType* glycosyl = 0);
 
+    /**
+     * Builds a theoretical ribose onto a nucleic acid's nitrogen base that fits the global
+     * position of two adjacent phosphates (toward 5' and 3'). A constant step cyclic
+     * coordinates method solves the optimization problem in the 2D torsion space created
+     * by rho and chi. Both pucker and glycosyl types can be forced, otherwise
+     * the best geometrical fit is favored. Fitting is quantified by the rms deviation between 
+     * length of implicit C5'-O5' and C3'-O3' bonds and their theoretical length (1.440 and 
+     * 1.431 Angstroms respectively). Any of the two phosphates can be ommited by setting them 
+     * to NULL, resulting in the unconstrained building of the corresponding ribose branch.
+     * Default optimization parameters are used.
+     *
+     * @param po4_5p Phosphate residue toward 5' (set it to NULL for an unconstrained branch).
+     * @param po4_3p Phosphate residue toward 3' (set it to NULL for an unconstrained branch).
+     * @param ref_override Override local referential (so it won't be computed here).
+     * @param pucker Optional pucker type restriction.
+     * @param glycosyl Optional glycosyl torsion type restriction.
+     * @return RMSD between length of implicit C5'-O5' and C3'-O3' bonds and their theoretical length (1.440 and 1.431 respectively) (Angstroms).
+     * @exception LibException is thrown if both phosphates are unspecified.
+     */
     float buildRiboseByCCM (const Residue* po4_5p, const Residue* po4_3p,
 			    const HomogeneousTransfo& ref_override,
 			    const PropertyType* pucker = 0, const PropertyType* glycosyl = 0);
@@ -1000,13 +1057,15 @@ namespace mccore
      * position of two adjacent phosphates (toward 5' and 3'). A constant step cyclic
      * coordinates method solves the optimization problem in the 2D torsion space created
      * by rho and chi. Both pucker and glycosyl types can be forced, otherwise
-     * the best geometrical fit is favored. Fitting is quantified by the rms deviation for
-     * the implicit C5'-O5' and C3'-O3' bond lengths. Any of the two phosphates can be ommited
-     * (set to NULL) resulting in the unconstrained building of the corresponding ribose branch.
-     * Optimization paramaters are specified.
+     * the best geometrical fit is favored. Fitting is quantified by the rms deviation between 
+     * length of implicit C5'-O5' and C3'-O3' bonds and their theoretical length (1.440 and 
+     * 1.431 Angstroms respectively). Any of the two phosphates can be ommited by setting them 
+     * to NULL, resulting in the unconstrained building of the corresponding ribose branch.
+     * Default optimization parameters are used.
      *
      * @param po4_5p Phosphate residue toward 5' (set it to NULL for an unconstrained branch).
      * @param po4_3p Phosphate residue toward 3' (set it to NULL for an unconstrained branch).
+     * @param ref_override Override local referential (so it won't be computed here).
      * @param minshift Torsion shift threshold during optimization (rad).
      * @param mindrop Displacement threshold in the optimization's objective function.
      * @param shiftrate Torsion shift reduction rate during optimization (assumed < 1).
