@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
-# $Revision: 1.41 $
-# $Id: configure.in,v 1.41 2005-06-07 22:15:38 larosem Exp $
+# $Revision: 1.42 $
+# $Id: configure.in,v 1.42 2005-07-18 20:12:32 thibaup Exp $
 # 
 # This file is part of mccore.
 # 
@@ -34,16 +34,16 @@ VERSION=1.5
 AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE")
 AC_DEFINE_UNQUOTED(VERSION, "$VERSION")
 
-AC_DEFINE_UNQUOTED(MACHINE, "`uname -m`")
-AC_DEFINE_UNQUOTED(KERNEL_VERSION, "`uname -r`")
-AC_DEFINE_UNQUOTED(OSNAME, "`uname -s`")
-
 AC_PROG_MAKE_SET
 
 AC_C_BIGENDIAN
 AC_PROG_CXX
 AC_LANG(C++)
+
 AC_CANONICAL_HOST
+AC_DEFINE_UNQUOTED(VERSION_CPU, "$host_cpu")
+AC_DEFINE_UNQUOTED(VERSION_VENDOR, "$host_vendor")
+AC_DEFINE_UNQUOTED(VERSION_OS, "$host_os")
 
 AC_PROG_INSTALL
 AC_PATH_PROG(AR,ar)

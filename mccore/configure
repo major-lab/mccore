@@ -1276,19 +1276,6 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
-cat >>confdefs.h <<_ACEOF
-#define MACHINE "`uname -m`"
-_ACEOF
-
-cat >>confdefs.h <<_ACEOF
-#define KERNEL "`uname -r`"
-_ACEOF
-
-cat >>confdefs.h <<_ACEOF
-#define OSNAME "`uname -s`"
-_ACEOF
-
-
 echo "$as_me:$LINENO: checking whether ${MAKE-make} sets \$(MAKE)" >&5
 echo $ECHO_N "checking whether ${MAKE-make} sets \$(MAKE)... $ECHO_C" >&6
 set dummy ${MAKE-make}; ac_make=`echo "$2" | sed 'y,:./+-,___p_,'`
@@ -2841,6 +2828,7 @@ ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
+
 ac_aux_dir=
 for ac_dir in $srcdir $srcdir/.. $srcdir/../..; do
   if test -f $ac_dir/install-sh; then
@@ -2919,6 +2907,18 @@ host_cpu=`echo $ac_cv_host | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/\1/'`
 host_vendor=`echo $ac_cv_host | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/\2/'`
 host_os=`echo $ac_cv_host | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/\3/'`
 
+
+cat >>confdefs.h <<_ACEOF
+#define VERSION_CPU "$host_cpu"
+_ACEOF
+
+cat >>confdefs.h <<_ACEOF
+#define VERSION_VENDOR "$host_vendor"
+_ACEOF
+
+cat >>confdefs.h <<_ACEOF
+#define VERSION_OS "$host_os"
+_ACEOF
 
 
 # Find a good install program.  We prefer a C program (faster),
