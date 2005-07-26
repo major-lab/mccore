@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.21 $
-// $Id: HomogeneousTransfo.cc,v 1.21 2005-07-26 20:25:51 larosem Exp $
+// $Revision: 1.22 $
+// $Id: HomogeneousTransfo.cc,v 1.22 2005-07-26 21:46:35 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -75,14 +75,20 @@ namespace mccore
   HomogeneousTransfo::HomogeneousTransfo (const float* openGLMatrix) 
   {
     matrix = new float[16];
-    memcpy (matrix, openGLMatrix, 16*sizeof (float));
+    set (openGLMatrix[0], openGLMatrix[4], openGLMatrix[ 8], openGLMatrix[12],
+	 openGLMatrix[1], openGLMatrix[5], openGLMatrix[ 9], openGLMatrix[13],
+	 openGLMatrix[2], openGLMatrix[6], openGLMatrix[10], openGLMatrix[14],
+	 openGLMatrix[3], openGLMatrix[7], openGLMatrix[11], openGLMatrix[15]);
   }
   
   
   HomogeneousTransfo::HomogeneousTransfo (const HomogeneousTransfo &other) 
   {
     matrix = new float[16];
-    memcpy (matrix, other.matrix, 16*sizeof (float));
+    set (other.matrix[0], other.matrix[4], other.matrix[ 8], other.matrix[12],
+	 other.matrix[1], other.matrix[5], other.matrix[ 9], other.matrix[13],
+	 other.matrix[2], other.matrix[6], other.matrix[10], other.matrix[14],
+	 other.matrix[3], other.matrix[7], other.matrix[11], other.matrix[15]);
   }
 
 
@@ -97,8 +103,10 @@ namespace mccore
   {
     if (this != &other)
       {
-	if (!matrix) matrix = new float[16];
-	memcpy (matrix, other.matrix, 16*sizeof (float));
+	set (other.matrix[0], other.matrix[4], other.matrix[ 8], other.matrix[12],
+	     other.matrix[1], other.matrix[5], other.matrix[ 9], other.matrix[13],
+	     other.matrix[2], other.matrix[6], other.matrix[10], other.matrix[14],
+	     other.matrix[3], other.matrix[7], other.matrix[11], other.matrix[15]);
       }
     return *this;
   }
