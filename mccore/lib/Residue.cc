@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.74 $
-// $Id: Residue.cc,v 1.74 2005-07-18 20:17:56 thibaup Exp $
+// $Revision: 1.75 $
+// $Id: Residue.cc,v 1.75 2005-07-26 20:25:59 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -652,7 +652,8 @@ namespace mccore
     }
 
     this->finalize ();
-    this->setReferential (HomogeneousTransfo::identity);
+    const HomogeneousTransfo identity;
+    this->setReferential (identity);
   }
 
 
@@ -2456,13 +2457,13 @@ namespace mccore
       else
       {
 	gOut (4) << "no referential for residue type " << *this << endl;
-	return HomogeneousTransfo::identity;
+	return HomogeneousTransfo ();
       }
     }
     catch (NoSuchAtomException& ex)
     {
       gOut (4) << "no referential for residue " << *this << ": " << ex << endl;
-      return HomogeneousTransfo::identity;
+      return HomogeneousTransfo ();
     }
 
     return HomogeneousTransfo::align (*pivot[0], *pivot[1], *pivot[2]);

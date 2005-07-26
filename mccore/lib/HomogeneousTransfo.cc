@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.20 $
-// $Id: HomogeneousTransfo.cc,v 1.20 2005-07-18 20:14:22 thibaup Exp $
+// $Revision: 1.21 $
+// $Id: HomogeneousTransfo.cc,v 1.21 2005-07-26 20:25:51 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -33,10 +33,8 @@
 #include "Binstream.h"
 #include "Exception.h"
 #include "HomogeneousTransfo.h"
-
-//#include "adenine.h"
-
 #include "Residue.h"
+
 
 
 namespace mccore 
@@ -53,11 +51,6 @@ namespace mccore
     return 2;
   }
 
-
-  const HomogeneousTransfo HomogeneousTransfo::identity;
-  //const float HomogeneousTransfo::alpha_square = 2.25;
-  float HomogeneousTransfo::alpha_square = 6.927424; // 2.632^2
-  
 
   HomogeneousTransfo::HomogeneousTransfo () 
   { 
@@ -528,13 +521,6 @@ namespace mccore
     return sqrt ((u2.transform (*this).squareDistance (u1) +
 		  v2.transform (*this).squareDistance (v1) +
 		  w2.transform (*this).squareDistance (w1)) / 3.0);
-
-//     static Adenine ade1;
-//     Adenine ade2;
-    
-//     ade2.transform (*this);
-
-//     return ade1.rmsd (ade2);
   }
 
 
