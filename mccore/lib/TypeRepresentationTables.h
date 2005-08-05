@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct  1 13:34:36 2004
-// $Revision: 1.3 $
-// $Id: TypeRepresentationTables.h,v 1.3 2005-01-03 23:09:22 larosem Exp $
+// $Revision: 1.4 $
+// $Id: TypeRepresentationTables.h,v 1.4 2005-08-05 16:01:19 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -46,7 +46,7 @@ namespace mccore
    * context.
    *
    * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: TypeRepresentationTables.h,v 1.3 2005-01-03 23:09:22 larosem Exp $
+   * @version $Id: TypeRepresentationTables.h,v 1.4 2005-08-05 16:01:19 larosem Exp $
    */
   template < typename T >
   class TypeRepresentationTables
@@ -95,14 +95,16 @@ namespace mccore
     {
       pair< typename map< string, const T* >::iterator, bool > inserted;
 
-      inserted = typeTable.insert (make_pair< const string, const T*> (str, 0));
+      inserted = typeTable.insert (make_pair< string, const T*> (str, 0));
       if (inserted.second)
 	{
 	  const T *type;
+	  pair< const T*, string > p;
 
 	  type = T::parseType (str);
 	  inserted.first->second = type;
-	  representationTable[type] = str;
+	  p = make_pair< const T*, string > (type, str);
+	  representationTable.insert (p);
 	}
       return inserted.first->second;
     }
@@ -136,7 +138,7 @@ namespace mccore
    * context and an AtomType.
    *
    * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: TypeRepresentationTables.h,v 1.3 2005-01-03 23:09:22 larosem Exp $
+   * @version $Id: TypeRepresentationTables.h,v 1.4 2005-08-05 16:01:19 larosem Exp $
    */
   class AmberAtomTypeRepresentationTable : public TypeRepresentationTables< AtomType >
   {
@@ -169,7 +171,7 @@ namespace mccore
    * context and an AtomType.
    *
    * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: TypeRepresentationTables.h,v 1.3 2005-01-03 23:09:22 larosem Exp $
+   * @version $Id: TypeRepresentationTables.h,v 1.4 2005-08-05 16:01:19 larosem Exp $
    */
   class PdbAtomTypeRepresentationTable : public TypeRepresentationTables< AtomType >
   {
@@ -202,7 +204,7 @@ namespace mccore
    * context and an ResidueType.
    *
    * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: TypeRepresentationTables.h,v 1.3 2005-01-03 23:09:22 larosem Exp $
+   * @version $Id: TypeRepresentationTables.h,v 1.4 2005-08-05 16:01:19 larosem Exp $
    */
   class AmberResidueTypeRepresentationTable : public TypeRepresentationTables< ResidueType >
   {
@@ -235,7 +237,7 @@ namespace mccore
    * context and an ResidueType.
    *
    * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: TypeRepresentationTables.h,v 1.3 2005-01-03 23:09:22 larosem Exp $
+   * @version $Id: TypeRepresentationTables.h,v 1.4 2005-08-05 16:01:19 larosem Exp $
    */
   class PdbResidueTypeRepresentationTable : public TypeRepresentationTables< ResidueType >
   {
