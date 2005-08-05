@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu May 10 14:49:18 2001
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 // 
 // This file is part of mccore.
 // 
@@ -32,7 +32,7 @@
 #include <vector>
 
 #include "Graph.h"
-#include "Path.h"
+// #include "Path.h"
 
 using namespace std;
 
@@ -44,7 +44,7 @@ namespace mccore
    * Directed graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: OrientedGraph.h,v 1.6 2005-06-07 19:58:52 larosem Exp $
+   * @version $Id: OrientedGraph.h,v 1.7 2005-08-05 15:53:58 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -93,7 +93,7 @@ namespace mccore
      */
     virtual super* cloneGraph () const
     {
-      return new OrientedGraph< V, E, VW, EW, Vertex_Comparator> (*this);
+      return (super*) new OrientedGraph< V, E, VW, EW, Vertex_Comparator> (*this);
     }
 
     /**
@@ -112,7 +112,7 @@ namespace mccore
     {
       if (this != &right)
 	{
-	  Graph< V, E, VW, EW, Vertex_Comparator>::operator= (right);
+	  super::operator= (right);
 	}
       return *this;
     }	  
@@ -124,8 +124,7 @@ namespace mccore
      */
     bool operator== (const OrientedGraph &right) const
     {
-      return (this == &right
-	      || Graph< V, E, VW, EW, Vertex_Comparator>::operator== (right));
+      return (this == &right || super::operator== (right));
     }
     
     /**
@@ -410,59 +409,59 @@ namespace mccore
 
   public:
     
-    /**
-     * Finds the all the paths from the label q to the root.  Must be a non
-     * cyclic graph.  edge weights must implement operator+.
-     * @param Dr the oriented graph (with no cycles).
-     * @param q the starting label.
-     * @return a collection of Paths from q to the root in Dr.
-     */
-    vector< Path< V, EW > > breadthFirstPaths (label q) const
-    {
-      vector< Path< V, EW> > result;
-      list< Path< label, EW > > lst (1, Path< label, EW > ());
-      Path< label, EW > &tmp = lst.front ();
+//     /**
+//      * Finds the all the paths from the label q to the root.  Must be a non
+//      * cyclic graph.  edge weights must implement operator+.
+//      * @param Dr the oriented graph (with no cycles).
+//      * @param q the starting label.
+//      * @return a collection of Paths from q to the root in Dr.
+//      */
+//     vector< Path< V, EW > > breadthFirstPaths (label q) const
+//     {
+//       vector< Path< V, EW> > result;
+//       list< Path< label, EW > > lst (1, Path< label, EW > ());
+//       Path< label, EW > &tmp = lst.front ();
       
-      tmp.push_back (q);
-      tmp.setValue (0);
-      while (! lst.empty ())
-	{
-	  Path< label, unsigned int > &front = lst.front ();
-	  label endNode;
-	  list< label > neighbors;
-	  typename list< label >::iterator neighborsIt;
+//       tmp.push_back (q);
+//       tmp.setValue (0);
+//       while (! lst.empty ())
+// 	{
+// 	  Path< label, unsigned int > &front = lst.front ();
+// 	  label endNode;
+// 	  list< label > neighbors;
+// 	  typename list< label >::iterator neighborsIt;
 
-	  endNode = front.back ();
-	  neighbors = internalOutNeighborhood (endNode);
-	  neighborsIt = neighbors.begin ();
-	  if (neighbors.end () == neighborsIt)
-	    {
-	      typename Path< label, EW >::reverse_iterator rIt;
+// 	  endNode = front.back ();
+// 	  neighbors = internalOutNeighborhood (endNode);
+// 	  neighborsIt = neighbors.begin ();
+// 	  if (neighbors.end () == neighborsIt)
+// 	    {
+// 	      typename Path< label, EW >::reverse_iterator rIt;
 
-	      result.push_back (Path< V, EW > ());
-	      Path< V, EW > &tmp = result.back ();
+// 	      result.push_back (Path< V, EW > ());
+// 	      Path< V, EW > &tmp = result.back ();
 	      
-	      for (rIt = front.rbegin (); front.rend () != rIt; ++rIt)
-		{
-		  tmp.push_back (internalGetVertex (*rIt));
-		}
-	      tmp.setValue (front.getValue ());
-	    }
-	  else
-	    {
-	      for (; neighbors.end () != neighborsIt; ++neighborsIt)
-		{
-		  lst.push_back (front);
-		  Path< label, EW > &tmp = lst.back ();
+// 	      for (rIt = front.rbegin (); front.rend () != rIt; ++rIt)
+// 		{
+// 		  tmp.push_back (internalGetVertex (*rIt));
+// 		}
+// 	      tmp.setValue (front.getValue ());
+// 	    }
+// 	  else
+// 	    {
+// 	      for (; neighbors.end () != neighborsIt; ++neighborsIt)
+// 		{
+// 		  lst.push_back (front);
+// 		  Path< label, EW > &tmp = lst.back ();
 
-		  tmp.push_back (*neighborsIt);
-		  tmp.setValue (tmp.getValue () + internalGetEdgeWeight (endNode, *neighborsIt));
-		}
-	    }
-	  lst.pop_front ();
-	}
-      return result;
-    }
+// 		  tmp.push_back (*neighborsIt);
+// 		  tmp.setValue (tmp.getValue () + internalGetEdgeWeight (endNode, *neighborsIt));
+// 		}
+// 	    }
+// 	  lst.pop_front ();
+// 	}
+//       return result;
+//     }
 
     /**
      * Adds the reverse path p to this OrientedGraph.  Edges weights are
@@ -470,28 +469,28 @@ namespace mccore
      * @param p the Path to add.
      * @param val the edge value.
      */
-    void addReversePath (Path< V, EW > &p, const EW &val)
-    {
-      typename Path< V, EW >::reverse_iterator fit;
-      typename Path< V, EW >::reverse_iterator lit;
+//     void addReversePath (Path< V, EW > &p, const EW &val)
+//     {
+//       typename Path< V, EW >::reverse_iterator fit;
+//       typename Path< V, EW >::reverse_iterator lit;
       
-      fit = p.rbegin ();
-      if (! contains (*fit))
-	{
-	  insert (*fit);
-	}
-      for (lit = fit++; p.rend () != fit; ++fit, ++lit)
-	{
-	  if (! contains (*fit))
-	    {
-	      insert (*fit);
-	    }
-	  if (! areConnected (*lit, *fit))
-	    {
-	      connect (*lit, *fit, val);
-	    }
-	}
-    }
+//       fit = p.rbegin ();
+//       if (! contains (*fit))
+// 	{
+// 	  insert (*fit);
+// 	}
+//       for (lit = fit++; p.rend () != fit; ++fit, ++lit)
+// 	{
+// 	  if (! contains (*fit))
+// 	    {
+// 	      insert (*fit);
+// 	    }
+// 	  if (! areConnected (*lit, *fit))
+// 	    {
+// 	      connect (*lit, *fit, val);
+// 	    }
+// 	}
+//     }
     
     // I/O  -----------------------------------------------------------------
 
