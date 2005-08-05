@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // ResidueTypeStore.h
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 // 
 // This file is part of mccore.
 // 
@@ -27,6 +27,7 @@
 #define _mccore_ResidueTypeStore_h_
 
 #include <set>
+#include <string>
 
 #include "ResidueType.h"
   
@@ -40,7 +41,7 @@ namespace mccore
    * Repository of residue types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueTypeStore.h,v 1.14 2005-01-03 23:03:58 larosem Exp $
+   * @version $Id: ResidueTypeStore.h,v 1.15 2005-08-05 16:00:47 larosem Exp $
    */
   class ResidueTypeStore
   {
@@ -48,12 +49,12 @@ namespace mccore
     /**
      * Residue type repository
      */
-    set< ResidueType*, ResidueType::less_deref > repository;
+    set< const ResidueType*, ResidueType::less_deref > repository;
 
     /**
      * Invalidated residue typ repository
      */
-    set< ResidueType*, ResidueType::less_deref > invalid_repository;
+    set< const ResidueType*, ResidueType::less_deref > invalid_repository;
 
   public:
 
