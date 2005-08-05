@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // ResidueType.h
-// Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-05 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.30 $
-// $Id: ResidueType.h,v 1.30 2005-01-03 23:03:09 larosem Exp $
+// $Revision: 1.31 $
+// $Id: ResidueType.h,v 1.31 2005-08-05 15:59:38 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -53,7 +53,7 @@ namespace mccore
    *   - The nature of a type (nucleic acid (pur/pyr) or amino acid)<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueType.h,v 1.30 2005-01-03 23:03:09 larosem Exp $
+   * @version $Id: ResidueType.h,v 1.31 2005-08-05 15:59:38 larosem Exp $
    */
   class ResidueType
   {    
@@ -136,7 +136,7 @@ namespace mccore
      * false otherwise.
      */
     bool operator== (const ResidueType &other) const
-    { return this->key == other.key; }
+    { return key == other.key; }
 
     /**
      * Indicates whether some other residue is "not equal to" this one.
@@ -156,22 +156,22 @@ namespace mccore
      */
     bool operator< (const ResidueType &other) const
     {
-      return this->key < other.key;
+      return key < other.key;
     }
 
     bool operator<= (const ResidueType &other) const
     {
-      return this->key < other.key || this->key == other.key;
+      return key < other.key || key == other.key;
     }
 
     bool operator> (const ResidueType &other) const
     {
-      return !this->operator<= (other);
+      return !operator<= (other);
     }
 
     bool operator>= (const ResidueType &other) const
     {
-      return !this->operator< (other);
+      return !operator< (other);
     }
 
     /**
@@ -180,7 +180,7 @@ namespace mccore
      */
     virtual operator const char* () const
     {
-      return this->key.c_str ();
+      return key.c_str ();
     }
  
     // METHODS -----------------------------------------------------------------
@@ -191,7 +191,7 @@ namespace mccore
      */
     virtual const string& toString () const
     {
-      return this->key;
+      return key;
     }
 
     /**
@@ -200,7 +200,7 @@ namespace mccore
      */
     virtual const string& toLongString () const
     {
-      return this->definition;
+      return definition;
     }
 
     /**

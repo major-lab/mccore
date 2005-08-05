@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // ResidueType.cc
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:32:49 2003
@@ -141,7 +141,9 @@ namespace mccore
   const ResidueType* 
   ResidueType::parseType (const char* str) 
   {
-    return ResidueType::rtstore->get (string (str));
+    string ts = str;
+    
+    return ResidueType::rtstore->get (ts);
   }
 
 

@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Tue Mar 11 18:45:58 2003
-// $Revision: 1.9 $
-// $Id: PdbFileHeader.cc,v 1.9 2005-04-13 16:04:14 thibaup Exp $
+// $Revision: 1.10 $
+// $Id: PdbFileHeader.cc,v 1.10 2005-08-05 15:57:06 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -520,7 +520,10 @@ namespace mccore
 	      {
 		// concatenate remark line to current remark text (assumed
 		// same id)
-		remtext += (remtext.empty () ? "" : "\n") + remline;
+		string s;
+
+		s = remtext.empty () ? "" : "\n";
+		remtext += s + remline;
 	      }
 	  }
 	else
