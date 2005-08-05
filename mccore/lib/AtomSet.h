@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // AtomSet.h
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu Mar 13 13:03:07 2003
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 // 
 // This file is part of mccore.
 // 
@@ -47,7 +47,7 @@ namespace mccore {
    * residues iterators.
    *
    * @author Martin Larose (<a href="larosem@IRO.UMontreal.CA">larosem@iro.umontreal.ca</a>)
-   * @version $Id: AtomSet.h,v 1.9 2005-02-02 18:09:07 thibaup Exp $
+   * @version $Id: AtomSet.h,v 1.10 2005-08-05 15:51:42 larosem Exp $
    */
   class AtomSet
   {
@@ -177,28 +177,24 @@ namespace mccore {
     /**
      * Initializes the object.
      */
-    AtomSetAll () : AtomSet () {}
+    AtomSetAll () : AtomSet () { }
 
     /**
      * Initializes the object with the other's content.
      * @param other the object to copy.
      */
-    AtomSetAll (const AtomSetAll &other) 
-      : AtomSet (other)
-    {}
+    AtomSetAll (const AtomSetAll &other) : AtomSet (other) { }
 
     /**
      * Copies the function object.
      * @return a copy of itself.
      */
-    virtual AtomSet* clone () const
-    { return new AtomSetAll (); }
+    virtual AtomSet* clone () const { return (AtomSet*) new AtomSetAll (*this); }
     
     /**
      * Destroys the object.
      */
-    virtual ~AtomSetAll () {
-    }
+    virtual ~AtomSetAll () { }
 
     // OPERATORS ------------------------------------------------------------
 
@@ -272,7 +268,7 @@ namespace mccore {
     /**
      * Initializes the object. Must not be used.
      */
-    AtomSetNot () : AtomSet () {}
+    AtomSetNot () : AtomSet () { }
 
   public:
 
@@ -281,8 +277,7 @@ namespace mccore {
      * @param x the left function object.
      * @param y the right function object.
      */
-    AtomSetNot (AtomSet *x) 
-      : AtomSet (), op(x) {}
+    AtomSetNot (AtomSet *x) : AtomSet (), op(x) { }
 
     /**
      * Initializes the object with the other's content.
@@ -296,15 +291,12 @@ namespace mccore {
      * Copies the function object.
      * @return a copy of itself.
      */
-    virtual AtomSet* clone () const
-    { return new AtomSetNot (op->clone ()); }
+    virtual AtomSet* clone () const { return (AtomSet*) new AtomSetNot (*this); }
     
     /**
      * Destroys the object.
      */
-    virtual ~AtomSetNot () {
-      delete op;
-    }
+    virtual ~AtomSetNot () { delete op; }
 
     // OPERATORS ------------------------------------------------------------
 
@@ -407,8 +399,7 @@ namespace mccore {
      * Copies the function object.
      * @return a copy of itself.
      */
-    virtual AtomSet* clone () const
-    { return new AtomSetAnd (op1->clone (), op2->clone ()); }
+    virtual AtomSet* clone () const { return (AtomSet*) new AtomSetAnd (*this); }
     
     /**
      * Destroys the object.
@@ -495,7 +486,7 @@ namespace mccore {
     /**
      * Initializes the object. Must not be used.
      */
-    AtomSetOr () : AtomSet () {}
+    AtomSetOr () : AtomSet () { }
 
   public:
 
@@ -519,13 +510,13 @@ namespace mccore {
      * Copies the function object.
      * @return a copy of itself.
      */
-    virtual AtomSet* clone () const
-    { return new AtomSetOr (op1->clone (), op2->clone ()); }
+    virtual AtomSet* clone () const { return (AtomSet*) new AtomSetOr (*this); }
   
     /**
      * Destroys the object.
      */
-    virtual ~AtomSetOr () {
+    virtual ~AtomSetOr ()
+    {
       delete op1;
       delete op2;
     }
@@ -1148,8 +1139,7 @@ namespace mccore {
      * Copies the function object.
      * @return a copy of itself.
      */
-    virtual AtomSet* clone () const
-    { return new AtomSetAtom (type); }
+    virtual AtomSet* clone () const { return (AtomSet*) new AtomSetAtom (*this); }
   
     /**
      * Destroys the object.
