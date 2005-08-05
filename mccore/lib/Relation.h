@@ -3,7 +3,7 @@
 // Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.17 $
+// $Revision: 1.18 $
 // 
 // This file is part of mccore.
 // 
@@ -57,6 +57,7 @@ namespace mccore
     float flow;
 
     HBondFlow () { }
+    ~HBondFlow () { }
     HBondFlow (const HBond &hbond, float flow) : hbond (hbond), flow (flow) { }
     bool operator< (const HBondFlow& other) const { return flow < other.flow; }
   };
@@ -66,7 +67,7 @@ namespace mccore
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.17 2005-01-10 16:47:13 thibaup Exp $
+   * @version $Id: Relation.h,v 1.18 2005-08-05 15:58:58 larosem Exp $
    */
   class Relation
   {
@@ -137,17 +138,17 @@ namespace mccore
     /**
      * The adjacent type mask (100).
      */
-    static const unsigned char adjacent_mask;
+    static const unsigned char adjacent_mask = '\4';
 
     /**
      * The stacking type mask (010).
      */
-    static const unsigned char stacking_mask;
+    static const unsigned char stacking_mask = '\2';
 
     /**
      * The pairing type mask (001).
      */
-    static const unsigned char pairing_mask;
+    static const unsigned char pairing_mask = '\1';
 
   protected:
 

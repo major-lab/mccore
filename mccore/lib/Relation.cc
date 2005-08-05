@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.39 $
-// $Id: Relation.cc,v 1.39 2005-04-04 23:08:26 larosem Exp $
+// $Revision: 1.40 $
+// $Id: Relation.cc,v 1.40 2005-08-05 15:58:54 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -51,13 +51,6 @@
 
 namespace mccore
 {
-
-  // STATIC MEMBERS -------------------------------------------------------
-
-  const unsigned char Relation::adjacent_mask = 4;
-  const unsigned char Relation::stacking_mask = 2;
-  const unsigned char Relation::pairing_mask  = 1;
-  
   vector< pair< Vector3D, const PropertyType* > > Relation::faces_A;
   vector< pair< Vector3D, const PropertyType* > > Relation::faces_C;
   vector< pair< Vector3D, const PropertyType* > > Relation::faces_G;
@@ -107,10 +100,8 @@ namespace mccore
       type_asp (other.type_asp),
       hbonds (other.hbonds),
       sum_flow (other.sum_flow)
-  {
+  { }
 
-  }
-    
 
   Relation& 
   Relation::operator= (const Relation &other)
