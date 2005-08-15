@@ -1,3 +1,421 @@
+2005-06-23  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Model.h, lib/AbstractModel.h: front and back method added.
+
+2005-06-21  thibaup  <thibaup@iro.umontreal.ca>
+
+	* lib/Residue.cc, lib/Residue.h:
+	- bug correction in _build_ribose_preprocess()
+	- new methods getFuranoseAmplitude() and getFuranoseType()
+
+2005-06-20  thibaup  <thibaup@iro.umontreal.ca>
+
+	* lib/Pdbstream.cc:
+	warning when residue number < -999 (along with > 9999)
+
+2005-06-16  thibaup  <thibaup@iro.umontreal.ca>
+
+	* lib/Pdbstream.cc:
+	- warning messages issued when ATOM record format is not respected in
+	  ouput stream.
+
+	* lib/ExtendedResidue.cc, lib/ExtendedResidue.h, lib/Residue.cc, lib/Residue.h:
+	- correct value now returned by buildRiboseByEstimation()
+
+2005-06-10  thibaup  <thibaup@iro.umontreal.ca>
+
+	* lib/ResidueTopology.cc: PSO atom was missing in obligatory sets.
+
+2005-06-09  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Cycle.h: New file.
+
+2005-06-09  thibaup  <thibaup@iro.umontreal.ca>
+
+	* lib/AbstractModel.cc, lib/AbstractModel.h:
+	new filter methods keepRNA(), keepDNA and keep(ResidueType*)
+
+2005-06-07  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Version.cc, lib/ServerSocket.cc, configure.in, config.h.in:
+	Defined variable KERNEL created conflict with Darwin's global variable.
+
+	* lib/Pdbstream.h, lib/Messagestream.h:
+	long double types removed to accomodate Darwin compilation.
+
+	* lib/UndirectedGraph.h, lib/ServerSocket.cc, lib/Path.h, lib/OrientedGraph.h, lib/Molecule.h, lib/GraphModel.h, lib/GraphModel.cc, configure.in, configure, lib/Makefile.in:
+	*** empty log message ***
+
+2005-05-31  thibaup  <thibaup@iro.umontreal.ca>
+
+	* configure.in:
+	using uname -s instead of uname -o for compatibility with Darwin
+
+	* lib/Binstream.cc, lib/Binstream.h:
+	Modified I/O methods of primitive types to be compatible between 32b
+	and 64b architectures. Type sizes are written and read as follow:
+
+	16b: char, unsigned char, signed char, short, unsigned short.
+	32b: int, unsigned, float.
+	64b: long int, unsigned long int, long long int, unsigned long long int, double.
+
+	Strings (char* or std::string) support is unchanged, i.e. the length
+	integer precedes the character buffer. There is no support for long
+	double or long long double.
+
+	Switch between 32b and 64b was tested sucessfully in both directions,
+	but endianess is still to be tested...
+
+	* lib/AtomType.cc:
+	output standard string instead of C-style char* string.
+
+	* lib/AbstractModel.cc, lib/AbstractModel.h:
+	New method safeFind() that throws NoSuchElementException when residue
+	isn't found.
+
+2005-05-20  thibaup  <thibaup@iro.umontreal.ca>
+
+	* config.h.in, configure.in, lib/Makefile.in, lib/Version.cc, lib/Version.h:
+	New utility class Version to output package version and building information.
+
+2005-04-27  thibaup  <thibaup@iro.umontreal.ca>
+
+	* lib/Residue.cc: Copy constructor correction: atoms are copied from
+	source object using the class interface in case the source object is
+	an ExtendedResidue and needs to be placed (see class
+	ExtendedResidue).
+
+2005-04-13  thibaup  <thibaup@iro.umontreal.ca>
+
+	* lib/PdbFileHeader.cc, lib/PdbFileHeader.h, lib/Pdbstream.cc, lib/Pdbstream.h:
+	PDB file title section is cut at 70 characters for read and write
+
+2005-04-12  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/RnamlWriter.h, lib/RnamlWriter.cc: Sequence annotation is
+	added in the rnaml output.
+
+	* lib/Molecule.cc: 'good' flag is used instead of eof.
+
+2005-04-12  thibaup  <thibaup@iro.umontreal.ca>
+
+	* lib/TypeRepresentationTables.cc: corrected string "RRU33" to "RRU3"
+
+2005-04-12  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/GraphModel.cc: Bug correction: GraphModel was not able to stop
+	at the ENDMDL.
+
+2005-04-07  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/RnamlWriter.h, lib/RnamlWriter.cc: mccore models will be
+	placed in separate rnaml Molecule.  Sequences may not be the same
+	between models.
+
+	* lib/RnamlWriter.cc: Saenger and Gautheret types written in
+	base-pair comment.
+
+	* configure.in, configure: Dependency flag changed to -M to catch
+	library changes.
+
+2005-04-06  thibaup  <thibaup@iro.umontreal.ca>
+
+	* lib/PropertyTypeStore.h: type helix now inherits from type stack
+
+	* lib/AtomType.cc, lib/AtomType.h, lib/AtomTypeStore.cc, lib/AtomTypeStore.h, lib/Residue.cc, lib/TypeRepresentationTables.cc:
+	New pseudo atom PSO at nucleotide frame's origin (N1 in pyrimidines,
+	N9 in purines).
+
+2005-04-04  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/UndirectedGraph.h, lib/Residue.cc, lib/Relation.cc, lib/Pdbstream.cc, lib/Path.h, lib/PairingPattern.cc, lib/OrientedGraph.h, lib/Messagestream.h, lib/MaximumFlowGraph.h, lib/Graph.h:
+	gcc 3.4 types update.
+
+2005-03-31  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/AbstractModel.h: Type correction.
+
+	* configure.in, configure: -fPIC added for 64bits compilation.
+
+2005-03-30  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/RnamlWriter.cc: strand-orientation added.
+
+	* lib/Atom.h, lib/Atom.cc: Initialisation moved to header file.
+
+	* lib/AtomTypeStore.h, lib/AtomTypeStore.cc:
+	ResidueType and not Residue should be included.
+
+2005-03-29  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/PdbFileHeader.cc: Empty remark string ranges from 12 to 70.
+
+2005-03-22  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/RnamlWriter.h, lib/RnamlWriter.cc:
+	Structure annotations are saved.
+
+2005-03-17  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/GraphModel.h: Annotation setter added.
+
+2005-03-14  thibaup  <thibaup@iro.umontreal.ca>
+
+	* lib/Relation.cc: minor correction
+
+2005-03-10  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/ResId.h, lib/ResId.cc:
+	Output operator redirects the call to the virtual method.
+
+2005-03-10  thibaup  <thibaup@iro.umontreal.ca>
+
+	* lib/PdbFileHeader.cc: *** empty log message ***
+
+	* lib/Molecule.h: Added missing Binstream I/O operators in header file
+
+	* lib/PdbFileHeader.cc, lib/PdbFileHeader.h: Added Binstream I/O
+
+2005-03-09  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/OrientedGraph.h: super typedef added.
+
+2005-02-25  thibaup  <thibaup@iro.umontreal.ca>
+
+	* lib/Relation.cc, lib/Residue.cc:
+	Relation annotation methods catch IntLibException
+	Residue::_add_ribise_hydrogen() catches also TypeException
+
+	* lib/Residue.cc:
+	[rel-1-4-freeze] now catching IntLibException in _add_ribose_hydrogen()
+
+	* lib/GraphModel.cc, lib/Model.cc, lib/ModelFactoryMethod.cc, lib/ModelFactoryMethod.h, lib/Molecule.cc, lib/ResidueFactoryMethod.cc, lib/ResidueFactoryMethod.h:
+	Bug correction in model insertion.
+
+2005-02-24  thibaup  <thibaup@iro.umontreal.ca>
+
+	* lib/Relation.cc:
+	now catching general IntLibException during annotation.
+
+2005-02-24  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/ResidueTypeStore.cc: Bug correction.
+
+2005-02-24  thibaup  <thibaup@iro.umontreal.ca>
+
+	* lib/ResidueTypeStore.cc:
+	corrected error in RNA and DNA residue types instances
+
+2005-02-18  thibaup  <thibaup@iro.umontreal.ca>
+
+	* lib/Pdbstream.cc: bug corrected
+
+2005-02-10  thibaup  <thibaup@iro.umontreal.ca>
+
+	* lib/Atom.h, lib/Makefile.in, lib/PdbFileHeader.cc, lib/PdbFileHeader.h, lib/Pdbstream.cc, lib/Pdbstream.h, lib/Residue.cc:
+	Improved PDB file header i/o. Class PdbFileHeader now handles all the
+	Pdbstream i/o for the PDB header records. For now the file header is
+	kept in the Pdbstream, but it should be moved to the relevant
+	container, such as Molecule.
+
+	* logo.jpg: The unofficial mccore logo!
+
+2005-02-09  thibaup  <thibaup@iro.umontreal.ca>
+
+	* lib/ExtendedResidue.h: doc update
+
+2005-02-02  thibaup  <thibaup@iro.umontreal.ca>
+
+	* lib/ExtendedResidue.cc, lib/ExtendedResidue.h, lib/Residue.cc, lib/Residue.h:
+	Method transform(HTfo) is now virtual.
+	Virtualised assignation between Residue and ExtendedResidue to prevent
+	any slicing.
+	Removed unnecessary friendship from the iterator classes to the
+	wrapping Residue class.
+
+	* lib/Atom.cc, lib/Atom.h, lib/RnamlReader.cc:
+	Added new Atom method set(Vector3D) and set(Vector3D,AtomType*)
+	Renamed Atom method setAll(float,float,float,AtomType*) to
+	set(float,float,float,AtomType*) for consistency.
+
+	* lib/AtomSet.h:
+	operator= made protected in abstract base class to prevent slicing
+
+	* lib/Makefile.in, lib/RiboseBuilder.cc, lib/RiboseBuilder.h, lib/RiboseEstimator.cc, lib/RiboseEstimator.h, lib/RiboseOptimizer2D.cc, lib/RiboseOptimizer2D.h, lib/RiboseOptimizer5D.cc, lib/RiboseOptimizer5D.h:
+	Removed obsolete classes. Ribose building is part of Residue class.
+
+2005-02-01  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/OrientedGraph.h, lib/UndirectedGraph.h, lib/Graph.h:
+	Unstable cycle revision.
+
+	* lib/Path.h, lib/UndirectedGraph.h: New graph implementation.
+
+2005-01-27  thibaup  <thibaup@iro.umontreal.ca>
+
+	* lib/ExtendedResidue.cc, lib/ExtendedResidue.h, lib/Residue.cc, lib/Residue.h:
+	locals atoms are now created in the constructors
+
+	* lib/Molecule.cc: returning iterators by casting to model_iterator
+
+2005-01-27  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Residue.h, lib/Residue.cc, lib/Molecule.h, lib/Molecule.cc, lib/Model.h, lib/ModelFactoryMethod.h, lib/ModelFactoryMethod.cc, lib/Model.cc, lib/GraphModel.h, lib/GraphModel.cc, lib/ExtendedResidue.h, lib/ExtendedResidue.cc, lib/AbstractModel.h:
+	*** empty log message ***
+
+2005-01-26  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Residue.h, lib/Residue.cc, lib/ExtendedResidue.h, lib/ExtendedResidue.cc:
+	*** empty log message ***
+
+2005-01-26  thibaup  <thibaup@iro.umontreal.ca>
+
+	* lib/ModelFactoryMethod.cc, lib/ModelFactoryMethod.h, lib/Molecule.cc, lib/Molecule.h, lib/ResidueFactoryMethod.cc, lib/ResidueFactoryMethod.h, lib/RnamlReader.cc, lib/RnamlReader.h:
+	Molecule now uses its ModelFactoryMethod to manage all model
+	insertion, either from insert() or from an input stream reading.
+	The factory method is saved along with the object in binary stream
+	I/O, thus a saved Molecule containing GraphModel will be restored to a
+	Molecule with GraphModel.
+	The ResidueFactoryMethod is still not saved because an ExtendedResidue
+	is fully restorable as a basic Residue, as the reverse. However maybe
+	we should save it and restore it as the ModelFactoryMethod for better
+	consistency in the design...
+
+2005-01-26  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/HomogeneousTransfo.h, lib/HomogeneousTransfo.cc:
+	ostream operator<< moved to std namespace.
+
+2005-01-26  thibaup  <thibaup@iro.umontreal.ca>
+
+	* lib/sockstream.cc:
+	using hstrerror() with gethostbyname() for more verbose error
+
+	* lib/SocketCommand.h: - Added command ID {FETCH,SEND}_MOLECULE.
+	- Added public typedef SocketCommand::com_type for ID type, for a more
+	  robust communication.
+
+2005-01-25  thibaup  <thibaup@iro.umontreal.ca>
+
+	* lib/Binstream.cc: using string::size_type for string's length I/O
+
+	* lib/Binstream.cc: bug correction in string I/O
+
+	* lib/ModelFactoryMethod.cc, lib/ModelFactoryMethod.h, lib/RnamlReader.cc, lib/RnamlReader.h:
+	Using ModelFactoryMethod instead of ResiduefactoryMethod (defaults to
+	GraphModelFM with ExtendedResidueFM).
+
+	* lib/RnamlReader.cc, lib/RnamlReader.h: ResidueFacto
+
+	* lib/AtomType.cc, lib/AtomType.h: *** empty log message ***
+
+2005-01-15  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/PropertyType.h: Comments added.
+
+	* lib/GraphModel.h: insert now return inserted Residue iterator.
+
+2005-01-14  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/RnamlWriter.cc: Check made on empty Molecule.
+
+	* test/Makefile.in: Removing links in distclean.
+
+	* test/Makefile.in, test/GraphModel.good, test/GraphModel.cc, lib/GraphModel.h, lib/GraphModel.cc, ChangeLog:
+	Bug correction in copy constructor and operator= for AbstractModels.
+
+2005-01-11  thibaup  <thibaup@iro.umontreal.ca>
+
+	* lib/Residue.cc, lib/Residue.h:
+	Referential computation uses pseudo atoms.
+
+	* lib/Exception.cc, lib/Exception.h:
+	TypeException: yet another IntLibException ;) used to report type mismatch
+
+	* test/HomogeneousTransfo.bin.gz, test/HomogeneousTransfo.cc, test/HomogeneousTransfo.good, test/Makefile.in:
+	new test for HomogeneousTransfo class.
+
+	* NEWS: *** empty log message ***
+
+	* lib/HomogeneousTransfo.cc, lib/HomogeneousTransfo.h:
+	New static method frame() to compute a coordinate frame from an
+	orthonormal basis and an origin.
+
+	* lib/Residue.cc: Corrected PSX point calculation.
+
+2005-01-10  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* test/Makefile.in:
+	LD_LIBRARY_PATH environment variable assigned to specify shared library path.
+
+2005-01-10  thibaup  <thibaup@iro.umontreal.ca>
+
+	* test/Makefile.in, test/GraphModel.good, test/GraphModel.cc, lib/Residue.cc, lib/Relation.h, lib/Relation.cc, lib/ModelFactoryMethod.h, lib/Makefile.in, lib/GraphModel.cc:
+	Updated GraphModel for Relation::invert()
+
+2005-01-08  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/UndirectedGraph.cc: Replaced with UndirectedGraph.h.
+
+2005-01-07  thibaup  <thibaup@iro.umontreal.ca>
+
+	* ChangeLog: *** empty log message ***
+
+	* lib/Relation.h, lib/Relation.cc:
+	o Member method invert() no longer const! It inverts the current object.
+	o New static method invert (const Relation&) that returns a new
+	  inverted relation.
+	o Stacking annotation revised to assign one of the four new stacking
+	  types.
+	o Additonal pairing annotation for base flips
+	o Method is(const PropertyType*) also checks for specialized types,
+	  new method has(const PropertyType*) checks only for a specific type.
+	o New method reset()
+	o New annotation identification as any combination of the three
+	  main familes: adjacent, stacking and pairing.
+
+	* lib/PropertyTypeStore.h, lib/PropertyTypeStore.cc, lib/PropertyType.h, lib/PropertyType.cc:
+	Modifications in the hierarchy:
+
+	o Adjacent5p and Adjacent3p both extend Adjacent, making DIR_5p and
+	  DIR_3p obsolete (removed along with DIR_ANY).
+
+	o Additional pairing information about base plane flips: Straight and
+	  Reverse (as in a standard helical Watson-Crick). Cis and Trans
+	  annotation was kept (for now...).
+
+	o New stacking labeling:
+
+	   BaseOrientation          Stack
+	          |                   |
+	     +----+----+         +----+----+
+	     |         |         |         |
+	  Straight  Reverse    Upward   Downward
+	     |         |         |         |
+	     +---+---------------+         |
+	     |   |     |         |         |
+	     +------+----------------------+
+	         |  |  |         |         |
+	         |  |  +----+----+         |
+	         |  |  |    |              |
+	         |  |  +--------+----------+
+	         |  |       |   |
+	         |  |       |   +-- ReverseDownward
+	         |  |       +------ ReverseUpward
+	         |  +-------------- StraightDownward
+	         +----------------- StraigthUpward
+
+	* lib/Residue.cc: *** empty log message ***
+
+	* lib/HomogeneousTransfo.h, lib/HomogeneousTransfo.cc:
+	Added two optional float* parameters to the distance metric methods to
+	save both contributions from translation and rotation for analysis.
+
+	* lib/Binstream.h, lib/Binstream.cc:
+	Using unsigned int for string length instead of short int
+
+	* lib/Exception.cc: *** empty log message ***
+
 2005-01-07  Philippe Thibault  <thibaup@iro.umontreal.ca>
 
 	* lib/Relation.h, lib/Relation.cc:

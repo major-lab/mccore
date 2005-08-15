@@ -3,7 +3,7 @@
 // Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.18 $
+// $Revision: 1.19 $
 // 
 // This file is part of mccore.
 // 
@@ -45,6 +45,8 @@ using namespace std;
 namespace mccore
 {
   class PropertyType;
+  class iBinstream;
+  class oBinstream;
 
   
 
@@ -57,17 +59,25 @@ namespace mccore
     float flow;
 
     HBondFlow () { }
-    ~HBondFlow () { }
+    virtual ~HBondFlow () { }
     HBondFlow (const HBond &hbond, float flow) : hbond (hbond), flow (flow) { }
     bool operator< (const HBondFlow& other) const { return flow < other.flow; }
+
+    virtual iBinstream& read (iBinstream &is);
+
+    virtual oBinstream& write (oBinstream &os) const;
   };
+
+  iBinstream& operator<< (iBinstream &is, HBondFlow &hf);
+
+  oBinstream& operator>> (oBinstream &os, const HBondFlow &hf);
   
 
   /**
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.18 2005-08-05 15:58:58 larosem Exp $
+   * @version $Id: Relation.h,v 1.19 2005-08-15 21:28:18 larosem Exp $
    */
   class Relation
   {
@@ -537,9 +547,39 @@ namespace mccore
      * @return the used output stream.
      */
     virtual ostream& write (ostream &os) const;
+
+    /**
+     * Reads the relation from a binary stream.
+     * @param is the binary input stream.
+     * @return the binary input stream.
+     */
+    virtual iBinstream& read (iBinstream &is);
+    
+    /**
+     * Writes the relation to a binary stream.
+     * @param os the binary output stream.
+     * @return the binary output stream.
+     */
+    virtual oBinstream& write (oBinstream &os) const;
     
   };
 
+  /**
+   * Reads the relation from a binary stream.
+   * @param is the binary input stream.
+   * @param rel the relation.
+   * @return the binary input stream.
+   */
+  iBinstream& operator>> (iBinstream &is, Relation &rel);
+  
+  /**
+   * Writes the relation to a binary stream.
+   * @param os the binary output stream.
+   * @param rel the relation to output.
+   * @return the binary output stream.
+   */
+  oBinstream& operator<< (oBinstream &os, const Relation &rel);
+  
 }
 
 

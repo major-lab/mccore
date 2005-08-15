@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // HBond.h
-// Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-05 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 // 
 // This file is part of mccore.
 // 
@@ -38,9 +38,11 @@ using namespace std;
 
 namespace mccore
 {
+  class Atom;
   class AtomType;
   class Residue;
-  class Atom;
+  class iBinstream;
+  class oBinstream;
 
   /**
    * @short Hydrogen bonds.
@@ -50,7 +52,7 @@ namespace mccore
    * between any two atoms.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: HBond.h,v 1.6 2005-01-03 22:55:11 larosem Exp $
+   * @version $Id: HBond.h,v 1.7 2005-08-15 21:28:06 larosem Exp $
    */
   class HBond
   {
@@ -291,8 +293,38 @@ namespace mccore
      */
     ostream &output (ostream &os) const;
 
+    /**
+     * Reads the HBond from a binary stream.
+     * @param is the binary input stream.
+     * @return the binary input stream.
+     */
+    virtual iBinstream& read (iBinstream &is);
+    
+    /**
+     * Writes the HBond to a binary stream.
+     * @param os the binary output stream.
+     * @return the binary output stream.
+     */
+    virtual oBinstream& write (oBinstream &os) const;
+    
   };
 
+  /**
+   * Reads the HBond from a binary stream.
+   * @param is the binary input stream.
+   * @param hbond the HBond.
+   * @return the binary input stream.
+   */
+  iBinstream& operator>> (iBinstream &is, HBond &hbond);
+  
+  /**
+   * Writes the HBond to a binary stream.
+   * @param os the binary output stream.
+   * @param hbond the HBond to output.
+   * @return the binary output stream.
+   */
+  oBinstream& operator<< (oBinstream &os, const HBond &hbond);
+  
 }
 
 

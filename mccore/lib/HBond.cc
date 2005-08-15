@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // HBond.cc
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu Mar 20 18:05:28 2003
-// $Revision: 1.12 $
-// $Id: HBond.cc,v 1.12 2005-01-03 22:54:51 larosem Exp $
+// $Revision: 1.13 $
+// $Id: HBond.cc,v 1.13 2005-08-15 21:28:01 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -37,6 +37,7 @@
 
 #include "Atom.h"
 #include "AtomType.h"
+#include "Binstream.h"
 #include "HBond.h"
 #include "Pdbstream.h"
 #include "Residue.h"
@@ -351,6 +352,48 @@ namespace mccore
 	return os << donor << "-" << hydrogen << " -> " 
 		  << acceptor << " (" << lonepair << ")";  
       }
+  }
+
+
+  iBinstream&
+  HBond::read (iBinstream &is)
+  {
+    Residue *res;
+    
+    is >> donor >> hydrogen >> acceptor >> lonepair;
+    is >> value;
+    res = new Residue ();
+    is >> *res;
+    resD = res;
+    res = new Residue ();
+    is >> *res;
+    resA = res;
+    return is;
+  }
+    
+
+  oBinstream&
+  HBond::write (oBinstream &os) const
+  {
+    os << donor << hydrogen << acceptor << lonepair;
+    os << value;
+    os << (const Residue&) *resD
+       << (const Residue&) *resA;
+    return os;
+  }
+    
+
+  iBinstream&
+  operator>> (iBinstream &is, HBond &hbond)
+  {
+    return hbond.read (is);
+  }
+  
+
+  oBinstream&
+  operator<< (oBinstream &os, const HBond &hbond)
+  {
+    return hbond.write (os);
   }
 
 }

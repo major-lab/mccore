@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.40 $
-// $Id: Relation.cc,v 1.40 2005-08-05 15:58:54 larosem Exp $
+// $Revision: 1.41 $
+// $Id: Relation.cc,v 1.41 2005-08-15 21:28:11 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -39,6 +39,7 @@
 #include "Atom.h"
 #include "AtomSet.h"
 #include "AtomType.h"
+#include "Binstream.h"
 #include "Exception.h"
 #include "ExtendedResidue.h"
 #include "MaximumFlowGraph.h"
@@ -63,6 +64,34 @@ namespace mccore
   float Relation::stack_distance_cutoff_square = 20.25; // 4.5 Ang
   float Relation::stack_tilt_cutoff = 0.61; // 35 deg
   float Relation::stack_overlap_cutoff = 0.61; // 35 deg
+
+
+  iBinstream&
+  HBondFlow::read (iBinstream &is)
+  {
+    return is >> hbond >> flow;
+  }
+
+
+  oBinstream&
+  HBondFlow::write (oBinstream &os) const
+  {
+    return os << hbond << flow;
+  }
+
+
+  iBinstream&
+  operator>> (iBinstream &is, HBondFlow &hf)
+  {
+    return hf.read (is);
+  }
+
+
+  oBinstream&
+  operator<< (oBinstream &os, const HBondFlow &hf)
+  {
+    return hf.write (os);
+  }
 
 
   Relation::Relation ()
@@ -1562,7 +1591,87 @@ namespace mccore
     }
     return best_type;
   }
-  
+
+
+  iBinstream&
+  Relation::read (iBinstream &is)
+  {
+    Residue *r;
+    set< const PropertyType* >::size_type propsSize;
+    vector< HBondFlow >::size_type hfsSize;
+    
+    r = new Residue ();
+    is >> *r;
+    ref = r;
+    r = new Residue ();
+    is >> *r;
+    res = r;
+    is >> tfo >> po4_tfo;
+    is >> refFace >> resFace;
+    labels.clear ();
+    is >> propsSize;
+    while (0 < propsSize)
+      {
+	const PropertyType *prop;
+	
+	is >> prop;
+	labels.insert (prop);
+	--propsSize;
+      }
+    is >> type_asp;
+    hbonds.clear ();
+    is >> hfsSize;
+    while (0 < hfsSize)
+      {
+	hbonds.push_back (HBondFlow ());
+	HBondFlow &hf = hbonds.back ();
+	is >> hf;
+	--hfsSize;
+      }
+    is >> sum_flow;
+    return is;
+  }
+    
+
+  oBinstream&
+  Relation::write (oBinstream &os) const
+  {
+    set< const PropertyType* >::const_iterator propsIt;
+    vector< HBondFlow >::const_iterator hfsIt;
+    
+    os << (const Residue&) *ref;
+    os << (const Residue&) *res;
+    os << tfo << po4_tfo;
+    os << refFace << resFace;
+    os << labels.size ();
+    for (propsIt = labels.begin (); labels.end () != propsIt; ++propsIt)
+      {
+	os << *propsIt;
+      }
+    os << type_asp;
+    os << hbonds.size ();
+    for (hfsIt = hbonds.begin (); hbonds.end () != hfsIt; ++hfsIt)
+      {
+	os << *hfsIt;
+      }
+    os << sum_flow;
+    return os;
+  }
+
+
+  iBinstream&
+  operator>> (iBinstream &is, Relation &rel)
+  {
+    return rel.read (is);
+  }
+
+
+  oBinstream&
+  operator<< (oBinstream &os, const Relation &rel)
+  {
+    return rel.write (os);
+  }
+
 }
 
 
