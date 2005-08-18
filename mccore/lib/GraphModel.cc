@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.11 $
-// $Id: GraphModel.cc,v 1.11 2005-08-05 15:55:41 larosem Exp $
+// $Revision: 1.12 $
+// $Id: GraphModel.cc,v 1.12 2005-08-18 18:06:48 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -30,6 +30,7 @@
 
 #include <algorithm>
 #include <list>
+#include <map>
 #include <set>
 #include <utility>
 #include <vector>
@@ -43,6 +44,7 @@
 #include "Relation.h"
 #include "Residue.h"
 #include "ResidueFactoryMethod.h"
+#include "ResId.h"
 
 
 
@@ -369,11 +371,13 @@ namespace mccore
       {
 	os << setw (5) << counter << "  " << *vit << "  " << *vwit << endl;
       }
+    
     os << "[Edges]" << endl;
     for (eit = edge_begin (), ewit = edgeWeights.begin (), counter = 0; edges.end () != eit; ++eit, ++ewit, ++counter)
       {
 	os << setw (5) << counter << "  " << **eit << "  " << *ewit << endl;
       }
+
     os << "[Adjacency matrix]" << endl;
     os << "     ";
     for (counter = 0; vertices.size () > counter; ++counter)
@@ -458,33 +462,91 @@ namespace mccore
   }
   
 
-  oBinstream&
-  GraphModel::output (oBinstream &obs) const
+  iBinstream&
+  GraphModel::input (iBinstream &is)
   {
-    graphsuper::const_iterator cit;
-    
-    obs << size ();
-    for (cit = graphsuper::begin (); cit != graphsuper::end (); ++cit)
-      obs << **cit;
-    return obs;
+    GraphModel::size_type sz;
+    map< ResId, const Residue* > resMap;
+
+    clear ();
+    is >> sz;
+    for (; sz > 0; --sz)
+      {
+	Residue *res;
+	vertex_weight value;
+
+	res = getResidueFM ()->createResidue ();
+	is >> *res >> value;
+	resMap.insert (make_pair (res->getResId (), res));
+	graphsuper::insert (res, value);
+      }
+    is >> sz;
+    for (; 0 < sz; --sz)
+      {
+	GraphModel::label from;
+	GraphModel::label to;
+	Relation *rel;
+	edge_weight value;
+
+	is >> from >> to;
+	rel = new Relation ();
+	try
+	  {
+	    rel->read (is, resMap);
+	  }
+	catch (NoSuchElementException &e)
+	  {
+	    gErr (0) << e;
+	  }
+	is >> value;
+	internalConnect (from, to, rel, value);
+      }
+    return is >> annotated;
   }
   
   
-  iBinstream&
-  GraphModel::input (iBinstream &ibs)
+  oBinstream&
+  GraphModel::output (oBinstream &os) const
   {
-    GraphModel::size_type sz;
+    size_type sz;
+    label lbl;
+    EV2ELabel::const_iterator eIt;
+    map< label, const EndVertices* > revMap;
+    map< label, const EndVertices* >::iterator revMapIt;
 
-    clear ();
-    ibs >> sz;
-    for (; sz > 0; --sz)
+    sz = size ();
+    os << sz;
+    for (lbl = 0; lbl < sz; ++lbl)
       {
-	Residue *res = getResidueFM ()->createResidue ();
-	
-	ibs >> *res;
-	graphsuper::insert (res, 0); 
+	os << *internalGetVertex (lbl) << internalGetVertexWeight (lbl);
       }
-    return ibs;
+    for (eIt = ev2elabel.begin (); ev2elabel.end () != eIt; ++eIt)
+      {
+	revMap.insert (make_pair (eIt->second, &(eIt->first)));
+      }
+    os << edgeSize ();
+    for (revMapIt = revMap.begin (); revMap.end () != revMapIt; ++revMapIt)
+      {
+	os << revMapIt->second->getHeadLabel ()
+	   << revMapIt->second->getTailLabel ();
+	internalGetEdge (revMapIt->first)->write (os);
+	os << internalGetEdgeWeight (revMapIt->first);
+      }
+    return os << annotated;
+  }
+
+  
+  iBinstream&
+  operator>> (iBinstream &is, GraphModel &model)
+  {
+    return model.input (is);
+  }
+
+
+  oBinstream&
+  operator<< (oBinstream &os, const GraphModel &model)
+  {
+    return model.output (os);
   }
   
 }

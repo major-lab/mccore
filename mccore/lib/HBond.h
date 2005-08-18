@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 // 
 // This file is part of mccore.
 // 
@@ -27,10 +27,12 @@
 #define _mccore_HBond_h
 
 #include <iostream>
+#include <map>
 #include <set>
 
 #include "Algo.h"
 #include "Exception.h"
+#include "ResId.h"
 
 using namespace std;
 
@@ -52,7 +54,7 @@ namespace mccore
    * between any two atoms.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: HBond.h,v 1.7 2005-08-15 21:28:06 larosem Exp $
+   * @version $Id: HBond.h,v 1.8 2005-08-18 18:07:02 larosem Exp $
    */
   class HBond
   {
@@ -296,9 +298,12 @@ namespace mccore
     /**
      * Reads the HBond from a binary stream.
      * @param is the binary input stream.
+     * @param resMap the model's residue mapping to their ResId.
+     * @exception NoSuchElementException is thrown when a residue is not found
+     * within resMap.
      * @return the binary input stream.
      */
-    virtual iBinstream& read (iBinstream &is);
+    virtual iBinstream& read (iBinstream &is, const map< ResId, const Residue* > &resMap) throw (NoSuchElementException);
     
     /**
      * Writes the HBond to a binary stream.
@@ -309,22 +314,6 @@ namespace mccore
     
   };
 
-  /**
-   * Reads the HBond from a binary stream.
-   * @param is the binary input stream.
-   * @param hbond the HBond.
-   * @return the binary input stream.
-   */
-  iBinstream& operator>> (iBinstream &is, HBond &hbond);
-  
-  /**
-   * Writes the HBond to a binary stream.
-   * @param os the binary output stream.
-   * @param hbond the HBond to output.
-   * @return the binary output stream.
-   */
-  oBinstream& operator<< (oBinstream &os, const HBond &hbond);
-  
 }
 
 

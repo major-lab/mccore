@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:31:01 2004
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 // 
 // This file is part of mccore.
 // 
@@ -53,7 +53,7 @@ namespace mccore
    * iterators.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.h,v 1.11 2005-08-05 15:55:45 larosem Exp $
+   * @version $Id: GraphModel.h,v 1.12 2005-08-18 18:06:52 larosem Exp $
    */
   class GraphModel : public AbstractModel, public OrientedGraph< Residue*, Relation*, int, int, less_deref< Residue > >
   {
@@ -68,6 +68,10 @@ namespace mccore
     typedef AbstractModel::const_iterator const_iterator;
     typedef graphsuper::size_type size_type;
     typedef graphsuper::label label;
+    typedef Residue* vertex;
+    typedef Relation* edge;
+    typedef int vertex_weight;
+    typedef int edge_weight;
 
   protected:
     
@@ -391,7 +395,23 @@ namespace mccore
     virtual iBinstream& input (iBinstream &ibs);
 
   };
-  
+
+  /**
+   * Reads the GraphModel from a binary input stream.
+   * @param is the binary input stream.
+   * @param model the GraphModel.
+   * @return the consumed binary stream.
+   */
+  iBinstream& operator>> (iBinstream &is, GraphModel &model);
+
+  /**
+   * Writes the GraphModel to a binary output stream.
+   * @param os the binary input stream.
+   * @param model the GraphModel.
+   * @return the consumed binary stream.
+   */
+  oBinstream& operator<< (oBinstream &os, const GraphModel &model);
+
 }
     
 #endif

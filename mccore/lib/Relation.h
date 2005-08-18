@@ -3,7 +3,7 @@
 // Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.19 $
+// $Revision: 1.20 $
 // 
 // This file is part of mccore.
 // 
@@ -27,6 +27,7 @@
 
 #include <iostream>
 #include <list>
+#include <map>
 #include <set>
 #include <utility>
 #include <vector>
@@ -35,6 +36,7 @@
 #include "Exception.h"
 #include "HBond.h"
 #include "HomogeneousTransfo.h"
+#include "ResId.h"
 #include "Residue.h"
 #include "Vector3D.h"
 
@@ -63,21 +65,16 @@ namespace mccore
     HBondFlow (const HBond &hbond, float flow) : hbond (hbond), flow (flow) { }
     bool operator< (const HBondFlow& other) const { return flow < other.flow; }
 
-    virtual iBinstream& read (iBinstream &is);
+    virtual iBinstream& read (iBinstream &is, const map< ResId, const Residue* > &resMap);
 
     virtual oBinstream& write (oBinstream &os) const;
   };
-
-  iBinstream& operator<< (iBinstream &is, HBondFlow &hf);
-
-  oBinstream& operator>> (oBinstream &os, const HBondFlow &hf);
-  
 
   /**
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.19 2005-08-15 21:28:18 larosem Exp $
+   * @version $Id: Relation.h,v 1.20 2005-08-18 18:07:14 larosem Exp $
    */
   class Relation
   {
@@ -551,9 +548,12 @@ namespace mccore
     /**
      * Reads the relation from a binary stream.
      * @param is the binary input stream.
+     * @param resMap the models residue mapping to their ResId.
      * @return the binary input stream.
+     * @exception NoSuchElementException is thrown when ref or res is not found
+     * within resMap.
      */
-    virtual iBinstream& read (iBinstream &is);
+    virtual iBinstream& read (iBinstream &is, const map< ResId, const Residue* > &resMap) throw (NoSuchElementException);
     
     /**
      * Writes the relation to a binary stream.
@@ -564,22 +564,6 @@ namespace mccore
     
   };
 
-  /**
-   * Reads the relation from a binary stream.
-   * @param is the binary input stream.
-   * @param rel the relation.
-   * @return the binary input stream.
-   */
-  iBinstream& operator>> (iBinstream &is, Relation &rel);
-  
-  /**
-   * Writes the relation to a binary stream.
-   * @param os the binary output stream.
-   * @param rel the relation to output.
-   * @return the binary output stream.
-   */
-  oBinstream& operator<< (oBinstream &os, const Relation &rel);
-  
 }
 
 

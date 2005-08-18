@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu Mar 20 18:05:28 2003
-// $Revision: 1.13 $
-// $Id: HBond.cc,v 1.13 2005-08-15 21:28:01 larosem Exp $
+// $Revision: 1.14 $
+// $Id: HBond.cc,v 1.14 2005-08-18 18:06:57 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -356,18 +356,37 @@ namespace mccore
 
 
   iBinstream&
-  HBond::read (iBinstream &is)
+  HBond::read (iBinstream &is, const map< ResId, const Residue* > &resMap) throw (NoSuchElementException)
   {
-    Residue *res;
+    ResId id;
+    map< ResId, const Residue* >::const_iterator rmIt;
     
     is >> donor >> hydrogen >> acceptor >> lonepair;
     is >> value;
-    res = new Residue ();
-    is >> *res;
-    resD = res;
-    res = new Residue ();
-    is >> *res;
-    resA = res;
+    is >> id;
+    if (resMap.end () == (rmIt = resMap.find (id)))
+      {
+	NoSuchElementException e ("cannot find residue id ", __FILE__, __LINE__);
+
+	e << id;
+	throw e;
+      }
+    else
+      {
+	resD = rmIt->second;
+      }
+    is >> id;
+    if (resMap.end () == (rmIt = resMap.find (id)))
+      {
+	NoSuchElementException e ("cannot find residue id ", __FILE__, __LINE__);
+
+	e << id;
+	throw e;
+      }
+    else
+      {
+	resA = rmIt->second;
+      }
     return is;
   }
     
@@ -375,27 +394,12 @@ namespace mccore
   oBinstream&
   HBond::write (oBinstream &os) const
   {
-    os << donor << hydrogen << acceptor << lonepair;
-    os << value;
-    os << (const Residue&) *resD
-       << (const Residue&) *resA;
-    return os;
+    return os << donor << hydrogen << acceptor << lonepair
+	      << value
+	      << resD->getResId ()
+	      << resA->getResId ();
   }
     
-
-  iBinstream&
-  operator>> (iBinstream &is, HBond &hbond)
-  {
-    return hbond.read (is);
-  }
-  
-
-  oBinstream&
-  operator<< (oBinstream &os, const HBond &hbond)
-  {
-    return hbond.write (os);
-  }
-
 }
 
 

@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.41 $
-// $Id: Relation.cc,v 1.41 2005-08-15 21:28:11 larosem Exp $
+// $Revision: 1.42 $
+// $Id: Relation.cc,v 1.42 2005-08-18 18:07:09 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -67,30 +67,18 @@ namespace mccore
 
 
   iBinstream&
-  HBondFlow::read (iBinstream &is)
+  HBondFlow::read (iBinstream &is, const map< ResId, const Residue* > &resMap)
   {
-    return is >> hbond >> flow;
+    hbond.read (is, resMap);
+    return is >> flow;
   }
 
 
   oBinstream&
   HBondFlow::write (oBinstream &os) const
   {
-    return os << hbond << flow;
-  }
-
-
-  iBinstream&
-  operator>> (iBinstream &is, HBondFlow &hf)
-  {
-    return hf.read (is);
-  }
-
-
-  oBinstream&
-  operator<< (oBinstream &os, const HBondFlow &hf)
-  {
-    return hf.write (os);
+    hbond.write (os);
+    return os << flow;
   }
 
 
@@ -1594,18 +1582,37 @@ namespace mccore
 
 
   iBinstream&
-  Relation::read (iBinstream &is)
+  Relation::read (iBinstream &is, const map< ResId, const Residue* > &resMap) throw (NoSuchElementException)
   {
-    Residue *r;
+    ResId id;
+    map<ResId, const Residue* >::const_iterator rmIt;
     set< const PropertyType* >::size_type propsSize;
     vector< HBondFlow >::size_type hfsSize;
     
-    r = new Residue ();
-    is >> *r;
-    ref = r;
-    r = new Residue ();
-    is >> *r;
-    res = r;
+    is >> id;
+    if (resMap.end () == (rmIt = resMap.find (id)))
+      {
+	NoSuchElementException e ("cannot find residue id ", __FILE__, __LINE__);
+
+	e << id;
+	throw e;
+      }
+    else
+      {
+	ref = rmIt->second;
+      }
+    is >> id;
+    if (resMap.end () == (rmIt = resMap.find (id)))
+      {
+	NoSuchElementException e ("cannot find residue id ", __FILE__, __LINE__);
+
+	e << id;
+	throw e;
+      }
+    else
+      {
+	res = rmIt->second;
+      }
     is >> tfo >> po4_tfo;
     is >> refFace >> resFace;
     labels.clear ();
@@ -1625,7 +1632,7 @@ namespace mccore
       {
 	hbonds.push_back (HBondFlow ());
 	HBondFlow &hf = hbonds.back ();
-	is >> hf;
+	hf.read (is, resMap);
 	--hfsSize;
       }
     is >> sum_flow;
@@ -1639,8 +1646,8 @@ namespace mccore
     set< const PropertyType* >::const_iterator propsIt;
     vector< HBondFlow >::const_iterator hfsIt;
     
-    os << (const Residue&) *ref;
-    os << (const Residue&) *res;
+    os << ref->getResId ();
+    os << res->getResId ();
     os << tfo << po4_tfo;
     os << refFace << resFace;
     os << labels.size ();
@@ -1652,24 +1659,10 @@ namespace mccore
     os << hbonds.size ();
     for (hfsIt = hbonds.begin (); hbonds.end () != hfsIt; ++hfsIt)
       {
-	os << *hfsIt;
+	hfsIt->write (os);
       }
     os << sum_flow;
     return os;
-  }
-
-
-  iBinstream&
-  operator>> (iBinstream &is, Relation &rel)
-  {
-    return rel.read (is);
-  }
-
-
-  oBinstream&
-  operator<< (oBinstream &os, const Relation &rel)
-  {
-    return rel.write (os);
   }
 
 }
