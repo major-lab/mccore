@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.31 $
-// $Id: Model.cc,v 1.31 2005-02-25 16:48:14 thibaup Exp $
+// $Revision: 1.32 $
+// $Id: Model.cc,v 1.32 2005-08-19 19:16:05 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -207,7 +207,7 @@ namespace mccore
   {
     const_iterator cit;
     
-    obs << size ();
+    obs << (long long) size ();
     for (cit = begin (); cit != end (); ++cit)
       {
 	obs << *cit;
@@ -219,7 +219,7 @@ namespace mccore
   iBinstream& 
   Model::input (iBinstream &ibs)
   {
-    Model::size_type sz;
+    long long sz;
     
     clear ();
     ibs >> sz;

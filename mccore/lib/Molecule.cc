@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:35 2003
-// $Revision: 1.15 $
-// $Id: Molecule.cc,v 1.15 2005-04-12 19:56:48 larosem Exp $
+// $Revision: 1.16 $
+// $Id: Molecule.cc,v 1.16 2005-08-19 19:16:11 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -250,18 +250,21 @@ namespace mccore
     map< string, string >::const_iterator pit;
 
     // -- dump ModelFactoryMethod in first place
-    obs << *this->modelFM;
+    obs << *modelFM;
 
     // -- dump models
-    obs << (unsigned int)size ();
+    obs << (unsigned long long) size ();
     for (mit = begin (); mit != end (); ++mit)
-      obs << *mit;
-
+      {
+	obs << *mit;
+      }
+    
     // -- dump properties
-    obs << (unsigned int)properties.size ();
+    obs << (unsigned long long) properties.size ();
     for (pit = properties.begin (); pit != properties.end (); ++pit)
-      obs << pit->first.c_str () << pit->second.c_str ();
-
+      {
+	obs << pit->first.c_str () << pit->second.c_str ();
+      }
     return obs;
   }
 
@@ -269,30 +272,31 @@ namespace mccore
   iBinstream&
   Molecule::read (iBinstream &ibs)
   {
-    unsigned int qty;
-    string kcs, vcs;
+    unsigned long long qty;
+    string kcs;
+    string vcs;
 
     // -- reset object
-    this->clear ();
-    delete this->modelFM;
+    clear ();
 
     // -- read ModelFactoryMethod
-    this->modelFM = ModelFactoryMethod::read (ibs);
+    delete modelFM;
+    modelFM = ModelFactoryMethod::read (ibs);
 
     // -- read models using restored factory method for object creation
     for (ibs >> qty; qty > 0; --qty)
     {
-      this->models.push_back (modelFM->createModel ());
-      ibs >> *this->models.back ();
+      models.push_back (modelFM->createModel ());
+      ibs >> *models.back ();
     }
 
     // -- read properties
     for (ibs >> qty; qty > 0; --qty)
     {
       ibs >> kcs >> vcs;
-      this->setProperty (kcs, vcs);
+      setProperty (kcs, vcs);
     }
-
+    
     return ibs;
   }
 

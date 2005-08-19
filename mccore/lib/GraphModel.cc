@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.12 $
-// $Id: GraphModel.cc,v 1.12 2005-08-18 18:06:48 larosem Exp $
+// $Revision: 1.13 $
+// $Id: GraphModel.cc,v 1.13 2005-08-19 19:15:59 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -465,7 +465,7 @@ namespace mccore
   iBinstream&
   GraphModel::input (iBinstream &is)
   {
-    GraphModel::size_type sz;
+    unsigned long long sz;
     map< ResId, const Residue* > resMap;
 
     clear ();
@@ -473,7 +473,7 @@ namespace mccore
     for (; sz > 0; --sz)
       {
 	Residue *res;
-	vertex_weight value;
+	long long value;
 
 	res = getResidueFM ()->createResidue ();
 	is >> *res >> value;
@@ -483,10 +483,10 @@ namespace mccore
     is >> sz;
     for (; 0 < sz; --sz)
       {
-	GraphModel::label from;
-	GraphModel::label to;
+	unsigned long long from;
+	unsigned long long to;
 	Relation *rel;
-	edge_weight value;
+	unsigned long long value;
 
 	is >> from >> to;
 	rel = new Relation ();
@@ -508,7 +508,7 @@ namespace mccore
   oBinstream&
   GraphModel::output (oBinstream &os) const
   {
-    size_type sz;
+    unsigned long long sz;
     label lbl;
     EV2ELabel::const_iterator eIt;
     map< label, const EndVertices* > revMap;
@@ -518,19 +518,20 @@ namespace mccore
     os << sz;
     for (lbl = 0; lbl < sz; ++lbl)
       {
-	os << *internalGetVertex (lbl) << internalGetVertexWeight (lbl);
+	os << *internalGetVertex (lbl)
+	   << (long long) internalGetVertexWeight (lbl);
       }
     for (eIt = ev2elabel.begin (); ev2elabel.end () != eIt; ++eIt)
       {
 	revMap.insert (make_pair (eIt->second, &(eIt->first)));
       }
-    os << edgeSize ();
+    os << (unsigned long long) edgeSize ();
     for (revMapIt = revMap.begin (); revMap.end () != revMapIt; ++revMapIt)
       {
-	os << revMapIt->second->getHeadLabel ()
-	   << revMapIt->second->getTailLabel ();
+	os << (unsigned long long) revMapIt->second->getHeadLabel ()
+	   << (unsigned long long) revMapIt->second->getTailLabel ();
 	internalGetEdge (revMapIt->first)->write (os);
-	os << internalGetEdgeWeight (revMapIt->first);
+	os << (long long) internalGetEdgeWeight (revMapIt->first);
       }
     return os << annotated;
   }
