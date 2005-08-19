@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.15 $
+// $Revision: 1.16 $
 // 
 // This file is part of mccore.
 // 
@@ -47,7 +47,7 @@ namespace mccore
    * General property types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: PropertyType.h,v 1.15 2005-01-15 02:17:39 larosem Exp $
+   * @version $Id: PropertyType.h,v 1.16 2005-08-19 15:24:19 thibaup Exp $
    */
   class PropertyType
   {
@@ -1292,6 +1292,86 @@ namespace mccore
      * Global Bh type.
      */
     static const PropertyType* pBh;
+
+    /**
+     * Global Alpha-L-Lyxo type.
+     */
+    static const PropertyType* pAlpha_L_Lyxofuranoside;
+
+    /**
+     * Global Beta-L-Lyxo type.
+     */
+    static const PropertyType* pBeta_L_Lyxofuranoside;
+
+    /**
+     * Global Alpha-D-Lyxo type.
+     */
+    static const PropertyType* pAlpha_D_Lyxofuranoside;
+
+    /**
+     * Global Beta-D-Lyxo type.
+     */
+    static const PropertyType* pBeta_D_Lyxofuranoside;
+
+    /**
+     * Global Alpha-L-Ribo type.
+     */
+    static const PropertyType* pAlpha_L_Ribofuranoside;
+
+    /**
+     * Global Beta-L-Ribo type.
+     */
+    static const PropertyType* pBeta_L_Ribofuranoside;
+
+    /**
+     * Global Alpha-D-Ribo type.
+     */
+    static const PropertyType* pAlpha_D_Ribofuranoside;
+
+    /**
+     * Global Beta-D-Ribo type.
+     */
+    static const PropertyType* pBeta_D_Ribofuranoside;
+
+    /**
+     * Global Alpha-L-Arabino type.
+     */
+    static const PropertyType* pAlpha_L_Arabinofuranoside;
+
+    /**
+     * Global Beta-L-Arabino type.
+     */
+    static const PropertyType* pBeta_L_Arabinofuranoside;
+
+    /**
+     * Global Alpha-D-Arabino type.
+     */
+    static const PropertyType* pAlpha_D_Arabinofuranoside;
+
+    /**
+     * Global Beta-D-Arabino type.
+     */
+    static const PropertyType* pBeta_D_Arabinofuranoside;
+
+    /**
+     * Global Alpha-L-Xylo type.
+     */
+    static const PropertyType* pAlpha_L_Xylofuranoside;
+
+    /**
+     * Global Beta-L-Xylo type.
+     */
+    static const PropertyType* pBeta_L_Xylofuranoside;
+
+    /**
+     * Global Alpha-D-Xylo type.
+     */
+    static const PropertyType* pAlpha_D_Xylofuranoside;
+
+    /**
+     * Global Beta-D-Xylo type.
+     */
+    static const PropertyType* pBeta_D_Xylofuranoside;
 
   };
   

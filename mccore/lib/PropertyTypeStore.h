@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:42:25 2003
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 // 
 // This file is part of mccore.
 // 
@@ -42,7 +42,7 @@ namespace mccore
    *
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: PropertyTypeStore.h,v 1.10 2005-04-06 16:21:56 thibaup Exp $
+   * @version $Id: PropertyTypeStore.h,v 1.11 2005-08-19 15:24:19 thibaup Exp $
    */
   class PropertyTypeStore
   {
@@ -2497,6 +2497,306 @@ namespace mccore
       PBh (const string& ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PBh* > (t); 
+      }
+    };
+
+    /**
+     * Public class for Furanose.
+     */
+    class Furanose : public virtual PropertyType {
+    public:
+      Furanose () {}
+      Furanose (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const Furanose* > (t); 
+      }
+    };
+
+    /**
+     * Public class for Alpha anomer.
+     */
+    class Alpha : public Furanose {
+    public:
+      Alpha () {}
+      Alpha (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const Alpha* > (t); 
+      }
+    };
+
+    /**
+     * Public class for Beta anomer.
+     */
+    class Beta : public Furanose {
+    public:
+      Beta () {}
+      Beta (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const Beta* > (t); 
+      }
+    };
+
+    /**
+     * Public class for L enantiomer.
+     */
+    class L : public Furanose {
+    public:
+      L () {}
+      L (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const L* > (t); 
+      }
+    };
+
+    /**
+     * Public class for D enantiomer.
+     */
+    class D : public Furanose {
+    public:
+      D () {}
+      D (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const D* > (t); 
+      }
+    };
+
+    /**
+     * Public class for Lyxo aldose.
+     */
+    class Lyxofuranoside : public virtual Furanose {
+    public:
+      Lyxofuranoside () {}
+      Lyxofuranoside (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+        return dynamic_cast< const Lyxofuranoside* > (t);
+      }
+    };
+
+    /**
+     * Public class for Ribo aldose.
+     */
+    class Ribofuranoside : public virtual Furanose {
+    public:
+      Ribofuranoside () {}
+      Ribofuranoside (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+        return dynamic_cast< const Ribofuranoside* > (t);
+      }
+    };
+
+    /**
+     * Public class for Arabino aldose.
+     */
+    class Arabinofuranoside : public virtual Furanose {
+    public:
+      Arabinofuranoside () {}
+      Arabinofuranoside (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+        return dynamic_cast< const Arabinofuranoside* > (t);
+      }
+    };
+
+    /**
+     * Public class for Xylo aldose.
+     */
+    class Xylofuranoside : public virtual Furanose {
+    public:
+      Xylofuranoside () {}
+      Xylofuranoside (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+        return dynamic_cast< const Xylofuranoside* > (t);
+      }
+    };
+
+    /**
+     * Public class for Alpha-L-Lyxofuranoside.
+     */
+    class Alpha_L_Lyxofuranoside : public virtual Alpha, public virtual L, public virtual Lyxofuranoside {
+    public:
+      Alpha_L_Lyxofuranoside () {}
+      Alpha_L_Lyxofuranoside (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+        return dynamic_cast< const Alpha_L_Lyxofuranoside* > (t);
+      }
+    };
+
+    /**
+     * Public class for Beta-L-Lyxo.
+     */
+    class Beta_L_Lyxofuranoside : public virtual Beta, public virtual L, public virtual Lyxofuranoside {
+    public:
+      Beta_L_Lyxofuranoside () {}
+      Beta_L_Lyxofuranoside (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+        return dynamic_cast< const Beta_L_Lyxofuranoside* > (t);
+      }
+    };
+
+    /**
+     * Public class for Alpha-D-Lyxo.
+     */
+    class Alpha_D_Lyxofuranoside : public virtual Alpha, public virtual D, public virtual Lyxofuranoside {
+    public:
+      Alpha_D_Lyxofuranoside () {}
+      Alpha_D_Lyxofuranoside (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+        return dynamic_cast< const Alpha_D_Lyxofuranoside* > (t);
+      }
+    };
+
+    /**
+     * Public class for Beta-D-Lyxo.
+     */
+    class Beta_D_Lyxofuranoside : public virtual Beta, public virtual D, public virtual Lyxofuranoside {
+    public:
+      Beta_D_Lyxofuranoside () {}
+      Beta_D_Lyxofuranoside (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+        return dynamic_cast< const Beta_D_Lyxofuranoside* > (t);
+      }
+    };
+
+    /**
+     * Public class for Alpha-L-Ribo.
+     */
+    class Alpha_L_Ribofuranoside : public virtual Alpha, public virtual L, public virtual Ribofuranoside {
+    public:
+      Alpha_L_Ribofuranoside () {}
+      Alpha_L_Ribofuranoside (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+        return dynamic_cast< const Alpha_L_Ribofuranoside* > (t);
+      }
+    };
+
+    /**
+     * Public class for Beta-L-Ribo.
+     */
+    class Beta_L_Ribofuranoside : public virtual Beta, public virtual L, public virtual Ribofuranoside {
+    public:
+      Beta_L_Ribofuranoside () {}
+      Beta_L_Ribofuranoside (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+        return dynamic_cast< const Beta_L_Ribofuranoside* > (t);
+      }
+    };
+
+    /**
+     * Public class for Alpha-D-Ribo.
+     */
+    class Alpha_D_Ribofuranoside : public virtual Alpha, public virtual D, public virtual Ribofuranoside {
+    public:
+      Alpha_D_Ribofuranoside () {}
+      Alpha_D_Ribofuranoside (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+        return dynamic_cast< const Alpha_D_Ribofuranoside* > (t);
+      }
+    };
+
+    /**
+     * Public class for Beta-D-Ribo.
+     */
+    class Beta_D_Ribofuranoside : public virtual Beta, public virtual D, public virtual Ribofuranoside {
+    public:
+      Beta_D_Ribofuranoside () {}
+      Beta_D_Ribofuranoside (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+        return dynamic_cast< const Beta_D_Ribofuranoside* > (t);
+      }
+    };
+
+    /**
+     * Public class for Alpha-L-Arabino.
+     */
+    class Alpha_L_Arabinofuranoside : public virtual Alpha, public virtual L, public virtual Arabinofuranoside {
+    public:
+      Alpha_L_Arabinofuranoside () {}
+      Alpha_L_Arabinofuranoside (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+        return dynamic_cast< const Alpha_L_Arabinofuranoside* > (t);
+      }
+    };
+
+    /**
+     * Public class for Beta-L-Arabino.
+     */
+    class Beta_L_Arabinofuranoside : public virtual Beta, public virtual L, public virtual Arabinofuranoside {
+    public:
+      Beta_L_Arabinofuranoside () {}
+      Beta_L_Arabinofuranoside (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+        return dynamic_cast< const Beta_L_Arabinofuranoside* > (t);
+      }
+    };
+
+    /**
+     * Public class for Alpha-D-Arabino.
+     */
+    class Alpha_D_Arabinofuranoside : public virtual Alpha, public virtual D, public virtual Arabinofuranoside {
+    public:
+      Alpha_D_Arabinofuranoside () {}
+      Alpha_D_Arabinofuranoside (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+        return dynamic_cast< const Alpha_D_Arabinofuranoside* > (t);
+      }
+    };
+
+    /**
+     * Public class for Beta-D-Arabino.
+     */
+    class Beta_D_Arabinofuranoside : public virtual Beta, public virtual D, public virtual Arabinofuranoside {
+    public:
+      Beta_D_Arabinofuranoside () {}
+      Beta_D_Arabinofuranoside (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+        return dynamic_cast< const Beta_D_Arabinofuranoside* > (t);
+      }
+    };
+
+    /**
+     * Public class for Alpha-L-Xylo.
+     */
+    class Alpha_L_Xylofuranoside : public virtual Alpha, public virtual L, public virtual Xylofuranoside {
+    public:
+      Alpha_L_Xylofuranoside () {}
+      Alpha_L_Xylofuranoside (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+        return dynamic_cast< const Alpha_L_Xylofuranoside* > (t);
+      }
+    };
+
+    /**
+     * Public class for Beta-L-Xylo.
+     */
+    class Beta_L_Xylofuranoside : public virtual Beta, public virtual L, public virtual Xylofuranoside {
+    public:
+      Beta_L_Xylofuranoside () {}
+      Beta_L_Xylofuranoside (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+        return dynamic_cast< const Beta_L_Xylofuranoside* > (t);
+      }
+    };
+
+    /**
+     * Public class for Alpha-D-Xylo.
+     */
+    class Alpha_D_Xylofuranoside : public virtual Alpha, public virtual D, public virtual Xylofuranoside {
+    public:
+      Alpha_D_Xylofuranoside () {}
+      Alpha_D_Xylofuranoside (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+        return dynamic_cast< const Alpha_D_Xylofuranoside* > (t);
+      }
+    };
+
+    /**
+     * Public class for Beta-D-Xylo.
+     */
+    class Beta_D_Xylofuranoside : public virtual Beta, public virtual D, public virtual Xylofuranoside {
+    public:
+      Beta_D_Xylofuranoside () {}
+      Beta_D_Xylofuranoside (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+        return dynamic_cast< const Beta_D_Xylofuranoside* > (t);
       }
     };
 

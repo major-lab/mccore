@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.36 $
+// $Revision: 1.37 $
 //
 // This file is part of mccore.
 // 
@@ -62,7 +62,7 @@ namespace mccore
    * the atom types.
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: Residue.h,v 1.36 2005-07-18 20:17:56 thibaup Exp $
+   * @version $Id: Residue.h,v 1.37 2005-08-19 15:24:19 thibaup Exp $
    */
   class Residue
   {
@@ -895,19 +895,12 @@ namespace mccore
 
     /**
      * Returns the furanose's type as labeled to the 16 possible stereochemical 
-     * arrangments of the four composites linked to the ring:
+     * arrangments of the four exocyclic composites linked to the ring: 
      *
-     * bit #3: O2' (only in RNA)
-     * bit #2: C5'
-     * bit #1: O3'
-     * bit #0: N1 (or N9)
-     *
-     * the canonical arrangment (alpha-D-ribofuranoside) is 0101 (5) 
-     *
-     * @return furanose's type value from 0 to 15 (0 to 7 in DNA)
-     * @throws IntLibException
+     * @return furanose's type 
+     * @throws IntLibException FatalIntLibException
      */
-    unsigned short getFuranoseType () const throw (IntLibException);
+    const PropertyType* getFuranoseType () const throw (IntLibException, FatalIntLibException);
 
     /**
      * Finalizes the residue. Computes the referential's pseudo-atoms.

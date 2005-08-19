@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.75 $
-// $Id: Residue.cc,v 1.75 2005-07-26 20:25:59 larosem Exp $
+// $Revision: 1.76 $
+// $Id: Residue.cc,v 1.76 2005-08-19 15:24:19 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -1641,19 +1641,20 @@ namespace mccore
   }
 
 
-  unsigned short
-  Residue::getFuranoseType () const throw (IntLibException)
+  const PropertyType*
+  Residue::getFuranoseType () const throw (IntLibException, FatalIntLibException)
   {
     /*
       4 bits unsigned value:
                              [1] C5'                   N1(N9)
          __ O4'__                |                     |
-        /        \     --->      C4'---C3'-[O4']-C2'---C1'    == 0101 (5)
+        /        \     --->      C4'---C3'-[O4']-C2'---C1'    == 0011 (5) == beta-D-ribofuranoside
       C4'-C3'-C2'-C1'                  |         |
-      b2  b1  b3  b0         [0]       O3'       O2'
+      b1  b2  b3  b0         [0]       O3'       O2'
     */
 
     unsigned short ftype = 0, b3m = 8, b2m = 4, b1m = 2, b0m = 1;
+    const PropertyType* fname = PropertyType::pNull;
 
     try
     {
@@ -1669,14 +1670,14 @@ namespace mccore
       if (ext.transform (HomogeneousTransfo::align (*c1p, *c2p, *o4p).invert ()).getX () < 0.0)
 	ftype |= b0m;
 
-      // b1: O3'
-      ext = *this->_safe_get (AtomType::aO3p);
-      if (ext.transform (HomogeneousTransfo::align (*c3p, *c4p, *c2p).invert ()).getX () < 0.0)
-	ftype |= b1m;
-
-      // b2: C5'
+      // b2: O3'
       ext = *this->_safe_get (AtomType::aC5p);
       if (ext.transform (HomogeneousTransfo::align (*c4p, *o4p, *c1p).invert ()).getX () < 0.0)
+	ftype |= b1m;
+
+      // b1: C5'
+      ext = *this->_safe_get (AtomType::aO3p);
+      if (ext.transform (HomogeneousTransfo::align (*c3p, *c4p, *c2p).invert ()).getX () < 0.0)
 	ftype |= b2m;
 
       // b3: O2' => only if exists
@@ -1698,7 +1699,32 @@ namespace mccore
       throw ex;
     }
 
-    return ftype;
+    switch (ftype)
+    {
+    case  0: fname = PropertyType::pAlpha_L_Lyxofuranoside; break;
+    case  1: fname = PropertyType::pBeta_L_Lyxofuranoside; break;
+    case  2: fname = PropertyType::pAlpha_D_Ribofuranoside; break;
+    case  3: fname = PropertyType::pBeta_D_Ribofuranoside; break;
+    case  4: fname = PropertyType::pAlpha_L_Arabinofuranoside; break;
+    case  5: fname = PropertyType::pBeta_L_Arabinofuranoside; break;
+    case  6: fname = PropertyType::pAlpha_D_Xylofuranoside; break;
+    case  7: fname = PropertyType::pBeta_D_Xylofuranoside; break;
+    case  8: fname = PropertyType::pAlpha_L_Xylofuranoside; break;
+    case  9: fname = PropertyType::pBeta_L_Xylofuranoside; break;
+    case 10: fname = PropertyType::pAlpha_D_Arabinofuranoside; break;
+    case 11: fname = PropertyType::pBeta_D_Arabinofuranoside; break;
+    case 12: fname = PropertyType::pAlpha_L_Ribofuranoside; break;
+    case 13: fname = PropertyType::pBeta_L_Ribofuranoside; break;
+    case 14: fname = PropertyType::pAlpha_D_Lyxofuranoside; break;
+    case 15: fname = PropertyType::pBeta_D_Lyxofuranoside; break;
+
+    default:
+      FatalIntLibException ex ("", __FILE__, __LINE__);
+      ex << "invalid furanose type id #" << ftype;
+      throw ex;
+    }    
+
+    return fname;
   }
   
   
@@ -1912,25 +1938,25 @@ namespace mccore
     omega = erho1 = (xz_len - Residue::s_cosf_vshift) / Residue::s_cosf_amplitude;
     
     // +/- 0.25 tolerance on cos amplitude
-    if (erho1 < -1.25)
-    {
-      this->rib_built_valid = false;
-      return numeric_limits< float >::max ();
-    }
-    else if (erho1 < -1.0)   // -1.25 <= omega < -1.0   
-      erho1 = -1.0;
-    else if (erho1 > 1.25)   
-    {
-      this->rib_built_valid = false;
-      return numeric_limits< float >::max ();
-    }
-    else if (erho1 > 1.0)    // 1.00 <= omega < 1.25
-      erho1 = 1.0;
-
-//     if (erho1 < -1)
+//     if (erho1 < -1.25)
+//     {
+//       this->rib_built_valid = false;
+//       return numeric_limits< float >::max ();
+//     }
+//     else if (erho1 < -1.0)   // -1.25 <= omega < -1.0   
 //       erho1 = -1.0;
-//     else if (erho1 > 1)
+//     else if (erho1 > 1.25)   
+//     {
+//       this->rib_built_valid = false;
+//       return numeric_limits< float >::max ();
+//     }
+//     else if (erho1 > 1.0)    // 1.00 <= omega < 1.25
 //       erho1 = 1.0;
+
+    if (erho1 < -1)
+      erho1 = -1.0;
+    else if (erho1 > 1)
+      erho1 = 1.0;
 
     erho1 = acos (erho1) - Residue::s_cosf_phase;
     erho2 = Residue::s_2xpi - 2 * Residue::s_cosf_phase - erho1;

@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.14 $
-// $Id: PropertyType.cc,v 1.14 2005-01-07 17:09:38 thibaup Exp $
+// $Revision: 1.15 $
+// $Id: PropertyType.cc,v 1.15 2005-08-19 15:24:19 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -232,7 +232,23 @@ namespace mccore
   const PropertyType* PropertyType::pBs = 0;
   const PropertyType* PropertyType::pBh = 0;
 
-  
+  const PropertyType* PropertyType::pAlpha_L_Lyxofuranoside = 0;
+  const PropertyType* PropertyType::pBeta_L_Lyxofuranoside = 0;
+  const PropertyType* PropertyType::pAlpha_D_Lyxofuranoside = 0;
+  const PropertyType* PropertyType::pBeta_D_Lyxofuranoside = 0;
+  const PropertyType* PropertyType::pAlpha_L_Ribofuranoside = 0;
+  const PropertyType* PropertyType::pBeta_L_Ribofuranoside = 0;
+  const PropertyType* PropertyType::pAlpha_D_Ribofuranoside = 0;
+  const PropertyType* PropertyType::pBeta_D_Ribofuranoside = 0;
+  const PropertyType* PropertyType::pAlpha_L_Arabinofuranoside = 0;
+  const PropertyType* PropertyType::pBeta_L_Arabinofuranoside = 0;
+  const PropertyType* PropertyType::pAlpha_D_Arabinofuranoside = 0;
+  const PropertyType* PropertyType::pBeta_D_Arabinofuranoside = 0;
+  const PropertyType* PropertyType::pAlpha_L_Xylofuranoside = 0;
+  const PropertyType* PropertyType::pBeta_L_Xylofuranoside = 0;
+  const PropertyType* PropertyType::pAlpha_D_Xylofuranoside = 0;
+  const PropertyType* PropertyType::pBeta_D_Xylofuranoside = 0;
+
   // LIFECYCLE -----------------------------------------------------------------
 
   PropertyType::PropertyType () 
