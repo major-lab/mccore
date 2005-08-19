@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.19 $
+// $Revision: 1.20 $
 //
 // This file is part of mccore.
 // 
@@ -56,7 +56,7 @@ namespace mccore
    * </pre>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: HomogeneousTransfo.h,v 1.19 2005-07-26 20:25:56 larosem Exp $
+   * @version $Id: HomogeneousTransfo.h,v 1.20 2005-08-19 20:24:33 thibaup Exp $
    */
   class HomogeneousTransfo
   {
@@ -65,16 +65,12 @@ namespace mccore
      */
     float *matrix;
     
-
   public:
 
     /**
      * The squared scale ratio between angle and distance (Ang^2 / rad^2)
      */
-    //const float HomogeneousTransfo::alpha_square = 2.25;
     static const float alpha_square = 6.927424; // 2.632^2
-    //static const float alpha_square;
-//     static float alpha_square;
     
     // LIFECYCLE ------------------------------------------------------------
     
