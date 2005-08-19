@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu Mar 13 13:03:07 2003
-// $Revision: 1.6 $
-// $Id: AtomSet.cc,v 1.6 2005-01-03 22:50:13 larosem Exp $
+// $Revision: 1.7 $
+// $Id: AtomSet.cc,v 1.7 2005-08-19 20:22:52 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -111,6 +111,11 @@ namespace mccore {
       ibs >> t;
       as = new AtomSetAtom (t);
       break;
+
+    default:
+      FatalIntLibException ex ("", __FILE__, __LINE__);
+      ex << "corrupted AtomSet class tag #" << nb << " in binary data.";
+      throw ex;
     }
     return ibs;
   }

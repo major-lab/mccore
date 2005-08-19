@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.42 $
-// $Id: Relation.cc,v 1.42 2005-08-18 18:07:09 larosem Exp $
+// $Revision: 1.43 $
+// $Id: Relation.cc,v 1.43 2005-08-19 20:22:52 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -172,6 +172,7 @@ namespace mccore
     this->labels.clear ();
     this->type_asp = 0;
     this->hbonds.clear ();
+    this->sum_flow = 0.0;
   }
 
 
@@ -632,7 +633,9 @@ namespace mccore
 	}
       }
 
+#ifdef DEBUG
       gOut (5) << graph << endl;
+#endif
 	
       if (graph.size () >= 3)
       {
@@ -640,7 +643,9 @@ namespace mccore
 
 	graph.preFlowPush (0, 1);
 	    
+#ifdef DEBUG
 	gOut (5) << graph << endl;
+#endif
 
 	for (label = 0; label < graph.edgeSize (); ++label)
 	{
@@ -656,7 +661,9 @@ namespace mccore
 	  }
 	}
 
+#ifdef DEBUG
 	gOut (4) << "Sum flow = " << sum_flow << endl;
+#endif
 	    
 	if (sum_flow >= PAIRING_CUTOFF)
 	{
@@ -668,7 +675,9 @@ namespace mccore
       else
       {
 	hbonds.clear ();
+#ifdef DEBUG
 	gOut (4) << "MaximumFlowGraph.size () = " << graph.size () << endl;
+#endif
       }
     }
     catch (IntLibException& ex)
@@ -1586,55 +1595,68 @@ namespace mccore
   {
     ResId id;
     map<ResId, const Residue* >::const_iterator rmIt;
-    set< const PropertyType* >::size_type propsSize;
-    vector< HBondFlow >::size_type hfsSize;
+    mccore::bin_ui64 qty = 0;
     
     is >> id;
     if (resMap.end () == (rmIt = resMap.find (id)))
-      {
-	NoSuchElementException e ("cannot find residue id ", __FILE__, __LINE__);
+    {
+      NoSuchElementException e ("cannot find residue id ", __FILE__, __LINE__);
 
-	e << id;
-	throw e;
-      }
+      e << id;
+      throw e;
+    }
     else
-      {
-	ref = rmIt->second;
-      }
+    {
+      ref = rmIt->second;
+    }
     is >> id;
     if (resMap.end () == (rmIt = resMap.find (id)))
-      {
-	NoSuchElementException e ("cannot find residue id ", __FILE__, __LINE__);
+    {
+      NoSuchElementException e ("cannot find residue id ", __FILE__, __LINE__);
 
-	e << id;
-	throw e;
-      }
+      e << id;
+      throw e;
+    }
     else
-      {
-	res = rmIt->second;
-      }
+    {
+      res = rmIt->second;
+    }
     is >> tfo >> po4_tfo;
     is >> refFace >> resFace;
     labels.clear ();
-    is >> propsSize;
-    while (0 < propsSize)
+    is >> qty;
+    while (0 < qty)
+    {
+      if (!is.good ())
       {
-	const PropertyType *prop;
-	
-	is >> prop;
-	labels.insert (prop);
-	--propsSize;
+	FatalIntLibException ex ("", __FILE__, __LINE__);
+	ex << "read failure, " << (unsigned)qty << " to go.";
+	throw ex;
       }
+
+      const PropertyType *prop;
+	
+      is >> prop;
+      labels.insert (prop);
+      --qty;
+    }
     is >> type_asp;
     hbonds.clear ();
-    is >> hfsSize;
-    while (0 < hfsSize)
+    is >> qty;
+    while (0 < qty)
+    {
+      if (!is.good ())
       {
-	hbonds.push_back (HBondFlow ());
-	HBondFlow &hf = hbonds.back ();
-	hf.read (is, resMap);
-	--hfsSize;
+	FatalIntLibException ex ("", __FILE__, __LINE__);
+	ex << "read failure, " << (unsigned)qty << " to go.";
+	throw ex;
       }
+
+      hbonds.push_back (HBondFlow ());
+      HBondFlow &hf = hbonds.back ();
+      hf.read (is, resMap);
+      --qty;
+    }
     is >> sum_flow;
     return is;
   }
@@ -1650,17 +1672,17 @@ namespace mccore
     os << res->getResId ();
     os << tfo << po4_tfo;
     os << refFace << resFace;
-    os << labels.size ();
+    os << (mccore::bin_ui64)labels.size ();
     for (propsIt = labels.begin (); labels.end () != propsIt; ++propsIt)
-      {
-	os << *propsIt;
-      }
+    {
+      os << *propsIt;
+    }
     os << type_asp;
-    os << hbonds.size ();
+    os << (mccore::bin_ui64)hbonds.size ();
     for (hfsIt = hbonds.begin (); hbonds.end () != hfsIt; ++hfsIt)
-      {
-	hfsIt->write (os);
-      }
+    {
+      hfsIt->write (os);
+    }
     os << sum_flow;
     return os;
   }

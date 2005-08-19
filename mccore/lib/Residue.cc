@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.77 $
-// $Id: Residue.cc,v 1.77 2005-08-19 19:17:13 larosem Exp $
+// $Revision: 1.78 $
+// $Id: Residue.cc,v 1.78 2005-08-19 20:22:52 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -3068,7 +3068,7 @@ namespace mccore
   iBinstream& 
   Residue::input (iBinstream &ibs)
   {
-    long long qty = 0;
+    mccore::bin_ui64 qty = 0;
     Atom a;
 
     clear ();
@@ -3076,6 +3076,13 @@ namespace mccore
     
     for (; qty > 0; --qty) 
     {
+      if (!ibs.good ())
+      {
+	FatalIntLibException ex ("", __FILE__, __LINE__);
+	ex << "read failure, " << (unsigned)qty << " to go.";
+	throw ex;
+      }
+
       ibs >> a;
       insert (a);
     }
@@ -3091,7 +3098,7 @@ namespace mccore
   {
     const_iterator cit;
 
-    obs << type << resId << (long long) size ();
+    obs << type << resId << (mccore::bin_ui64)size ();
 
     for (cit = begin (); cit != end (); ++cit)
       {
@@ -3245,7 +3252,7 @@ namespace mccore
       filter (f.clone ())
   {
     AtomMap::const_iterator last = res->atomIndex.end ();
-    while (pos != last && ! (*filter) (res->_get (pos->second)))
+    while (!(pos == last || (*filter) (res->_get (pos->second))))
       ++pos;
   }
 

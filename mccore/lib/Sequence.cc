@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr 25 10:12:06 2003
-// $Revision: 1.4 $
-// $Id: Sequence.cc,v 1.4 2005-01-03 23:05:58 larosem Exp $
+// $Revision: 1.5 $
+// $Id: Sequence.cc,v 1.5 2005-08-19 20:22:52 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -316,13 +316,20 @@ namespace mccore
     delete uniqueId;
     delete description;
   
-    int size;
+    mccore::bin_ui64 qty = 0;
     char c;
 
     is >> &uniqueId;
     is >> &description;
-    is >> size;
-    for (int i=0; i<size; ++i) {
+    for (is >> qty; qty > 0; --qty)
+    {
+      if (!is.good ())
+      {
+	FatalIntLibException ex ("", __FILE__, __LINE__);
+	ex << "read failure, " << (unsigned)qty << " to go.";
+	throw ex;
+      }
+
       is >> c;
       push_back (c);
     }
@@ -334,10 +341,12 @@ namespace mccore
   oBinstream& 
   Sequence::write (oBinstream &os) const
   {
+    const_iterator i;
+
     os << uniqueId;
     os << description;
-    os << size ();
-    for (const_iterator i=begin (); i!=end (); ++i) {
+    os << (mccore::bin_ui64)size ();
+    for (i=begin (); i!=end (); ++i) {
       os << *i;
     }
     return os;

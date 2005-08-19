@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:35 2003
-// $Revision: 1.16 $
-// $Id: Molecule.cc,v 1.16 2005-08-19 19:16:11 larosem Exp $
+// $Revision: 1.17 $
+// $Id: Molecule.cc,v 1.17 2005-08-19 20:22:52 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -253,14 +253,14 @@ namespace mccore
     obs << *modelFM;
 
     // -- dump models
-    obs << (unsigned long long) size ();
+    obs << (mccore::bin_ui64) size ();
     for (mit = begin (); mit != end (); ++mit)
       {
 	obs << *mit;
       }
     
     // -- dump properties
-    obs << (unsigned long long) properties.size ();
+    obs << (mccore::bin_ui64) properties.size ();
     for (pit = properties.begin (); pit != properties.end (); ++pit)
       {
 	obs << pit->first.c_str () << pit->second.c_str ();
@@ -272,7 +272,7 @@ namespace mccore
   iBinstream&
   Molecule::read (iBinstream &ibs)
   {
-    unsigned long long qty;
+    mccore::bin_ui64 qty = 0;
     string kcs;
     string vcs;
 
@@ -284,15 +284,31 @@ namespace mccore
     modelFM = ModelFactoryMethod::read (ibs);
 
     // -- read models using restored factory method for object creation
+    qty = 0;
     for (ibs >> qty; qty > 0; --qty)
     {
+      if (!ibs.good ())
+      {
+	FatalIntLibException ex ("", __FILE__, __LINE__);
+	ex << "read failure, " << (unsigned)qty << " to go.";
+	throw ex;
+      }
+
       models.push_back (modelFM->createModel ());
       ibs >> *models.back ();
     }
 
     // -- read properties
+    qty = 0;
     for (ibs >> qty; qty > 0; --qty)
     {
+      if (!ibs.good ())
+      {
+	FatalIntLibException ex ("", __FILE__, __LINE__);
+	ex << "read failure, " << (unsigned)qty << " to go.";
+	throw ex;
+      }
+
       ibs >> kcs >> vcs;
       setProperty (kcs, vcs);
     }

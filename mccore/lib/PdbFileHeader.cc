@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Tue Mar 11 18:45:58 2003
-// $Revision: 1.10 $
-// $Id: PdbFileHeader.cc,v 1.10 2005-08-05 15:57:06 larosem Exp $
+// $Revision: 1.11 $
+// $Id: PdbFileHeader.cc,v 1.11 2005-08-19 20:22:52 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -408,13 +408,13 @@ namespace mccore
 
     obs << classification << date << pdbId << title 
 	<< resolution
-	<< methods.size ();
+	<< (mccore::bin_ui64)methods.size ();
     for (mit = methods.begin (); methods.end () != mit; ++mit)
       obs << mit->first << mit->second;
-    obs << authors.size ();
+    obs << (mccore::bin_ui64)authors.size ();
     for (lit = authors.begin (); authors.end () != lit; ++lit)
       obs << *lit;
-    obs << unclassified.size ();
+    obs << (mccore::bin_ui64)unclassified.size ();
     for (lit = unclassified.begin (); unclassified.end () != lit; ++lit)
       obs << *lit;
     return obs;
@@ -599,27 +599,54 @@ namespace mccore
   iBinstream&
   PdbFileHeader::read (iBinstream& ibs)
   {
-    size_t qty;
+    mccore::bin_ui64 qty = 0;
     string s1, s2;
     
     clear ();
     ibs >> classification >> date >> pdbId >> title 
 	>> resolution;
+
     for (ibs >> qty; ibs.good () && qty > 0; --qty) 
     {
+      if (!ibs.good ())
+      {
+	FatalIntLibException ex ("", __FILE__, __LINE__);
+	ex << "read failure, " << (unsigned)qty << " to go.";
+	throw ex;
+      }
+
       ibs >> s1 >> s2;
       methods.insert (make_pair (s1, s2));
     }
+
+    qty = 0;
     for (ibs >> qty; ibs.good () && qty > 0; --qty)
     {
+      if (!ibs.good ())
+      {
+	FatalIntLibException ex ("", __FILE__, __LINE__);
+	ex << "read failure, " << (unsigned)qty << " to go.";
+	throw ex;
+      }
+
       ibs >> s1;
       authors.push_back (s1);
     }
+
+    qty = 0;
     for (ibs >> qty; ibs.good () && qty > 0; --qty)
     {
+      if (!ibs.good ())
+      {
+	FatalIntLibException ex ("", __FILE__, __LINE__);
+	ex << "read failure, " << (unsigned)qty << " to go.";
+	throw ex;
+      }
+
       ibs >> s1;
       unclassified.push_back (s1);
     }
+
     return ibs;
   }
 

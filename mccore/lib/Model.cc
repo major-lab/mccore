@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.32 $
-// $Id: Model.cc,v 1.32 2005-08-19 19:16:05 larosem Exp $
+// $Revision: 1.33 $
+// $Id: Model.cc,v 1.33 2005-08-19 20:22:52 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -207,7 +207,7 @@ namespace mccore
   {
     const_iterator cit;
     
-    obs << (long long) size ();
+    obs << (mccore::bin_ui64)size ();
     for (cit = begin (); cit != end (); ++cit)
       {
 	obs << *cit;
@@ -219,18 +219,25 @@ namespace mccore
   iBinstream& 
   Model::input (iBinstream &ibs)
   {
-    long long sz;
-    
+    mccore::bin_ui64 sz = 0;
+    Residue *res;
+
     clear ();
-    ibs >> sz;
-    for (; sz > 0; --sz)
+
+    for (ibs >> sz; sz > 0; --sz)
+    {
+      if (!ibs.good ())
       {
-	Residue *res = getResidueFM ()->createResidue ();
-	
-	ibs >> *res;
-	// Optimized insertion that bypasses the copy: 
-	residues.push_back (res); 
-      }
+	FatalIntLibException ex ("", __FILE__, __LINE__);
+	ex << "read failure, " << (unsigned)sz << " to go.";
+	throw ex;
+      }     
+
+      res = getResidueFM ()->createResidue ();
+      ibs >> *res;
+      // Optimized insertion that bypasses the copy: 
+      residues.push_back (res); 
+    }
     return ibs;
   }
   

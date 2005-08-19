@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:45:21 2003
-// $Revision: 1.9 $
-// $Id: ResId.cc,v 1.9 2005-08-19 19:16:15 larosem Exp $
+// $Revision: 1.10 $
+// $Id: ResId.cc,v 1.10 2005-08-19 20:22:52 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -177,9 +177,9 @@ namespace mccore
   iBinstream&
   operator>> (iBinstream &ibs, ResId &obj)
   {
-    long long resno;
-    char chainid;
-    char ic;
+    int resno = 0;
+    char chainid = 0;
+    char ic = 0;
     
     ibs >> resno >> chainid >> ic;
     obj.setResNo (resno);
@@ -192,7 +192,7 @@ namespace mccore
   oBinstream&
   operator<< (oBinstream &obs, const ResId &obj)
   {
-    return obs << (long long) obj.getResNo () << obj.getChainId ()
+    return obs << obj.getResNo () << obj.getChainId ()
 	       << obj.getInsertionCode ();
   }
 

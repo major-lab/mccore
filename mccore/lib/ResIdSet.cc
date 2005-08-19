@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Oct 26 10:24:02 2000
-// $Revision: 1.7 $
-// $Id: ResIdSet.cc,v 1.7 2005-01-03 23:00:43 larosem Exp $
+// $Revision: 1.8 $
+// $Id: ResIdSet.cc,v 1.8 2005-08-19 20:22:52 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -171,17 +171,24 @@ namespace mccore
   iBinstream&
   operator>> (iBinstream &ibs, ResIdSet &obj)
   {
-    ResIdSet::size_type sz;
+    mccore::bin_ui64 sz = 0;
 
     obj.clear ();
-    ibs >> sz;
-    for (; sz > 0; --sz)
+    
+    for (ibs >> sz; sz > 0; --sz)
+    {
+      if (!ibs.good ())
       {
-	ResId id;
-
-	ibs >> id;
-	obj.insert (obj.end (), id);
+	FatalIntLibException ex ("", __FILE__, __LINE__);
+	ex << "read failure, " << (unsigned)sz << " to go.";
+	throw ex;
       }
+
+      ResId id;
+
+      ibs >> id;
+      obj.insert (obj.end (), id);
+    }
     return ibs;
   }
 
@@ -191,7 +198,7 @@ namespace mccore
   {
     ResIdSet::const_iterator cit;
   
-    obs << obj.size ();
+    obs << (mccore::bin_ui64)obj.size ();
     for (cit = obj.begin (); cit != obj.end (); ++cit)
       obs << *cit;
     return obs;
