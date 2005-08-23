@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.78 $
-// $Id: Residue.cc,v 1.78 2005-08-19 20:22:52 thibaup Exp $
+// $Revision: 1.79 $
+// $Id: Residue.cc,v 1.79 2005-08-23 13:17:07 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -1670,12 +1670,12 @@ namespace mccore
       if (ext.transform (HomogeneousTransfo::align (*c1p, *c2p, *o4p).invert ()).getX () < 0.0)
 	ftype |= b0m;
 
-      // b2: O3'
+      // b1: C5'
       ext = *this->_safe_get (AtomType::aC5p);
-      if (ext.transform (HomogeneousTransfo::align (*c4p, *o4p, *c1p).invert ()).getX () < 0.0)
+      if (ext.transform (HomogeneousTransfo::align (*c4p, *o4p, *c3p).invert ()).getX () < 0.0)
 	ftype |= b1m;
 
-      // b1: C5'
+      // b2: O3'
       ext = *this->_safe_get (AtomType::aO3p);
       if (ext.transform (HomogeneousTransfo::align (*c3p, *c4p, *c2p).invert ()).getX () < 0.0)
 	ftype |= b2m;
@@ -1938,25 +1938,25 @@ namespace mccore
     omega = erho1 = (xz_len - Residue::s_cosf_vshift) / Residue::s_cosf_amplitude;
     
     // +/- 0.25 tolerance on cos amplitude
-//     if (erho1 < -1.25)
-//     {
-//       this->rib_built_valid = false;
-//       return numeric_limits< float >::max ();
-//     }
-//     else if (erho1 < -1.0)   // -1.25 <= omega < -1.0   
-//       erho1 = -1.0;
-//     else if (erho1 > 1.25)   
-//     {
-//       this->rib_built_valid = false;
-//       return numeric_limits< float >::max ();
-//     }
-//     else if (erho1 > 1.0)    // 1.00 <= omega < 1.25
-//       erho1 = 1.0;
-
-    if (erho1 < -1)
+    if (erho1 < -1.25)
+    {
+      this->rib_built_valid = false;
+      return numeric_limits< float >::max ();
+    }
+    else if (erho1 < -1.0)   // -1.25 <= omega < -1.0   
       erho1 = -1.0;
-    else if (erho1 > 1)
+    else if (erho1 > 1.25)   
+    {
+      this->rib_built_valid = false;
+      return numeric_limits< float >::max ();
+    }
+    else if (erho1 > 1.0)    // 1.00 <= omega < 1.25
       erho1 = 1.0;
+
+//     if (erho1 < -1)
+//       erho1 = -1.0;
+//     else if (erho1 > 1)
+//       erho1 = 1.0;
 
     erho1 = acos (erho1) - Residue::s_cosf_phase;
     erho2 = Residue::s_2xpi - 2 * Residue::s_cosf_phase - erho1;
