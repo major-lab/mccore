@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.31 $
-// $Id: ExtendedResidue.cc,v 1.31 2005-06-16 15:53:42 thibaup Exp $
+// $Revision: 1.32 $
+// $Id: ExtendedResidue.cc,v 1.32 2005-08-26 20:22:09 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -190,9 +190,7 @@ namespace mccore
 	*atomGlobal[inserted.first->second] = atom;
 	*atomLocal[inserted.first->second] = atom;
       }
-
-    if (placed)
-      atomLocal[inserted.first->second]->transform (referential.invert ());
+    atomLocal[inserted.first->second]->transform (referential.invert ());
   }
 
 
