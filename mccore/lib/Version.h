@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Philippe Thibault <philippe.thibault@umontreal.ca>
 // Created On       : Wed May 11 10:07:28 2005
-// $Revision: 1.2 $
-// $Id: Version.h,v 1.2 2005-07-18 20:12:30 thibaup Exp $
+// $Revision: 1.3 $
+// $Id: Version.h,v 1.3 2005-08-30 13:16:47 thibaup Exp $
 // 
 
 
@@ -33,56 +33,36 @@ namespace mccore
   class Version 
   {
     /**
-     * Current version string "<major>.<minor>"
+     * Major version number: <major>.<minor>
      */
-    string current_version;
+    int major_version;
+
+    /**
+     * Minor version number: <major>.<minor>
+     */
+    int minor_version;
 
     /**
      * Current CPU architecture string.
      */
-    string current_cpu;
+    string cpu;
 
     /**
      * Current vendor string.
      */
-    string current_vendor;
+    string vendor;
 
     /**
      * Current operating system name string.
      */
-    string current_os;
+    string os;
 
     /**
-     * Current building date.
+     * Current building timestamp.
      */
-    string current_date;
+    string timestamp;
     
   public:
-
-    /**
-     * Library version string "<major>.<minor>"
-     */
-    static const string version;
-
-    /**
-     * Library CPU architecture string.
-     */
-    static const string cpu;
-
-    /**
-     * Library vendor string.
-     */
-    static const string vendor;
-
-    /**
-     * Library operating system name string.
-     */
-    static const string os;
-
-    /**
-     * Library building date.
-     */
-    static const string date;
 
     // LIFECYCLE ------------------------------------------------------------
 
@@ -91,6 +71,8 @@ namespace mccore
      */
     Version ();
 
+    Version (const Version& v);
+
     /**
      * Destructs the object.
      */
@@ -98,9 +80,30 @@ namespace mccore
 
     // OPERATORS ------------------------------------------------------------
 
+    Version& operator= (const Version& v);
+
+    bool operator== (const Version& v) const;
+
+    bool operator!= (const Version& v) const
+    {
+      return !this->operator== (v);
+    }
+
     // ACCESS ---------------------------------------------------------------
 
+    int getMajorVersion () const
+    {
+      return this->major_version;
+    }
+
+    int getMinorVersion () const
+    {
+      return this->minor_version;
+    }
+
     // METHODS --------------------------------------------------------------
+
+    string toString () const;
 
     // I/O  -----------------------------------------------------------------
 

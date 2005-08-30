@@ -4,14 +4,16 @@
 //                  Université de Montréal.
 // Author           : Philippe Thibault <philippe.thibault@umontreal.ca>
 // Created On       : Wed May 11 10:07:28 2005
-// $Revision: 1.3 $
-// $Id: Version.cc,v 1.3 2005-07-18 20:12:30 thibaup Exp $
+// $Revision: 1.4 $
+// $Id: Version.cc,v 1.4 2005-08-30 13:16:47 thibaup Exp $
 // 
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
+
+#include <sstream>
 
 #include "Binstream.h"
 #include "Messagestream.h"
@@ -20,79 +22,115 @@
 
 namespace mccore
 {
-  const string Version::version (VERSION);
-  const string Version::cpu (VERSION_CPU);
-  const string Version::vendor (VERSION_VENDOR);
-  const string Version::os (VERSION_OS);
-  const string Version::date (__DATE__);
-
 
   Version::Version ()
-    : current_version (Version::version),
-      current_cpu (Version::cpu),
-      current_vendor (Version::vendor),
-      current_os (Version::os),
-      current_date (Version::date)
+    : major_version (-1),
+      minor_version (-1),
+      cpu (VERSION_CPU),
+      vendor (VERSION_VENDOR),
+      os (VERSION_OS)
+  {
+    istringstream iss (VERSION);
+    char dot;
+
+    iss >> this->major_version >> dot >> this->minor_version;
+    this->timestamp = __DATE__;
+    this->timestamp += " ";
+    this->timestamp += __TIME__;
+  }
+  
+
+  Version::Version (const Version& v)
+    : major_version (v.major_version),
+      minor_version (v.minor_version),
+      cpu (v.cpu),
+      vendor (v.vendor),
+      os (v.os),
+      timestamp (v.timestamp)
   {
 
+  }
+
+
+  Version&
+  Version::operator= (const Version& v)
+  {
+    if (this != &v)
+    {
+      this->major_version = v.major_version;
+      this->minor_version = v.minor_version;
+      this->cpu = v.cpu;
+      this->vendor = v.vendor;
+      this->os = v.os;
+      this->timestamp = v.timestamp;
+    }
+    return *this;
+  }
+
+
+  bool
+  Version::operator== (const Version& v) const
+  {
+    return 
+      this->major_version == v.major_version &&
+      this->minor_version == v.minor_version &&
+      this->cpu == v.cpu &&
+      this->vendor == v.vendor &&
+      this->os == v.os &&
+      this->timestamp == v.timestamp;
+  }
+
+
+  string
+  Version::toString () const
+  {
+    ostringstream oss;
+    oss << PACKAGE << " " 
+	<< this->major_version << "." << this->minor_version << " " 
+	<< this->cpu << " "
+	<< this->vendor << " "
+	<< this->os << " "
+	<< this->timestamp;
+    return oss.str ();
   }
 
 
   ostream&
   Version::write (ostream& os) const
   {
-    return os << PACKAGE << " " 
-	      << this->current_version << " " 
-	      << this->current_cpu << " "
-	      << this->current_vendor << " "
-	      << this->current_os << " "
-	      << this->current_date;
+    return os << this->toString ();
   }
 
 
   oBinstream&
   Version::write (oBinstream& obs) const
   {
-    return obs << this->current_version
-	       << this->current_cpu
-	       << this->current_vendor
-	       << this->current_os
-	       << this->current_date;
+    return obs << this->major_version << this->minor_version
+	       << this->cpu
+	       << this->vendor
+	       << this->os
+	       << this->timestamp;
   }
 
 
   iBinstream& 
   Version::read (iBinstream& ibs)
   {
-    this->current_version = this->current_cpu = this->current_vendor = this->current_os = this->current_date = "unread";
-    ibs >> this->current_version 
-	>> this->current_cpu 
-	>> this->current_vendor 
-	>> this->current_os
-	>> this->current_date;
+    Version saved = *this;
 
-    if (Version::version != this->current_version)
-      gErr (4) << "Warning: reading data created from " << PACKAGE 
-	       << " version " << this->current_version
-	       << " using " << PACKAGE << " version " << Version::version << endl;
+    this->cpu = this->vendor = this->os = this->timestamp = "unread";
+    this->major_version = this->minor_version = -1;
+    ibs >> this->major_version >> this->minor_version
+	>> this->cpu 
+	>> this->vendor 
+	>> this->os
+	>> this->timestamp;
 
-    if (Version::cpu != this->current_cpu)
-      gErr (4) << "Warning: reading data created from " << PACKAGE 
-	       << " built on cpu type \"" << this->current_cpu
-	       << "\" using " << PACKAGE << " built on cpu type \"" 
-	       << Version::cpu << "\"" << endl;
-
-    if (Version::vendor != this->current_vendor)
-      gErr (4) << "Warning: reading data created from " << PACKAGE 
-	       << " built on cpu vendor \"" << this->current_vendor
-	       << "\" using " << PACKAGE << " built on cpu vendor \"" 
-	       << Version::vendor << "\"" << endl;
-
-    if (Version::os != this->current_os)
-      gErr (4) << "Warning: reading data created from " << PACKAGE 
-	       << " built on os type \"" << this->current_os
-	       << "\" using " << PACKAGE << " built on os type \"" 
-	       << Version::os << "\"" << endl;
+    if (*this != saved)
+      gErr (4) << "Warning: reading data created from package version: " << endl
+	       << "\t" << *this << endl
+	       << "using package version: "
+	       << "\t" << saved << endl;
 
     return ibs;
   }
