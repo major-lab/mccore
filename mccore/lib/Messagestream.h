@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Sep  5 17:06:24 2001
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 //
 // This file is part of mccore.
 // 
@@ -50,7 +50,7 @@ namespace mccore
    * 5 : debug
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Messagestream.h,v 1.11 2005-06-07 20:42:45 larosem Exp $
+   * @version $Id: Messagestream.h,v 1.12 2005-08-30 17:58:26 thibaup Exp $
    */
   class Messagestream : public ostream
   {
@@ -171,6 +171,30 @@ namespace mccore
     { return operator<< ((const char*)s); }
 
     /**
+     * Writes an short integer to the Message stream.
+     * @param n the integer to write.
+     * @return itself.
+     */
+    Messagestream& operator<< (short int n)
+    {
+      if (currentVerboseLevel <= verboseLevel)
+	*(ostream*)this << n;
+      return *this;
+    }
+
+    /**
+     * Writes an short unsigned integer to the Message stream.
+     * @param n the unsigned integer to write.
+     * @return itself.
+     */
+    Messagestream& operator<< (unsigned short int n)
+    {
+      if (currentVerboseLevel <= verboseLevel)
+	*(ostream*)this << n;
+      return *this;
+    }
+
+    /**
      * Writes an integer to the Message stream.
      * @param n the integer to write.
      * @return itself.
@@ -212,6 +236,30 @@ namespace mccore
      * @return itself.
      */
     Messagestream& operator<<(unsigned long n)
+    {
+      if (currentVerboseLevel <= verboseLevel)
+	*(ostream*)this << n;
+      return *this;
+    }
+
+    /**
+     * Writes a long long integer to the Message stream.
+     * @param n the long integer to write.
+     * @return itself.
+     */
+    Messagestream& operator<< (long long n)
+    {
+      if (currentVerboseLevel <= verboseLevel)
+	*(ostream*)this << n;
+      return *this;
+    }
+
+    /**
+     * Writes an unsigned long long integer to the Message stream.
+     * @param n the unsigned long integer to write.
+     * @return itself.
+     */
+    Messagestream& operator<<(unsigned long long n)
     {
       if (currentVerboseLevel <= verboseLevel)
 	*(ostream*)this << n;
@@ -298,7 +346,7 @@ namespace mccore
    * @short Text implementation of Messages.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Messagestream.h,v 1.11 2005-06-07 20:42:45 larosem Exp $
+   * @version $Id: Messagestream.h,v 1.12 2005-08-30 17:58:26 thibaup Exp $
    */
   class oMessagestream : public Messagestream
   {
