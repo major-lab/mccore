@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // TypeRepresentationTables.cc
-// Copyright © 2004 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2004, 2005 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct  1 14:45:13 2004
-// $Revision: 1.6 $
-// $Id: TypeRepresentationTables.cc,v 1.6 2005-04-12 19:55:50 thibaup Exp $
+// $Revision: 1.7 $
+// $Id: TypeRepresentationTables.cc,v 1.7 2005-08-30 19:51:12 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -758,29 +758,29 @@ namespace mccore
     typeTable["PV"] = ResidueType::rVAL;
 
     representationTable[ResidueType::rRA] = "RA ";
-    representationTable[ResidueType::parseType ("RRA5")] = "RA5";
-    representationTable[ResidueType::parseType ("RRA3")] = "RA3";
+    representationTable[ResidueType::parseType ("R:A5")] = "RA5";
+    representationTable[ResidueType::parseType ("R:A3")] = "RA3";
     representationTable[ResidueType::rDA] = "DA ";
-    representationTable[ResidueType::parseType ("DDA5")] = "DA5";
-    representationTable[ResidueType::parseType ("DDA3")] = "DA3";
+    representationTable[ResidueType::parseType ("D:A5")] = "DA5";
+    representationTable[ResidueType::parseType ("D:A3")] = "DA3";
     representationTable[ResidueType::rRC] = "RC ";
-    representationTable[ResidueType::parseType ("RRC5")] = "RC5";
-    representationTable[ResidueType::parseType ("RRC3")] = "RC3";
+    representationTable[ResidueType::parseType ("R:C5")] = "RC5";
+    representationTable[ResidueType::parseType ("R:C3")] = "RC3";
     representationTable[ResidueType::rDC] = "DC ";
-    representationTable[ResidueType::parseType ("DDC5")] = "DC5";
-    representationTable[ResidueType::parseType ("DDC3")] = "DC3";
+    representationTable[ResidueType::parseType ("D:C5")] = "DC5";
+    representationTable[ResidueType::parseType ("D:C3")] = "DC3";
     representationTable[ResidueType::rRG] = "RG ";
-    representationTable[ResidueType::parseType ("RRG5")] = "RG5";
-    representationTable[ResidueType::parseType ("RRG3")] = "RG3";
+    representationTable[ResidueType::parseType ("R:G5")] = "RG5";
+    representationTable[ResidueType::parseType ("R:G3")] = "RG3";
     representationTable[ResidueType::rDG] = "DG ";
-    representationTable[ResidueType::parseType ("DDG5")] = "DG5";
-    representationTable[ResidueType::parseType ("DDG3")] = "DG3";
+    representationTable[ResidueType::parseType ("D:G5")] = "DG5";
+    representationTable[ResidueType::parseType ("D:G3")] = "DG3";
     representationTable[ResidueType::rRU] = "RU ";
-    representationTable[ResidueType::parseType ("RRU5")] = "RU5";
-    representationTable[ResidueType::parseType ("RRU3")] = "RU3";
+    representationTable[ResidueType::parseType ("R:U5")] = "RU5";
+    representationTable[ResidueType::parseType ("R:U3")] = "RU3";
     representationTable[ResidueType::rDT] = "DT ";
-    representationTable[ResidueType::parseType ("DDT5")] = "DT5";
-    representationTable[ResidueType::parseType ("DDT3")] = "DT3";
+    representationTable[ResidueType::parseType ("D:T5")] = "DT5";
+    representationTable[ResidueType::parseType ("D:T3")] = "DT3";
     representationTable[ResidueType::rALA] = "ALA";
     representationTable[ResidueType::rARG] = "ARG";
     representationTable[ResidueType::rASN] = "ASN";

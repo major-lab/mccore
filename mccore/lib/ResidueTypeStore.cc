@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.23 $
+// $Revision: 1.24 $
 // 
 // This file is part of mccore.
 // 
@@ -115,6 +115,27 @@ namespace mccore
     ResidueType::rDRibose5  = *repository.insert (new DRibose5  ((strs = "D:RIB5"), (strl = "DNA_Ribose5"))).first;
     ResidueType::rDRibose3  = *repository.insert (new DRibose3  ((strs = "D:RIB3"), (strl = "DNA_Ribose3"))).first;
     ResidueType::rDRibose53 = *repository.insert (new DRibose53 ((strs = "D:RIB53"), (strl = "DNA_Ribose53"))).first;
+
+    /**
+     * Amber terminals.
+     */
+    repository.insert (new RRA3 ((strs = "R:A3"), (strl ="RA3")));
+    repository.insert (new RRA5 ((strs = "R:A5"), (strl ="RA5")));
+    repository.insert (new RRC3 ((strs = "R:C3"), (strl ="RC3")));
+    repository.insert (new RRC5 ((strs = "R:C5"), (strl ="RC5")));
+    repository.insert (new RRG3 ((strs = "R:G3"), (strl ="RG3")));
+    repository.insert (new RRG5 ((strs = "R:G5"), (strl ="RG5")));
+    repository.insert (new RRU3 ((strs = "R:U3"), (strl ="RU3")));
+    repository.insert (new RRU5 ((strs = "R:U5"), (strl ="RU5")));
+    repository.insert (new DDA3 ((strs = "D:A3"), (strl ="DA3")));
+    repository.insert (new DDA5 ((strs = "D:A5"), (strl ="DA5")));
+    repository.insert (new DDC3 ((strs = "D:C3"), (strl ="DC3")));
+    repository.insert (new DDC5 ((strs = "D:C5"), (strl ="DC5")));
+    repository.insert (new DDG3 ((strs = "D:G3"), (strl ="DG3")));
+    repository.insert (new DDG5 ((strs = "D:G5"), (strl ="DG5")));
+    repository.insert (new DDT3 ((strs = "D:T3"), (strl ="DT3")));
+    repository.insert (new DDT5 ((strs = "D:T5"), (strl ="DT5")));
+
     
     /**
      * amino acid (IUPAC 3-letter)
