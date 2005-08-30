@@ -4,7 +4,7 @@
 //                           Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 16:27:35 1999
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 //
 // This file is part of mccore.
 // 
@@ -44,7 +44,7 @@ namespace mccore
    * libraries.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Exception.h,v 1.6 2005-01-11 20:57:05 thibaup Exp $
+   * @version $Id: Exception.h,v 1.7 2005-08-30 13:16:05 thibaup Exp $
    */
   class Exception : public exception
   {
@@ -505,12 +505,81 @@ namespace mccore
 
   };
 
+  /**
+   * @short Specialized internal exceptions 
+   *
+   * Thrown when a file is not found for opening.
+   *
+   * @author Philippe Thibault <thibaup@iro.umontreal.ca>
+   */
+  class FileNotFoundException : public IntLibException
+  {
+  public:
+
+    // LIFECYCLE ------------------------------------------------------------
+
+    /**
+     * Initializes the exception.
+     */
+    FileNotFoundException () 
+      : IntLibException ("FileNotFoundException: ") 
+    { }
+
+    /**
+     * Initializes the exeption with a message.
+     * @param message the message string.
+     */
+    FileNotFoundException (const string &message)
+      : IntLibException ("FileNotFoundException: " + message) 
+    { }
+
+    /**
+     * Initializes the exception with a message and where it was produced.
+     * @param theMessage the information string.
+     * @param file the file where the exception occured (default = "").
+     * @param line the line number where the exception occured (default = -1).
+     */
+    FileNotFoundException (const string &message, const string &file = "", int line = -1)
+      : IntLibException ("FileNotFoundException: " + message, file, line)
+    { }
+
+    /**
+     * Initializes the exception with the right's content.
+     * @param right the exception to copy.
+     */
+    FileNotFoundException (const FileNotFoundException &right)
+      : IntLibException (right)
+    { }
+
+    /**
+     * Destructs the exception.
+     */
+    virtual ~FileNotFoundException () throw () 
+    { }
+
+    // OPERATORS ------------------------------------------------------------
+
+    /**
+     * Assigns the exception with the right's content.
+     * @param right the exception to copy.
+     * @return itself.
+     */
+    FileNotFoundException& operator= (const FileNotFoundException &right);
+
+    // ACCESS ---------------------------------------------------------------
+
+    // METHODS --------------------------------------------------------------
+
+    // I/O ------------------------------------------------------------------
+
+  };
+
 
   /**
    * Exception for invalid access requests.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Exception.h,v 1.6 2005-01-11 20:57:05 thibaup Exp $
+   * @version $Id: Exception.h,v 1.7 2005-08-30 13:16:05 thibaup Exp $
    */
   class NoSuchElementException : public IntLibException
   {
