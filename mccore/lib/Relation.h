@@ -3,7 +3,7 @@
 // Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.20 $
+// $Revision: 1.21 $
 // 
 // This file is part of mccore.
 // 
@@ -65,6 +65,8 @@ namespace mccore
     HBondFlow (const HBond &hbond, float flow) : hbond (hbond), flow (flow) { }
     bool operator< (const HBondFlow& other) const { return flow < other.flow; }
 
+    virtual ostream& write (ostream &os) const;
+    
     virtual iBinstream& read (iBinstream &is, const map< ResId, const Residue* > &resMap);
 
     virtual oBinstream& write (oBinstream &os) const;
@@ -74,14 +76,15 @@ namespace mccore
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.20 2005-08-18 18:07:14 larosem Exp $
+   * @version $Id: Relation.h,v 1.21 2005-09-06 15:32:36 larosem Exp $
    */
   class Relation
   {
     static const float PAIRING_CUTOFF = 0.8f;
     static const float TWO_BONDS_CUTOFF = 1.5f;
     static const float THREE_BONDS_CUTOFF = 2.1f;
-
+//     static const float HBOND_DIST_MAX = 4;
+    static const float HBOND_DIST_MAX = 1.7;
   protected:
     
     /**
@@ -570,6 +573,14 @@ namespace mccore
 
 namespace std
 {
+
+  /**
+   * Ouputs the HBondFlow to the stream.
+   * @param os the output stream.
+   * @param hbf the HBondFlow.
+   * @return the used output stream.
+   */
+  ostream& operator<< (ostream &os, const mccore::HBondFlow &hbf);
   
   /**
    * Ouputs the relation to the stream.

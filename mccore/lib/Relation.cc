@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.43 $
-// $Id: Relation.cc,v 1.43 2005-08-19 20:22:52 thibaup Exp $
+// $Revision: 1.44 $
+// $Id: Relation.cc,v 1.44 2005-09-06 15:32:30 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -64,6 +64,13 @@ namespace mccore
   float Relation::stack_distance_cutoff_square = 20.25; // 4.5 Ang
   float Relation::stack_tilt_cutoff = 0.61; // 35 deg
   float Relation::stack_overlap_cutoff = 0.61; // 35 deg
+
+
+  ostream&
+  HBondFlow::write (ostream &os) const
+  {
+    return os << hbond << " " << flow;
+  }
 
 
   iBinstream&
@@ -342,7 +349,7 @@ namespace mccore
 	{
 	  if (j->getType ()->isNitrogen () || j->getType ()->isOxygen ())
 	  {
-	    if (i->distance (*j) > 1.7 && i->distance (*j) < 3.2)
+	    if (i->distance (*j) > HBOND_DIST_MAX && i->distance (*j) < 3.2)
 	    {
 	      string str;
 			
@@ -371,7 +378,7 @@ namespace mccore
 
     // 	for (i=ref->begin (hl->clone ()); i!=ref->end (); ++i) {
     // 	  for (j=ref->begin (da->clone ()); j!=ref->end (); ++j) {
-    // 	    if (i->distance (*j) < 1.7) {
+    // 	    if (i->distance (*j) < HBOND_DIST_MAX) {
     // 	      ref_at.push_back (i);
     // 	      refn_at.push_back (j);	  
     // 	    }
@@ -379,7 +386,7 @@ namespace mccore
     // 	}
     // 	for (i=res->begin (hl->clone ()); i!=res->end (); ++i) {
     // 	  for (j=res->begin (da->clone ()); j!=res->end (); ++j) {
-    // 	    if (i->distance (*j) < 1.7) {
+    // 	    if (i->distance (*j) < HBOND_DIST_MAX) {
     // 	      res_at.push_back (i);
     // 	      resn_at.push_back (j);
     // 	    }
@@ -423,7 +430,7 @@ namespace mccore
     // 	    for (j=res->begin (); j!=res->end (); ++j) {
     // 	      if (j->getType ()->isOxygen ()) {
 		
-    // 		if (i->distance (*j) > 1.7 && i->distance (*j) < 3.5) {
+    // 		if (i->distance (*j) > HBOND_DIST_MAX && i->distance (*j) < 3.5) {
     // 		  bool reject = false;
     // 		  if (i->getType () == AtomType::aN) {  // N donor
     // 		    Vector3D u, v, w;
@@ -461,7 +468,7 @@ namespace mccore
     // 	    for (j=ref->begin (); j!=ref->end (); ++j) {
     // 	      if (j->getType ()->isOxygen ()) {
 		
-    // 		if (i->distance (*j) > 1.7 && i->distance (*j) < 3.5) {
+    // 		if (i->distance (*j) > HBOND_DIST_MAX && i->distance (*j) < 3.5) {
     // 		   bool reject = false;
 
     // 		  if (i->getType () == AtomType::aN) {  // N donor
@@ -509,181 +516,188 @@ namespace mccore
     typedef map< Residue::const_iterator, unsigned int > AtomToInt;
 
     try
-    {
-      Residue::const_iterator i;
-      Residue::const_iterator j;
-      Residue::const_iterator k;
-      Residue::const_iterator l;
-      AtomToInt atomToInt;
-      unsigned int node;
-      HBondFlowGraph graph;
-      vector< Residue::const_iterator > ref_at;
-      vector< Residue::const_iterator > refn_at;
-      vector< Residue::const_iterator > res_at;
-      vector< Residue::const_iterator > resn_at;
-      vector< Residue::const_iterator >::size_type x;
-      vector< Residue::const_iterator >::size_type y;
-      AtomSetAnd da (new AtomSetSideChain (), 
-		     new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M), 
-						    new AtomSetAtom (AtomType::a3H5M))));
-	
-      node = 0;
-      graph.insert (node++, 1); // Source
-      graph.insert (node++, 1); // Sink
-
-      for (i = ref->begin (da); i != ref->end (); ++i)
       {
-	if ((i->getType ()->isCarbon ()
-	     || i->getType ()->isNitrogen ()
-	     || i->getType ()->isOxygen ()))
-	{
-	  for (j = ref->begin (da); j != ref->end (); ++j)
+	Residue::const_iterator i;
+	Residue::const_iterator j;
+	Residue::const_iterator k;
+	Residue::const_iterator l;
+	AtomToInt atomToInt;
+	unsigned int node;
+	HBondFlowGraph graph;
+	vector< Residue::const_iterator > ref_at;
+	vector< Residue::const_iterator > refn_at;
+	vector< Residue::const_iterator > res_at;
+	vector< Residue::const_iterator > resn_at;
+	vector< Residue::const_iterator >::size_type x;
+	vector< Residue::const_iterator >::size_type y;
+	AtomSetAnd da (new AtomSetSideChain (), 
+		       new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M), 
+						      new AtomSetAtom (AtomType::a3H5M))));
+	
+	node = 0;
+	graph.insert (node++, 1); // Source
+	graph.insert (node++, 1); // Sink
+
+	for (i = ref->begin (da); i != ref->end (); ++i)
 	  {
-	    if ((j->getType ()->isHydrogen ()
-		 || j->getType ()->isLonePair ())
-		&& i->distance (*j) < 1.7)
-	    {
-	      ref_at.push_back (j);
-	      refn_at.push_back (i);	  
-	    }
+	    if ((i->getType ()->isCarbon ()
+		 || i->getType ()->isNitrogen ()
+		 || i->getType ()->isOxygen ()))
+	      {
+		for (j = ref->begin (da); j != ref->end (); ++j)
+		  {
+		    if ((j->getType ()->isHydrogen ()
+			 || j->getType ()->isLonePair ())
+			&& i->distance (*j) < HBOND_DIST_MAX)
+		      {
+			ref_at.push_back (j);
+			refn_at.push_back (i);	  
+		      }
+		  }
+	      }
 	  }
-	}
-      }
       
-      for (i = res->begin (da); i != res->end (); ++i)
-      {
-	if ((i->getType ()->isCarbon ()
-	     || i->getType ()->isNitrogen ()
-	     || i->getType ()->isOxygen ()))
-	{
-	  for (j = res->begin (da); j != res->end (); ++j)
+	for (i = res->begin (da); i != res->end (); ++i)
 	  {
-	    if ((j->getType ()->isHydrogen ()
-		 || j->getType ()->isLonePair ())
-		&& i->distance (*j) < 1.7)
-	    {
-	      res_at.push_back (j);
-	      resn_at.push_back (i);	  
-	    }
+	    if ((i->getType ()->isCarbon ()
+		 || i->getType ()->isNitrogen ()
+		 || i->getType ()->isOxygen ()))
+	      {
+		for (j = res->begin (da); j != res->end (); ++j)
+		  {
+		    if ((j->getType ()->isHydrogen ()
+			 || j->getType ()->isLonePair ())
+			&& i->distance (*j) < HBOND_DIST_MAX)
+		      {
+			res_at.push_back (j);
+			resn_at.push_back (i);	  
+		      }
+		  }
+	      }
 	  }
-	}
-      }
 	
-      for (x = 0; x < ref_at.size (); ++x)
-      {
-	i = ref_at[x];
-	j = refn_at[x];
-	for (y = 0; y < res_at.size (); ++y)
-	{
-	  k = res_at[y];
-	  l = resn_at[y];
+	for (x = 0; x < ref_at.size (); ++x)
+	  {
+	    i = ref_at[x];
+	    j = refn_at[x];
+	    for (y = 0; y < res_at.size (); ++y)
+	      {
+		k = res_at[y];
+		l = resn_at[y];
 	      
-	  if (i->getType ()->isHydrogen () && k->getType ()->isLonePair ())
-	  {
-	    HBond h (j->getType (), i->getType (), l->getType (), k->getType ());
+		if (i->getType ()->isHydrogen () && k->getType ()->isLonePair ())
+		  {
+		    HBond h (j->getType (), i->getType (), l->getType (), k->getType ());
 		  
-	    h.evalStatistically (ref, res);
-	    if (h.getValue () > 0.01)
-	    {
-	      HBond fake (1);
-	      pair< AtomToInt::iterator, bool > iIt = atomToInt.insert (make_pair (i, node));
-
-	      if (iIt.second)
-	      {
-		graph.insert (node, 1);
-		graph.internalConnect (0, node, fake, 0);
-		++node;
-	      }
-	      pair< AtomToInt::iterator, bool > kIt = atomToInt.insert (make_pair (k, node));
-	      if (kIt.second)
-	      {
-		graph.insert (node, 1);
-		graph.internalConnect (node, 1, fake, 0);
-		++node;
-	      }
-	      graph.internalConnect (iIt.first->second, kIt.first->second, h, 0);
-	    }
-	  }
-	  else if (k->getType ()->isHydrogen () && i->getType ()->isLonePair ())
-	  {
-	    HBond h (l->getType (), k->getType (), j->getType (), i->getType ());
-		  
-	    h.evalStatistically (res, ref);
-	    if (h.getValue () > 0.01)
-	    {
-	      HBond fake (1);
-	      pair< AtomToInt::iterator, bool > kIt = atomToInt.insert (make_pair (k, node));
-			
-	      if (kIt.second)
-	      {
-		graph.insert (node, 1);
-		graph.internalConnect (0, node, fake, 0);
-		++node;
-	      }
-	      pair< AtomToInt::iterator, bool > iIt = atomToInt.insert (make_pair (i, node));
-	      if (iIt.second)
-	      {
-		graph.insert (node, 1);
-		graph.internalConnect (node, 1, fake, 0);
-		++node;
-	      }
-	      graph.internalConnect (kIt.first->second, iIt.first->second, h, 0);
-	    }
-	  }
-	}
-      }
-
+		    h.evalStatistically (ref, res);
 #ifdef DEBUG
-      gOut (5) << graph << endl;
+		    gOut (5) << h << endl;
 #endif
-	
-      if (graph.size () >= 3)
-      {
-	HBondFlowGraph::size_type label;
+		    if (h.getValue () > 0.01)
+		      {
+			HBond fake (1);
+			pair< AtomToInt::iterator, bool > iIt = atomToInt.insert (make_pair (i, node));
 
-	graph.preFlowPush (0, 1);
-	    
+			if (iIt.second)
+			  {
+			    graph.insert (node, 1);
+			    graph.internalConnect (0, node, fake, 0);
+			    ++node;
+			  }
+			pair< AtomToInt::iterator, bool > kIt = atomToInt.insert (make_pair (k, node));
+			if (kIt.second)
+			  {
+			    graph.insert (node, 1);
+			    graph.internalConnect (node, 1, fake, 0);
+			    ++node;
+			  }
+			graph.internalConnect (iIt.first->second, kIt.first->second, h, 0);
+		      }
+		  }
+		else if (k->getType ()->isHydrogen () && i->getType ()->isLonePair ())
+		  {
+		    HBond h (l->getType (), k->getType (), j->getType (), i->getType ());
+		  
+		    h.evalStatistically (res, ref);
+#ifdef DEBUG
+		    gOut (5) << h << endl;
+#endif
+		    if (h.getValue () > 0.01)
+		      {
+			HBond fake (1);
+			pair< AtomToInt::iterator, bool > kIt = atomToInt.insert (make_pair (k, node));
+			
+			if (kIt.second)
+			  {
+			    graph.insert (node, 1);
+			    graph.internalConnect (0, node, fake, 0);
+			    ++node;
+			  }
+			pair< AtomToInt::iterator, bool > iIt = atomToInt.insert (make_pair (i, node));
+			if (iIt.second)
+			  {
+			    graph.insert (node, 1);
+			    graph.internalConnect (node, 1, fake, 0);
+			    ++node;
+			  }
+			graph.internalConnect (kIt.first->second, iIt.first->second, h, 0);
+		      }
+		  }
+	      }
+	  }
+
 #ifdef DEBUG
 	gOut (5) << graph << endl;
 #endif
-
-	for (label = 0; label < graph.edgeSize (); ++label)
-	{
-	  HBond &hbond = graph.internalGetEdge (label);
-
-	  if (0 != hbond.getDonorType ())
+	
+	if (graph.size () >= 3)
 	  {
-	    float flow;
+	    HBondFlowGraph::size_type label;
 
-	    flow = graph.internalGetEdgeWeight (label);
-	    sum_flow += flow;
-	    hbonds.push_back (HBondFlow (hbond, flow));
-	  }
-	}
+	    graph.preFlowPush (0, 1);
+	    
+#ifdef DEBUG
+	    gOut (5) << graph << endl;
+#endif
+
+	    for (label = 0; label < graph.edgeSize (); ++label)
+	      {
+		HBond &hbond = graph.internalGetEdge (label);
+
+		if (0 != hbond.getDonorType ())
+		  {
+		    float flow;
+
+		    flow = graph.internalGetEdgeWeight (label);
+		    sum_flow += flow;
+		    hbonds.push_back (HBondFlow (hbond, flow));
+		  }
+	      }
 
 #ifdef DEBUG
-	gOut (4) << "Sum flow = " << sum_flow << endl;
+	    gOut (4) << "Sum flow = " << sum_flow << endl;
 #endif
 	    
-	if (sum_flow >= PAIRING_CUTOFF)
-	{
-	  this->type_asp |= Relation::pairing_mask;
-	  addPairingLabels ();
-	}
+	    if (sum_flow >= PAIRING_CUTOFF)
+	      {
+		this->type_asp |= Relation::pairing_mask;
+		addPairingLabels ();
+	      }
 
-      }
-      else
-      {
-	hbonds.clear ();
+	  }
+	else
+	  {
 #ifdef DEBUG
-	gOut (4) << "MaximumFlowGraph.size () = " << graph.size () << endl;
+	    gOut (4) << "MaximumFlowGraph.size () = " << graph.size ()
+		     << endl << hbonds << endl;
 #endif
+	    hbonds.clear ();
+	  }
       }
-    }
     catch (IntLibException& ex)
-    {
-      gOut (3) << "An error occured during pairing annotation: " << ex << endl;
-    }
+      {
+	gOut (3) << "An error occured during pairing annotation: " << ex << endl;
+      }
   }
 
 
@@ -1692,6 +1706,12 @@ namespace mccore
 
 namespace std
 {
+  
+  ostream& operator<< (ostream &os, const mccore::HBondFlow &hbf)
+  {
+    return hbf.write (os);
+  }
+
   
   ostream& operator<< (ostream &os, const mccore::Relation &r)
   {
