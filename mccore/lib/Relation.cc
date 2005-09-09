@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.44 $
-// $Id: Relation.cc,v 1.44 2005-09-06 15:32:30 larosem Exp $
+// $Revision: 1.45 $
+// $Id: Relation.cc,v 1.45 2005-09-09 22:01:49 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -28,11 +28,11 @@
 #include <config.h>
 #endif
 
+#include <algorithm>
 #include <cmath>
 #include <iterator>
 #include <limits>
 #include <string>
-#include <utility>
 
 #include "Relation.h"
 
@@ -109,7 +109,7 @@ namespace mccore
       type_asp (0),
       sum_flow (0)
   {
-    this->reset (rA, rB);  
+    reset (rA, rB);  
   }
 
   
@@ -123,7 +123,8 @@ namespace mccore
       labels (other.labels),
       type_asp (other.type_asp),
       hbonds (other.hbonds),
-      sum_flow (other.sum_flow)
+      sum_flow (other.sum_flow),
+      pairedFaces (other.pairedFaces)
   { }
 
 
@@ -131,18 +132,19 @@ namespace mccore
   Relation::operator= (const Relation &other)
   {
     if (this != &other)
-    {
-      this->ref = other.ref;
-      this->res = other.res;
-      this->tfo = other.tfo;
-      this->po4_tfo = other.po4_tfo;
-      this->refFace = other.refFace;
-      this->resFace = other.resFace;
-      this->type_asp = other.type_asp;
-      this->labels = other.labels;
-      this->hbonds = other.hbonds;
-      this->sum_flow = other.sum_flow;
-    }
+      {
+	ref = other.ref;
+	res = other.res;
+	tfo = other.tfo;
+	po4_tfo = other.po4_tfo;
+	refFace = other.refFace;
+	resFace = other.resFace;
+	type_asp = other.type_asp;
+	labels = other.labels;
+	hbonds = other.hbonds;
+	sum_flow = other.sum_flow;
+	pairedFaces = other.pairedFaces;
+      }
     return *this;
   }
 
@@ -155,7 +157,7 @@ namespace mccore
   {
     set< const PropertyType* >::const_iterator it;
     
-    for (it = this->labels.begin (); it != this->labels.end (); ++it)
+    for (it = labels.begin (); it != labels.end (); ++it)
       if ((*it)->is (t))
 	return true;
     return false;
@@ -171,36 +173,36 @@ namespace mccore
   void
   Relation::reset (const Residue* org, const Residue* dest)
   {
-    this->ref = org;
-    this->res = dest;
-    this->tfo = ref->getReferential ().invert () * res->getReferential ();
-    this->po4_tfo.setIdentity ();
-    this->refFace = this->resFace = PropertyType::pNull;
-    this->labels.clear ();
-    this->type_asp = 0;
-    this->hbonds.clear ();
-    this->sum_flow = 0.0;
+    ref = org;
+    res = dest;
+    tfo = ref->getReferential ().invert () * res->getReferential ();
+    po4_tfo.setIdentity ();
+    refFace = resFace = PropertyType::pNull;
+    labels.clear ();
+    type_asp = 0;
+    hbonds.clear ();
+    sum_flow = 0.0;
   }
 
 
   bool
   Relation::isAdjacent () const
   {
-    return this->type_asp & Relation::adjacent_mask;
+    return type_asp & Relation::adjacent_mask;
   }
 
   
   bool
   Relation::isStacking () const
   {
-    return this->type_asp & Relation::stacking_mask;
+    return type_asp & Relation::stacking_mask;
   }
 
   
   bool
   Relation::isPairing () const
   {
-    return this->type_asp & Relation::pairing_mask;
+    return type_asp & Relation::pairing_mask;
   }
 
 
@@ -212,38 +214,33 @@ namespace mccore
     set< const Residue*, less_deref< Residue > > newSet;
     
     if (resSet.end () == (resIt = resSet.find (ref)))
-    {
-      throw NoSuchElementException ("Residue not found", __FILE__, __LINE__);
-    }
+      {
+	throw NoSuchElementException ("Residue not found", __FILE__, __LINE__);
+      }
     ref = *resIt;
     newSet.insert (ref);
     if (resSet.end () == (resIt = resSet.find (res)))
-    {
-      throw NoSuchElementException ("Residue not found", __FILE__, __LINE__);
-    }
+      {
+	throw NoSuchElementException ("Residue not found", __FILE__, __LINE__);
+      }
     res = *resIt;
     newSet.insert (res);
     
     for (hbfIt = hbonds.begin (); hbonds.end () != hbfIt; ++hbfIt)
-    {
-      hbfIt->hbond.reassignResiduePointers (newSet);
-    }
+      {
+	hbfIt->hbond.reassignResiduePointers (newSet);
+      }
   }
 
   
   bool
   Relation::annotate () 
   {
-    this->areAdjacent ();
-    this->areStacked ();
-    this->arePaired ();
-
-    //     TODO: fix areHBonded method
-    //
-    //     if (! is (PropertyType::pPairing))
-    //       areHBonded ();
-
-    return !this->empty ();
+    areAdjacent ();
+    areStacked ();
+    arePaired ();
+    areHBonded ();
+    return ! empty ();
   }
   
   
@@ -253,28 +250,28 @@ namespace mccore
     Residue::const_iterator up, down;
     const PropertyType * adj_type = PropertyType::pNull;
     
-    if (this->ref->end () != (down = this->ref->find (AtomType::aO3p)) &&
-	this->res->end () != (up = this->res->find (AtomType::aP)) &&
+    if (ref->end () != (down = ref->find (AtomType::aO3p)) &&
+	res->end () != (up = res->find (AtomType::aP)) &&
 	down->squareDistance (*up) <= Relation::adjacency_distance_cutoff_square)
       adj_type = PropertyType::pAdjacent5p;
-    else if (this->res->end () != (down = this->res->find (AtomType::aO3p)) &&
-	     this->ref->end () != (up = this->ref->find (AtomType::aP)) &&
+    else if (res->end () != (down = res->find (AtomType::aO3p)) &&
+	     ref->end () != (up = ref->find (AtomType::aP)) &&
 	     down->squareDistance (*up) <= Relation::adjacency_distance_cutoff_square)
       adj_type = PropertyType::pAdjacent3p;
-    else if (this->ref->end () != (down = this->ref->find (AtomType::aC)) &&
-	     this->res->end () != (up = this->res->find (AtomType::aN)) &&
+    else if (ref->end () != (down = ref->find (AtomType::aC)) &&
+	     res->end () != (up = res->find (AtomType::aN)) &&
 	     down->squareDistance (*up) <= Relation::adjacency_distance_cutoff_square)
       adj_type = PropertyType::pAdjacent5p;
-    else if (this->res->end () != (down = this->res->find (AtomType::aC)) &&
-	     this->ref->end () != (up = this->ref->find (AtomType::aN)) &&
+    else if (res->end () != (down = res->find (AtomType::aC)) &&
+	     ref->end () != (up = ref->find (AtomType::aN)) &&
 	     down->squareDistance (*up) <= Relation::adjacency_distance_cutoff_square)
       adj_type = PropertyType::pAdjacent3p;
 
     if (adj_type != PropertyType::pNull)
-    {
-      this->labels.insert (adj_type);
-      this->type_asp |= Relation::adjacent_mask;
-    }
+      {
+	labels.insert (adj_type);
+	type_asp |= Relation::adjacent_mask;
+      }
     
     /*
       Compute relative transfo to place phosphate form ref base.
@@ -283,48 +280,48 @@ namespace mccore
     
     po4_tfo.setIdentity ();
     
-    if (this->ref->getType ()->isNucleicAcid () &&
-	this->res->getType ()->isNucleicAcid () &&
+    if (ref->getType ()->isNucleicAcid () &&
+	res->getType ()->isNucleicAcid () &&
 	adj_type->isAdjacent ())
       try
-      {
-	// fetch phosphate residue depending on adjacency direction
-	ResId rid;
-	Residue pRes (ResidueType::rPhosphate, rid);
+	{
+	  // fetch phosphate residue depending on adjacency direction
+	  ResId rid;
+	  Residue pRes (ResidueType::rPhosphate, rid);
 	  
-	pRes.setType (ResidueType::rPhosphate);
+	  pRes.setType (ResidueType::rPhosphate);
 
-	if (adj_type->is (PropertyType::pAdjacent5p))
-	{
-	  pRes.insert (*this->ref->safeFind (AtomType::aO3p));
-	  pRes.insert (*this->res->safeFind (AtomType::aP));
-	  pRes.insert (*this->res->safeFind (AtomType::aO1P));
-	  pRes.insert (*this->res->safeFind (AtomType::aO2P));
-	  pRes.insert (*this->res->safeFind (AtomType::aO5p));
-	}
-	else if (adj_type->is (PropertyType::pAdjacent3p))
-	{
-	  pRes.insert (*this->res->safeFind (AtomType::aO3p));
-	  pRes.insert (*this->ref->safeFind (AtomType::aP));
-	  pRes.insert (*this->ref->safeFind (AtomType::aO1P));
-	  pRes.insert (*this->ref->safeFind (AtomType::aO2P));
-	  pRes.insert (*this->ref->safeFind (AtomType::aO5p));
-	}
-	else
-	{
-	  IntLibException ex ("", __FILE__, __LINE__);
-	  ex << "adjacent type \"" << adj_type << "\" not handled";
-	  throw ex;
-	}
+	  if (adj_type->is (PropertyType::pAdjacent5p))
+	    {
+	      pRes.insert (*ref->safeFind (AtomType::aO3p));
+	      pRes.insert (*res->safeFind (AtomType::aP));
+	      pRes.insert (*res->safeFind (AtomType::aO1P));
+	      pRes.insert (*res->safeFind (AtomType::aO2P));
+	      pRes.insert (*res->safeFind (AtomType::aO5p));
+	    }
+	  else if (adj_type->is (PropertyType::pAdjacent3p))
+	    {
+	      pRes.insert (*res->safeFind (AtomType::aO3p));
+	      pRes.insert (*ref->safeFind (AtomType::aP));
+	      pRes.insert (*ref->safeFind (AtomType::aO1P));
+	      pRes.insert (*ref->safeFind (AtomType::aO2P));
+	      pRes.insert (*ref->safeFind (AtomType::aO5p));
+	    }
+	  else
+	    {
+	      IntLibException ex ("", __FILE__, __LINE__);
+	      ex << "adjacent type \"" << adj_type << "\" not handled";
+	      throw ex;
+	    }
 
-	pRes.finalize ();
-	this->po4_tfo = this->ref->getReferential ().invert () * pRes.getReferential ();
-      }
+	  pRes.finalize ();
+	  po4_tfo = ref->getReferential ().invert () * pRes.getReferential ();
+	}
       catch (IntLibException& ex)
-      {
-	gOut (3) << "unable to compute phosphate transfo in adjacent relation: " << ex << endl;
-	this->po4_tfo.setIdentity ();
-      }
+	{
+	  gOut (3) << "unable to compute phosphate transfo in adjacent relation: " << ex << endl;
+	  po4_tfo.setIdentity ();
+	}
   }
 
 
@@ -335,35 +332,53 @@ namespace mccore
     Residue::const_iterator j;
     Residue::const_iterator k;
     Residue::const_iterator l;
-    vector< Residue::const_iterator > ref_at;
-    vector< Residue::const_iterator > refn_at;
-    vector< Residue::const_iterator > res_at;
-    vector< Residue::const_iterator > resn_at;
-    AtomSetSideChain as_sidechain;
+    //     vector< Residue::const_iterator > ref_at;
+    //     vector< Residue::const_iterator > refn_at;
+    //     vector< Residue::const_iterator > res_at;
+    //     vector< Residue::const_iterator > resn_at;
+    AtomSetOr as (new AtomSetSideChain (),
+		  new AtomSetAnd (new AtomSetBackbone (),
+				  new AtomSetOr (new AtomSetAtom (AtomType::aO2p),
+						 new AtomSetAtom (AtomType::aO2P))));
 
-    for (i = ref->begin (as_sidechain); i != ref->end (); ++i)
-    {
-      if (i->getType ()->isNitrogen () || i->getType ()->isOxygen ())
+    for (i = ref->begin (as); ref->end () != i; ++i)
       {
-	for (j = res->begin (as_sidechain); j != res->end (); ++j)
-	{
-	  if (j->getType ()->isNitrogen () || j->getType ()->isOxygen ())
+	if (i->getType ()->isNitrogen () || i->getType ()->isOxygen ())
 	  {
-	    if (i->distance (*j) > HBOND_DIST_MAX && i->distance (*j) < 3.2)
-	    {
-	      string str;
-			
-	      labels.insert (PropertyType::parseType ("unclassified"));
-	      labels.insert (PropertyType::pPairing);
-	      str.append ((const char*) *(i->getType ()));
-	      str.append ("-");
-	      str.append ((const char*) *(j->getType ()));
-	      labels.insert (PropertyType::parseType (str));
-	    }
+	    for (j = res->begin (as); res->end () != j; ++j)
+	      {
+		if (((i->getType ()->isNitrogen ()
+		      && j->getType ()->isBackbone ())
+		     || (j->getType ()->isNitrogen ()
+			 && i->getType ()->isBackbone ()))
+		    && i->distance (*j) > HBOND_DIST_MAX
+		    && i->distance (*j) < 3.2)
+		  {
+		    const PropertyType *refface;
+		    const PropertyType *resface;
+		    const AtomType *refType;
+		    const AtomType *resType;
+		    
+		    labels.insert (PropertyType::pPairing);
+		    type_asp |= Relation::pairing_mask;
+		    refType = i->getType ();
+		    resType = j->getType ();
+		    refface = (refType->isNitrogen ()
+			       ? getFace (ref, *ref->safeFind (refType))
+			       : (AtomType::aO2p == refType
+				  ? PropertyType::pRibose
+				  : PropertyType::pPhosphate));
+		    resface = (resType->isNitrogen ()
+			       ? getFace (res, *res->safeFind (resType))
+			       : (AtomType::aO2p == resType
+				  ? PropertyType::pRibose
+				  : PropertyType::pPhosphate));
+		    cout << *refface << " " << *resface << endl;
+		    pairedFaces.push_back (make_pair (refface, resface));
+		  }
+	      }
 	  }
-	}
       }
-    }
     
 
     // TODO: This is experimental and is a tentative to identify as
@@ -530,8 +545,10 @@ namespace mccore
 	vector< Residue::const_iterator > resn_at;
 	vector< Residue::const_iterator >::size_type x;
 	vector< Residue::const_iterator >::size_type y;
-	AtomSetAnd da (new AtomSetSideChain (), 
-		       new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M), 
+	AtomSetAnd da (new AtomSetOr (new AtomSetSideChain (),
+				      new AtomSetOr (new AtomSetAtom (AtomType::aO2p),
+						     new AtomSetAtom (AtomType::aHO2p))),
+		       new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M),
 						      new AtomSetAtom (AtomType::a3H5M))));
 	
 	node = 0;
@@ -680,7 +697,7 @@ namespace mccore
 	    
 	    if (sum_flow >= PAIRING_CUTOFF)
 	      {
-		this->type_asp |= Relation::pairing_mask;
+		type_asp |= Relation::pairing_mask;
 		addPairingLabels ();
 	      }
 
@@ -718,30 +735,30 @@ namespace mccore
 
     labels.insert (PropertyType::pPairing);
     if (sum_flow < TWO_BONDS_CUTOFF)
-    {
-      labels.insert (PropertyType::pOneHbond);
-    }
+      {
+	labels.insert (PropertyType::pOneHbond);
+      }
 		
     // Compute contact points and visual contact points
     for (hbIt = hbonds.begin (); hbonds.end () != hbIt; ++hbIt)
-    {
-      HBondFlow &fl = *hbIt;
+      {
+	HBondFlow &fl = *hbIt;
 		    
-      if (fl.hbond.getDonorResidue () == ref)
-      {
-	pa = pa + (fl.hbond.getHydrogen () * fl.flow);
-	pb = pb + (fl.hbond.getLonePair () * fl.flow);
-	pva = pva + (fl.hbond.getHydrogen () * fl.flow);
-	pvb = pvb + (fl.hbond.getAcceptor () * fl.flow);
+	if (fl.hbond.getDonorResidue () == ref)
+	  {
+	    pa = pa + (fl.hbond.getHydrogen () * fl.flow);
+	    pb = pb + (fl.hbond.getLonePair () * fl.flow);
+	    pva = pva + (fl.hbond.getHydrogen () * fl.flow);
+	    pvb = pvb + (fl.hbond.getAcceptor () * fl.flow);
+	  }
+	else
+	  {
+	    pa = pa + (fl.hbond.getLonePair () * fl.flow);
+	    pb = pb + (fl.hbond.getHydrogen () * fl.flow);
+	    pva = pva + (fl.hbond.getAcceptor () * fl.flow);
+	    pvb = pvb + (fl.hbond.getHydrogen () * fl.flow);
+	  }
       }
-      else
-      {
-	pa = pa + (fl.hbond.getLonePair () * fl.flow);
-	pb = pb + (fl.hbond.getHydrogen () * fl.flow);
-	pva = pva + (fl.hbond.getAcceptor () * fl.flow);
-	pvb = pvb + (fl.hbond.getHydrogen () * fl.flow);
-      }
-    }
 			
     pa = pa / sum_flow;
     pb = pb / sum_flow;
@@ -761,220 +778,40 @@ namespace mccore
 	      
     // -- straight/reverse orientation
     labels.insert (Relation::_pyrimidine_ring_normal
-		   (*this->ref, Relation::_pyrimidine_ring_center (*this->ref)).dot
+		   (*ref, Relation::_pyrimidine_ring_center (*ref)).dot
 		   (Relation::_pyrimidine_ring_normal
-		    (*this->res, Relation::_pyrimidine_ring_center (*this->res))) > 0 ?
+		    (*res, Relation::_pyrimidine_ring_center (*res))) > 0 ?
 		   PropertyType::pStraight : PropertyType::pReverse);
 
     refFace = getFace (ref, pa);
     resFace = getFace (res, pb);
+    pairedFaces.push_back (make_pair (refFace, resFace));
 	      
     if (sum_flow >= PAIRING_CUTOFF && sum_flow < TWO_BONDS_CUTOFF)
-    {
-      size_hint = 1;
-    }
+      {
+	size_hint = 1;
+      }
     else if (sum_flow < THREE_BONDS_CUTOFF)
-    {
-      size_hint = 2;
-    }
+      {
+	size_hint = 2;
+      }
     else
-    {
-      size_hint = 3;
-    }
+      {
+	size_hint = 3;
+      }
     hbf.sort ();
     while (hbf.size () != size_hint)
-    {
-      hbf.pop_front ();
-    }
+      {
+	hbf.pop_front ();
+      }
     if (0 != (pp = translatePairing (ref, res, hbf, sum_flow, size_hint)))
-    {
-      labels.insert (pp);
-    }
+      {
+	labels.insert (pp);
+      }
 
   }
   
   
-
-
-  void
-  Relation::areStacked_old ()
-  {
-    static const float STACK_DISTANCE_CUTOFF = 4.50f;
-    static const float STACK_NORMAL_CUTOFF   = 0.61f; // 35 deg
-    static const float STACK_OVERLAP_CUTOFF  = 0.61f; // 35 deg
-    
-    try
-    {
-      Vector3D pyrCenterA;
-      Vector3D pyrCenterB;
-      Vector3D imidCenterA;
-      Vector3D imidCenterB;
-      Vector3D normalA, normalB;
-      Vector3D centerV;
-      float distance, theta1, theta2, tau1, tau2, tau3, tau4;
-      float normal, overlap;
-
-      // Stacking Pyr-Pyr 
-      pyrCenterA = ((*(ref->safeFind (AtomType::aN1))
-		     + *(ref->safeFind (AtomType::aC2))
-		     + *(ref->safeFind (AtomType::aN3))
-		     + *(ref->safeFind (AtomType::aC4))
-		     + *(ref->safeFind (AtomType::aC5))
-		     + *(ref->safeFind (AtomType::aC6))) / 6);
-      pyrCenterB = ((*(res->safeFind (AtomType::aN1))
-		     + *(res->safeFind (AtomType::aC2))
-		     + *(res->safeFind (AtomType::aN3))
-		     + *(res->safeFind (AtomType::aC4))
-		     + *(res->safeFind (AtomType::aC5))
-		     + *(res->safeFind (AtomType::aC6))) / 6);
-	
-      distance = pyrCenterA.distance (pyrCenterB);
-      centerV = pyrCenterB - pyrCenterA;
-      centerV = centerV.normalize ();
-      normalA = pyrimidineNormal (ref);
-      normalB = pyrimidineNormal (res);
-      theta1 = (float) acos (normalA.dot (normalB));   // this is symmetric
-      theta2 = (float) acos (-normalA.dot (normalB));
-      tau1 = (float) acos (normalA.dot (centerV));  // this ain't
-      tau2 = (float) acos (-normalA.dot (centerV));
-      tau3 = (float) acos (normalB.dot (centerV));
-      tau4 = (float) acos (-normalB.dot (centerV));
-	
-      normal = min (theta1, theta2);
-      overlap = min (min (tau1, tau2), min (tau3, tau4));
-	
-      // Check if the stack is reverse here since we need only pyr-pyr rings...
-      float rev_angle = Vector3D (0, 0, 0).angle (normalA, normalB);
-      bool reverse = false;
-	
-      if (ref->getType ()->isPurine () && res->getType ()->isPurine ()
-	  || ref->getType ()->isPyrimidine () && res->getType ()->isPyrimidine ())
-      {
-	if (rev_angle > M_PI / 2)
-	  reverse = true;
-      }
-      else if (rev_angle < M_PI / 2) 
-      {
-	reverse = true;
-      }
-	
-      if (distance <= STACK_DISTANCE_CUTOFF
-	  && normal <= STACK_NORMAL_CUTOFF
-	  && overlap <=  STACK_OVERLAP_CUTOFF)
-      {
-	labels.insert (PropertyType::pStack);
-	if (reverse)
-	  labels.insert (PropertyType::pReverse);
-	return;
-      }
-	
-      // Stacking imid-Pyr
-      if (ref->getType ()->isPurine ())
-      {
-	imidCenterA = ((*(ref->safeFind (AtomType::aC4))
-			+ *(ref->safeFind (AtomType::aC5))
-			+ *(ref->safeFind (AtomType::aN7))
-			+ *(ref->safeFind (AtomType::aC8))
-			+ *(ref->safeFind (AtomType::aN9))) / 5);
-	    
-	distance = imidCenterA.distance (pyrCenterB);
-	centerV = pyrCenterB - imidCenterA;
-	centerV = centerV.normalize ();
-	normalA = imidazolNormal (ref);
-	normalB = pyrimidineNormal (res);
-	theta1 = (float) acos (normalA.dot (normalB)); // this is symmetric
-	theta2 = (float) acos (-normalA.dot (normalB));
-	tau1 = (float) acos (normalA.dot (centerV));  // this ain't
-	tau2 = (float) acos (-normalA.dot (centerV));
-	tau3 = (float) acos (normalB.dot (centerV));
-	tau4 = (float) acos (-normalB.dot (centerV));
-	    
-	normal = min (theta1, theta2);
-	overlap = min (min (tau1, tau2), min (tau3, tau4));
-	    
-	if (distance <= STACK_DISTANCE_CUTOFF
-	    && normal <= STACK_NORMAL_CUTOFF
-	    && overlap <=  STACK_OVERLAP_CUTOFF)
-	{
-	  labels.insert (PropertyType::pStack);
-	  if (reverse)
-	    labels.insert (PropertyType::pReverse);
-	  return;
-	}
-      }
-	
-      // Stacking Pyr-Imid
-      if (res->getType ()->isPurine ())
-      {
-	imidCenterB = ((*(res->safeFind (AtomType::aC4))
-			+ *(res->safeFind (AtomType::aC5))
-			+ *(res->safeFind (AtomType::aN7))
-			+ *(res->safeFind (AtomType::aC8))
-			+ *(res->safeFind (AtomType::aN9))) / 5);
-	    
-	distance = pyrCenterA.distance (imidCenterB);
-	centerV = imidCenterB - pyrCenterA;
-	centerV = centerV.normalize ();
-	normalA = pyrimidineNormal (ref);
-	normalB = imidazolNormal (res);
-	theta1 = (float) acos (normalA.dot (normalB));  // this is symmetric
-	theta2 = (float) acos (-normalA.dot (normalB));
-	tau1 = (float) acos (normalA.dot (centerV));  // this ain't
-	tau2 = (float) acos (-normalA.dot (centerV));
-	tau3 = (float) acos (normalB.dot (centerV));
-	tau4 = (float) acos (-normalB.dot (centerV));
-	    
-	normal = min (theta1, theta2);
-	overlap = min (min (tau1, tau2), min (tau3, tau4));
-	    
-	if (distance <= STACK_DISTANCE_CUTOFF
-	    && normal <= STACK_NORMAL_CUTOFF
-	    && overlap <=  STACK_OVERLAP_CUTOFF)
-	{
-	  labels.insert (PropertyType::pStack);
-	  if (reverse)
-	    labels.insert (PropertyType::pReverse);
-	  return;
-	}
-      }
-	
-      // Stacking Imid-Imid
-      if (ref->getType ()->isPurine () && res->getType ()->isPurine ())
-      {
-	distance = imidCenterA.distance (imidCenterB);
-	centerV = imidCenterB - imidCenterA;
-	centerV = centerV.normalize ();
-	normalA = imidazolNormal (ref);
-	normalB = imidazolNormal (res);
-	theta1 = (float) acos (normalA.dot (normalB)); // this is symmetric
-	theta2 = (float) acos (-normalA.dot (normalB));
-	tau1 = (float) acos (normalA.dot (centerV));  // this ain't
-	tau2 = (float) acos (-normalA.dot (centerV));
-	tau3 = (float) acos (normalB.dot (centerV));
-	tau4 = (float) acos (-normalB.dot (centerV));
-	    
-	normal = min (theta1, theta2);
-	overlap = min (min (tau1, tau2), min (tau3, tau4));
-	    
-	if (distance <= STACK_DISTANCE_CUTOFF
-	    && normal <= STACK_NORMAL_CUTOFF
-	    && overlap <=  STACK_OVERLAP_CUTOFF)
-	{
-	  labels.insert (PropertyType::pStack);
-	  if (reverse)
-	    labels.insert (PropertyType::pReverse);
-	  return;
-	}
-      }
-    }
-    catch (IntLibException& ex)
-    {
-      gOut (3) << "An error occured during stacking annotation: " << ex << endl;
-    }
-    
-  }
-
-
   Vector3D
   Relation::_pyrimidine_ring_center (const Residue& res)
   {
@@ -1057,12 +894,12 @@ namespace mccore
     theta1 = acos (normalA.dot (normalB));
 
     if (theta1 > Relation::stack_tilt_cutoff)
-    {
-      if ((float)M_PI - theta1 < Relation::stack_tilt_cutoff)
-	annotation = 2;
-      else
-	return PropertyType::pNull;
-    }
+      {
+	if ((float)M_PI - theta1 < Relation::stack_tilt_cutoff)
+	  annotation = 2;
+	else
+	  return PropertyType::pNull;
+      }
 
     // - check ring overlap
     //   -> not symetrical, thus we say stack if any direction is satisfying.
@@ -1071,42 +908,42 @@ namespace mccore
     theta1 = acos (normalA.dot (vAB));
 
     if (theta1 > Relation::stack_overlap_cutoff)
-    {
-      if ((float)M_PI - theta1 < Relation::stack_overlap_cutoff)
-	annotation |= 1;
-      else
       {
-	// try from other base point of view
-	theta2 = acos (normalB.dot (vAB));
-
-	if (theta2 < Relation::stack_overlap_cutoff ||
-	    (float)M_PI - theta2 < Relation::stack_overlap_cutoff)
-	{
-	  if (theta1 > M_PI_2)
-	    annotation |= 1;
-	}
+	if ((float)M_PI - theta1 < Relation::stack_overlap_cutoff)
+	  annotation |= 1;
 	else
-	  return PropertyType::pNull;
-      }
-    }
+	  {
+	    // try from other base point of view
+	    theta2 = acos (normalB.dot (vAB));
 
-    this->type_asp |= Relation::stacking_mask;
+	    if (theta2 < Relation::stack_overlap_cutoff ||
+		(float)M_PI - theta2 < Relation::stack_overlap_cutoff)
+	      {
+		if (theta1 > M_PI_2)
+		  annotation |= 1;
+	      }
+	    else
+	      return PropertyType::pNull;
+	  }
+      }
+
+    type_asp |= Relation::stacking_mask;
     
     switch (annotation)
-    {
-    case 0:
-      return PropertyType::pStraightUpward;
-    case 1:
-      return PropertyType::pStraightDownward;
-    case 2:
-      return PropertyType::pReverseUpward;
-    case 3:
-      return PropertyType::pReverseDownward;
-    default:
-      FatalIntLibException ex ("", __FILE__, __LINE__);
-      ex << "invalid stacking annotation value " << annotation;
-      throw ex;
-    }
+      {
+      case 0:
+	return PropertyType::pStraightUpward;
+      case 1:
+	return PropertyType::pStraightDownward;
+      case 2:
+	return PropertyType::pReverseUpward;
+      case 3:
+	return PropertyType::pReverseDownward;
+      default:
+	FatalIntLibException ex ("", __FILE__, __LINE__);
+	ex << "invalid stacking annotation value " << annotation;
+	throw ex;
+      }
 
     return PropertyType::pNull;
   }
@@ -1116,85 +953,85 @@ namespace mccore
   Relation::areStacked ()
   {
     try
-    {
-      Vector3D pyrCA, pyrCB, imidCA, imidCB, pyrNA, pyrNB, imidNA, imidNB;
-      const PropertyType* stacking;
-      unsigned char rtypes;
+      {
+	Vector3D pyrCA, pyrCB, imidCA, imidCB, pyrNA, pyrNB, imidNA, imidNB;
+	const PropertyType* stacking;
+	unsigned char rtypes;
 
-      /*
-	Compute necessary geometry based on type family:
+	/*
+	  Compute necessary geometry based on type family:
 
-	00 (0) => Pur / Pur: imid / imid, imid / -pyr, -pyr / imid, -pyr / -pyr
-	01 (1) => Pur / Pyr:              imid /  pyr,              -pyr /  pyr
-	10 (2) => Pyr / Pur:                            pyr / imid,  pyr / -pyr
-	11 (3) => Pyr / Pyr:                                         pyr /  pyr
-      */
+	  00 (0) => Pur / Pur: imid / imid, imid / -pyr, -pyr / imid, -pyr / -pyr
+	  01 (1) => Pur / Pyr:              imid /  pyr,              -pyr /  pyr
+	  10 (2) => Pyr / Pur:                            pyr / imid,  pyr / -pyr
+	  11 (3) => Pyr / Pyr:                                         pyr /  pyr
+	*/
       
-      pyrCA = Relation::_pyrimidine_ring_center (*this->ref);
-      pyrNA = Relation::_pyrimidine_ring_normal (*this->ref, pyrCA);
+	pyrCA = Relation::_pyrimidine_ring_center (*ref);
+	pyrNA = Relation::_pyrimidine_ring_normal (*ref, pyrCA);
       
-      pyrCB = Relation::_pyrimidine_ring_center (*this->res);
-      pyrNB = Relation::_pyrimidine_ring_normal (*this->res, pyrCB);
+	pyrCB = Relation::_pyrimidine_ring_center (*res);
+	pyrNB = Relation::_pyrimidine_ring_normal (*res, pyrCB);
       
-      if (this->ref->getType ()->isPurine ())
-      {
-	rtypes = 0;
-	//pyrNA = -pyrNA;
-	imidCA = Relation::_imidazole_ring_center (*this->ref);
-	imidNA = Relation::_imidazole_ring_normal (*this->ref, imidCA);
-      }
-      else if (this->ref->getType ()->isPyrimidine ())
-      {
-	rtypes = 2;
-      }
-      else
-      {
-	IntLibException ex ("", __FILE__, __LINE__);
-	ex << "Type \"" << this->ref->getType () << "\" not handled for residue"
-	   << this->ref->getResId ();
-	throw ex;
-      }
+	if (ref->getType ()->isPurine ())
+	  {
+	    rtypes = 0;
+	    //pyrNA = -pyrNA;
+	    imidCA = Relation::_imidazole_ring_center (*ref);
+	    imidNA = Relation::_imidazole_ring_normal (*ref, imidCA);
+	  }
+	else if (ref->getType ()->isPyrimidine ())
+	  {
+	    rtypes = 2;
+	  }
+	else
+	  {
+	    IntLibException ex ("", __FILE__, __LINE__);
+	    ex << "Type \"" << ref->getType () << "\" not handled for residue"
+	       << ref->getResId ();
+	    throw ex;
+	  }
       
-      if (this->res->getType ()->isPurine ())
-      {
-	//pyrNB = -pyrNB;
-	imidCB = Relation::_imidazole_ring_center (*this->res);
-	imidNB = Relation::_imidazole_ring_normal (*this->res, imidCB);
+	if (res->getType ()->isPurine ())
+	  {
+	    //pyrNB = -pyrNB;
+	    imidCB = Relation::_imidazole_ring_center (*res);
+	    imidNB = Relation::_imidazole_ring_normal (*res, imidCB);
+	  }
+	else if (res->getType ()->isPyrimidine ())
+	  {
+	    rtypes |= 1;
+	  }
+	else
+	  {
+	    IntLibException ex ("", __FILE__, __LINE__);
+	    ex << "Type \"" << res->getType () << "\" not handled for residue"
+	       << res->getResId ();
+	    throw ex;
+	  }
+
+	// pyrimidine / pyrimidine
+	stacking = Relation::_ring_stacking (pyrCA, pyrNA, pyrCB, pyrNB);
+
+	// imidazole / pyrimidine
+	if (PropertyType::pNull == stacking && (1 == rtypes || 0 == rtypes))
+	  stacking = Relation::_ring_stacking (imidCA, imidNA, pyrCB, pyrNB);
+
+	// pyrimidine / imidazole
+	if (PropertyType::pNull == stacking && (2 == rtypes || 0 == rtypes))
+	  stacking = Relation::_ring_stacking (pyrCA, pyrNA, imidCB, imidNB);
+
+	// imidazole / imidazole
+	if (PropertyType::pNull == stacking && 0 == rtypes)
+	  stacking = Relation::_ring_stacking (imidCA, imidNA, imidCB, imidNB);
+
+	if (PropertyType::pNull != stacking)
+	  labels.insert (stacking);
       }
-      else if (this->res->getType ()->isPyrimidine ())
-      {
-	rtypes |= 1;
-      }
-      else
-      {
-	IntLibException ex ("", __FILE__, __LINE__);
-	ex << "Type \"" << this->res->getType () << "\" not handled for residue"
-	   << this->res->getResId ();
-	throw ex;
-      }
-
-      // pyrimidine / pyrimidine
-      stacking = Relation::_ring_stacking (pyrCA, pyrNA, pyrCB, pyrNB);
-
-      // imidazole / pyrimidine
-      if (PropertyType::pNull == stacking && (1 == rtypes || 0 == rtypes))
-	stacking = Relation::_ring_stacking (imidCA, imidNA, pyrCB, pyrNB);
-
-      // pyrimidine / imidazole
-      if (PropertyType::pNull == stacking && (2 == rtypes || 0 == rtypes))
-	stacking = Relation::_ring_stacking (pyrCA, pyrNA, imidCB, imidNB);
-
-      // imidazole / imidazole
-      if (PropertyType::pNull == stacking && 0 == rtypes)
-	stacking = Relation::_ring_stacking (imidCA, imidNA, imidCB, imidNB);
-
-      if (PropertyType::pNull != stacking)
-	labels.insert (stacking);
-    }
     catch (IntLibException& ex)
-    {
-      gOut (3) << "An error occured during stacking annotation: " << ex << endl;
-    }
+      {
+	gOut (3) << "An error occured during stacking annotation: " << ex << endl;
+      }
   }
   
 
@@ -1224,24 +1061,28 @@ namespace mccore
     const PropertyType* pt;
     set< const PropertyType* > lt;
     set< const PropertyType* >::const_iterator it;
+    vector< pair< const PropertyType*, const PropertyType* > >::iterator pfit;
 
     // -- invert residues and faces
-    rt = this->ref;
-    this->ref = this->res;
-    this->res = rt;
-    pt = this->refFace;
-    this->refFace = this->resFace;
-    this->resFace = pt;
+    rt = ref;
+    ref = res;
+    res = rt;
+    pt = refFace;
+    refFace = resFace;
+    resFace = pt;
 
     // -- invert transfos
-    this->tfo = this->tfo.invert ();
-    this->po4_tfo = this->tfo * this->po4_tfo;
+    tfo = tfo.invert ();
+    po4_tfo = tfo * po4_tfo;
 
     // -- invert labels
-    for (it = this->labels.begin (); it != this->labels.end (); ++it) 
+    for (it = labels.begin (); it != labels.end (); ++it) 
       lt.insert (PropertyType::invert (*it));
-    this->labels = lt;
-    
+    labels = lt;
+    for (pfit = pairedFaces.begin (); pairedFaces.end () != pfit; ++pfit)
+      {
+	swap (pfit->first, pfit->second);
+      }
     return *this;
   }
 
@@ -1253,17 +1094,22 @@ namespace mccore
   Relation::write (ostream &os) const
   {
     if (ref != 0 && res != 0)
-    {
-      os << "{" 
-	 << ref->getResId () << ref->getType () << " -> " 
-	 << res->getResId () << res->getType () << ": ";
-      copy (labels.begin (), labels.end (), ostream_iterator< const PropertyType* > (os, " "));
-      if (is (PropertyType::pPairing))
       {
-	os << " " << refFace << "/" << resFace;
+	os << "{" 
+	   << ref->getResId () << ref->getType () << " -> " 
+	   << res->getResId () << res->getType () << ": ";
+	copy (labels.begin (), labels.end (), ostream_iterator< const PropertyType* > (os, " "));
+	if (is (PropertyType::pPairing))
+	  {
+	    vector< pair< const PropertyType*, const PropertyType* > >::const_iterator it;
+
+	    for (it = pairedFaces.begin (); pairedFaces.end () != it; ++it)
+	      {
+		os << *it->first << "/" << *it->second << ' ';
+	      }
+	  }
+	os << "}";
       }
-      os << "}";
-    }
     return os;
   }
 
@@ -1304,16 +1150,6 @@ namespace mccore
   
 
   set< const PropertyType* > 
-  Relation::areStacked_old (const Residue* ra, const Residue *rb)
-  {
-    Relation rel (ra, rb);
-
-    rel.areStacked_old ();
-    return rel.getLabels ();
-  }
-
-  
-  set< const PropertyType* > 
   Relation::areHBonded (const Residue* ra, const Residue *rb)
   {
     Relation rel (ra, rb);
@@ -1323,65 +1159,6 @@ namespace mccore
   }
     
   
-  Vector3D 
-  Relation::pyrimidineNormal (const Residue *res)
-  {
-    Vector3D radius1, radius2, center;
-    Vector3D normal;
-    
-    center = ((*(res->safeFind (AtomType::aN1))
-	       + *(res->safeFind (AtomType::aC2))
-	       + *(res->safeFind (AtomType::aN3))
-	       + *(res->safeFind (AtomType::aC4))
-	       + *(res->safeFind (AtomType::aC5))
-	       + *(res->safeFind (AtomType::aC6)))
-	      / 6);
-    radius1 = (((*(res->safeFind (AtomType::aN1)) - center) * 1)
-	       + ((*(res->safeFind (AtomType::aC2)) - center) * 0.5)
-	       + ((*(res->safeFind (AtomType::aN3)) - center) * -0.5)
-	       + ((*(res->safeFind (AtomType::aC4)) - center) * -1)
-	       + ((*(res->safeFind (AtomType::aC5)) - center) * -0.5)
-	       + ((*(res->safeFind (AtomType::aC6)) - center) * 0.5));
-    radius2 = (((*(res->safeFind (AtomType::aC2)) - center) * 0.8660254)
-	       + ((*(res->safeFind (AtomType::aN3)) - center) * 0.8660254)
-	       + ((*(res->safeFind (AtomType::aC5)) - center) * -0.8660254)
-	       + ((*(res->safeFind (AtomType::aC6)) - center) * -0.8660254));
-    
-    normal = radius1.cross (radius2);
-    return normal.normalize ();
-  }
-
-
-
-  Vector3D 
-  Relation::imidazolNormal (const Residue *res)
-  {
-    Vector3D radius1, radius2, center;
-    Vector3D normal;
-    
-    center = ((*(res->safeFind (AtomType::aC4))
-	       + *(res->safeFind (AtomType::aC5))
-	       + *(res->safeFind (AtomType::aN7))
-	       + *(res->safeFind (AtomType::aC8))
-	       + *(res->safeFind (AtomType::aN9)))
-	      / 5);
-    
-    radius1 = (((*(res->safeFind (AtomType::aC4)) - center) * 1)
-	       + ((*(res->safeFind (AtomType::aC5)) - center) * 0.30901699)
-	       + ((*(res->safeFind (AtomType::aN7)) - center) * -0.80901699)
-	       + ((*(res->safeFind (AtomType::aC8)) - center) * -0.80901699)
-	       + ((*(res->safeFind (AtomType::aN9)) - center) * 0.30901699));
-    
-    radius2 = (((*(res->safeFind (AtomType::aC5)) - center) * 0.95105652)
-	       + ((*(res->safeFind (AtomType::aN7)) - center) * 0.58778525)
-	       + ((*(res->safeFind (AtomType::aC8)) - center) * -0.58778525)
-	       + ((*(res->safeFind (AtomType::aN9)) - center) * -0.95105652));
-    
-    normal = radius1.cross (radius2);
-    return normal.normalize ();
-  }
-
-
   const PropertyType* 
   Relation::getFace (const Residue *r, const Vector3D &p)
   {
@@ -1396,39 +1173,39 @@ namespace mccore
     vector< pair< Vector3D, const PropertyType* > > *faces = 0;
 
     if (r->getType ()->isA ())
-    {
-      faces = &faces_A;
-    }
+      {
+	faces = &faces_A;
+      }
     else if (r->getType ()->isC ())
-    {
-      faces = &faces_C;
-    }
+      {
+	faces = &faces_C;
+      }
     else if (r->getType ()->isG ())
-    {
-      faces = &faces_G;
-    }
+      {
+	faces = &faces_G;
+      }
     else if (r->getType ()->isU ())
-    {
-      faces = &faces_U;
-    }
+      {
+	faces = &faces_U;
+      }
     else if (r->getType ()->isT ())
-    {
-      faces = &faces_T;
-    }
+      {
+	faces = &faces_T;
+      }
 
     int face_index = 0;
     unsigned int x;
     float dist = numeric_limits< float >::max ();
     
     for (x = 0; x < faces->size (); ++x)
-    {
-      float tmp = pp.distance ((*faces)[x].first);
-      if (tmp < dist)
       {
-	face_index = x;
-	dist = tmp;
+	float tmp = pp.distance ((*faces)[x].first);
+	if (tmp < dist)
+	  {
+	    face_index = x;
+	    dist = tmp;
+	  }
       }
-    }
 
     return (*faces)[face_index].second;   
   }
@@ -1438,142 +1215,142 @@ namespace mccore
   Relation::init () 
   {
     try
-    {
-      Vector3D ta, tb;
-      ExtendedResidue A (ResidueType::rRA, ResId ('A', 1));
-      ExtendedResidue C (ResidueType::rRC, ResId ('C', 1));
-      ExtendedResidue G (ResidueType::rRG, ResId ('G', 1));
-      ExtendedResidue U (ResidueType::rRU, ResId ('U', 1));
-      ExtendedResidue T (ResidueType::rDT, ResId ('T', 1));
+      {
+	Vector3D ta, tb;
+	ExtendedResidue A (ResidueType::rRA, ResId ('A', 1));
+	ExtendedResidue C (ResidueType::rRC, ResId ('C', 1));
+	ExtendedResidue G (ResidueType::rRG, ResId ('G', 1));
+	ExtendedResidue U (ResidueType::rRU, ResId ('U', 1));
+	ExtendedResidue T (ResidueType::rDT, ResId ('T', 1));
 
-      A.setTheoretical ();
-      ta = *A.safeFind (AtomType::aH8);	
-      Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("C8")));
-      ta = (*A.safeFind (AtomType::aH8) + *A.safeFind (AtomType::aLP7)) / 2;	
-      Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
-      ta = (*A.safeFind (AtomType::a2H6) + *A.safeFind (AtomType::aLP7)) / 2;
-      Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
-      ta = *A.safeFind (AtomType::a2H6);
-      Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
-      ta = (*A.safeFind (AtomType::a1H6) + *A.safeFind (AtomType::a2H6)) / 2;
-      Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
-      ta = *A.safeFind (AtomType::a1H6);
-      Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
-      ta = (*A.safeFind (AtomType::aLP1) + *A.safeFind (AtomType::a1H6)) / 2;
-      Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
-      ta = (*A.safeFind (AtomType::aLP1) + *A.safeFind (AtomType::aH2)) / 2;
-      Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
-      ta = *A.safeFind (AtomType::aH2);
-      Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
-      ta = (*A.safeFind (AtomType::aH2) + *A.safeFind (AtomType::aLP3)) / 2;
-      Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
-      ta = *A.safeFind (AtomType::aLP3);
-      Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
+	A.setTheoretical ();
+	ta = *A.safeFind (AtomType::aH8);	
+	Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("C8")));
+	ta = (*A.safeFind (AtomType::aH8) + *A.safeFind (AtomType::aLP7)) / 2;	
+	Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+	ta = (*A.safeFind (AtomType::a2H6) + *A.safeFind (AtomType::aLP7)) / 2;
+	Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+	ta = *A.safeFind (AtomType::a2H6);
+	Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
+	ta = (*A.safeFind (AtomType::a1H6) + *A.safeFind (AtomType::a2H6)) / 2;
+	Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
+	ta = *A.safeFind (AtomType::a1H6);
+	Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
+	ta = (*A.safeFind (AtomType::aLP1) + *A.safeFind (AtomType::a1H6)) / 2;
+	Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+	ta = (*A.safeFind (AtomType::aLP1) + *A.safeFind (AtomType::aH2)) / 2;
+	Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+	ta = *A.safeFind (AtomType::aH2);
+	Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
+	ta = (*A.safeFind (AtomType::aH2) + *A.safeFind (AtomType::aLP3)) / 2;
+	Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
+	ta = *A.safeFind (AtomType::aLP3);
+	Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
 
-      C.setTheoretical ();
-      ta = *C.safeFind (AtomType::aH6);
-      Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
-      ta = (*C.safeFind (AtomType::a1H4) + *C.safeFind (AtomType::aH5)) / 2;
-      Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
-      ta = *C.safeFind (AtomType::a1H4);
-      Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
-      ta = (*C.safeFind (AtomType::a1H4) + *C.safeFind (AtomType::a2H4)) / 2;
-      Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
-      ta = *C.safeFind (AtomType::a2H4);
-      Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
-      ta = (*C.safeFind (AtomType::a2H4) + *C.safeFind (AtomType::aLP3)) / 2;
-      Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
-      ta = (*C.safeFind (AtomType::aLP3) + *C.safeFind (AtomType::a2LP2)) / 2;
-      Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
-      ta = *C.safeFind (AtomType::a2LP2);
-      Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
-      ta = (*C.safeFind (AtomType::a2LP2) + *C.safeFind (AtomType::a1LP2)) / 2;
-      Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
-      ta = *C.safeFind (AtomType::a1LP2);
-      Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
+	C.setTheoretical ();
+	ta = *C.safeFind (AtomType::aH6);
+	Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+	ta = (*C.safeFind (AtomType::a1H4) + *C.safeFind (AtomType::aH5)) / 2;
+	Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+	ta = *C.safeFind (AtomType::a1H4);
+	Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
+	ta = (*C.safeFind (AtomType::a1H4) + *C.safeFind (AtomType::a2H4)) / 2;
+	Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
+	ta = *C.safeFind (AtomType::a2H4);
+	Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
+	ta = (*C.safeFind (AtomType::a2H4) + *C.safeFind (AtomType::aLP3)) / 2;
+	Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+	ta = (*C.safeFind (AtomType::aLP3) + *C.safeFind (AtomType::a2LP2)) / 2;
+	Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+	ta = *C.safeFind (AtomType::a2LP2);
+	Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
+	ta = (*C.safeFind (AtomType::a2LP2) + *C.safeFind (AtomType::a1LP2)) / 2;
+	Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
+	ta = *C.safeFind (AtomType::a1LP2);
+	Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
 
-      G.setTheoretical ();
-      ta = *G.safeFind (AtomType::aH8);
-      Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("C8")));
-      ta = (*G.safeFind (AtomType::aH8) + *G.safeFind (AtomType::aLP7)) / 2;
-      Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
-      ta = (*G.safeFind (AtomType::a1LP6) + *G.safeFind (AtomType::aLP7)) / 2;
-      Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
-      ta = *G.safeFind (AtomType::a1LP6);
-      Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
-      ta = (*G.safeFind (AtomType::a1LP6) + *G.safeFind (AtomType::a2LP6)) / 2;
-      Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
-      ta = *G.safeFind (AtomType::a2LP6);
-      Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
-      ta = (*G.safeFind (AtomType::a2LP6) + *G.safeFind (AtomType::aH1)) / 2;
-      Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
-      ta = (*G.safeFind (AtomType::aH1) + *G.safeFind (AtomType::a2H2)) / 2;
-      Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
-      ta = *G.safeFind (AtomType::a2H2);
-      Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
-      ta = (*G.safeFind (AtomType::a2H2) + *G.safeFind (AtomType::a1H2)) / 2;
-      Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
-      ta = *G.safeFind (AtomType::a1H2);
-      Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Sw")));
-      ta = (*G.safeFind (AtomType::a1H2) + *G.safeFind (AtomType::aLP3)) / 2;
-      Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
+	G.setTheoretical ();
+	ta = *G.safeFind (AtomType::aH8);
+	Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("C8")));
+	ta = (*G.safeFind (AtomType::aH8) + *G.safeFind (AtomType::aLP7)) / 2;
+	Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+	ta = (*G.safeFind (AtomType::a1LP6) + *G.safeFind (AtomType::aLP7)) / 2;
+	Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+	ta = *G.safeFind (AtomType::a1LP6);
+	Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
+	ta = (*G.safeFind (AtomType::a1LP6) + *G.safeFind (AtomType::a2LP6)) / 2;
+	Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
+	ta = *G.safeFind (AtomType::a2LP6);
+	Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
+	ta = (*G.safeFind (AtomType::a2LP6) + *G.safeFind (AtomType::aH1)) / 2;
+	Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+	ta = (*G.safeFind (AtomType::aH1) + *G.safeFind (AtomType::a2H2)) / 2;
+	Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+	ta = *G.safeFind (AtomType::a2H2);
+	Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
+	ta = (*G.safeFind (AtomType::a2H2) + *G.safeFind (AtomType::a1H2)) / 2;
+	Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
+	ta = *G.safeFind (AtomType::a1H2);
+	Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Sw")));
+	ta = (*G.safeFind (AtomType::a1H2) + *G.safeFind (AtomType::aLP3)) / 2;
+	Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
     
-      U.setTheoretical ();
-      ta = *U.safeFind (AtomType::aH6);
-      Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
-      ta = (*U.safeFind (AtomType::a1LP4) + *U.safeFind (AtomType::aH5)) / 2;
-      Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
-      ta = *U.safeFind (AtomType::a1LP4);
-      Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
-      ta = (*U.safeFind (AtomType::a1LP4) + *U.safeFind (AtomType::a2LP4)) / 2;
-      Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
-      ta = *U.safeFind (AtomType::a2LP4);
-      Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
-      ta = (*U.safeFind (AtomType::a2LP4) + *U.safeFind (AtomType::aH3)) / 2;
-      Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
-      ta = *U.safeFind (AtomType::aH3);
-      Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
-      ta = (*U.safeFind (AtomType::a2LP2) + *U.safeFind (AtomType::aH3)) / 2;
-      Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
-      ta = *U.safeFind (AtomType::a2LP2);
-      Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
-      ta = (*U.safeFind (AtomType::a2LP2) + *U.safeFind (AtomType::a1LP2)) / 2;
-      Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
-      ta = *U.safeFind (AtomType::a1LP2);
-      Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
+	U.setTheoretical ();
+	ta = *U.safeFind (AtomType::aH6);
+	Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+	ta = (*U.safeFind (AtomType::a1LP4) + *U.safeFind (AtomType::aH5)) / 2;
+	Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+	ta = *U.safeFind (AtomType::a1LP4);
+	Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
+	ta = (*U.safeFind (AtomType::a1LP4) + *U.safeFind (AtomType::a2LP4)) / 2;
+	Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
+	ta = *U.safeFind (AtomType::a2LP4);
+	Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
+	ta = (*U.safeFind (AtomType::a2LP4) + *U.safeFind (AtomType::aH3)) / 2;
+	Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+	ta = *U.safeFind (AtomType::aH3);
+	Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+	ta = (*U.safeFind (AtomType::a2LP2) + *U.safeFind (AtomType::aH3)) / 2;
+	Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
+	ta = *U.safeFind (AtomType::a2LP2);
+	Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
+	ta = (*U.safeFind (AtomType::a2LP2) + *U.safeFind (AtomType::a1LP2)) / 2;
+	Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
+	ta = *U.safeFind (AtomType::a1LP2);
+	Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
     
-      T.setTheoretical ();
-      ta = *T.safeFind (AtomType::aH6);
-      Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
-      ta = (*T.safeFind (AtomType::a1LP4) + *T.safeFind (AtomType::aC5M)) / 2;
-      Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
-      ta = *T.safeFind (AtomType::a1LP4);
-      Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
-      ta = (*T.safeFind (AtomType::a1LP4) + *T.safeFind (AtomType::a2LP4)) / 2;
-      Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
-      ta = *T.safeFind (AtomType::a2LP4);
-      Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
-      ta = (*T.safeFind (AtomType::a2LP4) + *T.safeFind (AtomType::aH3)) / 2;
-      Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
-      ta = *T.safeFind (AtomType::aH3);
-      Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
-      ta = (*T.safeFind (AtomType::a2LP2) + *T.safeFind (AtomType::aH3)) / 2;
-      Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
-      ta = *T.safeFind (AtomType::a2LP2);
-      Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
-      ta = (*T.safeFind (AtomType::a2LP2) + *T.safeFind (AtomType::a1LP2)) / 2;
-      Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
-      ta = *T.safeFind (AtomType::a1LP2);
-      Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
+	T.setTheoretical ();
+	ta = *T.safeFind (AtomType::aH6);
+	Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+	ta = (*T.safeFind (AtomType::a1LP4) + *T.safeFind (AtomType::aC5M)) / 2;
+	Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+	ta = *T.safeFind (AtomType::a1LP4);
+	Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
+	ta = (*T.safeFind (AtomType::a1LP4) + *T.safeFind (AtomType::a2LP4)) / 2;
+	Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
+	ta = *T.safeFind (AtomType::a2LP4);
+	Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
+	ta = (*T.safeFind (AtomType::a2LP4) + *T.safeFind (AtomType::aH3)) / 2;
+	Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+	ta = *T.safeFind (AtomType::aH3);
+	Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+	ta = (*T.safeFind (AtomType::a2LP2) + *T.safeFind (AtomType::aH3)) / 2;
+	Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
+	ta = *T.safeFind (AtomType::a2LP2);
+	Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
+	ta = (*T.safeFind (AtomType::a2LP2) + *T.safeFind (AtomType::a1LP2)) / 2;
+	Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
+	ta = *T.safeFind (AtomType::a1LP2);
+	Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
  
-      Relation::face_init = true;
-    }
+	Relation::face_init = true;
+      }
     catch (IntLibException& ex)
-    {
-      FatalIntLibException fex ("", __FILE__, __LINE__);
-      fex << "failed to initialize faces in relation: " << ex.what ();
-      throw fex;
-    }
+      {
+	FatalIntLibException fex ("", __FILE__, __LINE__);
+	fex << "failed to initialize faces in relation: " << ex.what ();
+	throw fex;
+      }
     
   }
 
@@ -1589,17 +1366,17 @@ namespace mccore
     for (i = PairingPattern::patternList ().begin ();
 	 i != PairingPattern::patternList().end ();
 	 ++i)
-    {
-      if (size_hint >= (*i).size ()
-	  && (type = (*i).evaluate (ra, rb, hbf)) != 0)
       {
-	if ((*i).size () > best_size)
-	{
-	  best_size = (*i).size ();
-	  best_type = type;
-	}
+	if (size_hint >= (*i).size ()
+	    && (type = (*i).evaluate (ra, rb, hbf)) != 0)
+	  {
+	    if ((*i).size () > best_size)
+	      {
+		best_size = (*i).size ();
+		best_type = type;
+	      }
+	  }
       }
-    }
     return best_type;
   }
 
@@ -1613,65 +1390,81 @@ namespace mccore
     
     is >> id;
     if (resMap.end () == (rmIt = resMap.find (id)))
-    {
-      NoSuchElementException e ("cannot find residue id ", __FILE__, __LINE__);
+      {
+	NoSuchElementException e ("cannot find residue id ", __FILE__, __LINE__);
 
-      e << id;
-      throw e;
-    }
+	e << id;
+	throw e;
+      }
     else
-    {
-      ref = rmIt->second;
-    }
+      {
+	ref = rmIt->second;
+      }
     is >> id;
     if (resMap.end () == (rmIt = resMap.find (id)))
-    {
-      NoSuchElementException e ("cannot find residue id ", __FILE__, __LINE__);
+      {
+	NoSuchElementException e ("cannot find residue id ", __FILE__, __LINE__);
 
-      e << id;
-      throw e;
-    }
+	e << id;
+	throw e;
+      }
     else
-    {
-      res = rmIt->second;
-    }
+      {
+	res = rmIt->second;
+      }
     is >> tfo >> po4_tfo;
     is >> refFace >> resFace;
     labels.clear ();
     is >> qty;
     while (0 < qty)
-    {
-      if (!is.good ())
       {
-	FatalIntLibException ex ("", __FILE__, __LINE__);
-	ex << "read failure, " << (unsigned)qty << " to go.";
-	throw ex;
-      }
+	if (!is.good ())
+	  {
+	    FatalIntLibException ex ("", __FILE__, __LINE__);
+	    ex << "read failure, " << (unsigned)qty << " to go.";
+	    throw ex;
+	  }
 
-      const PropertyType *prop;
+	const PropertyType *prop;
 	
-      is >> prop;
-      labels.insert (prop);
-      --qty;
-    }
+	is >> prop;
+	labels.insert (prop);
+	--qty;
+      }
     is >> type_asp;
     hbonds.clear ();
     is >> qty;
     while (0 < qty)
-    {
-      if (!is.good ())
       {
-	FatalIntLibException ex ("", __FILE__, __LINE__);
-	ex << "read failure, " << (unsigned)qty << " to go.";
-	throw ex;
-      }
+	if (!is.good ())
+	  {
+	    FatalIntLibException ex ("", __FILE__, __LINE__);
+	    ex << "read failure, " << (unsigned)qty << " to go.";
+	    throw ex;
+	  }
 
-      hbonds.push_back (HBondFlow ());
-      HBondFlow &hf = hbonds.back ();
-      hf.read (is, resMap);
-      --qty;
-    }
+	hbonds.push_back (HBondFlow ());
+	HBondFlow &hf = hbonds.back ();
+	hf.read (is, resMap);
+	--qty;
+      }
     is >> sum_flow;
+    is >> qty;
+    while (0 < qty)
+      {
+	const PropertyType *ref;
+	const PropertyType *res;
+	
+	if (!is.good ())
+	  {
+	    FatalIntLibException ex ("", __FILE__, __LINE__);
+	    ex << "read failure, " << (unsigned)qty << " to go.";
+	    throw ex;
+	  }
+	is >> ref >> res;
+	pairedFaces.push_back (make_pair (ref, res));
+	--qty;
+      }
     return is;
   }
     
@@ -1681,23 +1474,29 @@ namespace mccore
   {
     set< const PropertyType* >::const_iterator propsIt;
     vector< HBondFlow >::const_iterator hfsIt;
+    vector< pair< const PropertyType*, const PropertyType* > >::const_iterator pfit;
     
     os << ref->getResId ();
     os << res->getResId ();
     os << tfo << po4_tfo;
     os << refFace << resFace;
-    os << (mccore::bin_ui64)labels.size ();
+    os << (mccore::bin_ui64) labels.size ();
     for (propsIt = labels.begin (); labels.end () != propsIt; ++propsIt)
-    {
-      os << *propsIt;
-    }
+      {
+	os << *propsIt;
+      }
     os << type_asp;
-    os << (mccore::bin_ui64)hbonds.size ();
+    os << (mccore::bin_ui64) hbonds.size ();
     for (hfsIt = hbonds.begin (); hbonds.end () != hfsIt; ++hfsIt)
-    {
-      hfsIt->write (os);
-    }
+      {
+	hfsIt->write (os);
+      }
     os << sum_flow;
+    os << (mccore::bin_ui64) pairedFaces.size ();
+    for (pfit = pairedFaces.begin (); pairedFaces.end () != pfit; ++pfit)
+      {
+	os << pfit->first << pfit->second;
+      }
     return os;
   }
 

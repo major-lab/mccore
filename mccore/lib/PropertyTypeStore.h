@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // PropertyTypeStore.h
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:42:25 2003
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 // 
 // This file is part of mccore.
 // 
@@ -42,7 +42,7 @@ namespace mccore
    *
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: PropertyTypeStore.h,v 1.11 2005-08-19 15:24:19 thibaup Exp $
+   * @version $Id: PropertyTypeStore.h,v 1.12 2005-09-09 22:01:44 larosem Exp $
    */
   class PropertyTypeStore
   {
@@ -81,7 +81,6 @@ namespace mccore
      * @return the matching property type or a new one if none existed.
      */
     const PropertyType* get (const string& key);
-  
 
   private:
 
@@ -2497,6 +2496,30 @@ namespace mccore
       PBh (const string& ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PBh* > (t); 
+      }
+    };
+
+    /**
+     * Public class for Phosphate.
+     */
+    class PPhosphate : public Face {
+    public:
+      PPhosphate () {}
+      PPhosphate (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PPhosphate* > (t); 
+      }
+    };
+
+    /**
+     * Public class for Ribose.
+     */
+    class PRibose : public Face {
+    public:
+      PRibose () {}
+      PRibose (const string& ks) : PropertyType (ks) {}
+      virtual bool describe (const PropertyType *t) const {
+	return dynamic_cast< const PRibose* > (t); 
       }
     };
 

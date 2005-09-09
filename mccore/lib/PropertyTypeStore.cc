@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // PropertyTypeStore.cc
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:42:25 2003
-// $Revision: 1.13 $
-// $Id: PropertyTypeStore.cc,v 1.13 2005-08-19 15:24:19 thibaup Exp $
+// $Revision: 1.14 $
+// $Id: PropertyTypeStore.cc,v 1.14 2005-09-09 22:01:40 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -227,6 +227,8 @@ namespace mccore
     PropertyType::pC8 = *this->repository.insert (new PC8 ((str = "C8"))).first;
     PropertyType::pBs = *this->repository.insert (new PBs ((str = "Bs"))).first;
     PropertyType::pBh = *this->repository.insert (new PBh ((str = "Bh"))).first;
+    PropertyType::pPhosphate = *repository.insert (new PPhosphate ((str = "O2P"))).first;
+    PropertyType::pRibose = *repository.insert (new PRibose ((str = "O2'"))).first;
 
     PropertyType::pAlpha_L_Lyxofuranoside = *this->repository.insert (new Alpha_L_Lyxofuranoside ((str = "alpha-L-lyxofuranoside"))).first;
     PropertyType::pBeta_L_Lyxofuranoside = *this->repository.insert (new Beta_L_Lyxofuranoside ((str = "beta-L-lyxofuranoside"))).first;
@@ -274,5 +276,5 @@ namespace mccore
 
     return ptype;
   }
-    
+
 }

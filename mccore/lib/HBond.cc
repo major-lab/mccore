@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu Mar 20 18:05:28 2003
-// $Revision: 1.14 $
-// $Id: HBond.cc,v 1.14 2005-08-18 18:06:57 larosem Exp $
+// $Revision: 1.15 $
+// $Id: HBond.cc,v 1.15 2005-09-09 22:01:28 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -279,58 +279,82 @@ namespace mccore
     float x[3];
     float p_x = 0;
     float p_h = 0;
+    Atom at;
     
     resD = ra;
     resA = rb;
     
     // PreCheck on the donor/acceptor distance
-    if (getDonor ().distance (getAcceptor ()) > 5) return (value = 0);
+    if (getDonor ().distance (getAcceptor ()) > 5)
+      {
+	return (value = 0);
+      }
     
-    if (donor == AtomType::aC5M) {
-      Vector3D px, py, pz, up, pv;
-      float tan70 = 2.7474774;
-      float C_H_dist = 1.08;
+    if (donor == AtomType::aC5M)
+      {
+	Vector3D px, py, pz, up, pv;
       
-      px = (getLonePair () - *ra->safeFind (AtomType::aC5)).normalize ();
-      py = (getDonor () - *rb->safeFind (AtomType::aC5)).normalize ();
-      up = px.cross (py).normalize ();
-      pz = py.cross (up);
-      pv = getDonor () + (py + pz * tan70).normalize () * C_H_dist;
+	px = (getLonePair () - *ra->safeFind (AtomType::aC5)).normalize ();
+	py = (getDonor () - *rb->safeFind (AtomType::aC5)).normalize ();
+	up = px.cross (py).normalize ();
+	pz = py.cross (up);
+	pv = getDonor () + (py + pz * Residue::TAN70).normalize () * Residue::C_H_DIST_CYC;
       
-      Atom at (pv, hydrogen);
-      
-      x[0] = log (pow (at.distance (getLonePair ()), 3));       
-      x[1] = atanh (cos (getDonor ().angle (at, getAcceptor ())));
-      x[2] = atanh (cos (getAcceptor ().angle (getDonor (), getLonePair ())));
-    } else {
-      x[0] = log (pow (getHydrogen ().distance (getLonePair ()), 3));       
-      x[1] = atanh (cos (getDonor ().angle (getHydrogen (), getAcceptor ())));
-      x[2] = atanh (cos (getAcceptor ().angle (getDonor (), getLonePair ())));
-    }
+	at = Atom (pv, hydrogen);
+      }
+//     else if (donor == AtomType::aO2p)
+//       {
+// 	Vector3D px;
+// 	Vector3D py;
+// 	Vector3D pz;
+// 	Vector3D up;
+// 	Vector3D pv;
+// 	int side = 1;
+
+// 	px = (getDonor () - *ra->safeFind (AtomType::aC2p)).normalize ();
+// 	py = (*ra->safeFind (AtomType::aC2p) - getLonePair ()).normalize ();
+// 	up = px.cross (py).normalize ();
+// 	pz = py.cross (up);
+// 	// if more than 90 deg, then invert the vector.
+// 	if (1.5707963 < getDonor ().angle (getLonePair (), px + pz * Residue::TAN71))
+// 	  {
+// 	    side = -1;
+// 	  }
+// 	pv = getDonor () + (py + pz * side * Residue::TAN71).normalize () * Residue::O_H_DIST;
+// 	at = Atom (pv, hydrogen);
+//       }
+    else
+      {
+	at = getHydrogen ();
+      }
+    x[0] = log (pow (at.distance (getLonePair ()), 3));       
+    x[1] = atanh (cos (getDonor ().angle (at, getAcceptor ())));
+    x[2] = atanh (cos (getAcceptor ().angle (getDonor (), getLonePair ())));
     
-    for (int i=0; i<sNbGauss; ++i) {
-      float diff[3];
-      diff[0] = x[0] - sMean[i][0];
-      diff[1] = x[1] - sMean[i][1];
-      diff[2] = x[2] - sMean[i][2];
+    for (int i=0; i<sNbGauss; ++i)
+      {
+	float diff[3];
+	diff[0] = x[0] - sMean[i][0];
+	diff[1] = x[1] - sMean[i][1];
+	diff[2] = x[2] - sMean[i][2];
       
-      float tmp = exp ((diff[0] * (diff[0] * sCovarInv[i][0][0] + 
-				   diff[1] * sCovarInv[i][1][0] + 
-				   diff[2] * sCovarInv[i][2][0]) + 
-			diff[1] * (diff[0] * sCovarInv[i][0][1] + 
-				   diff[1] * sCovarInv[i][1][1] +
-				   diff[2] * sCovarInv[i][2][1]) + 
-			diff[2] * (diff[0] * sCovarInv[i][0][2] +
-				   diff[1] * sCovarInv[i][1][2] +
-				   diff[2] * sCovarInv[i][2][2])) * -0.5);
-      float prob;
-      if (isnan (tmp) || fabs (sCovarDet[i]) < 0.0005) prob = 0;
-      else prob = sWeight[i] * tmp / 
-	(pow (2 * M_PI, 1.5) * sqrt (sCovarDet[i]));
+	float tmp = exp ((diff[0] * (diff[0] * sCovarInv[i][0][0] + 
+				     diff[1] * sCovarInv[i][1][0] + 
+				     diff[2] * sCovarInv[i][2][0]) + 
+			  diff[1] * (diff[0] * sCovarInv[i][0][1] + 
+				     diff[1] * sCovarInv[i][1][1] +
+				     diff[2] * sCovarInv[i][2][1]) + 
+			  diff[2] * (diff[0] * sCovarInv[i][0][2] +
+				     diff[1] * sCovarInv[i][1][2] +
+				     diff[2] * sCovarInv[i][2][2])) * -0.5);
+	float prob;
+	if (isnan (tmp) || fabs (sCovarDet[i]) < 0.0005) prob = 0;
+	else prob = sWeight[i] * tmp / 
+	  (pow (2 * M_PI, 1.5) * sqrt (sCovarDet[i]));
       
-      p_x += prob;
-      p_h += sProbH[i] * prob;
-    }
+	p_x += prob;
+	p_h += sProbH[i] * prob;
+      }
     return (value = p_h / p_x);
   }
   

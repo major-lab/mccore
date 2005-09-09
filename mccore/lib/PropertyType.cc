@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // PropertyType.cc
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.15 $
-// $Id: PropertyType.cc,v 1.15 2005-08-19 15:24:19 thibaup Exp $
+// $Revision: 1.16 $
+// $Id: PropertyType.cc,v 1.16 2005-09-09 22:01:32 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -231,6 +231,8 @@ namespace mccore
   const PropertyType* PropertyType::pC8 = 0;
   const PropertyType* PropertyType::pBs = 0;
   const PropertyType* PropertyType::pBh = 0;
+  const PropertyType* PropertyType::pPhosphate = 0;
+  const PropertyType* PropertyType::pRibose = 0;
 
   const PropertyType* PropertyType::pAlpha_L_Lyxofuranoside = 0;
   const PropertyType* PropertyType::pBeta_L_Lyxofuranoside = 0;
@@ -295,7 +297,7 @@ namespace mccore
     return ptstore.get (str);
   }
 
-  
+
   const PropertyType*
   PropertyType::invert (const PropertyType* t)
   {
@@ -304,7 +306,6 @@ namespace mccore
 
     if (PropertyType::pAdjacent5p == t) return PropertyType::pAdjacent3p;
     if (PropertyType::pAdjacent3p == t) return PropertyType::pAdjacent5p;
-
     return t;
   }
 

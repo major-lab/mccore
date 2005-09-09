@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.16 $
+// $Revision: 1.17 $
 // 
 // This file is part of mccore.
 // 
@@ -47,7 +47,7 @@ namespace mccore
    * General property types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: PropertyType.h,v 1.16 2005-08-19 15:24:19 thibaup Exp $
+   * @version $Id: PropertyType.h,v 1.17 2005-09-09 22:01:36 larosem Exp $
    */
   class PropertyType
   {
@@ -1293,6 +1293,16 @@ namespace mccore
      */
     static const PropertyType* pBh;
 
+    /**
+     * Global Phosphate face type.
+     */
+    static const PropertyType *pPhosphate;
+
+    /**
+     * Global Ribose face type.
+     */
+    static const PropertyType *pRibose;
+    
     /**
      * Global Alpha-L-Lyxo type.
      */

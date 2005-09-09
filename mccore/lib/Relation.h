@@ -3,7 +3,7 @@
 // Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.21 $
+// $Revision: 1.22 $
 // 
 // This file is part of mccore.
 // 
@@ -76,7 +76,7 @@ namespace mccore
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.21 2005-09-06 15:32:36 larosem Exp $
+   * @version $Id: Relation.h,v 1.22 2005-09-09 22:01:54 larosem Exp $
    */
   class Relation
   {
@@ -138,6 +138,11 @@ namespace mccore
      * The pairing flow sum, on other cases 0.
      */
     float sum_flow;
+
+    /**
+     * Collection of pairing faces.
+     */
+    vector< pair< const PropertyType*, const PropertyType* > > pairedFaces;
 
 
     // STATIC MEMBERS -------------------------------------------------------
@@ -294,6 +299,12 @@ namespace mccore
     float getFlowSum () const { return sum_flow; }
 
     /**
+     * Gets the pairing faces vector.
+     * @return the collection of pairing faces.
+     */
+    const vector< pair< const PropertyType*, const PropertyType* > >& getPairedFaces () const { return pairedFaces; }
+
+    /**
      * Replaces the Residue pointers with those coming from the set.  It
      * is used by the GraphModel class to do a deep copy without doing a full
      * re-annotation.
@@ -381,12 +392,6 @@ namespace mccore
      */
     void areStacked ();
 
-    /**
-     * DEPRECATED
-     * Tests for stacking relation.
-     */
-    void areStacked_old ();
-
   public:
 
     /**
@@ -423,17 +428,6 @@ namespace mccore
     areStacked (const Residue* ra, const Residue *rb);
 
     /**
-     * DEPRECATED
-     * Determines if the given residues are stacked in space based
-     * on the position of their rings.
-     * @param ra a residue.
-     * @param rb another residue.
-     * @return a set of properties describing the stacked state.
-     */
-    static set< const PropertyType* > 
-    areStacked_old (const Residue* ra, const Residue *rb);
-    
-    /**
      * Determines if the given residues are paired in space based on
      * the formation of hydrogen bonds.  This method is used for the
      * base pairing of nucleic acids based the parameters derived in:
@@ -461,16 +455,6 @@ namespace mccore
 
   protected:
     
-    /**
-     * DEPRECATED
-     */
-    static Vector3D pyrimidineNormal (const Residue *r);
-
-    /**
-     * DEPRECATED
-     */
-    static Vector3D imidazolNormal (const Residue *r);
-
     /**
      * Calculates the pyrimidine ring's geometrical center from a nucleic acid residue.
      * @param res The residue.
