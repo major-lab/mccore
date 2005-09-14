@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.79 $
-// $Id: Residue.cc,v 1.79 2005-08-23 13:17:07 thibaup Exp $
+// $Revision: 1.80 $
+// $Id: Residue.cc,v 1.80 2005-09-14 18:33:27 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -2026,7 +2026,7 @@ namespace mccore
       {
 	*this->rib_O5p = sO5p;
 	*this->rib_O1P = sO1P;
-	*this->rib_O2P = sO1P;	
+	*this->rib_O2P = sO2P;	
 	*this->rib_P = sP;
       }
       final_value = value1;
