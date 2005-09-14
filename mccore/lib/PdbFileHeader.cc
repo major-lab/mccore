@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Tue Mar 11 18:45:58 2003
-// $Revision: 1.11 $
-// $Id: PdbFileHeader.cc,v 1.11 2005-08-19 20:22:52 thibaup Exp $
+// $Revision: 1.12 $
+// $Id: PdbFileHeader.cc,v 1.12 2005-09-14 16:57:12 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -218,7 +218,7 @@ namespace mccore
     pair< map< string, string >::iterator, bool > inserted = 
       methods.insert (make_pair (Pdbstream::trim (n), c));
 
-    if (!inserted.second)
+    if (!inserted.second && !c.empty ())
       inserted.first->second += ", " + c;
   }
 
@@ -226,18 +226,12 @@ namespace mccore
   void 
   PdbFileHeader::addAuthor (const string& a)
   {
-    //string cut = Pdbstream::trim (a);
-//     if (!cut.empty ())
-//       authors.push_back (cut);
     authors.push_back (a);
   }
 
 
   void PdbFileHeader::addUnclassified (const string& str)
   {
-    //string cut = Pdbstream::trim (str);
-//     if (!cut.empty ())
-//       unclassified.push_back (cut);
     unclassified.push_back (str);
   }
 

@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.57 $
-// $Id: Pdbstream.cc,v 1.57 2005-08-05 15:57:49 larosem Exp $
+// $Revision: 1.58 $
+// $Id: Pdbstream.cc,v 1.58 2005-09-14 16:57:12 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -584,75 +584,84 @@ namespace mccore
   void
   oPdbstream::writeRecord (const string& name, const string& text, size_t writable)
   {
+    ostringstream rectype_oss;
+    string::size_type reclen, start = 0, end = 0, blank;
+    int continuation = 0;
+    bool dump = false, skip = true;
+
+    this->_write_header ();
+
     if (writable > Pdbstream::LINELENGTH)
       writable = Pdbstream::LINELENGTH;
 
-    _write_header ();
-
-    string line;
-    string::size_type recbeg, reclen, linelen, linebeg, lineend, textlen;
-    int continuation = 0;
+    reclen = writable - 11;
+    this->setf (ios::left, ios::adjustfield);
 
     // -- preformat record
-
     string rectype = Pdbstream::trim (name);
     rectype.resize (8, ' ');
 
+    // -- write multiline remark by words and
+    //    keeping original line wrapping when possible
 
-    // -- write multiline record keeping original line wrapping when possible
+    while (start < text.size ())
+    {
+      if (string::npos == (blank = text.find_first_of (" \n\r\f", end + 1)))
+	blank = text.size ();
 
-    linebeg = recbeg = 0;
-    textlen = text.size ();
-    //reclen = Pdbstream::LINELENGTH - 10;
-    reclen = writable - 10;
-
-    do // wrap using given newlines
+      if (blank - start > reclen)
+	// next blank (or text end) is too far, dump what we have for now
       {
-	lineend = text.find_first_of ("\n\r\f", linebeg);
-	line = text.substr (linebeg, lineend - linebeg);
-	recbeg = 0;
-	linelen = line.size ();
-      
-	do // wrap into LINELENGTH columns
-	  {
-	    *this << rectype;
-
-	    if (++continuation > 1)
-	      {
-		// continuation for line 2 and onward: 
-		// space is added at column 11 before line text
-		setf (ios::right, ios::adjustfield);
-		width (2);
-		*this << continuation;
-		if (line[recbeg] != ' ') 
-		  *this << ' ';
-		//reclen = Pdbstream::LINELENGTH - 11;
-		reclen = writable - 11;
-	      }
-	    else
-	      *this << "  ";
-
-	    setf (ios::left, ios::adjustfield);
-	    width (reclen);
-	    *this << line.substr (recbeg, reclen) << endl;
-	    recbeg += reclen;
-	  }
-	while (recbeg < linelen);
-
-	linebeg = lineend + 1;
+	if (end == start) // well, we have nothing so dump up to "reclen"
+	{
+	  end = start + reclen;
+	  skip = false;
+	}
+	dump = true;
       }
-    while (string::npos != lineend && linebeg < textlen);
-  }
+      else if (blank == text.size () || text[blank] != ' ')
+	// next blank is not too far, but is either a line wrapper
+	// or the end of the text, so dump up to it;
+      {
+	end = blank;
+	dump = true;
+      }
 
+      if (dump)
+      {
+	*this << rectype;
+
+	if (++continuation > 1)
+	{
+	  this->setf (ios::right, ios::adjustfield);
+	  this->width (2);
+	  *this << continuation << ' ';
+	  this->setf (ios::left, ios::adjustfield);
+	}
+	else
+	  *this << "   ";
+
+	this->width (reclen);
+	*this << text.substr (start, end - start) << endl;
+
+	start = skip ? ++end : end;
+
+	dump = false;
+	skip = true;
+      }
+      else
+	end = blank;
+    }
+  }
 
   void
   oPdbstream::writeRemark (const string& text, int k)
   {
-    _write_header ();
-
-    string line;
-    string::size_type recbeg, reclen, linelen, linebeg, lineend, textlen;
     ostringstream rectype_oss;
+    string::size_type reclen, start = 0, end = 0, blank;
+    bool dump = false, skip = true;
+
+    this->_write_header ();
 
     rectype_oss << "REMARK ";
     rectype_oss.setf (ios::right, ios::adjustfield);
@@ -660,39 +669,54 @@ namespace mccore
     rectype_oss << (k > 999 ? 999 : k) << ' ';
 
     reclen = 70 - rectype_oss.str ().size ();
-    
+    this->setf (ios::left, ios::adjustfield);
+
     // -- first remark line is blank
 
     *this << rectype_oss.str ();
-    width (reclen);
+    this->width (reclen);
     *this << ' ' << endl;
 
+    // -- write multiline remark by words and
+    //    keeping original line wrapping when possible
 
-    // -- write multiline remark keeping original line wrapping when possible
-    
-    linebeg = recbeg = 0;
-    textlen = text.size ();
+    while (start < text.size ())
+    {
+      if (string::npos == (blank = text.find_first_of (" \n\r\f", end + 1)))
+	blank = text.size ();
 
-    do // wrap using given newlines
+      if (blank - start > reclen)
+	// next blank (or text end) is too far, dump what we have for now
       {
-	lineend = text.find_first_of ("\n\r\f", linebeg);
-	line = text.substr (linebeg, lineend - linebeg);
-	recbeg = 0;
-	linelen = line.size ();
-      
-	do // wrap into LINELENGTH columns
-	  {
-	    *this << rectype_oss.str ();
-	    setf (ios::left, ios::adjustfield);
-	    width (reclen);
-	    *this << line.substr (recbeg, reclen) << endl;
-	    recbeg += reclen;
-	  }
-	while (recbeg < linelen);
-
-	linebeg = lineend + 1;
+	if (end == start) // well, we have nothing so dump up to "reclen"
+	{
+	  end = start + reclen;
+	  skip = false;
+	}
+	dump = true;
       }
-    while (string::npos != lineend && linebeg < textlen);
+      else if (blank == text.size () || text[blank] != ' ')
+	// next blank is not too far, but is either a line wrapper
+	// or the end of the text, so dump up to it;
+      {
+	end = blank;
+	dump = true;
+      }
+
+      if (dump)
+      {
+	*this << rectype_oss.str ();
+	this->width (reclen);
+	*this << text.substr (start, end - start) << endl;
+
+	start = skip ? ++end : end;
+
+	dump = false;
+	skip = true;
+      }
+      else
+	end = blank;
+    }
   }
 
 
