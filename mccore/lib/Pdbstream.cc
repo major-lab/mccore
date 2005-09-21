@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.58 $
-// $Id: Pdbstream.cc,v 1.58 2005-09-14 16:57:12 thibaup Exp $
+// $Revision: 1.59 $
+// $Id: Pdbstream.cc,v 1.59 2005-09-21 22:14:51 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -531,11 +531,13 @@ namespace mccore
     pdbType = type;
     if (Pdbstream::AMBER == type)
       {
+	header_written = true;
 	atomTypeParseTable = Pdbstream::amberAtomTypeParseTable;
 	residueTypeParseTable = Pdbstream::amberResidueTypeParseTable;
       }
     else
       {
+	header_written = false;
 	atomTypeParseTable = Pdbstream::pdbAtomTypeParseTable;
 	residueTypeParseTable = Pdbstream::pdbResidueTypeParseTable;
       }	
@@ -544,9 +546,7 @@ namespace mccore
 
   void
   oPdbstream::open () 
-  { 
-
-  }
+  { }
   
 
   void
@@ -561,7 +561,7 @@ namespace mccore
   oPdbstream::clear () 
   {
     ostream::clear ();
-    header_written = false;
+    header_written = Pdbstream::AMBER == pdbType;
     rtype = ResidueType::rNull;
     ResId id;
     rid = id;
