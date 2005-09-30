@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.46 $
-// $Id: Relation.cc,v 1.46 2005-09-30 19:20:47 thibaup Exp $
+// $Revision: 1.47 $
+// $Id: Relation.cc,v 1.47 2005-09-30 20:24:12 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -239,7 +239,7 @@ namespace mccore
     areAdjacent ();
     areStacked ();
     arePaired ();
-    areHBonded ();
+//     areHBonded ();
     return ! empty ();
   }
   
@@ -337,49 +337,51 @@ namespace mccore
     //     vector< Residue::const_iterator > res_at;
     //     vector< Residue::const_iterator > resn_at;
     AtomSetOr as (new AtomSetSideChain (),
-		  new AtomSetAnd (new AtomSetBackbone (),
-				  new AtomSetOr (new AtomSetAtom (AtomType::aO2p),
-						 new AtomSetAtom (AtomType::aO2P))));
+		  new AtomSetOr (new AtomSetAtom (AtomType::aO2p),
+				 new AtomSetOr (new AtomSetAtom (AtomType::aO2P),
+						new AtomSetAtom (AtomType::aO1P))));
 
-    for (i = ref->begin (as); ref->end () != i; ++i)
+    if (ref->getType ()->isNucleicAcid ()
+	&& res->getType ()->isNucleicAcid ())
       {
-	if (i->getType ()->isNitrogen () || i->getType ()->isOxygen ())
+	for (i = ref->begin (as); ref->end () != i; ++i)
 	  {
-	    for (j = res->begin (as); res->end () != j; ++j)
+	    if (i->getType ()->isNitrogen () || i->getType ()->isOxygen ())
 	      {
-		if (((i->getType ()->isNitrogen ()
-		      && j->getType ()->isBackbone ())
-		     || (j->getType ()->isNitrogen ()
-			 && i->getType ()->isBackbone ()))
-		    && i->distance (*j) > HBOND_DIST_MAX
-		    && i->distance (*j) < 3.2)
+		for (j = res->begin (as); res->end () != j; ++j)
 		  {
-		    const PropertyType *refface;
-		    const PropertyType *resface;
-		    const AtomType *refType;
-		    const AtomType *resType;
+		    if (((i->getType ()->isNitrogen ()
+			  && j->getType ()->isBackbone ())
+			 || (j->getType ()->isNitrogen ()
+			     && i->getType ()->isBackbone ()))
+			&& i->distance (*j) > HBOND_DIST_MAX
+			&& i->distance (*j) < 3.2)
+		      {
+			const PropertyType *refface;
+			const PropertyType *resface;
+			const AtomType *refType;
+			const AtomType *resType;
 		    
-		    labels.insert (PropertyType::pPairing);
-		    type_asp |= Relation::pairing_mask;
-		    refType = i->getType ();
-		    resType = j->getType ();
-		    refface = (refType->isNitrogen ()
-			       ? getFace (ref, *ref->safeFind (refType))
-			       : (AtomType::aO2p == refType
-				  ? PropertyType::pRibose
-				  : PropertyType::pPhosphate));
-		    resface = (resType->isNitrogen ()
-			       ? getFace (res, *res->safeFind (resType))
-			       : (AtomType::aO2p == resType
-				  ? PropertyType::pRibose
-				  : PropertyType::pPhosphate));
-		    cout << *refface << " " << *resface << endl;
-		    pairedFaces.push_back (make_pair (refface, resface));
+			labels.insert (PropertyType::pPairing);
+			type_asp |= Relation::pairing_mask;
+			refType = i->getType ();
+			resType = j->getType ();
+			refface = (refType->isNitrogen ()
+				   ? getFace (ref, *ref->safeFind (refType))
+				   : (AtomType::aO2p == refType
+				      ? PropertyType::pRibose
+				      : PropertyType::pPhosphate));
+			resface = (resType->isNitrogen ()
+				   ? getFace (res, *res->safeFind (resType))
+				   : (AtomType::aO2p == resType
+				      ? PropertyType::pRibose
+				      : PropertyType::pPhosphate));
+			pairedFaces.push_back (make_pair (refface, resface));
+		      }
 		  }
 	      }
 	  }
       }
-    
 
     // TODO: This is experimental and is a tentative to identify as
     // precisely as possible the presence of H-bonds on unindentified
