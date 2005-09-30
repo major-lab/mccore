@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Sep  5 17:06:24 2001
-// $Revision: 1.12 $
+// $Revision: 1.13 $
 //
 // This file is part of mccore.
 // 
@@ -50,7 +50,7 @@ namespace mccore
    * 5 : debug
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Messagestream.h,v 1.12 2005-08-30 17:58:26 thibaup Exp $
+   * @version $Id: Messagestream.h,v 1.13 2005-09-30 19:19:59 thibaup Exp $
    */
   class Messagestream : public ostream
   {
@@ -63,9 +63,9 @@ namespace mccore
     unsigned int verboseLevel;
 
     /**
-     * The verbose level of the last entered message.
+     * Alias to the associated streambuf object.
      */
-    unsigned int currentVerboseLevel;
+    streambuf* buf_alias;
 
   public:
 
@@ -75,16 +75,21 @@ namespace mccore
      * Initializes the object.
      */
     Messagestream () 
-      : ostream (cout.rdbuf ()), verboseLevel (2), currentVerboseLevel (2) { }
+      : ostream (cout.rdbuf ()), 
+	verboseLevel (2), 
+	buf_alias (cout.rdbuf ()) 
+    { }
 
     /**
      * Initializes the message system with verbose levels.
      * @param buf the streambuf of the output stream.
      * @param level the verbose level.
-     * @param clevel the level of messages.
      */
-    Messagestream (streambuf *buf, unsigned int level, unsigned int clevel)
-      : ostream (buf), verboseLevel (level), currentVerboseLevel (clevel) { }
+    Messagestream (streambuf *buf, unsigned int level)
+      : ostream (buf), 
+	verboseLevel (level), 
+	buf_alias (buf) 
+    { }
 
     /**
      * Destructs the object.
@@ -100,227 +105,7 @@ namespace mccore
      */
     Messagestream& operator() (unsigned int level)
     {
-      currentVerboseLevel = level;
-      return *this;
-    }
-
-    /**
-     * Writes a boolean to the Message stream.
-     * @param p the boolean to write.
-     * @return itself.
-     */
-    Messagestream& operator<< (bool p)
-    {
-      if (currentVerboseLevel <= verboseLevel)
-	*(ostream*)this << p;
-      return *this;
-    }
-
-    /**
-     * Writes a character to the Message stream.
-     * @param c the character to write.
-     * @return itself.
-     */
-    Messagestream& operator<< (char c)
-    {
-      if (currentVerboseLevel <= verboseLevel)
-	*(ostream*)this << c;
-      return *this;
-    }
-
-    /**
-     * Writes a unsigned char to the Message stream.
-     * @param c the unsigned char to write.
-     * @return itself.
-     */
-    Messagestream& operator<< (unsigned char c) { return operator<< ((char)c); }
-
-    /**
-     * Writes a signed char to the Message stream.
-     * @param c the signed char to write.
-     * @return itself.
-     */
-    Messagestream& operator<< (signed char c) { return operator<< ((char)c); }
-
-    /**
-     * Writes a string to the Message stream.
-     * @param s the string to write.
-     * @return itself.
-     */
-    Messagestream& operator<< (const char *s)
-    {
-      if (currentVerboseLevel <= verboseLevel)
-	*(ostream*)this << s;
-      return *this;
-    }
-
-    /**
-     * Writes an unsigned string to the Message stream.
-     * @param s the unsigned string to write.
-     * @return itself.
-     */
-    Messagestream& operator<< (const unsigned char *s)
-    { return operator<< ((const char*)s); }
-
-    /**
-     * Writes a signed string to the Message stream.
-     * @param s the signed string to write.
-     * @return itself.
-     */
-    Messagestream& operator<< (const signed char *s)
-    { return operator<< ((const char*)s); }
-
-    /**
-     * Writes an short integer to the Message stream.
-     * @param n the integer to write.
-     * @return itself.
-     */
-    Messagestream& operator<< (short int n)
-    {
-      if (currentVerboseLevel <= verboseLevel)
-	*(ostream*)this << n;
-      return *this;
-    }
-
-    /**
-     * Writes an short unsigned integer to the Message stream.
-     * @param n the unsigned integer to write.
-     * @return itself.
-     */
-    Messagestream& operator<< (unsigned short int n)
-    {
-      if (currentVerboseLevel <= verboseLevel)
-	*(ostream*)this << n;
-      return *this;
-    }
-
-    /**
-     * Writes an integer to the Message stream.
-     * @param n the integer to write.
-     * @return itself.
-     */
-    Messagestream& operator<< (int n)
-    {
-      if (currentVerboseLevel <= verboseLevel)
-	*(ostream*)this << n;
-      return *this;
-    }
-
-    /**
-     * Writes an unsigned integer to the Message stream.
-     * @param n the unsigned integer to write.
-     * @return itself.
-     */
-    Messagestream& operator<< (unsigned int n)
-    {
-      if (currentVerboseLevel <= verboseLevel)
-	*(ostream*)this << n;
-      return *this;
-    }
-
-    /**
-     * Writes a long integer to the Message stream.
-     * @param n the long integer to write.
-     * @return itself.
-     */
-    Messagestream& operator<< (long n)
-    {
-      if (currentVerboseLevel <= verboseLevel)
-	*(ostream*)this << n;
-      return *this;
-    }
-
-    /**
-     * Writes an unsigned long integer to the Message stream.
-     * @param n the unsigned long integer to write.
-     * @return itself.
-     */
-    Messagestream& operator<<(unsigned long n)
-    {
-      if (currentVerboseLevel <= verboseLevel)
-	*(ostream*)this << n;
-      return *this;
-    }
-
-    /**
-     * Writes a long long integer to the Message stream.
-     * @param n the long integer to write.
-     * @return itself.
-     */
-    Messagestream& operator<< (long long n)
-    {
-      if (currentVerboseLevel <= verboseLevel)
-	*(ostream*)this << n;
-      return *this;
-    }
-
-    /**
-     * Writes an unsigned long long integer to the Message stream.
-     * @param n the unsigned long integer to write.
-     * @return itself.
-     */
-    Messagestream& operator<<(unsigned long long n)
-    {
-      if (currentVerboseLevel <= verboseLevel)
-	*(ostream*)this << n;
-      return *this;
-    }
-
-    /**
-     * Writes a double real to the Message stream.
-     * @param n the double real to write.
-     * @return itself.
-     */
-    Messagestream& operator<< (double n)
-    {
-      if (currentVerboseLevel <= verboseLevel)
-	*(ostream*)this << n;
-      return *this;
-    }
-
-    /**
-     * Writes a float to the Message stream.
-     * @param n the float to write.
-     * @return itself.
-     */
-    Messagestream& operator<< (float n) { return operator<< ((double)n); }
-
-    /**
-     * Writes an object to the Message stream.
-     * @param obj the object to write.
-     * @return itself.
-     */
-    template< class _Object >
-    Messagestream& operator<< (const _Object &obj)
-    {
-      if (currentVerboseLevel <= verboseLevel)
-	{
-	  std::operator<< (*(ostream*)this, obj);
-	}
-      return *this;
-    }
-  
-    /**
-     * Modifies the Message stream.
-     * @param func the ios manipulator function.
-     * @return itself.
-     */
-    Messagestream& operator<< (ios& (*func)(ios&))
-    {
-      if (currentVerboseLevel <= verboseLevel)
-	(*func)(*(ostream*)this);
-      return *this;
-    }
-
-    /**
-     * Modifies the Message stream.
-     * @param func the ostream manipulator function.
-     * @return itself.
-     */
-    Messagestream& operator<< (ostream& (*func)(ostream&))
-    {
-      if (currentVerboseLevel <= verboseLevel)
-	(*func)(*(ostream*)this);
+      this->rdbuf (level > this->verboseLevel ? 0 : this->buf_alias);
       return *this;
     }
 
@@ -346,7 +131,7 @@ namespace mccore
    * @short Text implementation of Messages.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Messagestream.h,v 1.12 2005-08-30 17:58:26 thibaup Exp $
+   * @version $Id: Messagestream.h,v 1.13 2005-09-30 19:19:59 thibaup Exp $
    */
   class oMessagestream : public Messagestream
   {
@@ -369,7 +154,7 @@ namespace mccore
      * @param level the initial verbose level.
      */
     oMessagestream (ostream &os, unsigned int level)
-      : Messagestream (os.rdbuf (), level, level) { }
+      : Messagestream (os.rdbuf (), level) { }
   
     /**
      * Destructs the object.
