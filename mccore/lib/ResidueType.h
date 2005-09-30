@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.31 $
-// $Id: ResidueType.h,v 1.31 2005-08-05 15:59:38 larosem Exp $
+// $Revision: 1.32 $
+// $Id: ResidueType.h,v 1.32 2005-09-30 19:21:48 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -53,7 +53,7 @@ namespace mccore
    *   - The nature of a type (nucleic acid (pur/pyr) or amino acid)<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueType.h,v 1.31 2005-08-05 15:59:38 larosem Exp $
+   * @version $Id: ResidueType.h,v 1.32 2005-09-30 19:21:48 thibaup Exp $
    */
   class ResidueType
   {    
@@ -428,6 +428,7 @@ namespace mccore
 
     static const ResidueType* rPhosphate;
 
+    static const ResidueType* rRibose;
     static const ResidueType* rRRibose;
     static const ResidueType* rRRibose5;
     static const ResidueType* rRRibose3;

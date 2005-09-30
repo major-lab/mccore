@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.24 $
+// $Revision: 1.25 $
 // 
 // This file is part of mccore.
 // 
@@ -107,6 +107,7 @@ namespace mccore
      */
     
     ResidueType::rPhosphate = *repository.insert (new Phosphate ((strs = "PO4"), (strl = "Phosphate"))).first;
+    ResidueType::rRibose    = *repository.insert (new Ribose   ((strs = "N:RIB"), (strl = "Ribose"))).first;
     ResidueType::rRRibose   = *repository.insert (new RRibose   ((strs = "R:RIB"), (strl = "RNA_Ribose"))).first;
     ResidueType::rRRibose5  = *repository.insert (new RRibose5  ((strs = "R:RIB5"), (strl = "RNA_Ribose5"))).first;
     ResidueType::rRRibose3  = *repository.insert (new RRibose3  ((strs = "R:RIB3"), (strl = "RNA_Ribose3"))).first;

@@ -49,6 +49,7 @@ namespace mccore
   
   const ResidueType* ResidueType::rPhosphate = 0;
   
+  const ResidueType* ResidueType::rRibose = 0;
   const ResidueType* ResidueType::rRRibose = 0;
   const ResidueType* ResidueType::rRRibose5 = 0;
   const ResidueType* ResidueType::rRRibose3 = 0;
