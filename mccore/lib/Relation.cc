@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.45 $
-// $Id: Relation.cc,v 1.45 2005-09-09 22:01:49 larosem Exp $
+// $Revision: 1.46 $
+// $Id: Relation.cc,v 1.46 2005-09-30 19:20:47 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -1072,8 +1072,9 @@ namespace mccore
     resFace = pt;
 
     // -- invert transfos
-    tfo = tfo.invert ();
-    po4_tfo = tfo * po4_tfo;
+    this->tfo = this->tfo.invert ();
+    if (this->isAdjacent ())
+      this->po4_tfo = this->tfo * this->po4_tfo;
 
     // -- invert labels
     for (it = labels.begin (); it != labels.end (); ++it) 
