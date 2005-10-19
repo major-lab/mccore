@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct  1 14:45:13 2004
-// $Revision: 1.7 $
-// $Id: TypeRepresentationTables.cc,v 1.7 2005-08-30 19:51:12 larosem Exp $
+// $Revision: 1.8 $
+// $Id: TypeRepresentationTables.cc,v 1.8 2005-10-19 14:52:50 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -817,6 +817,9 @@ namespace mccore
     typeTable["URA"] = ResidueType::rRU;
     typeTable["T"] = ResidueType::rDT;
     typeTable["TYM"] = ResidueType::rDT;
+
+    typeTable["PO4"] = ResidueType::rRPhosphate;
+
     typeTable["ALA"] = ResidueType::rALA;
     typeTable["PA"] = ResidueType::rALA;
     typeTable["ARG"] = ResidueType::rARG;
@@ -866,6 +869,11 @@ namespace mccore
     representationTable[ResidueType::rDG] = "G";
     representationTable[ResidueType::rRU] = "U";
     representationTable[ResidueType::rDT] = "T";
+
+    representationTable[ResidueType::rPhosphate] = "PO4";
+    representationTable[ResidueType::rRPhosphate] = "PO4";
+    representationTable[ResidueType::rDPhosphate] = "PO4";
+
     representationTable[ResidueType::rALA] = "ALA";
     representationTable[ResidueType::rARG] = "ARG";
     representationTable[ResidueType::rASN] = "ASN";

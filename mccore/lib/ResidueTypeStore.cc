@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.25 $
+// $Revision: 1.26 $
 // 
 // This file is part of mccore.
 // 
@@ -106,7 +106,9 @@ namespace mccore
      * specialized residue types
      */
     
-    ResidueType::rPhosphate = *repository.insert (new Phosphate ((strs = "PO4"), (strl = "Phosphate"))).first;
+    ResidueType::rPhosphate = *repository.insert (new Phosphate ((strs = "N:PO4"), (strl = "Phosphate"))).first;
+    ResidueType::rRPhosphate = *repository.insert (new RPhosphate ((strs = "R:PO4"), (strl = "RNA_Phosphate"))).first;
+    ResidueType::rDPhosphate = *repository.insert (new DPhosphate ((strs = "D:PO4"), (strl = "DNA_Phosphate"))).first;
     ResidueType::rRibose    = *repository.insert (new Ribose   ((strs = "N:RIB"), (strl = "Ribose"))).first;
     ResidueType::rRRibose   = *repository.insert (new RRibose   ((strs = "R:RIB"), (strl = "RNA_Ribose"))).first;
     ResidueType::rRRibose5  = *repository.insert (new RRibose5  ((strs = "R:RIB5"), (strl = "RNA_Ribose5"))).first;
