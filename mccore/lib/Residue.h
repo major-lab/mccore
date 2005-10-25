@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.38 $
+// $Revision: 1.39 $
 //
 // This file is part of mccore.
 // 
@@ -62,7 +62,7 @@ namespace mccore
    * the atom types.
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: Residue.h,v 1.38 2005-09-09 22:02:00 larosem Exp $
+   * @version $Id: Residue.h,v 1.39 2005-10-25 15:36:02 thibaup Exp $
    */
   class Residue
   {
@@ -745,7 +745,7 @@ namespace mccore
      * @param t a homogeneous matrix that will be filled and that must not be null.
      * @return the referential.
      */
-    virtual const HomogeneousTransfo getReferential () const; 
+    virtual const HomogeneousTransfo getReferential () const;
 
     /**
      * Sets the homogeneous matrix representing the local referential.
@@ -1197,6 +1197,14 @@ namespace mccore
      * @return A pointer to the atom in the internal container.
      */
     virtual Atom* _get_or_create (const AtomType *aType);
+
+    /**
+     * @internal
+     * Set pseudo atoms PSX, PSY, PSZ and PSO to form a referential
+     * for the nucleobase. This method assumes that the residue is a
+     * nucleic acid having all required atoms.
+     */
+    void _set_pseudos ();
 
     /**
      * @internal

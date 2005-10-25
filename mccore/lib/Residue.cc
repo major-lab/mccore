@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.80 $
-// $Id: Residue.cc,v 1.80 2005-09-14 18:33:27 thibaup Exp $
+// $Revision: 1.81 $
+// $Id: Residue.cc,v 1.81 2005-10-25 15:36:02 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -365,6 +365,9 @@ namespace mccore
   const HomogeneousTransfo
   Residue::getReferential () const
   {
+    // needed to patch numerical instability
+    //this->_set_pseudos ();
+
     return this->_compute_referential ();
   }
 
@@ -372,6 +375,9 @@ namespace mccore
   void 
   Residue::setReferential (const HomogeneousTransfo& m) 
   {
+    // needed to patch numerical instability
+    this->_set_pseudos ();
+
     vector< Atom* >::iterator it;
     HomogeneousTransfo t  = m * this->_compute_referential ().invert ();
 
@@ -652,6 +658,7 @@ namespace mccore
     }
 
     this->finalize ();
+
     const HomogeneousTransfo identity;
     this->setReferential (identity);
   }
@@ -1731,61 +1738,7 @@ namespace mccore
   void 
   Residue::finalize ()
   {
-    Vector3D *p1, *p2, *p3;
-    Vector3D a, b, i, j, k;
-    Atom atom;
-
-    try
-    {
-      if (this->type->isNucleicAcid ())
-      {
-	// fetch needed atoms
-	p1 = this->_safe_get (Residue::nitrogenType19 (this->type));
-	p2 = this->_safe_get (Residue::carbonType68 (this->type));
-	p3 = this->_safe_get (Residue::carbonType24 (this->type));
-
-	// compute and insert pseudo-atoms
-	a = (*p2-*p1).normalize ();
-	b = (*p3-*p1).normalize ();
-	j = (a + b).normalize ();
-	k = (b.cross (a)).normalize ();
-	i = (j.cross (k)).normalize ();
-	this->insert (atom.set (*p1 + i, AtomType::aPSX));
-	this->insert (atom.set (*p1 + j, AtomType::aPSY));
-	this->insert (atom.set (*p1 + k, AtomType::aPSZ));
-	this->insert (atom.set (*p1, AtomType::aPSO));
-      }
-      else if (this->type->isPhosphate ())
-      {
-	// no pseudo-atoms needed
-      }
-      else if (this->type->isRibose ())
-      {
-	// no pseudo-atoms needed
-      }
-      else if (this->type->isAminoAcid ())
-      {
-	// fetch needed atoms
-	p1 = this->_safe_get (AtomType::aCA);
-	p2 = this->_safe_get (AtomType::aN);
-	p3 = this->_safe_get (AtomType::aC);
-
-	// compute and insert pseudo-atoms
-	a = (*p2 - *p1).normalize ();
-	b = (*p3 - *p1).normalize ();
-	k = *p1 + (b.cross (a)).normalize ();
-	this->insert (atom.set (k, AtomType::aPSAZ));
-      }
-      else
-      {
-	gOut (4) << "Unknown pseudo-atoms for residue type " << *this << endl;
-      }
-    }
-    catch (IntLibException& ex)
-    {
-      gOut (4) << "Unknown pseudo-atoms for residue "<< *this << ": " << ex << endl;
-    }
-    
+    this->_set_pseudos ();
   }
 
 
@@ -2435,11 +2388,72 @@ namespace mccore
   }
 
   
+  void
+  Residue::_set_pseudos ()
+  {
+    Vector3D *p1, *p2, *p3;
+    Vector3D a, b, i, j, k;
+    Atom atom;
+
+    try
+    {
+      if (this->type->isNucleicAcid ())
+      {
+	// fetch needed atoms
+	p1 = this->_safe_get (Residue::nitrogenType19 (this->type));
+	p2 = this->_safe_get (Residue::carbonType68 (this->type));
+	p3 = this->_safe_get (Residue::carbonType24 (this->type));
+
+	// compute and insert pseudo-atoms
+	a = *p2 - *p1;
+	b = *p3 - *p1;
+	j = (a + b).normalize ();
+	k = (b.cross (a)).normalize ();
+	i = (j.cross (k)).normalize ();
+	this->insert (atom.set (*p1 + i, AtomType::aPSX));
+	this->insert (atom.set (*p1 + j, AtomType::aPSY));
+	this->insert (atom.set (*p1 + k, AtomType::aPSZ));
+	this->insert (atom.set (*p1, AtomType::aPSO));
+      }
+      else if (this->type->isPhosphate ())
+      {
+	// no pseudo-atoms needed
+      }
+      else if (this->type->isRibose ())
+      {
+	// no pseudo-atoms needed
+      }
+      else if (this->type->isAminoAcid ())
+      {
+	// fetch needed atoms
+	p1 = this->_safe_get (AtomType::aCA);
+	p2 = this->_safe_get (AtomType::aN);
+	p3 = this->_safe_get (AtomType::aC);
+
+	// compute and insert pseudo-atoms
+	a = (*p2 - *p1).normalize ();
+	b = (*p3 - *p1).normalize ();
+	k = *p1 + (b.cross (a)).normalize ();
+	this->insert (atom.set (k, AtomType::aPSAZ));
+      }
+      else
+      {
+	gOut (4) << "Unknown pseudo-atoms for residue type " << *this << endl;
+      }
+    }
+    catch (IntLibException& ex)
+    {
+      gOut (4) << "Unknown pseudo-atoms for residue "<< *this << ": " << ex << endl;
+    }
+  }
+
+
   HomogeneousTransfo
   Residue::_compute_referential () const
   {
     Vector3D *pivot[3];
     Vector3D *origin;
+    HomogeneousTransfo I;
 
     try
     {
@@ -2451,10 +2465,10 @@ namespace mccore
 	return HomogeneousTransfo::frame (*this->_safe_get (AtomType::aPSX) - *origin,
 					  *this->_safe_get (AtomType::aPSY) - *origin,
 					  *this->_safe_get (AtomType::aPSZ) - *origin,
-					  *origin);
+	 				  *origin);
       } 
 
-      // fetch pivot types for other types with no pseudo atoms
+      // fetch pivot atoms for other types with no pseudo atoms
       if (this->type->isPhosphate ())
       {
 	pivot[0] = this->_safe_get (AtomType::aP);
@@ -2483,13 +2497,13 @@ namespace mccore
       else
       {
 	gOut (4) << "no referential for residue type " << *this << endl;
-	return HomogeneousTransfo ();
+	return I;
       }
     }
     catch (NoSuchAtomException& ex)
     {
       gOut (4) << "no referential for residue " << *this << ": " << ex << endl;
-      return HomogeneousTransfo ();
+      return I;
     }
 
     return HomogeneousTransfo::align (*pivot[0], *pivot[1], *pivot[2]);
