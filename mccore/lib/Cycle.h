@@ -4,7 +4,7 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Feb  2 15:34:32 2005
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 //
 // This file is part of mccore.
 // 
@@ -114,13 +114,13 @@ namespace mccore
      * Gets the value of r in the cycle.
      * @return the value of r.
      */
-    const V& getR () const { return front (); }
+    const V& getR () const { return this->front (); }
       
     /**
      * Gets the value of p in the cycle.
      * @return the value at the p index.
      */
-    const V& getP () const { return operator[] (p); }
+    const V& getP () const { return this->operator[] (p); }
       
     /**
      * Gets the r to p Path.
@@ -128,7 +128,7 @@ namespace mccore
      */
     Path< V, W > getRP () const
     {
-      return Path< V, W > (begin (), begin () + p);
+      return Path< V, W > (this->begin (), this->begin () + p);
     }
       
     /**
@@ -141,7 +141,7 @@ namespace mccore
      * Gets y value.
      * @return the value at y index.
      */
-    const V& getY () const { return operator[] (p + 1); }
+    const V& getY () const { return this->operator[] (p + 1); }
       
     /**
      * Gets the r to q Path.
@@ -149,14 +149,14 @@ namespace mccore
      */
     Path< V, W > getRQ () const
     {
-      return Path< V, W > (rbegin (), rbegin () + q);
+      return Path< V, W > (this->rbegin (), this->rbegin () + q);
     }
       
     /**
      * Gets the value of q in the Cycle.
      * @return the value at q index.
      */
-    const V& getQ () const { return operator[] (q); }
+    const V& getQ () const { return this->operator[] (q); }
       
     /**
      * Sets the q index.
@@ -178,7 +178,7 @@ namespace mccore
       Path< V, W >::write (os) << " r = " << getR ()
 			       << " p = " << getP ()
 			       << " q = " << getQ ();
-      if (0 == size () % 2)
+      if (0 == this->size () % 2)
 	{
 	  os << " y = " << getY ();
 	}

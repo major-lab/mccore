@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 24 21:31:52 2003
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 // 
 // This file is part of mccore.
 // 
@@ -40,7 +40,7 @@ namespace mccore
    * A path in a graph.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Path.h,v 1.10 2005-06-07 19:58:56 larosem Exp $
+   * @version $Id: Path.h,v 1.11 2005-11-04 19:46:47 larosem Exp $
    */
   template< class node_type, class valuetype >
   class Path : public vector< node_type >
@@ -113,7 +113,7 @@ namespace mccore
 	  const_iterator cit;
 	  const_iterator ocit;
 
-	  for (cit = begin (), ocit = other.begin (); end () != cit; ++cit, ++ocit)
+	  for (cit = this->begin (), ocit = other.begin (); this->end () != cit; ++cit, ++ocit)
 	    {
 	      if (*cit >= *ocit)
 		{

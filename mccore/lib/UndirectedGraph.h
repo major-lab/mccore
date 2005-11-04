@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Dec 10 19:09:13 2004
-// $Revision: 1.17 $
+// $Revision: 1.18 $
 // 
 // This file is part of mccore.
 // 
@@ -54,7 +54,7 @@ namespace mccore
    * Undirected graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: UndirectedGraph.h,v 1.17 2005-06-07 19:59:03 larosem Exp $
+   * @version $Id: UndirectedGraph.h,v 1.18 2005-11-04 19:46:51 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -458,7 +458,7 @@ namespace mccore
       vector< label > C;
       Compare comparator;
       
-      graphsize = size ();
+      graphsize = this->size ();
       paths.clear ();
       paths.resize (graphsize);
       
@@ -678,7 +678,7 @@ namespace mccore
       vector< vpiterator > marked;
       bool *row;
       
-      eSize = edgeSize ();
+      eSize = this->edgeSize ();
       row = new bool[eSize];    
       for (p = bag.begin (); p != bag.end (); ++p)
 	{
@@ -994,7 +994,7 @@ namespace mccore
       label pathSize = 0;
       vector< bool > candidate2;
 
-      eSize = edgeSize ();
+      eSize = this->edgeSize ();
       
       for (p = bag.begin (); p != bag.end (); ++p)
 	{
