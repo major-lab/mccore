@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.81 $
-// $Id: Residue.cc,v 1.81 2005-10-25 15:36:02 thibaup Exp $
+// $Revision: 1.82 $
+// $Id: Residue.cc,v 1.82 2005-11-15 16:09:38 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -62,18 +62,39 @@
 
 namespace mccore
 {
+  // GLOBAL CONSTANT ---------------------------------------------------------
 
-  // Parameters taken for AMBER all_nuc94.in
-  const float Residue::s_cosf_amplitude = 1.3305;
-  const float Residue::s_cosf_vshift = 2.0778;
-  const float Residue::s_cosf_phase = 0.3041;
-  const float Residue::s_cosf_2xphase = 2.0 * Residue::s_cosf_phase;
+  /**
+   * Constants used in hydrogens and lone pairs positioning. 
+   * Parameters taken for AMBER all_nuc94.in
+   */
+  const float C_H_DIST_CYC = 1.08;     // C-H distance for aromatic C
+  const float C_H_DIST     = 1.09;     // C-H distance for SP3 C
+  const float N_H_DIST     = 1.01;     // N-H distance for NH2 confo  
+  const float O_H_DIST     = 0.96;
+  const float O_LP_DIST    = 1.00;
+  const float N_LP_DIST    = 1.00;
+  const float TAN19        = 0.3443276;  // O2' H 
+  const float TAN30        = 0.57735027;
+  const float TAN54        = 1.3763819;
+  const float TAN60        = 1.7320508;  // For NH2-like conformations
+  const float TAN70        = 2.7474774;  // For CH3-like conformations
+  const float TAN71        = 2.9042109;
 
-  const float Residue::s_2xpi = 2.0 * M_PI;
-  const float Residue::s_4xpi = 4.0 * M_PI;
+  const float gc_2xpi = 6.283185482025146484375;
 
-  float Residue::s_rib_minshift = 0.1;
-  float Residue::s_rib_mindrop = 0.00001;
+  /**
+   * Pseudorotation estimation parameters
+   */
+  const float gc_cosf_amplitude = 1.3305;
+  const float gc_cosf_vshift    = 2.0778;
+  const float gc_cosf_phase     = 0.3041;
+  const float gc_cosf_2xphase   = 0.6082;
+
+  // STATIC MEMBER -----------------------------------------------------------
+
+  float Residue::s_rib_minshift  = 0.1;
+  float Residue::s_rib_mindrop   = 0.00001;
   float Residue::s_rib_shiftrate = 0.5;
 
   // LIFECYCLE ---------------------------------------------------------------
@@ -824,7 +845,7 @@ namespace mccore
 	  x = (*_safe_get (AtomType::aC2) - *_safe_get (AtomType::aN1)).normalize ();
 	  y = (*_safe_get (AtomType::aC2) - *_safe_get (AtomType::aN3)).normalize ();
 	  z = (x + y).normalize ();
-	  v = *_safe_get (AtomType::aC2) + z * Residue::C_H_DIST_CYC;
+	  v = *_safe_get (AtomType::aC2) + z * C_H_DIST_CYC;
 	  this->insert (atom.set (v, AtomType::aH2));
 	}
 	catch (NoSuchAtomException& ex)
@@ -839,7 +860,7 @@ namespace mccore
 	  x = (*this->_safe_get (AtomType::aC8) - *_safe_get (AtomType::aN7)).normalize ();
 	  y = (*this->_safe_get (AtomType::aC8) - *this->_safe_get (AtomType::aN9)).normalize ();
 	  z = (x + y).normalize ();
-	  v = *this->_safe_get (AtomType::aC8) + z * Residue::C_H_DIST_CYC;	
+	  v = *this->_safe_get (AtomType::aC8) + z * C_H_DIST_CYC;	
 	  this->insert (atom.set (v, AtomType::aH8));
 	}
 	catch (NoSuchAtomException& ex)
@@ -856,12 +877,12 @@ namespace mccore
 	  z = (*this->_safe_get (AtomType::aN6) - *this->_safe_get (AtomType::aC6)).normalize ();  // axe N6-C6     
 	  up = x.cross (y).normalize ();
 
-	  a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
-	  v = *this->_safe_get (AtomType::aN6) + a * Residue::N_H_DIST;
+	  a = (z + up.cross (z).normalize () * TAN60).normalize ();
+	  v = *this->_safe_get (AtomType::aN6) + a * N_H_DIST;
 	  this->insert (atom.set (v, AtomType::a1H6));
 	
-	  b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();	    
-	  v = *this->_safe_get (AtomType::aN6) + b * Residue::N_H_DIST;
+	  b = (z + z.cross (up).normalize () * TAN60).normalize ();	    
+	  v = *this->_safe_get (AtomType::aN6) + b * N_H_DIST;
 	  this->insert (atom.set (v, AtomType::a2H6));
 	}
 	catch (NoSuchAtomException& ex)
@@ -878,7 +899,7 @@ namespace mccore
 	  x = (*this->_safe_get (AtomType::aN1) - *this->_safe_get (AtomType::aC2)).normalize ();
 	  y = (*this->_safe_get (AtomType::aN1) - *this->_safe_get (AtomType::aC6)).normalize ();
 	  z = (x + y).normalize ();
-	  v = *this->_safe_get (AtomType::aN1) + z * Residue::N_H_DIST;
+	  v = *this->_safe_get (AtomType::aN1) + z * N_H_DIST;
 	  this->insert (atom.set (v, AtomType::aH1));
 	}
 	catch (NoSuchAtomException& ex)
@@ -893,7 +914,7 @@ namespace mccore
 	  x = (*this->_safe_get (AtomType::aC8) - *this->_safe_get (AtomType::aN7)).normalize ();
 	  y = (*this->_safe_get (AtomType::aC8) - *this->_safe_get (AtomType::aN9)).normalize ();
 	  z = (x + y).normalize ();
-	  v = *this->_safe_get (AtomType::aC8) + z * Residue::C_H_DIST_CYC;
+	  v = *this->_safe_get (AtomType::aC8) + z * C_H_DIST_CYC;
 	  this->insert (atom.set (v, AtomType::aH8));
 	}
 	catch (NoSuchAtomException& ex)
@@ -910,12 +931,12 @@ namespace mccore
 	  z = (*this->_safe_get (AtomType::aN2) - *this->_safe_get (AtomType::aC2)).normalize ();  // axe N2-C2	    
 	  up = x.cross (y).normalize ();
 		
-	  b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();
-	  v = *this->_safe_get (AtomType::aN2) + b * Residue::N_H_DIST;
+	  b = (z + z.cross (up).normalize () * TAN60).normalize ();
+	  v = *this->_safe_get (AtomType::aN2) + b * N_H_DIST;
 	  this->insert (atom.set (v, AtomType::a1H2));
 	
-	  a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
-	  v = *this->_safe_get (AtomType::aN2) + a * Residue::N_H_DIST;
+	  a = (z + up.cross (z).normalize () * TAN60).normalize ();
+	  v = *this->_safe_get (AtomType::aN2) + a * N_H_DIST;
 	  this->insert (atom.set (v, AtomType::a2H2));
 	}
 	catch (NoSuchAtomException& ex)
@@ -932,7 +953,7 @@ namespace mccore
 	  x = (*this->_safe_get (AtomType::aC5) - *this->_safe_get (AtomType::aC4)).normalize ();
 	  y = (*this->_safe_get (AtomType::aC5) - *this->_safe_get (AtomType::aC6)).normalize ();
 	  z = (x + y).normalize ();
-	  v = *this->_safe_get (AtomType::aC5) + z * Residue::C_H_DIST; // Exceptionnal distance!
+	  v = *this->_safe_get (AtomType::aC5) + z * C_H_DIST; // Exceptionnal distance!
 	  this->insert (atom.set (v, AtomType::aH5));
 	}
 	catch (NoSuchAtomException& ex)
@@ -947,7 +968,7 @@ namespace mccore
 	  x = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aC5)).normalize ();
 	  y = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aN1)).normalize ();
 	  z = (x + y).normalize ();
-	  v = *this->_safe_get (AtomType::aC6) + z * Residue::C_H_DIST_CYC;
+	  v = *this->_safe_get (AtomType::aC6) + z * C_H_DIST_CYC;
 	  this->insert (atom.set (v, AtomType::aH6));
 	}
 	catch (NoSuchAtomException& ex)
@@ -964,12 +985,12 @@ namespace mccore
 	  z = (*this->_safe_get (AtomType::aN4) - *this->_safe_get (AtomType::aC4)).normalize ();	    
 	  up = x.cross (y).normalize ();
 
-	  b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();	    
-	  v = *this->_safe_get (AtomType::aN4) + b * Residue::N_H_DIST;
+	  b = (z + z.cross (up).normalize () * TAN60).normalize ();	    
+	  v = *this->_safe_get (AtomType::aN4) + b * N_H_DIST;
 	  this->insert (atom.set (v, AtomType::a1H4));
 
-	  a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
-	  v = *this->_safe_get (AtomType::aN4) + a * Residue::N_H_DIST;
+	  a = (z + up.cross (z).normalize () * TAN60).normalize ();
+	  v = *this->_safe_get (AtomType::aN4) + a * N_H_DIST;
 	  this->insert (atom.set (v, AtomType::a2H4));
 	}
 	catch (NoSuchAtomException& ex)
@@ -986,7 +1007,7 @@ namespace mccore
 	  x = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC2)).normalize ();
 	  y = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC4)).normalize ();
 	  z = (x + y).normalize ();
-	  v = *this->_safe_get (AtomType::aN3) + z * Residue::C_H_DIST; // Exceptionnal distance!
+	  v = *this->_safe_get (AtomType::aN3) + z * C_H_DIST; // Exceptionnal distance!
 	  this->insert (atom.set (v, AtomType::aH3));
 	}
 	catch (NoSuchAtomException& ex)
@@ -1001,7 +1022,7 @@ namespace mccore
 	  x = (*this->_safe_get (AtomType::aC5) - *this->_safe_get (AtomType::aC4)).normalize ();
 	  y = (*this->_safe_get (AtomType::aC5) - *this->_safe_get (AtomType::aC6)).normalize ();
 	  z = (x + y).normalize ();
-	  v = *this->_safe_get (AtomType::aC5) + z * Residue::C_H_DIST; // Exceptionnal distance!	    
+	  v = *this->_safe_get (AtomType::aC5) + z * C_H_DIST; // Exceptionnal distance!	    
 	  this->insert (atom.set (v, AtomType::aH5));
 	}
 	catch (NoSuchAtomException& ex)
@@ -1016,7 +1037,7 @@ namespace mccore
 	  x = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aC5)).normalize ();
 	  y = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aN1)).normalize ();
 	  z = (x + y).normalize ();
-	  v = *this->_safe_get (AtomType::aC6) + z * Residue::C_H_DIST_CYC; 
+	  v = *this->_safe_get (AtomType::aC6) + z * C_H_DIST_CYC; 
 	  this->insert (atom.set (v, AtomType::aH6));
 	}
 	catch (NoSuchAtomException& ex)
@@ -1033,7 +1054,7 @@ namespace mccore
 	  x = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC2)).normalize ();
 	  y = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC4)).normalize ();
 	  z = (x + y).normalize ();
-	  v = *this->_safe_get (AtomType::aN3) + z * Residue::C_H_DIST; // Exceptionnal distance! 
+	  v = *this->_safe_get (AtomType::aN3) + z * C_H_DIST; // Exceptionnal distance! 
 	  this->insert (atom.set (v, AtomType::aH3));	    
 	}
 	catch (NoSuchAtomException& ex)
@@ -1048,7 +1069,7 @@ namespace mccore
 	  x = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aC5)).normalize ();
 	  y = (*this->_safe_get (AtomType::aC6) - *this->_safe_get (AtomType::aN1)).normalize ();
 	  z = (x + y).normalize ();
-	  v = *this->_safe_get (AtomType::aC6) + z * Residue::C_H_DIST_CYC;
+	  v = *this->_safe_get (AtomType::aC6) + z * C_H_DIST_CYC;
 	  this->insert (atom.set (v, AtomType::aH6));
 	}
 	catch (NoSuchAtomException& ex)
@@ -1065,15 +1086,15 @@ namespace mccore
 	  up = x.cross (y).normalize ();
 	  z = x.cross (up);
 	
-	  v = *this->_safe_get (AtomType::aC5M) + (x + z * Residue::TAN70).normalize () * Residue::C_H_DIST;
+	  v = *this->_safe_get (AtomType::aC5M) + (x + z * TAN70).normalize () * C_H_DIST;
 	  this->insert (atom.set (v, AtomType::a1H5M));
 	
-	  a = (up - z*Residue::TAN30).normalize ();
-	  v = *this->_safe_get (AtomType::aC5M) + (x + a * Residue::TAN70).normalize () * Residue::C_H_DIST;
+	  a = (up - z*TAN30).normalize ();
+	  v = *this->_safe_get (AtomType::aC5M) + (x + a * TAN70).normalize () * C_H_DIST;
 	  this->insert (atom.set (v, AtomType::a2H5M));
 	    
-	  b = (-up - z*Residue::TAN30).normalize ();
-	  v = *this->_safe_get (AtomType::aC5M) + (x + b * Residue::TAN70).normalize () * Residue::C_H_DIST;
+	  b = (-up - z*TAN30).normalize ();
+	  v = *this->_safe_get (AtomType::aC5M) + (x + b * TAN70).normalize () * C_H_DIST;
 	  this->insert (atom.set (v, AtomType::a3H5M));
 	}
 	catch (NoSuchAtomException& ex)
@@ -1112,7 +1133,7 @@ namespace mccore
 	y = (*r1 - *r3).normalize ();
 	z = (*r1 - *r4).normalize ();
 	
-	v = *r1 + (x + y + z).normalize () * Residue::C_H_DIST;
+	v = *r1 + (x + y + z).normalize () * C_H_DIST;
 	this->insert (atom.set (v, AtomType::aH1p));
       }
       catch (NoSuchAtomException& ex)
@@ -1140,7 +1161,7 @@ namespace mccore
 	y = (*r1 - *r3).normalize ();
 	z = (*r1 - *r4).normalize ();
 		    		    
-	v = *r1 + (x + y + z).normalize () * Residue::C_H_DIST;
+	v = *r1 + (x + y + z).normalize () * C_H_DIST;
 	this->insert (atom.set (v, AtomType::aH3p));
       }
       catch (NoSuchAtomException& ex)
@@ -1163,7 +1184,7 @@ namespace mccore
 	y = (*r1 - *r3).normalize ();
 	z = (*r1 - *r4).normalize ();
 	  
-	v = *r1 + (x + y + z).normalize () * Residue::C_H_DIST;
+	v = *r1 + (x + y + z).normalize () * C_H_DIST;
 	this->insert (atom.set (v, AtomType::aH4p));
       }
       catch (NoSuchAtomException& ex)
@@ -1186,10 +1207,10 @@ namespace mccore
 	z = (x + y).normalize ();
 	up = x.cross (y).normalize ();
 
-	v = *r1 + (up * Residue::TAN54 + z).normalize () * Residue::C_H_DIST;
+	v = *r1 + (up * TAN54 + z).normalize () * C_H_DIST;
 	this->insert (atom.set (v, AtomType::a1H5p));
 	
-	v = *r1 + (-up * Residue::TAN54 + z).normalize () * Residue::C_H_DIST;
+	v = *r1 + (-up * TAN54 + z).normalize () * C_H_DIST;
 	this->insert (atom.set (v, AtomType::a2H5p));
       }
       catch (NoSuchAtomException& ex)
@@ -1218,10 +1239,10 @@ namespace mccore
 	  z = (x + y).normalize ();
 	  up = x.cross (y).normalize ();
 			
-	  v = *r1 + (up * Residue::TAN54 + z).normalize () * Residue::C_H_DIST;
+	  v = *r1 + (up * TAN54 + z).normalize () * C_H_DIST;
 	  this->insert (atom.set (v, AtomType::a1H2p));
 	  
-	  v = *r1 + (-up * Residue::TAN54 + z).normalize () * Residue::C_H_DIST;
+	  v = *r1 + (-up * TAN54 + z).normalize () * C_H_DIST;
 	  this->insert (atom.set (v, AtomType::a2H2p));
 	}
 	catch (NoSuchAtomException& ex)
@@ -1246,7 +1267,7 @@ namespace mccore
 	  y = (*r1 - *r3).normalize ();
 	  z = (*r1 - *r4).normalize ();
 			
-	  v = *r1 + (x + y + z).normalize () * Residue::C_H_DIST;
+	  v = *r1 + (x + y + z).normalize () * C_H_DIST;
 	  this->insert (atom.set (v, AtomType::aH2p));
 	}
 	catch (NoSuchAtomException& ex)
@@ -1267,7 +1288,7 @@ namespace mccore
 	  y = (*r1 - *r2).normalize ();
 	  z = x.cross (y).cross (y).normalize ();
 	  
-	  v = *r1 + (y * Residue::TAN19 - z).normalize () * Residue::O_H_DIST;
+	  v = *r1 + (y * TAN19 - z).normalize () * O_H_DIST;
 	  this->insert (atom.set (v, AtomType::aHO2p));
 	}
 	catch (NoSuchAtomException& ex)
@@ -1297,7 +1318,7 @@ namespace mccore
 	Vector3D y = (*r1 - *r2).normalize ();
 	Vector3D z = x.cross (y).cross (y).normalize ();
 		    
-	Vector3D v = *r1 + (y*Residue::TAN19+z).normalize () * Residue::O_H_DIST;
+	Vector3D v = *r1 + (y*TAN19+z).normalize () * O_H_DIST;
 	this->insert (atom.set (v, AtomType::aHO3p));
       }
       catch (NoSuchAtomException& ex)
@@ -1323,7 +1344,7 @@ namespace mccore
 	  x = (*this->_safe_get (AtomType::aN1) - *this->_safe_get (AtomType::aC2)).normalize ();
 	  y = (*this->_safe_get (AtomType::aN1) - *this->_safe_get (AtomType::aC6)).normalize ();
 	  z = (x + y).normalize ();
-	  v = *this->_safe_get (AtomType::aN1) + z * Residue::N_LP_DIST;
+	  v = *this->_safe_get (AtomType::aN1) + z * N_LP_DIST;
 	  this->insert (atom.set (v, AtomType::aLP1));
 	}
 	catch (NoSuchAtomException& ex)
@@ -1338,7 +1359,7 @@ namespace mccore
 	  x = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC2)).normalize ();
 	  y = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC4)).normalize ();
 	  z = (x + y).normalize ();
-	  v =*this->_safe_get (AtomType::aN3) + z * Residue::N_LP_DIST;
+	  v =*this->_safe_get (AtomType::aN3) + z * N_LP_DIST;
 	  this->insert (atom.set (v, AtomType::aLP3));
 	}
 	catch (NoSuchAtomException& ex)
@@ -1353,7 +1374,7 @@ namespace mccore
 	  x = (*this->_safe_get (AtomType::aN7) - *this->_safe_get (AtomType::aC5)).normalize ();
 	  y = (*this->_safe_get (AtomType::aN7) - *this->_safe_get (AtomType::aC8)).normalize ();
 	  z = (x + y).normalize ();
-	  v = *this->_safe_get (AtomType::aN7) + z * Residue::N_LP_DIST;
+	  v = *this->_safe_get (AtomType::aN7) + z * N_LP_DIST;
 	  this->insert (atom.set (v, AtomType::aLP7));
 	}
 	catch (NoSuchAtomException& ex)
@@ -1370,7 +1391,7 @@ namespace mccore
 	  x = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC2)).normalize ();
 	  y = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC4)).normalize ();
 	  z = (x + y).normalize ();
-	  v = *this->_safe_get (AtomType::aN3) + z * Residue::N_LP_DIST;
+	  v = *this->_safe_get (AtomType::aN3) + z * N_LP_DIST;
 	  this->insert (atom.set (v, AtomType::aLP3));
 	}
 	catch (NoSuchAtomException& ex)
@@ -1385,7 +1406,7 @@ namespace mccore
 	  x = (*this->_safe_get (AtomType::aN7) - *this->_safe_get (AtomType::aC5)).normalize ();
 	  y = (*this->_safe_get (AtomType::aN7) - *this->_safe_get (AtomType::aC8)).normalize ();
 	  z = (x + y).normalize ();
-	  v = *this->_safe_get (AtomType::aN7) + z * Residue::N_LP_DIST;
+	  v = *this->_safe_get (AtomType::aN7) + z * N_LP_DIST;
 	  this->insert (atom.set (v, AtomType::aLP7));
 	}
 	catch (NoSuchAtomException& ex)
@@ -1402,12 +1423,12 @@ namespace mccore
 	  z = (*this->_safe_get (AtomType::aO6) - *this->_safe_get (AtomType::aC6)).normalize ();	
 	  up = x.cross (y).normalize ();
 	
-	  b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();	
-	  v = *this->_safe_get (AtomType::aO6) + b * Residue::O_LP_DIST;
+	  b = (z + z.cross (up).normalize () * TAN60).normalize ();	
+	  v = *this->_safe_get (AtomType::aO6) + b * O_LP_DIST;
 	  this->insert (atom.set (v, AtomType::a1LP6));
 
-	  a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
-	  v = *this->_safe_get (AtomType::aO6) + a * Residue::O_LP_DIST;
+	  a = (z + up.cross (z).normalize () * TAN60).normalize ();
+	  v = *this->_safe_get (AtomType::aO6) + a * O_LP_DIST;
 	  this->insert (atom.set (v, AtomType::a2LP6));
 	}
 	catch (NoSuchAtomException& ex)
@@ -1424,7 +1445,7 @@ namespace mccore
 	  x = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC2)).normalize ();
 	  y = (*this->_safe_get (AtomType::aN3) - *this->_safe_get (AtomType::aC4)).normalize ();
 	  z = (x + y).normalize ();
-	  v = *this->_safe_get (AtomType::aN3) + z * Residue::N_LP_DIST;
+	  v = *this->_safe_get (AtomType::aN3) + z * N_LP_DIST;
 	  this->insert (atom.set (v, AtomType::aLP3));
 	}
 	catch (NoSuchAtomException& ex)
@@ -1441,12 +1462,12 @@ namespace mccore
 	  z = (*this->_safe_get (AtomType::aO2) - *this->_safe_get (AtomType::aC2)).normalize ();
 	  up = x.cross (y).normalize ();
 
-	  a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
-	  v = *this->_safe_get (AtomType::aO2) + a * Residue::O_LP_DIST;
+	  a = (z + up.cross (z).normalize () * TAN60).normalize ();
+	  v = *this->_safe_get (AtomType::aO2) + a * O_LP_DIST;
 	  this->insert (atom.set (v, AtomType::a1LP2));
 
-	  b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();	
-	  v = *this->_safe_get (AtomType::aO2) + b * Residue::O_LP_DIST;
+	  b = (z + z.cross (up).normalize () * TAN60).normalize ();	
+	  v = *this->_safe_get (AtomType::aO2) + b * O_LP_DIST;
 	  this->insert (atom.set (v, AtomType::a2LP2));
 	}
 	catch (NoSuchAtomException& ex)
@@ -1465,12 +1486,12 @@ namespace mccore
 	  z = (*this->_safe_get (AtomType::aO2) - *this->_safe_get (AtomType::aC2)).normalize ();
 	  up = x.cross (y).normalize ();
 
-	  a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
-	  v = *this->_safe_get (AtomType::aO2) + a * Residue::O_LP_DIST;
+	  a = (z + up.cross (z).normalize () * TAN60).normalize ();
+	  v = *this->_safe_get (AtomType::aO2) + a * O_LP_DIST;
 	  this->insert (atom.set (v, AtomType::a1LP2));
 	
-	  b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();
-	  v = *this->_safe_get (AtomType::aO2) + b * Residue::O_LP_DIST;
+	  b = (z + z.cross (up).normalize () * TAN60).normalize ();
+	  v = *this->_safe_get (AtomType::aO2) + b * O_LP_DIST;
 	  this->insert (atom.set (v, AtomType::a2LP2));
 	}
 	catch (NoSuchAtomException& ex)
@@ -1487,12 +1508,12 @@ namespace mccore
 	  z = (*this->_safe_get (AtomType::aO4) - *this->_safe_get (AtomType::aC4)).normalize ();	
 	  up = x.cross (y).normalize ();
 	
-	  b = (z + z.cross (up).normalize () * Residue::TAN60).normalize ();
-	  v = *this->_safe_get (AtomType::aO4) + b * Residue::O_LP_DIST;
+	  b = (z + z.cross (up).normalize () * TAN60).normalize ();
+	  v = *this->_safe_get (AtomType::aO4) + b * O_LP_DIST;
 	  this->insert (atom.set (v, AtomType::a1LP4));
 	
-	  a = (z + up.cross (z).normalize () * Residue::TAN60).normalize ();
-	  v = *this->_safe_get (AtomType::aO4) + a * Residue::O_LP_DIST;
+	  a = (z + up.cross (z).normalize () * TAN60).normalize ();
+	  v = *this->_safe_get (AtomType::aO4) + a * O_LP_DIST;
 	  this->insert (atom.set (v, AtomType::a2LP4));
 	}
 	catch (NoSuchAtomException& ex)
@@ -1532,7 +1553,7 @@ namespace mccore
     double theta2 = c4p->torsionAngle (*c3p, *o4p, *c1p); // nu4
     double rho = atan2 (theta2 + theta4 - theta1 - theta3, theta0 * 3.077684f);
 
-    return rho > 0 ? rho : s_2xpi + rho;
+    return rho > 0 ? rho : gc_2xpi + rho;
   }
 
 
@@ -1564,7 +1585,7 @@ namespace mccore
     theta2 = c4p->torsionAngle (*c3p, *o4p, *c1p); // nu4
     float rho = atan2 (theta2 + theta4 - theta1 - theta3, theta0 * 3.077684f);
 
-    return rho > 0 ? rho : s_2xpi + rho;
+    return rho > 0 ? rho : gc_2xpi + rho;
   }
 
   
@@ -1888,7 +1909,7 @@ namespace mccore
     xz_len = sqrt (x*x + z*z);
 
     // rho estimation with respect to O3'
-    omega = erho1 = (xz_len - Residue::s_cosf_vshift) / Residue::s_cosf_amplitude;
+    omega = erho1 = (xz_len - gc_cosf_vshift) / gc_cosf_amplitude;
     
     // +/- 0.25 tolerance on cos amplitude
     if (erho1 < -1.25)
@@ -1911,14 +1932,14 @@ namespace mccore
 //     else if (erho1 > 1)
 //       erho1 = 1.0;
 
-    erho1 = acos (erho1) - Residue::s_cosf_phase;
-    erho2 = Residue::s_2xpi - 2 * Residue::s_cosf_phase - erho1;
+    erho1 = acos (erho1) - gc_cosf_phase;
+    erho2 = gc_2xpi - 2 * gc_cosf_phase - erho1;
 
 
     /** glycosyl torsion estimation **/
 
     // Y rotation from X axis to anchored O3'
-    anchor_yrot = z < 0 ? acos (x / xz_len) : Residue::s_2xpi - acos (x / xz_len);
+    anchor_yrot = z < 0 ? acos (x / xz_len) : gc_2xpi - acos (x / xz_len);
     
     // build with first rho. Must build O3'! 
     this->_build_ribose (erho1, 0, def_gamma, def_beta, build5p, true);
@@ -1927,7 +1948,7 @@ namespace mccore
     x = this->rib_O3p->getX ();
     z = this->rib_O3p->getZ ();
     xz_len = sqrt (x*x + z*z);
-    built_yrot = z < 0 ? acos (x / xz_len) : Residue::s_2xpi - acos (x / xz_len);
+    built_yrot = z < 0 ? acos (x / xz_len) : gc_2xpi - acos (x / xz_len);
 
     // compute estimated chi and apply Y rotation
     this->_transform_ribose (HomogeneousTransfo::rotationY (anchor_yrot - built_yrot), build5p, false);
@@ -1958,7 +1979,7 @@ namespace mccore
     x = this->rib_O3p->getX ();
     z = this->rib_O3p->getZ ();
     xz_len = sqrt (x*x + z*z);
-    built_yrot = z < 0 ? acos (x / xz_len) : Residue::s_2xpi - acos (x / xz_len);
+    built_yrot = z < 0 ? acos (x / xz_len) : gc_2xpi - acos (x / xz_len);
   
     // compute estimated chi and apply Y rotation
     this->_transform_ribose (HomogeneousTransfo::rotationY (anchor_yrot - built_yrot), build5p, false);
@@ -1995,7 +2016,6 @@ namespace mccore
     this->_build_ribose_postprocess (ref_override, build5p, false);
     this->rib_O3p = 0;
     
-//     return sqrt (final_value / 2.0);
     return final_value;
   }
 
@@ -2061,7 +2081,7 @@ namespace mccore
     if (PropertyType::pNull == pucker || 0 == pucker)
     {
       p_min[0] = 0.0;
-      p_max[0] = s_2xpi;
+      p_max[0] = gc_2xpi;
     }
     else
     {
@@ -2072,7 +2092,7 @@ namespace mccore
     if (PropertyType::pNull == glycosyl || 0 == glycosyl)
     {
       p_min[1] = 0.0;
-      p_max[1] = s_2xpi;
+      p_max[1] = gc_2xpi;
     }
     else
     {
@@ -2197,9 +2217,9 @@ namespace mccore
   {
     // adjust value between [0,360]
     while (rho < 0.0)
-      rho += Residue::s_2xpi;
-    while (rho > s_2xpi)
-      rho -= Residue::s_2xpi;
+      rho += gc_2xpi;
+    while (rho > gc_2xpi)
+      rho -= gc_2xpi;
 
     if (rho < RAD_36)
       return PropertyType::pC3p_endo;
@@ -2229,9 +2249,9 @@ namespace mccore
   {
     // adjust value between [-90,270]
     while (chi < -RAD_90)
-      chi += Residue::s_2xpi;
+      chi += gc_2xpi;
     while (chi > RAD_270)
-      chi -= Residue::s_2xpi;
+      chi -= gc_2xpi;
 
     if (chi < RAD_90)
       return PropertyType::pSyn;

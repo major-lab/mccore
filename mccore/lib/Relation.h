@@ -3,7 +3,7 @@
 // Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.22 $
+// $Revision: 1.23 $
 // 
 // This file is part of mccore.
 // 
@@ -76,15 +76,10 @@ namespace mccore
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.22 2005-09-09 22:01:54 larosem Exp $
+   * @version $Id: Relation.h,v 1.23 2005-11-15 16:09:39 thibaup Exp $
    */
   class Relation
   {
-    static const float PAIRING_CUTOFF = 0.8f;
-    static const float TWO_BONDS_CUTOFF = 1.5f;
-    static const float THREE_BONDS_CUTOFF = 2.1f;
-//     static const float HBOND_DIST_MAX = 4;
-    static const float HBOND_DIST_MAX = 1.7;
   protected:
     
     /**
@@ -174,26 +169,6 @@ namespace mccore
     static vector< pair< Vector3D, const PropertyType* > > faces_T;
 
     static bool face_init;
-
-    /**
-     * The O3'-P squared bond length cutoff between adjacent nucleotides (Angstroms square).
-     */
-    static float adjacency_distance_cutoff_square;
-    
-    /**
-     * The nitrogen base center squared distance cutoff for a stacking (Angstroms square).
-     */
-    static float stack_distance_cutoff_square;
-
-    /**
-     * The nitrogen base plane tilt cutoff for a stacking (radian).
-     */
-    static float stack_tilt_cutoff;
-
-    /**
-     * The nitrogen base plane overlap cutoff for a stacking (radian).
-     */
-    static float stack_overlap_cutoff;
 
   public:
     

@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu Mar 20 18:05:28 2003
-// $Revision: 1.15 $
-// $Id: HBond.cc,v 1.15 2005-09-09 22:01:28 larosem Exp $
+// $Revision: 1.16 $
+// $Id: HBond.cc,v 1.16 2005-11-15 16:09:39 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -46,6 +46,12 @@
 
 namespace mccore
 {
+  // GLOBAL CONSTANT ---------------------------------------------------------
+
+  const float TAN70        = 2.7474774;  // For CH3-like conformations
+  const float C_H_DIST_CYC = 1.08;       // C-H distance for aromatic C
+
+  // MEMBER CONSTANT ---------------------------------------------------------
 
   const int HBond::sNbGauss = 7;
 
@@ -298,7 +304,7 @@ namespace mccore
 	py = (getDonor () - *rb->safeFind (AtomType::aC5)).normalize ();
 	up = px.cross (py).normalize ();
 	pz = py.cross (up);
-	pv = getDonor () + (py + pz * Residue::TAN70).normalize () * Residue::C_H_DIST_CYC;
+	pv = getDonor () + (py + pz * TAN70).normalize () * C_H_DIST_CYC;
       
 	at = Atom (pv, hydrogen);
       }

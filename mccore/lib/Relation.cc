@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.47 $
-// $Id: Relation.cc,v 1.47 2005-09-30 20:24:12 larosem Exp $
+// $Revision: 1.48 $
+// $Id: Relation.cc,v 1.48 2005-11-15 16:09:39 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -27,6 +27,8 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+
+#define DEBUG 1
 
 #include <algorithm>
 #include <cmath>
@@ -52,6 +54,32 @@
 
 namespace mccore
 {
+  // GLOBAL CONSTANT ---------------------------------------------------------
+
+  /**
+   * Pairing annotation cutoffs.
+   */
+  const float PAIRING_CUTOFF = 0.8f;
+  const float TWO_BONDS_CUTOFF = 1.5f;
+  const float THREE_BONDS_CUTOFF = 2.1f;
+  //const float HBOND_DIST_MAX = 4;
+  const float HBOND_DIST_MAX = 1.7;
+
+  /**
+   * Other annotation cutoffs, respectively:
+   *
+   * - O3'-P squared bond length cutoff between adjacent nucleotides (Angstroms square).
+   * - nitrogen base center squared distance cutoff for a stacking (Angstroms square).
+   * - nitrogen base plane tilt cutoff for a stacking (radian).
+   * - nitrogen base plane overlap cutoff for a stacking (radian).
+   */
+  const float gc_adjacency_distance_cutoff_square = 4.00;  // 2.0 Ang
+  const float gc_stack_distance_cutoff_square     = 20.25; // 4.5 Ang
+  const float gc_stack_tilt_cutoff                = 0.61;  // 35 deg
+  const float gc_stack_overlap_cutoff             = 0.61;  // 35 deg
+
+  // STATIC MEMBER  ---------------------------------------------------------
+
   vector< pair< Vector3D, const PropertyType* > > Relation::faces_A;
   vector< pair< Vector3D, const PropertyType* > > Relation::faces_C;
   vector< pair< Vector3D, const PropertyType* > > Relation::faces_G;
@@ -60,10 +88,7 @@ namespace mccore
 
   bool Relation::face_init = false;
 
-  float Relation::adjacency_distance_cutoff_square = 4.00; // 2.0 Ang
-  float Relation::stack_distance_cutoff_square = 20.25; // 4.5 Ang
-  float Relation::stack_tilt_cutoff = 0.61; // 35 deg
-  float Relation::stack_overlap_cutoff = 0.61; // 35 deg
+
 
 
   ostream&
@@ -252,19 +277,19 @@ namespace mccore
     
     if (ref->end () != (down = ref->find (AtomType::aO3p)) &&
 	res->end () != (up = res->find (AtomType::aP)) &&
-	down->squareDistance (*up) <= Relation::adjacency_distance_cutoff_square)
+	down->squareDistance (*up) <= gc_adjacency_distance_cutoff_square)
       adj_type = PropertyType::pAdjacent5p;
     else if (res->end () != (down = res->find (AtomType::aO3p)) &&
 	     ref->end () != (up = ref->find (AtomType::aP)) &&
-	     down->squareDistance (*up) <= Relation::adjacency_distance_cutoff_square)
+	     down->squareDistance (*up) <= gc_adjacency_distance_cutoff_square)
       adj_type = PropertyType::pAdjacent3p;
     else if (ref->end () != (down = ref->find (AtomType::aC)) &&
 	     res->end () != (up = res->find (AtomType::aN)) &&
-	     down->squareDistance (*up) <= Relation::adjacency_distance_cutoff_square)
+	     down->squareDistance (*up) <= gc_adjacency_distance_cutoff_square)
       adj_type = PropertyType::pAdjacent5p;
     else if (res->end () != (down = res->find (AtomType::aC)) &&
 	     ref->end () != (up = ref->find (AtomType::aN)) &&
-	     down->squareDistance (*up) <= Relation::adjacency_distance_cutoff_square)
+	     down->squareDistance (*up) <= gc_adjacency_distance_cutoff_square)
       adj_type = PropertyType::pAdjacent3p;
 
     if (adj_type != PropertyType::pNull)
@@ -888,16 +913,16 @@ namespace mccore
     
     // - check ring center distance
     
-    if (centerA.squareDistance (centerB) > Relation::stack_distance_cutoff_square)
+    if (centerA.squareDistance (centerB) > gc_stack_distance_cutoff_square)
       return PropertyType::pNull;
 
     // - check ring normal angle (symetrical)    
 
     theta1 = acos (normalA.dot (normalB));
 
-    if (theta1 > Relation::stack_tilt_cutoff)
+    if (theta1 > gc_stack_tilt_cutoff)
       {
-	if ((float)M_PI - theta1 < Relation::stack_tilt_cutoff)
+	if ((float)M_PI - theta1 < gc_stack_tilt_cutoff)
 	  annotation = 2;
 	else
 	  return PropertyType::pNull;
@@ -909,17 +934,17 @@ namespace mccore
     Vector3D vAB = (centerB - centerA).normalize ();
     theta1 = acos (normalA.dot (vAB));
 
-    if (theta1 > Relation::stack_overlap_cutoff)
+    if (theta1 > gc_stack_overlap_cutoff)
       {
-	if ((float)M_PI - theta1 < Relation::stack_overlap_cutoff)
+	if ((float)M_PI - theta1 < gc_stack_overlap_cutoff)
 	  annotation |= 1;
 	else
 	  {
 	    // try from other base point of view
 	    theta2 = acos (normalB.dot (vAB));
 
-	    if (theta2 < Relation::stack_overlap_cutoff ||
-		(float)M_PI - theta2 < Relation::stack_overlap_cutoff)
+	    if (theta2 < gc_stack_overlap_cutoff ||
+		(float)M_PI - theta2 < gc_stack_overlap_cutoff)
 	      {
 		if (theta1 > M_PI_2)
 		  annotation |= 1;

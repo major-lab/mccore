@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.22 $
-// $Id: HomogeneousTransfo.cc,v 1.22 2005-07-26 21:46:35 larosem Exp $
+// $Revision: 1.23 $
+// $Id: HomogeneousTransfo.cc,v 1.23 2005-11-15 16:09:39 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -50,6 +50,12 @@ namespace mccore
       return 1;
     return 2;
   }
+
+
+  /**
+   * The squared scale ratio between angle and distance (Ang^2 / rad^2)
+   */
+  const float gc_alpha_square = 6.927424; // 2.632^2
 
 
   HomogeneousTransfo::HomogeneousTransfo () 
@@ -472,7 +478,7 @@ namespace mccore
 
   
   float 
-  HomogeneousTransfo::strength (float* tvalue, float* rvalue) const 
+  HomogeneousTransfo::strength () const 
   {
     float l2 = matrix[12]*matrix[12] + matrix[13]*matrix[13] + matrix[14]*matrix[14];
     
@@ -480,14 +486,29 @@ namespace mccore
     float b = matrix[8] - matrix[2];
     float c = matrix[1] - matrix[4];
     float diag = matrix[0] + matrix[5] + matrix[10] - 1;
-    
+ 
     float theta_rad = (float) atan2 (sqrt (a*a + b*b + c*c), diag);
 
-    if (tvalue) *tvalue = l2;
-    if (rvalue) *rvalue = HomogeneousTransfo::alpha_square * theta_rad * theta_rad;
-
-    return (float) sqrt (l2 + HomogeneousTransfo::alpha_square * theta_rad * theta_rad);
+    return (float) sqrt (l2 + gc_alpha_square * theta_rad * theta_rad);
   }
+
+
+  float 
+  HomogeneousTransfo::strength (float& tvalue2, float& rvalue2) const 
+  {
+    tvalue2 = matrix[12]*matrix[12] + matrix[13]*matrix[13] + matrix[14]*matrix[14];
+    
+    float a = matrix[6] - matrix[9];
+    float b = matrix[8] - matrix[2];
+    float c = matrix[1] - matrix[4];
+    float diag = matrix[0] + matrix[5] + matrix[10] - 1;
+ 
+    float theta_rad = (float) atan2 (sqrt (a*a + b*b + c*c), diag);
+    rvalue2 = gc_alpha_square * theta_rad * theta_rad;
+
+    return (float) sqrt (tvalue2 + rvalue2);
+  }
+
 
   
   float 
@@ -504,9 +525,9 @@ namespace mccore
 
 
   float
-  HomogeneousTransfo::distance (const HomogeneousTransfo &m, float* tvalue, float* rvalue) const 
+  HomogeneousTransfo::distance (const HomogeneousTransfo &m) const 
   {
-    return (this->invert () * m).strength (tvalue, rvalue);
+    return (this->invert () * m).strength ();
   }
 
   
@@ -563,13 +584,28 @@ namespace mccore
   }
 
 
+  float 
+  HomogeneousTransfo::orthoError () const
+  {
+    return 
+      fabs (sqrt (this->matrix[0]*this->matrix[0] + this->matrix[1]*this->matrix[1] + this->matrix[2]*this->matrix[2]) +
+	    sqrt (this->matrix[4]*this->matrix[4] + this->matrix[5]*this->matrix[5] + this->matrix[6]*this->matrix[6]) +
+	    sqrt (this->matrix[8]*this->matrix[8] + this->matrix[9]*this->matrix[9] + this->matrix[10]*this->matrix[10]) +
+	    sqrt (this->matrix[0]*this->matrix[0] + this->matrix[4]*this->matrix[4] + this->matrix[8]*this->matrix[8]) +
+	    sqrt (this->matrix[1]*this->matrix[1] + this->matrix[5]*this->matrix[5] + this->matrix[9]*this->matrix[9]) +
+	    sqrt (this->matrix[2]*this->matrix[2] + this->matrix[6]*this->matrix[6] + this->matrix[10]*this->matrix[10])
+	    - 6.0)
+      / 6.0;
+  }
+
+
   ostream &
   HomogeneousTransfo::output (ostream &out) const 
   {
     out.setf (ios::right, ios::adjustfield);
     out.setf (ios::fixed, ios::floatfield);
     out.precision (6);
-    out << "| " << setw (11) << matrix[0] << " " 
+    out << "| " << setw (11) << matrix[0] << " "  // 11
 	<< setw (11) << matrix[4] << " " 
 	<< setw (11) << matrix[8] << " " 
 	<< setw (11) << matrix[12] << " |" << endl;
@@ -585,6 +621,7 @@ namespace mccore
 	<< setw (11) << matrix[7] << " " 
 	<< setw (11) << matrix[11] << " " 
 	<< setw (11) << matrix[15] << " |" << endl;  
+
     return out;
   }
   

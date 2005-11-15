@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.20 $
+// $Revision: 1.21 $
 //
 // This file is part of mccore.
 // 
@@ -56,7 +56,7 @@ namespace mccore
    * </pre>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: HomogeneousTransfo.h,v 1.20 2005-08-19 20:24:33 thibaup Exp $
+   * @version $Id: HomogeneousTransfo.h,v 1.21 2005-11-15 16:09:39 thibaup Exp $
    */
   class HomogeneousTransfo
   {
@@ -66,12 +66,7 @@ namespace mccore
     float *matrix;
     
   public:
-
-    /**
-     * The squared scale ratio between angle and distance (Ang^2 / rad^2)
-     */
-    static const float alpha_square = 6.927424; // 2.632^2
-    
+   
     // LIFECYCLE ------------------------------------------------------------
     
     /**
@@ -370,7 +365,8 @@ namespace mccore
      * the translation and rotation components.
      * @return the strength (Angstroms).
      */
-    float strength (float* tvalue = 0, float* rvalue = 0) const;
+    float strength () const;
+    float strength (float& tvalue2, float& rvalue2) const;
 
     /**
      * Computes the rms of <i,j,k> moved by this transfo from the global referential.
@@ -398,7 +394,7 @@ namespace mccore
      * @param m the transfo to compare to.
      * @return the computed distance (Angstroms).
      */
-    float distance (const HomogeneousTransfo &m, float* tvalue = 0, float* rvalue = 0) const;
+    float distance (const HomogeneousTransfo &m) const;
 
     /**
      * M: m -> m'
@@ -444,6 +440,9 @@ namespace mccore
      * @return the coordinate frame.
      */
     static HomogeneousTransfo frame (const Vector3D& u, const Vector3D& v, const Vector3D& w, const Vector3D& o);
+
+
+    float orthoError () const;
 
     // I/O  -----------------------------------------------------------------
     

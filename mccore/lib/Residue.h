@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.39 $
+// $Revision: 1.40 $
 //
 // This file is part of mccore.
 // 
@@ -62,7 +62,7 @@ namespace mccore
    * the atom types.
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: Residue.h,v 1.39 2005-10-25 15:36:02 thibaup Exp $
+   * @version $Id: Residue.h,v 1.40 2005-11-15 16:09:38 thibaup Exp $
    */
   class Residue
   {
@@ -81,18 +81,18 @@ namespace mccore
     /**
      * Constants used in hydrogens and lone pairs insertion. 
      */
-    static const float C_H_DIST_CYC = 1.08;     // C-H distance for aromatic C
-    static const float C_H_DIST     = 1.09;     // C-H distance for SP3 C
-    static const float N_H_DIST     = 1.01;     // N-H distance for NH2 confo  
-    static const float O_H_DIST     = 0.96;
-    static const float O_LP_DIST    = 1.00;
-    static const float N_LP_DIST    = 1.00;
-    static const float TAN19        = 0.3443276;  // O2' H 
-    static const float TAN30        = 0.57735027;
-    static const float TAN54        = 1.3763819;
-    static const float TAN60        = 1.7320508;  // For NH2-like conformations
-    static const float TAN70        = 2.7474774;  // For CH3-like conformations
-    static const float TAN71        = 2.9042109;
+//     static const float C_H_DIST_CYC = 1.08;     // C-H distance for aromatic C
+//     static const float C_H_DIST     = 1.09;     // C-H distance for SP3 C
+//     static const float N_H_DIST     = 1.01;     // N-H distance for NH2 confo  
+//     static const float O_H_DIST     = 0.96;
+//     static const float O_LP_DIST    = 1.00;
+//     static const float N_LP_DIST    = 1.00;
+//     static const float TAN19        = 0.3443276;  // O2' H 
+//     static const float TAN30        = 0.57735027;
+//     static const float TAN54        = 1.3763819;
+//     static const float TAN60        = 1.7320508;  // For NH2-like conformations
+//     static const float TAN70        = 2.7474774;  // For CH3-like conformations
+//     static const float TAN71        = 2.9042109;
     
   protected:
 
@@ -136,16 +136,6 @@ namespace mccore
      * Ribose building counter.
      */
     unsigned int rib_built_count;
-
-    /**
-     * Constants for the ribose theoretical building by estimation.
-     */
-    static const float s_cosf_amplitude, s_cosf_vshift, s_cosf_phase, s_cosf_2xphase;
-
-    /**
-     * Respectively two times and four times the value of PI.
-     */
-    static const float s_2xpi, s_4xpi;
     
   public:
     
