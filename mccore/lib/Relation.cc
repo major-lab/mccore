@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.48 $
-// $Id: Relation.cc,v 1.48 2005-11-15 16:09:39 thibaup Exp $
+// $Revision: 1.49 $
+// $Id: Relation.cc,v 1.49 2005-11-17 19:26:38 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -799,16 +799,16 @@ namespace mccore
     pd = pd - *res->safeFind (AtomType::aPSY);
     pd = pd + pb;
 	      
-    // -- cis/trans orientation
-    rad = fabs (pa.torsionAngle (pc, pb, pd));
-    labels.insert (rad < M_PI / 2 ? PropertyType::pCis : PropertyType::pTrans);
-	      
-    // -- straight/reverse orientation
+    // -- parallel/antiparallel orientation
     labels.insert (Relation::_pyrimidine_ring_normal
 		   (*ref, Relation::_pyrimidine_ring_center (*ref)).dot
 		   (Relation::_pyrimidine_ring_normal
 		    (*res, Relation::_pyrimidine_ring_center (*res))) > 0 ?
-		   PropertyType::pStraight : PropertyType::pReverse);
+		   PropertyType::pParallel : PropertyType::pAntiparallel);
+
+    // -- cis/trans orientation
+    rad = fabs (pa.torsionAngle (pc, pb, pd));
+    labels.insert (rad < M_PI / 2 ? PropertyType::pCis : PropertyType::pTrans);
 
     refFace = getFace (ref, pa);
     resFace = getFace (res, pb);
@@ -959,13 +959,13 @@ namespace mccore
     switch (annotation)
       {
       case 0:
-	return PropertyType::pStraightUpward;
+	return PropertyType::pUpward;
       case 1:
-	return PropertyType::pStraightDownward;
+	return PropertyType::pDownward;
       case 2:
-	return PropertyType::pReverseUpward;
+	return PropertyType::pInward;
       case 3:
-	return PropertyType::pReverseDownward;
+	return PropertyType::pOutward;
       default:
 	FatalIntLibException ex ("", __FILE__, __LINE__);
 	ex << "invalid stacking annotation value " << annotation;

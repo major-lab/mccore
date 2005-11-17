@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.17 $
+// $Revision: 1.18 $
 // 
 // This file is part of mccore.
 // 
@@ -47,7 +47,7 @@ namespace mccore
    * General property types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: PropertyType.h,v 1.17 2005-09-09 22:01:36 larosem Exp $
+   * @version $Id: PropertyType.h,v 1.18 2005-11-17 19:26:38 thibaup Exp $
    */
   class PropertyType
   {
@@ -256,6 +256,37 @@ namespace mccore
     }
 
     /**
+     * is up?
+     */
+    virtual bool isUp () const
+    {
+      return false;
+    }
+
+    /**
+     * is down?
+     */
+    virtual bool isDown () const
+    {
+      return false;
+    }
+    /**
+     * is straight?
+     */
+    virtual bool isStraight () const
+    {
+      return false;
+    }
+
+    /**
+     * is reverse?
+     */
+    virtual bool isReverse () const
+    {
+      return false;
+    }
+
+    /**
      * isPairing?
      */
     virtual bool isPairing () const
@@ -291,14 +322,6 @@ namespace mccore
      * isW?
      */
     virtual bool isW () const
-    {
-      return false;
-    }
-
-    /**
-     * isBaseOrientation?
-     */
-    virtual bool isBaseOrientation () const
     {
       return false;
     }
@@ -389,35 +412,45 @@ namespace mccore
     static const PropertyType* pTheo;
     
     /**
-     * Global pairing type.
-     */
-    static const PropertyType* pPairing;
-    
-    /**
-     * Global pairing type.
+     * Global stack type.
      */
     static const PropertyType* pStack;
 
     /**
-     * Global straight upward type.
+     * Global upward type.
      */
-    static const PropertyType* pStraightUpward;
+    static const PropertyType* pUpward;
 
     /**
-     * Global straight downward type.
+     * Global downward type.
      */
-    static const PropertyType* pStraightDownward;
+    static const PropertyType* pDownward;
 
     /**
-     * Global reverse Upward type.
+     * Global inward type.
      */
-    static const PropertyType* pReverseUpward;
+    static const PropertyType* pInward;
 
     /**
-     * Global reverse downward type.
+     * Global outward type.
      */
-    static const PropertyType* pReverseDownward;
+    static const PropertyType* pOutward;
     
+    /**
+     * Global pairing type.
+     */
+    static const PropertyType* pPairing;
+
+    /**
+     * Global parallel type.
+     */
+    static const PropertyType* pParallel;
+
+    /**
+     * Global antiparallel type.
+     */
+    static const PropertyType* pAntiparallel;
+
     /**
      * Global cis type.
      */
@@ -427,16 +460,6 @@ namespace mccore
      * Global trans type.
      */
     static const PropertyType* pTrans;
-
-    /**
-     * Global straigth type.
-     */
-    static const PropertyType* pStraight;
-
-    /**
-     * Global reverse type.
-     */
-    static const PropertyType* pReverse;
     
     /**
      * Global adjacent type.

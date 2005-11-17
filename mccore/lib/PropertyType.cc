@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.16 $
-// $Id: PropertyType.cc,v 1.16 2005-09-09 22:01:32 larosem Exp $
+// $Revision: 1.17 $
+// $Id: PropertyType.cc,v 1.17 2005-11-17 19:26:38 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -51,16 +51,16 @@ namespace mccore
   const PropertyType* PropertyType::pAdjacent3p = 0;
   
   const PropertyType* PropertyType::pStack = 0;
-  const PropertyType* PropertyType::pStraightUpward = 0;
-  const PropertyType* PropertyType::pStraightDownward = 0;
-  const PropertyType* PropertyType::pReverseUpward = 0;
-  const PropertyType* PropertyType::pReverseDownward = 0;
+  const PropertyType* PropertyType::pUpward = 0;
+  const PropertyType* PropertyType::pDownward = 0;
+  const PropertyType* PropertyType::pInward = 0;
+  const PropertyType* PropertyType::pOutward = 0;
 
   const PropertyType* PropertyType::pPairing = 0;
+  const PropertyType* PropertyType::pParallel = 0;
+  const PropertyType* PropertyType::pAntiparallel = 0;
   const PropertyType* PropertyType::pCis = 0;
   const PropertyType* PropertyType::pTrans = 0;
-  const PropertyType* PropertyType::pStraight = 0;
-  const PropertyType* PropertyType::pReverse = 0;
 
   const PropertyType* PropertyType::pType_A = 0;
   const PropertyType* PropertyType::pType_B = 0;
@@ -301,9 +301,8 @@ namespace mccore
   const PropertyType*
   PropertyType::invert (const PropertyType* t)
   {
-    if (PropertyType::pStraightUpward == t) return PropertyType::pStraightDownward;
-    if (PropertyType::pStraightDownward == t) return PropertyType::pStraightUpward;
-
+    if (PropertyType::pUpward == t)     return PropertyType::pDownward;
+    if (PropertyType::pDownward == t)   return PropertyType::pUpward;
     if (PropertyType::pAdjacent5p == t) return PropertyType::pAdjacent3p;
     if (PropertyType::pAdjacent3p == t) return PropertyType::pAdjacent5p;
     return t;
