@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.26 $
+// $Revision: 1.27 $
 //
 // This file is part of mccore.
 // 
@@ -59,7 +59,7 @@ namespace mccore
    *   iterators yields object.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Model.h,v 1.26 2005-06-23 19:06:06 larosem Exp $
+   * @version $Id: Model.h,v 1.27 2005-12-09 18:28:51 larosem Exp $
    */
   class Model : public AbstractModel
   {
@@ -114,6 +114,13 @@ namespace mccore
      * @return itself.
      */
     Model& operator= (const AbstractModel &right);
+
+    /**
+     * Assigns the object with the right's content.
+     * @param right the object to copy.
+     * @return itself.
+     */
+    Model& operator= (const Model &right);
 
     /**
      * Gets the model reference at nth position.

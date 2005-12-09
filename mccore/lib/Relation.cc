@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.49 $
-// $Id: Relation.cc,v 1.49 2005-11-17 19:26:38 thibaup Exp $
+// $Revision: 1.50 $
+// $Id: Relation.cc,v 1.50 2005-12-09 18:28:51 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -264,7 +264,7 @@ namespace mccore
     areAdjacent ();
     areStacked ();
     arePaired ();
-//     areHBonded ();
+    areHBonded ();
     return ! empty ();
   }
   

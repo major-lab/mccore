@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Oct 10 15:34:08 2001
-// $Revision: 1.34 $
-// $Id: Model.cc,v 1.34 2005-11-15 16:10:50 thibaup Exp $
+// $Revision: 1.35 $
+// $Id: Model.cc,v 1.35 2005-12-09 18:28:51 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -77,6 +77,25 @@ namespace mccore
 
   Model&
   Model::operator= (const AbstractModel &right)
+  {
+    if (this != &right)
+      {
+	vector< Residue* >::iterator it;
+	
+	for (it = residues.begin (); it != residues.end (); ++it)
+	  {
+	    delete *it;
+	  }
+	residues.clear ();
+	AbstractModel::operator= (right);
+	AbstractModel::insert (right.begin (), right.end ());
+      }
+    return *this;
+  }
+  
+  
+  Model&
+  Model::operator= (const Model &right)
   {
     if (this != &right)
       {
