@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.50 $
-// $Id: Relation.cc,v 1.50 2005-12-09 18:28:51 larosem Exp $
+// $Revision: 1.51 $
+// $Id: Relation.cc,v 1.51 2005-12-09 18:47:42 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -27,8 +27,6 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
-
-#define DEBUG 1
 
 #include <algorithm>
 #include <cmath>
@@ -904,10 +902,9 @@ namespace mccore
     float theta1, theta2;
 
     /*
-      00 (0) straight upward   (default)
-      01 (1) straight downward
-      10 (2) reverse  upward
-      11 (3) reverse  downward
+      msb - b1b0 - lsb
+      b0: up (0) / down (1)
+      b1: straight (0) / reverse (1)
     */
     unsigned int annotation = 0; 
     
