@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.13 $
-// $Id: GraphModel.cc,v 1.13 2005-08-19 19:15:59 larosem Exp $
+// $Revision: 1.14 $
+// $Id: GraphModel.cc,v 1.14 2005-12-09 22:47:41 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -186,35 +186,38 @@ namespace mccore
   void
   GraphModel::sort ()
   {
-    vector< Residue* > orig = vertices;
-    vector< int > origWeights = vertexWeights;
-    graphsuper::size_type vIndex;
-    graphsuper::size_type *corresp;
-    EV2ELabel origEdgeMap = ev2elabel;
-    EV2ELabel::iterator evIt;
-
-    std::sort (vertices.begin (), vertices.end (), less_deref< Residue > ());
-    corresp = new graphsuper::size_type[size ()];
-    for (vIndex = 0; vIndex < size () - 1; ++vIndex)
+    if (! empty ())
       {
-	graphsuper::size_type origIndex;
+	vector< Residue* > orig = vertices;
+	vector< int > origWeights = vertexWeights;
+	graphsuper::size_type vIndex;
+	graphsuper::size_type *corresp;
+	EV2ELabel origEdgeMap = ev2elabel;
+	EV2ELabel::iterator evIt;
 
-	origIndex = v2vlabel.find (&orig[vIndex])->second;
-	corresp[origIndex] = vIndex;
-	vertexWeights[vIndex] = origWeights[origIndex];
-      }	
-    rebuildV2VLabel ();
+	std::sort (vertices.begin (), vertices.end (), less_deref< Residue > ());
+	corresp = new graphsuper::size_type[size ()];
+	for (vIndex = 0; vIndex < size () - 1; ++vIndex)
+	  {
+	    graphsuper::size_type origIndex;
 
-    ev2elabel.clear ();
-    for (evIt = origEdgeMap.begin (); origEdgeMap.end () != evIt; ++evIt)
-      {
-	const EndVertices &endVertices = evIt->first;
-	EndVertices ev (corresp[endVertices.getHeadLabel ()],
-			corresp[endVertices.getTailLabel ()]);
+	    origIndex = v2vlabel.find (&orig[vIndex])->second;
+	    corresp[origIndex] = vIndex;
+	    vertexWeights[vIndex] = origWeights[origIndex];
+	  }	
+	rebuildV2VLabel ();
 
-	ev2elabel.insert (make_pair (ev, evIt->second));
+	ev2elabel.clear ();
+	for (evIt = origEdgeMap.begin (); origEdgeMap.end () != evIt; ++evIt)
+	  {
+	    const EndVertices &endVertices = evIt->first;
+	    EndVertices ev (corresp[endVertices.getHeadLabel ()],
+			    corresp[endVertices.getTailLabel ()]);
+
+	    ev2elabel.insert (make_pair (ev, evIt->second));
+	  }
+	delete[] corresp;
       }
-    delete[] corresp;
   }
   
     
