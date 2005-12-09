@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.20 $
+// $Revision: 1.21 $
 // 
 // This file is part of mccore.
 // 
@@ -61,7 +61,7 @@ namespace mccore
    *          
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: ExtendedResidue.h,v 1.20 2005-06-16 15:53:42 thibaup Exp $
+   * @version $Id: ExtendedResidue.h,v 1.21 2005-12-09 18:46:29 thibaup Exp $
    */
   class ExtendedResidue : public Residue
   {
@@ -202,7 +202,7 @@ namespace mccore
      * @param t a homogeneous matrix that will be filled if non null.
      * @return the referential.
      */
-    virtual const HomogeneousTransfo getReferential () const 
+    virtual const HomogeneousTransfo getReferential () const
     { 
       return this->referential; 
     }
@@ -218,6 +218,14 @@ namespace mccore
      * @param m the transfo to apply.
      */
     virtual void transform (const HomogeneousTransfo& m);
+
+    /**
+     * Computes global atoms coordinates in the current referential.
+     */
+    virtual void place () const
+    {
+      this->_place ();
+    }
 
     /**
      * Inserts an atom in the residue.  It crushes the existing atom if it

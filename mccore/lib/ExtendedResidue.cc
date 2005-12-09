@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.32 $
-// $Id: ExtendedResidue.cc,v 1.32 2005-08-26 20:22:09 larosem Exp $
+// $Revision: 1.33 $
+// $Id: ExtendedResidue.cc,v 1.33 2005-12-09 18:46:29 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -34,6 +34,7 @@
 #include "ResId.h"
 #include "ResidueType.h"
 
+#define DEBUG 1
 
 
 namespace mccore
@@ -47,7 +48,7 @@ namespace mccore
     vector< Atom* >::const_iterator cit;
     
     for (this->atomGlobal.begin (); cit != this->atomGlobal.end (); ++cit)
-	this->atomLocal.push_back ((*cit)->clone ());
+      this->atomLocal.push_back ((*cit)->clone ());
   }
 
 
@@ -56,10 +57,15 @@ namespace mccore
       referential (exres.referential),
       placed (exres.placed)
   {
-    vector< Atom* >::const_iterator cit;
-    
-    for (cit = exres.atomLocal.begin (); cit != exres.atomLocal.end (); ++cit)
-      this->atomLocal.push_back ((*cit)->clone ());
+    // global atoms are set in base class Residue.
+
+    vector< Atom* >::iterator cit;
+
+    this->atomLocal = exres.atomLocal;
+
+    // harden atoms
+    for (cit = this->atomLocal.begin (); cit != this->atomLocal.end (); ++cit)
+      *cit = (*cit)->clone ();
   }
 
 
@@ -159,8 +165,8 @@ namespace mccore
   void
   ExtendedResidue::setReferential (const HomogeneousTransfo& m)
   {
-    referential = m;
-    placed = false;
+    this->referential = m;
+    this->placed = false;
   }
 
 
@@ -190,6 +196,7 @@ namespace mccore
 	*atomGlobal[inserted.first->second] = atom;
 	*atomLocal[inserted.first->second] = atom;
       }
+
     atomLocal[inserted.first->second]->transform (referential.invert ());
   }
 

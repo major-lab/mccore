@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.40 $
+// $Revision: 1.41 $
 //
 // This file is part of mccore.
 // 
@@ -62,7 +62,7 @@ namespace mccore
    * the atom types.
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: Residue.h,v 1.40 2005-11-15 16:09:38 thibaup Exp $
+   * @version $Id: Residue.h,v 1.41 2005-12-09 18:46:29 thibaup Exp $
    */
   class Residue
   {
@@ -748,6 +748,12 @@ namespace mccore
      * @param m the transfo to apply.
      */
     virtual void transform (const HomogeneousTransfo& m);
+
+    /**
+     * Computes global atoms coordinates in the current referential.
+     * Nothing to do here, global atoms are always positionned.
+     */
+    virtual void place () const { }
 
     /**
      * Inserts an atom in the residue.  It crushes the existing atom if it
