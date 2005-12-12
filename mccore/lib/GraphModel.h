@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:31:01 2004
-// $Revision: 1.12 $
+// $Revision: 1.13 $
 // 
 // This file is part of mccore.
 // 
@@ -53,7 +53,7 @@ namespace mccore
    * iterators.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.h,v 1.12 2005-08-18 18:06:52 larosem Exp $
+   * @version $Id: GraphModel.h,v 1.13 2005-12-12 21:40:13 thibaup Exp $
    */
   class GraphModel : public AbstractModel, public OrientedGraph< Residue*, Relation*, int, int, less_deref< Residue > >
   {
@@ -329,12 +329,12 @@ namespace mccore
     /**
      * Annotates the GraphModel.  It builds edges in the graph.
      */
-    void annotate ();
+    void annotate (bool backbone = true);
 
     /**
      * Reannotates the GraphModel.
      */
-    void reannotate ()
+    void reannotate (bool backbone = true)
     {
       annotated = false;
       annotate ();

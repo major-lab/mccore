@@ -3,7 +3,7 @@
 // Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.23 $
+// $Revision: 1.24 $
 // 
 // This file is part of mccore.
 // 
@@ -76,7 +76,7 @@ namespace mccore
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.23 2005-11-15 16:09:39 thibaup Exp $
+   * @version $Id: Relation.h,v 1.24 2005-12-12 21:40:13 thibaup Exp $
    */
   class Relation
   {
@@ -334,7 +334,7 @@ namespace mccore
      * Describes the interaction.
      * @return true if there is indeed a relation between the bases.
      */
-    bool annotate ();
+    bool annotate (bool backbone = true);
 
   protected:
     

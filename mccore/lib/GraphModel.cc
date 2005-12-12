@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.14 $
-// $Id: GraphModel.cc,v 1.14 2005-12-09 22:47:41 larosem Exp $
+// $Revision: 1.15 $
+// $Id: GraphModel.cc,v 1.15 2005-12-12 21:40:13 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -241,7 +241,7 @@ namespace mccore
 
 
   void
-  GraphModel::annotate ()
+  GraphModel::annotate (bool backbone)
   {
     if (! annotated)
       {
@@ -271,7 +271,7 @@ namespace mccore
 	    Residue *j = &*l->second;
 	    Relation *rel = new Relation (i, j);
 
-	    if (rel->annotate ())
+	    if (rel->annotate (backbone))
 	      {
 		Relation *inv;
 

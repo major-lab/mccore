@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.51 $
-// $Id: Relation.cc,v 1.51 2005-12-09 18:47:42 thibaup Exp $
+// $Revision: 1.52 $
+// $Id: Relation.cc,v 1.52 2005-12-12 21:40:13 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -257,12 +257,15 @@ namespace mccore
 
   
   bool
-  Relation::annotate () 
+  Relation::annotate (bool backbone) 
   {
     areAdjacent ();
     areStacked ();
     arePaired ();
-    areHBonded ();
+
+    if (backbone)
+      areHBonded ();
+
     return ! empty ();
   }
   
