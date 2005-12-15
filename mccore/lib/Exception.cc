@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.7 $
-// $Id: Exception.cc,v 1.7 2005-08-30 13:16:05 thibaup Exp $
+// $Revision: 1.8 $
+// $Id: Exception.cc,v 1.8 2005-12-15 16:46:32 thibaup Exp $
 //
 // This file is part of mccore.
 //
@@ -307,6 +307,13 @@ namespace mccore
     return *this;
   }	
 
+  Exception&
+  operator<< (Exception& exs, const Exception& ex)
+  {
+    ostringstream oss;
+    oss << ex;
+    return exs << oss.str ();
+  }
 }
 
 

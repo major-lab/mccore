@@ -4,7 +4,7 @@
 //                           Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 16:27:35 1999
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 //
 // This file is part of mccore.
 // 
@@ -44,7 +44,7 @@ namespace mccore
    * libraries.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Exception.h,v 1.7 2005-08-30 13:16:05 thibaup Exp $
+   * @version $Id: Exception.h,v 1.8 2005-12-15 16:46:32 thibaup Exp $
    */
   class Exception : public exception
   {
@@ -579,7 +579,7 @@ namespace mccore
    * Exception for invalid access requests.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Exception.h,v 1.7 2005-08-30 13:16:05 thibaup Exp $
+   * @version $Id: Exception.h,v 1.8 2005-12-15 16:46:32 thibaup Exp $
    */
   class NoSuchElementException : public IntLibException
   {
@@ -1083,6 +1083,14 @@ namespace mccore
     // I/O ------------------------------------------------------------------
   };
   
+
+  /**
+   * Outputs the exception to another exception stream.
+   * @param exs the hosting exception stream.
+   * @param ex the exception to output.
+   * @return the used exception stream.
+   */
+  Exception& operator<< (Exception& exs, const Exception& ex);
 }
 
 namespace std
@@ -1095,8 +1103,6 @@ namespace std
    * @return the used output stream.
    */
   ostream& operator<< (ostream &os, const mccore::Exception &exc);
-  
-
 }
   
 #endif
