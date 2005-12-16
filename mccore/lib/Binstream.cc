@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@orage.IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:18:52 EDT
-// $Revision: 1.25 $
-// $Id: Binstream.cc,v 1.25 2005-05-31 20:05:40 thibaup Exp $
+// $Revision: 1.26 $
+// $Id: Binstream.cc,v 1.26 2005-12-16 17:38:28 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -33,11 +33,33 @@
 namespace mccore
 {
 
+  /**
+   * 32b float to integer type punning
+   */
+  union f2i_32
+  {
+    float fv;
+    int iv;
+  };
+
+  /**
+   * 64b float to integer type punning
+   */
+  union f2i_64
+  {
+    double fv;
+    long long int iv;
+  };
+
   // -- class iBinstream
 
   iBinstream&
   iBinstream::operator>> (char& c)
   {
+//     this->read (&c, 1);
+//     return *this;
+
+
     mccore::bin_i16 data16;
 
     this->read16 (data16);
@@ -59,6 +81,9 @@ namespace mccore
   iBinstream&
   iBinstream::operator>> (unsigned char& c)
   {
+//     this->read ((char*)&c, 1);
+//     return *this;
+
     mccore::bin_ui16 data16;
 
     this->read16 (data16);
@@ -80,6 +105,10 @@ namespace mccore
   iBinstream&
   iBinstream::operator>> (signed char& c)
   {
+//     this->read ((char*)&c, 1);
+//     return *this;
+
+
     *this >> (char&)c;
     return *this;
   }
@@ -169,14 +198,20 @@ namespace mccore
   iBinstream&
   iBinstream::operator>> (float& f)
   {
-    return this->read32 (*(mccore::bin_ui32*)&f);
+    f2i_32 fi;
+    this->read32 (fi.iv);
+    f = fi.fv;
+    return *this;
   }
 
 
   iBinstream&
   iBinstream::operator>> (double& d)
   {
-    return this->read64 (*(mccore::bin_ui64*)&d);
+    f2i_64 fi;
+    this->read64 (fi.iv);
+    d = fi.fv;
+    return *this;
   }
 
 
@@ -379,14 +414,18 @@ namespace mccore
   oBinstream&
   oBinstream::operator<< (float f)
   {
-    return this->write32 (*(mccore::bin_ui32*)&f);
+    f2i_32 fi;
+    fi.fv = f;
+    return this->write32 (fi.iv);
   }
 
 
   oBinstream&
   oBinstream::operator<< (double d)
   {
-    return this->write64 (*(mccore::bin_ui64*)&d);
+    f2i_64 fi;
+    fi.fv = d;
+    return this->write64 (fi.iv);
   }
 
 
