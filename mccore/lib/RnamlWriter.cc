@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.13 $
-// $Id: RnamlWriter.cc,v 1.13 2005-04-12 20:14:11 larosem Exp $
+// $Revision: 1.14 $
+// $Id: RnamlWriter.cc,v 1.14 2005-12-19 17:51:25 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -208,21 +208,21 @@ namespace mccore
 
 		stack->setBaseId1 (RnamlWriter::toBaseId (0, 0, rel.getRef ()->getResId ()));
 		stack->setBaseId2 (RnamlWriter::toBaseId (0, 0, rel.getRes ()->getResId ()));
-		if (rel.is (PropertyType::pStraightUpward))
+		if (rel.is (PropertyType::pUpward))
 		  {
-		    stack->setComment ((const char*) *PropertyType::pStraightUpward);
+		    stack->setComment ((const char*) *PropertyType::pUpward);
 		  }
-		else if (rel.is (PropertyType::pStraightDownward))
+		else if (rel.is (PropertyType::pDownward))
 		  {
-		    stack->setComment ((const char*) *PropertyType::pStraightDownward);
+		    stack->setComment ((const char*) *PropertyType::pDownward);
 		  }
-		else if (rel.is (PropertyType::pReverseUpward))
+		else if (rel.is (PropertyType::pInward))
 		  {
-		    stack->setComment ((const char*) *PropertyType::pReverseUpward);
+		    stack->setComment ((const char*) *PropertyType::pInward);
 		  }
-		else if (rel.is (PropertyType::pReverseDownward))
+		else if (rel.is (PropertyType::pOutward))
 		  {
-		    stack->setComment ((const char*) *PropertyType::pReverseDownward);
+		    stack->setComment ((const char*) *PropertyType::pOutward);
 		  }
 		annotation->addChild (stack);
 	      }
@@ -244,9 +244,12 @@ namespace mccore
 		bPair->setBondOrientation ((rel.is (PropertyType::pCis)
 					   ? PropertyType::pCis
 					   : PropertyType::pTrans)->toString ().c_str ());
-		bPair->setStrandOrientation ((rel.is (PropertyType::pStraight)
-					      ? "parallel"
-					      : "anti-parallel"));
+		bPair->setStrandOrientation ((rel.is (PropertyType::pParallel)
+					      ? PropertyType::pParallel
+					      : PropertyType::pAntiparallel)->toString ().c_str ());
+// 		bPair->setStrandOrientation ((rel.is (PropertyType::pStraight)
+// 					      ? "parallel"
+// 					      : "anti-parallel"));
 		for (labelsIt = labels.begin (); labels.end () != labelsIt; ++labelsIt)
 		  {
 		    const PropertyType *type = *labelsIt;
