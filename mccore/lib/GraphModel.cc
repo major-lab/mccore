@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // GraphModel.cc
-// Copyright © 2004, 2005 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
+// Copyright © 2004-06 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.15 $
-// $Id: GraphModel.cc,v 1.15 2005-12-12 21:40:13 thibaup Exp $
+// $Revision: 1.16 $
+// $Id: GraphModel.cc,v 1.16 2006-01-19 20:09:20 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -188,34 +188,34 @@ namespace mccore
   {
     if (! empty ())
       {
-	vector< Residue* > orig = vertices;
+	vector< Residue* > sortedv = vertices;
 	vector< int > origWeights = vertexWeights;
 	graphsuper::size_type vIndex;
 	graphsuper::size_type *corresp;
-	EV2ELabel origEdgeMap = ev2elabel;
+ 	EV2ELabel sortedEdgeMap;
 	EV2ELabel::iterator evIt;
 
-	std::sort (vertices.begin (), vertices.end (), less_deref< Residue > ());
-	corresp = new graphsuper::size_type[size ()];
-	for (vIndex = 0; vIndex < size () - 1; ++vIndex)
+	std::sort (sortedv.begin (), sortedv.end (), less_deref< Residue > ());
+	corresp = new graphsuper::size_type[vertices.size ()];
+	for (vIndex = 0; vIndex < sortedv.size (); ++vIndex)
 	  {
 	    graphsuper::size_type origIndex;
 
-	    origIndex = v2vlabel.find (&orig[vIndex])->second;
+	    origIndex = v2vlabel.find (&sortedv[vIndex])->second;
 	    corresp[origIndex] = vIndex;
 	    vertexWeights[vIndex] = origWeights[origIndex];
 	  }	
-	rebuildV2VLabel ();
-
-	ev2elabel.clear ();
-	for (evIt = origEdgeMap.begin (); origEdgeMap.end () != evIt; ++evIt)
+	for (evIt = ev2elabel.begin (); ev2elabel.end () != evIt; ++evIt)
 	  {
 	    const EndVertices &endVertices = evIt->first;
 	    EndVertices ev (corresp[endVertices.getHeadLabel ()],
 			    corresp[endVertices.getTailLabel ()]);
 
-	    ev2elabel.insert (make_pair (ev, evIt->second));
+	    sortedEdgeMap.insert (make_pair (ev, evIt->second));
 	  }
+	vertices = sortedv;
+	rebuildV2VLabel ();
+	ev2elabel = sortedEdgeMap;
 	delete[] corresp;
       }
   }
