@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Version.h
-// Copyright © 2005 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
+// Copyright © 2005-06 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal.
 // Author           : Philippe Thibault <philippe.thibault@umontreal.ca>
 // Created On       : Wed May 11 10:07:28 2005
-// $Revision: 1.3 $
-// $Id: Version.h,v 1.3 2005-08-30 13:16:47 thibaup Exp $
+// $Revision: 1.4 $
+// $Id: Version.h,v 1.4 2006-01-23 23:05:56 larosem Exp $
 // 
 
 
@@ -33,14 +33,9 @@ namespace mccore
   class Version 
   {
     /**
-     * Major version number: <major>.<minor>
+     * MC-Core version string.
      */
-    int major_version;
-
-    /**
-     * Minor version number: <major>.<minor>
-     */
-    int minor_version;
+    string version;
 
     /**
      * Current CPU architecture string.
@@ -91,16 +86,12 @@ namespace mccore
 
     // ACCESS ---------------------------------------------------------------
 
-    int getMajorVersion () const
-    {
-      return this->major_version;
-    }
-
-    int getMinorVersion () const
-    {
-      return this->minor_version;
-    }
-
+    /**
+     * Gets MC-Core version string.
+     * @return MC-Core version string.
+     */
+    const string& getVersion () const { return version; }
+    
     // METHODS --------------------------------------------------------------
 
     string toString () const;
