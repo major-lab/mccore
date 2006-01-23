@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@orage.IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:18:52 EDT
-// $Revision: 1.26 $
-// $Id: Binstream.cc,v 1.26 2005-12-16 17:38:28 thibaup Exp $
+// $Revision: 1.27 $
+// $Id: Binstream.cc,v 1.27 2006-01-23 22:06:25 larosem Exp $
 //
 // This file is part of mccore.
 // 
