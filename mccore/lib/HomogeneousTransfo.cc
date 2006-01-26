@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.23 $
-// $Id: HomogeneousTransfo.cc,v 1.23 2005-11-15 16:09:39 thibaup Exp $
+// $Revision: 1.24 $
+// $Id: HomogeneousTransfo.cc,v 1.24 2006-01-26 21:18:31 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -28,6 +28,7 @@
 #include <config.h>
 #endif
 
+#include <sstream>
 #include <iomanip>
 
 #include "Binstream.h"
@@ -442,7 +443,10 @@ namespace mccore
   {
     if ((matrix[3] + matrix[7] + matrix[11]) != 0.0)
     {
-      FatalIntLibException ex ("HomogeneousTransfo containing scale cannot be inverted.", __FILE__, __LINE__);
+      ostringstream oss;
+      oss << *this;
+      FatalIntLibException ex ("", __FILE__, __LINE__);
+      ex << "HomogeneousTransfo containing scale cannot be inverted:\n" << oss.str ();
       throw ex;
     }
 
