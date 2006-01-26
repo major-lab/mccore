@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Version.cc
-// Copyright © 2005-06 Laboratoire de Biologie Informatique et Théorique
-//                     Université de Montréal.
+// Copyright © 2005 Laboratoire de Biologie Informatique et Théorique
+//                  Université de Montréal.
 // Author           : Philippe Thibault <philippe.thibault@umontreal.ca>
 // Created On       : Wed May 11 10:07:28 2005
-// $Revision: 1.5 $
-// $Id: Version.cc,v 1.5 2006-01-23 23:05:54 larosem Exp $
+// $Revision: 1.6 $
+// $Id: Version.cc,v 1.6 2006-01-26 21:19:55 thibaup Exp $
 // 
 
 #ifdef HAVE_CONFIG_H
@@ -24,34 +24,50 @@ namespace mccore
 {
 
   Version::Version ()
-    : version (VERSION),
+    : major_no (-1),
+      minor_no (-1),
+      revision_no (-1),
       cpu (VERSION_CPU),
       vendor (VERSION_VENDOR),
-      os (VERSION_OS),
-      timestamp (((string) __DATE__) + " " + __TIME__)
-  { }
+      os (VERSION_OS)
+  {
+    istringstream iss (VERSION);
+    char dot;
+
+    iss >> this->major_no >> dot >> this->minor_no >> dot >> this->revision_no;
+
+    this->timestamp = __DATE__;
+    this->timestamp += " ";
+    this->timestamp += __TIME__;
+  }
   
 
   Version::Version (const Version& v)
-    : version (v.version),
+    : major_no (v.major_no),
+      minor_no (v.minor_no),
+      revision_no (v.revision_no),
       cpu (v.cpu),
       vendor (v.vendor),
       os (v.os),
       timestamp (v.timestamp)
-  { }
+  {
+
+  }
 
 
   Version&
   Version::operator= (const Version& v)
   {
     if (this != &v)
-      {
-	version = v.version;
-	cpu = v.cpu;
-	vendor = v.vendor;
-	os = v.os;
-	timestamp = v.timestamp;
-      }
+    {
+      this->major_no = v.major_no;
+      this->minor_no = v.minor_no;
+      this->revision_no = v.revision_no;
+      this->cpu = v.cpu;
+      this->vendor = v.vendor;
+      this->os = v.os;
+      this->timestamp = v.timestamp;
+    }
     return *this;
   }
 
@@ -59,41 +75,46 @@ namespace mccore
   bool
   Version::operator== (const Version& v) const
   {
-    return (version == v.version
-	    && cpu == v.cpu
-	    && vendor == v.vendor
-	    && os == v.os
-	    && timestamp == v.timestamp);
+    return 
+      this->major_no == v.major_no &&
+      this->minor_no == v.minor_no &&
+      this->revision_no == v.revision_no &&
+      this->cpu == v.cpu &&
+      this->vendor == v.vendor &&
+      this->os == v.os &&
+      this->timestamp == v.timestamp;
   }
-  
+
 
   string
   Version::toString () const
   {
-    return (((string) PACKAGE) + " " 
-	    + version + " "
-	    + cpu + " "
-	    + vendor + " "
-	    + os + " "
-	    + timestamp);
+    ostringstream oss;
+    oss << PACKAGE << " " 
+	<< this->major_no << "." << this->minor_no << "." << this->revision_no << " "
+	<< this->cpu << " "
+	<< this->vendor << " "
+	<< this->os << " "
+	<< this->timestamp;
+    return oss.str ();
   }
 
 
   ostream&
   Version::write (ostream& os) const
   {
-    return os << toString ();
+    return os << this->toString ();
   }
 
 
   oBinstream&
   Version::write (oBinstream& obs) const
   {
-    return obs << version
-	       << cpu
-	       << vendor
-	       << os
-	       << timestamp;
+    return obs << this->major_no << this->minor_no << this->revision_no
+	       << this->cpu
+	       << this->vendor
+	       << this->os
+	       << this->timestamp;
   }
 
 
@@ -102,20 +123,20 @@ namespace mccore
   {
     Version saved = *this;
 
-    version = cpu = vendor = os = timestamp = "unread";
-    ibs >> version
-	>> cpu 
-	>> vendor 
-	>> os
-	>> timestamp;
+    this->cpu = this->vendor = this->os = this->timestamp = "unread";
+    this->major_no = this->minor_no = this->revision_no = -1;
+    ibs >> this->major_no >> this->minor_no >> this->revision_no
+	>> this->cpu 
+	>> this->vendor 
+	>> this->os
+	>> this->timestamp;
 
     if (*this != saved)
-      {
-	gErr (4) << "Warning: reading data created from package version: " << endl
-		 << "\t" << *this << endl
-		 << "using package version: "
-		 << "\t" << saved << endl;
-      }
+      gErr (4) << "Warning: reading data created from package version: " << endl
+	       << "\t" << *this << endl
+	       << "using package version: "
+	       << "\t" << saved << endl;
+
     return ibs;
   }
 

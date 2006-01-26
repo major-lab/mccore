@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Version.h
-// Copyright © 2005-06 Laboratoire de Biologie Informatique et Théorique
-//                     Université de Montréal.
+// Copyright © 2005 Laboratoire de Biologie Informatique et Théorique
+//                  Université de Montréal.
 // Author           : Philippe Thibault <philippe.thibault@umontreal.ca>
 // Created On       : Wed May 11 10:07:28 2005
-// $Revision: 1.4 $
-// $Id: Version.h,v 1.4 2006-01-23 23:05:56 larosem Exp $
+// $Revision: 1.5 $
+// $Id: Version.h,v 1.5 2006-01-26 21:19:55 thibaup Exp $
 // 
 
 
@@ -26,34 +26,44 @@ namespace mccore
   class oBinstream;
 
   /**
-   * @short Library version manipulation
+   * @short Library version manipulation <major>.<minor>.<revision>
    * 
    * @author Philippe Thibault <philippe.thibault@umontreal.ca>
    */
   class Version 
   {
     /**
-     * MC-Core version string.
+     * Major version number: <major>.<minor>.<revision>
      */
-    string version;
+    short int major_no;
 
     /**
-     * Current CPU architecture string.
+     * Minor version number: <major>.<minor>.<revision>
+     */
+    short int minor_no;
+
+    /**
+     * Revision version number: <major>.<minor>.<revision>
+     */
+    short int revision_no;
+
+    /**
+     * CPU architecture string.
      */
     string cpu;
 
     /**
-     * Current vendor string.
+     * Vendor string.
      */
     string vendor;
 
     /**
-     * Current operating system name string.
+     * Operating system name string.
      */
     string os;
 
     /**
-     * Current building timestamp.
+     * Building timestamp.
      */
     string timestamp;
     
@@ -86,12 +96,21 @@ namespace mccore
 
     // ACCESS ---------------------------------------------------------------
 
-    /**
-     * Gets MC-Core version string.
-     * @return MC-Core version string.
-     */
-    const string& getVersion () const { return version; }
-    
+    int getMajor () const
+    {
+      return this->major_no;
+    }
+
+    int getMinor () const
+    {
+      return this->minor_no;
+    }
+
+    int getRevision () const
+    {
+      return this->revision_no;
+    }
+
     // METHODS --------------------------------------------------------------
 
     string toString () const;
