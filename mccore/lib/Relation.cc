@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Relation.cc
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.52 $
-// $Id: Relation.cc,v 1.52 2005-12-12 21:40:13 thibaup Exp $
+// $Revision: 1.53 $
+// $Id: Relation.cc,v 1.53 2006-02-23 16:35:00 gendrop Exp $
 // 
 // This file is part of mccore.
 // 
@@ -573,12 +573,10 @@ namespace mccore
 	vector< Residue::const_iterator > resn_at;
 	vector< Residue::const_iterator >::size_type x;
 	vector< Residue::const_iterator >::size_type y;
-	AtomSetAnd da (new AtomSetOr (new AtomSetSideChain (),
-				      new AtomSetOr (new AtomSetAtom (AtomType::aO2p),
-						     new AtomSetAtom (AtomType::aHO2p))),
+	AtomSetAnd da (new AtomSetSideChain (),
 		       new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M),
 						      new AtomSetAtom (AtomType::a3H5M))));
-	
+
 	node = 0;
 	graph.insert (node++, 1); // Source
 	graph.insert (node++, 1); // Sink
