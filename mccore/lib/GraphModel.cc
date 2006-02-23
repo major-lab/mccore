@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.16 $
-// $Id: GraphModel.cc,v 1.16 2006-01-19 20:09:20 larosem Exp $
+// $Revision: 1.16.2.1 $
+// $Id: GraphModel.cc,v 1.16.2.1 2006-02-23 21:50:21 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -29,6 +29,7 @@
 #endif
 
 #include <algorithm>
+#include <functional>
 #include <list>
 #include <map>
 #include <set>
@@ -44,12 +45,76 @@
 #include "Relation.h"
 #include "Residue.h"
 #include "ResidueFactoryMethod.h"
+#include "ResidueType.h"
 #include "ResId.h"
 
 
 
 namespace mccore
 {
+
+  /**
+   * Unary negate function.
+   *
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: GraphModel.cc,v 1.16.2.1 2006-02-23 21:50:21 larosem Exp $
+   */
+  template < class V , class VC >
+  class negate : public unary_function< V, bool >
+  {
+  public:
+
+    /**
+     * Negates the result of the unary function VC over value.
+     * @param value the value to test.
+     */
+    bool operator() (const V &value) const
+    {
+      return ! VC ().operator() (value);
+    }
+    
+  };
+
+
+  class isAminoAcid : public unary_function< ResidueType, bool >
+  {
+  public:
+    bool operator() (const ResidueType *value) const
+    {
+      return value->isAminoAcid ();
+    }
+  };
+
+
+  class isNucleicAcid : public unary_function< ResidueType, bool >
+  {
+  public:
+    bool operator() (const ResidueType *value) const
+    {
+      return value->isNucleicAcid ();
+    }
+  };
+
+
+  class isRNA : public unary_function< ResidueType, bool >
+  {
+  public:
+    bool operator() (const ResidueType *value) const
+    {
+      return value->isRNA ();
+    }
+  };
+
+
+  class isDNA : public unary_function< ResidueType, bool >
+  {
+  public:
+    bool operator() (const ResidueType *value) const
+    {
+      return value->isDNA ();
+    }
+  };
+
 
   GraphModel::GraphModel (const AbstractModel &right, const ResidueFactoryMethod *fm)
     : AbstractModel (fm),
@@ -222,6 +287,48 @@ namespace mccore
   
     
   void
+  GraphModel::removeAminoAcid ()
+  {
+    keepTemplate< negate< const ResidueType*, isAminoAcid > > ();
+  }
+
+
+  void
+  GraphModel::removeNucleicAcid ()
+  {
+    keepTemplate< negate< const ResidueType*, isNucleicAcid > > ();
+  }
+
+
+  void
+  GraphModel::keepAminoAcid ()
+  {
+    keepTemplate< isAminoAcid > ();
+  }
+
+
+  void
+  GraphModel::keepNucleicAcid ()
+  {
+    keepTemplate< isNucleicAcid > ();
+  }
+
+
+  void
+  GraphModel::keepRNA ()
+  {
+    keepTemplate< isRNA > ();
+  }
+
+
+  void
+  GraphModel::keepDNA ()
+  {
+    keepTemplate< isDNA > ();
+  }
+
+
+  void
   GraphModel::clear ()
   {
     graphsuper::iterator vIt;
@@ -245,12 +352,10 @@ namespace mccore
   {
     if (! annotated)
       {
-// 	edge_iterator eIt;
 	vector< Relation* >::iterator eIt;
 	vector< pair< AbstractModel::iterator, AbstractModel::iterator > > contacts;
 	vector< pair< AbstractModel::iterator, AbstractModel::iterator > >::iterator l;
 
-// 	for (eIt = edge_begin (); edge_end () != eIt; ++eIt)
 	for (eIt = edges.begin (); edges.end () != eIt; ++eIt)
 	  {
 	    delete *eIt;

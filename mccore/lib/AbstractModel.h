@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // AbstractModel.h
-// Copyright © 2004, 2005 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
+// Copyright © 2004-06 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 16:12:42 2004
-// $Revision: 1.7 $
+// $Revision: 1.7.2.1 $
 //
 // This file is part of mccore.
 // 
@@ -52,7 +52,7 @@ namespace mccore
    * Abstract class for Models.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: AbstractModel.h,v 1.7 2005-06-23 19:05:54 larosem Exp $
+   * @version $Id: AbstractModel.h,v 1.7.2.1 2006-02-23 21:50:16 larosem Exp $
    */
   class AbstractModel
   {
@@ -402,48 +402,48 @@ namespace mccore
     /**
      * Removes the optional atoms within the residues.
      */
-    void removeOptionals ();
+    virtual void removeOptionals ();
 
     /**
      * Removes the amino acids from the model.
      */
-    void removeAminoAcid ();    
+    virtual void removeAminoAcid ();    
 
     /**
      * Removes the nucleic acids from the model.
      */
-    void removeNucleicAcid ();
+    virtual void removeNucleicAcid ();
 
     /**
      * Removes the water from the model.
      */
-    void removeWater ();
+    virtual void removeWater ();
 
     /**
      * Removes every residue that is not an amino acid.
      */
-    void keepAminoAcid ();
+    virtual void keepAminoAcid ();
 
     /**
      * Removes every residue that is not a nucleic acid.
      */
-    void keepNucleicAcid ();
+    virtual void keepNucleicAcid ();
 
     /**
      * Removes every residue that is not RNA.
      */
-    void keepRNA ();
+    virtual void keepRNA ();
 
     /**
      * Removes every residue that is not DNA.
      */
-    void keepDNA ();
+    virtual void keepDNA ();
 
     /**
      * Removes every residue that is not of the specified type family.
      * @param rtype type family.
      */
-    void keep (const ResidueType* rtype);
+    virtual void keep (const ResidueType* rtype);
 
     // I/O  -----------------------------------------------------------------
 
