@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // GraphModel.h
-// Copyright © 2004-05 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2004-06 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:31:01 2004
-// $Revision: 1.13 $
+// $Revision: 1.14 $
 // 
 // This file is part of mccore.
 // 
@@ -41,9 +41,10 @@ using namespace std;
 
 namespace mccore
 {
+  class Molecule;
   class Relation;
   class ResidueFactoryMethod;
-  class Molecule;
+  class ResidueType;
 
   
   
@@ -53,7 +54,7 @@ namespace mccore
    * iterators.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.h,v 1.13 2005-12-12 21:40:13 thibaup Exp $
+   * @version $Id: GraphModel.h,v 1.14 2006-02-24 15:38:07 larosem Exp $
    */
   class GraphModel : public AbstractModel, public OrientedGraph< Residue*, Relation*, int, int, less_deref< Residue > >
   {
@@ -303,6 +304,116 @@ namespace mccore
      */ 
     virtual void sort ();
     
+    /**
+     * Removes the amino acids from the model.  If the
+     * GraphModel is already annotated, it rearrange the adjacency graph.
+     * The edge order may change.
+     */
+    virtual void removeAminoAcid ();    
+
+    /**
+     * Removes the nucleic acids from the model.  If the
+     * GraphModel is already annotated, it rearrange the adjacency graph.
+     * The edge order may change.
+     */
+    virtual void removeNucleicAcid ();
+
+    /**
+     * Removes every residue that is not an amino acid.  If the
+     * GraphModel is already annotated, it rearrange the adjacency graph.
+     * The edge order may change.
+     */
+    virtual void keepAminoAcid ();
+
+    /**
+     * Removes every residue that is not a nucleic acid.  If the
+     * GraphModel is already annotated, it rearrange the adjacency graph.
+     * The edge order may change.
+     */
+    virtual void keepNucleicAcid ();
+
+    /**
+     * Removes every residue that is not RNA.  If the GraphModel is already
+     * annotated, it rearrange the adjacency graph.  The edge order may
+     * change.
+     */
+    virtual void keepRNA ();
+
+    /**
+     * Removes every residue that is not DNA.  If the GraphModel is already
+     * annotated, it rearrange the adjacency graph.  The edge order may
+     * change.
+     */
+    virtual void keepDNA ();
+
+  private:
+
+    /**
+     * Template function used by removeAminoAcid, removeNucleicAcid,
+     * keepAminoAcid, keepNucleicAcid, keepRNA and keepDNA.  If the
+     * GraphModel is already annotated, it rearrange the adjacency graph.
+     * The edge order may change.
+     */
+    template < class V >
+    void keepTemplate ()
+    {
+      if (! empty ())
+	{
+	  vector< Residue* > newv;
+	  vector< int > newweights;
+	  const graphsuper::size_type sz = size ();
+	  graphsuper::size_type vIndex;
+	  graphsuper::size_type *corresp;
+	  vector< bool > marks;
+	  EV2ELabel newEdgeMap;
+	  EV2ELabel::iterator evIt;
+	  vector< Relation* > newe;
+	  vector< int > newew;
+
+	  corresp = new graphsuper::size_type[vertices.size ()];
+	  for (vIndex = 0; vIndex < sz; ++vIndex)
+	    {
+	      bool value = V ().operator () (vertices[vIndex]->getType ());
+
+	      corresp[vIndex] = newv.size ();
+	      marks.push_back (value);
+	      if (value)
+		{
+		  newv.push_back (vertices[vIndex]);
+		  newweights.push_back (vertexWeights[vIndex]);
+		}
+	    }
+	  for (evIt = ev2elabel.begin (); ev2elabel.end () != evIt; ++evIt)
+	    {
+	      const EndVertices &endVertices = evIt->first;
+
+	      if (marks[endVertices.getHeadLabel ()]
+		  && marks[endVertices.getTailLabel ()])
+		{
+		  EndVertices ev (corresp[endVertices.getHeadLabel ()],
+				  corresp[endVertices.getTailLabel ()]);
+
+		  newEdgeMap.insert (make_pair (ev, newe.size ()));
+		  newe.push_back (edges[evIt->second]);
+		  newew.push_back (edgeWeights[evIt->second]);
+		}
+	      else
+		{
+		  delete edges[evIt->second];
+		}
+	    }
+	  vertices = newv;
+	  vertexWeights = newweights;
+	  rebuildV2VLabel ();
+	  edges = newe;
+	  edgeWeights = newew;
+	  ev2elabel = newEdgeMap;
+	  delete[] corresp;
+	}
+    }
+
+  public:
+
     /**
      * Returns the number of residues present in the model.
      * @return a number of residues.
