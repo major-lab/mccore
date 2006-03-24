@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // Graph.h
-// Copyright © 2004-05 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2006 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Martin Larose
-// Created On       : Fri Dec 10 00:05:15 2004
-// $Revision: 1.27 $
+// Created On       : Mon Mar 6 00:05:15 2006
+// $Revision: 1.27.4.1 $
 // 
 // This file is part of mccore.
 // 
@@ -28,254 +28,82 @@
 
 #include <iomanip>
 #include <iostream>
+#include <functional>
+#include <ext/hash_map>
 #include <list>
 #include <map>
+#include <set>
 #include <utility>
 #include <vector>
 
 #include "Algo.h"
-#include "Exception.h"
 // #include "Path.h"
 
-using namespace std;
-
+using namespace __gnu_cxx;
 
 
 namespace mccore
 {
   /**
-   * Abstract class for the graph classes.  Removing vertices or edges are
+   * Abstract class for the graph classes.  Removing vertices or edges is
    * costly.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Graph.h,v 1.27 2005-08-05 15:53:53 larosem Exp $
+   * @version $Id: Graph.h,v 1.27.4.1 2006-03-24 18:36:55 larosem Exp $
    */
-  template< class V,
-	    class E,
-	    class VW = float,
-	    class EW = float,
-	    class Vertex_Comparator = less< V > >	    
+  template< typename V, typename E, typename VW = float, typename EW = float,
+	    typename Vertex_Comparator = std::less< V > >
   class Graph
   {
     
   public:
 
-    typedef typename vector< V >::iterator iterator;
-    typedef typename vector< V >::const_iterator const_iterator;
-    typedef typename vector< V >::size_type size_type;
-    typedef typename vector< V >::size_type label;
-    typedef typename vector< E >::iterator edge_iterator;
-    typedef typename vector< E >::const_iterator edge_const_iterator;
-    typedef typename vector< E >::size_type edge_size_type;
-    typedef typename vector< E >::size_type edge_label;
-    
-  public:
-    
-    /**
-     * Stores the endvertices labels.
-     *
-     * @author Martin Larose (<a href="mailto:larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-     */
-    class EndVertices
-    {
-      /**
-       * The head vertex label.
-       */
-      label head;
-
-      /**
-       * The tail vertex label.
-       */
-      label tail;
-
-      // LIFECYCLE ------------------------------------------------------------
-      
-      /**
-       * Initializes the object;
-       */
-      EndVertices () { }
-
-    public:
-
-      /**
-       * Initializes the object with head and tail vertices labels.
-       * @param head the head label.
-       * @param tail the tail label.
-       */
-      EndVertices (label head, label tail)
-	: head (head), tail (tail)
-      { }
-
-      /**
-       * Initializes the object with right's content.
-       * @param right the endvertices to copy.
-       */
-      EndVertices (const EndVertices &right)
-	: head (right.head), tail (right.tail)
-      { }
-
-      /**
-       * Destroys the object.
-       */
-      ~EndVertices () { }
-
-      // OPERATORS ------------------------------------------------------------
-
-    protected:
-
-      /**
-       * Assigns the endvertices with the right's content.
-       * @param right the endvertices to copy.
-       * @return this.
-       */
-      EndVertices& operator= (const EndVertices &right)
-      {
-	if (this != &right)
-	  {
-	    head = right.head;
-	    tail = right.tail;
-	  }
-	return *this;
-      }
-
-    public:
-      
-      /**
-       * Tests whether this equals right.
-       * @param right the endvertices to compare.
-       * @return true if the endvertices labels are equal.
-       */
-      bool operator== (const EndVertices &right) const
-      {
-	return head == right.head && tail == right.tail;
-      }
-
-      /**
-       * Tests whether this differs from right.
-       * @param right the endvertices to compare.
-       * @return true if the endvertices labels differs.
-       */
-      bool operator!= (const EndVertices &right) const
-      {
-	return ! operator== (right);
-      }
-
-      /**
-       * Tests whether this is less than right.
-       * @param right the endvertices to compare.
-       * @return true if this is less than right.
-       */
-      bool operator< (const EndVertices &right) const
-      {
-	return (head < right.head
-		|| (head == right.head
-		    && tail < right.tail));
-      }
-
-      // ACCESS ---------------------------------------------------------------
-      
-      /**
-       * Gets the head vertex.
-       * @return the head vertex.
-       * @exception NoSuchElementException if the head label is outside the
-       * vertex container.
-       */
-      V& getHeadVertex () throw (NoSuchElementException)
-      {
-	if (vertices.size () <= head)
-	  {
-	    throw NoSuchElementException ();
-	  }
-	return vertices[head];
-      }
-
-      /**
-       * Gets the head vertex.
-       * @return the head vertex.
-       * @exception NoSuchElementException if the head label is outside the
-       * vertex container.
-       */
-      const V& getHeadVertex () const throw (NoSuchElementException)
-      {
-	if (vertices.size () <= head)
-	  {
-	    throw NoSuchElementException ();
-	  }
-	return vertices[head];
-      }
-
-      /**
-       * Gets the tail vertex.
-       * @return the tail vertex.
-       * @exception NoSuchElementException if the tail label is outside the
-       * vertex container.
-       */
-      V& getTailVertex () throw (NoSuchElementException)
-      {
-	if (vertices.size () <= tail)
-	  {
-	    throw NoSuchElementException ();
-	  }
-	return vertices[tail];
-      }
-
-      /**
-       * Gets the tail vertex.
-       * @return the tail vertex.
-       * @exception NoSuchElementException if the tail label is outside the
-       * vertex container.
-       */
-      const V& getTailVertex () const throw (NoSuchElementException)
-      {
-	if (vertices.size () <= tail)
-	  {
-	    throw NoSuchElementException ();
-	  }
-	return vertices[tail];
-      }
-
-      /**
-       * Gets the head label.
-       * @return the head label.
-       */
-      label getHeadLabel () const { return head; }
-
-      /**
-       * Gets the tail label.
-       * @return the tail label.
-       */
-      label getTailLabel () const { return tail; }
-
-      // METHODS --------------------------------------------------------------
-      
-      // I/O  -----------------------------------------------------------------
-
-    };
+    typedef V                     vertex;
+    typedef typename std::vector< vertex >::iterator iterator;
+    typedef typename std::vector< vertex >::const_iterator const_iterator;
+    typedef typename std::vector< vertex >::size_type size_type;
+    typedef typename std::vector< vertex >::size_type label;
+    typedef VW                    vertex_weight;
+    typedef typename std::vector< vertex_weight >::iterator vweight_iterator;
+    typedef typename std::vector< vertex_weight >::const_iterator vweight_const_iterator;
+    typedef typename std::vector< vertex_weight >::size_type vweight_size_type;
+    typedef typename std::vector< vertex_weight >::size_type vweight_label;
+    typedef E                     edge;
+    typedef typename std::vector< edge >::iterator edge_iterator;
+    typedef typename std::vector< edge >::const_iterator edge_const_iterator;
+    typedef typename std::vector< edge >::size_type edge_size_type;
+    typedef typename std::vector< edge >::size_type edge_label;
+    typedef EW                    edge_weight;
+    typedef typename std::vector< edge_weight >::iterator eweight_iterator;
+    typedef typename std::vector< edge_weight >::const_iterator eweight_const_iterator;
+    typedef typename std::vector< edge_weight >::size_type eweight_size_type;
+    typedef typename std::vector< edge_weight >::size_type eweight_label;
 
   protected:
-
-    typedef map< EndVertices, label > EV2ELabel;
-    typedef map< const V*, label, less_deref< V, Vertex_Comparator > > V2VLabel;
+    
+    typedef std::map< const vertex*, label, less_deref< vertex, Vertex_Comparator > > V2VLabel;
+    typedef hash_map< label, edge_label > InnerMap;
+    typedef hash_map< label, InnerMap > EV2ELabel;
     
     /**
      * The vertex collection.
      */
-    vector< V > vertices;
+    std::vector< vertex > vertices;
 
     /**
      * The vertex weight collection.
      */
-    vector< VW > vertexWeights;
+    std::vector< vertex_weight > vertexWeights;
 
     /**
      * The edge collection.
      */
-    vector< E > edges;
+    std::vector< edge > edges;
 
     /**
      * The edge weight collection.
      */
-    vector< EW > edgeWeights;
+    std::vector< edge_weight > edgeWeights;
 
     /**
      * The map between the vertices and their label.
@@ -300,7 +128,8 @@ namespace mccore
      * Clones the object.
      * @return a copy of the object.
      */
-    virtual Graph< V, E, VW, EW, Vertex_Comparator >* cloneGraph () const = 0;
+    virtual Graph* cloneGraph () const = 0;
+//     virtual Graph< vertex, edge, vertex_weight, edge_weight, Vertex_Comparator >* cloneGraph () const = 0;
 
     /**
      * Destroys the object.
@@ -339,7 +168,8 @@ namespace mccore
      * @param right a graph to compare with this.
      * @return whether the graphs are equals.
      */
-    bool operator== (const Graph< V, E, VW, EW, Vertex_Comparator > &right) const
+    bool operator== (const Graph &right) const
+//     bool operator== (const Graph< vertex, edge, vertex_weight, edge_weight, Vertex_Comparator > &right) const
     {
       return (this == &right
 	      || (vertices == right.vertices
@@ -354,7 +184,8 @@ namespace mccore
      * @param right a graph to compare with this.
      * @return whether the graphs differs.
      */
-    bool operator!= (const Graph< V, E, VW, EW, Vertex_Comparator > &right) const
+    bool operator!= (const Graph &right) const
+//     bool operator!= (const Graph< vertex, edge, vertex_weight, edge_weight, Vertex_Comparator > &right) const
     {
       return ! operator== (right);
     }
@@ -362,210 +193,28 @@ namespace mccore
     // ACCESS ---------------------------------------------------------------
 
     /**
-     * Gets the vertex weight.
-     * @param v the vertex.
-     * @return the vertex weight.
-     * @exception NoSuchElementException if the graph does not contain the
-     * vertex.
-     */
-    VW& getVertexWeight (const V &v) throw (NoSuchElementException)
-    {
-      typename V2VLabel::const_iterator it;
-
-      if (v2vlabel.end () == (it = v2vlabel.find (&v)))
-	{
-	  throw NoSuchElementException ();
-	}
-      return vertexWeights[it->second];
-    }
-      
-    /**
-     * Gets the vertex weight.
-     * @param v the vertex.
-     * @return the vertex weight.
-     * @exception NoSuchElementException if the graph does not contain the
-     * vertex.
-     */
-    const VW& getVertexWeight (const V &v) const throw (NoSuchElementException)
-    {
-      typename V2VLabel::const_iterator it;
-
-      if (v2vlabel.end () == (it = v2vlabel.find (&v)))
-	{
-	  throw NoSuchElementException ();
-	}
-      return vertexWeights[it->second];
-    }
-    
-    /**
-     * Sets the vertex weight.
-     * @param v the vertex.
-     * @param w the vertex weight.
-     * @exception NoSuchElementException if the graph does not contain the
-     * vertex.
-     */
-    void setVertexWeight (const V &v, const VW &w) throw (NoSuchElementException)
-    {
-      typename V2VLabel::const_iterator it;
-      
-      if (v2vlabel.end () == (it = v2vlabel.find (&v)))
-	{
-	  throw NoSuchElementException ();
-	}
-      vertexWeights[it->second] = w;
-    }
-      
-    /**
-     * Gets the edge that exists between vertices h and t.
-     * @param h the head of the edge.
-     * @param t the tail of the edge.
-     * @return the edge.
-     * @exception NoSuchElementException if the graph does not contain the
-     * vertices or the edge.
-     */
-    E& getEdge (const V &h, const V &t) throw (NoSuchElementException)
-    {
-      typename V2VLabel::const_iterator ith;
-      typename V2VLabel::const_iterator itt;
-      typename EV2ELabel::const_iterator ite;
-
-      if (v2vlabel.end () == (ith = v2vlabel.find (&h))
-	  || v2vlabel.end () == (itt = v2vlabel.find (&t)))
-	{
-	  throw NoSuchElementException ();
-	}
-      EndVertices ev (ith->second, itt->second);
-      if (ev2elabel.end () == (ite = ev2elabel.find (ev)))
-	{
-	  throw NoSuchElementException ();
-	}
-      return edges[ite->second];
-    }
-
-    /**
-     * Gets the edge between vertices h and t.
-     * @param h the head of the edge.
-     * @param t the tail of the edge.
-     * @return the edge.
-     * @exception NoSuchElementException if the graph does not contain the
-     * vertices or the edge.
-     */
-    const E& getEdge (const V &h, const V &t) const throw (NoSuchElementException)
-    {
-      typename V2VLabel::const_iterator ith;
-      typename V2VLabel::const_iterator itt;
-      typename EV2ELabel::const_iterator ite;
-
-      if (v2vlabel.end () == (ith = v2vlabel.find (&h))
-	  || v2vlabel.end () == (itt = v2vlabel.find (&t)))
-	{
-	  throw NoSuchElementException ();
-	}
-      EndVertices ev (ith->second, itt->second);
-      if (ev2elabel.end () == (ite = ev2elabel.find (ev)))
-	{
-	  throw NoSuchElementException ();
-	}
-      return edges[ite->second];
-    }
-
-    /**
-     * Gets the edge weight between vertices h and t.
-     * @param h the head of the edge.
-     * @param t the tail of the edge.
-     * @return the edge weight.
-     * @exception NoSuchElementException if the graph does not contain the
-     * vertices or the edge.
-     */
-    EW& getEdgeWeight (const V &h, const V &t) throw (NoSuchElementException)
-    {
-      typename V2VLabel::const_iterator ith;
-      typename V2VLabel::const_iterator itt;
-      typename EV2ELabel::const_iterator ite;
-
-      if (v2vlabel.end () == (ith = v2vlabel.find (&h))
-	  || v2vlabel.end () == (itt = v2vlabel.find (&t)))
-	{
-	  throw NoSuchElementException ();
-	}
-      EndVertices ev (ith->second, itt->second);
-      if (ev2elabel.end () == (ite = ev2elabel.find (ev)))
-	{
-	  throw NoSuchElementException ();
-	}
-      return edgeWeights[ite->second];
-    }
-    
-    /**
-     * Gets the edge weight between vertices h and t.
-     * @param h the head of the edge.
-     * @param t the tail of the edge.
-     * @return the edge weight.
-     * @exception NoSuchElementException if the graph does not contain the
-     * vertices or the edge.
-     */
-    const EW& getEdgeWeight (const V &h, const V &t) const throw (NoSuchElementException)
-    {
-      typename V2VLabel::const_iterator ith;
-      typename V2VLabel::const_iterator itt;
-      typename EV2ELabel::const_iterator ite;
-
-      if (v2vlabel.end () == (ith = v2vlabel.find (&h))
-	  || v2vlabel.end () == (itt = v2vlabel.find (&t)))
-	{
-	  throw NoSuchElementException ();
-	}
-      EndVertices ev (ith->second, itt->second);
-      if (ev2elabel.end () == (ite = ev2elabel.find (ev)))
-	{
-	  throw NoSuchElementException ();
-	}
-      return edgeWeights[ite->second];
-    }
-    
-    /**
-     * Sets the edge weight betwee endvertices h and t.
-     * @param h the head vertex.
-     * @param t the tail vertex.
-     * @param w the new weight.
-     * @exception NoSuchElementException if the graph does not contain the
-     * vertices or the edge.
-     */
-    void setEdgeWeight (const V &h, const V &t, const EW &w) throw (NoSuchElementException)
-    {
-      typename V2VLabel::const_iterator ith;
-      typename V2VLabel::const_iterator itt;
-      typename EV2ELabel::const_iterator ite;
-
-      if (v2vlabel.end () == (ith = v2vlabel.find (&h))
-	  || v2vlabel.end () == (itt = v2vlabel.find (&t)))
-	{
-	  throw NoSuchElementException ();
-	}
-      EndVertices ev (ith->second, itt->second);
-      if (ev2elabel.end () == (ite = ev2elabel.find (ev)))
-	{
-	  throw NoSuchElementException ();
-	}
-      edgeWeights[ite->second] = w;
-    }
-    
-    /**
      * Gets the vertex label.
      * @param v the vertex.
-     * @return the vertex label.
-     * @exception NoSuchElementException if the graph does not contain the
-     * vertex.
+     * @return the vertex label or Graph.size () if the vertex is not in
+     * the graph.
      */
-    label getVertexLabel (const V &v) const throw (NoSuchElementException)
+    label getVertexLabel (const vertex &v) const
     {
-      typename V2VLabel::const_iterator it;
-
-      if (v2vlabel.end () == (it = v2vlabel.find (&v)))
-	{
-	  throw NoSuchElementException ();
-	}
-      return it->second;
+      typename V2VLabel::const_iterator result;
+      
+      return ((result = v2vlabel.find (&v)) != v2vlabel.end ()
+	      ? result->second
+	      : size ());
+    }
+    
+    /**
+     * Gets the edge label whose endvertices are h and t.
+     * @param v the vertex.
+     * @return the edge label or edge_size () if no edge connects h and t.
+     */
+    edge_label getEdgeLabel (const vertex &h, const vertex &t) const
+    {
+      return internalGetEdgeLabel (getVertexLabel (h), getVertexLabel (t));
     }
     
     /**
@@ -573,9 +222,9 @@ namespace mccore
      * @param v the vertex to find.
      * @return true if the vertex v is in the graph.
      */
-    bool contains (const V &v) const
+    bool contains (const vertex &v) const
     {
-      return v2vlabel.end () != v2vlabel.find (&v);
+      return end () != find (v);
     }
 
     /**
@@ -584,299 +233,228 @@ namespace mccore
      * @param t an extremity of the edge.
      * @return true if there exists an edge between vertices h and t.
      */
-    bool areConnected (const V &h, const V &t) const
+    bool areConnected (const vertex &h, const vertex &t) const
     {
-      typename V2VLabel::const_iterator ith;
-      typename V2VLabel::const_iterator itt;
-
-      if (v2vlabel.end () != (ith = v2vlabel.find (&h))
-	  && v2vlabel.end () != (itt = v2vlabel.find (&t)))
-	{
-	  EndVertices ev (ith->second, itt->second);
-
-	  return ev2elabel.end () != ev2elabel.find (ev);
-	}
-      return false;
+      return edgeSize () > getEdgeLabel (h, t);
     }      
     
     /**
-     * Returns the neighbors of the given vertex sorted over their label. An
-     * empty list is returned if the vertex has no neighbors or if the graph
-     * does not contain the vertex.
+     * Returns the neighbors of the given vertex. An empty list is returned
+     * if the vertex has no neighbors or if the graph does not contain the
+     * vertex. Vertex order is unsorted and may change on graph modification.
      * @param v a vertex in the graph.
      * @return the list of neighbors.
      */
-    virtual list< V > neighborhood (const V &v) = 0;
-    
+    virtual std::list< vertex > neighborhood (const vertex &v)
+    {
+      std::list< vertex > res;
+      typename EV2ELabel::const_iterator evit;
+      
+      if (((typename EV2ELabel::const_iterator) ev2elabel.end ()) != (evit = ev2elabel.find (getVertexLabel (v))))
+	{
+	  const InnerMap &im = evit->second;
+	  typename InnerMap::const_iterator imit;
+
+	  for (imit = im.begin (); im.end () != imit; ++imit)
+	    {
+	      res.push_back (*internalFind (imit->first));
+	    }
+	}
+      return res;
+    }	  
+
     /**
-     * Returns a increasing label list of the neighbors of the given vertex
-     * label.  An empty list is returned if the label has no neighbor or if
-     * it is not contained in the graph.
+     * Returns a label list of the out-neighbors of the given vertex label.
+     * An empty list is returned if the label has no neighbor or if it is
+     * not contained in the graph. Labels order is unsorted and may change
+     * on graph modification.
      * @param l the vertex label.
-     * @return the list of neighbors.
+     * @return the list of connected labels to l.
      */
-    virtual list< label > internalNeighborhood (label l) const = 0;
-    
+    virtual list< label > internalNeighborhood (label l) const
+    {
+      list< label > res;
+      typename EV2ELabel::const_iterator evit;
+      
+      if (((typename EV2ELabel::const_iterator) ev2elabel.end ()) != (evit = ev2elabel.find (l)))
+	{
+	  const InnerMap &im = evit->second;
+	  typename InnerMap::const_iterator imit;
+
+	  for (imit = im.begin (); im.end () != imit; ++imit)
+	    {
+	      res.push_back (imit->first);
+	    }
+	}
+      return res;
+    }	  
+
     /**
-     * Gets a vertex given its label.
+     * Finds a vertex whose label is l or end () if the graph does not
+     * contain this label.
      * @param l the vertex label.
      * @return the vertex.
-     * @exception NoSuchElementException if the graph does not contain the
-     * label.
      */
-    V& internalGetVertex (Graph::label l) throw (NoSuchElementException)
+    iterator internalFind (label l)
     {
-      if (vertices.size () <= l)
-	{
-	  throw NoSuchElementException ();
-	}
-      return vertices[l];
+      return (size () > l ? vertices.begin () + l : end ());
     }
 
     /**
-     * Gets a vertex given its label.
+     * Finds a vertex whose label is l or end () if the graph does not
+     * contain this label.
      * @param l the vertex label.
      * @return the vertex.
-     * @exception NoSuchElementException if the graph does not contain the
-     * label.
      */
-    const V& internalGetVertex (Graph::label l) const throw (NoSuchElementException)
+    const_iterator internalFind (label l) const
     {
-      if (vertices.size () <= l)
-	{
-	  throw NoSuchElementException ();
-	}
-      return vertices[l];
+      return (size () > l ? vertices.begin () + l : end ());
     }
 
     /**
-     * Gets the vertex label weight.
+     * Finds a vertex weight whose label is l or end () if the graph does not
+     * contain this label.
      * @param l the vertex label.
      * @return the vertex weight.
-     * @exception NoSuchElementException if the graph does not contain the
-     * label.
      */
-    VW& internalGetVertexWeight (Graph::label l) throw (NoSuchElementException)
+    vweight_iterator internalFindWeight (label l)
     {
-      if (vertexWeights.size () <= l)
-	{
-	  throw NoSuchElementException ();
-	}
-      return vertexWeights[l];
+      return (size () > l ? vertexWeights.begin () + l : vweight_end ());
     }
 
     /**
-     * Gets the vertex label weight.
+     * Finds a vertex weight whose label is l or end () if the graph does not
+     * contain this label.
      * @param l the vertex label.
      * @return the vertex weight.
-     * @exception NoSuchElementException if the graph does not contain the
-     * label.
      */
-    const VW& internalGetVertexWeight (Graph::label l) const throw (NoSuchElementException)
+    vweight_const_iterator internalFindWeight (label l) const
     {
-      if (vertexWeights.size () <= l)
-	{
-	  throw NoSuchElementException ();
-	}
-      return vertexWeights[l];
+      return (size () > l ? vertexWeights.begin () + l : vweight_end ());
     }
     
     /**
-     * Sets the vertex label weight.
-     * @param l the vertex label.
-     * @param w the new vertex weight.
-     * @exception NoSuchElementException if the graph does not contain the
-     * label.
+     * Gets the edge label between endvertices labels h and t. 
+     * @param h the head label of the edge.
+     * @param t the tail label of the edge.
+     * @return the edge label or graph.edge_size () if no edges exists between
+     * h and t.
      */
-    void internalSetVertexWeight (Graph::label l, const VW &w) throw (NoSuchElementException)
+    edge_label internalGetEdgeLabel (label h, label t) const
     {
-      if (vertexWeights.size () <= l)
+      typename EV2ELabel::const_iterator headIt;
+
+      if (((typename EV2ELabel::const_iterator) ev2elabel.end ()) != (headIt = ev2elabel.find (h)))
 	{
-	  throw NoSuchElementException ();
+	  const InnerMap &im = headIt->second;
+	  typename InnerMap::const_iterator tailIt;
+
+	  if (im.end () != (tailIt = im.find (t)))
+	    {
+	      return tailIt->second;
+	    }
 	}
-      vertexWeights[l] = w;
+      return edges.size ();
     }
     
     /**
-     * Gets the edge given its label.
-     * @param l the edge label.
-     * @return the edge.
-     * @exception NoSuchElementException if the graph does not contain the
-     * label.
-     */
-    E& internalGetEdge (Graph::edge_label l) throw (NoSuchElementException)
-    {
-      if (edges.size () <= l)
-	{
-	  throw NoSuchElementException ();
-	}
-      return edges[l];
-    }
-    
-    /**
-     * Gets the edge given its label.
-     * @param l the edge label.
-     * @return the edge.
-     * @exception NoSuchElementException if the graph does not contain the
-     * label.
-     */
-    const E& internalGetEdge (Graph::edge_label l) const throw (NoSuchElementException)
-    {
-      if (edges.size () <= l)
-	{
-	  throw NoSuchElementException ();
-	}
-      return edges[l];
-    }
-    
-    /**
-     * Gets the edge given its endvertices label.
+     * Finds an edge whose endlabels are h and t or edge_end () if no edge
+     * connects h and t.
      * @param h the endvertices head label.
      * @param t the endvertices tail label.
      * @return the edge.
-     * @exception NoSuchElementException if the graph does not contain the
-     * label.
      */
-    const E& internalGetEdge (Graph::label h, Graph::label t) const throw (NoSuchElementException)
+    edge_iterator internalFind (label h, label t)
     {
-      typename EV2ELabel::const_iterator evit;
-      EndVertices ev (h, t);
-      
-      if (vertices.size () <= h
-	  || vertices.size () <= t
-	  || ev2elabel.end () == (evit = ev2elabel.find (ev)))
-	{
-	  throw NoSuchElementException ();
-	}
-      return edges[evit->second];
+      return edges.begin () + internalGetEdgeLabel (h, t);
     }
     
     /**
-     * Gets the edge label between endvertices labels h and t.
-     * @param h the head label of the edge.
-     * @param t the tail label of the edge.
-     * @return the edge label.
-     * @exception NoSuchElementException if the graph does not contain the
-     * labels or the vertices are not connected.
+     * Finds an edge whose endlabels are h and t or edge_end () if no edge
+     * connects h and t.
+     * @param h the endvertices head label.
+     * @param t the endvertices tail label.
+     * @return the edge.
      */
-    edge_label internalGetEdgeLabel (label h, label t) const throw (NoSuchElementException)
+    edge_const_iterator internalFind (label h, label t) const
     {
-      typename EV2ELabel::const_iterator evit;
-      EndVertices ev (h, t);
-      
-      if (vertices.size () <= h
-	  || vertices.size () <= t
-	  || ev2elabel.end () == (evit = ev2elabel.find (ev)))
-	{
-	  throw NoSuchElementException ();
-	}
-      return evit->second;
+      return edges.begin () + internalGetEdgeLabel (h, t);
     }
     
     /**
-     * Gets the edge weight between endvertices labels h and t.
-     * @param h the head label of the edge.
-     * @param t the tail label of the edge.
-     * @return the edge weight.
-     * @exception NoSuchElementException if the graph does not contain the
-     * labels or the vertices are not connected.
-     */
-    EW& internalGetEdgeWeight (Graph::label h, Graph::label t) throw (NoSuchElementException)
-    {
-      typename EV2ELabel::iterator evit;
-      EndVertices ev (h, t);
-      
-      if (vertices.size () <= h
-	  || vertices.size () <= t
-	  || ev2elabel.end () == (evit = ev2elabel.find (ev)))
-	{
-	  throw NoSuchElementException ();
-	}
-      return edgeWeights[evit->second];
-    }
-    
-    /**
-     * Gets the edge weight between endvertices labels h and t.
-     * @param h the head label of the edge.
-     * @param t the tail label of the edge.
-     * @return the edge weight.
-     * @exception NoSuchElementException if the graph does not contain the
-     * labels or the vertices are not connected.
-     */
-    const EW& internalGetEdgeWeight (Graph::label h, Graph::label t) const throw (NoSuchElementException)
-    {
-      typename EV2ELabel::const_iterator evit;
-      EndVertices ev (h, t);
-      
-      if (vertices.size () <= h
-	  || vertices.size () <= t
-	  || ev2elabel.end () == (evit = ev2elabel.find (ev)))
-	{
-	  throw NoSuchElementException ();
-	}
-      return edgeWeights[evit->second];
-    }
-    
-    /**
-     * Gets the edge weight given the edge label.
+     * Finds an edge whose label is l or edge_end () if the graph does not
+     * contain this label.
      * @param l the edge label.
-     * @return the edge weight.
-     * @exception NoSuchElementException if the graph does not contain the
-     * label.
+     * @return the edge.
      */
-    EW& internalGetEdgeWeight (Graph::edge_label l) throw (NoSuchElementException)
+    edge_iterator internalFindEdge (edge_label l)
     {
-      if (edgeWeights.size () <= l)
-	{
-	  throw NoSuchElementException ();
-	}
-      return edgeWeights[l];
+      return (edgeSize () > l ? edges.begin () + l : edge_end ());
+    }
+    
+    /**
+     * Finds an edge whose label is l or edge_end () if the graph does not
+     * contain this label.
+     * @param l the edge label.
+     * @return the edge.
+     */
+    edge_const_iterator internalFindEdge (edge_label l) const
+    {
+      return (edgeSize () > l ? edges.begin () + l : edge_end ());
     }
 
     /**
-     * Gets the edge weight given the edge label.
+     * Finds an edge weight whose endlabels are h and t or eweight_end () if
+     * no edge connects h and t.
+     * @param h the head label of the edge.
+     * @param t the tail label of the edge.
+     * @return the edge weight.
+     */
+    eweight_iterator internalFindWeight (label h, label t)
+    {
+      return edgeWeights.begin () + internalGetEdgeLabel (h, t);
+    }
+    
+    /**
+     * Finds an edge weight whose endlabels are h and t or eweight_end () if
+     * no edge connects h and t.
+     * @param h the head label of the edge.
+     * @param t the tail label of the edge.
+     * @return the edge weight.
+     */
+    eweight_const_iterator internalFindWeight (label h, label t) const
+    {
+      return edgeWeights.begin () + internalGetEdgeLabel (h, t);
+    }
+    
+    /**
+     * Finds an edge weight whose edge label is l or eweight_end () if the
+     * graph does not contain this label.
      * @param l the edge label.
      * @return the edge weight.
-     * @exception NoSuchElementException if the graph does not contain the
-     * label.
      */
-    const EW& internalGetEdgeWeight (Graph::edge_label l) const throw (NoSuchElementException)
+    eweight_iterator internalFindEdgeWeight (edge_label l)
     {
-      if (edgeWeights.size () <= l)
-	{
-	  throw NoSuchElementException ();
-	}
-      return edgeWeights[l];
+      return (edgeSize () > l ? edgeWeights.begin () + l : eweight_end ());
     }
 
     /**
-     * Sets the edge weight between endvertices labels h and t.
-     * @param h the head label of the edge.
-     * @param t the tail label of the edge.
-     * @param w the new weight.
-     * @exception NoSuchElementException if the graph does not contain the
-     * labels or the vertices are not connected.
+     * Finds an edge weight whose edge label is l or eweight_end () if the
+     * graph does not contain this label.
+     * @param l the edge label.
+     * @return the edge weight.
      */
-    void internalSetEdgeWeight (Graph::label h, Graph::label t, const EW w) throw (NoSuchElementException)
+    eweight_const_iterator internalFindEdgeWeight (edge_label l) const
     {
-      typename EV2ELabel::iterator evit;
-      EndVertices ev (h, t);
-      
-      if (vertices.size () <= h
-	  || vertices.size () <= t
-	  || ev2elabel.end () == (evit = ev2elabel.find (ev)))
-	{
-	  throw NoSuchElementException ();
-	}
-      edgeWeights[evit->second] = w;
+      return (edgeSize () > l ? edgeWeights.begin () + l : eweight_end ());
     }
-    
+
     /**
      * Determines if the vertex label is in the graph.
      * @param l the vertex label to find.
      * @return whether the label is within the range of vertices.
      */
-    bool internalContains (Graph::label l) const
+    bool internalContains (label l) const
     {
       return vertices.size () > l;
     }
@@ -887,16 +465,9 @@ namespace mccore
      * @param t the tail label of the edge.
      * @return true if there exists an edge between vertices h and t.
      */
-    bool internalAreConnected (Graph::label h, Graph::label t) const
+    bool internalAreConnected (label h, label t) const
     {
-      if (vertices.size () > h
-	  && vertices.size () > t)
-	{
-	  EndVertices ev (h, t);
-
-	  return ev2elabel.end () != ev2elabel.find (ev);
-	}
-      return false;
+      return edges.size () != internalGetEdgeLabel (h, t);
     }
     
     /**
@@ -924,6 +495,32 @@ namespace mccore
     const_iterator end () const { return vertices.end (); }
 
     /**
+     * Gets the iterator pointing to the beginning of the graph vertex weights.
+     * @return the iterator.
+     */
+    vweight_iterator vweight_begin () { return vertexWeights.begin (); }
+
+    /**
+     * Gets the iterator pointing to the end of the graph vertex weights.
+     * @return the iterator.
+     */
+    vweight_iterator vweight_end () { return vertexWeights.end (); }
+
+    /**
+     * Gets the const_iterator pointing to the beginning of the graph vertex
+     * weights.
+     * @return the iterator.
+     */
+    vweight_const_iterator vweight_begin () const { return vertexWeights.begin (); }
+
+    /**
+     * Gets the const_iterator pointing to the end of the graph vertex
+     * weights.
+     * @return the iterator.
+     */
+    vweight_const_iterator vweight_end () const { return vertexWeights.end (); }
+
+    /**
      * Gets the iterator pointing to the beginning of the graph edges.
      * @return the iterator.
      */
@@ -947,16 +544,41 @@ namespace mccore
      */
     edge_const_iterator edge_end () const { return edges.end (); }
 
+    /**
+     * Gets the iterator pointing to the beginning of the graph edge weights.
+     * @return the iterator.
+     */
+    eweight_iterator eweight_begin () { return edgeWeights.begin (); }
+
+    /**
+     * Gets the iterator pointing to the end of the graph edge weights.
+     * @return the iterator.
+     */
+    eweight_iterator eweight_end () { return edgeWeights.end (); }
+
+    /**
+     * Gets the const_iterator pointing to the beginning of the graph edge
+     * weights.
+     * @return the iterator.
+     */
+    eweight_const_iterator eweight_begin () const { return edgeWeights.begin (); }
+
+    /**
+     * Gets the const_iterator pointing to the end of the graph edge weights.
+     * @return the iterator.
+     */
+    eweight_const_iterator eweight_end () const { return edgeWeights.end (); }
+
     // METHODS --------------------------------------------------------------
 
   protected:
 
     /**
-     * Rebuilds the vertex to vertex lable map.
+     * Rebuilds the vertex to vertex label map.
      */
     void rebuildV2VLabel ()
     {
-      typename vector< V >::iterator it;
+      typename std::vector< vertex >::iterator it;
       
       v2vlabel.clear ();
       for (it = vertices.begin (); vertices.end () != it; ++it)
@@ -972,7 +594,7 @@ namespace mccore
      * @param v the vertex to insert.
      * @return true if the element was inserted, false if already present.
      */
-    virtual bool insert (const V &v)
+    virtual bool insert (const vertex &v)
     {
       typename V2VLabel::iterator it;
 
@@ -992,7 +614,7 @@ namespace mccore
      * @param w the vertex weight.
      * @return true if the element was inserted, false if already present.
      */
-    virtual bool insert (const V &v, const VW &w)
+    virtual bool insert (const vertex &v, const vertex_weight &w)
     {
       typename V2VLabel::iterator it;
 
@@ -1011,7 +633,7 @@ namespace mccore
      * @param f the first iterator in the range.
      * @param l the last iterator in the range.
      */
-    template <class InputIterator>
+    template <typename InputIterator>
     void insertRange (InputIterator f, InputIterator l)
     {
       for (; l != f; ++f)
@@ -1021,71 +643,339 @@ namespace mccore
     }
 
   protected:
+    
+    /**
+     * Rebuilds the mapping between vertices and edges when some were
+     * deleted.  If a label inside the mapping vectors is equal to the
+     * vector size, it means that this label has been deleted.
+     * @param vertexmapping the mapping between the old and the new vertices.
+     * @param edgemapping the mapping between the old and the new edges.
+     */
+    void rebuildEV2ELabel (const std::vector< label > &vertexmapping, const std::vector< edge_label > &edgemapping)
+    {
+      label sz = vertexmapping.size ();
+      edge_label esz = edgemapping.size ();
+      EV2ELabel newMap;
+      typename EV2ELabel::iterator eit;
+
+      for (eit = ev2elabel.begin (); ((typename EV2ELabel::iterator) ev2elabel.end ()) != eit; ++eit)
+	{
+	  label h;
+	  
+	  if (sz != (h = vertexmapping[eit->first]))
+	    {
+	      const InnerMap &im = eit->second;
+	      typename InnerMap::const_iterator imit;
+	      InnerMap newInner;
+
+	      for (imit = im.begin (); im.end () != imit; ++imit)
+		{
+		  label t;
+		  edge_label e;
+	      
+		  if (sz != (t = vertexmapping[imit->first])
+		      && esz != (e = edgemapping[imit->second]))
+		    {
+		      newInner[t] = e;
+		    }
+		}
+	      if (! newInner.empty ())
+		{
+		  newMap[h] = newInner;
+		}
+	    }
+	}
+      ev2elabel = newMap;
+    }
 
     /**
-     * Erase a vertex label from the graph.  If an edge is connected to this
-     * vertex label it is also removed.  No check is made on label validity.
-     * @param l the vertex label to remove.
-     * @return an iterator over the next vertex element.
+     * Builds the set of edges to delete according to the given vertex set.
+     * @param labelset the set of labels to delete.
+     * @param edgelabelset the set of edge labels that will have to be deleted.
      */
-    virtual iterator uncheckedInternalErase (label l) = 0;
+    virtual void edgestodelete (const std::set< label > &labelset, std::set< edge_label > &edgelabelset) const
+    {
+      typename std::set< label >::const_iterator lsit;
+      typename EV2ELabel::const_iterator ev2elit;
+
+      edgelabelset.clear ();
+      for (lsit = labelset.begin (); labelset.end () != lsit; ++lsit)
+	{
+	  if (((typename EV2ELabel::const_iterator) ev2elabel.end ()) != (ev2elit = ev2elabel.find (*lsit)))
+	    {
+	      const InnerMap &im = ev2elit->second;
+	      typename InnerMap::const_iterator imit;
+
+	      for (imit = im.begin (); im.end () != imit; ++imit)
+		{
+		  edgelabelset.insert (imit->second);
+		}
+	    }
+	}
+      for (ev2elit = ev2elabel.begin (); ((typename EV2ELabel::const_iterator) ev2elabel.end ()) != ev2elit; ++ev2elit)
+	{
+	  label h = ev2elit->first;
+
+	  if (labelset.end () == labelset.find (h))
+	    {
+	      const InnerMap &im = ev2elit->second;
+	      typename InnerMap::const_iterator imit;
+
+	      for (imit = im.begin (); im.end () != imit; ++imit)
+		{
+		  if (labelset.end () != labelset.find (imit->first))
+		    {
+		      edgelabelset.insert (imit->second);
+		    }
+		}
+	    }
+	}
+    }
+        
+    /**
+     * Erases a set of vertices and edges whose labels are in labelset and
+     * edgelabelset respectively.
+     * @param labelset the vertex labels to remove.
+     */
+    void internalErase (const std::set< label > &labelset, const std::set< edge_label > &edgelabelset)
+    {
+      size_type sz = size ();
+      edge_size_type esz = edgeSize ();
+      std::vector< label > vertexmapping (sz);
+      std::vector< edge_label > edgemapping (esz);
+      
+      if (! labelset.empty ())
+	{
+	  label count;
+	  label ocount;
+	  iterator vit;
+	  vweight_iterator vwit;
+	  typename std::set< label >::const_iterator lsit;
+
+	  // Remove vertex and build vertex mapping vector.
+	  for (count = 0, ocount = 0, vit = begin (), vwit = vweight_begin (), lsit = labelset.begin ();
+	       labelset.end () != lsit;
+	       ++ocount)
+	    {
+	      if (ocount < *lsit)
+		{
+		  vertexmapping[ocount] = count;
+		  ++count;
+		  ++vit;
+		  ++vwit;
+		}
+	      else
+		{
+		  vertexmapping[ocount] = sz;
+		  vit = vertices.erase (vit);
+		  vwit = vertexWeights.erase (vwit);
+		  ++lsit;
+		}
+	    }
+	  while (sz > ocount)
+	    {
+	      vertexmapping[ocount] = count;
+	      ++count;
+	      ++ocount;
+	    }
+	  rebuildV2VLabel ();
+	}
+      else
+	{
+	  label label;
+
+	  for (label = 0; sz > label; ++label)
+	    {
+	      vertexmapping[label] = label;
+	    }
+	}
+	  
+      // Remove edges and build edge mapping vector.
+      if (! edgelabelset.empty ())
+	{
+	  edge_label ecount;
+	  edge_label oecount;
+	  edge_iterator eit;
+	  eweight_iterator ewit;
+	  typename std::set< edge_label >::const_iterator elsit;
+
+	  for (ecount = 0, oecount = 0, eit = edge_begin (), ewit = eweight_begin (), elsit = edgelabelset.begin ();
+	       edgelabelset.end () != elsit;
+	       ++oecount)
+	    {
+	      if (oecount < *elsit)
+		{
+		  // increase everybody except edgelabelset iterator
+		  edgemapping[oecount] = ecount;
+		  ++ecount;
+		  ++eit;
+		  ++ewit;
+		}
+	      else
+		{
+		  // found an edge to delete
+		  edgemapping[oecount] = esz;
+		  eit = edges.erase (eit);
+		  ewit = edgeWeights.erase (ewit);
+		  ++elsit;
+		}
+	    }
+	  while (esz > oecount)
+	    {
+	      edgemapping[oecount] = ecount;
+	      ++ecount;
+	      ++oecount;
+	    }
+	}
+      else
+	{
+	  edge_label elabel;
+
+	  for (elabel = 0; esz > elabel; ++elabel)
+	    {
+	      edgemapping[elabel] = elabel;
+	    }
+	}
+      rebuildEV2ELabel (vertexmapping, edgemapping);
+    }
+    
+    /**
+     * Erases a set of vertices whose labels are in labelset.  If an edge is
+     * connected to these vertex labels they are also removed.
+     * @param labelset the vertex labels to remove.
+     */
+    void internalErase (const std::set< label > &labelset)
+    {
+      std::set< edge_label > edgelabelset;
+
+      // Build the set of edges to delete.
+      edgestodelete (labelset, edgelabelset);
+      internalErase (labelset, edgelabelset);
+    }
 
   public:
+    
+    /**
+     * Erases a vertex whose label is l.  If an edge is connected to this
+     * vertex label it is also removed.
+     * @param l the vertex label to remove.
+     * @return an iterator over the next vertex element or end () if the
+     * vertex was not found.
+     */
+    iterator internalErase (label l)
+    {
+      if (size () > l)
+	{
+	  std::set< label > labelset;
+
+	  labelset.insert (l);
+	  internalErase (labelset);
+	  return begin () + l;
+	}
+      else
+	{
+	  return end ();
+	}
+    }      
     
     /**
      * Erase a vertex from the graph.  If an edge is connected to this
      * vertex it is also removed.
      * @param v the vertex to remove.
-     * @return an iterator over the next vertex element.
+     * @return an iterator over the next vertex element or end () if the
+     * vertex was not found.
      */
-    iterator erase (const V &v)
+    iterator erase (const vertex &v)
     {
-      typename V2VLabel::iterator it;
-      
-      return (v2vlabel.end () != (it = v2vlabel.find (&v))
-	      ? uncheckedInternalErase (it->second)
-	      : vertices.end ());
+      return internalErase (getVertexLabel (v));
     }
     
     /**
-     * Erase a vertex label from the graph.  If an edge is connected to this
-     * vertex label it is also removed.
-     * @param l the vertex label to remove.
-     * @return an iterator over the next vertex element.
-     */
-    iterator internalErase (label l)
-    {
-      return (vertices.size () > l
-	      ? uncheckedInternalErase (l)
-	      : vertices.end ());
-    }
-    
-    /**
-     * Finds a vertex in the graph.
+     * Finds a vertex whose key is v.
      * @param v the vertex to find.
      * @return an iterator on the found vertex or on end () if not found.
      */
-    iterator find (const V &v)
+    iterator find (const vertex &v)
     {
-      typename V2VLabel::const_iterator it;
-
-      return (v2vlabel.end () == (it = v2vlabel.find (&v))
-	      ? vertices.end ()
-	      : vertices.begin () + it->second);
+      return vertices.begin () + getVertexLabel (v);
     }
 
     /**
-     * Finds a vertex in the graph.
+     * Finds a vertex whose key is v.
      * @param v the vertex to find.
      * @return an iterator on the found vertex or on end () if not found.
      */
-    const_iterator find (const V &v) const
+    const_iterator find (const vertex &v) const
     {
-      typename V2VLabel::const_iterator it;
+      return vertices.begin () + getVertexLabel (v);
+    }
 
-      return (v2vlabel.end () == (it = v2vlabel.find (&v))
-	      ? vertices.end ()
-	      : vertices.begin () + it->second);
+    /**
+     * Finds a vertex weight whose key is v.
+     * @param v the vertex to find.
+     * @return an iterator on the found vertex or on vweight_end () if v is
+     * not found.
+     */
+    vweight_iterator findWeight (const vertex &v)
+    {
+      return vertexWeights.begin () + getVertexLabel (v);
+    }
+
+    /**
+     * Finds a vertex weight whose key is v.
+     * @param v the vertex to find.
+     * @return an iterator on the found vertex or on vweight_end () if v is
+     * not found.
+     */
+    vweight_const_iterator findWeight (const vertex &v) const
+    {
+      return vertexWeights.begin () + getVertexLabel (v);
+    }
+
+    /**
+     * Finds an edge whose endvertices are h and t.
+     * @param h the head vertex.
+     * @param t the tail vertex.
+     * @return an iterator on the found edge or on edge_end () if not found.
+     */
+    edge_iterator find (const vertex &h, const vertex &t)
+    {
+      return edges.begin () + getEdgeLabel (h, t);
+    }
+
+    /**
+     * Finds an edge whose endvertices are h and t.
+     * @param h the head vertex.
+     * @param t the tail vertex.
+     * @return an iterator on the found edge or on edge_end () if not found.
+     */
+    edge_const_iterator find (const vertex &h, const vertex &t) const
+    {
+      return edges.begin () + getEdgeLabel (h, t);
+    }
+
+    /**
+     * Finds an edge weight whose endvertices are h and t.
+     * @param h the head vertex.
+     * @param t the tail vertex.
+     * @return an iterator on the found edge weight or on eweight_end () if
+     * not found.
+     */
+    eweight_iterator findWeight (const vertex &h, const vertex &t)
+    {
+      return edgeWeights.begin () + getEdgeLabel (h, t);
+    }
+
+    /**
+     * Finds an edge weight whose endvertices are h and t.
+     * @param h the head vertex.
+     * @param t the tail vertex.
+     * @return an iterator on the found edge weight or on eweight_end () if
+     * not found.
+     */
+    eweight_const_iterator findWeight (const vertex &h, const vertex &t) const
+    {
+      return edgeWeights.begin () + getEdgeLabel (h, t);
     }
 
     /**
@@ -1119,80 +1009,38 @@ namespace mccore
       ev2elabel.clear ();
     }
 
-  protected:
-
-    /**
-     * Connects two vertices labels of the graph with an edge.  No check are
-     * made on vertex labels validity.
-     * @param h the head vertex label of the edge.
-     * @param t the tail vertex label of the edge.
-     * @param e the edge.
-     * @return true if the connect operation succeeded.
-     */
-    virtual bool uncheckedInternalConnect (Graph::label h, Graph::label t, const E &e) = 0;
-    
-    /**
-     * Connects two vertices of the graph with an edge and weight.  No check
-     * are made on vertex labels validity.
-     * @param h the head vertex of the edge.
-     * @param t the tail vertex of the edge.
-     * @param e the edge.
-     * @param w the weight of this edge.
-     * @return true if the connect operation succeeded.
-     */
-    virtual bool uncheckedInternalConnect (Graph::label h, Graph::label t, const E &e, const EW &w) = 0;
-    
-  public:
-    
-    /**
-     * Connects two vertices of the graph with an edge.
-     * @param h the head vertex of the edge.
-     * @param t the tail vertex of the edge.
-     * @param e the edge.
-     * @return true if the connect operation succeeded.
-     */
-    virtual bool connect (const V &h, const V &t, const E &e)
-    {
-      typename V2VLabel::const_iterator ith;
-      typename V2VLabel::const_iterator itt;
-
-      return (v2vlabel.end () != (ith = v2vlabel.find (&h))
-	      && v2vlabel.end () != (itt = v2vlabel.find (&t))
-	      ? uncheckedInternalConnect (ith->second, itt->second, e)
-	      : false);
-    }      
-    
-    /**
-     * Connects two vertices of the graph with an edge and weight.
-     * @param h the head vertex of the edge.
-     * @param t the tail vertex of the edge.
-     * @param e the edge.
-     * @param w the weight of this edge.
-     * @return true if the connect operation succeeded.
-     */
-    virtual bool connect (const V &h, const V &t, const E &e, const EW &w)
-    {
-      typename V2VLabel::const_iterator ith;
-      typename V2VLabel::const_iterator itt;
-      
-      return (v2vlabel.end () != (ith = v2vlabel.find (&h))
-	      && v2vlabel.end () != (itt = v2vlabel.find (&t))
-	      ? uncheckedInternalConnect (ith->second, itt->second, e, w)
-	      : false);
-    }
-    
     /**
      * Connects two vertices labels of the graph with an edge.
      * @param h the head vertex label of the edge.
      * @param t the tail vertex label of the edge.
      * @param e the edge.
-     * @return true if the connect operation succeeded.
+     * @return true if the connect operation succeeded or false if the
+     * labels were already connected.
      */
-    virtual bool internalConnect (Graph::label h, Graph::label t, const E &e)
+    virtual bool internalConnect (label h, label t, const edge &e)
     {
-      return (vertices.size () > h && vertices.size () > t
-	      ? uncheckedInternalConnect (h, t, e)
-	      : false);
+      if (size () > h
+	  && size () > t
+	  && edgeSize () == internalGetEdgeLabel (h, t))
+	{
+	  InnerMap im;
+	  edge_label el;
+	  std::pair< typename EV2ELabel::iterator, bool > inserted;
+	  
+	  im[t] = el = edgeSize ();
+	  edges.push_back (e);
+	  edgeWeights.resize (edgeWeights.size () + 1);
+	  inserted = ev2elabel.insert (std::make_pair (h, im));
+	  if (! inserted.second)
+	    {
+	      inserted.first->second[t] = el;
+	    }
+	  return true;
+	}
+      else
+	{
+	  return false;
+	}
     }
     
     /**
@@ -1203,41 +1051,55 @@ namespace mccore
      * @param w the weight of this edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool internalConnect (Graph::label h, Graph::label t, const E &e, const EW &w)
+    virtual bool internalConnect (label h, label t, const edge &e, const edge_weight &w)
     {
-      return (vertices.size () > h && vertices.size () > t
-	      ? uncheckedInternalConnect (h, t, e, w)
-	      : false);
+      if (size () > h
+	  && size () > t
+	  && edgeSize () == internalGetEdgeLabel (h, t))
+	{
+	  InnerMap im;
+	  edge_label el;
+	  std::pair< typename EV2ELabel::iterator, bool > inserted;
+
+	  im[t] = el = edgeSize ();
+	  edges.push_back (e);
+	  edgeWeights.push_back (w);
+	  inserted = ev2elabel.insert (std::make_pair (h, im));
+	  if (! inserted.second)
+	    {
+	      inserted.first->second[t] = el;
+	    }
+	  return true;
+	}
+      else
+	{
+	  return false;
+	}
     }
-
-  protected:
-
-    /**
-     * Disconnects two endvertices labels of the graph.  No check are
-     * made on vertex labels validity.
-     * @param h the head vertex of the edge.
-     * @param t the tail vertex of the edge.
-     * @return true if the vertices were disconnected.
-     */
-    virtual bool uncheckedInternalDisconnect (Graph::label h, Graph::label t) = 0;
-    
-  public:
     
     /**
-     * Disconnects two endvertices of the graph.
+     * Connects two vertices of the graph with an edge.
      * @param h the head vertex of the edge.
      * @param t the tail vertex of the edge.
-     * @return true if the vertices were disconnected.
+     * @param e the edge.
+     * @return true if the connect operation succeeded.
      */
-    bool disconnect (const V &t, const V &h)
+    bool connect (const vertex &h, const vertex &t, const edge &e)
     {
-      typename V2VLabel::const_iterator ith;
-      typename V2VLabel::const_iterator itt;
-
-      return (v2vlabel.end () != (ith = v2vlabel.find (&h))
-	      && v2vlabel.end () != (itt = v2vlabel.find (&t))
-	      ? uncheckedInternalDisconnect (h, t)
-	      : false);
+      return internalConnect (getVertexLabel (h), getVertexLabel (t), e);
+    }      
+    
+    /**
+     * Connects two vertices of the graph with an edge and weight.
+     * @param h the head vertex of the edge.
+     * @param t the tail vertex of the edge.
+     * @param e the edge.
+     * @param w the weight of this edge.
+     * @return true if the connect operation succeeded.
+     */
+    bool connect (const vertex &h, const vertex &t, const edge &e, const edge_weight &w)
+    {
+      return internalConnect (getVertexLabel (h), getVertexLabel (t), e, w);
     }
     
     /**
@@ -1246,96 +1108,94 @@ namespace mccore
      * @param t the tail vertex of the edge.
      * @return true if the vertices were disconnected.
      */
-    bool internalDisconnect (Graph::label h, Graph::label t)
+    virtual bool internalDisconnect (label h, label t)
     {
-      return (vertices.size () > h && vertices.size () > t
-	      ? uncheckedInternalDisconnect (h, t)
-	      : false);
+      edge_label e;
+      
+      if (edgeSize () > (e = internalGetEdgeLabel (h, t)))
+	{
+	  std::set< label > labelset;
+	  std::set< edge_label > edgelabelset;
+
+	  edgelabelset.insert (e);
+	  internalErase (labelset, edgelabelset);
+	  return true;
+	}
+      else
+	{
+	  return false;
+	}
+    }
+    
+    /**
+     * Disconnects two endvertices of the graph.
+     * @param h the head vertex of the edge.
+     * @param t the tail vertex of the edge.
+     * @return true if the vertices were disconnected.
+     */
+    bool disconnect (const vertex &h, const vertex &t)
+    {
+      return internalDisconnect (getVertexLabel (h), getVertexLabel (t));
     }
     
     // I/O  -----------------------------------------------------------------
 
     /**
-     * Writes the object to a stream.
+     * Writes the graph to a stream.
      * @param os the stream.
      * @return the stream.
      */
-    virtual ostream& write (ostream& os) const
+    virtual std::ostream& write (std::ostream& os) const
     {
-      typename vector< V >::const_iterator vit;
-      typename vector< VW >::const_iterator vwit;
-      typename vector< E >::const_iterator eit;
-      typename vector< EW >::const_iterator ewit;
+      typename std::vector< vertex >::const_iterator vit;
+      typename std::vector< vertex_weight >::const_iterator vwit;
+      typename std::vector< edge >::const_iterator eit;
+      typename std::vector< edge_weight >::const_iterator ewit;
       typename EV2ELabel::const_iterator evit;
-      label counter;
+      label rowcounter;
       label linecounter;
+      label sz = size ();
+      edge_label esz = edgeSize ();
 
-      os << "[Vertices]" << endl;
-      for (vit = vertices.begin (), vwit = vertexWeights.begin (), counter = 0; vertices.end () != vit; ++vit, ++vwit, ++counter)
+      os << "[Vertices]" << std::endl;
+      for (vit = vertices.begin (), vwit = vertexWeights.begin (), rowcounter = 0; vertices.end () != vit; ++vit, ++vwit, ++rowcounter)
 	{
-	  os << setw (5) << counter << "  " << *vit << "  " << *vwit << endl;
+	  os << std::setw (5) << rowcounter << "  " << *vit << "  " << *vwit << std::endl;
 	}
-      os << "[Edges]" << endl;
-      for (eit = edges.begin (), ewit = edgeWeights.begin (), counter = 0; edges.end () != eit; ++eit, ++ewit, ++counter)
+      os << "[Edges]" << std::endl;
+      for (eit = edges.begin (), ewit = edgeWeights.begin (), rowcounter = 0; edges.end () != eit; ++eit, ++ewit, ++rowcounter)
 	{
-	  os << setw (5) << counter << "  " << *eit << "  " << *ewit << endl;
+	  os << std::setw (5) << rowcounter << "  " << *eit << "  " << *ewit << std::endl;
 	}
-      os << "[Adjacency matrix]" << endl;
+      os << "[Adjacency matrix]" << std::endl;
       os << "     ";
-      for (counter = 0; vertices.size () > counter; ++counter)
+      for (rowcounter = 0; vertices.size () > rowcounter; ++rowcounter)
 	{
-	  os << setw (5) << counter;
+	  os << std::setw (5) << rowcounter;
 	}
-      linecounter = 0;
-      if (! empty ())
+      for (linecounter = 0; sz > linecounter; ++linecounter)
 	{
-	  os << endl << setw (5) << linecounter;
-	}
-      for (counter = 0, evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit, ++counter)
-	{
-	  label evline;
-	  label evcolumn;
-
-	  evline = evit->first.getHeadLabel ();
-	  evcolumn = evit->first.getTailLabel ();
-	  while (linecounter < evline)
+	  os << std::endl << std::setw (5) << linecounter;
+	  for (rowcounter = 0; sz > rowcounter; ++rowcounter)
 	    {
-	      while (vertices.size () > counter)
+	      edge_label edge;
+	      
+	      if (esz == (edge = internalGetEdgeLabel (linecounter, rowcounter)))
 		{
-		  os << setw (5) << '.';
-		  ++counter;
+		  os << std::setw (5) << '.';
 		}
-	      counter = 0;
-	      ++linecounter;
-	      os << endl << setw (5) << linecounter;
-	    }
-	  while (counter < evcolumn)
-	    {
-	      os << setw (5) << '.';
-	      ++counter;
-	    }
-	  os << setw (5) << evit->second;
-	}
-      while (linecounter < vertices.size ())
-	{
-	  while (counter < vertices.size ())
-	    {
-	      os << setw (5) << '.';
-	      ++counter;
-	    }
-	  counter = 0;
-	  ++linecounter;
-	  if (linecounter < vertices.size ())
-	    {
-	      os << endl << setw (5) << linecounter;
+	      else
+		{
+		  os << std::setw (5) << edge;
+		}
 	    }
 	}
-      os << endl;      
+      os << std::endl;      
       return os;
     }
     
   };
-
+  
 }
 
 
@@ -1350,8 +1210,8 @@ namespace std
    * @param obj the graph.
    * @return the output stream.
    */
-  template < class V, class E, class VW, class EW, class VC >
-  ostream& operator<< (ostream &os, const mccore::Graph< V, E, VW, EW, VC > &obj)
+  template < typename vertex, typename edge, typename vertex_weight, typename edge_weight, typename VC >
+  ostream& operator<< (ostream &os, const mccore::Graph< vertex, edge, vertex_weight, edge_weight, VC > &obj)
   {
     return obj.write (os);
   }

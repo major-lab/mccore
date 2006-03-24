@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // MaximumFlowGraph.h
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Mon Apr  7 18:28:55 2003
-// $Revision: 1.12 $
+// $Revision: 1.12.4.1 $
 // 
 // This file is part of mccore.
 // 
@@ -51,53 +51,66 @@ namespace mccore
    * </pre>
    * for flow calculation.
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: MaximumFlowGraph.h,v 1.12 2005-04-04 23:07:56 larosem Exp $
+   * @version $Id: MaximumFlowGraph.h,v 1.12.4.1 2006-03-24 18:39:21 larosem Exp $
    */
-  template< class V,
-	    class E,
-	    class VW = float,
-	    class Vertex_Comparator = less< V > >	    
+  template< typename V,
+	    typename E,
+	    typename VW = float,
+	    typename Vertex_Comparator = less< V > >	    
   class MaximumFlowGraph : public OrientedGraph< V, E, VW, float, Vertex_Comparator >
   {
 
+  public:
+
+    typedef V vertex;
+    typedef E edge;
+    typedef VW vertex_weight;
+    typedef float edge_weight;
+
   protected:
 
-    typedef OrientedGraph< V, E, VW, float, Vertex_Comparator > super;
+    typedef OrientedGraph< vertex, edge, vertex_weight, edge_weight, Vertex_Comparator > super;
     
   public:
     
-    typedef typename super::size_type size_type;
-    typedef typename super::label label;
     typedef typename super::iterator iterator;
     typedef typename super::const_iterator const_iterator;
-    typedef typename super::V2VLabel V2VLabel;
-    typedef typename super::EV2ELabel EV2ELabel;
-    typedef typename super::EndVertices EndVertices;
+    typedef typename super::size_type size_type;
+    typedef typename super::label label;
+    typedef typename super::vweight_iterator vweight_iterator;
+    typedef typename super::vweight_const_iterator vweight_const_iterator;
+    typedef typename super::vweight_size_type vweight_size_type;
+    typedef typename super::vweight_label vweight_label;
+    typedef typename super::edge_iterator edge_iterator;
+    typedef typename super::edge_const_iterator edge_const_iterator;
+    typedef typename super::edge_size_type edge_size_type;
+    typedef typename super::edge_label edge_label;
+    typedef typename super::eweight_iterator eweight_iterator;
+    typedef typename super::eweight_const_iterator eweight_const_iterator;
+    typedef typename super::eweight_size_type eweight_size_type;
+    typedef typename super::eweight_label eweight_label;
 
     // LIFECYCLE ---------------------------------------------------------------
     
     /**
      * Initializes the object.
      */
-    MaximumFlowGraph ()
-      : super ()
-    { }
+    MaximumFlowGraph () : super () { }
     
     /**
      * Initializes the object with the right's content.
      * @param right the object to copy.
      */
     MaximumFlowGraph (const MaximumFlowGraph &right)
-      : super (right)
-    { }
+      : super (right) { }
   
     /**
      * Clones the object.
      * @return a copy of the object.
      */
-    virtual Graph< V, E, VW, float, Vertex_Comparator >* cloneGraph () const
+    virtual Graph< vertex, edge, vertex_weight, edge_weight, Vertex_Comparator >* cloneGraph () const
     {
-      return new MaximumFlowGraph< V, E, VW, Vertex_Comparator> (*this);
+      return new MaximumFlowGraph< vertex, edge, vertex_weight, Vertex_Comparator> (*this);
     }
 
     /**
@@ -135,7 +148,7 @@ namespace mccore
      * @param e the edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool connect (const V &h, const V &t, const E &e) { return false; }
+    virtual bool connect (const vertex &h, const vertex &t, const edge &e) { return false; }
 
   public:
     
@@ -147,7 +160,7 @@ namespace mccore
      * @param w the edge weight.
      * @return true if the connect operation succeeded.
      */
-    virtual bool connect (const V &h, const V &t, const E &e, const float w)
+    virtual bool connect (const vertex &h, const vertex &t, const edge &e, const edge_weight w)
     {
       return super::connect (h, t, e, w);
     }
@@ -162,7 +175,7 @@ namespace mccore
      * @param e the edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool internalConnect (label h, label t, const E &e)
+    virtual bool internalConnect (label h, label t, const edge &e)
     {
       return false;
     }      
@@ -177,7 +190,7 @@ namespace mccore
      * @param w the weight of this edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool internalConnect (label h, label t, const E &e, const float w)
+    virtual bool internalConnect (label h, label t, const edge &e, const edge_weight &w)
     {
       return super::internalConnect (h, t, e, w);
     }
@@ -191,25 +204,25 @@ namespace mccore
      * @param source the source of the graph.
      * @param sink the sink of the graph.
      */
-    void preFlowPush (const V &source, const V &sink)
+    void preFlowPush (const vertex &source, const vertex &sink)
     {
       if (contains (source) && contains (sink))
 	{
 	  label sourceid;
 	  label sinkid;
-	  vector< int > labels;
-	  vector< float > excess;
-	  list< label > q;
+	  std::vector< int > labels;
+	  std::vector< float > excess;
+	  std::list< label > q;
 	  int distance;
-	  list< label > active;
-	  list< label > neighborhood;
-	  typename list< label >:: iterator it;
+	  std::list< label > active;
+	  std::list< label > neighborhood;
+	  typename std::list< label >::iterator it;
 
 	  sourceid = getVertexLabel (source);
 	  sinkid = getVertexLabel (sink);
       
 	  // Compute the initial distance labels
-	  labels.insert (labels.end (), this->size (), numeric_limits< int >::max ());
+	  labels.insert (labels.end (), this->size (), std::numeric_limits< int >::max ());
 	  excess.insert (excess.end (), this->size (), 0);
 	  
 	  distance = 0;
@@ -220,7 +233,7 @@ namespace mccore
 	  
 	  while (! q.empty ())
 	    {
-	      list < label > tmp;
+	      std::list < label > tmp;
 
 	      distance = labels[q.front ()] + 1;
 	      neighborhood = internalOutNeighborhood (q.front ());
@@ -243,8 +256,7 @@ namespace mccore
 	  neighborhood = internalOutNeighborhood (sourceid);
 	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
 	    {
-	      internalSetEdgeWeight (sourceid, *it, internalGetEdge (sourceid, *it).getValue ());
-	      excess[*it] = internalGetEdgeWeight (sourceid, *it);
+	      excess[*it] = *internalFindEdgeWeight (sourceid, *it) = internalFindEdge (sourceid, *it)->getValue ();
 	      excess[sourceid] -= excess[*it];
 	      active.push_back (*it);
 	    }
@@ -273,7 +285,7 @@ namespace mccore
      * @param source the source vertex label.
      * @param sink the sink vertex label.
      */
-    void pushRelabel (list< label > &active, vector< float > &excess, vector< int > &labels, label source, label sink)
+    void pushRelabel (std::list< label > &active, std::vector< float > &excess, std::vector< int > &labels, label source, label sink)
     {
       label front;
 
@@ -282,19 +294,19 @@ namespace mccore
       
       if (0 < excess[front])
 	{
-	  list< label > neighborhood;
-	  typename list< label >::iterator it;
-	  vector< float > cap;
+	  std::list< label > neighborhood;
+	  typename std::list< label >::iterator it;
+	  std::vector< float > cap;
 	  float eq;
 
 	  neighborhood = internalOutNeighborhood (front);
 	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
 	    {
 	      if (labels[*it] > labels[front]
-		  && internalGetEdgeWeight (front, *it) < internalGetEdge (front, *it).getValue ())
+		  && *internalFindEdgeWeight (front, *it) < internalFindEdge (front, *it)->getValue ())
 		{
-		  cap.push_back (internalGetEdge (front, *it).getValue ()
-				 - internalGetEdgeWeight (front, *it));
+		  cap.push_back (internalFindEdge (front, *it)->getValue ()
+				 - *internalFindEdgeWeight (front, *it));
 		}
 	    }
 	  eq = equilibrateFlow (cap, excess[front]);
@@ -302,18 +314,18 @@ namespace mccore
 	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
 	    {
 	      if (labels[*it] > labels[front]
-		  && internalGetEdgeWeight (front, *it) < internalGetEdge (front, *it).getValue ())
+		  && *internalFindEdgeWeight (front, *it) < internalFindEdge (front, *it)->getValue ())
 		{
 		  float push_delta;
 
-		  push_delta = min (eq, internalGetEdge (front, *it).getValue () - internalGetEdgeWeight (front, *it));
+		  push_delta = min (eq, internalFindEdge (front, *it)->getValue () - *internalFindEdgeWeight (front, *it));
 		  
 		  gOut (5) << "Pushing " << push_delta << " from " << front
 			   << " to " << *it << endl;
-		  
-		  internalSetEdgeWeight (front, *it, internalGetEdgeWeight (front, *it) + push_delta);
+
+		  *internalFindEdgeWeight (front, *it) += push_delta;
 		  excess[front] -= push_delta;
-		  if (fabs (excess[front]) < 1e-5)
+		  if (std::fabs (excess[front]) < 1e-5)
 		    {
 		      excess[front] = 0;
 		    }
@@ -329,18 +341,18 @@ namespace mccore
       
       if (0 < excess[front])
 	{
-	  list< label > neighborhood;
-	  typename list< label >::iterator it;
-	  vector< float > cap;
+	  std::list< label > neighborhood;
+	  typename std::list< label >::iterator it;
+	  std::vector< float > cap;
 	  float eq;
 
 	  neighborhood = internalInNeighborhood (front);
 	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
 	    {
 	      if (labels[*it] > labels[front]
-		  && 0 < internalGetEdgeWeight (*it, front))
+		  && 0 < *internalFindEdgeWeight (*it, front))
 		{
-		  cap.push_back (internalGetEdgeWeight (*it, front));
+		  cap.push_back (*internalFindEdgeWeight (*it, front));
 		}
 	    }
 	  eq = equilibrateFlow (cap, excess[front]);
@@ -348,18 +360,18 @@ namespace mccore
 	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
 	    {
 	      if (labels[*it] > labels[front]
-		  && 0 < internalGetEdgeWeight (*it, front))
+		  && 0 < *internalFindEdgeWeight (*it, front))
 		{
 		  float push_delta;
 
-		  push_delta = min (eq, internalGetEdgeWeight (*it, front));
+		  push_delta = min (eq, *internalFindEdgeWeight (*it, front));
 		  
 		  gOut (5) << "Pushing back " << push_delta << " from " << front
 			   << " to " << *it << endl;
 		  
-		  internalSetEdgeWeight (*it, front, internalGetEdgeWeight (*it, front) - push_delta);
+		  *internalFindEdgeWeight (*it, front) -= push_delta;
 		  excess[front] -= push_delta;
-		  if (fabs (excess[front]) < 1e-5)
+		  if (std::fabs (excess[front]) < 1e-5)
 		    {
 		      excess[front] = 0;
 		    }
@@ -375,8 +387,8 @@ namespace mccore
       
       if (0 < excess[front])
 	{
-	  list< label > neighborhood;
-	  typename list< label >::iterator it;
+	  std::list< label > neighborhood;
+	  typename std::list< label >::iterator it;
 	  int max_dist;
 
 	  gOut (5) << "Residual" << endl;
@@ -384,12 +396,12 @@ namespace mccore
 	  neighborhood = internalOutNeighborhood (front);
 	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
 	    {
-	      if (0 < internalGetEdge (front, *it).getValue () - internalGetEdgeWeight (front, *it)
+	      if (0 < internalFindEdge (front, *it)->getValue () - *internalFindEdgeWeight (front, *it)
 		  && labels[*it] > max_dist)
 		{
 		  max_dist = labels[*it];
 		  gOut (5) << "  max_dist forward residual = " 
-			   << internalGetEdgeWeight (front, *it) - internalGetEdgeWeight (front, *it)
+			   << internalFindEdge (front, *it)->getValue () - *internalFindEdgeWeight (front, *it)
 			   << endl;
 		}
 	    }
@@ -397,12 +409,12 @@ namespace mccore
 	  neighborhood = internalInNeighborhood (front);
 	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
 	    {
-	      if (0 < internalGetEdgeWeight (*it, front)
+	      if (0 < *internalFindEdgeWeight (*it, front)
 		  && labels[*it] > max_dist)
 		{
 		  max_dist = labels[*it];
 		  gOut (5) << "  max_dist back residual = " 
-			   << internalGetEdgeWeight (*it, front) << endl;
+			   << *internalFindEdgeWeight (*it, front) << endl;
 		}
 	    }
 
@@ -417,11 +429,11 @@ namespace mccore
     /**
      * Reequilibrate flows in the graph.
      */
-    float equilibrateFlow (vector< float > &capacities, float excess) 
+    float equilibrateFlow (std::vector< float > &capacities, float excess) 
     {
       unsigned int i;
       
-      sort (capacities.begin (), capacities.end ());
+      std::sort (capacities.begin (), capacities.end ());
       for (i = 0; i < capacities.size (); ++i)
 	{
 	  if (capacities[i] < (excess / (capacities.size () - i)))
@@ -449,7 +461,7 @@ namespace mccore
     virtual ostream& write (ostream& os) const
     {
       os << "[MaximumFlowGraph]" << endl;
-      Graph< V, E, VW, float, Vertex_Comparator >::write (os);
+      Graph< vertex, edge, vertex_weight, edge_weight, Vertex_Comparator >::write (os);
       return os;
     }
     
@@ -469,7 +481,7 @@ namespace std
    * @param obj the graph.
    * @return the output stream.
    */
-  template < class V, class E, class VW, class VC >
+  template < typename V, typename E, typename VW, typename VC >
   ostream& operator<< (ostream &os, const mccore::MaximumFlowGraph< V, E, VW, VC > &obj)
   {
     return obj.write (os);

@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Relation.cc
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.52 $
-// $Id: Relation.cc,v 1.52 2005-12-12 21:40:13 thibaup Exp $
+// $Revision: 1.52.4.1 $
+// $Id: Relation.cc,v 1.52.4.1 2006-03-24 18:41:00 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -57,11 +57,16 @@ namespace mccore
   /**
    * Pairing annotation cutoffs.
    */
-  const float PAIRING_CUTOFF = 0.8f;
-  const float TWO_BONDS_CUTOFF = 1.5f;
-  const float THREE_BONDS_CUTOFF = 2.1f;
-  //const float HBOND_DIST_MAX = 4;
+//   const float PAIRING_CUTOFF = 0.8f;
+//   const float TWO_BONDS_CUTOFF = 1.5f;
+//   const float THREE_BONDS_CUTOFF = 2.1f;
+  
+  float Relation::PAIRING_CUTOFF = 0.8;
+  float Relation::TWO_BONDS_CUTOFF = Relation::PAIRING_CUTOFF * 1.875;
+  float Relation::THREE_BONDS_CUTOFF = Relation::PAIRING_CUTOFF * 2.625;
   const float HBOND_DIST_MAX = 1.7;
+//   const float HBOND_DIST_MAX = 4;
+  
 
   /**
    * Other annotation cutoffs, respectively:
@@ -229,6 +234,15 @@ namespace mccore
   }
 
 
+  void
+  Relation::setPairingCutoff (float pc)
+  {
+    Relation::PAIRING_CUTOFF = pc;
+    Relation::TWO_BONDS_CUTOFF = Relation::PAIRING_CUTOFF * 1.875;
+    Relation::THREE_BONDS_CUTOFF = Relation::PAIRING_CUTOFF * 2.625;
+  }
+
+  
   void
   Relation::reassignResiduePointers (const set< const Residue*, less_deref< Residue> > &resSet) throw (NoSuchElementException)
   {
@@ -573,9 +587,7 @@ namespace mccore
 	vector< Residue::const_iterator > resn_at;
 	vector< Residue::const_iterator >::size_type x;
 	vector< Residue::const_iterator >::size_type y;
-	AtomSetAnd da (new AtomSetOr (new AtomSetSideChain (),
-				      new AtomSetOr (new AtomSetAtom (AtomType::aO2p),
-						     new AtomSetAtom (AtomType::aHO2p))),
+	AtomSetAnd da (new AtomSetSideChain (),
 		       new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M),
 						      new AtomSetAtom (AtomType::a3H5M))));
 	
@@ -707,13 +719,13 @@ namespace mccore
 
 	    for (label = 0; label < graph.edgeSize (); ++label)
 	      {
-		HBond &hbond = graph.internalGetEdge (label);
+		HBond &hbond = *graph.internalFindEdge (label);
 
 		if (0 != hbond.getDonorType ())
 		  {
 		    float flow;
 
-		    flow = graph.internalGetEdgeWeight (label);
+		    flow = *graph.internalFindEdgeWeight (label);
 		    sum_flow += flow;
 		    hbonds.push_back (HBondFlow (hbond, flow));
 		  }
@@ -828,7 +840,7 @@ namespace mccore
 	size_hint = 3;
       }
     hbf.sort ();
-    while (hbf.size () != size_hint)
+    while (! hbf.empty () && hbf.size () != size_hint)
       {
 	hbf.pop_front ();
       }
