@@ -1,9 +1,9 @@
 //                              -*- Mode: C++ -*- 
 // Relation.h
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.24 $
+// $Revision: 1.24.4.1 $
 // 
 // This file is part of mccore.
 // 
@@ -76,10 +76,18 @@ namespace mccore
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.24 2005-12-12 21:40:13 thibaup Exp $
+   * @version $Id: Relation.h,v 1.24.4.1 2006-03-24 18:51:34 larosem Exp $
    */
   class Relation
   {
+    
+    /**
+     * Pairing annotation cutoffs.
+     */
+    static float Relation::PAIRING_CUTOFF;
+    static float Relation::TWO_BONDS_CUTOFF;
+    static float Relation::THREE_BONDS_CUTOFF;
+
   protected:
     
     /**
@@ -215,6 +223,12 @@ namespace mccore
 
     // ACCESS ---------------------------------------------------------------
 
+    /**
+     * Sets the pairing cutoff.  It also changes the TWO_BONDS_CUTOFF and THREE_BONDS_CUTOFF bounds.
+     * @param pc the pairing cutoff a value between 0 and 1;
+     */
+    static void setPairingCutoff (float pc);
+    
     /**
      * Returns the origin residue location of the relation.
      */
