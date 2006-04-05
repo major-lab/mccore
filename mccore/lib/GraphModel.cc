@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.16.2.2 $
-// $Id: GraphModel.cc,v 1.16.2.2 2006-03-23 01:35:41 larosem Exp $
+// $Revision: 1.16.2.3 $
+// $Id: GraphModel.cc,v 1.16.2.3 2006-04-05 22:22:55 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -29,6 +29,7 @@
 #endif
 
 #include <algorithm>
+#include <functional>
 #include <list>
 #include <map>
 #include <set>
@@ -36,7 +37,6 @@
 #include <vector>
 
 #include "Binstream.h"
-#include "Exception.h"
 #include "GraphModel.h"
 #include "Messagestream.h"
 #include "ModelFactoryMethod.h"
@@ -54,67 +54,64 @@ namespace mccore
 {
 
   /**
-   * Base unary function used in keep.
-   */
-  class keepTemplate : public unary_function< ResidueType, bool >
-  {
-  public:
-    virtual ~keepTemplate () { }
-    virtual bool operator() (const ResidueType &value) const { return false; }
-  };
-
-  
-  /**
    * Unary negate function.
+   *
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: GraphModel.cc,v 1.16.2.3 2006-04-05 22:22:55 larosem Exp $
    */
-  template < class VC >
-  class negate : public keepTemplate
+  template < class V , class VC >
+  class negate : public unary_function< V, bool >
   {
   public:
-    virtual bool operator() (const ResidueType &value) const
+
+    /**
+     * Negates the result of the unary function VC over value.
+     * @param value the value to test.
+     */
+    bool operator() (const V &value) const
     {
-      return ! VC () (value);
+      return ! VC ().operator() (value);
     }
     
   };
 
 
-  class isAminoAcid : public keepTemplate
+  class isAminoAcid : public unary_function< ResidueType, bool >
   {
   public:
-    virtual bool operator() (const ResidueType &value) const
+    bool operator() (const ResidueType *value) const
     {
-      return value.isAminoAcid ();
+      return value->isAminoAcid ();
     }
   };
 
 
-  class isNucleicAcid : public keepTemplate
+  class isNucleicAcid : public unary_function< ResidueType, bool >
   {
   public:
-    virtual bool operator() (const ResidueType &value) const
+    bool operator() (const ResidueType *value) const
     {
-      return value.isNucleicAcid ();
+      return value->isNucleicAcid ();
     }
   };
 
 
-  class isRNA : public keepTemplate
+  class isRNA : public unary_function< ResidueType, bool >
   {
   public:
-    virtual bool operator() (const ResidueType &value) const
+    bool operator() (const ResidueType *value) const
     {
-      return value.isRNA ();
+      return value->isRNA ();
     }
   };
 
 
-  class isDNA : public keepTemplate
+  class isDNA : public unary_function< ResidueType, bool >
   {
   public:
-    virtual bool operator() (const ResidueType &value) const
+    bool operator() (const ResidueType *value) const
     {
-      return value.isDNA ();
+      return value->isDNA ();
     }
   };
 
@@ -147,8 +144,8 @@ namespace mccore
   
   GraphModel::~GraphModel ()
   {
-    vector< vertex >::iterator resIt;
-    vector< edge >::iterator relIt;
+    vector< Residue* >::iterator resIt;
+    vector< Relation* >::iterator relIt;
 
     for (relIt = edges.begin (); edges.end () != relIt; ++relIt)
       {
@@ -164,13 +161,13 @@ namespace mccore
   void
   GraphModel::deepCopy (const GraphModel &right)
   {
-    vector< vertex >::const_iterator resIt;
-    vector< edge >::const_iterator relIt;
+    vector< Residue* >::const_iterator resIt;
+    vector< Relation* >::const_iterator relIt;
     set< const Residue*, less_deref< Residue > > resSet;
 
     for (resIt = right.vertices.begin (); right.vertices.end () != resIt; ++resIt)
       {
-	vertex res = (*resIt)->clone ();
+	Residue *res = (*resIt)->clone ();
 	
 	graphsuper::insert (res, 0);
 	resSet.insert (res);	
@@ -181,7 +178,7 @@ namespace mccore
 
 	rel = (*relIt)->clone ();
 	rel->reassignResiduePointers (resSet);
-	graphsuper::connect ((const vertex) rel->getRef (), (const vertex) rel->getRes (), rel, 0);
+	graphsuper::connect (const_cast< Residue* > (rel->getRef ()), const_cast < Residue* > (rel->getRes ()), rel, 0);
       }
   }
   
@@ -227,7 +224,7 @@ namespace mccore
   GraphModel::insert (const Residue &res, int w)
   {
     iterator found;
-    vertex r;
+    Residue *r;
 
     if (end () != (found = find (res.getResId ())))
       {
@@ -243,7 +240,7 @@ namespace mccore
   GraphModel::iterator
   GraphModel::erase (AbstractModel::iterator pos) 
   {
-    vertex res = &*pos;
+    Residue *res = &*pos;
     iterator ret (graphsuper::erase (&*pos));
 
     delete res;
@@ -256,31 +253,35 @@ namespace mccore
   {
     if (! empty ())
       {
-	vector< vertex > sortedv = vertices;
-	vector< int > newWeights (size ());
-	vector< label > vmapping (size ());
-	vector< edge_label > emapping (edgeSize ());
-	vector< vertex >::const_iterator vit;
-	edge_label ecount;
-	edge_label esz = edgeSize ();
+	vector< Residue* > sortedv = vertices;
+	vector< int > origWeights = vertexWeights;
+	graphsuper::size_type vIndex;
+	graphsuper::size_type *corresp;
+ 	EV2ELabel sortedEdgeMap;
+	EV2ELabel::iterator evIt;
 
 	std::sort (sortedv.begin (), sortedv.end (), less_deref< Residue > ());
-	for (vit = sortedv.begin (); sortedv.end () != vit; ++vit)
+	corresp = new graphsuper::size_type[vertices.size ()];
+	for (vIndex = 0; vIndex < sortedv.size (); ++vIndex)
 	  {
-	    label olabel = getVertexLabel (*vit);
-	    label nlabel = vit - sortedv.begin ();
-	    
-	    vmapping[olabel] = nlabel;
-	    newWeights[nlabel] = *internalFindWeight (olabel);
-	  }
-	for (ecount = 0; esz > ecount; ++ecount)
+	    graphsuper::size_type origIndex;
+
+	    origIndex = v2vlabel.find (&sortedv[vIndex])->second;
+	    corresp[origIndex] = vIndex;
+	    vertexWeights[vIndex] = origWeights[origIndex];
+	  }	
+	for (evIt = ev2elabel.begin (); ev2elabel.end () != evIt; ++evIt)
 	  {
-	    emapping[ecount] = ecount;
+	    const EndVertices &endVertices = evIt->first;
+	    EndVertices ev (corresp[endVertices.getHeadLabel ()],
+			    corresp[endVertices.getTailLabel ()]);
+
+	    sortedEdgeMap.insert (make_pair (ev, evIt->second));
 	  }
 	vertices = sortedv;
-	vertexWeights = newWeights;
 	rebuildV2VLabel ();
-	rebuildEV2ELabel (vmapping, emapping);
+	ev2elabel = sortedEdgeMap;
+	delete[] corresp;
       }
   }
   
@@ -288,82 +289,45 @@ namespace mccore
   void
   GraphModel::removeAminoAcid ()
   {
-    negate< isAminoAcid > fn;
-    
-    keep (fn);
+    keepTemplate< negate< const ResidueType*, isAminoAcid > > ();
   }
 
 
   void
   GraphModel::removeNucleicAcid ()
   {
-    negate< isNucleicAcid > fn;
-    
-    keep (fn);
+    keepTemplate< negate< const ResidueType*, isNucleicAcid > > ();
   }
 
 
   void
   GraphModel::keepAminoAcid ()
   {
-    keep (isAminoAcid ());
+    keepTemplate< isAminoAcid > ();
   }
 
 
   void
   GraphModel::keepNucleicAcid ()
   {
-    keep (isNucleicAcid ());
+    keepTemplate< isNucleicAcid > ();
   }
 
 
   void
   GraphModel::keepRNA ()
   {
-    keep (isRNA ());
+    keepTemplate< isRNA > ();
   }
 
 
   void
   GraphModel::keepDNA ()
   {
-    keep (isDNA ());
+    keepTemplate< isDNA > ();
   }
 
 
-  void
-  GraphModel::keep (const keepTemplate &is)
-  {
-    iterator cit;
-    set< label > labelset;
-      
-    for (cit = begin (); end () != cit; ++cit)
-      {
-	if (is (*cit->getType ()))
-	  {
-	    labelset.insert (getVertexLabel (&*cit));
-	  }
-      }
-    if (! labelset.empty ())
-      {
-	set< label >::iterator it;
-	set< edge_label > edgelabelset;
-	set< edge_label >::iterator eit;
-
-	edgestodelete (labelset, edgelabelset);
-	for (it = labelset.begin (); labelset.end () != it; ++it)
-	  {
-	    delete *internalFind (*it);
-	  }
-	for (eit = edgelabelset.begin (); edgelabelset.end () != eit; ++eit)
-	  {
-	    delete *internalFindEdge (*eit);
-	  }
-	internalErase (labelset, edgelabelset);
-      }
-  }
-
-  
   void
   GraphModel::clear ()
   {
@@ -388,7 +352,7 @@ namespace mccore
   {
     if (! annotated)
       {
-	vector< edge >::iterator eIt;
+	vector< Relation* >::iterator eIt;
 	vector< pair< AbstractModel::iterator, AbstractModel::iterator > > contacts;
 	vector< pair< AbstractModel::iterator, AbstractModel::iterator > >::iterator l;
 
@@ -408,13 +372,13 @@ namespace mccore
   
 	for (l = contacts.begin (); contacts.end () != l; ++l)
 	  {
-	    vertex i = &*l->first;
-	    vertex j = &*l->second;
-	    edge rel = new Relation (i, j);
+	    Residue *i = &*l->first;
+	    Residue *j = &*l->second;
+	    Relation *rel = new Relation (i, j);
 
 	    if (rel->annotate (backbone))
 	      {
-		edge inv;
+		Relation *inv;
 
 		inv = rel->clone ();
 		inv->invert ();
@@ -435,7 +399,7 @@ namespace mccore
 //   GraphModel::fillMoleculeWithCycles (Molecule &molecule, const vector< Path< label, unsigned int > > &cycles) const
 //   {
 //     vector< Path< label, unsigned int > >::const_iterator cit;
-//     set< const vertex, less_deref< Residue > > resCopies;
+//     set< const Residue*, less_deref< Residue > > resCopies;
 
 //     for (cit = cycles.begin (); cycles.end () != cit; ++cit)
 //       {
@@ -502,54 +466,81 @@ namespace mccore
   GraphModel::output (ostream &os) const
   {
     const_iterator vit;
-    vweight_const_iterator vwit;
-    edge_label elabel;
-    label rowcounter;
+    vector< int >::const_iterator vwit;
+    edge_const_iterator eit;
+    vector< int >::const_iterator ewit;
+    EV2ELabel::const_iterator evit;
+    label counter;
     label linecounter;
-    label sz = size ();
-    edge_label esz = edgeSize ();
 
     os << "[GraphModel]" << endl
        << "[Vertices]" << endl;
-    for (vit = begin (), vwit = vweight_begin (), rowcounter = 0; end () != vit; ++vit, ++vwit, ++rowcounter)
+    for (vit = begin (), vwit = vertexWeights.begin (), counter = 0; end () != vit; ++vit, ++vwit, ++counter)
       {
-	os << setw (5) << rowcounter << "  " << *vit << "  " << *vwit << endl;
+	os << setw (5) << counter << "  " << *vit << "  " << *vwit << endl;
       }
     
     os << "[Edges]" << endl;
-    for (elabel = 0; esz > elabel; ++elabel)
+    for (eit = edge_begin (), ewit = edgeWeights.begin (), counter = 0; edges.end () != eit; ++eit, ++ewit, ++counter)
       {
-	os << setw (5) << elabel << "  " << **internalFindEdge (elabel) << "  " << *internalFindEdgeWeight (elabel) << endl;
+	os << setw (5) << counter << "  " << **eit << "  " << *ewit << endl;
       }
 
     os << "[Adjacency matrix]" << endl;
     os << "     ";
-    for (rowcounter = 0; sz > rowcounter; ++rowcounter)
+    for (counter = 0; vertices.size () > counter; ++counter)
       {
-	os << setw (5) << rowcounter;
+	os << setw (5) << counter;
       }
-    for (linecounter = 0; sz > linecounter; ++linecounter)
+    linecounter = 0;
+    if (! empty ())
       {
 	os << endl << setw (5) << linecounter;
-	for (rowcounter = 0; sz > rowcounter; ++rowcounter)
+      }
+    for (counter = 0, evit = ev2elabel.begin (); ev2elabel.end () != evit; ++evit, ++counter)
+      {
+	label evline;
+	label evcolumn;
+
+	evline = evit->first.getHeadLabel ();
+	evcolumn = evit->first.getTailLabel ();
+	while (linecounter < evline)
 	  {
-	    edge_label edge;
-	      
-	    if (esz == (edge = internalGetEdgeLabel (linecounter, rowcounter)))
+	    while (size () > counter)
 	      {
 		os << setw (5) << '.';
+		++counter;
 	      }
-	    else
-	      {
-		os << setw (5) << edge;
-	      }
+	    counter = 0;
+	    ++linecounter;
+	    os << endl << setw (5) << linecounter;
+	  }
+	while (counter < evcolumn)
+	  {
+	    os << setw (5) << '.';
+	    ++counter;
+	  }
+	os << setw (5) << evit->second;
+      }
+    while (linecounter < size ())
+      {
+	while (counter < size ())
+	  {
+	    os << setw (5) << '.';
+	    ++counter;
+	  }
+	counter = 0;
+	++linecounter;
+	if (linecounter < size ())
+	  {
+	    os << endl << setw (5) << linecounter;
 	  }
       }
     os << endl;      
     return os;
   }
 
-  
+
   iPdbstream&
   GraphModel::input (iPdbstream &ips)
   {
@@ -563,7 +554,7 @@ namespace mccore
     currNb = ips.getModelNb ();
     while (! ips.eof () && currNb == ips.getModelNb ())
       {
-	vertex res = getResidueFM ()->createResidue ();
+	Residue *res = getResidueFM ()->createResidue ();
 	
 	ips >> *res;
  	if (0 != res->size ())
@@ -589,7 +580,7 @@ namespace mccore
     is >> sz;
     for (; sz > 0; --sz)
       {
-	vertex res;
+	Residue *res;
 	long long value;
 
 	res = getResidueFM ()->createResidue ();
@@ -625,28 +616,30 @@ namespace mccore
   oBinstream&
   GraphModel::output (oBinstream &os) const
   {
-    unsigned long long sz = size ();
-    unsigned long long esz = edgeSize ();
+    unsigned long long sz;
     label lbl;
-    edge_label elabel;
+    EV2ELabel::const_iterator eIt;
+    map< label, const EndVertices* > revMap;
+    map< label, const EndVertices* >::iterator revMapIt;
 
+    sz = size ();
     os << sz;
     for (lbl = 0; lbl < sz; ++lbl)
       {
-	os << **internalFind (lbl)
-	   << (long long) *internalFindWeight (lbl);
+	os << *internalGetVertex (lbl)
+	   << (long long) internalGetVertexWeight (lbl);
       }
-    // In order to keep the binaries and graphs similar, the edges are saved
-    // in their label order.
-    os << esz;
-    for (elabel = 0; esz > elabel; ++elabel)
+    for (eIt = ev2elabel.begin (); ev2elabel.end () != eIt; ++eIt)
       {
-	const Relation &rel = **internalFindEdge (elabel);
-	
-	os << (unsigned long long) this->getVertexLabel ((const vertex) rel.getRef ())
-	   << (unsigned long long) getVertexLabel ((const vertex) rel.getRes ());
-	rel.write (os);
-	os << (long long) *internalFindEdgeWeight (elabel);
+	revMap.insert (make_pair (eIt->second, &(eIt->first)));
+      }
+    os << (unsigned long long) edgeSize ();
+    for (revMapIt = revMap.begin (); revMap.end () != revMapIt; ++revMapIt)
+      {
+	os << (unsigned long long) revMapIt->second->getHeadLabel ()
+	   << (unsigned long long) revMapIt->second->getTailLabel ();
+	internalGetEdge (revMapIt->first)->write (os);
+	os << (long long) internalGetEdgeWeight (revMapIt->first);
       }
     return os << annotated;
   }

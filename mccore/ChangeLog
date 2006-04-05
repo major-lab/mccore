@@ -1,3 +1,271 @@
+2006-01-23  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Version.h, lib/Version.cc, configure.in: Version 1.6.0.
+
+	* lib/Binstream.cc: Type punning bug.
+
+2006-01-19  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/GraphModel.cc:
+	Bug corrected in sort.  The code was rewritten to preserve it's independence with the super class.
+
+2005-12-19  Philippe Thibault  <thibaup@garlando.iro.umontreal.ca>
+
+	* lib/RnamlWriter.cc:
+	Updated for new stacking property types and parallel/antiparallel
+
+2005-12-16  Philippe Thibault  <thibaup@garlando.iro.umontreal.ca>
+
+	* lib/Binstream.cc: Bug in floating value I/O ..
+
+	Replaced former use of float aliasing to int by type punning. However
+	it is still to be proven what is the appropriate way to pass a float
+	in htonl() and ntohl().
+
+2005-12-15  Philippe Thibault  <thibaup@garlando.iro.umontreal.ca>
+
+	* lib/Exception.cc, lib/Exception.h:
+	new global operator<< to print an Exception object in an Exception
+	stream.
+
+2005-12-12  Philippe Thibault  <thibaup@garlando.iro.umontreal.ca>
+
+	* lib/GraphModel.cc, lib/GraphModel.h, lib/Relation.cc, lib/Relation.h:
+	temporary boolean parameter "backbone" passed to method
+	Relation::annotate() and GraphModel::annotate():
+
+	true (default) => annotate everything.
+	false => don't annotate pairing with backbone (O2P and O2').
+
+2005-12-09  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/GraphModel.cc: Bug correction.
+
+2005-12-09  Philippe Thibault  <thibaup@garlando.iro.umontreal.ca>
+
+	* lib/Relation.cc: comment update in stacking annotation
+
+	* lib/ExtendedResidue.cc, lib/ExtendedResidue.h, lib/Residue.cc, lib/Residue.h:
+	Bug corrected in Residue and ExtendedResidue object copy.
+
+2005-12-09  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Model.cc, lib/Model.h, lib/Relation.cc:
+	Model assignment bug corrected.
+
+2005-11-25  Philippe Thibault  <thibaup@garlando.iro.umontreal.ca>
+
+	* lib/Pdbstream.cc: corrected a double-delete bug (grrr...)
+
+2005-11-17  Philippe Thibault  <thibaup@garlando.iro.umontreal.ca>
+
+	* lib/PropertyType.cc, lib/PropertyType.h, lib/PropertyTypeStore.cc, lib/PropertyTypeStore.h, lib/Relation.cc:
+	New labeling:
+
+	- sub-families "straight" and "reverse" no longer inherit from
+	  "stack". They are now root families (inherit PropertyType only)
+
+	- "stacking" sub-family upward renamed "up"
+
+	- "stacking" sub-family downward renamed "down"
+
+	- "upward" replaces "straight_upward" (inherits both up and straight)
+
+	- "downward" replaces "straight_downward" (inherits both down and
+	  straight)
+
+	- "inward" replaces "reverse_upward" (inherits both up and reverse)
+
+	- "outward" replaces "reverse_downward" (inherits both down and
+	  reverse)
+
+	- new type "parallel" inherits both "pairing" and "straight" (replaces
+	  "straight" in pairing annotation)
+
+	- new type "antiparallel" inherits both "pairing" and "reverse"
+	  (replaces "reverse" in pairing annotation)
+
+	- Removed sub-family "BaseOrientation"
+
+2005-11-15  Philippe Thibault  <thibaup@garlando.iro.umontreal.ca>
+
+	* lib/Model.cc: using an explicit level for warning output
+
+	* lib/HBond.cc, lib/HomogeneousTransfo.cc, lib/HomogeneousTransfo.h, lib/Relation.cc, lib/Relation.h, lib/Residue.cc, lib/Residue.h:
+	moved non-integral type float constant from class member static
+	constant to global constant in .cc files
+
+2005-11-04  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/UndirectedGraph.h, lib/Path.h, lib/Cycle.h:
+	Corrections on templates for gcc 4.0
+
+2005-10-25  Philippe Thibault  <thibaup@garlando.iro.umontreal.ca>
+
+	* lib/Residue.cc, lib/Residue.h:
+	Residue::setReferential() recomputes pseudo atoms to avoid numerical
+	instability.
+	Cannot be done in getReferential() because of constness, but a call to
+	finalize() also recomputes pseudo atoms.
+
+2005-10-19  Philippe Thibault  <thibaup@garlando.iro.umontreal.ca>
+
+	* lib/ResidueType.cc, lib/ResidueType.h, lib/ResidueTypeStore.cc, lib/TypeRepresentationTables.cc:
+	Added RNA and DNA flavour for Phosphate residue type.
+
+2005-09-30  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Relation.cc: areHBonded lives again!!!
+
+2005-09-30  Philippe Thibault  <thibaup@garlando.iro.umontreal.ca>
+
+	* lib/ResidueType.cc, lib/ResidueType.h, lib/ResidueTypeStore.cc:
+	new general type static instance rRibose for a nucleic acid ribose
+	(RNA or DNA)
+
+	* lib/Relation.cc:
+	inverting phosphate tfo only if relation is annotated as adjacent
+
+	* lib/Messagestream.h: Implementation modification:
+	  - no redefinition of operator<< from ostream
+	  - inhibition of ouput controlled by a temporary redirection of
+	  streambuf to NULL (is this legal?)
+
+2005-09-21  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Pdbstream.cc: No headers are witten in Pdbstream::AMBER mode.
+
+2005-09-14  Philippe Thibault  <thibaup@garlando.iro.umontreal.ca>
+
+	* lib/Residue.cc: *** empty log message ***
+
+	* lib/PdbFileHeader.cc, lib/Pdbstream.cc:
+	- new multiline writing method that doesn't breakup words
+
+2005-09-09  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Residue.h, lib/Relation.h, lib/Relation.cc, lib/PropertyTypeStore.h, lib/PropertyTypeStore.cc, lib/PropertyType.h, lib/PropertyType.cc, lib/HBond.cc:
+	O2P and O2' annotations are added, a simple distance metric is used.  For this purpose, 2 new properties are added pRibose and pPhosphate.
+
+2005-09-06  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Relation.h, lib/Relation.cc:
+	H-bond maximum distance value constant put in a constant variable.
+
+2005-08-30  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/TypeRepresentationTables.cc, lib/ResidueTypeStore.cc:
+	Amber terminals added to ResidueTypeStore table.
+
+2005-08-30  Philippe Thibault  <thibaup@garlando.iro.umontreal.ca>
+
+	* lib/Messagestream.h:
+	added operator<< for short and long long integer types
+
+	* lib/Version.cc, lib/Version.h: removed static strings
+
+	* lib/Exception.cc, lib/Exception.h:
+	new IntLibException "FileNotFoundException"
+
+2005-08-26  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/ExtendedResidue.cc:
+	Inserted atoms should be put back in local coordinates even if the placed flag is false.
+
+2005-08-23  Philippe Thibault  <thibaup@garlando.iro.umontreal.ca>
+
+	* lib/Residue.cc: corrected error in getFuranoseType()
+
+2005-08-19  Philippe Thibault  <thibaup@garlando.iro.umontreal.ca>
+
+	* lib/HomogeneousTransfo.h: *** empty log message ***
+
+	* lib/AtomSet.cc, lib/Model.cc, lib/Molecule.cc, lib/PdbFileHeader.cc, lib/Relation.cc, lib/ResId.cc, lib/ResIdSet.cc, lib/Residue.cc, lib/Sequence.cc:
+	correction for binstream i/o compatibility accross 32b and 64b arch
+
+2005-08-19  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Residue.cc, lib/ResId.cc, lib/Molecule.cc, lib/Model.cc, lib/GraphModel.cc:
+	Binstream type corrections for 32/64 bits compatibility (not complete).
+
+2005-08-19  Philippe Thibault  <thibaup@garlando.iro.umontreal.ca>
+
+	* lib/AtomSet.h: bug correction in class AtomSetAtom
+
+	* lib/AtomTypeStore.cc, lib/ResidueTypeStore.cc:
+	slightly reduced compilation time...
+
+	* lib/PropertyType.cc, lib/PropertyType.h, lib/PropertyTypeStore.cc, lib/PropertyTypeStore.h, lib/Residue.cc, lib/Residue.h:
+	modified method getFuranoseType(): now using 16 propertytype labels
+	named "{alpha,beta}-{L,D}-{lyxo,ribo,arabino,xylo}furanoside", where
+	"beta-D-ribofuranoside" is the canonical type in RNA
+
+2005-08-18  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Relation.h, lib/Relation.cc, lib/HBond.h, lib/HBond.cc, lib/GraphModel.h, lib/GraphModel.cc:
+	Binary dump for GraphModel, Relations and HBond added.
+
+2005-08-15  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Relation.h, lib/Relation.cc, lib/HBond.h, lib/HBond.cc, ChangeLog:
+	Added Binstream to I/O.
+
+2005-08-05  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/TypeRepresentationTables.h: *** empty log message ***
+
+	* lib/ResidueTypeStore.h, lib/ResidueTypeStore.cc:
+	ResidueType pointers singletons are const.
+
+	* lib/ResidueType.h, lib/ResidueType.cc:
+	String explicitely allocated on stack.
+
+	* lib/Relation.h, lib/Relation.cc:
+	Pseudo constants changed to real constants.
+
+	* lib/Pdbstream.cc: *** empty log message ***
+
+	* lib/PdbFileHeader.cc: String explicitely allocated on stack.
+
+	* lib/GraphModel.h, lib/GraphModel.cc:
+	Path and cycle stuff removed until completed.  Relations are deleted before the Residues (more logical).
+
+	* lib/OrientedGraph.h, lib/Graph.h:
+	Path and cycle stuff removed until completed.
+
+	* lib/AtomSet.h: *** empty log message ***
+
+2005-07-26  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/HomogeneousTransfo.cc: memcpy is not posix.
+
+	* lib/Residue.cc, lib/HomogeneousTransfo.h, lib/HomogeneousTransfo.cc:
+	Bug correction: the size of an object cannot be known until it's class is fully defined.
+
+2005-07-18  Philippe Thibault  <thibaup@garlando.iro.umontreal.ca>
+
+	* lib/Residue.cc, lib/Residue.h:
+	- Modified ribose optimization methods objective function return
+	  value: now returning the RMSD between length of implicit C5'-O5' and
+	  C3'-O3' bonds and their theoretical length (1.440 and 1.431
+	  Angstroms respectively).
+	- Modified range of acceptable omega value in estimation: now
+	  accepting omega in [-1.25,1.25].
+	- Exterminated a bug in estimation method.
+	- Clarification of header comments.
+
+	* lib/HomogeneousTransfo.cc, lib/HomogeneousTransfo.h:
+	Changed default value for alpha_square static variable to 2.632^2, and
+	temporary removed its constness.
+
+	* config.h.in, configure, configure.in, lib/Version.cc, lib/Version.h:
+	Using AC_CANONICAL_HOST variables instead of calling uname
+
+2005-07-08  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/GraphModel.h, lib/GraphModel.cc:
+	A GraphModel is clearly an oriented graph and not a undirected graph.
+
 2005-06-23  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* lib/Model.h, lib/AbstractModel.h: front and back method added.

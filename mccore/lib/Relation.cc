@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.52.2.1 $
-// $Id: Relation.cc,v 1.52.2.1 2006-03-23 01:36:00 larosem Exp $
+// $Revision: 1.52.2.2 $
+// $Id: Relation.cc,v 1.52.2.2 2006-04-05 22:23:05 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -573,12 +573,10 @@ namespace mccore
 	vector< Residue::const_iterator > resn_at;
 	vector< Residue::const_iterator >::size_type x;
 	vector< Residue::const_iterator >::size_type y;
-	AtomSetAnd da (new AtomSetOr (new AtomSetSideChain (),
-				      new AtomSetOr (new AtomSetAtom (AtomType::aO2p),
-						     new AtomSetAtom (AtomType::aHO2p))),
+	AtomSetAnd da (new AtomSetSideChain (),
 		       new AtomSetNot (new AtomSetOr (new AtomSetAtom (AtomType::a2H5M),
 						      new AtomSetAtom (AtomType::a3H5M))));
-	
+
 	node = 0;
 	graph.insert (node++, 1); // Source
 	graph.insert (node++, 1); // Sink
@@ -707,13 +705,13 @@ namespace mccore
 
 	    for (label = 0; label < graph.edgeSize (); ++label)
 	      {
-		HBond &hbond = *graph.internalFindEdge (label);
+		HBond &hbond = graph.internalGetEdge (label);
 
 		if (0 != hbond.getDonorType ())
 		  {
 		    float flow;
 
-		    flow = *graph.internalFindEdgeWeight (label);
+		    flow = graph.internalGetEdgeWeight (label);
 		    sum_flow += flow;
 		    hbonds.push_back (HBondFlow (hbond, flow));
 		  }

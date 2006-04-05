@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:31:01 2004
-// $Revision: 1.13.2.2 $
+// $Revision: 1.13.2.3 $
 // 
 // This file is part of mccore.
 // 
@@ -30,9 +30,10 @@
 
 #include "AbstractModel.h"
 #include "Algo.h"
+#include "Exception.h"
 // #include "Path.h"
-#include "OrientedGraph.h"
 #include "Residue.h"
+#include "OrientedGraph.h"
 
 using namespace std;
 
@@ -40,7 +41,6 @@ using namespace std;
 
 namespace mccore
 {
-  class keepTemplate;
   class Molecule;
   class Relation;
   class ResidueFactoryMethod;
@@ -54,21 +54,14 @@ namespace mccore
    * iterators.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.h,v 1.13.2.2 2006-03-23 01:35:46 larosem Exp $
+   * @version $Id: GraphModel.h,v 1.13.2.3 2006-04-05 22:22:58 larosem Exp $
    */
   class GraphModel : public AbstractModel, public OrientedGraph< Residue*, Relation*, int, int, less_deref< Residue > >
   {
 
-  public:
-
-    typedef Residue* vertex;
-    typedef Relation* edge;
-    typedef int vertex_weight;
-    typedef int edge_weight;
-
   protected:
     
-    typedef OrientedGraph< vertex, edge, vertex_weight, edge_weight, less_deref< Residue > > graphsuper;
+    typedef OrientedGraph< Residue*, Relation*, int, int, less_deref< Residue > > graphsuper;
     
   public:
 
@@ -76,24 +69,16 @@ namespace mccore
     typedef AbstractModel::const_iterator const_iterator;
     typedef graphsuper::size_type size_type;
     typedef graphsuper::label label;
-    typedef graphsuper::vweight_iterator vweight_iterator;
-    typedef graphsuper::vweight_const_iterator vweight_const_iterator;
-    typedef graphsuper::vweight_size_type vweight_size_type;
-    typedef graphsuper::vweight_label vweight_label;
-    typedef graphsuper::edge_iterator edge_iterator;
-    typedef graphsuper::edge_const_iterator edge_const_iterator;
-    typedef graphsuper::edge_size_type edge_size_type;
-    typedef graphsuper::edge_label edge_label;
-    typedef graphsuper::eweight_iterator eweight_iterator;
-    typedef graphsuper::eweight_const_iterator eweight_const_iterator;
-    typedef graphsuper::eweight_size_type eweight_size_type;
-    typedef graphsuper::eweight_label eweight_label;
+    typedef Residue* vertex;
+    typedef Relation* edge;
+    typedef int vertex_weight;
+    typedef int edge_weight;
 
   protected:
     
     typedef graphsuper::V2VLabel V2VLabel;
-    typedef graphsuper::InnerMap InnerMap;
     typedef graphsuper::EV2ELabel EV2ELabel;
+    typedef graphsuper::EndVertices EndVertices;
 
   private:
 
@@ -169,20 +154,36 @@ namespace mccore
      * Gets the model reference at nth position.
      * @param nth the position of the reference to get.
      * @return the nth reference.
+     * @exception ArrayIndexOutOfBoundsException
      */
-    virtual Residue& operator[] (size_type nth)
+    virtual Residue& operator[] (size_type nth) throw (ArrayIndexOutOfBoundsException)
     {
-      return **(begin () + nth);
+      try
+	{
+	  return *internalGetVertex (nth);
+	}
+      catch (NoSuchElementException &e)
+	{
+	  throw ArrayIndexOutOfBoundsException ("", __FILE__, __LINE__);
+	}
     }
 
     /**
      * Gets the model const_reference at nth position.
      * @param nth the position of the const_reference to get.
      * @return the nth const_reference.
+     * @exception ArrayIndexOutOfBoundsException
      */
-    virtual const Residue& operator[] (size_type nth) const
+    virtual const Residue& operator[] (size_type nth) const throw (ArrayIndexOutOfBoundsException)
     {
-      return **(begin () + nth);
+      try
+	{
+	  return *internalGetVertex (nth);
+	}
+      catch (NoSuchElementException &e)
+	{
+	  throw ArrayIndexOutOfBoundsException ("", __FILE__, __LINE__);
+	}
     }
 
     // ACCESS ---------------------------------------------------------------
@@ -191,25 +192,27 @@ namespace mccore
      * Gets the iterator pointing to the beginning of the model.
      * @return the iterator.
      */
-    virtual iterator begin () { return iterator (graphsuper::begin ()); }
+    virtual iterator begin () { return iterator (vertices.begin ()); }
 
     /**
      * Gets the iterator pointing to the end of the model.
      * @return the iterator.
      */
-    virtual iterator end () { return iterator (graphsuper::end ()); }
+    virtual iterator end () { return iterator (vertices.end ()); }
 
     /**
      * Gets the const iterator pointing to the beginning of the model.
      * @return the iterator.
      */
-    virtual const_iterator begin () const { return const_iterator (graphsuper::begin ()); }
+    virtual const_iterator begin () const
+    { return const_iterator (vertices.begin ()); }
 
     /**
      * Gets the const iterator pointing to the end of the model.
      * @return the iterator.
      */
-    virtual const_iterator end () const { return const_iterator (graphsuper::end()); }
+    virtual const_iterator end () const
+    { return const_iterator (vertices.end()); }
 
     /**
      * Tells if the GraphModel was annotated.
@@ -233,7 +236,7 @@ namespace mccore
      * @param v the vertex to insert.
      * @return true if the element was inserted, false if already present.
      */
-    virtual bool insert (const vertex &v) { return false; }
+    virtual bool insert (const Residue *&v) { return false; }
 
     /**
      * Inserts a vertex and its weight in the graph.  Private, use the
@@ -242,7 +245,7 @@ namespace mccore
      * @param w the vertex weight.
      * @return true if the element was inserted, false if already present.
      */
-    virtual bool insert (const vertex &v, const vertex_weight &w) { return false; }
+    virtual bool insert (const Residue *&v, const int &w) { return false; }
 
   public:
     
@@ -262,7 +265,7 @@ namespace mccore
      * @param w the Residue weight.
      * @return the position where the residue was inserted.
      */
-    virtual iterator insert (const Residue &res, vertex_weight w);
+    virtual iterator insert (const Residue &res, int w);
       
     /**
      * Erases a residue from the model.
@@ -346,12 +349,68 @@ namespace mccore
   private:
 
     /**
-     * Function used by removeAminoAcid, removeNucleicAcid,
+     * Template function used by removeAminoAcid, removeNucleicAcid,
      * keepAminoAcid, keepNucleicAcid, keepRNA and keepDNA.  If the
      * GraphModel is already annotated, it rearrange the adjacency graph.
      * The edge order may change.
      */
-    void keep (const keepTemplate &is);
+    template < class V >
+    void keepTemplate ()
+    {
+      if (! empty ())
+	{
+	  vector< Residue* > newv;
+	  vector< int > newweights;
+	  const graphsuper::size_type sz = size ();
+	  graphsuper::size_type vIndex;
+	  graphsuper::size_type *corresp;
+	  vector< bool > marks;
+	  EV2ELabel newEdgeMap;
+	  EV2ELabel::iterator evIt;
+	  vector< Relation* > newe;
+	  vector< int > newew;
+
+	  corresp = new graphsuper::size_type[vertices.size ()];
+	  for (vIndex = 0; vIndex < sz; ++vIndex)
+	    {
+	      bool value = V ().operator () (vertices[vIndex]->getType ());
+
+	      corresp[vIndex] = newv.size ();
+	      marks.push_back (value);
+	      if (value)
+		{
+		  newv.push_back (vertices[vIndex]);
+		  newweights.push_back (vertexWeights[vIndex]);
+		}
+	    }
+	  for (evIt = ev2elabel.begin (); ev2elabel.end () != evIt; ++evIt)
+	    {
+	      const EndVertices &endVertices = evIt->first;
+
+	      if (marks[endVertices.getHeadLabel ()]
+		  && marks[endVertices.getTailLabel ()])
+		{
+		  EndVertices ev (corresp[endVertices.getHeadLabel ()],
+				  corresp[endVertices.getTailLabel ()]);
+
+		  newEdgeMap.insert (make_pair (ev, newe.size ()));
+		  newe.push_back (edges[evIt->second]);
+		  newew.push_back (edgeWeights[evIt->second]);
+		}
+	      else
+		{
+		  delete edges[evIt->second];
+		}
+	    }
+	  vertices = newv;
+	  vertexWeights = newweights;
+	  rebuildV2VLabel ();
+	  edges = newe;
+	  edgeWeights = newew;
+	  ev2elabel = newEdgeMap;
+	  delete[] corresp;
+	}
+    }
 
   public:
 

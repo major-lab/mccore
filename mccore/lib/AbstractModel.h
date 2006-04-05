@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 16:12:42 2004
-// $Revision: 1.7.2.2 $
+// $Revision: 1.7.2.3 $
 //
 // This file is part of mccore.
 // 
@@ -52,7 +52,7 @@ namespace mccore
    * Abstract class for Models.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: AbstractModel.h,v 1.7.2.2 2006-03-23 01:35:31 larosem Exp $
+   * @version $Id: AbstractModel.h,v 1.7.2.3 2006-04-05 22:22:46 larosem Exp $
    */
   class AbstractModel
   {
@@ -219,15 +219,17 @@ namespace mccore
      * Gets the model reference at nth position.
      * @param nth the position of the reference to get.
      * @return the nth reference.
+     * @exception ArrayIndexOutOfBoundsException
      */
-    virtual Residue& operator[] (size_type nth) = 0;
+    virtual Residue& operator[] (size_type nth) throw (ArrayIndexOutOfBoundsException) = 0;
 
     /**
      * Gets the model const_reference at nth position.
      * @param nth the position of the const_reference to get.
      * @return the nth const_reference.
+     * @exception ArrayIndexOutOfBoundsException
      */
-    virtual const Residue& operator[] (size_type nth) const = 0;
+    virtual const Residue& operator[] (size_type nth) const throw (ArrayIndexOutOfBoundsException) = 0;
 
     // ACCESS ---------------------------------------------------------------
 

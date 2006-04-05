@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 21 15:30:27 2003
-// $Revision: 1.3 $
+// $Revision: 1.3.2.1 $
 // 
 // This file is part of mccore.
 // 
@@ -44,12 +44,12 @@ namespace mccore
    * The topology of known residues including obligatory and optionnal atoms.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueTopology.h,v 1.3 2005-01-03 23:02:37 larosem Exp $
+   * @version $Id: ResidueTopology.h,v 1.3.2.1 2006-04-05 22:23:16 larosem Exp $
    */
   class ResidueTopology
   {
 
-    static map< const ResidueType*, UndirectedGraph< const AtomType*, bool > > topologies;
+    static map< const ResidueType*, UndirectedGraph< const AtomType*, pair< const AtomType*, const AtomType* > > > topologies;
     
   public:
 
@@ -80,7 +80,7 @@ namespace mccore
      * @param type the ResidueType.
      * @return the topology or null if the type is non-standard.
      */
-    static const UndirectedGraph< const AtomType*, bool >* get (const ResidueType* type);
+    static const UndirectedGraph< const AtomType*, pair< const AtomType*, const AtomType* > >* get (const ResidueType* type);
 
     /**
      * Returns obligatory atom sets for the given type. 
@@ -97,6 +97,18 @@ namespace mccore
 
   };
 
+}
+
+namespace std
+{
+  /**
+   * Outputs a pair of atom types. It is necessary because of class Graph output,
+   * but this ain't really nice ... 
+   * @param os The ouput stream.
+   * @param ap The pair of atom types.
+   * @return The written stream.
+   */
+  ostream& operator<< (ostream& os, const pair< const mccore::AtomType*, const mccore::AtomType* >& ap);
 }
 
 #endif

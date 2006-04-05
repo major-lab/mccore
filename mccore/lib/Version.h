@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Philippe Thibault <philippe.thibault@umontreal.ca>
 // Created On       : Wed May 11 10:07:28 2005
-// $Revision: 1.3 $
-// $Id: Version.h,v 1.3 2005-08-30 13:16:47 thibaup Exp $
+// $Revision: 1.3.2.1 $
+// $Id: Version.h,v 1.3.2.1 2006-04-05 22:23:33 larosem Exp $
 // 
 
 
@@ -26,39 +26,44 @@ namespace mccore
   class oBinstream;
 
   /**
-   * @short Library version manipulation
+   * @short Library version manipulation <major>.<minor>.<revision>
    * 
    * @author Philippe Thibault <philippe.thibault@umontreal.ca>
    */
   class Version 
   {
     /**
-     * Major version number: <major>.<minor>
+     * Major version number: <major>.<minor>.<revision>
      */
-    int major_version;
+    short int major_no;
 
     /**
-     * Minor version number: <major>.<minor>
+     * Minor version number: <major>.<minor>.<revision>
      */
-    int minor_version;
+    short int minor_no;
 
     /**
-     * Current CPU architecture string.
+     * Revision version number: <major>.<minor>.<revision>
+     */
+    short int revision_no;
+
+    /**
+     * CPU architecture string.
      */
     string cpu;
 
     /**
-     * Current vendor string.
+     * Vendor string.
      */
     string vendor;
 
     /**
-     * Current operating system name string.
+     * Operating system name string.
      */
     string os;
 
     /**
-     * Current building timestamp.
+     * Building timestamp.
      */
     string timestamp;
     
@@ -91,14 +96,19 @@ namespace mccore
 
     // ACCESS ---------------------------------------------------------------
 
-    int getMajorVersion () const
+    int getMajor () const
     {
-      return this->major_version;
+      return this->major_no;
     }
 
-    int getMinorVersion () const
+    int getMinor () const
     {
-      return this->minor_version;
+      return this->minor_no;
+    }
+
+    int getRevision () const
+    {
+      return this->revision_no;
     }
 
     // METHODS --------------------------------------------------------------
