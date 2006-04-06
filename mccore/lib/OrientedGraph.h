@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // OrientedGraph.h
-// Copyright © 2001-06 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-05 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu May 10 14:49:18 2001
-// $Revision: 1.7.2.1 $
+// $Revision: 1.7.2.2 $
 // 
 // This file is part of mccore.
 // 
@@ -28,12 +28,13 @@
 
 #include <functional>
 #include <list>
-#include <set>
 #include <utility>
 #include <vector>
 
 #include "Graph.h"
 // #include "Path.h"
+
+using namespace std;
 
 
 
@@ -43,51 +44,32 @@ namespace mccore
    * Directed graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: OrientedGraph.h,v 1.7.2.1 2006-03-23 01:35:54 larosem Exp $
+   * @version $Id: OrientedGraph.h,v 1.7.2.2 2006-04-06 15:50:24 larosem Exp $
    */
-  template< typename V,
-	    typename E,
-	    typename VW = float,
-	    typename EW = float,
-	    typename Vertex_Comparator = std::less< V > >	    
+  template< class V,
+	    class E,
+	    class VW = float,
+	    class EW = float,
+	    class Vertex_Comparator = less< V > >	    
   class OrientedGraph : public Graph< V, E, VW, EW, Vertex_Comparator >
   {
-    
-  public:
-
-    typedef V vertex;
-    typedef E edge;
-    typedef VW vertex_weight;
-    typedef EW edge_weight;
 
   protected:
 
-    typedef Graph< vertex, edge, vertex_weight, edge_weight, Vertex_Comparator > super;
+    typedef Graph< V, E, VW, EW, Vertex_Comparator > super;
     
   public:
 
-    typedef typename super::iterator iterator;
-    typedef typename super::const_iterator const_iterator;
     typedef typename super::size_type size_type;
     typedef typename super::label label;
-    typedef typename super::vweight_iterator vweight_iterator;
-    typedef typename super::vweight_const_iterator vweight_const_iterator;
-    typedef typename super::vweight_size_type vweight_size_type;
-    typedef typename super::vweight_label vweight_label;
-    typedef typename super::edge_iterator edge_iterator;
-    typedef typename super::edge_const_iterator edge_const_iterator;
-    typedef typename super::edge_size_type edge_size_type;
-    typedef typename super::edge_label edge_label;
-    typedef typename super::eweight_iterator eweight_iterator;
-    typedef typename super::eweight_const_iterator eweight_const_iterator;
-    typedef typename super::eweight_size_type eweight_size_type;
-    typedef typename super::eweight_label eweight_label;
+    typedef typename super::iterator iterator;
+    typedef typename super::const_iterator const_iterator;
 
   protected:
     
     typedef typename super::V2VLabel V2VLabel;
-    typedef typename super::InnerMap InnerMap;
     typedef typename super::EV2ELabel EV2ELabel;
+    typedef typename super::EndVertices EndVertices;
 
   public:
     
@@ -111,7 +93,7 @@ namespace mccore
      */
     virtual super* cloneGraph () const
     {
-      return (super*) new OrientedGraph< vertex, edge, vertex_weight, edge_weight, Vertex_Comparator> (*this);
+      return (super*) new OrientedGraph< V, E, VW, EW, Vertex_Comparator> (*this);
     }
 
     /**
@@ -133,7 +115,7 @@ namespace mccore
 	  super::operator= (right);
 	}
       return *this;
-    }
+    }	  
 
     /**
      * Tests whether the graphs are equals.
@@ -164,27 +146,27 @@ namespace mccore
      * @param v a vertex in the graph.
      * @return the list of in-neighbors.
      */
-    virtual std::list< vertex > inNeighborhood (const vertex &v)
+    virtual list< V > inNeighborhood (const V &v)
     {
-      std::list< vertex > res;
-      label t;
+      list< V > res;
+      typename V2VLabel::const_iterator it;
 
-      if (this->size () != (t = getVertexLabel (v)))
+      if (this->v2vlabel.end () != (it = this->v2vlabel.find (&v)))
 	{
-	  typename EV2ELabel::const_iterator cit;
+	  typename EV2ELabel::const_iterator evit;
+	  label l;
 
-	  for (cit = this->ev2elabel.begin (); ((typename EV2ELabel::const_iterator) this->ev2elabel.end ()) != cit; ++cit)
+	  l = it->second;
+	  for (evit = this->ev2elabel.begin (); this->ev2elabel.end () != evit; ++evit)
 	    {
-	      const InnerMap &im = cit->second;
-
-	      if (im.end () != im.find (t))
+	      if (evit->first.getTailLabel () == l)
 		{
-		  res.push_back (*internalFind (cit->first));
+		  res.push_back (this->vertices[evit->first.getHeadLabel ()]);
 		}
 	    }
 	}
       return res;
-    }
+    }	  
 
     /**
      * Returns the out-neighbors of the given vertex. An empty list is
@@ -193,23 +175,22 @@ namespace mccore
      * @param v a vertex in the graph.
      * @return the list of out-neighbors.
      */
-    virtual std::list< vertex > outNeighborhood (const vertex &v)
+    virtual list< V > outNeighborhood (const V &v)
     {
-      std::list< vertex > res;
-      label h;
+      list< V > res;
+      typename V2VLabel::const_iterator it;
 
-      if (this->size () != (h = getVertexLabel (v)))
+      if (this->v2vlabel.end () != (it = this->v2vlabel.find (&v)))
 	{
-	  typename EV2ELabel::const_iterator cit;
+	  typename EV2ELabel::const_iterator evit;
+	  label l;
 
-	  if (((typename EV2ELabel::const_iterator) this->ev2elabel.end ()) != (cit = this->ev2elabel.find (h)))
+	  l = it->second;
+	  for (evit = this->ev2elabel.begin (); this->ev2elabel.end () != evit && evit->first.getHeadLabel () <= l; ++evit)
 	    {
-	      const InnerMap &im = cit->second;
-	      typename InnerMap::const_iterator imit;
-	      
-	      for (imit = im.begin (); im.end () != imit; ++imit)
+	      if (evit->first.getHeadLabel () == l)
 		{
-		  res.push_back (*internalFind (imit->first));
+		  res.push_back (this->vertices[evit->first.getTailLabel ()]);
 		}
 	    }
 	}
@@ -220,145 +201,214 @@ namespace mccore
      * Returns a label list of the in-neighbors of the given vertex label.
      * An empty list is returned if the label has no in-neighbor or if it is
      * not contained in the graph.
-     * @param t the vertex label.
+     * @param l the vertex label.
      * @return the list of in-neighbors.
      */
-    virtual std::list< label > internalInNeighborhood (label t) const 
+    virtual list< label > internalInNeighborhood (label l) const 
     {
-      std::list< label > res;
+      list< label > res;
 
-      if (this->size () > t)
+      if (this->vertices.size () > l)
 	{
-	  typename EV2ELabel::const_iterator cit;
+	  typename EV2ELabel::const_iterator evit;
 
-	  for (cit = this->ev2elabel.begin (); ((typename EV2ELabel::const_iterator) this->ev2elabel.end ()) != cit; ++cit)
+	  for (evit = this->ev2elabel.begin (); this->ev2elabel.end () != evit; ++evit)
 	    {
-	      const InnerMap &im = cit->second;
-	      typename InnerMap::const_iterator imit;
-
-	      if (im.end () != (imit = im.find (t)))
+	      if (evit->first.getTailLabel () == l)
 		{
-		  res.push_back (cit->first);
+		  res.push_back (evit->first.getHeadLabel ());
 		}
 	    }
 	}
       return res;
-    }
+    }	  
     
     /**
      * Returns a label list of the neighbors of the given vertex label.  An
      * empty list is returned if the label has no neighbor or if it is not
      * contained in the graph.
-     * @param h the vertex label.
+     * @param l the vertex label.
      * @return the list of out-neighbors.
      */
-    virtual std::list< label > internalOutNeighborhood (label h) const
+    virtual list< label > internalOutNeighborhood (label l) const
     {
-      std::list< label > res;
-      typename EV2ELabel::const_iterator cit;
+      list< label > res;
 
-      if (((typename EV2ELabel::const_iterator) this->ev2elabel.end ()) != (cit = this->ev2elabel.find (h)))
+      if (this->vertices.size () > l)
 	{
-	  const InnerMap &im = cit->second;
-	  typename InnerMap::const_iterator imit;
+	  typename EV2ELabel::const_iterator evit;
 
-	  for (imit = im.begin (); im.end () != imit; ++imit)
+	  for (evit = this->ev2elabel.begin (); this->ev2elabel.end () != evit && evit->first.getHeadLabel () <= l; ++evit)
 	    {
-	      res.push_back (imit->first);
+	      if (evit->first.getHeadLabel () == l)
+		{
+		  res.push_back (evit->first.getTailLabel ());
+		}
 	    }
 	}
       return res;
     }	  
 
     /**
-     * Returns the in and out neighbors of the given vertex. An empty list
-     * is returned if the vertex has no neighbors or if the graph does not
-     * contain the vertex. Vertices order is unsorted and may change on
-     * graph modification.
+     * Returns the neighbors of the given vertex sorted over their label. An
+     * empty list is returned if the vertex has no neighbors or if the graph
+     * does not contain the vertex.  It is a alias for outNeighborhood.
      * @param v a vertex in the graph.
      * @return the list of neighbors.
      */
-    virtual std::list< vertex > neighborhood (const vertex &v)
+    virtual list< V > neighborhood (const V &v)
     {
-      std::list< vertex > res;
-      label l;
-
-      if (this->size () > (l = getVertexLabel (v)))
-	{
-	  std::set< label > labelset;
-	  typename std::set< label >::const_iterator labelsetit;
-	  typename EV2ELabel::const_iterator evit;
-
-	  for (evit = this->ev2elabel.begin (); ((typename EV2ELabel::const_iterator) this->ev2elabel.end ()) != evit; ++evit)
-	    {
-	      const InnerMap &im = evit->second;
-	      label head;
-
-	      if ((head = evit->first) == l)
-		{
-		  typename InnerMap::const_iterator imit;
-
-		  for (imit = im.begin (); im.end () != imit; ++imit)
-		    {
-		      labelset.insert (imit->first);
-		    }
-		}
-	      else if (im.end () != im.find (l))
-		{
-		  labelset.insert (head);
-		}
-	    }
-	  for (labelsetit = labelset.begin (); labelset.end () != labelsetit; ++labelsetit)
-	    {
-	      res.push_back (*internalFind (*labelsetit));
-	    }
-	}
-      return res;		
+      return outNeighborhood (v);
     }
     
     /**
-     * Returns the in and out neighbor labels of the given vertex. An empty list
-     * is returned if the vertex has no neighbors or if the graph does not
-     * contain the vertex. Labels order is unsorted and may change on graph
-     * modification.
+     * Returns a increasing label list of the out-neighbors of the given vertex
+     * label.  An empty list is returned if the label has no neighbor or if
+     * it is not contained in the graph.  It is an alias for
+     * internalOutNeighborhood.
      * @param l the vertex label.
-     * @return the list of neighbors.
+     * @return the list of out-neighbors.
      */
-    virtual std::list< label > internalNeighborhood (label l) const
+    virtual list< label > internalNeighborhood (label l) const
     {
-      std::list< label > res;
-
-      if (this->size () > l)
-	{
-	  std::set< label > labelset;
-	  typename EV2ELabel::const_iterator evit;
-
-	  for (evit = this->ev2elabel.begin (); ((typename EV2ELabel::const_iterator) this->ev2elabel.end ()) != evit; ++evit)
-	    {
-	      const InnerMap &im = evit->second;
-	      label head;
-	      
-	      if ((head = evit->first) == l)
-		{
-		  typename InnerMap::const_iterator imit;
-
-		  for (imit = im.begin (); im.end () != imit; ++imit)
-		    {
-		      labelset.insert (imit->first);
-		    }
-		}
-	      else if (im.end () != im.find (l))
-		{
-		  labelset.insert (head);
-		}
-	    }
-	  res.insert (res.end (), labelset.begin (), labelset.end ());
-	}
-      return res;
+      return internalOutNeighborhood (l);
     }
     
     // METHODS --------------------------------------------------------------
 
+  protected:
+
+    /**
+     * Erase a vertex label from the graph.  If an edge is connected to this
+     * vertex label it is also removed.  No check is made on label validity.
+     * @param l the vertex label to remove.
+     * @return an iterator over the next vertex element.
+     */
+    virtual iterator uncheckedInternalErase (label l)
+    {
+      list< label > outNeighbors = internalOutNeighborhood (l);
+      list< label > inNeighbors = internalInNeighborhood (l);
+      typename list< label >::iterator lit;
+      iterator res;
+      typename EV2ELabel::iterator evit;
+      EV2ELabel newEV2;
+      
+      for (lit = outNeighbors.begin (); outNeighbors.end () != lit; ++lit)
+	{
+	  uncheckedInternalDisconnect (l, *lit);
+	}
+      for (lit = inNeighbors.begin (); inNeighbors.end () != lit; ++lit)
+	{
+	  uncheckedInternalDisconnect (*lit, l);
+	}
+      res = this->vertices.erase (this->vertices.begin () + l);
+      this->vertexWeights.erase (this->vertexWeights.begin () + l);
+      this->rebuildV2VLabel ();
+	  
+      for (evit = this->ev2elabel.begin (); this->ev2elabel.end () != evit; ++evit)
+	{
+	  label h;
+	  label t;
+	  
+	  h = evit->first.getHeadLabel ();
+	  t = evit->first.getTailLabel ();
+	  if (h > l)
+	    {
+	      --h;
+	    }
+	  if (t > l)
+	    {
+	      --t;
+	    }
+	  
+	  EndVertices ev (h, t);
+	  newEV2.insert (make_pair (ev, evit->second));
+	}
+      this->ev2elabel = newEV2;
+      return res;
+    }
+
+    /**
+     * Connects two vertices labels of the graph with an edge.  No check are
+     * made on vertex labels validity.
+     * @param h the head vertex label of the edge.
+     * @param t the tail vertex label of the edge.
+     * @param e the edge.
+     * @return true if the connect operation succeeded.
+     */
+    virtual bool uncheckedInternalConnect (label h, label t, const E &e)
+    {
+      EndVertices ev (h, t);
+      typename EV2ELabel::const_iterator evit;
+      
+      if (this->ev2elabel.end () == (evit = this->ev2elabel.find (ev)))
+	{
+	  this->ev2elabel.insert (make_pair (ev, this->edges.size ()));
+	  this->edges.push_back (e);
+	  this->edgeWeights.resize (this->edgeWeights.size () + 1);
+	  return true;
+	}
+      return false;
+    }
+
+    /**
+     * Connects two vertices of the graph with an edge and weight.  No check
+     * are made on vertex labels validity.
+     * @param h the head vertex of the edge.
+     * @param t the tail vertex of the edge.
+     * @param e the edge.
+     * @param w the weight of this edge.
+     * @return true if the connect operation succeeded.
+     */
+    virtual bool uncheckedInternalConnect (label h, label t, const E &e, const EW &w)
+    {
+      EndVertices ev (h, t);
+      typename EV2ELabel::const_iterator evit;
+      
+      if (this->ev2elabel.end () == (evit = this->ev2elabel.find (ev)))
+	{
+	  this->ev2elabel.insert (make_pair (ev, this->edges.size ()));
+	  this->edges.push_back (e);
+	  this->edgeWeights.push_back (w);
+	  return true;
+	}
+      return false;
+    }
+    
+    /**
+     * Disconnects two endvertices labels of the graph.  No check are
+     * made on vertex labels validity.
+     * @param h the head vertex of the edge.
+     * @param t the tail vertex of the edge.
+     * @return true if the vertices were disconnected.
+     */
+    virtual bool uncheckedInternalDisconnect (label h, label t)
+    {
+      EndVertices ev (h, t);
+      typename EV2ELabel::iterator evit;
+      
+      if (this->ev2elabel.end () != (evit = this->ev2elabel.find (ev)))
+	{
+	  label l;
+	  
+	  l = evit->second;
+	  this->edges.erase (this->edges.begin () + l);
+	  this->edgeWeights.erase (this->edgeWeights.begin () + l);
+	  this->ev2elabel.erase (evit);
+	  for (evit = this->ev2elabel.begin (); this->ev2elabel.end () != evit; ++evit)
+	    {
+	      if (evit->second > l)
+		{
+		  --evit->second;
+		}
+	    }
+	  return true;
+	}
+      return false;
+    }      
+
+  public:
+    
 //     /**
 //      * Finds the all the paths from the label q to the root.  Must be a non
 //      * cyclic graph.  edge weights must implement operator+.
@@ -366,11 +416,11 @@ namespace mccore
 //      * @param q the starting label.
 //      * @return a collection of Paths from q to the root in Dr.
 //      */
-//     vector< Path< vertex, edge_weight > > breadthFirstPaths (label q) const
+//     vector< Path< V, EW > > breadthFirstPaths (label q) const
 //     {
-//       vector< Path< vertex, edge_weight> > result;
-//       std::list< Path< label, edge_weight > > lst (1, Path< label, edge_weight > ());
-//       Path< label, edge_weight > &tmp = lst.front ();
+//       vector< Path< V, EW> > result;
+//       list< Path< label, EW > > lst (1, Path< label, EW > ());
+//       Path< label, EW > &tmp = lst.front ();
       
 //       tmp.push_back (q);
 //       tmp.setValue (0);
@@ -378,18 +428,18 @@ namespace mccore
 // 	{
 // 	  Path< label, unsigned int > &front = lst.front ();
 // 	  label endNode;
-// 	  std::list< label > neighbors;
-// 	  typename std::list< label >::iterator neighborsIt;
+// 	  list< label > neighbors;
+// 	  typename list< label >::iterator neighborsIt;
 
 // 	  endNode = front.back ();
 // 	  neighbors = internalOutNeighborhood (endNode);
 // 	  neighborsIt = neighbors.begin ();
 // 	  if (neighbors.end () == neighborsIt)
 // 	    {
-// 	      typename Path< label, edge_weight >::reverse_iterator rIt;
+// 	      typename Path< label, EW >::reverse_iterator rIt;
 
-// 	      result.push_back (Path< vertex, edge_weight > ());
-// 	      Path< vertex, edge_weight > &tmp = result.back ();
+// 	      result.push_back (Path< V, EW > ());
+// 	      Path< V, EW > &tmp = result.back ();
 	      
 // 	      for (rIt = front.rbegin (); front.rend () != rIt; ++rIt)
 // 		{
@@ -402,7 +452,7 @@ namespace mccore
 // 	      for (; neighbors.end () != neighborsIt; ++neighborsIt)
 // 		{
 // 		  lst.push_back (front);
-// 		  Path< label, edge_weight > &tmp = lst.back ();
+// 		  Path< label, EW > &tmp = lst.back ();
 
 // 		  tmp.push_back (*neighborsIt);
 // 		  tmp.setValue (tmp.getValue () + internalGetEdgeWeight (endNode, *neighborsIt));
@@ -419,10 +469,10 @@ namespace mccore
      * @param p the Path to add.
      * @param val the edge value.
      */
-//     void addReversePath (Path< vertex, edge_weight > &p, const edge_weight &val)
+//     void addReversePath (Path< V, EW > &p, const EW &val)
 //     {
-//       typename Path< vertex, edge_weight >::reverse_iterator fit;
-//       typename Path< vertex, edge_weight >::reverse_iterator lit;
+//       typename Path< V, EW >::reverse_iterator fit;
+//       typename Path< V, EW >::reverse_iterator lit;
       
 //       fit = p.rbegin ();
 //       if (! contains (*fit))
@@ -449,9 +499,9 @@ namespace mccore
      * @param os the stream.
      * @return the stream.
      */
-    virtual std::ostream& write (std::ostream& os) const
+    virtual ostream& write (ostream& os) const
     {
-      os << "[OrientedGraph]" << std::endl;
+      os << "[OrientedGraph]" << endl;
       return super::write (os);
     }
     
