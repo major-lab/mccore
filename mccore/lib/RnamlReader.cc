@@ -4,8 +4,8 @@
 //                     UniversitÅÈ de MontrÅÈal.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
-// $Revision: 1.9 $
-// $Id: RnamlReader.cc,v 1.9 2005-02-02 18:11:20 thibaup Exp $
+// $Revision: 1.10 $
+// $Id: RnamlReader.cc,v 1.10 2006-04-13 18:05:55 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -44,17 +44,17 @@
 #include "ResidueType.h"
 #include "RnamlReader.h"
 
-#include "xmlcpg/Atom.h"
-#include "xmlcpg/Base.h"
-#include "xmlcpg/FileInputStream.h"
-#include "xmlcpg/GZIPInputStream.h"
-#include "xmlcpg/InputStream.h"
-#include "xmlcpg/Model.h"
-#include "xmlcpg/Molecule.h"
-#include "xmlcpg/Object.h"
-#include "xmlcpg/Rnaml.h"
-#include "xmlcpg/Structure.h"
-#include "xmlcpg/Unmarshaller.h"
+#include "rnamlc++/Atom.h"
+#include "rnamlc++/Base.h"
+#include "rnamlc++/FileInputStream.h"
+#include "rnamlc++/GZIPInputStream.h"
+#include "rnamlc++/InputStream.h"
+#include "rnamlc++/Model.h"
+#include "rnamlc++/Molecule.h"
+#include "rnamlc++/Object.h"
+#include "rnamlc++/Rnaml.h"
+#include "rnamlc++/Structure.h"
+#include "rnamlc++/Unmarshaller.h"
 
 
 

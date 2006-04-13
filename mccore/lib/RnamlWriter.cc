@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.14 $
-// $Id: RnamlWriter.cc,v 1.14 2005-12-19 17:51:25 thibaup Exp $
+// $Revision: 1.15 $
+// $Id: RnamlWriter.cc,v 1.15 2006-04-13 18:05:55 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -50,27 +50,27 @@
 #include "ResidueType.h"
 #include "RnamlWriter.h"
 
-#include "xmlcpg/Atom.h"
-#include "xmlcpg/Base.h"
-#include "xmlcpg/BaseId.h"
-#include "xmlcpg/BaseId3p.h"
-#include "xmlcpg/BaseId5p.h"
-#include "xmlcpg/BasePair.h"
-#include "xmlcpg/BaseStack.h"
-#include "xmlcpg/FileOutputStream.h"
-#include "xmlcpg/GZIPOutputStream.h"
-#include "xmlcpg/Marshaller.h"
-#include "xmlcpg/Model.h"
-#include "xmlcpg/ModelId.h"
-#include "xmlcpg/Molecule.h"
-#include "xmlcpg/MoleculeId.h"
-#include "xmlcpg/PrintStream.h"
-#include "xmlcpg/Rnaml.h"
-#include "xmlcpg/Segment.h"
-#include "xmlcpg/SeqAnnotation.h"
-#include "xmlcpg/Sequence.h"
-#include "xmlcpg/StrAnnotation.h"
-#include "xmlcpg/Structure.h"
+#include "rnamlc++/Atom.h"
+#include "rnamlc++/Base.h"
+#include "rnamlc++/BaseId.h"
+#include "rnamlc++/BaseId3p.h"
+#include "rnamlc++/BaseId5p.h"
+#include "rnamlc++/BasePair.h"
+#include "rnamlc++/BaseStack.h"
+#include "rnamlc++/FileOutputStream.h"
+#include "rnamlc++/GZIPOutputStream.h"
+#include "rnamlc++/Marshaller.h"
+#include "rnamlc++/Model.h"
+#include "rnamlc++/ModelId.h"
+#include "rnamlc++/Molecule.h"
+#include "rnamlc++/MoleculeId.h"
+#include "rnamlc++/PrintStream.h"
+#include "rnamlc++/Rnaml.h"
+#include "rnamlc++/Segment.h"
+#include "rnamlc++/SeqAnnotation.h"
+#include "rnamlc++/Sequence.h"
+#include "rnamlc++/StrAnnotation.h"
+#include "rnamlc++/Structure.h"
 
 
 
