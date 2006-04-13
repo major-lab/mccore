@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:00:09 2003
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 // 
 // This file is part of mccore.
 // 
@@ -29,6 +29,7 @@
 #include <iostream>
 
 #include "Vector3D.h"
+#include "AtomType.h"
 
 using namespace std;
 
@@ -36,7 +37,6 @@ using namespace std;
 
 namespace mccore
 {
-  class AtomType;
   class iBinstream;
   class iPdbstream;
   class oBinstream;
@@ -49,7 +49,7 @@ namespace mccore
    * Warning: nothing is done to prevents slicing when assigning from a Vector*.
    *
    * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Atom.h,v 1.11 2005-03-30 18:59:42 larosem Exp $
+   * @version $Id: Atom.h,v 1.12 2006-04-13 18:02:58 thibaup Exp $
    */
   class Atom : public Vector3D
   {
@@ -65,7 +65,10 @@ namespace mccore
     /**
      * Initializes the object.
      */
-    Atom ();
+    Atom ()
+    : Vector3D (),
+      type (AtomType::aNull)
+    { }
 
     /**
      * Initializes the atom with coordinates and a type.
@@ -97,6 +100,15 @@ namespace mccore
       : Vector3D (other),
 	type (other.type)
     { }
+
+    /**
+     * Initializes the object with the other's content.
+     * @param other the object to copy.
+     */
+    Atom (const Vector3D &other)
+      : Vector3D (other),
+	type (AtomType::aNull)
+    { }
     
     /**
      * Clones the atom.
@@ -116,7 +128,27 @@ namespace mccore
      * @param other the object to copy.
      * @return itself.
      */
-    Atom& operator= (const Atom &other);
+    Atom& operator= (const Atom &other)
+    {
+      if (&other != this)
+      {
+	Vector3D::operator= (other);
+	type = other.type;
+      }
+      return *this;
+    }
+
+    /**
+     * Assigns the object with the other's content.
+     * @param other the object to copy.
+     * @return itself.
+     */
+    Atom& operator= (const Vector3D &other)
+    {
+      if (this != &other)
+	this->Vector3D::operator= (other);
+      return *this;
+    }
 
     /**
      * Indicates whether some other atom is "equal to" this one.

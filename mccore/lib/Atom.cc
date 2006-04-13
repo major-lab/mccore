@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:00:09 2003
-// $Revision: 1.13 $
-// $Id: Atom.cc,v 1.13 2005-03-30 18:59:18 larosem Exp $
+// $Revision: 1.14 $
+// $Id: Atom.cc,v 1.14 2006-04-13 18:02:58 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -29,7 +29,6 @@
 #endif
 
 #include "Atom.h"
-#include "AtomType.h"
 #include "Binstream.h"
 #include "Pdbstream.h"
 
@@ -37,23 +36,6 @@
 
 namespace mccore
 {
-  
-  Atom::Atom ()
-    : Vector3D (),
-      type (AtomType::aNull)
-  { }
-  
-  
-  Atom& 
-  Atom::operator= (const Atom &other)
-  {
-    if (&other != this)
-      {
-	Vector3D::operator= (other);
-	type = other.type;
-      }
-    return *this;
-  }
   
   
   bool 
