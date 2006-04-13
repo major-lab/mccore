@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Tue Mar 11 13:56:50 2003
-// $Revision: 1.16 $
-// $Id: AtomTypeStore.cc,v 1.16 2005-08-19 15:26:24 thibaup Exp $
+// $Revision: 1.17 $
+// $Id: AtomTypeStore.cc,v 1.17 2006-04-13 18:03:25 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -31,6 +31,7 @@
 
 #include "AtomTypeStore.h"
 #include "ResidueType.h"
+#include "Messagestream.h"
 
 
 namespace mccore
@@ -235,6 +236,8 @@ namespace mccore
       delete atype;
       atype = *inserted.first;
     }
+    else
+      gOut (4) << endl << "... created unknown atom type \'" << atype << "\'" << endl;
 
     return atype;
   }
