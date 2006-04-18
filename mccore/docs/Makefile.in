@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:53:22 2000
-# $Revision: 1.7 $
-# $Id: Makefile.in,v 1.7 2005-01-03 22:48:35 larosem Exp $
+# $Revision: 1.8 $
+# $Id: Makefile.in,v 1.8 2006-04-18 15:31:16 thibaup Exp $
 #
 # This file is part of mccore.
 # 
@@ -53,12 +53,13 @@ all static test:
 
 doc:
 
-install install-static: doc
+install install-static install-doc: doc
 
-uninstall:
+uninstall uninstall-doc:
 
 mostlyclean:
 	@ rm -f *.aux *.dvi *.log *.toc *.ilg *.ind *.out body.tmp head.tmp
+	@ rm -rf html texinfo docbook
 
 clean: mostlyclean
 

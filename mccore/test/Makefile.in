@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.9 $
-# $Id: Makefile.in,v 1.9 2005-01-14 20:43:27 larosem Exp $
+# $Revision: 1.10 $
+# $Id: Makefile.in,v 1.10 2006-04-18 15:31:16 thibaup Exp $
 # 
 # This file is part of mccore.
 # 
@@ -104,7 +104,7 @@ test: $(PROGRAMS)
 	    diff $(srcdir)/$$program.good $$program.out || echo "Errors in " $$program; \
 	  done
 
-install install-static uninstall:
+install install-static install-doc uninstall uninstall-doc:
 
 mostlyclean:
 	@ $(RM) *~ core.*

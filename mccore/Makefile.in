@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:10:38 2000
-# $Revision: 1.17 $
-# $Id: Makefile.in,v 1.17 2005-01-03 22:48:24 larosem Exp $
+# $Revision: 1.18 $
+# $Id: Makefile.in,v 1.18 2006-04-18 15:31:16 thibaup Exp $
 #
 #  This file is part of mccore.
 #  
@@ -62,7 +62,7 @@ all static doc test:
 	   (cd $$subdir && $(MAKE) $@) || exit 1; \
 	  done
 
-install install-static:
+install install-static install-doc:
 	@ for subdir in $(SUBDIRS); do \
 	   echo "Building $@ in $$subdir"; \
 	   (cd $$subdir && $(MAKE) $@) || exit 1; \
@@ -82,7 +82,11 @@ uninstall:
 	  done
 	@- rmdir -p $(datadir)/$(PACKAGE)/$(VERSION)/doc
 
-
+uninstall-doc:
+	@ for subdir in $(SUBDIRS); do \
+	   echo Making $@ in $$subdir; \
+	   (cd $$subdir && $(MAKE) $@) || exit 1; \
+	  done
 
 mostlyclean: mostlyclean-recursive mostlyclean-local
 
