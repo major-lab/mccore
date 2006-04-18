@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.53 $
-// $Id: Relation.cc,v 1.53 2006-02-23 16:35:00 gendrop Exp $
+// $Revision: 1.53.2.1 $
+// $Id: Relation.cc,v 1.53.2.1 2006-04-18 14:09:37 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -57,7 +57,7 @@ namespace mccore
   /**
    * Pairing annotation cutoffs.
    */
-  const float PAIRING_CUTOFF = 0.8f;
+  const float PAIRING_CUTOFF = 0.64f;
   const float TWO_BONDS_CUTOFF = 1.5f;
   const float THREE_BONDS_CUTOFF = 2.1f;
   //const float HBOND_DIST_MAX = 4;
@@ -751,13 +751,12 @@ namespace mccore
     Vector3D pb;
     Vector3D pc;
     Vector3D pd;
-    Vector3D pva;
-    Vector3D pvb;
     list< HBondFlow > hbf (hbonds.begin (), hbonds.end ());
     vector< HBondFlow >::iterator hbIt;
     float rad;
     unsigned int size_hint;
     const PropertyType *pp;
+    const PropertyType *bpo;
 
     labels.insert (PropertyType::pPairing);
     if (sum_flow < TWO_BONDS_CUTOFF)
@@ -765,6 +764,14 @@ namespace mccore
 	labels.insert (PropertyType::pOneHbond);
       }
 		
+    // -- parallel/antiparallel orientation
+    bpo = (Relation::_pyrimidine_ring_normal (*ref,
+					      Relation::_pyrimidine_ring_center (*ref)).dot (Relation::_pyrimidine_ring_normal (*res,
+																Relation::_pyrimidine_ring_center (*res))) > 0
+	   ? PropertyType::pParallel
+	   : PropertyType::pAntiparallel);
+    labels.insert (bpo);
+
     // Compute contact points and visual contact points
     for (hbIt = hbonds.begin (); hbonds.end () != hbIt; ++hbIt)
       {
@@ -774,45 +781,21 @@ namespace mccore
 	  {
 	    pa = pa + (fl.hbond.getHydrogen () * fl.flow);
 	    pb = pb + (fl.hbond.getLonePair () * fl.flow);
-	    pva = pva + (fl.hbond.getHydrogen () * fl.flow);
-	    pvb = pvb + (fl.hbond.getAcceptor () * fl.flow);
 	  }
 	else
 	  {
 	    pa = pa + (fl.hbond.getLonePair () * fl.flow);
 	    pb = pb + (fl.hbond.getHydrogen () * fl.flow);
-	    pva = pva + (fl.hbond.getAcceptor () * fl.flow);
-	    pvb = pvb + (fl.hbond.getHydrogen () * fl.flow);
 	  }
       }
 			
     pa = pa / sum_flow;
     pb = pb / sum_flow;
-    pva = pva / sum_flow;
-    pvb = pvb / sum_flow;
-	      
-    pc = *ref->safeFind (AtomType::aC1p); 
-    pc = pc - *ref->safeFind (AtomType::aPSY);
-    pc = pc + pa;
-    pd = *res->safeFind (AtomType::aC1p); 
-    pd = pd - *res->safeFind (AtomType::aPSY);
-    pd = pd + pb;
-	      
-    // -- parallel/antiparallel orientation
-    labels.insert (Relation::_pyrimidine_ring_normal
-		   (*ref, Relation::_pyrimidine_ring_center (*ref)).dot
-		   (Relation::_pyrimidine_ring_normal
-		    (*res, Relation::_pyrimidine_ring_center (*res))) > 0 ?
-		   PropertyType::pParallel : PropertyType::pAntiparallel);
 
-    // -- cis/trans orientation
-    rad = fabs (pa.torsionAngle (pc, pb, pd));
-    labels.insert (rad < M_PI / 2 ? PropertyType::pCis : PropertyType::pTrans);
-
+    // Compute pairing according to LW+ and Saenger/Gautheret nomenclatures.
     refFace = getFace (ref, pa);
     resFace = getFace (res, pb);
     pairedFaces.push_back (make_pair (refFace, resFace));
-	      
     if (sum_flow >= PAIRING_CUTOFF && sum_flow < TWO_BONDS_CUTOFF)
       {
 	size_hint = 1;
@@ -830,11 +813,23 @@ namespace mccore
       {
 	hbf.pop_front ();
       }
-    if (0 != (pp = translatePairing (ref, res, hbf, sum_flow, size_hint)))
+    if (0 != (pp = translatePairing (ref, res, bpo, hbf, sum_flow, size_hint)))
       {
 	labels.insert (pp);
       }
 
+    // -- cis/trans orientation
+    Vector3D refpyr = Relation::_pyrimidine_ring_center (*ref);
+    Vector3D respyr = Relation::_pyrimidine_ring_center (*res);
+    
+    pc = *ref->safeFind (AtomType::aC1p); 
+    pc = pc - *ref->safeFind (AtomType::aPSY);
+    pc = pc + refpyr;
+    pd = *res->safeFind (AtomType::aC1p); 
+    pd = pd - *res->safeFind (AtomType::aPSY);
+    pd = pd + respyr;
+    rad = fabs (refpyr.torsionAngle (pc, respyr, pd));
+    labels.insert (rad < M_PI / 2 ? PropertyType::pCis : PropertyType::pTrans);
   }
   
   
@@ -1382,7 +1377,7 @@ namespace mccore
 
 
   const PropertyType* 
-  Relation::translatePairing (const Residue *ra, const Residue *rb, list< HBondFlow > &hbf, float total_flow, unsigned int size_hint)
+  Relation::translatePairing (const Residue *ra, const Residue *rb, const PropertyType *bpo, list< HBondFlow > &hbf, float total_flow, unsigned int size_hint)
   {
     list< PairingPattern >::const_iterator i;
     const PropertyType *type;
@@ -1394,7 +1389,7 @@ namespace mccore
 	 ++i)
       {
 	if (size_hint >= (*i).size ()
-	    && (type = (*i).evaluate (ra, rb, hbf)) != 0)
+	    && (type = (*i).evaluate (ra, rb, bpo, hbf)) != 0)
 	  {
 	    if ((*i).size () > best_size)
 	      {
