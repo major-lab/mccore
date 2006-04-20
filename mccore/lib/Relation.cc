@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.53.2.2 $
-// $Id: Relation.cc,v 1.53.2.2 2006-04-20 14:59:57 larosem Exp $
+// $Revision: 1.53.2.3 $
+// $Id: Relation.cc,v 1.53.2.3 2006-04-20 18:48:22 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -57,9 +57,9 @@ namespace mccore
   /**
    * Pairing annotation cutoffs.
    */
-  const float PAIRING_CUTOFF = 0.64f;
-  const float TWO_BONDS_CUTOFF = 1.5f;
-  const float THREE_BONDS_CUTOFF = 2.1f;
+  const float PAIRING_CUTOFF = 0.8;
+  const float TWO_BONDS_CUTOFF = 1.5;
+  const float THREE_BONDS_CUTOFF = 2.1;
   //const float HBOND_DIST_MAX = 4;
   const float HBOND_DIST_MAX = 1.7;
 
