@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.53.2.1 $
-// $Id: Relation.cc,v 1.53.2.1 2006-04-18 14:09:37 larosem Exp $
+// $Revision: 1.53.2.2 $
+// $Id: Relation.cc,v 1.53.2.2 2006-04-20 14:59:57 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -634,7 +634,7 @@ namespace mccore
 		  
 		    h.evalStatistically (ref, res);
 #ifdef DEBUG
-		    gOut (5) << h << endl;
+		    gOut (4) << h << endl;
 #endif
 		    if (h.getValue () > 0.01)
 		      {
@@ -663,7 +663,7 @@ namespace mccore
 		  
 		    h.evalStatistically (res, ref);
 #ifdef DEBUG
-		    gOut (5) << h << endl;
+		    gOut (4) << h << endl;
 #endif
 		    if (h.getValue () > 0.01)
 		      {
@@ -690,7 +690,7 @@ namespace mccore
 	  }
 
 #ifdef DEBUG
-	gOut (5) << graph << endl;
+	gOut (4) << graph << endl;
 #endif
 	
 	if (graph.size () >= 3)
@@ -700,7 +700,7 @@ namespace mccore
 	    graph.preFlowPush (0, 1);
 	    
 #ifdef DEBUG
-	    gOut (5) << graph << endl;
+	    gOut (4) << graph << endl;
 #endif
 
 	    for (label = 0; label < graph.edgeSize (); ++label)
@@ -972,85 +972,88 @@ namespace mccore
   void
   Relation::areStacked ()
   {
-    try
+    if (ref->getType ()->isNucleicAcid () && res->getType ()->isNucleicAcid ())
       {
-	Vector3D pyrCA, pyrCB, imidCA, imidCB, pyrNA, pyrNB, imidNA, imidNB;
-	const PropertyType* stacking;
-	unsigned char rtypes;
+	try
+	  {
+	    Vector3D pyrCA, pyrCB, imidCA, imidCB, pyrNA, pyrNB, imidNA, imidNB;
+	    const PropertyType* stacking;
+	    unsigned char rtypes;
 
-	/*
-	  Compute necessary geometry based on type family:
+	    /*
+	      Compute necessary geometry based on type family:
 
-	  00 (0) => Pur / Pur: imid / imid, imid / -pyr, -pyr / imid, -pyr / -pyr
-	  01 (1) => Pur / Pyr:              imid /  pyr,              -pyr /  pyr
-	  10 (2) => Pyr / Pur:                            pyr / imid,  pyr / -pyr
-	  11 (3) => Pyr / Pyr:                                         pyr /  pyr
-	*/
+	      00 (0) => Pur / Pur: imid / imid, imid / -pyr, -pyr / imid, -pyr / -pyr
+	      01 (1) => Pur / Pyr:              imid /  pyr,              -pyr /  pyr
+	      10 (2) => Pyr / Pur:                            pyr / imid,  pyr / -pyr
+	      11 (3) => Pyr / Pyr:                                         pyr /  pyr
+	    */
       
-	pyrCA = Relation::_pyrimidine_ring_center (*ref);
-	pyrNA = Relation::_pyrimidine_ring_normal (*ref, pyrCA);
+	    pyrCA = Relation::_pyrimidine_ring_center (*ref);
+	    pyrNA = Relation::_pyrimidine_ring_normal (*ref, pyrCA);
       
-	pyrCB = Relation::_pyrimidine_ring_center (*res);
-	pyrNB = Relation::_pyrimidine_ring_normal (*res, pyrCB);
+	    pyrCB = Relation::_pyrimidine_ring_center (*res);
+	    pyrNB = Relation::_pyrimidine_ring_normal (*res, pyrCB);
       
-	if (ref->getType ()->isPurine ())
-	  {
-	    rtypes = 0;
-	    //pyrNA = -pyrNA;
-	    imidCA = Relation::_imidazole_ring_center (*ref);
-	    imidNA = Relation::_imidazole_ring_normal (*ref, imidCA);
-	  }
-	else if (ref->getType ()->isPyrimidine ())
-	  {
-	    rtypes = 2;
-	  }
-	else
-	  {
-	    IntLibException ex ("", __FILE__, __LINE__);
-	    ex << "Type \"" << ref->getType () << "\" not handled for residue"
-	       << ref->getResId ();
-	    throw ex;
-	  }
+	    if (ref->getType ()->isPurine ())
+	      {
+		rtypes = 0;
+		//pyrNA = -pyrNA;
+		imidCA = Relation::_imidazole_ring_center (*ref);
+		imidNA = Relation::_imidazole_ring_normal (*ref, imidCA);
+	      }
+	    else if (ref->getType ()->isPyrimidine ())
+	      {
+		rtypes = 2;
+	      }
+	    else
+	      {
+		IntLibException ex ("", __FILE__, __LINE__);
+		ex << "Type \"" << ref->getType () << "\" not handled for residue"
+		   << ref->getResId ();
+		throw ex;
+	      }
       
-	if (res->getType ()->isPurine ())
-	  {
-	    //pyrNB = -pyrNB;
-	    imidCB = Relation::_imidazole_ring_center (*res);
-	    imidNB = Relation::_imidazole_ring_normal (*res, imidCB);
+	    if (res->getType ()->isPurine ())
+	      {
+		//pyrNB = -pyrNB;
+		imidCB = Relation::_imidazole_ring_center (*res);
+		imidNB = Relation::_imidazole_ring_normal (*res, imidCB);
+	      }
+	    else if (res->getType ()->isPyrimidine ())
+	      {
+		rtypes |= 1;
+	      }
+	    else
+	      {
+		IntLibException ex ("", __FILE__, __LINE__);
+		ex << "Type \"" << res->getType () << "\" not handled for residue"
+		   << res->getResId ();
+		throw ex;
+	      }
+
+	    // pyrimidine / pyrimidine
+	    stacking = Relation::_ring_stacking (pyrCA, pyrNA, pyrCB, pyrNB);
+
+	    // imidazole / pyrimidine
+	    if (PropertyType::pNull == stacking && (1 == rtypes || 0 == rtypes))
+	      stacking = Relation::_ring_stacking (imidCA, imidNA, pyrCB, pyrNB);
+
+	    // pyrimidine / imidazole
+	    if (PropertyType::pNull == stacking && (2 == rtypes || 0 == rtypes))
+	      stacking = Relation::_ring_stacking (pyrCA, pyrNA, imidCB, imidNB);
+
+	    // imidazole / imidazole
+	    if (PropertyType::pNull == stacking && 0 == rtypes)
+	      stacking = Relation::_ring_stacking (imidCA, imidNA, imidCB, imidNB);
+
+	    if (PropertyType::pNull != stacking)
+	      labels.insert (stacking);
 	  }
-	else if (res->getType ()->isPyrimidine ())
+	catch (IntLibException& ex)
 	  {
-	    rtypes |= 1;
+	    gOut (3) << "An error occured during stacking annotation: " << ex << endl;
 	  }
-	else
-	  {
-	    IntLibException ex ("", __FILE__, __LINE__);
-	    ex << "Type \"" << res->getType () << "\" not handled for residue"
-	       << res->getResId ();
-	    throw ex;
-	  }
-
-	// pyrimidine / pyrimidine
-	stacking = Relation::_ring_stacking (pyrCA, pyrNA, pyrCB, pyrNB);
-
-	// imidazole / pyrimidine
-	if (PropertyType::pNull == stacking && (1 == rtypes || 0 == rtypes))
-	  stacking = Relation::_ring_stacking (imidCA, imidNA, pyrCB, pyrNB);
-
-	// pyrimidine / imidazole
-	if (PropertyType::pNull == stacking && (2 == rtypes || 0 == rtypes))
-	  stacking = Relation::_ring_stacking (pyrCA, pyrNA, imidCB, imidNB);
-
-	// imidazole / imidazole
-	if (PropertyType::pNull == stacking && 0 == rtypes)
-	  stacking = Relation::_ring_stacking (imidCA, imidNA, imidCB, imidNB);
-
-	if (PropertyType::pNull != stacking)
-	  labels.insert (stacking);
-      }
-    catch (IntLibException& ex)
-      {
-	gOut (3) << "An error occured during stacking annotation: " << ex << endl;
       }
   }
   
