@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.52.2.3 $
-// $Id: Relation.cc,v 1.52.2.3 2006-04-21 15:31:22 larosem Exp $
+// $Revision: 1.52.2.4 $
+// $Id: Relation.cc,v 1.52.2.4 2006-04-21 18:55:50 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -795,27 +795,30 @@ namespace mccore
     // Compute pairing according to LW+ and Saenger/Gautheret nomenclatures.
     refFace = getFace (ref, pa);
     resFace = getFace (res, pb);
-    pairedFaces.push_back (make_pair (refFace, resFace));
-    if (sum_flow >= PAIRING_CUTOFF && sum_flow < TWO_BONDS_CUTOFF)
+    if (0 != refFace && 0 != resFace)
       {
-	size_hint = 1;
-      }
-    else if (sum_flow < THREE_BONDS_CUTOFF)
-      {
-	size_hint = 2;
-      }
-    else
-      {
-	size_hint = 3;
-      }
-    hbf.sort ();
-    while (hbf.size () != size_hint)
-      {
-	hbf.pop_front ();
-      }
-    if (0 != (pp = translatePairing (ref, res, bpo, hbf, sum_flow, size_hint)))
-      {
-	labels.insert (pp);
+	pairedFaces.push_back (make_pair (refFace, resFace));
+	if (sum_flow >= PAIRING_CUTOFF && sum_flow < TWO_BONDS_CUTOFF)
+	  {
+	    size_hint = 1;
+	  }
+	else if (sum_flow < THREE_BONDS_CUTOFF)
+	  {
+	    size_hint = 2;
+	  }
+	else
+	  {
+	    size_hint = 3;
+	  }
+	hbf.sort ();
+	while (hbf.size () != size_hint)
+	  {
+	    hbf.pop_front ();
+	  }
+	if (0 != (pp = translatePairing (ref, res, bpo, hbf, sum_flow, size_hint)))
+	  {
+	    labels.insert (pp);
+	  }
       }
 
     // -- cis/trans orientation
@@ -1196,6 +1199,7 @@ namespace mccore
     Vector3D pp = t * p;
     vector< pair< Vector3D, const PropertyType* > > *faces = 0;
 
+    gOut (0) << *r->getType () << " " << r->getType ()->isA () << endl;
     if (r->getType ()->isA ())
       {
 	faces = &faces_A;
@@ -1217,21 +1221,28 @@ namespace mccore
 	faces = &faces_T;
       }
 
-    int face_index = 0;
-    unsigned int x;
-    float dist = numeric_limits< float >::max ();
-    
-    for (x = 0; x < faces->size (); ++x)
+    if (0 != faces)
       {
-	float tmp = pp.distance ((*faces)[x].first);
-	if (tmp < dist)
+	int face_index = 0;
+	unsigned int x;
+	float dist = numeric_limits< float >::max ();
+    
+	for (x = 0; x < faces->size (); ++x)
 	  {
-	    face_index = x;
-	    dist = tmp;
+	    float tmp = pp.distance ((*faces)[x].first);
+	    if (tmp < dist)
+	      {
+		face_index = x;
+		dist = tmp;
+	      }
 	  }
-      }
 
-    return (*faces)[face_index].second;   
+	return (*faces)[face_index].second;
+      }
+    else
+      {
+	return 0;
+      }
   }
   
   
