@@ -1,11 +1,11 @@
 ;                      -*- Mode: Outline -*-
 ; NEWS
-; Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique.
-;                  Université de Montréal.
+; Copyright © 2000-06 Laboratoire de Biologie Informatique et Théorique.
+;                     Université de Montréal.
 ; Author           : Martin Larose
 ; Created On       : Tue Sep 19 18:15:25 2000
-; $Revision: 1.9 $
-; $Id: NEWS,v 1.9 2005-01-11 19:43:51 thibaup Exp $
+; $Revision: 1.9.2.1 $
+; $Id: NEWS,v 1.9.2.1 2006-04-21 15:31:12 larosem Exp $
 
 * Version 1.5
 
@@ -45,8 +45,13 @@ us to create GraphModels.
     (aligned or opposed) and target base position relative to its reference
     (upward or downward), regardless of strand direction in the case of adjacent
     stack.
-  o Identify base plane direction as straight or reversed in base pairing,
+  o Identify base plane direction as parallel or antiparallel in base pairing,
     deprecating cis and trans annotation.
+  o Gautheret annotations corrected with the usage of pairing base plane
+    orientation to differenciate them.
+  o cis and trans torsion angle calculation is now based on the geometric
+    center of pyrimidine rings of the residues. It's no longer based on the
+    mean h-bonds vectors.  
     
 
 * Version 1.4
