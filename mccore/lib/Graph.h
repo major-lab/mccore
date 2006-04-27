@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Martin Larose
 // Created On       : Mon Mar 6 00:05:15 2006
-// $Revision: 1.27.4.1 $
+// $Revision: 1.27.4.2 $
 // 
 // This file is part of mccore.
 // 
@@ -49,7 +49,7 @@ namespace mccore
    * costly.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Graph.h,v 1.27.4.1 2006-03-24 18:36:55 larosem Exp $
+   * @version $Id: Graph.h,v 1.27.4.2 2006-04-27 15:48:42 larosem Exp $
    */
   template< typename V, typename E, typename VW = float, typename EW = float,
 	    typename Vertex_Comparator = std::less< V > >
@@ -355,6 +355,33 @@ namespace mccore
 	    }
 	}
       return edges.size ();
+    }
+
+    /**
+     * Gets the endvertices labels of a given edge label.
+     * @param e the edge label.
+     * @return a pair containing the endvertices label. If the edge is not
+     * found, a pair with endvertices equal to the size of the graph is
+     * returned.
+     */
+    std::pair< label, label > internalGetEndverticeLabels (edge_label e) const
+    {
+      typename EV2ELabel::const_iterator headIt;
+
+      for (headIt = ev2elabel.begin (); ((typename EV2ELabel::const_iterator) ev2elabel.end ()) != headIt; ++headIt)
+	{
+	  const InnerMap &im = headIt->second;
+	  typename InnerMap::const_iterator tailIt;
+
+	  for (tailIt = im.begin (); im.end () != tailIt; ++tailIt)
+	    {
+	      if (tailIt->second == e)
+		{
+		  return std::make_pair (headIt->first, tailIt->first);
+		}
+	    }
+	}
+      return std::make_pair (size (), size ());
     }
     
     /**
