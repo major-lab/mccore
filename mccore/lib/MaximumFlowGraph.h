@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Mon Apr  7 18:28:55 2003
-// $Revision: 1.12.4.1 $
+// $Revision: 1.12.4.2 $
 // 
 // This file is part of mccore.
 // 
@@ -51,7 +51,7 @@ namespace mccore
    * </pre>
    * for flow calculation.
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: MaximumFlowGraph.h,v 1.12.4.1 2006-03-24 18:39:21 larosem Exp $
+   * @version $Id: MaximumFlowGraph.h,v 1.12.4.2 2006-04-27 15:49:37 larosem Exp $
    */
   template< typename V,
 	    typename E,
@@ -256,7 +256,7 @@ namespace mccore
 	  neighborhood = internalOutNeighborhood (sourceid);
 	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
 	    {
-	      excess[*it] = *internalFindEdgeWeight (sourceid, *it) = internalFindEdge (sourceid, *it)->getValue ();
+	      excess[*it] = *internalFindWeight (sourceid, *it) = internalFind (sourceid, *it)->getValue ();
 	      excess[sourceid] -= excess[*it];
 	      active.push_back (*it);
 	    }
@@ -303,10 +303,10 @@ namespace mccore
 	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
 	    {
 	      if (labels[*it] > labels[front]
-		  && *internalFindEdgeWeight (front, *it) < internalFindEdge (front, *it)->getValue ())
+		  && *internalFindWeight (front, *it) < internalFind (front, *it)->getValue ())
 		{
-		  cap.push_back (internalFindEdge (front, *it)->getValue ()
-				 - *internalFindEdgeWeight (front, *it));
+		  cap.push_back (internalFind (front, *it)->getValue ()
+				 - *internalFindWeight (front, *it));
 		}
 	    }
 	  eq = equilibrateFlow (cap, excess[front]);
@@ -314,16 +314,16 @@ namespace mccore
 	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
 	    {
 	      if (labels[*it] > labels[front]
-		  && *internalFindEdgeWeight (front, *it) < internalFindEdge (front, *it)->getValue ())
+		  && *internalFindWeight (front, *it) < internalFind (front, *it)->getValue ())
 		{
 		  float push_delta;
 
-		  push_delta = min (eq, internalFindEdge (front, *it)->getValue () - *internalFindEdgeWeight (front, *it));
+		  push_delta = min (eq, internalFind (front, *it)->getValue () - *internalFindWeight (front, *it));
 		  
 		  gOut (5) << "Pushing " << push_delta << " from " << front
 			   << " to " << *it << endl;
 
-		  *internalFindEdgeWeight (front, *it) += push_delta;
+		  *internalFindWeight (front, *it) += push_delta;
 		  excess[front] -= push_delta;
 		  if (std::fabs (excess[front]) < 1e-5)
 		    {
@@ -350,9 +350,9 @@ namespace mccore
 	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
 	    {
 	      if (labels[*it] > labels[front]
-		  && 0 < *internalFindEdgeWeight (*it, front))
+		  && 0 < *internalFindWeight (*it, front))
 		{
-		  cap.push_back (*internalFindEdgeWeight (*it, front));
+		  cap.push_back (*internalFindWeight (*it, front));
 		}
 	    }
 	  eq = equilibrateFlow (cap, excess[front]);
@@ -360,16 +360,16 @@ namespace mccore
 	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
 	    {
 	      if (labels[*it] > labels[front]
-		  && 0 < *internalFindEdgeWeight (*it, front))
+		  && 0 < *internalFindWeight (*it, front))
 		{
 		  float push_delta;
 
-		  push_delta = min (eq, *internalFindEdgeWeight (*it, front));
+		  push_delta = min (eq, *internalFindWeight (*it, front));
 		  
 		  gOut (5) << "Pushing back " << push_delta << " from " << front
 			   << " to " << *it << endl;
 		  
-		  *internalFindEdgeWeight (*it, front) -= push_delta;
+		  *internalFindWeight (*it, front) -= push_delta;
 		  excess[front] -= push_delta;
 		  if (std::fabs (excess[front]) < 1e-5)
 		    {
@@ -396,12 +396,12 @@ namespace mccore
 	  neighborhood = internalOutNeighborhood (front);
 	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
 	    {
-	      if (0 < internalFindEdge (front, *it)->getValue () - *internalFindEdgeWeight (front, *it)
+	      if (0 < internalFind (front, *it)->getValue () - *internalFindWeight (front, *it)
 		  && labels[*it] > max_dist)
 		{
 		  max_dist = labels[*it];
 		  gOut (5) << "  max_dist forward residual = " 
-			   << internalFindEdge (front, *it)->getValue () - *internalFindEdgeWeight (front, *it)
+			   << internalFind (front, *it)->getValue () - *internalFindWeight (front, *it)
 			   << endl;
 		}
 	    }
@@ -409,12 +409,12 @@ namespace mccore
 	  neighborhood = internalInNeighborhood (front);
 	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
 	    {
-	      if (0 < *internalFindEdgeWeight (*it, front)
+	      if (0 < *internalFindWeight (*it, front)
 		  && labels[*it] > max_dist)
 		{
 		  max_dist = labels[*it];
 		  gOut (5) << "  max_dist back residual = " 
-			   << *internalFindEdgeWeight (*it, front) << endl;
+			   << *internalFindWeight (*it, front) << endl;
 		}
 	    }
 
