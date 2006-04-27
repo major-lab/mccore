@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.52.2.4 $
-// $Id: Relation.cc,v 1.52.2.4 2006-04-21 18:55:50 larosem Exp $
+// $Revision: 1.52.2.5 $
+// $Id: Relation.cc,v 1.52.2.5 2006-04-27 18:55:56 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -1199,7 +1199,6 @@ namespace mccore
     Vector3D pp = t * p;
     vector< pair< Vector3D, const PropertyType* > > *faces = 0;
 
-    gOut (0) << *r->getType () << " " << r->getType ()->isA () << endl;
     if (r->getType ()->isA ())
       {
 	faces = &faces_A;
