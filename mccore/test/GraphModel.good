@@ -406,8 +406,8 @@ Size: 324 Edge size: 1040
    77  {A201R:G -> A120R:U: pairing antiparallel cis XXVIII Ww/Ws }  0
    78  {A121R:C -> A122R:A: adjacent_5p }  0
    79  {A122R:A -> A121R:C: adjacent_3p }  0
-   80  {A121R:C -> A200R:G: pairing antiparallel trans XIX Ww/Ww }  0
-   81  {A200R:G -> A121R:C: pairing antiparallel trans XIX Ww/Ww }  0
+   80  {A121R:C -> A200R:G: pairing antiparallel cis XIX Ww/Ww }  0
+   81  {A200R:G -> A121R:C: pairing antiparallel cis XIX Ww/Ww }  0
    82  {A121R:C -> A201R:G: outward }  0
    83  {A201R:G -> A121R:C: outward }  0
    84  {A122R:A -> A123R:A: adjacent_5p }  0
@@ -756,8 +756,8 @@ Size: 324 Edge size: 1040
   427  {A248R:A -> A225R:A: outward pairing O2P/Bh }  0
   428  {A226R:A -> A227R:G: adjacent_5p upward }  0
   429  {A227R:G -> A226R:A: adjacent_3p downward }  0
-  430  {A226R:A -> A249R:U: pairing antiparallel trans XX Ww/Ww }  0
-  431  {A249R:U -> A226R:A: pairing antiparallel trans XX Ww/Ww }  0
+  430  {A226R:A -> A249R:U: pairing antiparallel cis XX Ww/Ww }  0
+  431  {A249R:U -> A226R:A: pairing antiparallel cis XX Ww/Ww }  0
   432  {A227R:G -> A228R:U: adjacent_5p upward }  0
   433  {A228R:U -> A227R:G: adjacent_3p downward }  0
   434  {A227R:G -> A247R:U: pairing antiparallel cis XXVIII Ww/Ws }  0
@@ -772,8 +772,8 @@ Size: 324 Edge size: 1040
   443  {A245R:G -> A229R:C: pairing antiparallel cis XIX Ww/Ww }  0
   444  {A230R:A -> A231R:A: adjacent_5p upward }  0
   445  {A231R:A -> A230R:A: adjacent_3p downward }  0
-  446  {A230R:A -> A244R:U: pairing antiparallel trans XX Ww/Ww }  0
-  447  {A244R:U -> A230R:A: pairing antiparallel trans XX Ww/Ww }  0
+  446  {A230R:A -> A244R:U: pairing antiparallel cis XX Ww/Ww }  0
+  447  {A244R:U -> A230R:A: pairing antiparallel cis XX Ww/Ww }  0
   448  {A230R:A -> A245R:G: outward }  0
   449  {A245R:G -> A230R:A: outward }  0
   450  {A231R:A -> A232R:C: adjacent_5p upward }  0
@@ -932,8 +932,8 @@ Size: 324 Edge size: 1040
   603  {B201R:G -> B120R:U: pairing antiparallel cis XXVIII Ww/Ws }  0
   604  {B121R:C -> B122R:A: adjacent_5p }  0
   605  {B122R:A -> B121R:C: adjacent_3p }  0
-  606  {B121R:C -> B200R:G: pairing antiparallel trans XIX Ww/Ww }  0
-  607  {B200R:G -> B121R:C: pairing antiparallel trans XIX Ww/Ww }  0
+  606  {B121R:C -> B200R:G: pairing antiparallel cis XIX Ww/Ww }  0
+  607  {B200R:G -> B121R:C: pairing antiparallel cis XIX Ww/Ww }  0
   608  {B121R:C -> B201R:G: outward }  0
   609  {B201R:G -> B121R:C: outward }  0
   610  {B122R:A -> B123R:A: adjacent_5p }  0
@@ -1276,8 +1276,8 @@ Size: 324 Edge size: 1040
   947  {B248R:A -> B225R:A: outward pairing O2P/Bh }  0
   948  {B226R:A -> B227R:G: adjacent_5p upward }  0
   949  {B227R:G -> B226R:A: adjacent_3p downward }  0
-  950  {B226R:A -> B249R:U: pairing antiparallel trans XX Ww/Ww }  0
-  951  {B249R:U -> B226R:A: pairing antiparallel trans XX Ww/Ww }  0
+  950  {B226R:A -> B249R:U: pairing antiparallel cis XX Ww/Ww }  0
+  951  {B249R:U -> B226R:A: pairing antiparallel cis XX Ww/Ww }  0
   952  {B227R:G -> B228R:U: adjacent_5p upward }  0
   953  {B228R:U -> B227R:G: adjacent_3p downward }  0
   954  {B227R:G -> B247R:U: pairing antiparallel cis XXVIII Ww/Ws }  0
@@ -1292,8 +1292,8 @@ Size: 324 Edge size: 1040
   963  {B245R:G -> B229R:C: pairing antiparallel cis XIX Ww/Ww }  0
   964  {B230R:A -> B231R:A: adjacent_5p upward }  0
   965  {B231R:A -> B230R:A: adjacent_3p downward }  0
-  966  {B230R:A -> B244R:U: pairing antiparallel trans XX Ww/Ww }  0
-  967  {B244R:U -> B230R:A: pairing antiparallel trans XX Ww/Ww }  0
+  966  {B230R:A -> B244R:U: pairing antiparallel cis XX Ww/Ww }  0
+  967  {B244R:U -> B230R:A: pairing antiparallel cis XX Ww/Ww }  0
   968  {B230R:A -> B245R:G: outward }  0
   969  {B245R:G -> B230R:A: outward }  0
   970  {B231R:A -> B232R:C: adjacent_5p upward }  0
@@ -2102,8 +2102,8 @@ Size: 324 Edge size: 1040
    77  {A201R:G -> A120R:U: pairing antiparallel cis XXVIII Ww/Ws }  0
    78  {A121R:C -> A122R:A: adjacent_5p }  0
    79  {A122R:A -> A121R:C: adjacent_3p }  0
-   80  {A121R:C -> A200R:G: pairing antiparallel trans XIX Ww/Ww }  0
-   81  {A200R:G -> A121R:C: pairing antiparallel trans XIX Ww/Ww }  0
+   80  {A121R:C -> A200R:G: pairing antiparallel cis XIX Ww/Ww }  0
+   81  {A200R:G -> A121R:C: pairing antiparallel cis XIX Ww/Ww }  0
    82  {A121R:C -> A201R:G: outward }  0
    83  {A201R:G -> A121R:C: outward }  0
    84  {A122R:A -> A123R:A: adjacent_5p }  0
@@ -2452,8 +2452,8 @@ Size: 324 Edge size: 1040
   427  {A248R:A -> A225R:A: outward pairing O2P/Bh }  0
   428  {A226R:A -> A227R:G: adjacent_5p upward }  0
   429  {A227R:G -> A226R:A: adjacent_3p downward }  0
-  430  {A226R:A -> A249R:U: pairing antiparallel trans XX Ww/Ww }  0
-  431  {A249R:U -> A226R:A: pairing antiparallel trans XX Ww/Ww }  0
+  430  {A226R:A -> A249R:U: pairing antiparallel cis XX Ww/Ww }  0
+  431  {A249R:U -> A226R:A: pairing antiparallel cis XX Ww/Ww }  0
   432  {A227R:G -> A228R:U: adjacent_5p upward }  0
   433  {A228R:U -> A227R:G: adjacent_3p downward }  0
   434  {A227R:G -> A247R:U: pairing antiparallel cis XXVIII Ww/Ws }  0
@@ -2468,8 +2468,8 @@ Size: 324 Edge size: 1040
   443  {A245R:G -> A229R:C: pairing antiparallel cis XIX Ww/Ww }  0
   444  {A230R:A -> A231R:A: adjacent_5p upward }  0
   445  {A231R:A -> A230R:A: adjacent_3p downward }  0
-  446  {A230R:A -> A244R:U: pairing antiparallel trans XX Ww/Ww }  0
-  447  {A244R:U -> A230R:A: pairing antiparallel trans XX Ww/Ww }  0
+  446  {A230R:A -> A244R:U: pairing antiparallel cis XX Ww/Ww }  0
+  447  {A244R:U -> A230R:A: pairing antiparallel cis XX Ww/Ww }  0
   448  {A230R:A -> A245R:G: outward }  0
   449  {A245R:G -> A230R:A: outward }  0
   450  {A231R:A -> A232R:C: adjacent_5p upward }  0
@@ -2628,8 +2628,8 @@ Size: 324 Edge size: 1040
   603  {B201R:G -> B120R:U: pairing antiparallel cis XXVIII Ww/Ws }  0
   604  {B121R:C -> B122R:A: adjacent_5p }  0
   605  {B122R:A -> B121R:C: adjacent_3p }  0
-  606  {B121R:C -> B200R:G: pairing antiparallel trans XIX Ww/Ww }  0
-  607  {B200R:G -> B121R:C: pairing antiparallel trans XIX Ww/Ww }  0
+  606  {B121R:C -> B200R:G: pairing antiparallel cis XIX Ww/Ww }  0
+  607  {B200R:G -> B121R:C: pairing antiparallel cis XIX Ww/Ww }  0
   608  {B121R:C -> B201R:G: outward }  0
   609  {B201R:G -> B121R:C: outward }  0
   610  {B122R:A -> B123R:A: adjacent_5p }  0
@@ -2972,8 +2972,8 @@ Size: 324 Edge size: 1040
   947  {B248R:A -> B225R:A: outward pairing O2P/Bh }  0
   948  {B226R:A -> B227R:G: adjacent_5p upward }  0
   949  {B227R:G -> B226R:A: adjacent_3p downward }  0
-  950  {B226R:A -> B249R:U: pairing antiparallel trans XX Ww/Ww }  0
-  951  {B249R:U -> B226R:A: pairing antiparallel trans XX Ww/Ww }  0
+  950  {B226R:A -> B249R:U: pairing antiparallel cis XX Ww/Ww }  0
+  951  {B249R:U -> B226R:A: pairing antiparallel cis XX Ww/Ww }  0
   952  {B227R:G -> B228R:U: adjacent_5p upward }  0
   953  {B228R:U -> B227R:G: adjacent_3p downward }  0
   954  {B227R:G -> B247R:U: pairing antiparallel cis XXVIII Ww/Ws }  0
@@ -2988,8 +2988,8 @@ Size: 324 Edge size: 1040
   963  {B245R:G -> B229R:C: pairing antiparallel cis XIX Ww/Ww }  0
   964  {B230R:A -> B231R:A: adjacent_5p upward }  0
   965  {B231R:A -> B230R:A: adjacent_3p downward }  0
-  966  {B230R:A -> B244R:U: pairing antiparallel trans XX Ww/Ww }  0
-  967  {B244R:U -> B230R:A: pairing antiparallel trans XX Ww/Ww }  0
+  966  {B230R:A -> B244R:U: pairing antiparallel cis XX Ww/Ww }  0
+  967  {B244R:U -> B230R:A: pairing antiparallel cis XX Ww/Ww }  0
   968  {B230R:A -> B245R:G: outward }  0
   969  {B245R:G -> B230R:A: outward }  0
   970  {B231R:A -> B232R:C: adjacent_5p upward }  0
@@ -3798,8 +3798,8 @@ Size: 324 Edge size: 1040
    77  {A201R:G -> A120R:U: pairing antiparallel cis XXVIII Ww/Ws }  0
    78  {A121R:C -> A122R:A: adjacent_5p }  0
    79  {A122R:A -> A121R:C: adjacent_3p }  0
-   80  {A121R:C -> A200R:G: pairing antiparallel trans XIX Ww/Ww }  0
-   81  {A200R:G -> A121R:C: pairing antiparallel trans XIX Ww/Ww }  0
+   80  {A121R:C -> A200R:G: pairing antiparallel cis XIX Ww/Ww }  0
+   81  {A200R:G -> A121R:C: pairing antiparallel cis XIX Ww/Ww }  0
    82  {A121R:C -> A201R:G: outward }  0
    83  {A201R:G -> A121R:C: outward }  0
    84  {A122R:A -> A123R:A: adjacent_5p }  0
@@ -4148,8 +4148,8 @@ Size: 324 Edge size: 1040
   427  {A248R:A -> A225R:A: outward pairing O2P/Bh }  0
   428  {A226R:A -> A227R:G: adjacent_5p upward }  0
   429  {A227R:G -> A226R:A: adjacent_3p downward }  0
-  430  {A226R:A -> A249R:U: pairing antiparallel trans XX Ww/Ww }  0
-  431  {A249R:U -> A226R:A: pairing antiparallel trans XX Ww/Ww }  0
+  430  {A226R:A -> A249R:U: pairing antiparallel cis XX Ww/Ww }  0
+  431  {A249R:U -> A226R:A: pairing antiparallel cis XX Ww/Ww }  0
   432  {A227R:G -> A228R:U: adjacent_5p upward }  0
   433  {A228R:U -> A227R:G: adjacent_3p downward }  0
   434  {A227R:G -> A247R:U: pairing antiparallel cis XXVIII Ww/Ws }  0
@@ -4164,8 +4164,8 @@ Size: 324 Edge size: 1040
   443  {A245R:G -> A229R:C: pairing antiparallel cis XIX Ww/Ww }  0
   444  {A230R:A -> A231R:A: adjacent_5p upward }  0
   445  {A231R:A -> A230R:A: adjacent_3p downward }  0
-  446  {A230R:A -> A244R:U: pairing antiparallel trans XX Ww/Ww }  0
-  447  {A244R:U -> A230R:A: pairing antiparallel trans XX Ww/Ww }  0
+  446  {A230R:A -> A244R:U: pairing antiparallel cis XX Ww/Ww }  0
+  447  {A244R:U -> A230R:A: pairing antiparallel cis XX Ww/Ww }  0
   448  {A230R:A -> A245R:G: outward }  0
   449  {A245R:G -> A230R:A: outward }  0
   450  {A231R:A -> A232R:C: adjacent_5p upward }  0
@@ -4324,8 +4324,8 @@ Size: 324 Edge size: 1040
   603  {B201R:G -> B120R:U: pairing antiparallel cis XXVIII Ww/Ws }  0
   604  {B121R:C -> B122R:A: adjacent_5p }  0
   605  {B122R:A -> B121R:C: adjacent_3p }  0
-  606  {B121R:C -> B200R:G: pairing antiparallel trans XIX Ww/Ww }  0
-  607  {B200R:G -> B121R:C: pairing antiparallel trans XIX Ww/Ww }  0
+  606  {B121R:C -> B200R:G: pairing antiparallel cis XIX Ww/Ww }  0
+  607  {B200R:G -> B121R:C: pairing antiparallel cis XIX Ww/Ww }  0
   608  {B121R:C -> B201R:G: outward }  0
   609  {B201R:G -> B121R:C: outward }  0
   610  {B122R:A -> B123R:A: adjacent_5p }  0
@@ -4668,8 +4668,8 @@ Size: 324 Edge size: 1040
   947  {B248R:A -> B225R:A: outward pairing O2P/Bh }  0
   948  {B226R:A -> B227R:G: adjacent_5p upward }  0
   949  {B227R:G -> B226R:A: adjacent_3p downward }  0
-  950  {B226R:A -> B249R:U: pairing antiparallel trans XX Ww/Ww }  0
-  951  {B249R:U -> B226R:A: pairing antiparallel trans XX Ww/Ww }  0
+  950  {B226R:A -> B249R:U: pairing antiparallel cis XX Ww/Ww }  0
+  951  {B249R:U -> B226R:A: pairing antiparallel cis XX Ww/Ww }  0
   952  {B227R:G -> B228R:U: adjacent_5p upward }  0
   953  {B228R:U -> B227R:G: adjacent_3p downward }  0
   954  {B227R:G -> B247R:U: pairing antiparallel cis XXVIII Ww/Ws }  0
@@ -4684,8 +4684,8 @@ Size: 324 Edge size: 1040
   963  {B245R:G -> B229R:C: pairing antiparallel cis XIX Ww/Ww }  0
   964  {B230R:A -> B231R:A: adjacent_5p upward }  0
   965  {B231R:A -> B230R:A: adjacent_3p downward }  0
-  966  {B230R:A -> B244R:U: pairing antiparallel trans XX Ww/Ww }  0
-  967  {B244R:U -> B230R:A: pairing antiparallel trans XX Ww/Ww }  0
+  966  {B230R:A -> B244R:U: pairing antiparallel cis XX Ww/Ww }  0
+  967  {B244R:U -> B230R:A: pairing antiparallel cis XX Ww/Ww }  0
   968  {B230R:A -> B245R:G: outward }  0
   969  {B245R:G -> B230R:A: outward }  0
   970  {B231R:A -> B232R:C: adjacent_5p upward }  0
@@ -5494,8 +5494,8 @@ Size: 324 Edge size: 1040
    77  {A201R:G -> A120R:U: pairing antiparallel cis XXVIII Ww/Ws }  0
    78  {A121R:C -> A122R:A: adjacent_5p }  0
    79  {A122R:A -> A121R:C: adjacent_3p }  0
-   80  {A121R:C -> A200R:G: pairing antiparallel trans XIX Ww/Ww }  0
-   81  {A200R:G -> A121R:C: pairing antiparallel trans XIX Ww/Ww }  0
+   80  {A121R:C -> A200R:G: pairing antiparallel cis XIX Ww/Ww }  0
+   81  {A200R:G -> A121R:C: pairing antiparallel cis XIX Ww/Ww }  0
    82  {A121R:C -> A201R:G: outward }  0
    83  {A201R:G -> A121R:C: outward }  0
    84  {A122R:A -> A123R:A: adjacent_5p }  0
@@ -5844,8 +5844,8 @@ Size: 324 Edge size: 1040
   427  {A248R:A -> A225R:A: outward pairing O2P/Bh }  0
   428  {A226R:A -> A227R:G: adjacent_5p upward }  0
   429  {A227R:G -> A226R:A: adjacent_3p downward }  0
-  430  {A226R:A -> A249R:U: pairing antiparallel trans XX Ww/Ww }  0
-  431  {A249R:U -> A226R:A: pairing antiparallel trans XX Ww/Ww }  0
+  430  {A226R:A -> A249R:U: pairing antiparallel cis XX Ww/Ww }  0
+  431  {A249R:U -> A226R:A: pairing antiparallel cis XX Ww/Ww }  0
   432  {A227R:G -> A228R:U: adjacent_5p upward }  0
   433  {A228R:U -> A227R:G: adjacent_3p downward }  0
   434  {A227R:G -> A247R:U: pairing antiparallel cis XXVIII Ww/Ws }  0
@@ -5860,8 +5860,8 @@ Size: 324 Edge size: 1040
   443  {A245R:G -> A229R:C: pairing antiparallel cis XIX Ww/Ww }  0
   444  {A230R:A -> A231R:A: adjacent_5p upward }  0
   445  {A231R:A -> A230R:A: adjacent_3p downward }  0
-  446  {A230R:A -> A244R:U: pairing antiparallel trans XX Ww/Ww }  0
-  447  {A244R:U -> A230R:A: pairing antiparallel trans XX Ww/Ww }  0
+  446  {A230R:A -> A244R:U: pairing antiparallel cis XX Ww/Ww }  0
+  447  {A244R:U -> A230R:A: pairing antiparallel cis XX Ww/Ww }  0
   448  {A230R:A -> A245R:G: outward }  0
   449  {A245R:G -> A230R:A: outward }  0
   450  {A231R:A -> A232R:C: adjacent_5p upward }  0
@@ -6020,8 +6020,8 @@ Size: 324 Edge size: 1040
   603  {B201R:G -> B120R:U: pairing antiparallel cis XXVIII Ww/Ws }  0
   604  {B121R:C -> B122R:A: adjacent_5p }  0
   605  {B122R:A -> B121R:C: adjacent_3p }  0
-  606  {B121R:C -> B200R:G: pairing antiparallel trans XIX Ww/Ww }  0
-  607  {B200R:G -> B121R:C: pairing antiparallel trans XIX Ww/Ww }  0
+  606  {B121R:C -> B200R:G: pairing antiparallel cis XIX Ww/Ww }  0
+  607  {B200R:G -> B121R:C: pairing antiparallel cis XIX Ww/Ww }  0
   608  {B121R:C -> B201R:G: outward }  0
   609  {B201R:G -> B121R:C: outward }  0
   610  {B122R:A -> B123R:A: adjacent_5p }  0
@@ -6364,8 +6364,8 @@ Size: 324 Edge size: 1040
   947  {B248R:A -> B225R:A: outward pairing O2P/Bh }  0
   948  {B226R:A -> B227R:G: adjacent_5p upward }  0
   949  {B227R:G -> B226R:A: adjacent_3p downward }  0
-  950  {B226R:A -> B249R:U: pairing antiparallel trans XX Ww/Ww }  0
-  951  {B249R:U -> B226R:A: pairing antiparallel trans XX Ww/Ww }  0
+  950  {B226R:A -> B249R:U: pairing antiparallel cis XX Ww/Ww }  0
+  951  {B249R:U -> B226R:A: pairing antiparallel cis XX Ww/Ww }  0
   952  {B227R:G -> B228R:U: adjacent_5p upward }  0
   953  {B228R:U -> B227R:G: adjacent_3p downward }  0
   954  {B227R:G -> B247R:U: pairing antiparallel cis XXVIII Ww/Ws }  0
@@ -6380,8 +6380,8 @@ Size: 324 Edge size: 1040
   963  {B245R:G -> B229R:C: pairing antiparallel cis XIX Ww/Ww }  0
   964  {B230R:A -> B231R:A: adjacent_5p upward }  0
   965  {B231R:A -> B230R:A: adjacent_3p downward }  0
-  966  {B230R:A -> B244R:U: pairing antiparallel trans XX Ww/Ww }  0
-  967  {B244R:U -> B230R:A: pairing antiparallel trans XX Ww/Ww }  0
+  966  {B230R:A -> B244R:U: pairing antiparallel cis XX Ww/Ww }  0
+  967  {B244R:U -> B230R:A: pairing antiparallel cis XX Ww/Ww }  0
   968  {B230R:A -> B245R:G: outward }  0
   969  {B245R:G -> B230R:A: outward }  0
   970  {B231R:A -> B232R:C: adjacent_5p upward }  0
@@ -7190,8 +7190,8 @@ Size: 324 Edge size: 1040
    77  {A201R:G -> A120R:U: pairing antiparallel cis XXVIII Ww/Ws }  0
    78  {A121R:C -> A122R:A: adjacent_5p }  0
    79  {A122R:A -> A121R:C: adjacent_3p }  0
-   80  {A121R:C -> A200R:G: pairing antiparallel trans XIX Ww/Ww }  0
-   81  {A200R:G -> A121R:C: pairing antiparallel trans XIX Ww/Ww }  0
+   80  {A121R:C -> A200R:G: pairing antiparallel cis XIX Ww/Ww }  0
+   81  {A200R:G -> A121R:C: pairing antiparallel cis XIX Ww/Ww }  0
    82  {A121R:C -> A201R:G: outward }  0
    83  {A201R:G -> A121R:C: outward }  0
    84  {A122R:A -> A123R:A: adjacent_5p }  0
@@ -7540,8 +7540,8 @@ Size: 324 Edge size: 1040
   427  {A248R:A -> A225R:A: outward pairing O2P/Bh }  0
   428  {A226R:A -> A227R:G: adjacent_5p upward }  0
   429  {A227R:G -> A226R:A: adjacent_3p downward }  0
-  430  {A226R:A -> A249R:U: pairing antiparallel trans XX Ww/Ww }  0
-  431  {A249R:U -> A226R:A: pairing antiparallel trans XX Ww/Ww }  0
+  430  {A226R:A -> A249R:U: pairing antiparallel cis XX Ww/Ww }  0
+  431  {A249R:U -> A226R:A: pairing antiparallel cis XX Ww/Ww }  0
   432  {A227R:G -> A228R:U: adjacent_5p upward }  0
   433  {A228R:U -> A227R:G: adjacent_3p downward }  0
   434  {A227R:G -> A247R:U: pairing antiparallel cis XXVIII Ww/Ws }  0
@@ -7556,8 +7556,8 @@ Size: 324 Edge size: 1040
   443  {A245R:G -> A229R:C: pairing antiparallel cis XIX Ww/Ww }  0
   444  {A230R:A -> A231R:A: adjacent_5p upward }  0
   445  {A231R:A -> A230R:A: adjacent_3p downward }  0
-  446  {A230R:A -> A244R:U: pairing antiparallel trans XX Ww/Ww }  0
-  447  {A244R:U -> A230R:A: pairing antiparallel trans XX Ww/Ww }  0
+  446  {A230R:A -> A244R:U: pairing antiparallel cis XX Ww/Ww }  0
+  447  {A244R:U -> A230R:A: pairing antiparallel cis XX Ww/Ww }  0
   448  {A230R:A -> A245R:G: outward }  0
   449  {A245R:G -> A230R:A: outward }  0
   450  {A231R:A -> A232R:C: adjacent_5p upward }  0
@@ -7716,8 +7716,8 @@ Size: 324 Edge size: 1040
   603  {B201R:G -> B120R:U: pairing antiparallel cis XXVIII Ww/Ws }  0
   604  {B121R:C -> B122R:A: adjacent_5p }  0
   605  {B122R:A -> B121R:C: adjacent_3p }  0
-  606  {B121R:C -> B200R:G: pairing antiparallel trans XIX Ww/Ww }  0
-  607  {B200R:G -> B121R:C: pairing antiparallel trans XIX Ww/Ww }  0
+  606  {B121R:C -> B200R:G: pairing antiparallel cis XIX Ww/Ww }  0
+  607  {B200R:G -> B121R:C: pairing antiparallel cis XIX Ww/Ww }  0
   608  {B121R:C -> B201R:G: outward }  0
   609  {B201R:G -> B121R:C: outward }  0
   610  {B122R:A -> B123R:A: adjacent_5p }  0
@@ -8060,8 +8060,8 @@ Size: 324 Edge size: 1040
   947  {B248R:A -> B225R:A: outward pairing O2P/Bh }  0
   948  {B226R:A -> B227R:G: adjacent_5p upward }  0
   949  {B227R:G -> B226R:A: adjacent_3p downward }  0
-  950  {B226R:A -> B249R:U: pairing antiparallel trans XX Ww/Ww }  0
-  951  {B249R:U -> B226R:A: pairing antiparallel trans XX Ww/Ww }  0
+  950  {B226R:A -> B249R:U: pairing antiparallel cis XX Ww/Ww }  0
+  951  {B249R:U -> B226R:A: pairing antiparallel cis XX Ww/Ww }  0
   952  {B227R:G -> B228R:U: adjacent_5p upward }  0
   953  {B228R:U -> B227R:G: adjacent_3p downward }  0
   954  {B227R:G -> B247R:U: pairing antiparallel cis XXVIII Ww/Ws }  0
@@ -8076,8 +8076,8 @@ Size: 324 Edge size: 1040
   963  {B245R:G -> B229R:C: pairing antiparallel cis XIX Ww/Ww }  0
   964  {B230R:A -> B231R:A: adjacent_5p upward }  0
   965  {B231R:A -> B230R:A: adjacent_3p downward }  0
-  966  {B230R:A -> B244R:U: pairing antiparallel trans XX Ww/Ww }  0
-  967  {B244R:U -> B230R:A: pairing antiparallel trans XX Ww/Ww }  0
+  966  {B230R:A -> B244R:U: pairing antiparallel cis XX Ww/Ww }  0
+  967  {B244R:U -> B230R:A: pairing antiparallel cis XX Ww/Ww }  0
   968  {B230R:A -> B245R:G: outward }  0
   969  {B245R:G -> B230R:A: outward }  0
   970  {B231R:A -> B232R:C: adjacent_5p upward }  0
