@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Thu May 31 08:17:56 2001
-// $Revision: 1.14 $
-// $Id: PairingPattern.cc,v 1.14 2006-05-02 19:51:45 larosem Exp $
+// $Revision: 1.15 $
+// $Id: PairingPattern.cc,v 1.15 2006-05-02 20:03:17 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -80,9 +80,9 @@ namespace mccore
   {
     const PropertyType *result = 0;
     
-    gOut (5) << "Testing " << *this << endl
-	     << "  " << *ra->getType () << " " << *rb->getType ()
-	     << " " << *bpori << endl;
+    gOut (5) << "Testing " << *this
+	     << "  with " << *ra->getType () << " " << *rb->getType ()
+	     << " " << *bpori << endl;      
     if (((ra->getType ()->is (typeA) && rb->getType ()->is (typeB))
 	 || (ra->getType ()->is (typeB) && rb->getType ()->is (typeA)))
 	&& bpori == baseOrientation)
@@ -113,6 +113,7 @@ namespace mccore
 				 && '<' == descIt->direction))
 			    && descIt->hbond == k->hbond)
 			  {
+			    gOut (5) << "Found " << *name << endl;
 			    found = true;
 			    break;
 			  }
@@ -120,7 +121,7 @@ namespace mccore
 		    if (! found)
 		      {
 			ab = false;
-			gOut (5) << "ANot found " << endl;
+			gOut (5) << "A Not found " << endl;
 			break;
 		      }
 		    else
@@ -166,7 +167,7 @@ namespace mccore
 		      }
 		    if (! found)
 		      {
-			gOut (5) << "BNot found " << endl;
+			gOut (5) << "B Not found " << endl;
 			ba = false;
 			break;
 		      }
@@ -189,6 +190,14 @@ namespace mccore
 	  {
 	    result = name;
 	  }
+      }
+    if (result)
+      {
+	gOut (5) << *result << endl;
+      }
+    else
+      {
+	gOut (5) << "none" << endl;
       }
     return result;
   }
@@ -809,7 +818,8 @@ namespace mccore
   ostream& 
   PairingPattern::output (ostream &os) const
   {
-    os << name << ": " << *typeA << " " << *typeB << *baseOrientation << endl;
+    os << name << ": " << *typeA << " " << *typeB << " " << *baseOrientation
+       << endl;
     for_each (descriptions.begin (), descriptions.end (), Print< const PairingPattern::Description > (os));
     return os;
   }

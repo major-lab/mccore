@@ -1,9 +1,20 @@
+2006-04-27  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/PairingPattern.cc [rel-1-5]: Extra output added.
+
+	* test/GraphModel.good [rel-1-5]: Updated test output.
+
+	* lib/Relation.cc [rel-1-5]: Test outpout disabled.
+
+	* test/GraphModel.good [rel-1-5]: Updated GraphModel result file.
+
 2006-04-21  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* lib/Relation.cc [rel-1-5]: pairing face discovery is now protected
 	against non-canonical bases.
 
-	* lib/Residue.cc, lib/Relation.h, lib/Relation.cc, lib/PairingPattern.h, lib/PairingPattern.cc, NEWS, ChangeLog	[rel-1-5]: Merge from [pa-annotation] branch.
+	* lib/Residue.cc, lib/Relation.h, lib/Relation.cc, lib/PairingPattern.h, lib/PairingPattern.cc, NEWS, ChangeLog	[rel-1-5]:
+	Merge from [pa-annotation] branch.
 
 2006-04-20  Martin Larose  <larosem@iro.umontreal.ca>
 
@@ -17,12 +28,13 @@
 
 2006-04-05  Martin Larose  <larosem@iro.umontreal.ca>
 
-	* test/UndirectedGraph.good, test/UndirectedGraph.cc, test/OrientedGraph.good, test/OrientedGraph.cc, test/GraphModel.good, lib/Version.h, lib/Version.cc, lib/RnamlWriter.cc, lib/RnamlReader.cc, lib/ResidueTopology.h, lib/ResidueTopology.cc, lib/Relation.cc, lib/HomogeneousTransfo.cc, lib/GraphModel.h, lib/GraphModel.cc, lib/Graph.h, lib/AbstractModel.h, configure.in, ChangeLog [rel-1-5]: Back
-	to March 15, 2006 version due to update error.
+	* test/UndirectedGraph.good, test/UndirectedGraph.cc, test/OrientedGraph.good, test/OrientedGraph.cc, test/GraphModel.good, lib/Version.h, lib/Version.cc, lib/RnamlWriter.cc, lib/RnamlReader.cc, lib/ResidueTopology.h, lib/ResidueTopology.cc, lib/Relation.cc, lib/HomogeneousTransfo.cc, lib/GraphModel.h, lib/GraphModel.cc, lib/Graph.h, lib/AbstractModel.h, configure.in, ChangeLog [rel-1-5]:
+	Back to March 15, 2006 version due to update error.
 
 2006-03-23  Martin Larose  <larosem@iro.umontreal.ca>
 
-	* test/UndirectedGraph.good, test/UndirectedGraph.cc, test/OrientedGraph.good, test/OrientedGraph.cc, test/GraphModel.good, lib/UndirectedGraph.h, lib/Relation.cc, lib/OrientedGraph.h, lib/MaximumFlowGraph.h, lib/GraphModel.h, lib/GraphModel.cc, lib/Graph.h, lib/AbstractModel.h [hash-graph]: Unstable release.
+	* test/UndirectedGraph.good, test/UndirectedGraph.cc, test/OrientedGraph.good, test/OrientedGraph.cc, test/GraphModel.good, lib/UndirectedGraph.h, lib/Relation.cc, lib/OrientedGraph.h, lib/MaximumFlowGraph.h, lib/GraphModel.h, lib/GraphModel.cc, lib/Graph.h, lib/AbstractModel.h [hash-graph]:
+	Unstable release.
 
 2006-02-23  Martin Larose  <larosem@iro.umontreal.ca>
 
