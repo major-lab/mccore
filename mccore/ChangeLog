@@ -1,3 +1,32 @@
+2006-05-02  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/PairingPattern.cc, lib/PairingPattern.h [rel-1-5]: Changed the
+	patterns description to make a simpler evaluation algorithm.
+
+	* ChangeLog, configure, lib/PairingPattern.cc, lib/Relation.cc, test/GraphModel.good:
+	Merge with rel-1-5-patch-3.
+
+	* ChangeLog, NEWS: *** empty log message ***
+
+	* lib/PairingPattern.cc, lib/PairingPattern.h: evaluate include base
+	orientation for a better classification.
+
+	* lib/Relation.cc, lib/Relation.h: cis/trans uses
+	_pyrimidine_ring_center rather than average hbonds orientation.
+	translatePairing include base orientation for a better
+	classification.
+
+	* lib/Residue.cc: Lifted output level for hydrogens and lone pair
+	warnings.
+
+	* lib/RnamlReader.cc, lib/RnamlWriter.cc: Corrected xmlcpg include
+	directories.
+
+	* lib/Version.cc, lib/Version.h: Added LGPL license headers.
+
+	* test/GraphModel.good, ChangeLog [rel-1-5]: GraphModel test file
+	verified and corrected.
+
 2006-04-27  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* lib/PairingPattern.cc [rel-1-5]: Extra output added.
@@ -6,7 +35,13 @@
 
 	* lib/Relation.cc [rel-1-5]: Test outpout disabled.
 
-	* test/GraphModel.good [rel-1-5]: Updated GraphModel result file.
+	* test/GraphModel.good [rev-1-5]: Updated GraphModel result file.
+
+	* test/GraphModel.good [pa-annotation]: Updated GraphModel result file.
+
+	* lib/MaximumFlowGraph.h [hash-graph]: update on used methods.
+
+	* lib/Graph.h [mccore-hash]: New method.
 
 2006-04-21  Martin Larose  <larosem@iro.umontreal.ca>
 

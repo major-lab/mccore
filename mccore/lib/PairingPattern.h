@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Thu May 31 08:17:56 2001
-// $Revision: 1.9 $
-// $Id: PairingPattern.h,v 1.9 2006-05-02 19:51:45 larosem Exp $
+// $Revision: 1.10 $
+// $Id: PairingPattern.h,v 1.10 2006-05-02 20:54:08 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -53,12 +53,12 @@ namespace mccore
    * identify the pairing.
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: PairingPattern.h,v 1.9 2006-05-02 19:51:45 larosem Exp $
+   * @version $Id: PairingPattern.h,v 1.10 2006-05-02 20:54:08 larosem Exp $
    */
   class PairingPattern
     {
       /**
-       * The MC-Sym Id.
+       * The Saenger/Gautheret pairing type.
        */
       const PropertyType *name;
 
@@ -69,7 +69,7 @@ namespace mccore
       const ResidueType *typeB;
 
       /**
-       * The base orientation (parallel or antiparallel).
+       * The parallel/antiparallel base orientation.
        */
       const PropertyType *baseOrientation;
 
@@ -84,23 +84,15 @@ namespace mccore
 	 */
 	bool ignored;
 	
-	/**
-	 * The description. '>' indicates a bond from A to B, '<' indicates a
-	 * bond from B to A.
-	 */
-	char direction;
-	
 	HBond hbond;
 
 	/**
 	 * Initializes the description.
 	 */
-	Description (bool i, char d, HBond &h)
-	  : ignored (i), direction (d), hbond (h) { }
+	Description (bool i, HBond &h) : ignored (i), hbond (h) { }
 
 	Description (const Description &other)
-	  : ignored (other.ignored), direction (other.direction), hbond (other.hbond)
-	{ }
+	  : ignored (other.ignored), hbond (other.hbond) { }
 
 	~Description () { }
 
@@ -109,7 +101,6 @@ namespace mccore
 	  if (this != &other)
 	    {
 	      ignored = other.ignored;
-	      direction = other.direction;
 	      hbond = other.hbond;
 	    }
 	  return *this;
@@ -118,7 +109,16 @@ namespace mccore
 
     private:
 
-      vector< Description > descriptions;
+      /**
+       * The descriptions from type A to type B.
+       */
+      vector< Description > AtoB;
+
+      /**
+       * The descriptions from type B to type A.
+       */
+      vector< Description > BtoA;
+      
 
       /**
        * The number of non ignored descriptions.
@@ -163,7 +163,8 @@ namespace mccore
 	  typeA (other.typeA),
 	  typeB (other.typeB),
 	  baseOrientation (other.baseOrientation),
-	  descriptions (other.descriptions),
+	  AtoB (other.AtoB),
+	  BtoA (other.BtoA),
 	  msize (other.msize)
       { }
 
@@ -206,11 +207,17 @@ namespace mccore
       const ResidueType* getTypeB () const { return typeB; }
 
       /**
-       * Gets the descriptions of a pattern.
+       * Gets the AtoB descriptions of a pattern.
        * @return the descriptions of the pattern.
        */
-      const vector< Description >& getDescriptions () const { return descriptions; }
-
+      vector< Description >& getAtoB () { return AtoB; }
+      
+      /**
+       * Gets the BtoA descriptions of a pattern.
+       * @return the descriptions of the pattern.
+       */
+      vector< Description >& getBtoA () { return BtoA; }
+      
       /**
        * Gets all pairing patterns.
        * @return the list of the pairing patterns.
@@ -234,17 +241,26 @@ namespace mccore
       // METHODS --------------------------------------------------------------
 
       /**
-       * Add an H-Bond to the pattern.
-       * @param dir the direction (based on the ordering given in the constructor).
+       * Add an H-Bond to the Description desc.
+       * @param desc the collection of Description.
        * @param donor the donor atom type.
        * @param hydro the hydrogen type.
        * @param acceptor the acceptor atom type.
        * @param loneair the lonepair implicated.
        * @param ignore wether this shouldn't be in the pairing.
        */
-      void addBond (char dir, const AtomType *donor, const AtomType *hydro, const AtomType *acceptor, const AtomType *lonepair, bool ignore=false);
-  
-     
+      void addBond (vector< Description > &desc, const AtomType *donor, const AtomType *hydro, const AtomType *acceptor, const AtomType *lonepair, bool ignore = false);
+
+      /**
+       * Tests if all Descriptions from desc are matched in the HBondFlow list.
+       * @param hbf the HBondFlow list.
+       * @param desc the Description collection.
+       * @param rA the donor residue.
+       * @param direction the desc direction (only for printing purpose).
+       * @return if the hbf matches the desc collection.
+       */
+      bool match (list< HBondFlow > &hbf, const vector< Description > &desc, const Residue *rA, char direction) const;
+      
       /**
        * Evaluates the possibility of the flow pattern to match the
        * current HBond pairing pattern.
@@ -270,6 +286,7 @@ namespace mccore
 }
 
 
+
 namespace std
 {
   
@@ -280,14 +297,6 @@ namespace std
    * @return the output stream.
    */
   ostream& operator<< (ostream &obs, const mccore::PairingPattern &pat);
-
-  /**
-   * Outputs the pairing pattern to an output stream.
-   * @param obs the output stream.
-   * @param obj the Description to output.
-   * @return the output stream.
-   */
-  ostream& operator<< (ostream &obs, const mccore::PairingPattern::Description &desc);
 
 }
 
