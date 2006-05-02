@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // RnamlReader.cc
-// Copyright Å© 2003-05 Laboratoire de Biologie Informatique et ThÅÈorique
+// Copyright Å© 2003-06 Laboratoire de Biologie Informatique et ThÅÈorique
 //                     UniversitÅÈ de MontrÅÈal.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
-// $Revision: 1.10 $
-// $Id: RnamlReader.cc,v 1.10 2006-04-13 18:05:55 thibaup Exp $
+// $Revision: 1.11 $
+// $Id: RnamlReader.cc,v 1.11 2006-05-02 19:33:02 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -46,15 +46,15 @@
 
 #include "rnamlc++/Atom.h"
 #include "rnamlc++/Base.h"
-#include "rnamlc++/FileInputStream.h"
-#include "rnamlc++/GZIPInputStream.h"
-#include "rnamlc++/InputStream.h"
+#include "xmlcpg/FileInputStream.h"
+#include "xmlcpg/GZIPInputStream.h"
+#include "xmlcpg/InputStream.h"
 #include "rnamlc++/Model.h"
 #include "rnamlc++/Molecule.h"
 #include "rnamlc++/Object.h"
 #include "rnamlc++/Rnaml.h"
 #include "rnamlc++/Structure.h"
-#include "rnamlc++/Unmarshaller.h"
+#include "rnamlc+++/Unmarshaller.h"
 
 
 

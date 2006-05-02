@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // RnamlWriter.cc
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Jul 10 14:43:57 2003
-// $Revision: 1.15 $
-// $Id: RnamlWriter.cc,v 1.15 2006-04-13 18:05:55 thibaup Exp $
+// $Revision: 1.16 $
+// $Id: RnamlWriter.cc,v 1.16 2006-05-02 19:33:02 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -57,14 +57,14 @@
 #include "rnamlc++/BaseId5p.h"
 #include "rnamlc++/BasePair.h"
 #include "rnamlc++/BaseStack.h"
-#include "rnamlc++/FileOutputStream.h"
-#include "rnamlc++/GZIPOutputStream.h"
+#include "xmlcpg/FileOutputStream.h"
+#include "xmlcpg/GZIPOutputStream.h"
 #include "rnamlc++/Marshaller.h"
 #include "rnamlc++/Model.h"
 #include "rnamlc++/ModelId.h"
 #include "rnamlc++/Molecule.h"
 #include "rnamlc++/MoleculeId.h"
-#include "rnamlc++/PrintStream.h"
+#include "xmlcpg/PrintStream.h"
 #include "rnamlc++/Rnaml.h"
 #include "rnamlc++/Segment.h"
 #include "rnamlc++/SeqAnnotation.h"
