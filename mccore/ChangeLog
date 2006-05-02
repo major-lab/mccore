@@ -1,3 +1,20 @@
+2006-04-27  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/PairingPattern.cc [rel-1-5]: Extra output added.
+
+	* test/GraphModel.good [rel-1-5]: Updated test output.
+
+	* lib/Relation.cc [rel-1-5]: Test outpout disabled.
+
+	* test/GraphModel.good [rel-1-5]: Updated GraphModel result file.
+
+2006-04-21  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/Relation.cc [rel-1-5]: pairing face discovery is now protected
+	against non-canonical bases.
+
+	* lib/Residue.cc, lib/Relation.h, lib/Relation.cc, lib/PairingPattern.h, lib/PairingPattern.cc, NEWS, ChangeLog	[rel-1-5]: Merge from [pa-annotation] branch.
+
 2006-04-20  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* configure.in [rel-1-5]: Version information shows 1.6.0 instead of

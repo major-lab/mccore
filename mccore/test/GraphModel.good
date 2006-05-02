@@ -344,8 +344,8 @@ Size: 324 Edge size: 1040
    15  {A107R:U -> A106R:U: adjacent_3p }  0
    16  {A107R:U -> A108R:G: adjacent_5p upward }  0
    17  {A108R:G -> A107R:U: adjacent_3p downward }  0
-   18  {A107R:U -> A214R:A: pairing antiparallel cis one_hbond 51 Wh/Wh }  0
-   19  {A214R:A -> A107R:U: pairing antiparallel cis one_hbond 51 Wh/Wh }  0
+   18  {A107R:U -> A214R:A: pairing antiparallel cis one_hbond Wh/Wh }  0
+   19  {A214R:A -> A107R:U: pairing antiparallel cis one_hbond Wh/Wh }  0
    20  {A108R:G -> A109R:G: adjacent_5p upward }  0
    21  {A109R:G -> A108R:G: adjacent_3p downward }  0
    22  {A108R:G -> A213R:C: pairing antiparallel cis XIX Ww/Ww }  0
@@ -390,16 +390,16 @@ Size: 324 Edge size: 1040
    61  {A205R:U -> A116R:G: pairing antiparallel cis XXVIII Ws/Ww }  0
    62  {A117R:G -> A118R:G: adjacent_5p upward }  0
    63  {A118R:G -> A117R:G: adjacent_3p downward }  0
-   64  {A117R:G -> A204R:C: pairing antiparallel cis 124 Ww/Ww }  0
-   65  {A204R:C -> A117R:G: pairing antiparallel cis 124 Ww/Ww }  0
+   64  {A117R:G -> A204R:C: pairing antiparallel cis Ww/Ww }  0
+   65  {A204R:C -> A117R:G: pairing antiparallel cis Ww/Ww }  0
    66  {A118R:G -> A119R:G: adjacent_5p upward }  0
    67  {A119R:G -> A118R:G: adjacent_3p downward }  0
-   68  {A118R:G -> A203R:C: pairing antiparallel cis 124 Ww/Ww }  0
-   69  {A203R:C -> A118R:G: pairing antiparallel cis 124 Ww/Ww }  0
+   68  {A118R:G -> A203R:C: pairing antiparallel cis Ww/Ww }  0
+   69  {A203R:C -> A118R:G: pairing antiparallel cis Ww/Ww }  0
    70  {A119R:G -> A120R:U: adjacent_5p upward }  0
    71  {A120R:U -> A119R:G: adjacent_3p downward }  0
-   72  {A119R:G -> A202R:U: pairing antiparallel cis one_hbond 87 Ws/Ws }  0
-   73  {A202R:U -> A119R:G: pairing antiparallel cis one_hbond 87 Ws/Ws }  0
+   72  {A119R:G -> A202R:U: pairing antiparallel cis one_hbond Ws/Ws }  0
+   73  {A202R:U -> A119R:G: pairing antiparallel cis one_hbond Ws/Ws }  0
    74  {A120R:U -> A121R:C: adjacent_5p }  0
    75  {A121R:C -> A120R:U: adjacent_3p }  0
    76  {A120R:U -> A201R:G: pairing antiparallel cis XXVIII Ws/Ww }  0
@@ -456,8 +456,8 @@ Size: 324 Edge size: 1040
   127  {A192R:A -> A131R:U: pairing antiparallel cis XX Ww/Ww }  0
   128  {A132R:C -> A133R:A: adjacent_5p upward }  0
   129  {A133R:A -> A132R:C: adjacent_3p downward }  0
-  130  {A132R:C -> A191R:G: pairing antiparallel cis 124 Ww/Ww }  0
-  131  {A191R:G -> A132R:C: pairing antiparallel cis 124 Ww/Ww }  0
+  130  {A132R:C -> A191R:G: pairing antiparallel cis Ww/Ww }  0
+  131  {A191R:G -> A132R:C: pairing antiparallel cis Ww/Ww }  0
   132  {A133R:A -> A134R:G: adjacent_5p upward }  0
   133  {A134R:G -> A133R:A: adjacent_3p downward }  0
   134  {A133R:A -> A190R:U: pairing antiparallel cis XX Ww/Ww }  0
@@ -542,8 +542,8 @@ Size: 324 Edge size: 1040
   213  {A151R:A -> A150R:G: adjacent_3p }  0
   214  {A150R:G -> A152R:A: pairing O2'/Bh O2'/Hh }  0
   215  {A152R:A -> A150R:G: pairing Bh/O2' Hh/O2' }  0
-  216  {A150R:G -> A153R:A: pairing antiparallel cis one_hbond 53 Sw/Hh Bs/O2P }  0
-  217  {A153R:A -> A150R:G: pairing antiparallel cis one_hbond 53 Hh/Sw O2P/Bs }  0
+  216  {A150R:G -> A153R:A: pairing antiparallel trans one_hbond Sw/Hh Bs/O2P }  0
+  217  {A153R:A -> A150R:G: pairing antiparallel trans one_hbond Hh/Sw O2P/Bs }  0
   218  {A151R:A -> A152R:A: adjacent_5p upward }  0
   219  {A152R:A -> A151R:A: adjacent_3p downward }  0
   220  {A151R:A -> A226R:A: outward }  0
@@ -614,8 +614,8 @@ Size: 324 Edge size: 1040
   285  {A171R:A -> A170R:C: adjacent_3p downward }  0
   286  {A170R:C -> B254R:G: pairing antiparallel cis XIX Ww/Ww }  0
   287  {B254R:G -> A170R:C: pairing antiparallel cis XIX Ww/Ww }  0
-  288  {A171R:A -> A172R:A: adjacent_5p pairing parallel cis one_hbond 41 Ss/Hw O2'/Hh }  0
-  289  {A172R:A -> A171R:A: adjacent_3p pairing parallel cis one_hbond 41 Hw/Ss Hh/O2' }  0
+  288  {A171R:A -> A172R:A: adjacent_5p pairing parallel cis one_hbond Ss/Hw O2'/Hh }  0
+  289  {A172R:A -> A171R:A: adjacent_3p pairing parallel cis one_hbond Hw/Ss Hh/O2' }  0
   290  {A172R:A -> A173R:A: adjacent_5p upward }  0
   291  {A173R:A -> A172R:A: adjacent_3p downward }  0
   292  {A172R:A -> B254R:G: outward }  0
@@ -716,8 +716,8 @@ Size: 324 Edge size: 1040
   387  {A215R:G -> A214R:A: adjacent_3p downward }  0
   388  {A215R:G -> A216R:C: adjacent_5p }  0
   389  {A216R:C -> A215R:G: adjacent_3p }  0
-  390  {A215R:G -> A260R:C: pairing antiparallel cis 129 Ww/Ww }  0
-  391  {A260R:C -> A215R:G: pairing antiparallel cis 129 Ww/Ww }  0
+  390  {A215R:G -> A260R:C: pairing antiparallel cis Ww/Ww }  0
+  391  {A260R:C -> A215R:G: pairing antiparallel cis Ww/Ww }  0
   392  {A216R:C -> A217R:C: adjacent_5p }  0
   393  {A217R:C -> A216R:C: adjacent_3p }  0
   394  {A217R:C -> A218R:A: adjacent_5p upward }  0
@@ -746,8 +746,8 @@ Size: 324 Edge size: 1040
   417  {A225R:A -> A224R:U: adjacent_3p }  0
   418  {A224R:U -> A248R:A: pairing antiparallel trans XXIV Ws/Hh }  0
   419  {A248R:A -> A224R:U: pairing antiparallel trans XXIV Hh/Ws }  0
-  420  {A225R:A -> A226R:A: adjacent_5p pairing parallel cis one_hbond 41 Ss/Hw O2'/Hh }  0
-  421  {A226R:A -> A225R:A: adjacent_3p pairing parallel cis one_hbond 41 Hw/Ss Hh/O2' }  0
+  420  {A225R:A -> A226R:A: adjacent_5p pairing parallel cis one_hbond Ss/Hw O2'/Hh }  0
+  421  {A226R:A -> A225R:A: adjacent_3p pairing parallel cis one_hbond Hw/Ss Hh/O2' }  0
   422  {A225R:A -> A227R:G: pairing O2'/Hh }  0
   423  {A227R:G -> A225R:A: pairing Hh/O2' }  0
   424  {A225R:A -> A247R:U: inward }  0
@@ -782,8 +782,8 @@ Size: 324 Edge size: 1040
   453  {A243R:U -> A231R:A: pairing antiparallel cis XX Ww/Ww }  0
   454  {A232R:C -> A233R:A: adjacent_5p }  0
   455  {A233R:A -> A232R:C: adjacent_3p }  0
-  456  {A232R:C -> A242R:G: pairing antiparallel cis one_hbond 129 Ww/Ww }  0
-  457  {A242R:G -> A232R:C: pairing antiparallel cis one_hbond 129 Ww/Ww }  0
+  456  {A232R:C -> A242R:G: pairing antiparallel cis one_hbond Ww/Ww }  0
+  457  {A242R:G -> A232R:C: pairing antiparallel cis one_hbond Ww/Ww }  0
   458  {A233R:A -> A234R:G: adjacent_5p upward }  0
   459  {A234R:G -> A233R:A: adjacent_3p downward }  0
   460  {A233R:A -> A241R:U: pairing antiparallel cis XX Ww/Ww }  0
@@ -870,8 +870,8 @@ Size: 324 Edge size: 1040
   541  {B107R:U -> B106R:U: adjacent_3p }  0
   542  {B107R:U -> B108R:G: adjacent_5p upward }  0
   543  {B108R:G -> B107R:U: adjacent_3p downward }  0
-  544  {B107R:U -> B214R:A: pairing antiparallel cis one_hbond 51 Wh/Wh }  0
-  545  {B214R:A -> B107R:U: pairing antiparallel cis one_hbond 51 Wh/Wh }  0
+  544  {B107R:U -> B214R:A: pairing antiparallel cis one_hbond Wh/Wh }  0
+  545  {B214R:A -> B107R:U: pairing antiparallel cis one_hbond Wh/Wh }  0
   546  {B108R:G -> B109R:G: adjacent_5p upward }  0
   547  {B109R:G -> B108R:G: adjacent_3p downward }  0
   548  {B108R:G -> B213R:C: pairing antiparallel cis XIX Ww/Ww }  0
@@ -916,16 +916,16 @@ Size: 324 Edge size: 1040
   587  {B205R:U -> B116R:G: pairing antiparallel cis XXVIII Ws/Ww }  0
   588  {B117R:G -> B118R:G: adjacent_5p upward }  0
   589  {B118R:G -> B117R:G: adjacent_3p downward }  0
-  590  {B117R:G -> B204R:C: pairing antiparallel cis 124 Ww/Ww }  0
-  591  {B204R:C -> B117R:G: pairing antiparallel cis 124 Ww/Ww }  0
+  590  {B117R:G -> B204R:C: pairing antiparallel cis Ww/Ww }  0
+  591  {B204R:C -> B117R:G: pairing antiparallel cis Ww/Ww }  0
   592  {B118R:G -> B119R:G: adjacent_5p upward }  0
   593  {B119R:G -> B118R:G: adjacent_3p downward }  0
-  594  {B118R:G -> B203R:C: pairing antiparallel cis 124 Ww/Ww }  0
-  595  {B203R:C -> B118R:G: pairing antiparallel cis 124 Ww/Ww }  0
+  594  {B118R:G -> B203R:C: pairing antiparallel cis Ww/Ww }  0
+  595  {B203R:C -> B118R:G: pairing antiparallel cis Ww/Ww }  0
   596  {B119R:G -> B120R:U: adjacent_5p upward }  0
   597  {B120R:U -> B119R:G: adjacent_3p downward }  0
-  598  {B119R:G -> B202R:U: pairing antiparallel cis one_hbond 87 Ws/Ws }  0
-  599  {B202R:U -> B119R:G: pairing antiparallel cis one_hbond 87 Ws/Ws }  0
+  598  {B119R:G -> B202R:U: pairing antiparallel cis one_hbond Ws/Ws }  0
+  599  {B202R:U -> B119R:G: pairing antiparallel cis one_hbond Ws/Ws }  0
   600  {B120R:U -> B121R:C: adjacent_5p }  0
   601  {B121R:C -> B120R:U: adjacent_3p }  0
   602  {B120R:U -> B201R:G: pairing antiparallel cis XXVIII Ws/Ww }  0
@@ -982,8 +982,8 @@ Size: 324 Edge size: 1040
   653  {B192R:A -> B131R:U: pairing antiparallel cis XX Ww/Ww }  0
   654  {B132R:C -> B133R:A: adjacent_5p upward }  0
   655  {B133R:A -> B132R:C: adjacent_3p downward }  0
-  656  {B132R:C -> B191R:G: pairing antiparallel cis 124 Ww/Ww }  0
-  657  {B191R:G -> B132R:C: pairing antiparallel cis 124 Ww/Ww }  0
+  656  {B132R:C -> B191R:G: pairing antiparallel cis Ww/Ww }  0
+  657  {B191R:G -> B132R:C: pairing antiparallel cis Ww/Ww }  0
   658  {B133R:A -> B134R:G: adjacent_5p upward }  0
   659  {B134R:G -> B133R:A: adjacent_3p downward }  0
   660  {B133R:A -> B190R:U: pairing antiparallel cis XX Ww/Ww }  0
@@ -1068,8 +1068,8 @@ Size: 324 Edge size: 1040
   739  {B151R:A -> B150R:G: adjacent_3p }  0
   740  {B150R:G -> B152R:A: pairing O2'/Bh O2'/Hh }  0
   741  {B152R:A -> B150R:G: pairing Bh/O2' Hh/O2' }  0
-  742  {B150R:G -> B153R:A: pairing antiparallel cis one_hbond 53 Sw/Hh Bs/O2P }  0
-  743  {B153R:A -> B150R:G: pairing antiparallel cis one_hbond 53 Hh/Sw O2P/Bs }  0
+  742  {B150R:G -> B153R:A: pairing antiparallel trans one_hbond Sw/Hh Bs/O2P }  0
+  743  {B153R:A -> B150R:G: pairing antiparallel trans one_hbond Hh/Sw O2P/Bs }  0
   744  {B151R:A -> B152R:A: adjacent_5p upward }  0
   745  {B152R:A -> B151R:A: adjacent_3p downward }  0
   746  {B151R:A -> B226R:A: outward }  0
@@ -1124,8 +1124,8 @@ Size: 324 Edge size: 1040
   795  {B168R:U -> B167R:U: adjacent_3p }  0
   796  {B167R:U -> B171R:A: downward }  0
   797  {B171R:A -> B167R:U: upward }  0
-  798  {B167R:U -> B173R:A: pairing parallel trans one_hbond 51 Wh/Wh }  0
-  799  {B173R:A -> B167R:U: pairing parallel trans one_hbond 51 Wh/Wh }  0
+  798  {B167R:U -> B173R:A: pairing parallel cis one_hbond 51 Wh/Wh }  0
+  799  {B173R:A -> B167R:U: pairing parallel cis one_hbond 51 Wh/Wh }  0
   800  {B168R:U -> B169R:G: adjacent_5p }  0
   801  {B169R:G -> B168R:U: adjacent_3p }  0
   802  {B168R:U -> B183R:A: outward }  0
@@ -1136,8 +1136,8 @@ Size: 324 Edge size: 1040
   807  {B170R:C -> B169R:G: adjacent_3p downward }  0
   808  {B170R:C -> B171R:A: adjacent_5p upward }  0
   809  {B171R:A -> B170R:C: adjacent_3p downward }  0
-  810  {B171R:A -> B172R:A: adjacent_5p pairing parallel cis one_hbond 41 Ss/Hw O2'/Hh }  0
-  811  {B172R:A -> B171R:A: adjacent_3p pairing parallel cis one_hbond 41 Hw/Ss Hh/O2' }  0
+  810  {B171R:A -> B172R:A: adjacent_5p pairing parallel cis one_hbond Ss/Hw O2'/Hh }  0
+  811  {B172R:A -> B171R:A: adjacent_3p pairing parallel cis one_hbond Hw/Ss Hh/O2' }  0
   812  {B172R:A -> B173R:A: adjacent_5p upward }  0
   813  {B173R:A -> B172R:A: adjacent_3p downward }  0
   814  {B173R:A -> B174R:G: adjacent_5p upward }  0
@@ -1236,8 +1236,8 @@ Size: 324 Edge size: 1040
   907  {B215R:G -> B214R:A: adjacent_3p downward }  0
   908  {B215R:G -> B216R:C: adjacent_5p }  0
   909  {B216R:C -> B215R:G: adjacent_3p }  0
-  910  {B215R:G -> B260R:C: pairing antiparallel cis 129 Ww/Ww }  0
-  911  {B260R:C -> B215R:G: pairing antiparallel cis 129 Ww/Ww }  0
+  910  {B215R:G -> B260R:C: pairing antiparallel cis Ww/Ww }  0
+  911  {B260R:C -> B215R:G: pairing antiparallel cis Ww/Ww }  0
   912  {B216R:C -> B217R:C: adjacent_5p }  0
   913  {B217R:C -> B216R:C: adjacent_3p }  0
   914  {B217R:C -> B218R:A: adjacent_5p upward }  0
@@ -1266,8 +1266,8 @@ Size: 324 Edge size: 1040
   937  {B225R:A -> B224R:U: adjacent_3p }  0
   938  {B224R:U -> B248R:A: pairing antiparallel trans XXIV Ws/Hh }  0
   939  {B248R:A -> B224R:U: pairing antiparallel trans XXIV Hh/Ws }  0
-  940  {B225R:A -> B226R:A: adjacent_5p pairing parallel cis one_hbond 41 Ss/Hw O2'/Hh }  0
-  941  {B226R:A -> B225R:A: adjacent_3p pairing parallel cis one_hbond 41 Hw/Ss Hh/O2' }  0
+  940  {B225R:A -> B226R:A: adjacent_5p pairing parallel cis one_hbond Ss/Hw O2'/Hh }  0
+  941  {B226R:A -> B225R:A: adjacent_3p pairing parallel cis one_hbond Hw/Ss Hh/O2' }  0
   942  {B225R:A -> B227R:G: pairing O2'/Hh }  0
   943  {B227R:G -> B225R:A: pairing Hh/O2' }  0
   944  {B225R:A -> B247R:U: inward }  0
@@ -1302,8 +1302,8 @@ Size: 324 Edge size: 1040
   973  {B243R:U -> B231R:A: pairing antiparallel cis XX Ww/Ww }  0
   974  {B232R:C -> B233R:A: adjacent_5p }  0
   975  {B233R:A -> B232R:C: adjacent_3p }  0
-  976  {B232R:C -> B242R:G: pairing antiparallel cis one_hbond 129 Ww/Ww }  0
-  977  {B242R:G -> B232R:C: pairing antiparallel cis one_hbond 129 Ww/Ww }  0
+  976  {B232R:C -> B242R:G: pairing antiparallel cis one_hbond Ww/Ww }  0
+  977  {B242R:G -> B232R:C: pairing antiparallel cis one_hbond Ww/Ww }  0
   978  {B233R:A -> B234R:G: adjacent_5p upward }  0
   979  {B234R:G -> B233R:A: adjacent_3p downward }  0
   980  {B233R:A -> B241R:U: pairing antiparallel cis XX Ww/Ww }  0
@@ -2040,8 +2040,8 @@ Size: 324 Edge size: 1040
    15  {A107R:U -> A106R:U: adjacent_3p }  0
    16  {A107R:U -> A108R:G: adjacent_5p upward }  0
    17  {A108R:G -> A107R:U: adjacent_3p downward }  0
-   18  {A107R:U -> A214R:A: pairing antiparallel cis one_hbond 51 Wh/Wh }  0
-   19  {A214R:A -> A107R:U: pairing antiparallel cis one_hbond 51 Wh/Wh }  0
+   18  {A107R:U -> A214R:A: pairing antiparallel cis one_hbond Wh/Wh }  0
+   19  {A214R:A -> A107R:U: pairing antiparallel cis one_hbond Wh/Wh }  0
    20  {A108R:G -> A109R:G: adjacent_5p upward }  0
    21  {A109R:G -> A108R:G: adjacent_3p downward }  0
    22  {A108R:G -> A213R:C: pairing antiparallel cis XIX Ww/Ww }  0
@@ -2086,16 +2086,16 @@ Size: 324 Edge size: 1040
    61  {A205R:U -> A116R:G: pairing antiparallel cis XXVIII Ws/Ww }  0
    62  {A117R:G -> A118R:G: adjacent_5p upward }  0
    63  {A118R:G -> A117R:G: adjacent_3p downward }  0
-   64  {A117R:G -> A204R:C: pairing antiparallel cis 124 Ww/Ww }  0
-   65  {A204R:C -> A117R:G: pairing antiparallel cis 124 Ww/Ww }  0
+   64  {A117R:G -> A204R:C: pairing antiparallel cis Ww/Ww }  0
+   65  {A204R:C -> A117R:G: pairing antiparallel cis Ww/Ww }  0
    66  {A118R:G -> A119R:G: adjacent_5p upward }  0
    67  {A119R:G -> A118R:G: adjacent_3p downward }  0
-   68  {A118R:G -> A203R:C: pairing antiparallel cis 124 Ww/Ww }  0
-   69  {A203R:C -> A118R:G: pairing antiparallel cis 124 Ww/Ww }  0
+   68  {A118R:G -> A203R:C: pairing antiparallel cis Ww/Ww }  0
+   69  {A203R:C -> A118R:G: pairing antiparallel cis Ww/Ww }  0
    70  {A119R:G -> A120R:U: adjacent_5p upward }  0
    71  {A120R:U -> A119R:G: adjacent_3p downward }  0
-   72  {A119R:G -> A202R:U: pairing antiparallel cis one_hbond 87 Ws/Ws }  0
-   73  {A202R:U -> A119R:G: pairing antiparallel cis one_hbond 87 Ws/Ws }  0
+   72  {A119R:G -> A202R:U: pairing antiparallel cis one_hbond Ws/Ws }  0
+   73  {A202R:U -> A119R:G: pairing antiparallel cis one_hbond Ws/Ws }  0
    74  {A120R:U -> A121R:C: adjacent_5p }  0
    75  {A121R:C -> A120R:U: adjacent_3p }  0
    76  {A120R:U -> A201R:G: pairing antiparallel cis XXVIII Ws/Ww }  0
@@ -2152,8 +2152,8 @@ Size: 324 Edge size: 1040
   127  {A192R:A -> A131R:U: pairing antiparallel cis XX Ww/Ww }  0
   128  {A132R:C -> A133R:A: adjacent_5p upward }  0
   129  {A133R:A -> A132R:C: adjacent_3p downward }  0
-  130  {A132R:C -> A191R:G: pairing antiparallel cis 124 Ww/Ww }  0
-  131  {A191R:G -> A132R:C: pairing antiparallel cis 124 Ww/Ww }  0
+  130  {A132R:C -> A191R:G: pairing antiparallel cis Ww/Ww }  0
+  131  {A191R:G -> A132R:C: pairing antiparallel cis Ww/Ww }  0
   132  {A133R:A -> A134R:G: adjacent_5p upward }  0
   133  {A134R:G -> A133R:A: adjacent_3p downward }  0
   134  {A133R:A -> A190R:U: pairing antiparallel cis XX Ww/Ww }  0
@@ -2238,8 +2238,8 @@ Size: 324 Edge size: 1040
   213  {A151R:A -> A150R:G: adjacent_3p }  0
   214  {A150R:G -> A152R:A: pairing O2'/Bh O2'/Hh }  0
   215  {A152R:A -> A150R:G: pairing Bh/O2' Hh/O2' }  0
-  216  {A150R:G -> A153R:A: pairing antiparallel cis one_hbond 53 Sw/Hh Bs/O2P }  0
-  217  {A153R:A -> A150R:G: pairing antiparallel cis one_hbond 53 Hh/Sw O2P/Bs }  0
+  216  {A150R:G -> A153R:A: pairing antiparallel trans one_hbond Sw/Hh Bs/O2P }  0
+  217  {A153R:A -> A150R:G: pairing antiparallel trans one_hbond Hh/Sw O2P/Bs }  0
   218  {A151R:A -> A152R:A: adjacent_5p upward }  0
   219  {A152R:A -> A151R:A: adjacent_3p downward }  0
   220  {A151R:A -> A226R:A: outward }  0
@@ -2310,8 +2310,8 @@ Size: 324 Edge size: 1040
   285  {A171R:A -> A170R:C: adjacent_3p downward }  0
   286  {A170R:C -> B254R:G: pairing antiparallel cis XIX Ww/Ww }  0
   287  {B254R:G -> A170R:C: pairing antiparallel cis XIX Ww/Ww }  0
-  288  {A171R:A -> A172R:A: adjacent_5p pairing parallel cis one_hbond 41 Ss/Hw O2'/Hh }  0
-  289  {A172R:A -> A171R:A: adjacent_3p pairing parallel cis one_hbond 41 Hw/Ss Hh/O2' }  0
+  288  {A171R:A -> A172R:A: adjacent_5p pairing parallel cis one_hbond Ss/Hw O2'/Hh }  0
+  289  {A172R:A -> A171R:A: adjacent_3p pairing parallel cis one_hbond Hw/Ss Hh/O2' }  0
   290  {A172R:A -> A173R:A: adjacent_5p upward }  0
   291  {A173R:A -> A172R:A: adjacent_3p downward }  0
   292  {A172R:A -> B254R:G: outward }  0
@@ -2412,8 +2412,8 @@ Size: 324 Edge size: 1040
   387  {A215R:G -> A214R:A: adjacent_3p downward }  0
   388  {A215R:G -> A216R:C: adjacent_5p }  0
   389  {A216R:C -> A215R:G: adjacent_3p }  0
-  390  {A215R:G -> A260R:C: pairing antiparallel cis 129 Ww/Ww }  0
-  391  {A260R:C -> A215R:G: pairing antiparallel cis 129 Ww/Ww }  0
+  390  {A215R:G -> A260R:C: pairing antiparallel cis Ww/Ww }  0
+  391  {A260R:C -> A215R:G: pairing antiparallel cis Ww/Ww }  0
   392  {A216R:C -> A217R:C: adjacent_5p }  0
   393  {A217R:C -> A216R:C: adjacent_3p }  0
   394  {A217R:C -> A218R:A: adjacent_5p upward }  0
@@ -2442,8 +2442,8 @@ Size: 324 Edge size: 1040
   417  {A225R:A -> A224R:U: adjacent_3p }  0
   418  {A224R:U -> A248R:A: pairing antiparallel trans XXIV Ws/Hh }  0
   419  {A248R:A -> A224R:U: pairing antiparallel trans XXIV Hh/Ws }  0
-  420  {A225R:A -> A226R:A: adjacent_5p pairing parallel cis one_hbond 41 Ss/Hw O2'/Hh }  0
-  421  {A226R:A -> A225R:A: adjacent_3p pairing parallel cis one_hbond 41 Hw/Ss Hh/O2' }  0
+  420  {A225R:A -> A226R:A: adjacent_5p pairing parallel cis one_hbond Ss/Hw O2'/Hh }  0
+  421  {A226R:A -> A225R:A: adjacent_3p pairing parallel cis one_hbond Hw/Ss Hh/O2' }  0
   422  {A225R:A -> A227R:G: pairing O2'/Hh }  0
   423  {A227R:G -> A225R:A: pairing Hh/O2' }  0
   424  {A225R:A -> A247R:U: inward }  0
@@ -2478,8 +2478,8 @@ Size: 324 Edge size: 1040
   453  {A243R:U -> A231R:A: pairing antiparallel cis XX Ww/Ww }  0
   454  {A232R:C -> A233R:A: adjacent_5p }  0
   455  {A233R:A -> A232R:C: adjacent_3p }  0
-  456  {A232R:C -> A242R:G: pairing antiparallel cis one_hbond 129 Ww/Ww }  0
-  457  {A242R:G -> A232R:C: pairing antiparallel cis one_hbond 129 Ww/Ww }  0
+  456  {A232R:C -> A242R:G: pairing antiparallel cis one_hbond Ww/Ww }  0
+  457  {A242R:G -> A232R:C: pairing antiparallel cis one_hbond Ww/Ww }  0
   458  {A233R:A -> A234R:G: adjacent_5p upward }  0
   459  {A234R:G -> A233R:A: adjacent_3p downward }  0
   460  {A233R:A -> A241R:U: pairing antiparallel cis XX Ww/Ww }  0
@@ -2566,8 +2566,8 @@ Size: 324 Edge size: 1040
   541  {B107R:U -> B106R:U: adjacent_3p }  0
   542  {B107R:U -> B108R:G: adjacent_5p upward }  0
   543  {B108R:G -> B107R:U: adjacent_3p downward }  0
-  544  {B107R:U -> B214R:A: pairing antiparallel cis one_hbond 51 Wh/Wh }  0
-  545  {B214R:A -> B107R:U: pairing antiparallel cis one_hbond 51 Wh/Wh }  0
+  544  {B107R:U -> B214R:A: pairing antiparallel cis one_hbond Wh/Wh }  0
+  545  {B214R:A -> B107R:U: pairing antiparallel cis one_hbond Wh/Wh }  0
   546  {B108R:G -> B109R:G: adjacent_5p upward }  0
   547  {B109R:G -> B108R:G: adjacent_3p downward }  0
   548  {B108R:G -> B213R:C: pairing antiparallel cis XIX Ww/Ww }  0
@@ -2612,16 +2612,16 @@ Size: 324 Edge size: 1040
   587  {B205R:U -> B116R:G: pairing antiparallel cis XXVIII Ws/Ww }  0
   588  {B117R:G -> B118R:G: adjacent_5p upward }  0
   589  {B118R:G -> B117R:G: adjacent_3p downward }  0
-  590  {B117R:G -> B204R:C: pairing antiparallel cis 124 Ww/Ww }  0
-  591  {B204R:C -> B117R:G: pairing antiparallel cis 124 Ww/Ww }  0
+  590  {B117R:G -> B204R:C: pairing antiparallel cis Ww/Ww }  0
+  591  {B204R:C -> B117R:G: pairing antiparallel cis Ww/Ww }  0
   592  {B118R:G -> B119R:G: adjacent_5p upward }  0
   593  {B119R:G -> B118R:G: adjacent_3p downward }  0
-  594  {B118R:G -> B203R:C: pairing antiparallel cis 124 Ww/Ww }  0
-  595  {B203R:C -> B118R:G: pairing antiparallel cis 124 Ww/Ww }  0
+  594  {B118R:G -> B203R:C: pairing antiparallel cis Ww/Ww }  0
+  595  {B203R:C -> B118R:G: pairing antiparallel cis Ww/Ww }  0
   596  {B119R:G -> B120R:U: adjacent_5p upward }  0
   597  {B120R:U -> B119R:G: adjacent_3p downward }  0
-  598  {B119R:G -> B202R:U: pairing antiparallel cis one_hbond 87 Ws/Ws }  0
-  599  {B202R:U -> B119R:G: pairing antiparallel cis one_hbond 87 Ws/Ws }  0
+  598  {B119R:G -> B202R:U: pairing antiparallel cis one_hbond Ws/Ws }  0
+  599  {B202R:U -> B119R:G: pairing antiparallel cis one_hbond Ws/Ws }  0
   600  {B120R:U -> B121R:C: adjacent_5p }  0
   601  {B121R:C -> B120R:U: adjacent_3p }  0
   602  {B120R:U -> B201R:G: pairing antiparallel cis XXVIII Ws/Ww }  0
@@ -2678,8 +2678,8 @@ Size: 324 Edge size: 1040
   653  {B192R:A -> B131R:U: pairing antiparallel cis XX Ww/Ww }  0
   654  {B132R:C -> B133R:A: adjacent_5p upward }  0
   655  {B133R:A -> B132R:C: adjacent_3p downward }  0
-  656  {B132R:C -> B191R:G: pairing antiparallel cis 124 Ww/Ww }  0
-  657  {B191R:G -> B132R:C: pairing antiparallel cis 124 Ww/Ww }  0
+  656  {B132R:C -> B191R:G: pairing antiparallel cis Ww/Ww }  0
+  657  {B191R:G -> B132R:C: pairing antiparallel cis Ww/Ww }  0
   658  {B133R:A -> B134R:G: adjacent_5p upward }  0
   659  {B134R:G -> B133R:A: adjacent_3p downward }  0
   660  {B133R:A -> B190R:U: pairing antiparallel cis XX Ww/Ww }  0
@@ -2764,8 +2764,8 @@ Size: 324 Edge size: 1040
   739  {B151R:A -> B150R:G: adjacent_3p }  0
   740  {B150R:G -> B152R:A: pairing O2'/Bh O2'/Hh }  0
   741  {B152R:A -> B150R:G: pairing Bh/O2' Hh/O2' }  0
-  742  {B150R:G -> B153R:A: pairing antiparallel cis one_hbond 53 Sw/Hh Bs/O2P }  0
-  743  {B153R:A -> B150R:G: pairing antiparallel cis one_hbond 53 Hh/Sw O2P/Bs }  0
+  742  {B150R:G -> B153R:A: pairing antiparallel trans one_hbond Sw/Hh Bs/O2P }  0
+  743  {B153R:A -> B150R:G: pairing antiparallel trans one_hbond Hh/Sw O2P/Bs }  0
   744  {B151R:A -> B152R:A: adjacent_5p upward }  0
   745  {B152R:A -> B151R:A: adjacent_3p downward }  0
   746  {B151R:A -> B226R:A: outward }  0
@@ -2820,8 +2820,8 @@ Size: 324 Edge size: 1040
   795  {B168R:U -> B167R:U: adjacent_3p }  0
   796  {B167R:U -> B171R:A: downward }  0
   797  {B171R:A -> B167R:U: upward }  0
-  798  {B167R:U -> B173R:A: pairing parallel trans one_hbond 51 Wh/Wh }  0
-  799  {B173R:A -> B167R:U: pairing parallel trans one_hbond 51 Wh/Wh }  0
+  798  {B167R:U -> B173R:A: pairing parallel cis one_hbond 51 Wh/Wh }  0
+  799  {B173R:A -> B167R:U: pairing parallel cis one_hbond 51 Wh/Wh }  0
   800  {B168R:U -> B169R:G: adjacent_5p }  0
   801  {B169R:G -> B168R:U: adjacent_3p }  0
   802  {B168R:U -> B183R:A: outward }  0
@@ -2832,8 +2832,8 @@ Size: 324 Edge size: 1040
   807  {B170R:C -> B169R:G: adjacent_3p downward }  0
   808  {B170R:C -> B171R:A: adjacent_5p upward }  0
   809  {B171R:A -> B170R:C: adjacent_3p downward }  0
-  810  {B171R:A -> B172R:A: adjacent_5p pairing parallel cis one_hbond 41 Ss/Hw O2'/Hh }  0
-  811  {B172R:A -> B171R:A: adjacent_3p pairing parallel cis one_hbond 41 Hw/Ss Hh/O2' }  0
+  810  {B171R:A -> B172R:A: adjacent_5p pairing parallel cis one_hbond Ss/Hw O2'/Hh }  0
+  811  {B172R:A -> B171R:A: adjacent_3p pairing parallel cis one_hbond Hw/Ss Hh/O2' }  0
   812  {B172R:A -> B173R:A: adjacent_5p upward }  0
   813  {B173R:A -> B172R:A: adjacent_3p downward }  0
   814  {B173R:A -> B174R:G: adjacent_5p upward }  0
@@ -2932,8 +2932,8 @@ Size: 324 Edge size: 1040
   907  {B215R:G -> B214R:A: adjacent_3p downward }  0
   908  {B215R:G -> B216R:C: adjacent_5p }  0
   909  {B216R:C -> B215R:G: adjacent_3p }  0
-  910  {B215R:G -> B260R:C: pairing antiparallel cis 129 Ww/Ww }  0
-  911  {B260R:C -> B215R:G: pairing antiparallel cis 129 Ww/Ww }  0
+  910  {B215R:G -> B260R:C: pairing antiparallel cis Ww/Ww }  0
+  911  {B260R:C -> B215R:G: pairing antiparallel cis Ww/Ww }  0
   912  {B216R:C -> B217R:C: adjacent_5p }  0
   913  {B217R:C -> B216R:C: adjacent_3p }  0
   914  {B217R:C -> B218R:A: adjacent_5p upward }  0
@@ -2962,8 +2962,8 @@ Size: 324 Edge size: 1040
   937  {B225R:A -> B224R:U: adjacent_3p }  0
   938  {B224R:U -> B248R:A: pairing antiparallel trans XXIV Ws/Hh }  0
   939  {B248R:A -> B224R:U: pairing antiparallel trans XXIV Hh/Ws }  0
-  940  {B225R:A -> B226R:A: adjacent_5p pairing parallel cis one_hbond 41 Ss/Hw O2'/Hh }  0
-  941  {B226R:A -> B225R:A: adjacent_3p pairing parallel cis one_hbond 41 Hw/Ss Hh/O2' }  0
+  940  {B225R:A -> B226R:A: adjacent_5p pairing parallel cis one_hbond Ss/Hw O2'/Hh }  0
+  941  {B226R:A -> B225R:A: adjacent_3p pairing parallel cis one_hbond Hw/Ss Hh/O2' }  0
   942  {B225R:A -> B227R:G: pairing O2'/Hh }  0
   943  {B227R:G -> B225R:A: pairing Hh/O2' }  0
   944  {B225R:A -> B247R:U: inward }  0
@@ -2998,8 +2998,8 @@ Size: 324 Edge size: 1040
   973  {B243R:U -> B231R:A: pairing antiparallel cis XX Ww/Ww }  0
   974  {B232R:C -> B233R:A: adjacent_5p }  0
   975  {B233R:A -> B232R:C: adjacent_3p }  0
-  976  {B232R:C -> B242R:G: pairing antiparallel cis one_hbond 129 Ww/Ww }  0
-  977  {B242R:G -> B232R:C: pairing antiparallel cis one_hbond 129 Ww/Ww }  0
+  976  {B232R:C -> B242R:G: pairing antiparallel cis one_hbond Ww/Ww }  0
+  977  {B242R:G -> B232R:C: pairing antiparallel cis one_hbond Ww/Ww }  0
   978  {B233R:A -> B234R:G: adjacent_5p upward }  0
   979  {B234R:G -> B233R:A: adjacent_3p downward }  0
   980  {B233R:A -> B241R:U: pairing antiparallel cis XX Ww/Ww }  0
@@ -3736,8 +3736,8 @@ Size: 324 Edge size: 1040
    15  {A107R:U -> A106R:U: adjacent_3p }  0
    16  {A107R:U -> A108R:G: adjacent_5p upward }  0
    17  {A108R:G -> A107R:U: adjacent_3p downward }  0
-   18  {A107R:U -> A214R:A: pairing antiparallel cis one_hbond 51 Wh/Wh }  0
-   19  {A214R:A -> A107R:U: pairing antiparallel cis one_hbond 51 Wh/Wh }  0
+   18  {A107R:U -> A214R:A: pairing antiparallel cis one_hbond Wh/Wh }  0
+   19  {A214R:A -> A107R:U: pairing antiparallel cis one_hbond Wh/Wh }  0
    20  {A108R:G -> A109R:G: adjacent_5p upward }  0
    21  {A109R:G -> A108R:G: adjacent_3p downward }  0
    22  {A108R:G -> A213R:C: pairing antiparallel cis XIX Ww/Ww }  0
@@ -3782,16 +3782,16 @@ Size: 324 Edge size: 1040
    61  {A205R:U -> A116R:G: pairing antiparallel cis XXVIII Ws/Ww }  0
    62  {A117R:G -> A118R:G: adjacent_5p upward }  0
    63  {A118R:G -> A117R:G: adjacent_3p downward }  0
-   64  {A117R:G -> A204R:C: pairing antiparallel cis 124 Ww/Ww }  0
-   65  {A204R:C -> A117R:G: pairing antiparallel cis 124 Ww/Ww }  0
+   64  {A117R:G -> A204R:C: pairing antiparallel cis Ww/Ww }  0
+   65  {A204R:C -> A117R:G: pairing antiparallel cis Ww/Ww }  0
    66  {A118R:G -> A119R:G: adjacent_5p upward }  0
    67  {A119R:G -> A118R:G: adjacent_3p downward }  0
-   68  {A118R:G -> A203R:C: pairing antiparallel cis 124 Ww/Ww }  0
-   69  {A203R:C -> A118R:G: pairing antiparallel cis 124 Ww/Ww }  0
+   68  {A118R:G -> A203R:C: pairing antiparallel cis Ww/Ww }  0
+   69  {A203R:C -> A118R:G: pairing antiparallel cis Ww/Ww }  0
    70  {A119R:G -> A120R:U: adjacent_5p upward }  0
    71  {A120R:U -> A119R:G: adjacent_3p downward }  0
-   72  {A119R:G -> A202R:U: pairing antiparallel cis one_hbond 87 Ws/Ws }  0
-   73  {A202R:U -> A119R:G: pairing antiparallel cis one_hbond 87 Ws/Ws }  0
+   72  {A119R:G -> A202R:U: pairing antiparallel cis one_hbond Ws/Ws }  0
+   73  {A202R:U -> A119R:G: pairing antiparallel cis one_hbond Ws/Ws }  0
    74  {A120R:U -> A121R:C: adjacent_5p }  0
    75  {A121R:C -> A120R:U: adjacent_3p }  0
    76  {A120R:U -> A201R:G: pairing antiparallel cis XXVIII Ws/Ww }  0
@@ -3848,8 +3848,8 @@ Size: 324 Edge size: 1040
   127  {A192R:A -> A131R:U: pairing antiparallel cis XX Ww/Ww }  0
   128  {A132R:C -> A133R:A: adjacent_5p upward }  0
   129  {A133R:A -> A132R:C: adjacent_3p downward }  0
-  130  {A132R:C -> A191R:G: pairing antiparallel cis 124 Ww/Ww }  0
-  131  {A191R:G -> A132R:C: pairing antiparallel cis 124 Ww/Ww }  0
+  130  {A132R:C -> A191R:G: pairing antiparallel cis Ww/Ww }  0
+  131  {A191R:G -> A132R:C: pairing antiparallel cis Ww/Ww }  0
   132  {A133R:A -> A134R:G: adjacent_5p upward }  0
   133  {A134R:G -> A133R:A: adjacent_3p downward }  0
   134  {A133R:A -> A190R:U: pairing antiparallel cis XX Ww/Ww }  0
@@ -3934,8 +3934,8 @@ Size: 324 Edge size: 1040
   213  {A151R:A -> A150R:G: adjacent_3p }  0
   214  {A150R:G -> A152R:A: pairing O2'/Bh O2'/Hh }  0
   215  {A152R:A -> A150R:G: pairing Bh/O2' Hh/O2' }  0
-  216  {A150R:G -> A153R:A: pairing antiparallel cis one_hbond 53 Sw/Hh Bs/O2P }  0
-  217  {A153R:A -> A150R:G: pairing antiparallel cis one_hbond 53 Hh/Sw O2P/Bs }  0
+  216  {A150R:G -> A153R:A: pairing antiparallel trans one_hbond Sw/Hh Bs/O2P }  0
+  217  {A153R:A -> A150R:G: pairing antiparallel trans one_hbond Hh/Sw O2P/Bs }  0
   218  {A151R:A -> A152R:A: adjacent_5p upward }  0
   219  {A152R:A -> A151R:A: adjacent_3p downward }  0
   220  {A151R:A -> A226R:A: outward }  0
@@ -4006,8 +4006,8 @@ Size: 324 Edge size: 1040
   285  {A171R:A -> A170R:C: adjacent_3p downward }  0
   286  {A170R:C -> B254R:G: pairing antiparallel cis XIX Ww/Ww }  0
   287  {B254R:G -> A170R:C: pairing antiparallel cis XIX Ww/Ww }  0
-  288  {A171R:A -> A172R:A: adjacent_5p pairing parallel cis one_hbond 41 Ss/Hw O2'/Hh }  0
-  289  {A172R:A -> A171R:A: adjacent_3p pairing parallel cis one_hbond 41 Hw/Ss Hh/O2' }  0
+  288  {A171R:A -> A172R:A: adjacent_5p pairing parallel cis one_hbond Ss/Hw O2'/Hh }  0
+  289  {A172R:A -> A171R:A: adjacent_3p pairing parallel cis one_hbond Hw/Ss Hh/O2' }  0
   290  {A172R:A -> A173R:A: adjacent_5p upward }  0
   291  {A173R:A -> A172R:A: adjacent_3p downward }  0
   292  {A172R:A -> B254R:G: outward }  0
@@ -4108,8 +4108,8 @@ Size: 324 Edge size: 1040
   387  {A215R:G -> A214R:A: adjacent_3p downward }  0
   388  {A215R:G -> A216R:C: adjacent_5p }  0
   389  {A216R:C -> A215R:G: adjacent_3p }  0
-  390  {A215R:G -> A260R:C: pairing antiparallel cis 129 Ww/Ww }  0
-  391  {A260R:C -> A215R:G: pairing antiparallel cis 129 Ww/Ww }  0
+  390  {A215R:G -> A260R:C: pairing antiparallel cis Ww/Ww }  0
+  391  {A260R:C -> A215R:G: pairing antiparallel cis Ww/Ww }  0
   392  {A216R:C -> A217R:C: adjacent_5p }  0
   393  {A217R:C -> A216R:C: adjacent_3p }  0
   394  {A217R:C -> A218R:A: adjacent_5p upward }  0
@@ -4138,8 +4138,8 @@ Size: 324 Edge size: 1040
   417  {A225R:A -> A224R:U: adjacent_3p }  0
   418  {A224R:U -> A248R:A: pairing antiparallel trans XXIV Ws/Hh }  0
   419  {A248R:A -> A224R:U: pairing antiparallel trans XXIV Hh/Ws }  0
-  420  {A225R:A -> A226R:A: adjacent_5p pairing parallel cis one_hbond 41 Ss/Hw O2'/Hh }  0
-  421  {A226R:A -> A225R:A: adjacent_3p pairing parallel cis one_hbond 41 Hw/Ss Hh/O2' }  0
+  420  {A225R:A -> A226R:A: adjacent_5p pairing parallel cis one_hbond Ss/Hw O2'/Hh }  0
+  421  {A226R:A -> A225R:A: adjacent_3p pairing parallel cis one_hbond Hw/Ss Hh/O2' }  0
   422  {A225R:A -> A227R:G: pairing O2'/Hh }  0
   423  {A227R:G -> A225R:A: pairing Hh/O2' }  0
   424  {A225R:A -> A247R:U: inward }  0
@@ -4174,8 +4174,8 @@ Size: 324 Edge size: 1040
   453  {A243R:U -> A231R:A: pairing antiparallel cis XX Ww/Ww }  0
   454  {A232R:C -> A233R:A: adjacent_5p }  0
   455  {A233R:A -> A232R:C: adjacent_3p }  0
-  456  {A232R:C -> A242R:G: pairing antiparallel cis one_hbond 129 Ww/Ww }  0
-  457  {A242R:G -> A232R:C: pairing antiparallel cis one_hbond 129 Ww/Ww }  0
+  456  {A232R:C -> A242R:G: pairing antiparallel cis one_hbond Ww/Ww }  0
+  457  {A242R:G -> A232R:C: pairing antiparallel cis one_hbond Ww/Ww }  0
   458  {A233R:A -> A234R:G: adjacent_5p upward }  0
   459  {A234R:G -> A233R:A: adjacent_3p downward }  0
   460  {A233R:A -> A241R:U: pairing antiparallel cis XX Ww/Ww }  0
@@ -4262,8 +4262,8 @@ Size: 324 Edge size: 1040
   541  {B107R:U -> B106R:U: adjacent_3p }  0
   542  {B107R:U -> B108R:G: adjacent_5p upward }  0
   543  {B108R:G -> B107R:U: adjacent_3p downward }  0
-  544  {B107R:U -> B214R:A: pairing antiparallel cis one_hbond 51 Wh/Wh }  0
-  545  {B214R:A -> B107R:U: pairing antiparallel cis one_hbond 51 Wh/Wh }  0
+  544  {B107R:U -> B214R:A: pairing antiparallel cis one_hbond Wh/Wh }  0
+  545  {B214R:A -> B107R:U: pairing antiparallel cis one_hbond Wh/Wh }  0
   546  {B108R:G -> B109R:G: adjacent_5p upward }  0
   547  {B109R:G -> B108R:G: adjacent_3p downward }  0
   548  {B108R:G -> B213R:C: pairing antiparallel cis XIX Ww/Ww }  0
@@ -4308,16 +4308,16 @@ Size: 324 Edge size: 1040
   587  {B205R:U -> B116R:G: pairing antiparallel cis XXVIII Ws/Ww }  0
   588  {B117R:G -> B118R:G: adjacent_5p upward }  0
   589  {B118R:G -> B117R:G: adjacent_3p downward }  0
-  590  {B117R:G -> B204R:C: pairing antiparallel cis 124 Ww/Ww }  0
-  591  {B204R:C -> B117R:G: pairing antiparallel cis 124 Ww/Ww }  0
+  590  {B117R:G -> B204R:C: pairing antiparallel cis Ww/Ww }  0
+  591  {B204R:C -> B117R:G: pairing antiparallel cis Ww/Ww }  0
   592  {B118R:G -> B119R:G: adjacent_5p upward }  0
   593  {B119R:G -> B118R:G: adjacent_3p downward }  0
-  594  {B118R:G -> B203R:C: pairing antiparallel cis 124 Ww/Ww }  0
-  595  {B203R:C -> B118R:G: pairing antiparallel cis 124 Ww/Ww }  0
+  594  {B118R:G -> B203R:C: pairing antiparallel cis Ww/Ww }  0
+  595  {B203R:C -> B118R:G: pairing antiparallel cis Ww/Ww }  0
   596  {B119R:G -> B120R:U: adjacent_5p upward }  0
   597  {B120R:U -> B119R:G: adjacent_3p downward }  0
-  598  {B119R:G -> B202R:U: pairing antiparallel cis one_hbond 87 Ws/Ws }  0
-  599  {B202R:U -> B119R:G: pairing antiparallel cis one_hbond 87 Ws/Ws }  0
+  598  {B119R:G -> B202R:U: pairing antiparallel cis one_hbond Ws/Ws }  0
+  599  {B202R:U -> B119R:G: pairing antiparallel cis one_hbond Ws/Ws }  0
   600  {B120R:U -> B121R:C: adjacent_5p }  0
   601  {B121R:C -> B120R:U: adjacent_3p }  0
   602  {B120R:U -> B201R:G: pairing antiparallel cis XXVIII Ws/Ww }  0
@@ -4374,8 +4374,8 @@ Size: 324 Edge size: 1040
   653  {B192R:A -> B131R:U: pairing antiparallel cis XX Ww/Ww }  0
   654  {B132R:C -> B133R:A: adjacent_5p upward }  0
   655  {B133R:A -> B132R:C: adjacent_3p downward }  0
-  656  {B132R:C -> B191R:G: pairing antiparallel cis 124 Ww/Ww }  0
-  657  {B191R:G -> B132R:C: pairing antiparallel cis 124 Ww/Ww }  0
+  656  {B132R:C -> B191R:G: pairing antiparallel cis Ww/Ww }  0
+  657  {B191R:G -> B132R:C: pairing antiparallel cis Ww/Ww }  0
   658  {B133R:A -> B134R:G: adjacent_5p upward }  0
   659  {B134R:G -> B133R:A: adjacent_3p downward }  0
   660  {B133R:A -> B190R:U: pairing antiparallel cis XX Ww/Ww }  0
@@ -4460,8 +4460,8 @@ Size: 324 Edge size: 1040
   739  {B151R:A -> B150R:G: adjacent_3p }  0
   740  {B150R:G -> B152R:A: pairing O2'/Bh O2'/Hh }  0
   741  {B152R:A -> B150R:G: pairing Bh/O2' Hh/O2' }  0
-  742  {B150R:G -> B153R:A: pairing antiparallel cis one_hbond 53 Sw/Hh Bs/O2P }  0
-  743  {B153R:A -> B150R:G: pairing antiparallel cis one_hbond 53 Hh/Sw O2P/Bs }  0
+  742  {B150R:G -> B153R:A: pairing antiparallel trans one_hbond Sw/Hh Bs/O2P }  0
+  743  {B153R:A -> B150R:G: pairing antiparallel trans one_hbond Hh/Sw O2P/Bs }  0
   744  {B151R:A -> B152R:A: adjacent_5p upward }  0
   745  {B152R:A -> B151R:A: adjacent_3p downward }  0
   746  {B151R:A -> B226R:A: outward }  0
@@ -4516,8 +4516,8 @@ Size: 324 Edge size: 1040
   795  {B168R:U -> B167R:U: adjacent_3p }  0
   796  {B167R:U -> B171R:A: downward }  0
   797  {B171R:A -> B167R:U: upward }  0
-  798  {B167R:U -> B173R:A: pairing parallel trans one_hbond 51 Wh/Wh }  0
-  799  {B173R:A -> B167R:U: pairing parallel trans one_hbond 51 Wh/Wh }  0
+  798  {B167R:U -> B173R:A: pairing parallel cis one_hbond 51 Wh/Wh }  0
+  799  {B173R:A -> B167R:U: pairing parallel cis one_hbond 51 Wh/Wh }  0
   800  {B168R:U -> B169R:G: adjacent_5p }  0
   801  {B169R:G -> B168R:U: adjacent_3p }  0
   802  {B168R:U -> B183R:A: outward }  0
@@ -4528,8 +4528,8 @@ Size: 324 Edge size: 1040
   807  {B170R:C -> B169R:G: adjacent_3p downward }  0
   808  {B170R:C -> B171R:A: adjacent_5p upward }  0
   809  {B171R:A -> B170R:C: adjacent_3p downward }  0
-  810  {B171R:A -> B172R:A: adjacent_5p pairing parallel cis one_hbond 41 Ss/Hw O2'/Hh }  0
-  811  {B172R:A -> B171R:A: adjacent_3p pairing parallel cis one_hbond 41 Hw/Ss Hh/O2' }  0
+  810  {B171R:A -> B172R:A: adjacent_5p pairing parallel cis one_hbond Ss/Hw O2'/Hh }  0
+  811  {B172R:A -> B171R:A: adjacent_3p pairing parallel cis one_hbond Hw/Ss Hh/O2' }  0
   812  {B172R:A -> B173R:A: adjacent_5p upward }  0
   813  {B173R:A -> B172R:A: adjacent_3p downward }  0
   814  {B173R:A -> B174R:G: adjacent_5p upward }  0
@@ -4628,8 +4628,8 @@ Size: 324 Edge size: 1040
   907  {B215R:G -> B214R:A: adjacent_3p downward }  0
   908  {B215R:G -> B216R:C: adjacent_5p }  0
   909  {B216R:C -> B215R:G: adjacent_3p }  0
-  910  {B215R:G -> B260R:C: pairing antiparallel cis 129 Ww/Ww }  0
-  911  {B260R:C -> B215R:G: pairing antiparallel cis 129 Ww/Ww }  0
+  910  {B215R:G -> B260R:C: pairing antiparallel cis Ww/Ww }  0
+  911  {B260R:C -> B215R:G: pairing antiparallel cis Ww/Ww }  0
   912  {B216R:C -> B217R:C: adjacent_5p }  0
   913  {B217R:C -> B216R:C: adjacent_3p }  0
   914  {B217R:C -> B218R:A: adjacent_5p upward }  0
@@ -4658,8 +4658,8 @@ Size: 324 Edge size: 1040
   937  {B225R:A -> B224R:U: adjacent_3p }  0
   938  {B224R:U -> B248R:A: pairing antiparallel trans XXIV Ws/Hh }  0
   939  {B248R:A -> B224R:U: pairing antiparallel trans XXIV Hh/Ws }  0
-  940  {B225R:A -> B226R:A: adjacent_5p pairing parallel cis one_hbond 41 Ss/Hw O2'/Hh }  0
-  941  {B226R:A -> B225R:A: adjacent_3p pairing parallel cis one_hbond 41 Hw/Ss Hh/O2' }  0
+  940  {B225R:A -> B226R:A: adjacent_5p pairing parallel cis one_hbond Ss/Hw O2'/Hh }  0
+  941  {B226R:A -> B225R:A: adjacent_3p pairing parallel cis one_hbond Hw/Ss Hh/O2' }  0
   942  {B225R:A -> B227R:G: pairing O2'/Hh }  0
   943  {B227R:G -> B225R:A: pairing Hh/O2' }  0
   944  {B225R:A -> B247R:U: inward }  0
@@ -4694,8 +4694,8 @@ Size: 324 Edge size: 1040
   973  {B243R:U -> B231R:A: pairing antiparallel cis XX Ww/Ww }  0
   974  {B232R:C -> B233R:A: adjacent_5p }  0
   975  {B233R:A -> B232R:C: adjacent_3p }  0
-  976  {B232R:C -> B242R:G: pairing antiparallel cis one_hbond 129 Ww/Ww }  0
-  977  {B242R:G -> B232R:C: pairing antiparallel cis one_hbond 129 Ww/Ww }  0
+  976  {B232R:C -> B242R:G: pairing antiparallel cis one_hbond Ww/Ww }  0
+  977  {B242R:G -> B232R:C: pairing antiparallel cis one_hbond Ww/Ww }  0
   978  {B233R:A -> B234R:G: adjacent_5p upward }  0
   979  {B234R:G -> B233R:A: adjacent_3p downward }  0
   980  {B233R:A -> B241R:U: pairing antiparallel cis XX Ww/Ww }  0
@@ -5432,8 +5432,8 @@ Size: 324 Edge size: 1040
    15  {A107R:U -> A106R:U: adjacent_3p }  0
    16  {A107R:U -> A108R:G: adjacent_5p upward }  0
    17  {A108R:G -> A107R:U: adjacent_3p downward }  0
-   18  {A107R:U -> A214R:A: pairing antiparallel cis one_hbond 51 Wh/Wh }  0
-   19  {A214R:A -> A107R:U: pairing antiparallel cis one_hbond 51 Wh/Wh }  0
+   18  {A107R:U -> A214R:A: pairing antiparallel cis one_hbond Wh/Wh }  0
+   19  {A214R:A -> A107R:U: pairing antiparallel cis one_hbond Wh/Wh }  0
    20  {A108R:G -> A109R:G: adjacent_5p upward }  0
    21  {A109R:G -> A108R:G: adjacent_3p downward }  0
    22  {A108R:G -> A213R:C: pairing antiparallel cis XIX Ww/Ww }  0
@@ -5478,16 +5478,16 @@ Size: 324 Edge size: 1040
    61  {A205R:U -> A116R:G: pairing antiparallel cis XXVIII Ws/Ww }  0
    62  {A117R:G -> A118R:G: adjacent_5p upward }  0
    63  {A118R:G -> A117R:G: adjacent_3p downward }  0
-   64  {A117R:G -> A204R:C: pairing antiparallel cis 124 Ww/Ww }  0
-   65  {A204R:C -> A117R:G: pairing antiparallel cis 124 Ww/Ww }  0
+   64  {A117R:G -> A204R:C: pairing antiparallel cis Ww/Ww }  0
+   65  {A204R:C -> A117R:G: pairing antiparallel cis Ww/Ww }  0
    66  {A118R:G -> A119R:G: adjacent_5p upward }  0
    67  {A119R:G -> A118R:G: adjacent_3p downward }  0
-   68  {A118R:G -> A203R:C: pairing antiparallel cis 124 Ww/Ww }  0
-   69  {A203R:C -> A118R:G: pairing antiparallel cis 124 Ww/Ww }  0
+   68  {A118R:G -> A203R:C: pairing antiparallel cis Ww/Ww }  0
+   69  {A203R:C -> A118R:G: pairing antiparallel cis Ww/Ww }  0
    70  {A119R:G -> A120R:U: adjacent_5p upward }  0
    71  {A120R:U -> A119R:G: adjacent_3p downward }  0
-   72  {A119R:G -> A202R:U: pairing antiparallel cis one_hbond 87 Ws/Ws }  0
-   73  {A202R:U -> A119R:G: pairing antiparallel cis one_hbond 87 Ws/Ws }  0
+   72  {A119R:G -> A202R:U: pairing antiparallel cis one_hbond Ws/Ws }  0
+   73  {A202R:U -> A119R:G: pairing antiparallel cis one_hbond Ws/Ws }  0
    74  {A120R:U -> A121R:C: adjacent_5p }  0
    75  {A121R:C -> A120R:U: adjacent_3p }  0
    76  {A120R:U -> A201R:G: pairing antiparallel cis XXVIII Ws/Ww }  0
@@ -5544,8 +5544,8 @@ Size: 324 Edge size: 1040
   127  {A192R:A -> A131R:U: pairing antiparallel cis XX Ww/Ww }  0
   128  {A132R:C -> A133R:A: adjacent_5p upward }  0
   129  {A133R:A -> A132R:C: adjacent_3p downward }  0
-  130  {A132R:C -> A191R:G: pairing antiparallel cis 124 Ww/Ww }  0
-  131  {A191R:G -> A132R:C: pairing antiparallel cis 124 Ww/Ww }  0
+  130  {A132R:C -> A191R:G: pairing antiparallel cis Ww/Ww }  0
+  131  {A191R:G -> A132R:C: pairing antiparallel cis Ww/Ww }  0
   132  {A133R:A -> A134R:G: adjacent_5p upward }  0
   133  {A134R:G -> A133R:A: adjacent_3p downward }  0
   134  {A133R:A -> A190R:U: pairing antiparallel cis XX Ww/Ww }  0
@@ -5630,8 +5630,8 @@ Size: 324 Edge size: 1040
   213  {A151R:A -> A150R:G: adjacent_3p }  0
   214  {A150R:G -> A152R:A: pairing O2'/Bh O2'/Hh }  0
   215  {A152R:A -> A150R:G: pairing Bh/O2' Hh/O2' }  0
-  216  {A150R:G -> A153R:A: pairing antiparallel cis one_hbond 53 Sw/Hh Bs/O2P }  0
-  217  {A153R:A -> A150R:G: pairing antiparallel cis one_hbond 53 Hh/Sw O2P/Bs }  0
+  216  {A150R:G -> A153R:A: pairing antiparallel trans one_hbond Sw/Hh Bs/O2P }  0
+  217  {A153R:A -> A150R:G: pairing antiparallel trans one_hbond Hh/Sw O2P/Bs }  0
   218  {A151R:A -> A152R:A: adjacent_5p upward }  0
   219  {A152R:A -> A151R:A: adjacent_3p downward }  0
   220  {A151R:A -> A226R:A: outward }  0
@@ -5702,8 +5702,8 @@ Size: 324 Edge size: 1040
   285  {A171R:A -> A170R:C: adjacent_3p downward }  0
   286  {A170R:C -> B254R:G: pairing antiparallel cis XIX Ww/Ww }  0
   287  {B254R:G -> A170R:C: pairing antiparallel cis XIX Ww/Ww }  0
-  288  {A171R:A -> A172R:A: adjacent_5p pairing parallel cis one_hbond 41 Ss/Hw O2'/Hh }  0
-  289  {A172R:A -> A171R:A: adjacent_3p pairing parallel cis one_hbond 41 Hw/Ss Hh/O2' }  0
+  288  {A171R:A -> A172R:A: adjacent_5p pairing parallel cis one_hbond Ss/Hw O2'/Hh }  0
+  289  {A172R:A -> A171R:A: adjacent_3p pairing parallel cis one_hbond Hw/Ss Hh/O2' }  0
   290  {A172R:A -> A173R:A: adjacent_5p upward }  0
   291  {A173R:A -> A172R:A: adjacent_3p downward }  0
   292  {A172R:A -> B254R:G: outward }  0
@@ -5804,8 +5804,8 @@ Size: 324 Edge size: 1040
   387  {A215R:G -> A214R:A: adjacent_3p downward }  0
   388  {A215R:G -> A216R:C: adjacent_5p }  0
   389  {A216R:C -> A215R:G: adjacent_3p }  0
-  390  {A215R:G -> A260R:C: pairing antiparallel cis 129 Ww/Ww }  0
-  391  {A260R:C -> A215R:G: pairing antiparallel cis 129 Ww/Ww }  0
+  390  {A215R:G -> A260R:C: pairing antiparallel cis Ww/Ww }  0
+  391  {A260R:C -> A215R:G: pairing antiparallel cis Ww/Ww }  0
   392  {A216R:C -> A217R:C: adjacent_5p }  0
   393  {A217R:C -> A216R:C: adjacent_3p }  0
   394  {A217R:C -> A218R:A: adjacent_5p upward }  0
@@ -5834,8 +5834,8 @@ Size: 324 Edge size: 1040
   417  {A225R:A -> A224R:U: adjacent_3p }  0
   418  {A224R:U -> A248R:A: pairing antiparallel trans XXIV Ws/Hh }  0
   419  {A248R:A -> A224R:U: pairing antiparallel trans XXIV Hh/Ws }  0
-  420  {A225R:A -> A226R:A: adjacent_5p pairing parallel cis one_hbond 41 Ss/Hw O2'/Hh }  0
-  421  {A226R:A -> A225R:A: adjacent_3p pairing parallel cis one_hbond 41 Hw/Ss Hh/O2' }  0
+  420  {A225R:A -> A226R:A: adjacent_5p pairing parallel cis one_hbond Ss/Hw O2'/Hh }  0
+  421  {A226R:A -> A225R:A: adjacent_3p pairing parallel cis one_hbond Hw/Ss Hh/O2' }  0
   422  {A225R:A -> A227R:G: pairing O2'/Hh }  0
   423  {A227R:G -> A225R:A: pairing Hh/O2' }  0
   424  {A225R:A -> A247R:U: inward }  0
@@ -5870,8 +5870,8 @@ Size: 324 Edge size: 1040
   453  {A243R:U -> A231R:A: pairing antiparallel cis XX Ww/Ww }  0
   454  {A232R:C -> A233R:A: adjacent_5p }  0
   455  {A233R:A -> A232R:C: adjacent_3p }  0
-  456  {A232R:C -> A242R:G: pairing antiparallel cis one_hbond 129 Ww/Ww }  0
-  457  {A242R:G -> A232R:C: pairing antiparallel cis one_hbond 129 Ww/Ww }  0
+  456  {A232R:C -> A242R:G: pairing antiparallel cis one_hbond Ww/Ww }  0
+  457  {A242R:G -> A232R:C: pairing antiparallel cis one_hbond Ww/Ww }  0
   458  {A233R:A -> A234R:G: adjacent_5p upward }  0
   459  {A234R:G -> A233R:A: adjacent_3p downward }  0
   460  {A233R:A -> A241R:U: pairing antiparallel cis XX Ww/Ww }  0
@@ -5958,8 +5958,8 @@ Size: 324 Edge size: 1040
   541  {B107R:U -> B106R:U: adjacent_3p }  0
   542  {B107R:U -> B108R:G: adjacent_5p upward }  0
   543  {B108R:G -> B107R:U: adjacent_3p downward }  0
-  544  {B107R:U -> B214R:A: pairing antiparallel cis one_hbond 51 Wh/Wh }  0
-  545  {B214R:A -> B107R:U: pairing antiparallel cis one_hbond 51 Wh/Wh }  0
+  544  {B107R:U -> B214R:A: pairing antiparallel cis one_hbond Wh/Wh }  0
+  545  {B214R:A -> B107R:U: pairing antiparallel cis one_hbond Wh/Wh }  0
   546  {B108R:G -> B109R:G: adjacent_5p upward }  0
   547  {B109R:G -> B108R:G: adjacent_3p downward }  0
   548  {B108R:G -> B213R:C: pairing antiparallel cis XIX Ww/Ww }  0
@@ -6004,16 +6004,16 @@ Size: 324 Edge size: 1040
   587  {B205R:U -> B116R:G: pairing antiparallel cis XXVIII Ws/Ww }  0
   588  {B117R:G -> B118R:G: adjacent_5p upward }  0
   589  {B118R:G -> B117R:G: adjacent_3p downward }  0
-  590  {B117R:G -> B204R:C: pairing antiparallel cis 124 Ww/Ww }  0
-  591  {B204R:C -> B117R:G: pairing antiparallel cis 124 Ww/Ww }  0
+  590  {B117R:G -> B204R:C: pairing antiparallel cis Ww/Ww }  0
+  591  {B204R:C -> B117R:G: pairing antiparallel cis Ww/Ww }  0
   592  {B118R:G -> B119R:G: adjacent_5p upward }  0
   593  {B119R:G -> B118R:G: adjacent_3p downward }  0
-  594  {B118R:G -> B203R:C: pairing antiparallel cis 124 Ww/Ww }  0
-  595  {B203R:C -> B118R:G: pairing antiparallel cis 124 Ww/Ww }  0
+  594  {B118R:G -> B203R:C: pairing antiparallel cis Ww/Ww }  0
+  595  {B203R:C -> B118R:G: pairing antiparallel cis Ww/Ww }  0
   596  {B119R:G -> B120R:U: adjacent_5p upward }  0
   597  {B120R:U -> B119R:G: adjacent_3p downward }  0
-  598  {B119R:G -> B202R:U: pairing antiparallel cis one_hbond 87 Ws/Ws }  0
-  599  {B202R:U -> B119R:G: pairing antiparallel cis one_hbond 87 Ws/Ws }  0
+  598  {B119R:G -> B202R:U: pairing antiparallel cis one_hbond Ws/Ws }  0
+  599  {B202R:U -> B119R:G: pairing antiparallel cis one_hbond Ws/Ws }  0
   600  {B120R:U -> B121R:C: adjacent_5p }  0
   601  {B121R:C -> B120R:U: adjacent_3p }  0
   602  {B120R:U -> B201R:G: pairing antiparallel cis XXVIII Ws/Ww }  0
@@ -6070,8 +6070,8 @@ Size: 324 Edge size: 1040
   653  {B192R:A -> B131R:U: pairing antiparallel cis XX Ww/Ww }  0
   654  {B132R:C -> B133R:A: adjacent_5p upward }  0
   655  {B133R:A -> B132R:C: adjacent_3p downward }  0
-  656  {B132R:C -> B191R:G: pairing antiparallel cis 124 Ww/Ww }  0
-  657  {B191R:G -> B132R:C: pairing antiparallel cis 124 Ww/Ww }  0
+  656  {B132R:C -> B191R:G: pairing antiparallel cis Ww/Ww }  0
+  657  {B191R:G -> B132R:C: pairing antiparallel cis Ww/Ww }  0
   658  {B133R:A -> B134R:G: adjacent_5p upward }  0
   659  {B134R:G -> B133R:A: adjacent_3p downward }  0
   660  {B133R:A -> B190R:U: pairing antiparallel cis XX Ww/Ww }  0
@@ -6156,8 +6156,8 @@ Size: 324 Edge size: 1040
   739  {B151R:A -> B150R:G: adjacent_3p }  0
   740  {B150R:G -> B152R:A: pairing O2'/Bh O2'/Hh }  0
   741  {B152R:A -> B150R:G: pairing Bh/O2' Hh/O2' }  0
-  742  {B150R:G -> B153R:A: pairing antiparallel cis one_hbond 53 Sw/Hh Bs/O2P }  0
-  743  {B153R:A -> B150R:G: pairing antiparallel cis one_hbond 53 Hh/Sw O2P/Bs }  0
+  742  {B150R:G -> B153R:A: pairing antiparallel trans one_hbond Sw/Hh Bs/O2P }  0
+  743  {B153R:A -> B150R:G: pairing antiparallel trans one_hbond Hh/Sw O2P/Bs }  0
   744  {B151R:A -> B152R:A: adjacent_5p upward }  0
   745  {B152R:A -> B151R:A: adjacent_3p downward }  0
   746  {B151R:A -> B226R:A: outward }  0
@@ -6212,8 +6212,8 @@ Size: 324 Edge size: 1040
   795  {B168R:U -> B167R:U: adjacent_3p }  0
   796  {B167R:U -> B171R:A: downward }  0
   797  {B171R:A -> B167R:U: upward }  0
-  798  {B167R:U -> B173R:A: pairing parallel trans one_hbond 51 Wh/Wh }  0
-  799  {B173R:A -> B167R:U: pairing parallel trans one_hbond 51 Wh/Wh }  0
+  798  {B167R:U -> B173R:A: pairing parallel cis one_hbond 51 Wh/Wh }  0
+  799  {B173R:A -> B167R:U: pairing parallel cis one_hbond 51 Wh/Wh }  0
   800  {B168R:U -> B169R:G: adjacent_5p }  0
   801  {B169R:G -> B168R:U: adjacent_3p }  0
   802  {B168R:U -> B183R:A: outward }  0
@@ -6224,8 +6224,8 @@ Size: 324 Edge size: 1040
   807  {B170R:C -> B169R:G: adjacent_3p downward }  0
   808  {B170R:C -> B171R:A: adjacent_5p upward }  0
   809  {B171R:A -> B170R:C: adjacent_3p downward }  0
-  810  {B171R:A -> B172R:A: adjacent_5p pairing parallel cis one_hbond 41 Ss/Hw O2'/Hh }  0
-  811  {B172R:A -> B171R:A: adjacent_3p pairing parallel cis one_hbond 41 Hw/Ss Hh/O2' }  0
+  810  {B171R:A -> B172R:A: adjacent_5p pairing parallel cis one_hbond Ss/Hw O2'/Hh }  0
+  811  {B172R:A -> B171R:A: adjacent_3p pairing parallel cis one_hbond Hw/Ss Hh/O2' }  0
   812  {B172R:A -> B173R:A: adjacent_5p upward }  0
   813  {B173R:A -> B172R:A: adjacent_3p downward }  0
   814  {B173R:A -> B174R:G: adjacent_5p upward }  0
@@ -6324,8 +6324,8 @@ Size: 324 Edge size: 1040
   907  {B215R:G -> B214R:A: adjacent_3p downward }  0
   908  {B215R:G -> B216R:C: adjacent_5p }  0
   909  {B216R:C -> B215R:G: adjacent_3p }  0
-  910  {B215R:G -> B260R:C: pairing antiparallel cis 129 Ww/Ww }  0
-  911  {B260R:C -> B215R:G: pairing antiparallel cis 129 Ww/Ww }  0
+  910  {B215R:G -> B260R:C: pairing antiparallel cis Ww/Ww }  0
+  911  {B260R:C -> B215R:G: pairing antiparallel cis Ww/Ww }  0
   912  {B216R:C -> B217R:C: adjacent_5p }  0
   913  {B217R:C -> B216R:C: adjacent_3p }  0
   914  {B217R:C -> B218R:A: adjacent_5p upward }  0
@@ -6354,8 +6354,8 @@ Size: 324 Edge size: 1040
   937  {B225R:A -> B224R:U: adjacent_3p }  0
   938  {B224R:U -> B248R:A: pairing antiparallel trans XXIV Ws/Hh }  0
   939  {B248R:A -> B224R:U: pairing antiparallel trans XXIV Hh/Ws }  0
-  940  {B225R:A -> B226R:A: adjacent_5p pairing parallel cis one_hbond 41 Ss/Hw O2'/Hh }  0
-  941  {B226R:A -> B225R:A: adjacent_3p pairing parallel cis one_hbond 41 Hw/Ss Hh/O2' }  0
+  940  {B225R:A -> B226R:A: adjacent_5p pairing parallel cis one_hbond Ss/Hw O2'/Hh }  0
+  941  {B226R:A -> B225R:A: adjacent_3p pairing parallel cis one_hbond Hw/Ss Hh/O2' }  0
   942  {B225R:A -> B227R:G: pairing O2'/Hh }  0
   943  {B227R:G -> B225R:A: pairing Hh/O2' }  0
   944  {B225R:A -> B247R:U: inward }  0
@@ -6390,8 +6390,8 @@ Size: 324 Edge size: 1040
   973  {B243R:U -> B231R:A: pairing antiparallel cis XX Ww/Ww }  0
   974  {B232R:C -> B233R:A: adjacent_5p }  0
   975  {B233R:A -> B232R:C: adjacent_3p }  0
-  976  {B232R:C -> B242R:G: pairing antiparallel cis one_hbond 129 Ww/Ww }  0
-  977  {B242R:G -> B232R:C: pairing antiparallel cis one_hbond 129 Ww/Ww }  0
+  976  {B232R:C -> B242R:G: pairing antiparallel cis one_hbond Ww/Ww }  0
+  977  {B242R:G -> B232R:C: pairing antiparallel cis one_hbond Ww/Ww }  0
   978  {B233R:A -> B234R:G: adjacent_5p upward }  0
   979  {B234R:G -> B233R:A: adjacent_3p downward }  0
   980  {B233R:A -> B241R:U: pairing antiparallel cis XX Ww/Ww }  0
@@ -7128,8 +7128,8 @@ Size: 324 Edge size: 1040
    15  {A107R:U -> A106R:U: adjacent_3p }  0
    16  {A107R:U -> A108R:G: adjacent_5p upward }  0
    17  {A108R:G -> A107R:U: adjacent_3p downward }  0
-   18  {A107R:U -> A214R:A: pairing antiparallel cis one_hbond 51 Wh/Wh }  0
-   19  {A214R:A -> A107R:U: pairing antiparallel cis one_hbond 51 Wh/Wh }  0
+   18  {A107R:U -> A214R:A: pairing antiparallel cis one_hbond Wh/Wh }  0
+   19  {A214R:A -> A107R:U: pairing antiparallel cis one_hbond Wh/Wh }  0
    20  {A108R:G -> A109R:G: adjacent_5p upward }  0
    21  {A109R:G -> A108R:G: adjacent_3p downward }  0
    22  {A108R:G -> A213R:C: pairing antiparallel cis XIX Ww/Ww }  0
@@ -7174,16 +7174,16 @@ Size: 324 Edge size: 1040
    61  {A205R:U -> A116R:G: pairing antiparallel cis XXVIII Ws/Ww }  0
    62  {A117R:G -> A118R:G: adjacent_5p upward }  0
    63  {A118R:G -> A117R:G: adjacent_3p downward }  0
-   64  {A117R:G -> A204R:C: pairing antiparallel cis 124 Ww/Ww }  0
-   65  {A204R:C -> A117R:G: pairing antiparallel cis 124 Ww/Ww }  0
+   64  {A117R:G -> A204R:C: pairing antiparallel cis Ww/Ww }  0
+   65  {A204R:C -> A117R:G: pairing antiparallel cis Ww/Ww }  0
    66  {A118R:G -> A119R:G: adjacent_5p upward }  0
    67  {A119R:G -> A118R:G: adjacent_3p downward }  0
-   68  {A118R:G -> A203R:C: pairing antiparallel cis 124 Ww/Ww }  0
-   69  {A203R:C -> A118R:G: pairing antiparallel cis 124 Ww/Ww }  0
+   68  {A118R:G -> A203R:C: pairing antiparallel cis Ww/Ww }  0
+   69  {A203R:C -> A118R:G: pairing antiparallel cis Ww/Ww }  0
    70  {A119R:G -> A120R:U: adjacent_5p upward }  0
    71  {A120R:U -> A119R:G: adjacent_3p downward }  0
-   72  {A119R:G -> A202R:U: pairing antiparallel cis one_hbond 87 Ws/Ws }  0
-   73  {A202R:U -> A119R:G: pairing antiparallel cis one_hbond 87 Ws/Ws }  0
+   72  {A119R:G -> A202R:U: pairing antiparallel cis one_hbond Ws/Ws }  0
+   73  {A202R:U -> A119R:G: pairing antiparallel cis one_hbond Ws/Ws }  0
    74  {A120R:U -> A121R:C: adjacent_5p }  0
    75  {A121R:C -> A120R:U: adjacent_3p }  0
    76  {A120R:U -> A201R:G: pairing antiparallel cis XXVIII Ws/Ww }  0
@@ -7240,8 +7240,8 @@ Size: 324 Edge size: 1040
   127  {A192R:A -> A131R:U: pairing antiparallel cis XX Ww/Ww }  0
   128  {A132R:C -> A133R:A: adjacent_5p upward }  0
   129  {A133R:A -> A132R:C: adjacent_3p downward }  0
-  130  {A132R:C -> A191R:G: pairing antiparallel cis 124 Ww/Ww }  0
-  131  {A191R:G -> A132R:C: pairing antiparallel cis 124 Ww/Ww }  0
+  130  {A132R:C -> A191R:G: pairing antiparallel cis Ww/Ww }  0
+  131  {A191R:G -> A132R:C: pairing antiparallel cis Ww/Ww }  0
   132  {A133R:A -> A134R:G: adjacent_5p upward }  0
   133  {A134R:G -> A133R:A: adjacent_3p downward }  0
   134  {A133R:A -> A190R:U: pairing antiparallel cis XX Ww/Ww }  0
@@ -7326,8 +7326,8 @@ Size: 324 Edge size: 1040
   213  {A151R:A -> A150R:G: adjacent_3p }  0
   214  {A150R:G -> A152R:A: pairing O2'/Bh O2'/Hh }  0
   215  {A152R:A -> A150R:G: pairing Bh/O2' Hh/O2' }  0
-  216  {A150R:G -> A153R:A: pairing antiparallel cis one_hbond 53 Sw/Hh Bs/O2P }  0
-  217  {A153R:A -> A150R:G: pairing antiparallel cis one_hbond 53 Hh/Sw O2P/Bs }  0
+  216  {A150R:G -> A153R:A: pairing antiparallel trans one_hbond Sw/Hh Bs/O2P }  0
+  217  {A153R:A -> A150R:G: pairing antiparallel trans one_hbond Hh/Sw O2P/Bs }  0
   218  {A151R:A -> A152R:A: adjacent_5p upward }  0
   219  {A152R:A -> A151R:A: adjacent_3p downward }  0
   220  {A151R:A -> A226R:A: outward }  0
@@ -7398,8 +7398,8 @@ Size: 324 Edge size: 1040
   285  {A171R:A -> A170R:C: adjacent_3p downward }  0
   286  {A170R:C -> B254R:G: pairing antiparallel cis XIX Ww/Ww }  0
   287  {B254R:G -> A170R:C: pairing antiparallel cis XIX Ww/Ww }  0
-  288  {A171R:A -> A172R:A: adjacent_5p pairing parallel cis one_hbond 41 Ss/Hw O2'/Hh }  0
-  289  {A172R:A -> A171R:A: adjacent_3p pairing parallel cis one_hbond 41 Hw/Ss Hh/O2' }  0
+  288  {A171R:A -> A172R:A: adjacent_5p pairing parallel cis one_hbond Ss/Hw O2'/Hh }  0
+  289  {A172R:A -> A171R:A: adjacent_3p pairing parallel cis one_hbond Hw/Ss Hh/O2' }  0
   290  {A172R:A -> A173R:A: adjacent_5p upward }  0
   291  {A173R:A -> A172R:A: adjacent_3p downward }  0
   292  {A172R:A -> B254R:G: outward }  0
@@ -7500,8 +7500,8 @@ Size: 324 Edge size: 1040
   387  {A215R:G -> A214R:A: adjacent_3p downward }  0
   388  {A215R:G -> A216R:C: adjacent_5p }  0
   389  {A216R:C -> A215R:G: adjacent_3p }  0
-  390  {A215R:G -> A260R:C: pairing antiparallel cis 129 Ww/Ww }  0
-  391  {A260R:C -> A215R:G: pairing antiparallel cis 129 Ww/Ww }  0
+  390  {A215R:G -> A260R:C: pairing antiparallel cis Ww/Ww }  0
+  391  {A260R:C -> A215R:G: pairing antiparallel cis Ww/Ww }  0
   392  {A216R:C -> A217R:C: adjacent_5p }  0
   393  {A217R:C -> A216R:C: adjacent_3p }  0
   394  {A217R:C -> A218R:A: adjacent_5p upward }  0
@@ -7530,8 +7530,8 @@ Size: 324 Edge size: 1040
   417  {A225R:A -> A224R:U: adjacent_3p }  0
   418  {A224R:U -> A248R:A: pairing antiparallel trans XXIV Ws/Hh }  0
   419  {A248R:A -> A224R:U: pairing antiparallel trans XXIV Hh/Ws }  0
-  420  {A225R:A -> A226R:A: adjacent_5p pairing parallel cis one_hbond 41 Ss/Hw O2'/Hh }  0
-  421  {A226R:A -> A225R:A: adjacent_3p pairing parallel cis one_hbond 41 Hw/Ss Hh/O2' }  0
+  420  {A225R:A -> A226R:A: adjacent_5p pairing parallel cis one_hbond Ss/Hw O2'/Hh }  0
+  421  {A226R:A -> A225R:A: adjacent_3p pairing parallel cis one_hbond Hw/Ss Hh/O2' }  0
   422  {A225R:A -> A227R:G: pairing O2'/Hh }  0
   423  {A227R:G -> A225R:A: pairing Hh/O2' }  0
   424  {A225R:A -> A247R:U: inward }  0
@@ -7566,8 +7566,8 @@ Size: 324 Edge size: 1040
   453  {A243R:U -> A231R:A: pairing antiparallel cis XX Ww/Ww }  0
   454  {A232R:C -> A233R:A: adjacent_5p }  0
   455  {A233R:A -> A232R:C: adjacent_3p }  0
-  456  {A232R:C -> A242R:G: pairing antiparallel cis one_hbond 129 Ww/Ww }  0
-  457  {A242R:G -> A232R:C: pairing antiparallel cis one_hbond 129 Ww/Ww }  0
+  456  {A232R:C -> A242R:G: pairing antiparallel cis one_hbond Ww/Ww }  0
+  457  {A242R:G -> A232R:C: pairing antiparallel cis one_hbond Ww/Ww }  0
   458  {A233R:A -> A234R:G: adjacent_5p upward }  0
   459  {A234R:G -> A233R:A: adjacent_3p downward }  0
   460  {A233R:A -> A241R:U: pairing antiparallel cis XX Ww/Ww }  0
@@ -7654,8 +7654,8 @@ Size: 324 Edge size: 1040
   541  {B107R:U -> B106R:U: adjacent_3p }  0
   542  {B107R:U -> B108R:G: adjacent_5p upward }  0
   543  {B108R:G -> B107R:U: adjacent_3p downward }  0
-  544  {B107R:U -> B214R:A: pairing antiparallel cis one_hbond 51 Wh/Wh }  0
-  545  {B214R:A -> B107R:U: pairing antiparallel cis one_hbond 51 Wh/Wh }  0
+  544  {B107R:U -> B214R:A: pairing antiparallel cis one_hbond Wh/Wh }  0
+  545  {B214R:A -> B107R:U: pairing antiparallel cis one_hbond Wh/Wh }  0
   546  {B108R:G -> B109R:G: adjacent_5p upward }  0
   547  {B109R:G -> B108R:G: adjacent_3p downward }  0
   548  {B108R:G -> B213R:C: pairing antiparallel cis XIX Ww/Ww }  0
@@ -7700,16 +7700,16 @@ Size: 324 Edge size: 1040
   587  {B205R:U -> B116R:G: pairing antiparallel cis XXVIII Ws/Ww }  0
   588  {B117R:G -> B118R:G: adjacent_5p upward }  0
   589  {B118R:G -> B117R:G: adjacent_3p downward }  0
-  590  {B117R:G -> B204R:C: pairing antiparallel cis 124 Ww/Ww }  0
-  591  {B204R:C -> B117R:G: pairing antiparallel cis 124 Ww/Ww }  0
+  590  {B117R:G -> B204R:C: pairing antiparallel cis Ww/Ww }  0
+  591  {B204R:C -> B117R:G: pairing antiparallel cis Ww/Ww }  0
   592  {B118R:G -> B119R:G: adjacent_5p upward }  0
   593  {B119R:G -> B118R:G: adjacent_3p downward }  0
-  594  {B118R:G -> B203R:C: pairing antiparallel cis 124 Ww/Ww }  0
-  595  {B203R:C -> B118R:G: pairing antiparallel cis 124 Ww/Ww }  0
+  594  {B118R:G -> B203R:C: pairing antiparallel cis Ww/Ww }  0
+  595  {B203R:C -> B118R:G: pairing antiparallel cis Ww/Ww }  0
   596  {B119R:G -> B120R:U: adjacent_5p upward }  0
   597  {B120R:U -> B119R:G: adjacent_3p downward }  0
-  598  {B119R:G -> B202R:U: pairing antiparallel cis one_hbond 87 Ws/Ws }  0
-  599  {B202R:U -> B119R:G: pairing antiparallel cis one_hbond 87 Ws/Ws }  0
+  598  {B119R:G -> B202R:U: pairing antiparallel cis one_hbond Ws/Ws }  0
+  599  {B202R:U -> B119R:G: pairing antiparallel cis one_hbond Ws/Ws }  0
   600  {B120R:U -> B121R:C: adjacent_5p }  0
   601  {B121R:C -> B120R:U: adjacent_3p }  0
   602  {B120R:U -> B201R:G: pairing antiparallel cis XXVIII Ws/Ww }  0
@@ -7766,8 +7766,8 @@ Size: 324 Edge size: 1040
   653  {B192R:A -> B131R:U: pairing antiparallel cis XX Ww/Ww }  0
   654  {B132R:C -> B133R:A: adjacent_5p upward }  0
   655  {B133R:A -> B132R:C: adjacent_3p downward }  0
-  656  {B132R:C -> B191R:G: pairing antiparallel cis 124 Ww/Ww }  0
-  657  {B191R:G -> B132R:C: pairing antiparallel cis 124 Ww/Ww }  0
+  656  {B132R:C -> B191R:G: pairing antiparallel cis Ww/Ww }  0
+  657  {B191R:G -> B132R:C: pairing antiparallel cis Ww/Ww }  0
   658  {B133R:A -> B134R:G: adjacent_5p upward }  0
   659  {B134R:G -> B133R:A: adjacent_3p downward }  0
   660  {B133R:A -> B190R:U: pairing antiparallel cis XX Ww/Ww }  0
@@ -7852,8 +7852,8 @@ Size: 324 Edge size: 1040
   739  {B151R:A -> B150R:G: adjacent_3p }  0
   740  {B150R:G -> B152R:A: pairing O2'/Bh O2'/Hh }  0
   741  {B152R:A -> B150R:G: pairing Bh/O2' Hh/O2' }  0
-  742  {B150R:G -> B153R:A: pairing antiparallel cis one_hbond 53 Sw/Hh Bs/O2P }  0
-  743  {B153R:A -> B150R:G: pairing antiparallel cis one_hbond 53 Hh/Sw O2P/Bs }  0
+  742  {B150R:G -> B153R:A: pairing antiparallel trans one_hbond Sw/Hh Bs/O2P }  0
+  743  {B153R:A -> B150R:G: pairing antiparallel trans one_hbond Hh/Sw O2P/Bs }  0
   744  {B151R:A -> B152R:A: adjacent_5p upward }  0
   745  {B152R:A -> B151R:A: adjacent_3p downward }  0
   746  {B151R:A -> B226R:A: outward }  0
@@ -7908,8 +7908,8 @@ Size: 324 Edge size: 1040
   795  {B168R:U -> B167R:U: adjacent_3p }  0
   796  {B167R:U -> B171R:A: downward }  0
   797  {B171R:A -> B167R:U: upward }  0
-  798  {B167R:U -> B173R:A: pairing parallel trans one_hbond 51 Wh/Wh }  0
-  799  {B173R:A -> B167R:U: pairing parallel trans one_hbond 51 Wh/Wh }  0
+  798  {B167R:U -> B173R:A: pairing parallel cis one_hbond 51 Wh/Wh }  0
+  799  {B173R:A -> B167R:U: pairing parallel cis one_hbond 51 Wh/Wh }  0
   800  {B168R:U -> B169R:G: adjacent_5p }  0
   801  {B169R:G -> B168R:U: adjacent_3p }  0
   802  {B168R:U -> B183R:A: outward }  0
@@ -7920,8 +7920,8 @@ Size: 324 Edge size: 1040
   807  {B170R:C -> B169R:G: adjacent_3p downward }  0
   808  {B170R:C -> B171R:A: adjacent_5p upward }  0
   809  {B171R:A -> B170R:C: adjacent_3p downward }  0
-  810  {B171R:A -> B172R:A: adjacent_5p pairing parallel cis one_hbond 41 Ss/Hw O2'/Hh }  0
-  811  {B172R:A -> B171R:A: adjacent_3p pairing parallel cis one_hbond 41 Hw/Ss Hh/O2' }  0
+  810  {B171R:A -> B172R:A: adjacent_5p pairing parallel cis one_hbond Ss/Hw O2'/Hh }  0
+  811  {B172R:A -> B171R:A: adjacent_3p pairing parallel cis one_hbond Hw/Ss Hh/O2' }  0
   812  {B172R:A -> B173R:A: adjacent_5p upward }  0
   813  {B173R:A -> B172R:A: adjacent_3p downward }  0
   814  {B173R:A -> B174R:G: adjacent_5p upward }  0
@@ -8020,8 +8020,8 @@ Size: 324 Edge size: 1040
   907  {B215R:G -> B214R:A: adjacent_3p downward }  0
   908  {B215R:G -> B216R:C: adjacent_5p }  0
   909  {B216R:C -> B215R:G: adjacent_3p }  0
-  910  {B215R:G -> B260R:C: pairing antiparallel cis 129 Ww/Ww }  0
-  911  {B260R:C -> B215R:G: pairing antiparallel cis 129 Ww/Ww }  0
+  910  {B215R:G -> B260R:C: pairing antiparallel cis Ww/Ww }  0
+  911  {B260R:C -> B215R:G: pairing antiparallel cis Ww/Ww }  0
   912  {B216R:C -> B217R:C: adjacent_5p }  0
   913  {B217R:C -> B216R:C: adjacent_3p }  0
   914  {B217R:C -> B218R:A: adjacent_5p upward }  0
@@ -8050,8 +8050,8 @@ Size: 324 Edge size: 1040
   937  {B225R:A -> B224R:U: adjacent_3p }  0
   938  {B224R:U -> B248R:A: pairing antiparallel trans XXIV Ws/Hh }  0
   939  {B248R:A -> B224R:U: pairing antiparallel trans XXIV Hh/Ws }  0
-  940  {B225R:A -> B226R:A: adjacent_5p pairing parallel cis one_hbond 41 Ss/Hw O2'/Hh }  0
-  941  {B226R:A -> B225R:A: adjacent_3p pairing parallel cis one_hbond 41 Hw/Ss Hh/O2' }  0
+  940  {B225R:A -> B226R:A: adjacent_5p pairing parallel cis one_hbond Ss/Hw O2'/Hh }  0
+  941  {B226R:A -> B225R:A: adjacent_3p pairing parallel cis one_hbond Hw/Ss Hh/O2' }  0
   942  {B225R:A -> B227R:G: pairing O2'/Hh }  0
   943  {B227R:G -> B225R:A: pairing Hh/O2' }  0
   944  {B225R:A -> B247R:U: inward }  0
@@ -8086,8 +8086,8 @@ Size: 324 Edge size: 1040
   973  {B243R:U -> B231R:A: pairing antiparallel cis XX Ww/Ww }  0
   974  {B232R:C -> B233R:A: adjacent_5p }  0
   975  {B233R:A -> B232R:C: adjacent_3p }  0
-  976  {B232R:C -> B242R:G: pairing antiparallel cis one_hbond 129 Ww/Ww }  0
-  977  {B242R:G -> B232R:C: pairing antiparallel cis one_hbond 129 Ww/Ww }  0
+  976  {B232R:C -> B242R:G: pairing antiparallel cis one_hbond Ww/Ww }  0
+  977  {B242R:G -> B232R:C: pairing antiparallel cis one_hbond Ww/Ww }  0
   978  {B233R:A -> B234R:G: adjacent_5p upward }  0
   979  {B234R:G -> B233R:A: adjacent_3p downward }  0
   980  {B233R:A -> B241R:U: pairing antiparallel cis XX Ww/Ww }  0
