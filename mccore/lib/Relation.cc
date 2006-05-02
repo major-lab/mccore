@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.53 $
-// $Id: Relation.cc,v 1.53 2006-02-23 16:35:00 gendrop Exp $
+// $Revision: 1.54 $
+// $Id: Relation.cc,v 1.54 2006-05-02 19:48:56 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -57,9 +57,9 @@ namespace mccore
   /**
    * Pairing annotation cutoffs.
    */
-  const float PAIRING_CUTOFF = 0.8f;
-  const float TWO_BONDS_CUTOFF = 1.5f;
-  const float THREE_BONDS_CUTOFF = 2.1f;
+  const float PAIRING_CUTOFF = 0.8;
+  const float TWO_BONDS_CUTOFF = 1.5;
+  const float THREE_BONDS_CUTOFF = 2.1;
   //const float HBOND_DIST_MAX = 4;
   const float HBOND_DIST_MAX = 1.7;
 
@@ -634,7 +634,7 @@ namespace mccore
 		  
 		    h.evalStatistically (ref, res);
 #ifdef DEBUG
-		    gOut (5) << h << endl;
+		    gOut (4) << h << endl;
 #endif
 		    if (h.getValue () > 0.01)
 		      {
@@ -663,7 +663,7 @@ namespace mccore
 		  
 		    h.evalStatistically (res, ref);
 #ifdef DEBUG
-		    gOut (5) << h << endl;
+		    gOut (4) << h << endl;
 #endif
 		    if (h.getValue () > 0.01)
 		      {
@@ -690,7 +690,7 @@ namespace mccore
 	  }
 
 #ifdef DEBUG
-	gOut (5) << graph << endl;
+	gOut (4) << graph << endl;
 #endif
 	
 	if (graph.size () >= 3)
@@ -700,7 +700,7 @@ namespace mccore
 	    graph.preFlowPush (0, 1);
 	    
 #ifdef DEBUG
-	    gOut (5) << graph << endl;
+	    gOut (4) << graph << endl;
 #endif
 
 	    for (label = 0; label < graph.edgeSize (); ++label)
@@ -751,13 +751,12 @@ namespace mccore
     Vector3D pb;
     Vector3D pc;
     Vector3D pd;
-    Vector3D pva;
-    Vector3D pvb;
     list< HBondFlow > hbf (hbonds.begin (), hbonds.end ());
     vector< HBondFlow >::iterator hbIt;
     float rad;
     unsigned int size_hint;
     const PropertyType *pp;
+    const PropertyType *bpo;
 
     labels.insert (PropertyType::pPairing);
     if (sum_flow < TWO_BONDS_CUTOFF)
@@ -765,6 +764,14 @@ namespace mccore
 	labels.insert (PropertyType::pOneHbond);
       }
 		
+    // -- parallel/antiparallel orientation
+    bpo = (Relation::_pyrimidine_ring_normal (*ref,
+					      Relation::_pyrimidine_ring_center (*ref)).dot (Relation::_pyrimidine_ring_normal (*res,
+																Relation::_pyrimidine_ring_center (*res))) > 0
+	   ? PropertyType::pParallel
+	   : PropertyType::pAntiparallel);
+    labels.insert (bpo);
+
     // Compute contact points and visual contact points
     for (hbIt = hbonds.begin (); hbonds.end () != hbIt; ++hbIt)
       {
@@ -774,67 +781,58 @@ namespace mccore
 	  {
 	    pa = pa + (fl.hbond.getHydrogen () * fl.flow);
 	    pb = pb + (fl.hbond.getLonePair () * fl.flow);
-	    pva = pva + (fl.hbond.getHydrogen () * fl.flow);
-	    pvb = pvb + (fl.hbond.getAcceptor () * fl.flow);
 	  }
 	else
 	  {
 	    pa = pa + (fl.hbond.getLonePair () * fl.flow);
 	    pb = pb + (fl.hbond.getHydrogen () * fl.flow);
-	    pva = pva + (fl.hbond.getAcceptor () * fl.flow);
-	    pvb = pvb + (fl.hbond.getHydrogen () * fl.flow);
 	  }
       }
 			
     pa = pa / sum_flow;
     pb = pb / sum_flow;
-    pva = pva / sum_flow;
-    pvb = pvb / sum_flow;
-	      
-    pc = *ref->safeFind (AtomType::aC1p); 
-    pc = pc - *ref->safeFind (AtomType::aPSY);
-    pc = pc + pa;
-    pd = *res->safeFind (AtomType::aC1p); 
-    pd = pd - *res->safeFind (AtomType::aPSY);
-    pd = pd + pb;
-	      
-    // -- parallel/antiparallel orientation
-    labels.insert (Relation::_pyrimidine_ring_normal
-		   (*ref, Relation::_pyrimidine_ring_center (*ref)).dot
-		   (Relation::_pyrimidine_ring_normal
-		    (*res, Relation::_pyrimidine_ring_center (*res))) > 0 ?
-		   PropertyType::pParallel : PropertyType::pAntiparallel);
 
-    // -- cis/trans orientation
-    rad = fabs (pa.torsionAngle (pc, pb, pd));
-    labels.insert (rad < M_PI / 2 ? PropertyType::pCis : PropertyType::pTrans);
-
+    // Compute pairing according to LW+ and Saenger/Gautheret nomenclatures.
     refFace = getFace (ref, pa);
     resFace = getFace (res, pb);
-    pairedFaces.push_back (make_pair (refFace, resFace));
-	      
-    if (sum_flow >= PAIRING_CUTOFF && sum_flow < TWO_BONDS_CUTOFF)
+    if (0 != refFace && 0 != resFace)
       {
-	size_hint = 1;
-      }
-    else if (sum_flow < THREE_BONDS_CUTOFF)
-      {
-	size_hint = 2;
-      }
-    else
-      {
-	size_hint = 3;
-      }
-    hbf.sort ();
-    while (hbf.size () != size_hint)
-      {
-	hbf.pop_front ();
-      }
-    if (0 != (pp = translatePairing (ref, res, hbf, sum_flow, size_hint)))
-      {
-	labels.insert (pp);
+	pairedFaces.push_back (make_pair (refFace, resFace));
+	if (sum_flow >= PAIRING_CUTOFF && sum_flow < TWO_BONDS_CUTOFF)
+	  {
+	    size_hint = 1;
+	  }
+	else if (sum_flow < THREE_BONDS_CUTOFF)
+	  {
+	    size_hint = 2;
+	  }
+	else
+	  {
+	    size_hint = 3;
+	  }
+	hbf.sort ();
+	while (hbf.size () != size_hint)
+	  {
+	    hbf.pop_front ();
+	  }
+	if (0 != (pp = translatePairing (ref, res, bpo, hbf, sum_flow, size_hint)))
+	  {
+	    labels.insert (pp);
+	  }
       }
 
+    // -- cis/trans orientation
+    Vector3D refpyr = Relation::_pyrimidine_ring_center (*ref);
+    Vector3D respyr = Relation::_pyrimidine_ring_center (*res);
+    
+    pc = *ref->safeFind (AtomType::aC1p); 
+    pc = pc - *ref->safeFind (AtomType::aPSY);
+    pc = pc + refpyr;
+    pd = *res->safeFind (AtomType::aC1p); 
+    pd = pd - *res->safeFind (AtomType::aPSY);
+    pd = pd + respyr;
+    rad = fabs (refpyr.torsionAngle (pc, respyr, pd));
+    labels.insert (rad < M_PI / 2 ? PropertyType::pCis : PropertyType::pTrans);
   }
   
   
@@ -977,85 +975,88 @@ namespace mccore
   void
   Relation::areStacked ()
   {
-    try
+    if (ref->getType ()->isNucleicAcid () && res->getType ()->isNucleicAcid ())
       {
-	Vector3D pyrCA, pyrCB, imidCA, imidCB, pyrNA, pyrNB, imidNA, imidNB;
-	const PropertyType* stacking;
-	unsigned char rtypes;
+	try
+	  {
+	    Vector3D pyrCA, pyrCB, imidCA, imidCB, pyrNA, pyrNB, imidNA, imidNB;
+	    const PropertyType* stacking;
+	    unsigned char rtypes;
 
-	/*
-	  Compute necessary geometry based on type family:
+	    /*
+	      Compute necessary geometry based on type family:
 
-	  00 (0) => Pur / Pur: imid / imid, imid / -pyr, -pyr / imid, -pyr / -pyr
-	  01 (1) => Pur / Pyr:              imid /  pyr,              -pyr /  pyr
-	  10 (2) => Pyr / Pur:                            pyr / imid,  pyr / -pyr
-	  11 (3) => Pyr / Pyr:                                         pyr /  pyr
-	*/
+	      00 (0) => Pur / Pur: imid / imid, imid / -pyr, -pyr / imid, -pyr / -pyr
+	      01 (1) => Pur / Pyr:              imid /  pyr,              -pyr /  pyr
+	      10 (2) => Pyr / Pur:                            pyr / imid,  pyr / -pyr
+	      11 (3) => Pyr / Pyr:                                         pyr /  pyr
+	    */
       
-	pyrCA = Relation::_pyrimidine_ring_center (*ref);
-	pyrNA = Relation::_pyrimidine_ring_normal (*ref, pyrCA);
+	    pyrCA = Relation::_pyrimidine_ring_center (*ref);
+	    pyrNA = Relation::_pyrimidine_ring_normal (*ref, pyrCA);
       
-	pyrCB = Relation::_pyrimidine_ring_center (*res);
-	pyrNB = Relation::_pyrimidine_ring_normal (*res, pyrCB);
+	    pyrCB = Relation::_pyrimidine_ring_center (*res);
+	    pyrNB = Relation::_pyrimidine_ring_normal (*res, pyrCB);
       
-	if (ref->getType ()->isPurine ())
-	  {
-	    rtypes = 0;
-	    //pyrNA = -pyrNA;
-	    imidCA = Relation::_imidazole_ring_center (*ref);
-	    imidNA = Relation::_imidazole_ring_normal (*ref, imidCA);
-	  }
-	else if (ref->getType ()->isPyrimidine ())
-	  {
-	    rtypes = 2;
-	  }
-	else
-	  {
-	    IntLibException ex ("", __FILE__, __LINE__);
-	    ex << "Type \"" << ref->getType () << "\" not handled for residue"
-	       << ref->getResId ();
-	    throw ex;
-	  }
+	    if (ref->getType ()->isPurine ())
+	      {
+		rtypes = 0;
+		//pyrNA = -pyrNA;
+		imidCA = Relation::_imidazole_ring_center (*ref);
+		imidNA = Relation::_imidazole_ring_normal (*ref, imidCA);
+	      }
+	    else if (ref->getType ()->isPyrimidine ())
+	      {
+		rtypes = 2;
+	      }
+	    else
+	      {
+		IntLibException ex ("", __FILE__, __LINE__);
+		ex << "Type \"" << ref->getType () << "\" not handled for residue"
+		   << ref->getResId ();
+		throw ex;
+	      }
       
-	if (res->getType ()->isPurine ())
-	  {
-	    //pyrNB = -pyrNB;
-	    imidCB = Relation::_imidazole_ring_center (*res);
-	    imidNB = Relation::_imidazole_ring_normal (*res, imidCB);
+	    if (res->getType ()->isPurine ())
+	      {
+		//pyrNB = -pyrNB;
+		imidCB = Relation::_imidazole_ring_center (*res);
+		imidNB = Relation::_imidazole_ring_normal (*res, imidCB);
+	      }
+	    else if (res->getType ()->isPyrimidine ())
+	      {
+		rtypes |= 1;
+	      }
+	    else
+	      {
+		IntLibException ex ("", __FILE__, __LINE__);
+		ex << "Type \"" << res->getType () << "\" not handled for residue"
+		   << res->getResId ();
+		throw ex;
+	      }
+
+	    // pyrimidine / pyrimidine
+	    stacking = Relation::_ring_stacking (pyrCA, pyrNA, pyrCB, pyrNB);
+
+	    // imidazole / pyrimidine
+	    if (PropertyType::pNull == stacking && (1 == rtypes || 0 == rtypes))
+	      stacking = Relation::_ring_stacking (imidCA, imidNA, pyrCB, pyrNB);
+
+	    // pyrimidine / imidazole
+	    if (PropertyType::pNull == stacking && (2 == rtypes || 0 == rtypes))
+	      stacking = Relation::_ring_stacking (pyrCA, pyrNA, imidCB, imidNB);
+
+	    // imidazole / imidazole
+	    if (PropertyType::pNull == stacking && 0 == rtypes)
+	      stacking = Relation::_ring_stacking (imidCA, imidNA, imidCB, imidNB);
+
+	    if (PropertyType::pNull != stacking)
+	      labels.insert (stacking);
 	  }
-	else if (res->getType ()->isPyrimidine ())
+	catch (IntLibException& ex)
 	  {
-	    rtypes |= 1;
+	    gOut (3) << "An error occured during stacking annotation: " << ex << endl;
 	  }
-	else
-	  {
-	    IntLibException ex ("", __FILE__, __LINE__);
-	    ex << "Type \"" << res->getType () << "\" not handled for residue"
-	       << res->getResId ();
-	    throw ex;
-	  }
-
-	// pyrimidine / pyrimidine
-	stacking = Relation::_ring_stacking (pyrCA, pyrNA, pyrCB, pyrNB);
-
-	// imidazole / pyrimidine
-	if (PropertyType::pNull == stacking && (1 == rtypes || 0 == rtypes))
-	  stacking = Relation::_ring_stacking (imidCA, imidNA, pyrCB, pyrNB);
-
-	// pyrimidine / imidazole
-	if (PropertyType::pNull == stacking && (2 == rtypes || 0 == rtypes))
-	  stacking = Relation::_ring_stacking (pyrCA, pyrNA, imidCB, imidNB);
-
-	// imidazole / imidazole
-	if (PropertyType::pNull == stacking && 0 == rtypes)
-	  stacking = Relation::_ring_stacking (imidCA, imidNA, imidCB, imidNB);
-
-	if (PropertyType::pNull != stacking)
-	  labels.insert (stacking);
-      }
-    catch (IntLibException& ex)
-      {
-	gOut (3) << "An error occured during stacking annotation: " << ex << endl;
       }
   }
   
@@ -1198,6 +1199,7 @@ namespace mccore
     Vector3D pp = t * p;
     vector< pair< Vector3D, const PropertyType* > > *faces = 0;
 
+    gOut (0) << *r->getType () << " " << r->getType ()->isA () << endl;
     if (r->getType ()->isA ())
       {
 	faces = &faces_A;
@@ -1219,21 +1221,28 @@ namespace mccore
 	faces = &faces_T;
       }
 
-    int face_index = 0;
-    unsigned int x;
-    float dist = numeric_limits< float >::max ();
-    
-    for (x = 0; x < faces->size (); ++x)
+    if (0 != faces)
       {
-	float tmp = pp.distance ((*faces)[x].first);
-	if (tmp < dist)
+	int face_index = 0;
+	unsigned int x;
+	float dist = numeric_limits< float >::max ();
+    
+	for (x = 0; x < faces->size (); ++x)
 	  {
-	    face_index = x;
-	    dist = tmp;
+	    float tmp = pp.distance ((*faces)[x].first);
+	    if (tmp < dist)
+	      {
+		face_index = x;
+		dist = tmp;
+	      }
 	  }
-      }
 
-    return (*faces)[face_index].second;   
+	return (*faces)[face_index].second;
+      }
+    else
+      {
+	return 0;
+      }
   }
   
   
@@ -1382,7 +1391,7 @@ namespace mccore
 
 
   const PropertyType* 
-  Relation::translatePairing (const Residue *ra, const Residue *rb, list< HBondFlow > &hbf, float total_flow, unsigned int size_hint)
+  Relation::translatePairing (const Residue *ra, const Residue *rb, const PropertyType *bpo, list< HBondFlow > &hbf, float total_flow, unsigned int size_hint)
   {
     list< PairingPattern >::const_iterator i;
     const PropertyType *type;
@@ -1394,7 +1403,7 @@ namespace mccore
 	 ++i)
       {
 	if (size_hint >= (*i).size ()
-	    && (type = (*i).evaluate (ra, rb, hbf)) != 0)
+	    && (type = (*i).evaluate (ra, rb, bpo, hbf)) != 0)
 	  {
 	    if ((*i).size () > best_size)
 	      {
