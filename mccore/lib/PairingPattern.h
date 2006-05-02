@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // PairingPattern.h
-// Copyright © 2001-04 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2001-06 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Thu May 31 08:17:56 2001
-// $Revision: 1.8 $
-// $Id: PairingPattern.h,v 1.8 2005-01-03 22:57:55 larosem Exp $
+// $Revision: 1.9 $
+// $Id: PairingPattern.h,v 1.9 2006-05-02 19:51:45 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -53,7 +53,7 @@ namespace mccore
    * identify the pairing.
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: PairingPattern.h,v 1.8 2005-01-03 22:57:55 larosem Exp $
+   * @version $Id: PairingPattern.h,v 1.9 2006-05-02 19:51:45 larosem Exp $
    */
   class PairingPattern
     {
@@ -67,6 +67,11 @@ namespace mccore
        */
       const ResidueType *typeA;
       const ResidueType *typeB;
+
+      /**
+       * The base orientation (parallel or antiparallel).
+       */
+      const PropertyType *baseOrientation;
 
     public:
       
@@ -135,7 +140,7 @@ namespace mccore
       /**
        * Initializes the object.
        */
-      PairingPattern () : name (0), typeA (0), typeB (0), msize (0) { }
+      PairingPattern () : name (0), typeA (0), typeB (0), baseOrientation (0), msize (0) { }
 
     public:
 
@@ -145,8 +150,8 @@ namespace mccore
        * @param type_a the type of one residue.
        * @param type_b the type of another residue.
        */
-      PairingPattern (const PropertyType *id, const ResidueType *type_a, const ResidueType *type_b)
-	: name (id), typeA (type_a), typeB (type_b), msize (0)
+      PairingPattern (const PropertyType *id, const ResidueType *type_a, const ResidueType *type_b, const PropertyType *ori)
+	: name (id), typeA (type_a), typeB (type_b), baseOrientation (ori), msize (0)
       { }
 
       /**
@@ -157,6 +162,7 @@ namespace mccore
 	: name (other.name),
 	  typeA (other.typeA),
 	  typeB (other.typeB),
+	  baseOrientation (other.baseOrientation),
 	  descriptions (other.descriptions),
 	  msize (other.msize)
       { }
@@ -241,11 +247,11 @@ namespace mccore
      
       /**
        * Evaluates the possibility of the flow pattern to match the
-       * current HBond pairing pattern.  
-       * @param pattern the description of the flow pattern in a BasePair.
+       * current HBond pairing pattern.
+       * @param bpori base pair orientation (para or anti).
        * @return the property type or 0 if there is no match.
        */
-      const PropertyType* evaluate (const Residue *ra, const Residue *rb, list< HBondFlow > &hbf) const;
+      const PropertyType* evaluate (const Residue *ra, const Residue *rb, const PropertyType *bpori, list< HBondFlow > &hbf) const;
 
       /**
        * Initializes the Global vector of pairing patterns
