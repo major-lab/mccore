@@ -4,8 +4,8 @@
 //                     UniversitÅÈ de MontrÅÈal.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
-// $Revision: 1.9.2.1 $
-// $Id: RnamlReader.cc,v 1.9.2.1 2006-04-05 22:23:21 larosem Exp $
+// $Revision: 1.9.2.2 $
+// $Id: RnamlReader.cc,v 1.9.2.2 2006-05-03 21:04:37 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -46,15 +46,15 @@
 
 #include "rnamlc++/Atom.h"
 #include "rnamlc++/Base.h"
-#include "xmlcpg/FileInputStream.h"
-#include "xmlcpg/GZIPInputStream.h"
-#include "xmlcpg/InputStream.h"
+#include "rnamlc++/FileInputStream.h"
+#include "rnamlc++/GZIPInputStream.h"
+#include "rnamlc++/InputStream.h"
 #include "rnamlc++/Model.h"
 #include "rnamlc++/Molecule.h"
 #include "rnamlc++/Object.h"
 #include "rnamlc++/Rnaml.h"
 #include "rnamlc++/Structure.h"
-#include "rnamlc+++/Unmarshaller.h"
+#include "rnamlc++/Unmarshaller.h"
 
 
 
