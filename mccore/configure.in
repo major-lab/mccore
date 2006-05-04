@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:21:58 2000
-# $Revision: 1.43 $
-# $Id: configure.in,v 1.43 2006-01-23 23:05:52 larosem Exp $
+# $Revision: 1.44 $
+# $Id: configure.in,v 1.44 2006-05-04 13:59:36 thibaup Exp $
 # 
 # This file is part of mccore.
 # 
@@ -172,8 +172,12 @@ AC_SUBST(AROPTIONS)
 AC_SUBST(HAVE_LIBRNAML)
 AC_SUBST(HAVE_LIBMYSQL)
 
-AC_OUTPUT(
-    Makefile
-    docs/Makefile
-    lib/Makefile
-    test/Makefile, echo timestamp > stamp-h )
+AC_OUTPUT([
+Makefile
+mccore-config
+docs/Makefile
+lib/Makefile
+test/Makefile],[
+echo timestamp > stamp-h
+chmod +x mccore-config
+])

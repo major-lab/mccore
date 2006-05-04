@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:10:38 2000
-# $Revision: 1.18 $
-# $Id: Makefile.in,v 1.18 2006-04-18 15:31:16 thibaup Exp $
+# $Revision: 1.19 $
+# $Id: Makefile.in,v 1.19 2006-05-04 13:59:36 thibaup Exp $
 #
 #  This file is part of mccore.
 #  
@@ -34,6 +34,7 @@ VPATH = @srcdir@
 
 prefix = @prefix@
 exec_prefix = @exec_prefix@
+bindir = @bindir@
 datadir = @datadir@
 includedir = @includedir@
 libdir = @libdir@
@@ -47,7 +48,7 @@ SUBDIRS = lib test docs
 RELEASESUBDIRS = $(SUBDIRS)
 
 DISTFILES = COPYING ChangeLog INSTALL Makefile.in NEWS README config.guess \
-config.h.in config.sub configure.in configure install-sh mkinstalldirs \
+config.h.in config.sub configure.in configure mccore-config.in install-sh mkinstalldirs \
 stamp-h.in
 
 
@@ -67,6 +68,9 @@ install install-static install-doc:
 	   echo "Building $@ in $$subdir"; \
 	   (cd $$subdir && $(MAKE) $@) || exit 1; \
 	  done
+	@ echo Installing mccore-config in $(bindir)
+	@ $(srcdir)/mkinstalldirs $(bindir)
+	@ $(INSTALL_PROGRAM) mccore-config $(bindir)/mccore-config
 	@ $(srcdir)/mkinstalldirs $(datadir)/$(PACKAGE)/$(VERSION)/doc
 	@ for file in ChangeLog NEWS README; do \
            $(INSTALL_DATA) $(srcdir)/$$file $(datadir)/$(PACKAGE)/$(VERSION)/doc; \
@@ -80,6 +84,7 @@ uninstall:
 	   echo Making $@ in $$subdir; \
 	   (cd $$subdir && $(MAKE) $@) || exit 1; \
 	  done
+	@ $(RM) $(bindir)/mccore-config
 	@- rmdir -p $(datadir)/$(PACKAGE)/$(VERSION)/doc
 
 uninstall-doc:
@@ -173,6 +178,9 @@ Makefile: $(srcdir)/Makefile.in config.status stamp-h
 
 config.status: $(srcdir)/configure
 	@ ./config.status --recheck
+
+mccore-config: config.status $(srcdir)/mccore-config.in
+	@ cd $(srcdir) && ./config.status $@
 
 # Tell versions [3.59,3.63) of GNU make not to export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
