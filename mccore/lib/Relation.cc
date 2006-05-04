@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.55 $
-// $Id: Relation.cc,v 1.55 2006-05-02 20:03:17 larosem Exp $
+// $Revision: 1.56 $
+// $Id: Relation.cc,v 1.56 2006-05-04 20:21:26 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -723,7 +723,6 @@ namespace mccore
 	    
 	    if (sum_flow >= PAIRING_CUTOFF)
 	      {
-		type_asp |= Relation::pairing_mask;
 		addPairingLabels ();
 	      }
 
@@ -758,6 +757,7 @@ namespace mccore
     const PropertyType *pp;
     const PropertyType *bpo;
 
+    type_asp |= Relation::pairing_mask;
     labels.insert (PropertyType::pPairing);
     if (sum_flow < TWO_BONDS_CUTOFF)
       {
@@ -795,7 +795,7 @@ namespace mccore
     // Compute pairing according to LW+ and Saenger/Gautheret nomenclatures.
     refFace = getFace (ref, pa);
     resFace = getFace (res, pb);
-    if (0 != refFace && 0 != resFace)
+    if (PropertyType::pNull != refFace && PropertyType::pNull != resFace)
       {
 	pairedFaces.push_back (make_pair (refFace, resFace));
 	if (sum_flow >= PAIRING_CUTOFF && sum_flow < TWO_BONDS_CUTOFF)
@@ -1240,7 +1240,7 @@ namespace mccore
       }
     else
       {
-	return 0;
+	return PropertyType::pNull;
       }
   }
   
