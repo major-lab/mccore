@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
-// $Revision: 1.33 $
-// $Id: ExtendedResidue.cc,v 1.33 2005-12-09 18:46:29 thibaup Exp $
+// $Revision: 1.34 $
+// $Id: ExtendedResidue.cc,v 1.34 2006-05-15 17:56:21 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -111,7 +111,7 @@ namespace mccore
 
       if (0 == vptr)
       {
-	// -- fix local atoms with new globals
+	// -- fix local atoms with new globals, referential becomes identity
 
 	vector< Atom* >::const_iterator cit;
 
@@ -120,8 +120,8 @@ namespace mccore
 	for (cit = this->atomGlobal.begin (); cit != this->atomGlobal.end (); ++cit)
 	  this->atomLocal.push_back ((*cit)->clone ());
 
-	this->placed = false;
-	this->_place ();
+	this->referential.setIdentity ();
+	this->placed = true;
       }
       else
 	this->ExtendedResidue::_assign (*vptr);
