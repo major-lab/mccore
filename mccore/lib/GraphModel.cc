@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.17 $
-// $Id: GraphModel.cc,v 1.17 2006-02-24 15:38:07 larosem Exp $
+// $Revision: 1.18 $
+// $Id: GraphModel.cc,v 1.18 2006-05-15 18:10:21 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -57,7 +57,7 @@ namespace mccore
    * Unary negate function.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.cc,v 1.17 2006-02-24 15:38:07 larosem Exp $
+   * @version $Id: GraphModel.cc,v 1.18 2006-05-15 18:10:21 thibaup Exp $
    */
   template < class V , class VC >
   class negate : public unary_function< V, bool >
@@ -348,7 +348,7 @@ namespace mccore
 
 
   void
-  GraphModel::annotate (bool backbone)
+  GraphModel::annotate (unsigned char aspb)
   {
     if (! annotated)
       {
@@ -376,7 +376,7 @@ namespace mccore
 	    Residue *j = &*l->second;
 	    Relation *rel = new Relation (i, j);
 
-	    if (rel->annotate (backbone))
+	    if (rel->annotate (aspb))
 	      {
 		Relation *inv;
 

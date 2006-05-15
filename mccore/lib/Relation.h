@@ -3,7 +3,7 @@
 // Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.25 $
+// $Revision: 1.26 $
 // 
 // This file is part of mccore.
 // 
@@ -76,7 +76,7 @@ namespace mccore
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.25 2006-05-02 19:48:56 larosem Exp $
+   * @version $Id: Relation.h,v 1.26 2006-05-15 18:10:21 thibaup Exp $
    */
   class Relation
   {
@@ -120,9 +120,9 @@ namespace mccore
     set< const PropertyType* > labels;
 
     /**
-     * The three-bits annotation type: msb<-[adjacent][stacking][pairing]->lsb
+     * The four-bits annotation type: msb<-[adjacent][stacking][pairing][backbone]->lsb
      */
-    unsigned char type_asp;
+    unsigned char type_aspb;
     
     /**
      * The collection of hbond.  Empty if not a pairing.
@@ -146,19 +146,24 @@ namespace mccore
   public:
     
     /**
-     * The adjacent type mask (100).
+     * The adjacent type mask (1000).
      */
-    static const unsigned char adjacent_mask = '\4';
+    static const unsigned char adjacent_mask = 8;
 
     /**
-     * The stacking type mask (010).
+     * The stacking type mask (0100).
      */
-    static const unsigned char stacking_mask = '\2';
+    static const unsigned char stacking_mask = 4;
 
     /**
-     * The pairing type mask (001).
+     * The pairing type mask (0010).
      */
-    static const unsigned char pairing_mask = '\1';
+    static const unsigned char pairing_mask = 2;
+
+    /**
+     * The backbone type mask (0001).
+     */
+    static const unsigned char backbone_mask = 1;
 
   protected:
 
@@ -246,7 +251,7 @@ namespace mccore
      */
     unsigned char getAnnotationType () const
     {
-      return this->type_asp;
+      return this->type_aspb;
     }
     
     /**
@@ -332,26 +337,17 @@ namespace mccore
     
     /** 
      * Describes the interaction.
+     * @param asbp Bit mask controlling annotation tasks: adjacency, 
+     *        stacking, pairing and pairing with backbone (default: all).
      * @return true if there is indeed a relation between the bases.
      */
-    bool annotate (bool backbone = true);
-
-  protected:
+    bool annotate (unsigned char aspb = adjacent_mask|pairing_mask|stacking_mask|backbone_mask);
     
     /**
      * Tests for adjacency relation.
      */
     void areAdjacent ();
 
-  private:
-
-    /**
-     * Adds the pairing labels into the Relation.
-     */
-    void addPairingLabels ();
-
-  protected:
-    
     /**
      * Tests for h-bonded relation.
      */
@@ -366,6 +362,13 @@ namespace mccore
      * Tests for stacking relation.
      */
     void areStacked ();
+
+  private:
+
+    /**
+     * Adds the pairing labels into the Relation.
+     */
+    void addPairingLabels ();
 
   public:
 

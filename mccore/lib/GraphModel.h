@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:31:01 2004
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 // 
 // This file is part of mccore.
 // 
@@ -33,6 +33,7 @@
 #include "Exception.h"
 // #include "Path.h"
 #include "Residue.h"
+#include "Relation.h"
 #include "OrientedGraph.h"
 
 using namespace std;
@@ -54,7 +55,7 @@ namespace mccore
    * iterators.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.h,v 1.14 2006-02-24 15:38:07 larosem Exp $
+   * @version $Id: GraphModel.h,v 1.15 2006-05-15 18:10:21 thibaup Exp $
    */
   class GraphModel : public AbstractModel, public OrientedGraph< Residue*, Relation*, int, int, less_deref< Residue > >
   {
@@ -439,16 +440,20 @@ namespace mccore
 
     /**
      * Annotates the GraphModel.  It builds edges in the graph.
+     * @param asbp Bit mask controlling annotation tasks: adjacency, 
+     *        stacking, pairing and pairing with backbone (default: all).
      */
-    void annotate (bool backbone = true);
+    void annotate (unsigned char aspb = Relation::adjacent_mask|Relation::pairing_mask|Relation::stacking_mask|Relation::backbone_mask);
 
     /**
      * Reannotates the GraphModel.
+     * @param asbp Bit mask controlling annotation tasks: adjacency, 
+     *        stacking, pairing and pairing with backbone (default: all).
      */
-    void reannotate (bool backbone = true)
+    void reannotate (unsigned char aspb = Relation::adjacent_mask|Relation::pairing_mask|Relation::stacking_mask|Relation::backbone_mask)
     {
       annotated = false;
-      annotate ();
+      annotate (aspb);
     }
 
   private:

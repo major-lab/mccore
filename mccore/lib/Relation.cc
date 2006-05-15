@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.56 $
-// $Id: Relation.cc,v 1.56 2006-05-04 20:21:26 larosem Exp $
+// $Revision: 1.57 $
+// $Id: Relation.cc,v 1.57 2006-05-15 18:10:21 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -47,8 +47,6 @@
 #include "PropertyType.h"
 #include "ResidueType.h"
 #include "Messagestream.h"
-
-
 
 namespace mccore
 {
@@ -117,7 +115,7 @@ namespace mccore
       res (0),
       refFace (PropertyType::pNull),
       resFace (PropertyType::pNull),
-      type_asp (0),
+      type_aspb (0),
       sum_flow (0)
   {
     
@@ -129,7 +127,7 @@ namespace mccore
       res (rB),
       refFace (PropertyType::pNull),
       resFace (PropertyType::pNull),
-      type_asp (0),
+      type_aspb (0),
       sum_flow (0)
   {
     reset (rA, rB);  
@@ -144,7 +142,7 @@ namespace mccore
       refFace (other.refFace),
       resFace (other.resFace), 
       labels (other.labels),
-      type_asp (other.type_asp),
+      type_aspb (other.type_aspb),
       hbonds (other.hbonds),
       sum_flow (other.sum_flow),
       pairedFaces (other.pairedFaces)
@@ -162,7 +160,7 @@ namespace mccore
 	po4_tfo = other.po4_tfo;
 	refFace = other.refFace;
 	resFace = other.resFace;
-	type_asp = other.type_asp;
+	type_aspb = other.type_aspb;
 	labels = other.labels;
 	hbonds = other.hbonds;
 	sum_flow = other.sum_flow;
@@ -202,7 +200,7 @@ namespace mccore
     po4_tfo.setIdentity ();
     refFace = resFace = PropertyType::pNull;
     labels.clear ();
-    type_asp = 0;
+    type_aspb = 0;
     hbonds.clear ();
     sum_flow = 0.0;
   }
@@ -211,21 +209,21 @@ namespace mccore
   bool
   Relation::isAdjacent () const
   {
-    return type_asp & Relation::adjacent_mask;
+    return type_aspb & Relation::adjacent_mask;
   }
 
   
   bool
   Relation::isStacking () const
   {
-    return type_asp & Relation::stacking_mask;
+    return type_aspb & Relation::stacking_mask;
   }
 
   
   bool
   Relation::isPairing () const
   {
-    return type_asp & Relation::pairing_mask;
+    return type_aspb & Relation::pairing_mask;
   }
 
 
@@ -255,15 +253,20 @@ namespace mccore
       }
   }
 
-  
-  bool
-  Relation::annotate (bool backbone) 
-  {
-    areAdjacent ();
-    areStacked ();
-    arePaired ();
 
-    if (backbone)
+  bool
+  Relation::annotate (unsigned char aspb) 
+  {
+    if (0 != (aspb & Relation::adjacent_mask))
+      areAdjacent ();
+
+    if (0 != (aspb & Relation::stacking_mask))
+      areStacked ();
+
+    if (0 != (aspb & Relation::pairing_mask))
+      arePaired ();
+
+    if (0 != (aspb & Relation::backbone_mask))
       areHBonded ();
 
     return ! empty ();
@@ -296,7 +299,7 @@ namespace mccore
     if (adj_type != PropertyType::pNull)
       {
 	labels.insert (adj_type);
-	type_asp |= Relation::adjacent_mask;
+	type_aspb |= Relation::adjacent_mask;
       }
     
     /*
@@ -389,7 +392,7 @@ namespace mccore
 			const AtomType *resType;
 		    
 			labels.insert (PropertyType::pPairing);
-			type_asp |= Relation::pairing_mask;
+			type_aspb |= Relation::pairing_mask;
 			refType = i->getType ();
 			resType = j->getType ();
 			refface = (refType->isNitrogen ()
@@ -717,9 +720,7 @@ namespace mccore
 		  }
 	      }
 
-#ifdef DEBUG
-	    gOut (4) << "Sum flow = " << sum_flow << endl;
-#endif
+	    gOut (4) << "Pairing annotation sum flow = " << sum_flow << endl;
 	    
 	    if (sum_flow >= PAIRING_CUTOFF)
 	      {
@@ -757,7 +758,7 @@ namespace mccore
     const PropertyType *pp;
     const PropertyType *bpo;
 
-    type_asp |= Relation::pairing_mask;
+    type_aspb |= Relation::pairing_mask;
     labels.insert (PropertyType::pPairing);
     if (sum_flow < TWO_BONDS_CUTOFF)
       {
@@ -950,7 +951,7 @@ namespace mccore
 	  }
       }
 
-    type_asp |= Relation::stacking_mask;
+    type_aspb |= Relation::stacking_mask;
     
     switch (annotation)
       {
@@ -1136,6 +1137,7 @@ namespace mccore
 	      }
 	  }
 	os << "}";
+
       }
     return os;
   }
@@ -1465,7 +1467,7 @@ namespace mccore
 	labels.insert (prop);
 	--qty;
       }
-    is >> type_asp;
+    is >> type_aspb;
     hbonds.clear ();
     is >> qty;
     while (0 < qty)
@@ -1519,7 +1521,7 @@ namespace mccore
       {
 	os << *propsIt;
       }
-    os << type_asp;
+    os << type_aspb;
     os << (mccore::bin_ui64) hbonds.size ();
     for (hfsIt = hbonds.begin (); hbonds.end () != hfsIt; ++hfsIt)
       {
