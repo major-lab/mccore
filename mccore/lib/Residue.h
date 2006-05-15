@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.41 $
+// $Revision: 1.42 $
 //
 // This file is part of mccore.
 // 
@@ -62,7 +62,7 @@ namespace mccore
    * the atom types.
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: Residue.h,v 1.41 2005-12-09 18:46:29 thibaup Exp $
+   * @version $Id: Residue.h,v 1.42 2006-05-15 17:59:40 thibaup Exp $
    */
   class Residue
   {
@@ -799,7 +799,7 @@ namespace mccore
      * Handled types are nitrogen bases (nucleic acid types), phosphates and riboses.
      * @exception IntLibException
      */
-    void setTheoretical ();
+    void setTheoretical (bool base_with_C1p = false);
 
     /**
      * Sets all atoms according to standard coordinates as defined by
