@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.84 $
-// $Id: Residue.cc,v 1.84 2006-05-02 19:41:07 larosem Exp $
+// $Revision: 1.85 $
+// $Id: Residue.cc,v 1.85 2006-05-15 17:59:15 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -523,7 +523,7 @@ namespace mccore
 
 
   void
-  Residue::setTheoretical ()
+  Residue::setTheoretical (bool base_with_C1p)
   {
     this->clear ();
     Atom atom;
@@ -540,6 +540,9 @@ namespace mccore
       this->insert (atom.set ( 0.579f,  2.170f,  2.844f, AtomType::aC5));
       this->insert (atom.set ( 0.747f,  0.934f,  3.454f, AtomType::aN7));
       this->insert (atom.set ( 0.520f,  0.074f,  2.491f, AtomType::aC8));
+
+      if (base_with_C1p)
+	this->insert (atom.set (-0.093f, -0.004f,  0.018f, AtomType::aC1p));
 
       this->insert (atom.set ( -0.0303076f, 5.03468f, 0.54474f, AtomType::aH2));
       this->insert (atom.set ( 1.04802f, 4.75317f, 4.88051f, AtomType::a1H6));
@@ -559,6 +562,9 @@ namespace mccore
       this->insert (atom.set ( 0.491f,  1.984f,  3.638f, AtomType::aC4)); 
       this->insert (atom.set ( 0.631f,  2.649f,  4.788f, AtomType::aN4)); 
       this->insert (atom.set ( 0.328f,  0.569f,  3.645f, AtomType::aC5));
+
+      if (base_with_C1p)
+	this->insert (atom.set (0.064f, -0.006f,  0.002f, AtomType::aC1p));
 
       this->insert (atom.set ( 0.620979f, 2.14851f, 5.66522f, AtomType::a1H4));
       this->insert (atom.set ( 0.746876f, 3.6523f, 4.78031f, AtomType::a2H4));
@@ -582,6 +588,9 @@ namespace mccore
       this->insert (atom.set ( 0.712f,  0.912f,  3.448f, AtomType::aN7)); 
       this->insert (atom.set ( 0.498f,  0.057f,  2.485f, AtomType::aC8));
 
+      if (base_with_C1p)
+	this->insert (atom.set (-0.075f, -0.005f,  0.009f, AtomType::aC1p));
+
       this->insert (atom.set ( 0.502066f, 5.40203f, 2.7193f, AtomType::aH1));
       this->insert (atom.set ( -0.271768f, 5.15574f, -0.642136f, AtomType::a1H2));
       this->insert (atom.set ( 0.0354486f, 6.19476f, 0.731306f, AtomType::a2H2));
@@ -602,6 +611,9 @@ namespace mccore
       this->insert (atom.set ( 0.629f,  2.653f,  4.755f, AtomType::aO4)); 
       this->insert (atom.set ( 0.329f,  0.571f,  3.657f, AtomType::aC5));
 
+      if (base_with_C1p)
+	this->insert (atom.set (0.063f, -0.008f, -0.006f, AtomType::aC1p));
+
       this->insert (atom.set ( 0.632158f, 3.71141f, 2.51965f, AtomType::aH3));
       this->insert (atom.set ( 0.310285f, -0.0229714f, 4.57076f, AtomType::aH5));
       this->insert (atom.set ( 0.0682911f, -1.09504f, 2.43321f, AtomType::aH6));
@@ -621,6 +633,10 @@ namespace mccore
       this->insert (atom.set ( 0.560f,  2.568f,  4.812f, AtomType::aO4)); 
       this->insert (atom.set ( 0.279f,  0.500f,  3.685f, AtomType::aC5)); 
       this->insert (atom.set ( 0.231f, -0.299f,  4.949f, AtomType::aC5M));
+
+      if (base_with_C1p)
+	this->insert (atom.set (0.000f,  0.000f,  0.000f, AtomType::aC1p));
+
 
       this->insert (atom.set ( 0.610471f, 3.67381f, 2.59215f, AtomType::aH3));
       this->insert (atom.set ( 0.338584f, 0.359726f, 5.81075f, AtomType::a1H5M));
