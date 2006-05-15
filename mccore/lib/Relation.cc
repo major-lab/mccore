@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.57 $
-// $Id: Relation.cc,v 1.57 2006-05-15 18:10:21 thibaup Exp $
+// $Revision: 1.58 $
+// $Id: Relation.cc,v 1.58 2006-05-15 19:52:23 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -720,7 +720,9 @@ namespace mccore
 		  }
 	      }
 
+#ifdef DEBUG
 	    gOut (4) << "Pairing annotation sum flow = " << sum_flow << endl;
+#endif
 	    
 	    if (sum_flow >= PAIRING_CUTOFF)
 	      {
