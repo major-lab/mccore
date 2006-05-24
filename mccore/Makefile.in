@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:10:38 2000
-# $Revision: 1.19 $
-# $Id: Makefile.in,v 1.19 2006-05-04 13:59:36 thibaup Exp $
+# $Revision: 1.20 $
+# $Id: Makefile.in,v 1.20 2006-05-24 13:01:38 thibaup Exp $
 #
 #  This file is part of mccore.
 #  
@@ -180,7 +180,7 @@ config.status: $(srcdir)/configure
 	@ ./config.status --recheck
 
 mccore-config: config.status $(srcdir)/mccore-config.in
-	@ cd $(srcdir) && ./config.status $@
+	@ ./config.status $@
 
 # Tell versions [3.59,3.63) of GNU make not to export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
