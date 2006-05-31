@@ -4,8 +4,8 @@
 //                           Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.8 $
-// $Id: Exception.cc,v 1.8 2005-12-15 16:46:32 thibaup Exp $
+// $Revision: 1.9 $
+// $Id: Exception.cc,v 1.9 2006-05-31 13:32:10 thibaup Exp $
 //
 // This file is part of mccore.
 //
@@ -111,6 +111,28 @@ namespace mccore
     return *this;
   }
 
+
+  Exception&
+  Exception::operator<< (long long int integer)
+  {
+    ostringstream oss;
+
+    oss << integer;
+    mMessage += oss.str ();
+    return *this;
+  }
+
+
+
+  Exception&
+  Exception::operator<< (unsigned long long int integer)
+  {
+    ostringstream oss;
+
+    oss << integer;
+    mMessage += oss.str ();
+    return *this;
+  }
 
 
   Exception&

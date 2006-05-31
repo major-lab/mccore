@@ -4,7 +4,7 @@
 //                           Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 16:27:35 1999
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 //
 // This file is part of mccore.
 // 
@@ -44,7 +44,7 @@ namespace mccore
    * libraries.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Exception.h,v 1.8 2005-12-15 16:46:32 thibaup Exp $
+   * @version $Id: Exception.h,v 1.9 2006-05-31 13:32:10 thibaup Exp $
    */
   class Exception : public exception
   {
@@ -160,6 +160,24 @@ namespace mccore
      * @return itself.
      */
     Exception& operator<< (unsigned long int integer);
+
+    /**
+     * Concatenates the current message with a long long integer.  Be careful when
+     * using this operator, the returned exception is a Exception type NOT a
+     * derived type.
+     * @param integer the long long integer to concatenate.
+     * @return itself.
+     */
+    Exception& operator<< (long long int integer);
+
+    /**
+     * Concatenates the current message with an unsigned long long integer.  Be
+     * careful when using this operator, the returned exception is a Exception
+     * type NOT a derived type.
+     * @param integer the unsigned long long integer to concatenate.
+     * @return itself.
+     */
+    Exception& operator<< (unsigned long long int integer);
 
     /**
      * Concatenates the current message with a float.  Be careful when using
@@ -579,7 +597,7 @@ namespace mccore
    * Exception for invalid access requests.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Exception.h,v 1.8 2005-12-15 16:46:32 thibaup Exp $
+   * @version $Id: Exception.h,v 1.9 2006-05-31 13:32:10 thibaup Exp $
    */
   class NoSuchElementException : public IntLibException
   {
