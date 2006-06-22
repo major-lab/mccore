@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.67 $
-# $Id: Makefile.in,v 1.67 2006-06-22 18:13:05 thibaup Exp $
+# $Revision: 1.68 $
+# $Id: Makefile.in,v 1.68 2006-06-22 21:10:18 thibaup Exp $
 # 
 # This file is part of mccore.
 # 
@@ -75,21 +75,20 @@ HAVE_LIBMYSQL = @HAVE_LIBMYSQL@
 % : %.o
 
 
-
+RNAML_SOURCES = 
 RNAML_DIST_SOURCES = RnamlReader.cc RnamlWriter.cc
 
-MYSQL_DIST_SOURCES = SqlReader.cc SqlExtrac.cc
-
 ifeq ($(HAVE_LIBRNAML),1)
-        RNAML_SOURCES = $(RNAML_DIST_SOURCES)
-else
-	RNAML_SOURCES = 
+        RNAML_SOURCES := $(RNAML_DIST_SOURCES)
+	RNAML_DIST_SOURCES =
 endif
 
+MYSQL_SOURCES =
+MYSQL_DIST_SOURCES = SqlReader.cc SqlExtrac.cc
+
 ifeq ($(HAVE_LIBMYSQL),1)
-        MYSQL_SOURCES = $(MYSQL_DIST_SOURCES)
-else
-	MYSQL_SOURCES = 
+        MYSQL_SOURCES := $(MYSQL_DIST_SOURCES)
+	MYSQL_DIST_SOURCES = 
 endif
 
 SOURCES = $(RNAML_SOURCES) \
@@ -143,7 +142,12 @@ OBJECTS = $(SOURCES:.cc=.o)
 
 LIBRARY = lib$(PACKAGE)
 
-DISTFILES = Makefile.in $(SOURCES) $(RNAML_DIST_SOURCES) $(MYSQL_DIST_SOURCES) $(HEADERS)
+DISTFILES = Makefile.in $(SOURCES) \
+	    $(RNAML_DIST_SOURCES) \
+	    $(MYSQL_DIST_SOURCES) \
+	    $(HEADERS) \
+	    $(RNAML_DIST_SOURCES:.cc=.h) \
+	    $(MYSQL_DIST_SOURCES:.cc=.h)
 
 
 all: $(LIBRARY).$(LIBEXT).$(VERSION) TAGS
@@ -237,10 +241,9 @@ topclean: distclean
 	@ echo "The project is getting _top_ clean\!"
 
 dist:
-	@ echo "Copying distribution files"
 	@ for file in $(DISTFILES); do \
 	   ln $(srcdir)/$$file ../$(PACKAGE)-$(VERSION)/lib 2> /dev/null \
-	    || cp -p $(srcdir)/$$file ../$(PACKAGE)$(VERSION)/lib; \
+	    || cp -p $(srcdir)/$$file ../$(PACKAGE)-$(VERSION)/lib; \
 	  done
 
 Makefile: $(srcdir)/Makefile.in ../config.status
