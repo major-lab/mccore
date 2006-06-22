@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:10:38 2000
-# $Revision: 1.22 $
-# $Id: Makefile.in,v 1.22 2006-06-22 18:07:41 thibaup Exp $
+# $Revision: 1.23 $
+# $Id: Makefile.in,v 1.23 2006-06-22 20:08:43 thibaup Exp $
 #
 #  This file is part of mccore.
 #  
@@ -49,7 +49,7 @@ RELEASESUBDIRS = $(SUBDIRS)
 
 DISTFILES = COPYING ChangeLog INSTALL Makefile.in NEWS README config.guess \
 config.h.in config.sub configure.in configure mccore-config.in install-sh mkinstalldirs \
-stamp-h.in
+stamp-h.in logo.jpg
 
 
 .SUFFIXES:
