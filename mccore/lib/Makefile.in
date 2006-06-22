@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.65 $
-# $Id: Makefile.in,v 1.65 2006-06-22 17:58:20 thibaup Exp $
+# $Revision: 1.66 $
+# $Id: Makefile.in,v 1.66 2006-06-22 18:06:38 thibaup Exp $
 # 
 # This file is part of mccore.
 # 
@@ -235,8 +235,6 @@ distclean: clean
 
 topclean: distclean
 	@ echo "The project is getting _top_ clean\!"
-
-release: static
 
 dist:
 	@ echo "Copying distribution files"
