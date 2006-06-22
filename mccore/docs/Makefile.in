@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose
 # Created On       : Tue Sep 19 18:53:22 2000
-# $Revision: 1.7 $
-# $Id: Makefile.in,v 1.7 2005-01-03 22:48:35 larosem Exp $
+# $Revision: 1.7.2.1 $
+# $Id: Makefile.in,v 1.7.2.1 2006-06-22 18:26:13 thibaup Exp $
 #
 # This file is part of mccore.
 # 
@@ -72,7 +72,7 @@ dist:
 	@ echo "Copying distribution files"
 	@ for file in $(DISTFILES); do \
 	   ln $(srcdir)/$$file ../$(PACKAGE)-$(VERSION)/docs 2> /dev/null \
-	    || cp -p $(srcdir)/$$file ../$(PACKAGE)$(VERSION)/docs; \
+	    || cp -p $(srcdir)/$$file ../$(PACKAGE)-$(VERSION)/docs; \
 	  done
 
 Makefile: $(srcdir)/Makefile.in ../config.status

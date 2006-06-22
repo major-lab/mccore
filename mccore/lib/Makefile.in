@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.63 $
-# $Id: Makefile.in,v 1.63 2005-06-07 19:56:05 larosem Exp $
+# $Revision: 1.63.2.1 $
+# $Id: Makefile.in,v 1.63.2.1 2006-06-22 18:26:13 thibaup Exp $
 # 
 # This file is part of mccore.
 # 
@@ -76,16 +76,18 @@ HAVE_LIBMYSQL = @HAVE_LIBMYSQL@
 
 
 
+RNAML_DIST_SOURCES = RnamlReader.cc RnamlWriter.cc
+
+MYSQL_DIST_SOURCES = SqlReader.cc SqlExtrac.cc
+
 ifeq ($(HAVE_LIBRNAML),1)
-        RNAML_SOURCES = RnamlReader.cc \
-		   	 RnamlWriter.cc	
+        RNAML_SOURCES = $(RNAML_DIST_SOURCES)
 else
 	RNAML_SOURCES = 
 endif
 
 ifeq ($(HAVE_LIBMYSQL),1)
-        MYSQL_SOURCES = SqlReader.cc \
-		   	 SqlExtrac.cc	
+        MYSQL_SOURCES = $(MYSQL_DIST_SOURCES)
 else
 	MYSQL_SOURCES = 
 endif
@@ -141,7 +143,7 @@ OBJECTS = $(SOURCES:.cc=.o)
 
 LIBRARY = lib$(PACKAGE)
 
-DISTFILES = Makefile.in $(SOURCES) $(HEADERS)
+DISTFILES = Makefile.in $(SOURCES) $(RNAML_DIST_SOURCES) $(MYSQL_DIST_SOURCES) $(HEADERS)
 
 
 all: $(LIBRARY).$(LIBEXT).$(VERSION) TAGS
@@ -229,13 +231,11 @@ distclean: clean
 topclean: distclean
 	@ echo "The project is getting _top_ clean\!"
 
-release: static
-
 dist:
 	@ echo "Copying distribution files"
 	@ for file in $(DISTFILES); do \
 	   ln $(srcdir)/$$file ../$(PACKAGE)-$(VERSION)/lib 2> /dev/null \
-	    || cp -p $(srcdir)/$$file ../$(PACKAGE)$(VERSION)/lib; \
+	    || cp -p $(srcdir)/$$file ../$(PACKAGE)-$(VERSION)/lib; \
 	  done
 
 Makefile: $(srcdir)/Makefile.in ../config.status
