@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:10:38 2000
-# $Revision: 1.20 $
-# $Id: Makefile.in,v 1.20 2006-05-24 13:01:38 thibaup Exp $
+# $Revision: 1.21 $
+# $Id: Makefile.in,v 1.21 2006-06-22 17:58:21 thibaup Exp $
 #
 #  This file is part of mccore.
 #  
@@ -117,26 +117,6 @@ mostlyclean-recursive clean-recursive distclean-recursive topclean-recursive:
 	   (cd $$subdir && $(MAKE) $$target) || exit 1; \
 	  done
 
-release:
-	@ rm -fr $(PACKAGE)-$(VERSION)
-	@ rm -f $(PACKAGE)-$(VERSION).tar.gz
-	@ mkdir $(PACKAGE)-$(VERSION)
-	@ chmod 777 $(PACKAGE)-$(VERSION)
-	@ for file in INSTALL NEWS README; do \
-	   ln -s ../$(srcdir)/$$file $(PACKAGE)-$(VERSION)/$$file; \
-	  done
-	@ for subdir in $(RELEASESUBDIRS); do \
-	   mkdir $(PACKAGE)-$(VERSION)/$$subdir; \
-	   chmod 777 $(PACKAGE)-$(VERSION)/$$subdir; \
-	  done
-	@ for subdir in $(SUBDIRS); do \
-	   (cd $$subdir && $(MAKE) $@) || exit 1; \
-	  done
-	@ chmod -R a+r $(PACKAGE)-$(VERSION)
-	@ tar chof $(PACKAGE)-$(VERSION).tar $(PACKAGE)-$(VERSION)
-	@ gzip -9 $(PACKAGE)-$(VERSION).tar
-	@ rm -fr $(PACKAGE)-$(VERSION)
-
 dist:
 	@ rm -fr $(PACKAGE)-$(VERSION)
 	@ mkdir $(PACKAGE)-$(VERSION)
@@ -156,7 +136,6 @@ dist:
 	@ tar chof $(PACKAGE)-$(VERSION).tar $(PACKAGE)-$(VERSION)
 	@ gzip -9 $(PACKAGE)-$(VERSION).tar
 	@ rm -fr $(PACKAGE)-$(VERSION)
-
 
 
 $(srcdir)/configure: $(srcdir)/configure.in
