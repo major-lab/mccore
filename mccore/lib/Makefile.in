@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.63.2.1 $
-# $Id: Makefile.in,v 1.63.2.1 2006-06-22 18:26:13 thibaup Exp $
+# $Revision: 1.63.2.2 $
+# $Id: Makefile.in,v 1.63.2.2 2006-06-22 21:22:03 thibaup Exp $
 # 
 # This file is part of mccore.
 # 
@@ -76,20 +76,20 @@ HAVE_LIBMYSQL = @HAVE_LIBMYSQL@
 
 
 
+RNAML_SOURCES = 
 RNAML_DIST_SOURCES = RnamlReader.cc RnamlWriter.cc
 
-MYSQL_DIST_SOURCES = SqlReader.cc SqlExtrac.cc
-
 ifeq ($(HAVE_LIBRNAML),1)
-        RNAML_SOURCES = $(RNAML_DIST_SOURCES)
-else
-	RNAML_SOURCES = 
+        RNAML_SOURCES := $(RNAML_DIST_SOURCES)
+	RNAML_DIST_SOURCES =
 endif
 
+MYSQL_SOURCES =
+MYSQL_DIST_SOURCES = SqlReader.cc SqlExtrac.cc
+
 ifeq ($(HAVE_LIBMYSQL),1)
-        MYSQL_SOURCES = $(MYSQL_DIST_SOURCES)
-else
-	MYSQL_SOURCES = 
+        MYSQL_SOURCES := $(MYSQL_DIST_SOURCES)
+	MYSQL_DIST_SOURCES = 
 endif
 
 SOURCES = $(RNAML_SOURCES) \
@@ -143,7 +143,12 @@ OBJECTS = $(SOURCES:.cc=.o)
 
 LIBRARY = lib$(PACKAGE)
 
-DISTFILES = Makefile.in $(SOURCES) $(RNAML_DIST_SOURCES) $(MYSQL_DIST_SOURCES) $(HEADERS)
+DISTFILES = Makefile.in $(SOURCES) \
+	    $(RNAML_DIST_SOURCES) \
+	    $(MYSQL_DIST_SOURCES) \
+	    $(HEADERS) \
+	    $(RNAML_DIST_SOURCES:.cc=.h) \
+	    $(MYSQL_DIST_SOURCES:.cc=.h)
 
 
 all: $(LIBRARY).$(LIBEXT).$(VERSION) TAGS
