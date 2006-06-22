@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:31:01 2004
-// $Revision: 1.13.2.3 $
+// $Revision: 1.13.2.4 $
 // 
 // This file is part of mccore.
 // 
@@ -43,6 +43,7 @@ namespace mccore
 {
   class Molecule;
   class Relation;
+  class ResIdSet;
   class ResidueFactoryMethod;
   class ResidueType;
 
@@ -54,7 +55,7 @@ namespace mccore
    * iterators.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.h,v 1.13.2.3 2006-04-05 22:22:58 larosem Exp $
+   * @version $Id: GraphModel.h,v 1.13.2.4 2006-06-22 16:14:19 larosem Exp $
    */
   class GraphModel : public AbstractModel, public OrientedGraph< Residue*, Relation*, int, int, less_deref< Residue > >
   {
@@ -439,17 +440,22 @@ namespace mccore
 
     /**
      * Annotates the GraphModel.  It builds edges in the graph.
+     * @param backbone backbone annotation flag (defaults to true).
      */
     void annotate (bool backbone = true);
 
     /**
+     * Annotates a residue selection of the GraphModel.  It builds edges in
+     * the graph.
+     * @param rs the residue selection. An empty set means all residues.
+     * @param backbone backbone annotation flag (defaults to true).
+     */
+    void annotate (const ResIdSet &rs, bool backbone = true);
+
+    /**
      * Reannotates the GraphModel.
      */
-    void reannotate (bool backbone = true)
-    {
-      annotated = false;
-      annotate ();
-    }
+    void reannotate (bool backbone = true);
 
   private:
     

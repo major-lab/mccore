@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.16.2.3 $
-// $Id: GraphModel.cc,v 1.16.2.3 2006-04-05 22:22:55 larosem Exp $
+// $Revision: 1.16.2.4 $
+// $Id: GraphModel.cc,v 1.16.2.4 2006-06-22 16:14:15 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -43,6 +43,7 @@
 #include "Molecule.h"
 #include "Pdbstream.h"
 #include "Relation.h"
+#include "ResIdSet.h"
 #include "Residue.h"
 #include "ResidueFactoryMethod.h"
 #include "ResidueType.h"
@@ -57,7 +58,7 @@ namespace mccore
    * Unary negate function.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.cc,v 1.16.2.3 2006-04-05 22:22:55 larosem Exp $
+   * @version $Id: GraphModel.cc,v 1.16.2.4 2006-06-22 16:14:15 larosem Exp $
    */
   template < class V , class VC >
   class negate : public unary_function< V, bool >
@@ -350,6 +351,13 @@ namespace mccore
   void
   GraphModel::annotate (bool backbone)
   {
+    annotate (ResIdSet (), backbone);
+  }
+
+  
+  void
+  GraphModel::annotate (const ResIdSet &residueSelection, bool backbone)
+  {
     if (! annotated)
       {
 	vector< Relation* >::iterator eIt;
@@ -364,10 +372,30 @@ namespace mccore
 	ev2elabel.clear ();
 	edgeWeights.clear ();
 
-	removeWater ();
+// 	removeWater ();
 	addHLP ();
-	
-	contacts = Algo::extractContacts (begin (), end (), 5.0);
+
+	if (residueSelection.empty ())
+	  {
+	    contacts = Algo::extractContacts (begin (), end (), 5.0);
+	  }
+	else
+	  {
+	    ResIdSet::iterator it;
+	    GraphModel residues;
+
+	    for (it = residueSelection.begin (); residueSelection.end () != it; ++it)
+	      {
+		iterator res;
+		
+		if (end () != (res = find (*it)))
+		  {
+		    residues.insert (*res);
+		  }
+	      }
+	    contacts = Algo::extractContacts (residues.begin (), residues.end (), 5.0);
+	  }
+	    
 	gErr (3) << "Found " << contacts.size () << " possible contacts " << endl;
   
 	for (l = contacts.begin (); contacts.end () != l; ++l)
@@ -394,6 +422,14 @@ namespace mccore
       }
   }
 
+
+  void
+  GraphModel::reannotate (bool backbone)
+  {
+    annotated = false;
+    annotate (ResIdSet (), backbone);
+  }
+  
 
 //   void
 //   GraphModel::fillMoleculeWithCycles (Molecule &molecule, const vector< Path< label, unsigned int > > &cycles) const
