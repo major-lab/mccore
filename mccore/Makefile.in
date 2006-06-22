@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:10:38 2000
-# $Revision: 1.21 $
-# $Id: Makefile.in,v 1.21 2006-06-22 17:58:21 thibaup Exp $
+# $Revision: 1.22 $
+# $Id: Makefile.in,v 1.22 2006-06-22 18:07:41 thibaup Exp $
 #
 #  This file is part of mccore.
 #  
@@ -134,7 +134,7 @@ dist:
 	  done
 	@ chmod -R a+r $(PACKAGE)-$(VERSION)
 	@ tar chof $(PACKAGE)-$(VERSION).tar $(PACKAGE)-$(VERSION)
-	@ gzip -9 $(PACKAGE)-$(VERSION).tar
+	@ gzip -9f $(PACKAGE)-$(VERSION).tar
 	@ rm -fr $(PACKAGE)-$(VERSION)
 
 
