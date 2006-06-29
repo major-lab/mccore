@@ -1,3 +1,107 @@
+2006-06-22  Philippe Thibault  <philippe.thibault@umontreal.ca>
+
+	* Makefile.in: Added logo.jpg to dist files
+
+	* Makefile.in, docs/Makefile.in, lib/Makefile.in:
+	  Tag: rel-1-5 (patch-6)
+	 	Makefile.in docs/Makefile.in lib/Makefile.in
+
+	Updated 'dist' rule
+	Removed 'release' rule
+
+	* lib/Makefile.in: *** empty log message ***
+
+	* Makefile.in: Makefile.in
+
+	* lib/Makefile.in, test/Makefile.in: removed rule 'release'
+
+	* Makefile.in, docs/Makefile.in, lib/Makefile.in: Updated rule 'dist'
+	Removed rule 'release'
+
+2006-06-22  Martin Larose  <larosem@yoda.iro.umontreal.ca>
+
+	* lib/GraphModel.h, lib/GraphModel.cc, configure.in, configure:
+	annotate and reannotate now use the backbone flag.
+
+2006-05-31  Philippe Thibault  <philippe.thibault@umontreal.ca>
+
+	* lib/Exception.cc, lib/Exception.h: Added output for long long integer
+
+2006-05-24  Philippe Thibault  <philippe.thibault@umontreal.ca>
+
+	* Makefile.in: rule mccore-config corrected
+
+2006-05-15  Philippe Thibault  <philippe.thibault@umontreal.ca>
+
+	* lib/Relation.cc: *** empty log message ***
+
+	* lib/GraphModel.cc, lib/GraphModel.h, lib/Relation.cc, lib/Relation.h:
+	- Added one bit to annotation mask for backbone pairing: msb-ASPB-lsb.
+	- Optional parameter to annotate(): ASPB mask bit.
+	- In Relation: areAdjacent(), areStacked, arePaired and areHBonded now
+	  public.
+
+	* lib/Residue.h: (same as below)
+
+	* lib/Residue.cc:
+	Added (resurrected...) C1' atom in nuclebases' theoretical
+	coordinates. A bool parameter controls its addition (default is no
+	addition).
+
+	* lib/ExtendedResidue.cc:
+	Correction in operator= from a Residue object. Local and global
+	coordinates being the same, the new referential is set
+	to identity.
+
+2006-05-04  Martin Larose  <larosem@yoda.iro.umontreal.ca>
+
+	* lib/Relation.cc: Merge from rel-1-5-patch-5.
+
+	* lib/Relation.cc:
+	[rel-1-5]: getFace no longer return 0, it is replaced with PropertyType::pNull.
+
+2006-05-04  Philippe Thibault  <philippe.thibault@umontreal.ca>
+
+	* Makefile.in, configure, configure.in, mccore-config.in:
+	Added mccore-config script to package.
+
+2006-05-03  Martin Larose  <larosem@yoda.iro.umontreal.ca>
+
+	* lib/RnamlWriter.cc, lib/RnamlReader.cc: Patch merge from rel-1-5.
+
+	* lib/RnamlWriter.cc, lib/RnamlReader.cc:
+	[rel-1-5]: Rnaml header files corrected.
+
+2006-05-02  Martin Larose  <larosem@yoda.iro.umontreal.ca>
+
+	* ChangeLog, lib/PairingPattern.cc, lib/PairingPattern.h:
+	Merge with rel-1-5-patch-4.
+
+	* lib/PairingPattern.cc, lib/PairingPattern.h:
+	[rel-1-5]: Changed the patterns description to make a simpler evaluation algorithm.
+
+	* ChangeLog, configure, lib/PairingPattern.cc, lib/Relation.cc, test/GraphModel.good:
+	Merge with rel-1-5-patch-3.
+
+	* ChangeLog, NEWS: *** empty log message ***
+
+	* lib/PairingPattern.cc, lib/PairingPattern.h:
+	evaluate include base orientation for a better classification.
+
+	* lib/Relation.cc, lib/Relation.h:
+	cis/trans uses _pyrimidine_ring_center rather than average hbonds orientation.  translatePairing include base orientation for a better classification.
+
+	* lib/Residue.cc:
+	Lifted output level for hydrogens and lone pair warnings.
+
+	* lib/RnamlReader.cc, lib/RnamlWriter.cc:
+	Corrected xmlcpg include directories.
+
+	* lib/Version.cc, lib/Version.h: Added LGPL license headers.
+
+	* test/GraphModel.good, ChangeLog:
+	[rel-1-5]: GraphModel test file verified and corrected.
+
 2006-05-02  Martin Larose  <larosem@iro.umontreal.ca>
 
 	* lib/PairingPattern.cc, lib/PairingPattern.h [rel-1-5]: Changed the

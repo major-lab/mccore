@@ -4,8 +4,35 @@
 ;                     Université de Montréal.
 ; Author           : Martin Larose
 ; Created On       : Tue Sep 19 18:15:25 2000
-; $Revision: 1.11 $
-; $Id: NEWS,v 1.11 2006-06-29 18:39:56 thibaup Exp $
+; $Revision: 1.12 $
+; $Id: NEWS,v 1.12 2006-06-29 19:12:07 thibaup Exp $
+
+
+* Version 1.6.1
+
+
+** HomogeneousTransfo class reimplemented
+
+New implementation of HomogeneousTransfo class. Replaced the 16 float
+array by 12 independent float variables for first three row of the 4X4
+matrix. Last row is implicit (always {0,0,0,1}). The interface is
+unchanged.
+
+Using default gcc optimization (-O2), matrix multiplication is now
+100X faster and matrix inversion is near 200X faster. Multiplication
+by a 3D point (Vector3D) at same speed, however.
+
+New implementation of matrix inversion. Previous implementation was
+using the analytical simplification applicable to rigid body
+transformation. However, this method shows unstable numerical
+error. Therefore it was replaced by a general inversion method
+applicable to any invertible matrix. This method isn't more precise
+than the latter method as a one-shot, but numerical errors are
+stable. Even if more floating point operations are needed to do so,
+performance with default gcc optimization (-O2) is not
+affected. Previous implementation was still conserved and renamed
+invert_unstable(). 
+
 
 
 * Version 1.6.0
@@ -20,6 +47,8 @@ Using 3-digits version number.
    accessible in class Relation an can be passed to annotation
    processes to restrict annotation. All four families are annotated
    by default.
+
+
 
 
 * Version 1.5

@@ -1,12 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // HomogeneousTransfo.cc
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
-//                     Université de Montréal
+// Copyright Â© 2003-05 Laboratoire de Biologie Informatique et ThÃ©orique
+//                     UniversitÃ© de MontrÃ©al
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.24 $
-// $Id: HomogeneousTransfo.cc,v 1.24 2006-01-26 21:18:31 thibaup Exp $
-//
+// $Revision: 1.25 $
+// $Id: HomogeneousTransfo.cc,v 1.25 2006-06-29 19:12:07 thibaup Exp $
+// 
 // This file is part of mccore.
 // 
 // mccore is free software; you can redistribute it and/or
@@ -28,20 +28,17 @@
 #include <config.h>
 #endif
 
-#include <sstream>
+
 #include <iomanip>
 
 #include "Binstream.h"
-#include "Exception.h"
 #include "HomogeneousTransfo.h"
-#include "Residue.h"
-
 
 
 namespace mccore 
 {
 
-#define sgn( x ) ( ( ( x ) >= 0.0 ) ? +1 : -1 )
+#define sgn( x ) ( ( ( x ) >= 0.0f ) ? +1 : -1 )
 
   inline int min3( float x, float y, float z )
   {
@@ -52,178 +49,75 @@ namespace mccore
     return 2;
   }
 
-
-  /**
-   * The squared scale ratio between angle and distance (Ang^2 / rad^2)
-   */
-  const float gc_alpha_square = 6.927424; // 2.632^2
-
-
-  HomogeneousTransfo::HomogeneousTransfo () 
-  { 
-    matrix = new float[16];
-    setIdentity (); 
-  }
-
   
-  HomogeneousTransfo::HomogeneousTransfo(float n00, float n01, float n02, float n03,
-					 float n10, float n11, float n12, float n13,
-					 float n20, float n21, float n22, float n23,
-					 float n30, float n31, float n32, float n33) 
+  float
+  HomogeneousTransfo::elementAt (unsigned i, unsigned j) const throw (ArrayIndexOutOfBoundsException)
   {
-    matrix = new float[16];
-    set(n00, n01, n02, n03, 
-	n10, n11, n12, n13, 
-	n20, n21, n22, n23,
-	n30, n31, n32, n33);
-  }
-
-
-  HomogeneousTransfo::HomogeneousTransfo (const float* openGLMatrix) 
-  {
-    matrix = new float[16];
-    set (openGLMatrix[0], openGLMatrix[4], openGLMatrix[ 8], openGLMatrix[12],
-	 openGLMatrix[1], openGLMatrix[5], openGLMatrix[ 9], openGLMatrix[13],
-	 openGLMatrix[2], openGLMatrix[6], openGLMatrix[10], openGLMatrix[14],
-	 openGLMatrix[3], openGLMatrix[7], openGLMatrix[11], openGLMatrix[15]);
-  }
-  
-  
-  HomogeneousTransfo::HomogeneousTransfo (const HomogeneousTransfo &other) 
-  {
-    matrix = new float[16];
-    set (other.matrix[0], other.matrix[4], other.matrix[ 8], other.matrix[12],
-	 other.matrix[1], other.matrix[5], other.matrix[ 9], other.matrix[13],
-	 other.matrix[2], other.matrix[6], other.matrix[10], other.matrix[14],
-	 other.matrix[3], other.matrix[7], other.matrix[11], other.matrix[15]);
-  }
-
-
-  HomogeneousTransfo::~HomogeneousTransfo () 
-  {
-    delete[] matrix;
-  }
-
-
-  HomogeneousTransfo& 
-  HomogeneousTransfo::operator= (const HomogeneousTransfo &other)
-  {
-    if (this != &other)
+    // emulate random access ...
+    switch (i)
+    {
+    case 0:
+      switch (j)
       {
-	set (other.matrix[0], other.matrix[4], other.matrix[ 8], other.matrix[12],
-	     other.matrix[1], other.matrix[5], other.matrix[ 9], other.matrix[13],
-	     other.matrix[2], other.matrix[6], other.matrix[10], other.matrix[14],
-	     other.matrix[3], other.matrix[7], other.matrix[11], other.matrix[15]);
+      case 0: return this->m00; break;
+      case 1: return this->m01; break;
+      case 2: return this->m02; break;
+      case 3: return this->m03; break;
       }
-    return *this;
-  }
-  
+      break;
+    case 1:
+      switch (j)
+      {
+      case 0: return this->m10; break;
+      case 1: return this->m11; break;
+      case 2: return this->m12; break;
+      case 3: return this->m13; break;
+      }
+      break;
+    case 2:
+      switch (j)
+      {
+      case 0: return this->m20; break;
+      case 1: return this->m21; break;
+      case 2: return this->m22; break;
+      case 3: return this->m23; break;
+      }
+      break;
+    case 3:
+      switch (j)
+      {
+      case 0: return 0.0f; break;
+      case 1: return 0.0f; break;
+      case 2: return 0.0f; break;
+      case 3: return 1.0f; break;
+      }
+      break;
+    }
 
-  void HomogeneousTransfo::set(float n00, float n01, float n02, float n03,
-			       float n10, float n11, float n12, float n13,
-			       float n20, float n21, float n22, float n23,
-			       float n30, float n31, float n32, float n33) {
-    matrix[ 0] = n00; matrix[ 4] = n01; matrix[ 8] = n02; matrix[12] = n03;
-    matrix[ 1] = n10; matrix[ 5] = n11; matrix[ 9] = n12; matrix[13] = n13;
-    matrix[ 2] = n20; matrix[ 6] = n21; matrix[10] = n22; matrix[14] = n23;
-    matrix[ 3] = n30; matrix[ 7] = n31; matrix[11] = n32; matrix[15] = n33;
-  }
-  
+    ArrayIndexOutOfBoundsException ex ("", __FILE__, __LINE__);
+    ex << "index [" << i << ',' << j << "] out of 4X4 matrix bounds.";
+    throw ex;
 
-  void HomogeneousTransfo::setIdentity() {
-    set (1.0f, 0.0f, 0.0f, 0.0f, 
-	 0.0f, 1.0f, 0.0f, 0.0f, 
-	 0.0f, 0.0f, 1.0f, 0.0f, 
-	 0.0f, 0.0f, 0.0f, 1.0f);
-  }
-  
-  
-  bool HomogeneousTransfo::isIdentity() {
-    return (matrix[0] == 1 && matrix[ 4] == 0 && matrix[ 8] == 0 && matrix[12] == 0
-	    && matrix[1] == 0 && matrix[ 5] == 1 && matrix[ 9] == 0 && matrix[13] == 0
-	    && matrix[2] == 0 && matrix[ 6] == 0 && matrix[10] == 1 && matrix[14] == 0
-	    && matrix[3] == 0 && matrix[ 7] == 0 && matrix[11] == 0 && matrix[15] == 1);
-  }
-
-
-  HomogeneousTransfo 
-  HomogeneousTransfo::operator* (const HomogeneousTransfo &right) const 
-  {
-    return HomogeneousTransfo 
-      (matrix[0] * right.matrix[0] + matrix[4] * right.matrix[1] + matrix[8] * right.matrix[2] + matrix[12] * right.matrix[3],
-       matrix[0] * right.matrix[4] + matrix[4] * right.matrix[5] + matrix[8] * right.matrix[6] + matrix[12] * right.matrix[7],
-       matrix[0] * right.matrix[8] + matrix[4] * right.matrix[9] + matrix[8] * right.matrix[10] + matrix[12] * right.matrix[11],
-       matrix[0] * right.matrix[12] + matrix[4] * right.matrix[13] + matrix[8] * right.matrix[14] + matrix[12] * right.matrix[15],
-       
-       matrix[1] * right.matrix[0] + matrix[5] * right.matrix[1] + matrix[9] * right.matrix[2] + matrix[13] * right.matrix[3],
-       matrix[1] * right.matrix[4] + matrix[5] * right.matrix[5] + matrix[9] * right.matrix[6] + matrix[13] * right.matrix[7],
-       matrix[1] * right.matrix[8] + matrix[5] * right.matrix[9] + matrix[9] * right.matrix[10] + matrix[13] * right.matrix[11],
-       matrix[1] * right.matrix[12] + matrix[5] * right.matrix[13] + matrix[9] * right.matrix[14] + matrix[13] * right.matrix[15],
-       
-       matrix[2] * right.matrix[0] + matrix[6] * right.matrix[1] + matrix[10] * right.matrix[2] + matrix[14] * right.matrix[3],
-       matrix[2] * right.matrix[4] + matrix[6] * right.matrix[5] + matrix[10] * right.matrix[6] + matrix[14] * right.matrix[7],
-       matrix[2] * right.matrix[8] + matrix[6] * right.matrix[9] + matrix[10] * right.matrix[10] + matrix[14] * right.matrix[11],
-       matrix[2] * right.matrix[12] + matrix[6] * right.matrix[13] + matrix[10] * right.matrix[14] + matrix[14] * right.matrix[15],
-       
-       matrix[3] * right.matrix[0] + matrix[7] * right.matrix[1] + matrix[11] * right.matrix[2] + matrix[15] * right.matrix[3],
-       matrix[3] * right.matrix[4] + matrix[7] * right.matrix[5] + matrix[11] * right.matrix[6] + matrix[15] * right.matrix[7],
-       matrix[3] * right.matrix[8] + matrix[7] * right.matrix[9] + matrix[11] * right.matrix[10] + matrix[15] * right.matrix[11],
-       matrix[3] * right.matrix[12] + matrix[7] * right.matrix[13] + matrix[11] * right.matrix[14] + matrix[15] * right.matrix[15]);	     
-  }
-
-
-  HomogeneousTransfo& 
-  HomogeneousTransfo::operator*= (const HomogeneousTransfo &right) 
-  {
-    set (matrix[0] * right.matrix[0] + matrix[4] * right.matrix[1] + matrix[8] * right.matrix[2] + matrix[12] * right.matrix[3],
-	 matrix[0] * right.matrix[4] + matrix[4] * right.matrix[5] + matrix[8] * right.matrix[6] + matrix[12] * right.matrix[7],
-	 matrix[0] * right.matrix[8] + matrix[4] * right.matrix[9] + matrix[8] * right.matrix[10] + matrix[12] * right.matrix[11],
-	 matrix[0] * right.matrix[12] + matrix[4] * right.matrix[13] + matrix[8] * right.matrix[14] + matrix[12] * right.matrix[15],
-	 
-	 matrix[1] * right.matrix[0] + matrix[5] * right.matrix[1] + matrix[9] * right.matrix[2] + matrix[13] * right.matrix[3],
-	 matrix[1] * right.matrix[4] + matrix[5] * right.matrix[5] + matrix[9] * right.matrix[6] + matrix[13] * right.matrix[7],
-	 matrix[1] * right.matrix[8] + matrix[5] * right.matrix[9] + matrix[9] * right.matrix[10] + matrix[13] * right.matrix[11],
-	 matrix[1] * right.matrix[12] + matrix[5] * right.matrix[13] + matrix[9] * right.matrix[14] + matrix[13] * right.matrix[15],
-	 
-	 matrix[2] * right.matrix[0] + matrix[6] * right.matrix[1] + matrix[10] * right.matrix[2] + matrix[14] * right.matrix[3],
-	 matrix[2] * right.matrix[4] + matrix[6] * right.matrix[5] + matrix[10] * right.matrix[6] + matrix[14] * right.matrix[7],
-	 matrix[2] * right.matrix[8] + matrix[6] * right.matrix[9] + matrix[10] * right.matrix[10] + matrix[14] * right.matrix[11],
-	 matrix[2] * right.matrix[12] + matrix[6] * right.matrix[13] + matrix[10] * right.matrix[14] + matrix[14] * right.matrix[15],
-	 
-	 matrix[3] * right.matrix[0] + matrix[7] * right.matrix[1] + matrix[11] * right.matrix[2] + matrix[15] * right.matrix[3],
-	 matrix[3] * right.matrix[4] + matrix[7] * right.matrix[5] + matrix[11] * right.matrix[6] + matrix[15] * right.matrix[7],
-	 matrix[3] * right.matrix[8] + matrix[7] * right.matrix[9] + matrix[11] * right.matrix[10] + matrix[15] * right.matrix[11],
-	 matrix[3] * right.matrix[12] + matrix[7] * right.matrix[13] + matrix[11] * right.matrix[14] + matrix[15] * right.matrix[15]);
-    return *this;
-  }
-
-
-  Vector3D 
-  HomogeneousTransfo::operator* (const Vector3D &v) const 
-  {
-    return Vector3D(matrix[0]*v.getX () + matrix[4]*v.getY () + matrix[8]*v.getZ () + matrix[12],  
-		    matrix[1]*v.getX () + matrix[5]*v.getY () + matrix[9]*v.getZ () + matrix[13], 
-		    matrix[2]*v.getX () + matrix[6]*v.getY () + matrix[10]*v.getZ () + matrix[14]);
+    return 0.0f;
   }
 
 
   HomogeneousTransfo 
   HomogeneousTransfo::getRotation () const 
   {
-    return HomogeneousTransfo (matrix[0], matrix[4], matrix[8],  0,
-			       matrix[1], matrix[5], matrix[9],  0,
-			       matrix[2], matrix[6], matrix[10], 0,
-			       0, 0, 0, 1);
+    return HomogeneousTransfo (m00, m01, m02, 0.0f,
+		   m10, m11, m12, 0.0f,
+		   m20, m21, m22, 0.0f);
   }
   
   
   pair< Vector3D, float >
   HomogeneousTransfo::getRotationVector () const
   {
-    float a = matrix[9] - matrix[6];
-    float b = matrix[2] - matrix[8];
-    float c = matrix[4] - matrix[1];
-    float diag = matrix[0] + matrix[5] + matrix[10] - 1;
+    float a = m12 - m21;
+    float b = m20 - m02;
+    float c = m01 - m10;
+    float diag = m00 + m11 + m22 - 1;
     float theta;
     
     theta = atan2( sqrt( a*a + b*b + c*c ), diag );
@@ -241,50 +135,50 @@ namespace mccore
     //   0, 1, 0, 0 );
     // theta = 120o  axe = ( 1/sqrt(3), 1/sqrt(3), 1/sqrt(3) )
     
-    float Kx = 0.0;
-    float Ky = 0.0;
-    float Kz = 0.0;
-    if (theta >= M_PI/2.0)
-      {
-	float cost = cos (theta);
-	float vers = 1 - cost;
-	Kx = sgn (a) * sqrt ((matrix[ 0] - cost) / vers);
-	Ky = sgn (b) * sqrt ((matrix[ 5] - cost) / vers);
-	Kz = sgn (c) * sqrt ((matrix[10] - cost) / vers);
+    float Kx = 0.0f;
+    float Ky = 0.0f;
+    float Kz = 0.0f;
+    if (theta >= M_PI/2.0f)
+    {
+      float cost = cos (theta);
+      float vers = 1 - cost;
+      Kx = sgn (a) * sqrt ((m00 - cost) / vers);
+      Ky = sgn (b) * sqrt ((m11 - cost) / vers);
+      Kz = sgn (c) * sqrt ((m22 - cost) / vers);
 	
-	float denom;
-	switch (min3 (Kx, Ky, Kz))
-	  {
-	  case 0:
-	    denom = 2 * Kx * vers;
-	    Ky =  (matrix[4] + matrix[1]) / denom;
-	    Kz =  (matrix[2] + matrix[8]) / denom;
-	    break;
+      float denom;
+      switch (min3 (Kx, Ky, Kz))
+      {
+      case 0:
+	denom = 2 * Kx * vers;
+	Ky =  (m01 + m10) / denom;
+	Kz =  (m20 + m02) / denom;
+	break;
 	    
-	  case 1:
-	    denom = 2 * Ky * vers;
-	    Kx =  (matrix[4] + matrix[1]) / denom;
-	    Kz =  (matrix[9] + matrix[6]) / denom;
-	    break;
+      case 1:
+	denom = 2 * Ky * vers;
+	Kx =  (m01 + m10) / denom;
+	Kz =  (m12 + m21) / denom;
+	break;
 	    
-	  default:
-	    denom = 2 * Kz * vers;
-	    Kx =  (matrix[2] + matrix[8]) / denom;
-	    Ky =  (matrix[9] + matrix[6]) / denom;
-	    break;
-	  }
+      default:
+	denom = 2 * Kz * vers;
+	Kx =  (m20 + m02) / denom;
+	Ky =  (m12 + m21) / denom;
+	break;
       }
+    }
     else
-      if (theta > 0.0)
-	{
-	  float denom = 2.0 * sin (theta);
-	  Kx = a / denom;
-	  Ky = b / denom;
-	  Kz = c / denom;
-	}
+      if (theta > 0.0f)
+      {
+	float denom = 2.0f * sin (theta);
+	Kx = a / denom;
+	Ky = b / denom;
+	Kz = c / denom;
+      }
     
     Vector3D v (Kx, Ky, Kz);
-    if (v.length() > 0.0)
+    if (v.length() > 0.0f)
       v.normalize();
     
     return make_pair (v, theta);
@@ -294,17 +188,16 @@ namespace mccore
   Vector3D
   HomogeneousTransfo::getTranslationVector () const 
   {
-    return Vector3D (matrix[12], matrix[13], matrix[14]);
+    return Vector3D (m03, m13, m23);
   }
   
 
   HomogeneousTransfo 
   HomogeneousTransfo::getTranslation () const 
   {
-    return HomogeneousTransfo (1, 0, 0, matrix[12],
-			       0, 1, 0, matrix[13],
-			       0, 0, 1, matrix[14],
-			       0, 0, 0, 1);
+    return HomogeneousTransfo (1, 0, 0, m03,
+		   0, 1, 0, m13,
+		   0, 0, 1, m23);
   }
   
   
@@ -328,18 +221,17 @@ namespace mccore
     z = naxis.getZ ();
 
     return HomogeneousTransfo (x * x * versTh + cosTh,
-			       x * y * versTh - z * sinTh,
-			       x * z * versTh + y * sinTh,
-			       0,
-			       x * y * versTh + z * sinTh,
-			       y * y * versTh + cosTh,
-			       y * z * versTh - x * sinTh,
-			       0,
-			       x * z * versTh - y * sinTh,
-			       y * z * versTh + x * sinTh,
-			       z * z * versTh + cosTh,
-			       0,
-			       0, 0, 0, 1);
+		   x * y * versTh - z * sinTh,
+		   x * z * versTh + y * sinTh,
+		   0.0f,
+		   x * y * versTh + z * sinTh,
+		   y * y * versTh + cosTh,
+		   y * z * versTh - x * sinTh,
+		   0.0f,
+		   x * z * versTh - y * sinTh,
+		   y * z * versTh + x * sinTh,
+		   z * z * versTh + cosTh,
+		   0.0f);
   }
 
   
@@ -349,9 +241,8 @@ namespace mccore
     float a = (float)sin (theta);
     float b = (float)cos (theta);
     return HomogeneousTransfo (1, 0, 0, 0,
-			       0, b, -a, 0,
-			       0 , a, b, 0,
-			       0,  0, 0, 1);
+		   0, b, -a, 0,
+		   0 , a, b, 0);
   }
 
   
@@ -361,9 +252,8 @@ namespace mccore
     float a = (float) sin (theta);
     float b = (float) cos (theta);
     return HomogeneousTransfo (b, 0, a, 0,
-			       0, 1, 0, 0,
-			       -a, 0, b, 0,
-			       0, 0, 0, 1);
+		   0, 1, 0, 0,
+		   -a, 0, b, 0);
   }
 
 
@@ -373,9 +263,8 @@ namespace mccore
     float a = (float) sin (theta);
     float b = (float) cos (theta);
     return HomogeneousTransfo (b,-a, 0, 0,
-			       a, b, 0, 0,
-			       0, 0, 1, 0,
-			       0, 0, 0, 1);
+		   a, b, 0, 0,
+		   0, 0, 1, 0);
   }
 
   
@@ -418,9 +307,8 @@ namespace mccore
   HomogeneousTransfo::translation (float x, float y, float z) 
   {
     return HomogeneousTransfo(1, 0, 0, x,
-			      0, 1, 0, y,
-			      0, 0, 1, z,
-			      0, 0, 0, 1);
+		  0, 1, 0, y,
+		  0, 0, 1, z);
   }
 
 
@@ -437,236 +325,129 @@ namespace mccore
     return (*this *HomogeneousTransfo::translation (x, y, z));
   }
   
-
-  HomogeneousTransfo 
-  HomogeneousTransfo::invert () const 
-  {
-    if ((matrix[3] + matrix[7] + matrix[11]) != 0.0)
-    {
-      ostringstream oss;
-      oss << *this;
-      FatalIntLibException ex ("", __FILE__, __LINE__);
-      ex << "HomogeneousTransfo containing scale cannot be inverted:\n" << oss.str ();
-      throw ex;
-    }
-
-    return HomogeneousTransfo (matrix[0], matrix[1], matrix[2], 
-			       -(matrix[12]*matrix[0] + matrix[13]*matrix[1] + matrix[14]*matrix[2]),
-			       matrix[4], matrix[5], matrix[6], 
-			       -(matrix[12]*matrix[4] + matrix[13]*matrix[5] + matrix[14]*matrix[6]),
-			       matrix[8], matrix[9], matrix[10], 
-			       -(matrix[12]*matrix[8] + matrix[13]*matrix[9] + matrix[14]*matrix[10]),
-			       matrix[3], matrix[7], matrix[11], 
-			       matrix[15]);
-  }
-
-
-  float 
-  HomogeneousTransfo::strength_old () const 
-  {
-    Vector3D trans (matrix[12], matrix[13], matrix[14]);
-    
-    float a = matrix[6] - matrix[9];
-    float b = matrix[8] - matrix[2];
-    float c = matrix[1] - matrix[4];
-    float diag = matrix[0] + matrix[5] + matrix[10] - 1;
-    float theta;
-    
-    a *= a;
-    b *= b;
-    c *= c;
-    theta = (float) atan2 (sqrt (a + b + c), diag) * 180 / (float) M_PI;
-    
-    return (float) sqrt (trans.length () * trans.length () + theta * theta / 900);
-  }
-
   
-  float 
-  HomogeneousTransfo::strength () const 
-  {
-    float l2 = matrix[12]*matrix[12] + matrix[13]*matrix[13] + matrix[14]*matrix[14];
-    
-    float a = matrix[6] - matrix[9];
-    float b = matrix[8] - matrix[2];
-    float c = matrix[1] - matrix[4];
-    float diag = matrix[0] + matrix[5] + matrix[10] - 1;
- 
-    float theta_rad = (float) atan2 (sqrt (a*a + b*b + c*c), diag);
+//   float 
+//   HomogeneousTransfo::strength () const 
+//   {
+//     float a = m21 - m12;
+//     float b = m02 - m20;
+//     float c = m10 - m01;
 
-    return (float) sqrt (l2 + gc_alpha_square * theta_rad * theta_rad);
-  }
+//     float theta_rad = atan2f (sqrtf (a*a + b*b + c*c), m00 + m11 + m22 - 1.0f);
+
+//     return sqrtf (m03*m03 + m13*m13 + m23*m23 + gc_alpha_square * theta_rad * theta_rad);
+//   }
 
 
   float 
   HomogeneousTransfo::strength (float& tvalue2, float& rvalue2) const 
   {
-    tvalue2 = matrix[12]*matrix[12] + matrix[13]*matrix[13] + matrix[14]*matrix[14];
-    
-    float a = matrix[6] - matrix[9];
-    float b = matrix[8] - matrix[2];
-    float c = matrix[1] - matrix[4];
-    float diag = matrix[0] + matrix[5] + matrix[10] - 1;
- 
-    float theta_rad = (float) atan2 (sqrt (a*a + b*b + c*c), diag);
-    rvalue2 = gc_alpha_square * theta_rad * theta_rad;
+    float a = m21 - m12;
+    float b = m02 - m20;
+    float c = m10 - m01;
 
-    return (float) sqrt (tvalue2 + rvalue2);
-  }
+    float theta_rad = atan2f (sqrtf (a*a + b*b + c*c), m00 + m11 + m22 - 1.0f);
 
-
-  
-  float 
-  HomogeneousTransfo::distance_old (const HomogeneousTransfo &m) const 
-  {
-    HomogeneousTransfo a = *this;
-    HomogeneousTransfo bi = m;
-    bi = bi.invert ();
-    
-    HomogeneousTransfo a_bi = a * bi;
-    HomogeneousTransfo bi_a = bi * a;
-    return (a_bi.strength_old () + bi_a.strength_old ()) / 2;
-  }
-
-
-  float
-  HomogeneousTransfo::distance (const HomogeneousTransfo &m) const 
-  {
-    return (this->invert () * m).strength ();
+    return sqrtf ((tvalue2 = m03*m03 + m13*m13 + m23*m23) + 
+		  (rvalue2 = HomogeneousTransfo::alpha_square * theta_rad * theta_rad));
   }
 
   
-  float
-  HomogeneousTransfo::squareDistance (const HomogeneousTransfo &m) const
+  double
+  HomogeneousTransfo::euclidianRMSD (const HomogeneousTransfo& t) const
   {
-    float val;
-
-    val = distance (m);
-    return val * val;
-  }
-
-  
-  float
-  HomogeneousTransfo::rmsd () const
-  {
-    Vector3D u1 (1.0, 0.0, 0.0), v1 (0.0, 1.0, 0.0), w1 (0.0, 0.0, 1.0);
-    Vector3D u2 = u1, v2 = v1, w2 = w1;
-
-    return sqrt ((u2.transform (*this).squareDistance (u1) +
-		  v2.transform (*this).squareDistance (v1) +
-		  w2.transform (*this).squareDistance (w1)) / 3.0);
+    return sqrt ((pow (m01 - t.m01, 2.0) +
+		  pow (m02 - t.m02, 2.0) +
+		  pow (m03 - t.m03, 2.0) +
+		  pow (m11 - t.m11, 2.0) +
+		  pow (m12 - t.m12, 2.0) +
+		  pow (m13 - t.m13, 2.0) +
+		  pow (m21 - t.m21, 2.0) +
+		  pow (m22 - t.m22, 2.0) +
+		  pow (m23 - t.m23, 2.0)) / 12.0);
   }
 
 
-  float
-  HomogeneousTransfo::rmsd (const HomogeneousTransfo &m) const
+  ostream&
+  HomogeneousTransfo::write (ostream& os) const 
   {
-    return (this->invert () * m).rmsd ();
-  }
+    int w = 16, p = 11;
 
-  
-  HomogeneousTransfo 
-  HomogeneousTransfo::align (const Vector3D &p1, const Vector3D &p2, const Vector3D &p3) 
-  {
-    Vector3D u, v, w; // the orthonormal basis
+    os.setf (ios::right, ios::adjustfield);
+    os.setf (ios::fixed, ios::floatfield);
+    os.precision (p);
+    os << "| " << setw (w) << m00 << " "  // 11
+	<< setw (w) << m01 << " " 
+	<< setw (w) << m02 << " " 
+	<< setw (w) << m03 << " |" << endl;
+    os << "| " << setw (w) << m10 << " " 
+	<< setw (w) << m11 << " " 
+	<< setw (w) << m12 << " " 
+	<< setw (w) << m13 << " |" << endl;
+    os << "| " << setw (w) << m20 << " " 
+	<< setw (w) << m21 << " " 
+	<< setw (w) << m22 << " " 
+	<< setw (w) << m23 << " |" << endl;
+    os << "| " << setw (w) << 0.0f << " " 
+	<< setw (w) << 0.0f << " " 
+	<< setw (w) << 0.0f << " " 
+	<< setw (w) << 1.0f << " |" << endl;  
 
-    v = (p2 - p1).normalize ();
-    u = ((p2 - p1).cross(p3 - p1)).normalize ();
-    w = (u.cross (v)).normalize ();
-
-    return HomogeneousTransfo::frame (u, v, w, p1);
-  }
-
-
-  HomogeneousTransfo 
-  HomogeneousTransfo::frame (const Vector3D& u, const Vector3D& v, const Vector3D& w, const Vector3D& o) 
-  {
-    HomogeneousTransfo tf
-      (u.getX (), v.getX (), w.getX (), o.getX (),
-       u.getY (), v.getY (), w.getY (), o.getY (),
-       u.getZ (), v.getZ (), w.getZ (), o.getZ ());
-    return tf;
-  }
-
-
-  float 
-  HomogeneousTransfo::orthoError () const
-  {
-    return 
-      fabs (sqrt (this->matrix[0]*this->matrix[0] + this->matrix[1]*this->matrix[1] + this->matrix[2]*this->matrix[2]) +
-	    sqrt (this->matrix[4]*this->matrix[4] + this->matrix[5]*this->matrix[5] + this->matrix[6]*this->matrix[6]) +
-	    sqrt (this->matrix[8]*this->matrix[8] + this->matrix[9]*this->matrix[9] + this->matrix[10]*this->matrix[10]) +
-	    sqrt (this->matrix[0]*this->matrix[0] + this->matrix[4]*this->matrix[4] + this->matrix[8]*this->matrix[8]) +
-	    sqrt (this->matrix[1]*this->matrix[1] + this->matrix[5]*this->matrix[5] + this->matrix[9]*this->matrix[9]) +
-	    sqrt (this->matrix[2]*this->matrix[2] + this->matrix[6]*this->matrix[6] + this->matrix[10]*this->matrix[10])
-	    - 6.0)
-      / 6.0;
-  }
-
-
-  ostream &
-  HomogeneousTransfo::output (ostream &out) const 
-  {
-    out.setf (ios::right, ios::adjustfield);
-    out.setf (ios::fixed, ios::floatfield);
-    out.precision (6);
-    out << "| " << setw (11) << matrix[0] << " "  // 11
-	<< setw (11) << matrix[4] << " " 
-	<< setw (11) << matrix[8] << " " 
-	<< setw (11) << matrix[12] << " |" << endl;
-    out << "| " << setw (11) << matrix[1] << " " 
-	<< setw (11) << matrix[5] << " " 
-	<< setw (11) << matrix[9] << " " 
-	<< setw (11) << matrix[13] << " |" << endl;
-    out << "| " << setw (11) << matrix[2] << " " 
-	<< setw (11) << matrix[6] << " " 
-	<< setw (11) << matrix[10] << " " 
-	<< setw (11) << matrix[14] << " |" << endl;
-    out << "| " << setw (11) << matrix[3] << " " 
-	<< setw (11) << matrix[7] << " " 
-	<< setw (11) << matrix[11] << " " 
-	<< setw (11) << matrix[15] << " |" << endl;  
-
-    return out;
-  }
-  
-  
-  iBinstream&
-  operator>> (iBinstream &ibs, HomogeneousTransfo &obj)
-  {
-    int i;
-    
-    for (i = 0; i < 16; ++i)
-      {
-	float x;
-	
-	ibs >> x;
-	obj.setElementAt (x, i);
-      }
-    return ibs;
+    return os;
   }
   
 
   oBinstream&
-  operator<< (oBinstream &obs, const HomogeneousTransfo &obj)
+  HomogeneousTransfo::write (oBinstream& obs) const
   {
-    int i;
-    
-    for (i = 0; i < 16; ++i)
-      obs << obj.elementAt (i);
-    return obs;
+//     return obs << m00 << m01 << m02 << m03 
+// 	       << m10 << m11 << m12 << m13 
+// 	       << m20 << m21 << m22 << m23;
+    // temporary backward compatibility
+    return obs << m00 << m10 << m20 << 0.0f
+	       << m01 << m11 << m21 << 0.0f
+	       << m02 << m12 << m22 << 0.0f
+	       << m03 << m13 << m23 << 1.0f; 
+  }
+
+
+  iBinstream&
+  HomogeneousTransfo::read (iBinstream& ibs)
+  {
+    // temporary backward compatibility
+    float ign;
+    ibs >> m00 >> m10 >> m20 >> ign
+	>> m01 >> m11 >> m21 >> ign
+	>> m02 >> m12 >> m22 >> ign
+	>> m03 >> m13 >> m23 >> ign; 
+    return ibs; 
+
+//     return ibs >> m00 >> m01 >> m02 >> m03 
+// 	       >> m10 >> m11 >> m12 >> m13 
+// 	       >> m20 >> m21 >> m22 >> m23;    
+  }
+  
+
+  oBinstream&
+  operator<< (oBinstream& obs, const HomogeneousTransfo& obj)
+  {
+    return obj.write (obs);
+  }
+  
+
+  iBinstream&
+  operator>> (iBinstream& ibs, HomogeneousTransfo& obj)
+  {
+    return obj.read (ibs);
   }
   
 }
 
-
-
 namespace std
 {
-
   ostream&
-  operator<< (ostream &out, const mccore::HomogeneousTransfo &v)
+  operator<< (ostream& os, const mccore::HomogeneousTransfo& obj)
   {
-    return v.output (out);
+    return obj.write (os);
   }
-
 }

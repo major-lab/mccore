@@ -1,11 +1,12 @@
 //                              -*- Mode: C++ -*- 
 // HomogeneousTransfo.h
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
-//                     Université de Montréal
+// Copyright Â© 2003-05 Laboratoire de Biologie Informatique et ThÃ©orique
+//                     UniversitÃ© de MontrÃ©al
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.21 $
-//
+// $Revision: 1.22 $
+// $Id: HomogeneousTransfo.h,v 1.22 2006-06-29 19:12:07 thibaup Exp $
+// 
 // This file is part of mccore.
 // 
 // mccore is free software; you can redistribute it and/or
@@ -27,13 +28,11 @@
 #define _mccore_HomogeneousTransfo_h_
 
 #include <iostream>
-#include <utility>
 
 #include "Vector3D.h"
+#include "Exception.h"
 
 using namespace std;
-
-
 
 namespace mccore
 {
@@ -41,39 +40,40 @@ namespace mccore
   class iBinstream;
   class oBinstream;
   
-  
-  
   /**
-   * Homogeneous transformation matrices.  The internal representation
-   * matches the one of the OpenGL library.
+   * @short Rigid body linear transformation matrix in homogeneous coordinates.
    *
-   * <pre>
-   * m = matrix
-   * | m0  m4  m8  m12  |      | n00  n01  n02  n03 |
-   * | m1  m5  m9  m13  |  ==  | n10  n11  n12  n13 |
-   * | m2  m6  m10 m14  |      | n20  n21  n22  n23 |
-   * | m3  m7  m11 m15  |      | n30  n31  n32  n33 |
-   * </pre>
+   * The 4X4 matrix is encoded using 12 float variables for the first
+   * three rows. The last {0,0,0,1} row is implicit.
    *
-   * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: HomogeneousTransfo.h,v 1.21 2005-11-15 16:09:39 thibaup Exp $
+   * Binary stream I/O is backward compatible (for now...). 
+   *
    */
   class HomogeneousTransfo
   {
     /**
-     * The tranfo matrix.
+     * The transfo matrix elements (first three rows).
      */
-    float *matrix;
-    
+    float m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23;
+   
+    /**
+     * The squared scale ratio between angle and distance (Ang^2 / rad^2)
+     */ 
+    static const float alpha_square = 6.927424; // 2.632^2
+ 
   public:
    
     // LIFECYCLE ------------------------------------------------------------
     
     /**
-     * Initializes the object.
+     * Initializes the trasnformation as identity.
      */
-    HomogeneousTransfo ();
-    
+    HomogeneousTransfo ()
+      : m00 (1.0f), m01 (0.0f), m02 (0.0f), m03 (0.0f),
+	m10 (0.0f), m11 (1.0f), m12 (0.0f), m13 (0.0f),
+	m20 (0.0f), m21 (0.0f), m22 (1.0f), m23 (0.0f)
+    { }
+
     /**
      * Initializes the transfo.
      * @param n00 the float at position [0,0].
@@ -95,82 +95,44 @@ namespace mccore
      */
     HomogeneousTransfo(float n00, float n01, float n02, float n03,
 		       float n10, float n11, float n12, float n13,
-		       float n20, float n21, float n22, float n23,
-		       float n30 = 0, float n31 = 0, float n32 = 0, float n33 = 1);
+		       float n20, float n21, float n22, float n23)
+      : m00 (n00), m01 (n01), m02 (n02), m03 (n03), 
+	m10 (n10), m11 (n11), m12 (n12), m13 (n13), 
+	m20 (n20), m21 (n21), m22 (n22), m23 (n23)
+    { }
     
-    /**
-     * Creates a transfo with an openGL matrix.
-     * @param openGLMatrix the array of values in openGL format.
-     */
-    HomogeneousTransfo (const float* openGLMatrix);
     
     /**
      * Initializes the object with the other's content.
-     * @param other the object to copy.
+     * @param t the object to copy.
      */
-    HomogeneousTransfo (const HomogeneousTransfo &other);
+    HomogeneousTransfo (const HomogeneousTransfo& t)
+      : m00 (t.m00), m01 (t.m01), m02 (t.m02), m03 (t.m03), 
+	m10 (t.m10), m11 (t.m11), m12 (t.m12), m13 (t.m13), 
+	m20 (t.m20), m21 (t.m21), m22 (t.m22), m23 (t.m23)
+    { }
     
     /**
      * Destroys the object.
      */
-    virtual ~HomogeneousTransfo ();
+    ~HomogeneousTransfo () { }
     
     // OPERATORS ------------------------------------------------------------
     
     /**
      * Assigns the object with the other's content.
-     * @param other the object to copy.
+     * @param t the object to copy.
      * @return itself.
      */
-    HomogeneousTransfo& operator= (const HomogeneousTransfo &other);
+    HomogeneousTransfo& operator= (const HomogeneousTransfo& t)
+    {
+      m00 = t.m00; m01 = t.m01; m02 = t.m02; m03 = t.m03;
+      m10 = t.m10; m11 = t.m11; m12 = t.m12; m13 = t.m13;
+      m20 = t.m20; m21 = t.m21; m22 = t.m22; m23 = t.m23;
+      return *this;
+    }
     
     // ACCESS ---------------------------------------------------------------
-    
-    /**
-     * Returns an openGL matrix.
-     * @return an array of values corresponding to the open GL matrix.
-     */
-    float* toOpenGL() {
-      return matrix;
-    }
-    
-    /**
-     * Gets the element at position i.
-     * @param i the position.
-     * @return the element at position i.
-     */
-    float elementAt(int i) const {
-      return matrix[i];
-    }
-    
-    /**
-     * Sets the element at position i.
-     * @param x the new value.
-     * @param i the position.
-     */
-    void setElementAt(float x, int i) {
-      matrix[i] = x;
-    }
-    
-    /**
-     * Gets the element of row i column j.
-     * @param i the row number.
-     * @param j the column number.
-     * @return the element[i,j].
-     */
-    float elementAt(int i,int j) const {
-      return matrix[i + j * 4];
-    }
-    
-    /**
-     * Sets the element of row i, column j.
-     * @param x the new value.
-     * @param i the row number.
-     * @param j the column number.
-     */
-    void setElementAt(float x, int i, int j) {
-      matrix[i + j * 4] = x;
-    }
     
     /**
      * Sets all elements.
@@ -186,47 +148,101 @@ namespace mccore
      * @param n21 the value at position [2,1].
      * @param n22 the value at position [2,2].
      * @param n23 the value at position [2,3].
+     * @return itself.
      */
-    void set(float n00, float n01, float n02, float n03,
-	     float n10, float n11, float n12, float n13,
-	     float n20, float n21, float n22, float n23,
-	     float n30 = 0, float n31 = 0, float n32 = 0, float n33 = 1);
+    HomogeneousTransfo& set(float n00, float n01, float n02, float n03,
+			    float n10, float n11, float n12, float n13,
+			    float n20, float n21, float n22, float n23)
+    {
+      m00 = n00; m01 = n01; m02 = n02; m03 = n03;
+      m10 = n10; m11 = n11; m12 = n12; m13 = n13;
+      m20 = n20; m21 = n21; m22 = n22; m23 = n23;
+      return *this;
+    }
     
     /**
      * Sets the matrix to identity.
      */
-    void setIdentity();
+    void setIdentity()
+    {
+      m01 = m02 = m03 = m10 = m12 = m13 = m20 = m21 = m23 = 0.0f;
+      m00 = m11 = m22 = 1.0f;
+    }
     
-    /**
-     * Determines if the matrix is set to identity.
-     * @return if the HomogeneousTransfo is set to identity.
-     */
-    bool isIdentity();
-    
-    // METHODS --------------------------------------------------------------
+    // OPERATORS ------------------------------------------------------------
     
     /**
      * Calculates the matrix multiplication.
      * @param right the right matrix.
      * @return the resulting matrix.
      */
-    HomogeneousTransfo operator* (const HomogeneousTransfo &right) const;
+    HomogeneousTransfo operator* (const HomogeneousTransfo& t) const
+    {
+      return HomogeneousTransfo (      m00*t.m00 + m01*t.m10 + m02*t.m20,
+				       m00*t.m01 + m01*t.m11 + m02*t.m21,
+				       m00*t.m02 + m01*t.m12 + m02*t.m22,
+				       m03 + m00*t.m03 + m01*t.m13 + m02*t.m23,
+
+				       m10*t.m00 + m11*t.m10 + m12*t.m20,
+				       m10*t.m01 + m11*t.m11 + m12*t.m21,
+				       m10*t.m02 + m11*t.m12 + m12*t.m22,
+				       m13 + m10*t.m03 + m11*t.m13 + m12*t.m23,
+
+				       m20*t.m00 + m21*t.m10 + m22*t.m20,
+				       m20*t.m01 + m21*t.m11 + m22*t.m21,
+				       m20*t.m02 + m21*t.m12 + m22*t.m22,
+				       m23 + m20*t.m03 + m21*t.m13 + m22*t.m23);
+    }
     
     /**
      * Calculates and assign the matrix multiplication.
      * @param right the right matrix.
      * @return the resulting matrix.
      */
-    HomogeneousTransfo& operator*= (const HomogeneousTransfo &right);
+    HomogeneousTransfo& operator*= (const HomogeneousTransfo& t)
+    {
+      m00 =       m00*t.m00 + m01*t.m10 + m02*t.m20;
+      m01 =       m00*t.m01 + m01*t.m11 + m02*t.m21;
+      m02 =       m00*t.m02 + m01*t.m12 + m02*t.m22;
+      m03 = m03 + m00*t.m03 + m01*t.m13 + m02*t.m23;
+
+      m10 =       m10*t.m00 + m11*t.m10 + m12*t.m20;
+      m11 =       m10*t.m01 + m11*t.m11 + m12*t.m21;
+      m12 =       m10*t.m02 + m11*t.m12 + m12*t.m22;
+      m13 = m13 + m10*t.m03 + m11*t.m13 + m12*t.m23;
+
+      m20 =       m20*t.m00 + m21*t.m10 + m22*t.m20;
+      m21 =       m20*t.m01 + m21*t.m11 + m22*t.m21;
+      m22 =       m20*t.m02 + m21*t.m12 + m22*t.m22;
+      m23 = m23 + m20*t.m03 + m21*t.m13 + m22*t.m23;
+
+      return *this;
+    }
     
     /**
      * Applies the transfo to the given point.
      * @param v the original point.
      * @return the transformed point.
      */
-    Vector3D operator* (const Vector3D &v) const;
+    Vector3D operator* (const Vector3D &v) const
+    {
+      return Vector3D (m00*v.getX () + m01*v.getY () + m02*v.getZ () + m03,  
+		       m10*v.getX () + m11*v.getY () + m12*v.getZ () + m13, 
+		       m20*v.getX () + m21*v.getY () + m22*v.getZ () + m23);
+    }
     
-    
+    // METHODS --------------------------------------------------------------    
+
+    /**
+     * Gets the element of row i column j. Throws an ArrayIndexOutOfBoundsException
+     * if (i,j) not in {0,1,2,3}X{0,1,2,3}.
+     * @param i the row number in {0,1,2,3}.
+     * @param j the column number in {0,1,2,3}.
+     * @return the element[i,j].
+     * @throws ArrayIndexOutOfBoundsException
+     */
+    float elementAt (unsigned i, unsigned j) const throw (ArrayIndexOutOfBoundsException);
+
     /**
      * Gets a transfo containing the rotation part of this transfo.
      * @return the transfo.
@@ -345,45 +361,70 @@ namespace mccore
      * @return this.
      */
     HomogeneousTransfo translate (float x, float y, float z) const;
+
     
     /**
-     * Returns the homogeneous matrix to it's inverse.
-     * @return the new HomogeneousTransfo inverse.
+     * Returns this matrix's inverse using the general method. This is the default invert method.
+     * More floating-point operations than unstable version, but apparently 
+     * not slower using compiler optimization (prove me wrong!).
+     * Stable numerical error, but not more precise than unstable version as a one-shot.
+     * @return the inverted matrix.
      */
-    HomogeneousTransfo invert () const;
+    HomogeneousTransfo invert () const
+    {
+      float det = m01*m12*m20 + m02*m10*m21 - m00*m12*m21 - m01*m10*m22 + m00*m11*m22 - m02*m11*m20;      
+      return HomogeneousTransfo 
+	((m11*m22 - m12*m21) / det,
+	 (m02*m21 - m01*m22) / det,
+	 (m01*m12 - m02*m11) / det,
+	 (m03*m12*m21 - m02*m13*m21 - m03*m11*m22 + m01*m13*m22 + m02*m11*m23 - m01*m12*m23) / det,
+	 
+	 (m12*m20 - m10*m22) / det,
+	 (m00*m22 - m02*m20) / det,
+	 (m02*m10 - m00*m12) / det,
+	 (m02*m13*m20 + m03*m10*m22 - m00*m13*m22 - m02*m10*m23 + m00*m12*m23 - m03*m12*m20) / det,
+		
+	 (m10*m21 - m11*m20) / det,
+	 (m01*m20 - m00*m21) / det,
+	 (m00*m11 - m01*m10) / det,
+	 (m03*m11*m20 - m01*m13*m20 - m03*m10*m21 + m00*m13*m21 + m01*m10*m23 - m00*m11*m23) / det);
+    }
     
+
     /**
-     * [DEPRECATED]
-     * Calculates the distance from the homogeneous matrix to origin.  The
-     * rotation factor is also included.
-     * @return the distance.
+     * Returns this matrix's inverse assuming that we have a rigid body transfo.
+     * Unstable numerical error (after 22 iterations!).
+     * @return the inverted matrix.
      */
-    float strength_old () const;
+    HomogeneousTransfo invert_unstable () const
+    {
+      return HomogeneousTransfo (m00, m10, m20, -m03*m00 - m13*m10 - m23*m20,
+				 m01, m11, m21, -m03*m01 - m13*m11 - m23*m21,
+				 m02, m12, m22, -m03*m02 - m13*m12 - m23*m22);
+    }
+
 
     /**
      * Computes the strength of this transfo, which is relative to both
      * the translation and rotation components.
      * @return the strength (Angstroms).
      */
-    float strength () const;
-    float strength (float& tvalue2, float& rvalue2) const;
+    float strength () const
+    {
+      float a = m21 - m12;
+      float b = m02 - m20;
+      float c = m10 - m01;
+      float theta_rad = atan2f (sqrtf (a*a + b*b + c*c), m00 + m11 + m22 - 1.0f);
+      return sqrtf (m03*m03 + m13*m13 + m23*m23 + alpha_square * theta_rad * theta_rad);
+    }
 
     /**
-     * Computes the rms of <i,j,k> moved by this transfo from the global referential.
-     * @return the rmsd (Angstroms).
+     * Same as strength() method, but provides access to the metric components.
+     * @param tvalue2 placeholder for translation component (Angstrom^2).
+     * @param rvalue2 placeholder for rotation component (Angstrom^2).
+     * @return the strength (Angstroms).
      */
-    float rmsd () const;
-    
-    /**
-     * [DEPRECATED]
-     * Computes the distance between two transfo.  For more details,
-     * see a discussion of the metric used in P. Gendron, S. Lemieuxs
-     * and F. Major (2001) Quantitative analysis of nucleic acid
-     * three-dimensional structures, J. Mol. Biol. 308(5):919-936
-     * @param m the other transfo.
-     * @return the computed distance.
-     */
-    float distance_old (const HomogeneousTransfo &m) const;
+    float strength (float& tvalue2, float& rvalue2) const;
 
     /**
      * M: m -> m'
@@ -394,28 +435,28 @@ namespace mccore
      * @param m the transfo to compare to.
      * @return the computed distance (Angstroms).
      */
-    float distance (const HomogeneousTransfo &m) const;
+    float distance (const HomogeneousTransfo &m) const
+    {
+      return (this->invert () * m).strength ();
+    }
 
     /**
-     * M: m -> m'
-     * N: n -> n'
-     * Computes the rmsd of the transfo that represents n' in m''s
-     * referential when m and n are both aligned to the global referential
-     * (This transfo is M^-1 * N).
+     * Same as distance() method, but using unstable invert() method.
      * @param m the transfo to compare to.
-     * @return the computed rmsd (Angstroms).
+     * @return the computed distance (Angstroms).
      */
-    float rmsd (const HomogeneousTransfo &m) const;
-    
+    float distance_unstable (const HomogeneousTransfo &m) const
+    {
+      return (this->invert_unstable () * m).strength ();
+    }
+
     /**
-     * Computes the squared distance between two transfo.  For more details,
-     * see a discussion of the metric used in P. Gendron, S. Lemieuxs
-     * and F. Major (2001) Quantitative analysis of nucleic acid
-     * three-dimensional structures, J. Mol. Biol. 308(5):919-936
-     * @param m the other transfo.
-     * @return the computed distance.
+     * Computes the euclidian RMSD between this transfo and another transfo, viewing
+     * matrices has 12D vectors (ignoring last row).
+     * @param t the transfo to compare to.
+     * @return the computed euclidian distance (Angstroms).
      */
-    float squareDistance (const HomogeneousTransfo &m) const;
+    double euclidianRMSD (const HomogeneousTransfo& t) const;
 
     /**
      * Computes the homogeneous transformation matrix that represents the
@@ -427,8 +468,13 @@ namespace mccore
      * @param p3 point P3.
      * @return the coordinate frame.
      */
-    static HomogeneousTransfo align (const Vector3D &p1, const Vector3D &p2, const Vector3D &p3);
-    
+    static HomogeneousTransfo align (const Vector3D &p1, const Vector3D &p2, const Vector3D &p3)
+    {
+      Vector3D v = (p2 - p1).normalize ();
+      Vector3D u = ((p2 - p1).cross(p3 - p1)).normalize ();
+      return HomogeneousTransfo::frame (u, v, (u.cross (v)).normalize (), p1);
+    }
+
     /**
      * Computes the homogeneous transformation matrix that represents the
      * coordinate frame <u,v,w> with origin at O in the standard Euclidian
@@ -439,20 +485,35 @@ namespace mccore
      * @param o point O, the frame's origin.
      * @return the coordinate frame.
      */
-    static HomogeneousTransfo frame (const Vector3D& u, const Vector3D& v, const Vector3D& w, const Vector3D& o);
-
-
-    float orthoError () const;
+    static HomogeneousTransfo frame (const Vector3D& u, const Vector3D& v, const Vector3D& w, const Vector3D& o)
+    {
+      return HomogeneousTransfo (u.getX (), v.getX (), w.getX (), o.getX (),
+				 u.getY (), v.getY (), w.getY (), o.getY (),
+				 u.getZ (), v.getZ (), w.getZ (), o.getZ ());
+    }
 
     // I/O  -----------------------------------------------------------------
     
     /**
      * Outputs to a stream.
-     * @param out the output stream.
-     * @return the output stream used.
+     * @param os the output stream.
+     * @return the written stream.
      */
-    ostream &output (ostream &out) const;
-    
+    ostream& write (ostream& os) const;
+
+    /**
+     * Outputs to a binary stream.
+     * @param obs the output stream.
+     * @return the written stream.
+     */
+    oBinstream& write (oBinstream& obs) const;
+
+    /**
+     * Set transfo from a binary stream.
+     * @param ibs the input stream.
+     * @return the read stream.
+     */
+    iBinstream& read (iBinstream& ibs);
   };
   
   /**
@@ -461,7 +522,7 @@ namespace mccore
    * @param obj the transfo to fill.
    * @return the used input binary stream.
    */
-  iBinstream& operator>> (iBinstream& ibs, HomogeneousTransfo &obj);
+  iBinstream& operator>> (iBinstream& ibs, HomogeneousTransfo& obj);
   
   /**
    * Writes the transfo to the output binary stream.
@@ -469,7 +530,7 @@ namespace mccore
    * @param obj the transfo to write.
    * @return the used output binary stream.
    */
-  oBinstream& operator<< (oBinstream& obs, const HomogeneousTransfo &obj);
+  oBinstream& operator<< (oBinstream& obs, const HomogeneousTransfo& obj);
 
 }
 
@@ -483,7 +544,7 @@ namespace std
    * @param out the output stream.
    * @return the output stream used.
    */
-  ostream &operator<< (ostream &out, const mccore::HomogeneousTransfo &h);
+  ostream& operator<< (ostream& os, const mccore::HomogeneousTransfo& obj);
   
 }
 
