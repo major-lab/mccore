@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:31:01 2004
-// $Revision: 1.13.2.4 $
+// $Revision: 1.13.2.5 $
 // 
 // This file is part of mccore.
 // 
@@ -31,7 +31,7 @@
 #include "AbstractModel.h"
 #include "Algo.h"
 #include "Exception.h"
-// #include "Path.h"
+#include "Path.h"
 #include "Residue.h"
 #include "OrientedGraph.h"
 
@@ -55,7 +55,7 @@ namespace mccore
    * iterators.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.h,v 1.13.2.4 2006-06-22 16:14:19 larosem Exp $
+   * @version $Id: GraphModel.h,v 1.13.2.5 2006-07-03 23:48:52 larosem Exp $
    */
   class GraphModel : public AbstractModel, public OrientedGraph< Residue*, Relation*, int, int, less_deref< Residue > >
   {
@@ -459,27 +459,27 @@ namespace mccore
 
   private:
     
-//     /**
-//      * Fills the Molecule with the elements from this identified with the
-//      * Path vector.
-//      * @param molecule the molecule to fill.
-//      * @param cycles the collection of Paths describing the cycles.
-//      */
-//     void fillMoleculeWithCycles (Molecule &molecule, const vector< Path< label, unsigned int > > &cycles) const;
+    /**
+     * Fills the Molecule with the elements from this identified with the
+     * Path vector.
+     * @param molecule the molecule to fill.
+     * @param cycles the collection of Paths describing the cycles.
+     */
+    void fillMoleculeWithCycles (Molecule &molecule, const vector< Path< GraphModel::label, GraphModel::size_type > > &cycles) const;
 
   public:
     
-//     /**
-//      * Finds a minimum cycle basis from this GraphModel.
-//      * @param molecule the container to fill with the cycles.
-//      */
-//     void minimumCycleBasis (Molecule &molecule);
+    /**
+     * Finds a minimum cycle basis from this GraphModel.
+     * @param molecule the container to fill with the cycles.
+     */
+    void minimumCycleBasis (Molecule &molecule) const;
 
-//     /**
-//      * Finds the union of minimum cycle bases from this GraphModel.
-//      * @param molecule the container to fill with the cycles.
-//      */
-//     void unionMinimumCycleBases (Molecule &molecule);
+    /**
+     * Finds the union of minimum cycle bases from this GraphModel.
+     * @param molecule the container to fill with the cycles.
+     */
+    void unionMinimumCycleBases (Molecule &molecule);
     
     // I/O  -----------------------------------------------------------------
 

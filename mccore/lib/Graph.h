@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // Graph.h
-// Copyright © 2004-05 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2004-06 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 00:05:15 2004
-// $Revision: 1.27.2.2 $
+// $Revision: 1.27.2.3 $
 // 
 // This file is part of mccore.
 // 
@@ -48,7 +48,7 @@ namespace mccore
    * costly.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Graph.h,v 1.27.2.2 2006-04-05 22:22:51 larosem Exp $
+   * @version $Id: Graph.h,v 1.27.2.3 2006-07-03 23:48:46 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -254,7 +254,7 @@ namespace mccore
 
   protected:
 
-    typedef map< EndVertices, label > EV2ELabel;
+    typedef map< EndVertices, edge_label > EV2ELabel;
     typedef map< const V*, label, less_deref< V, Vertex_Comparator > > V2VLabel;
     
     /**

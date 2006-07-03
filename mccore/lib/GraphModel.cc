@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.16.2.4 $
-// $Id: GraphModel.cc,v 1.16.2.4 2006-06-22 16:14:15 larosem Exp $
+// $Revision: 1.16.2.5 $
+// $Id: GraphModel.cc,v 1.16.2.5 2006-07-03 23:48:49 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -48,6 +48,7 @@
 #include "ResidueFactoryMethod.h"
 #include "ResidueType.h"
 #include "ResId.h"
+#include "UndirectedGraph.h"
 
 
 
@@ -58,7 +59,7 @@ namespace mccore
    * Unary negate function.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.cc,v 1.16.2.4 2006-06-22 16:14:15 larosem Exp $
+   * @version $Id: GraphModel.cc,v 1.16.2.5 2006-07-03 23:48:49 larosem Exp $
    */
   template < class V , class VC >
   class negate : public unary_function< V, bool >
@@ -431,71 +432,108 @@ namespace mccore
   }
   
 
-//   void
-//   GraphModel::fillMoleculeWithCycles (Molecule &molecule, const vector< Path< label, unsigned int > > &cycles) const
-//   {
-//     vector< Path< label, unsigned int > >::const_iterator cit;
-//     set< const Residue*, less_deref< Residue > > resCopies;
+  void
+  GraphModel::fillMoleculeWithCycles (Molecule &molecule, const vector< Path< GraphModel::label, GraphModel::size_type > > &cycles) const
+  {
+    vector< Path< GraphModel::label, GraphModel::size_type > >::const_iterator cit;
+    set< const Residue*, less_deref< Residue > > resCopies;
+    AbstractModel *tmp;
 
-//     for (cit = cycles.begin (); cycles.end () != cit; ++cit)
-//       {
-// 	const Path< label, unsigned int > &cycle = *cit;
-// 	Path< label, unsigned int >::const_iterator pit;
-// 	GraphModel gm;
-// 	AbstractModel::iterator mit;
-// 	Residue *ref;
-// 	label refl;
+    tmp = molecule.getModelFM ()->createModel ();
+    for (cit = cycles.begin (); cycles.end () != cit; ++cit)
+      {
+	const Path< GraphModel::label, GraphModel::size_type > &cycle = *cit;
+	GraphModel *gm;
+	Path< GraphModel::label, GraphModel::size_type >::const_iterator pit;
+	AbstractModel::iterator mit;
+	Residue *ref;
+	label refl;
 
-// 	molecule.insert (gm);
-// 	GraphModel &model = (GraphModel&) molecule.back ();
-
-// 	refl = cycle.back ();
-// 	ref = &*(mit = model.insert (*internalGetVertex (refl), internalGetVertexWeight (refl)));
-// 	resCopies.insert (ref);
-// 	for (pit = cycle.begin (); cycle.end () != pit; ++pit)
-// 	  {
-// 	    label resl;
-// 	    Residue *res;
-// 	    Relation *rel;
+	molecule.insert (*tmp);
+	AbstractModel &model = molecule.back ();
+	gm = dynamic_cast< GraphModel* > (&model);
+	refl = cycle.back ();
+	ref = &*(mit = model.insert (*internalGetVertex (refl)));
+	resCopies.insert (ref);
+	for (pit = cycle.begin (); cycle.end () != pit; ++pit)
+	  {
+	    GraphModel::label resl;
+	    Residue *res;
 	    
-// 	    resl = *pit;
-// 	    res = &*(mit = model.insert (*internalGetVertex (resl), internalGetVertexWeight (resl)));
-// 	    rel = internalGetEdge (refl, resl)->clone ();
-// 	    rel->reassignResiduePointers (resCopies);
-// 	    model.connect (ref, res, rel, internalGetEdgeWeight (refl, resl));
-// 	    refl = resl;
-// 	    ref = res;
-// 	  }
-//       }
-//   }
+	    resl = *pit;
+	    res = &*(mit = model.insert (*internalGetVertex (resl)));
+	    if (0 != gm)
+	      {
+		Relation *rel;
+		
+		rel = internalGetEdge (refl, resl)->clone ();
+		rel->reassignResiduePointers (resCopies);
+		gm->connect (ref, res, rel);
+	      }
+	    refl = resl;
+	    ref = res;
+	  }
+      }
+    delete tmp;
+  }
   
 
-//   void
-//   GraphModel::minimumCycleBasis (Molecule &molecule)
-//   {
-//     vector< Path< label, unsigned int > > cycles;
-//     GraphModelFM gFM;
-    
-//     molecule.clear ();
-//     molecule.setModelFM (&gFM);
-//     annotate ();
-//     internalMinimumCycleBasis (cycles);
-//     fillMoleculeWithCycles (molecule, cycles);
-//   }
+  void
+  GraphModel::minimumCycleBasis (Molecule &molecule) const
+  {
+    typedef UndirectedGraph< GraphModel::label, bool, GraphModel::size_type, GraphModel::size_type > UGraph;
+    UGraph graph;
+    vector< Path< UGraph::label, UGraph::size_type > > cycles;
+    const_iterator it;
+    edge_const_iterator eit;
+
+    for (it = begin (); end () != it; ++it)
+      {
+	graph.insert (getVertexLabel (const_cast< Residue* > (&*it)));
+      }
+    for (eit = edge_begin (); edge_end () != eit; ++eit)
+      {
+	const Relation *rel = *eit;
+	
+	if (rel->getRef () < rel->getRes ())
+	  {
+	    graph.connect (getVertexLabel (const_cast< Residue* > (rel->getRef ())),
+			   getVertexLabel (const_cast< Residue* > (rel->getRes ())),
+			   true, 1);
+	  }
+      }
+    graph.internalMinimumCycleBasis (cycles);
+    fillMoleculeWithCycles (molecule, cycles);
+  }
 
   
-//   void
-//   GraphModel::unionMinimumCycleBases (Molecule &molecule)
-//   {
-//     vector< Path< label, unsigned int > > cycles;
-//     GraphModelFM gFM;
+  void
+  GraphModel::unionMinimumCycleBases (Molecule &molecule)
+  {
+    typedef UndirectedGraph< GraphModel::label, bool, GraphModel::size_type, GraphModel::size_type > UGraph;
+    UGraph graph;
+    vector< Path< UGraph::label, UGraph::size_type > > cycles;
+    const_iterator it;
+    edge_const_iterator eit;
 
-//     molecule.clear ();
-//     molecule.setModelFM (&gFM);
-//     annotate ();
-//     internalUnionMinimumCycleBases (cycles);
-//     fillMoleculeWithCycles (molecule, cycles);
-//   }
+    for (it = begin (); end () != it; ++it)
+      {
+	graph.insert (getVertexLabel (const_cast< Residue* > (&*it)));
+      }
+    for (eit = edge_begin (); edge_end () != eit; ++eit)
+      {
+	const Relation *rel = *eit;
+	
+	if (rel->getRef () < rel->getRes ())
+	  {
+	    graph.connect (getVertexLabel (const_cast< Residue* > (rel->getRef ())),
+			   getVertexLabel (const_cast< Residue* > (rel->getRes ())),
+			   true, 1);
+	  }
+      }
+    graph.internalUnionMinimumCycleBases (cycles);
+    fillMoleculeWithCycles (molecule, cycles);
+  }
 
   
   ostream&
