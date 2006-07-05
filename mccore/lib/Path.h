@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // Path.h
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 24 21:31:52 2003
-// $Revision: 1.11 $
+// $Revision: 1.11.2.1 $
 // 
 // This file is part of mccore.
 // 
@@ -40,7 +40,7 @@ namespace mccore
    * A path in a graph.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Path.h,v 1.11 2005-11-04 19:46:47 larosem Exp $
+   * @version $Id: Path.h,v 1.11.2.1 2006-07-05 23:17:24 larosem Exp $
    */
   template< class node_type, class valuetype >
   class Path : public vector< node_type >
@@ -107,8 +107,12 @@ namespace mccore
     {
       if (value < other.value
 	  || (value == other.value
-	      && (size () < other.size ()
-		  || (size () == other.size ()))))
+	      && size () < other.size ()))
+	{
+	  return true;
+	}
+      else if (value == other.value
+	       && size () == other.size ())
 	{
 	  const_iterator cit;
 	  const_iterator ocit;
@@ -122,7 +126,10 @@ namespace mccore
 	    }
 	  return true;
 	}
-      return false;
+      else
+	{
+	  return false;
+	}
     }
 
     /**

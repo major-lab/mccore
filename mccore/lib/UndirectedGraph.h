@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Dec 10 19:09:13 2004
-// $Revision: 1.18.2.3 $
+// $Revision: 1.18.2.4 $
 // 
 // This file is part of mccore.
 // 
@@ -51,7 +51,7 @@ namespace mccore
    * Undirected graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: UndirectedGraph.h,v 1.18.2.3 2006-07-03 23:48:58 larosem Exp $
+   * @version $Id: UndirectedGraph.h,v 1.18.2.4 2006-07-05 23:17:28 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -447,7 +447,7 @@ namespace mccore
      * @param paths a collection of Path to fill with the SPT.
      */
     template< class Compare >
-    void sptDijkstraTiernan (label source, vector< Path< label, size_type > > &paths, Compare comparator = less< size_type > ()) const
+    void sptDijkstraTiernan (label source, vector< Path< label, size_type > > &paths, Compare comparator = less< label > ()) const
     {
       const size_type MAXUIVALUE = numeric_limits< size_type >::max ();
       label w;
@@ -527,126 +527,126 @@ namespace mccore
 	}
     }
     
-    /**
-     * Dijkstra's algorithm for the shortest path in a directed graph.  The
-     * SPT is optimized for graphs with non-negative edge weights.  A path
-     * P(x,y) is pruned if there is a z in P(x,y) so that z < x.  The path's
-     * value is reset to the max value of the Path's value type.  The source
-     * (x) is at the beginning of the path.  The value of the edge weights is
-     * fixed and given by value.
-     * <pre>
-     * NODE v, w;
-     * SET V, S;             both V and S are SETS
-     * int Dist[MAX][MAX];   distance from node v to w
-     * int D[MAX];           current distance from the root
-     * int P[MAX];           backward path towards root
-     * 
-     * S = {ROOT}; 
-     * for (all other nodes w in V-S) {
-     *   if (areConnected (ROOT, w) and ROOT < w) {
-     *     D[w] = Dist[ROOT][w];
-     *     P[w] = ROOT;
-     * }
-     * while (S is not yet V) {
-     *   choose node w in V-S such that D[w] is minimum;
-     *   S = S union {w};
-     *   for (each node v in V-S)
-     *     if (D[v] > D[w] + Dist[w][v] and areConnected (w, v) and ROOT < v) {
-     *       D[v] = D[w] + Dist[w][v];
-     *       P[v] = w;
-     *     }
-     * }
-     * </pre>
-     * @param source the source node id of the paths.
-     * @param paths a collection of Path to fill with the SPT.
-     * @param val the fixed value of edge weights.
-     * @param comparator the node comparator.
-     */
-    template< class FW, class Compare >
-    void sptDijkstraTiernanWithFixedValues (label source, vector< Path< label, FW > > &paths, const FW &val) const
-    {
-      const FW MAXVAL = numeric_limits< FW >::max ();
-      label w;
-      size_type graphsize;
-      vector< label > C;
-// <<<<<<< UndirectedGraph.h
-//       Compare comparator;
-// =======
-      const unsigned int MAXUIVALUE = numeric_limits< unsigned int >::max ();
-// >>>>>>> 1.16
+//     /**
+//      * Dijkstra's algorithm for the shortest path in a directed graph.  The
+//      * SPT is optimized for graphs with non-negative edge weights.  A path
+//      * P(x,y) is pruned if there is a z in P(x,y) so that z < x.  The path's
+//      * value is reset to the max value of the Path's value type.  The source
+//      * (x) is at the beginning of the path.  The value of the edge weights is
+//      * fixed and given by value.
+//      * <pre>
+//      * NODE v, w;
+//      * SET V, S;             both V and S are SETS
+//      * int Dist[MAX][MAX];   distance from node v to w
+//      * int D[MAX];           current distance from the root
+//      * int P[MAX];           backward path towards root
+//      * 
+//      * S = {ROOT}; 
+//      * for (all other nodes w in V-S) {
+//      *   if (areConnected (ROOT, w) and ROOT < w) {
+//      *     D[w] = Dist[ROOT][w];
+//      *     P[w] = ROOT;
+//      * }
+//      * while (S is not yet V) {
+//      *   choose node w in V-S such that D[w] is minimum;
+//      *   S = S union {w};
+//      *   for (each node v in V-S)
+//      *     if (D[v] > D[w] + Dist[w][v] and areConnected (w, v) and ROOT < v) {
+//      *       D[v] = D[w] + Dist[w][v];
+//      *       P[v] = w;
+//      *     }
+//      * }
+//      * </pre>
+//      * @param source the source node id of the paths.
+//      * @param paths a collection of Path to fill with the SPT.
+//      * @param val the fixed value of edge weights.
+//      * @param comparator the node comparator.
+//      */
+//     template< class FW, class Compare >
+//     void sptDijkstraTiernanWithFixedValues (label source, vector< Path< label, FW > > &paths, const FW &val) const
+//     {
+//       const FW MAXVAL = numeric_limits< FW >::max ();
+//       label w;
+//       size_type graphsize;
+//       vector< label > C;
+// // <<<<<<< UndirectedGraph.h
+// //       Compare comparator;
+// // =======
+//       const unsigned int MAXUIVALUE = numeric_limits< unsigned int >::max ();
+// // >>>>>>> 1.16
       
-      graphsize = this->size ();
-      paths.clear ();
-      paths.resize (graphsize);
+//       graphsize = this->size ();
+//       paths.clear ();
+//       paths.resize (graphsize);
       
-      // Initialize ---
-      for  (w = 0; w < graphsize; ++w)
-	{
-	  int value;
+//       // Initialize ---
+//       for  (w = 0; w < graphsize; ++w)
+// 	{
+// 	  int value;
 	  
-	  paths[w].push_back (source);
-	  if  (w == source)
-	    {
-	      value = MAXVAL;
-	    }
-	  else
-	    {
-	      if (internalAreConnected (source, w))
-		{
-		  value = val;
-		  paths[w].push_back (w);
-		}
-	      else
-		{
-		  value = MAXVAL;
-		}
-	      C.push_back (w);
-	    }
-	  paths[w].setValue (value);
-	}
+// 	  paths[w].push_back (source);
+// 	  if  (w == source)
+// 	    {
+// 	      value = MAXVAL;
+// 	    }
+// 	  else
+// 	    {
+// 	      if (internalAreConnected (source, w))
+// 		{
+// 		  value = val;
+// 		  paths[w].push_back (w);
+// 		}
+// 	      else
+// 		{
+// 		  value = MAXVAL;
+// 		}
+// 	      C.push_back (w);
+// 	    }
+// 	  paths[w].setValue (value);
+// 	}
       
-      while (! C.empty ())
-	{
-	  typename vector< label >::iterator min_iter;
-	  typename vector< label >::iterator k;
-	  FW min_value;
+//       while (! C.empty ())
+// 	{
+// 	  typename vector< label >::iterator min_iter;
+// 	  typename vector< label >::iterator k;
+// 	  FW min_value;
 	  
-	  min_iter = C.begin ();
-	  min_value = paths[*min_iter].getValue ();
+// 	  min_iter = C.begin ();
+// 	  min_value = paths[*min_iter].getValue ();
 	  
-	  for  (k = C.begin (); k != C.end (); ++k)
-	    if  (paths[*k].getValue () < min_value)
-	      {
-		min_value = paths[*k].getValue ();
-		min_iter = k;
-	      }
-	  w = *min_iter;
-	  C.erase (min_iter);
+// 	  for  (k = C.begin (); k != C.end (); ++k)
+// 	    if  (paths[*k].getValue () < min_value)
+// 	      {
+// 		min_value = paths[*k].getValue ();
+// 		min_iter = k;
+// 	      }
+// 	  w = *min_iter;
+// 	  C.erase (min_iter);
 	  
-	  // Break if the elements remaining in C are not connected to the
-	  // source.
-	  if  (min_value == MAXVAL)
-	    {
-	      break;
-	    }
+// 	  // Break if the elements remaining in C are not connected to the
+// 	  // source.
+// 	  if  (min_value == MAXVAL)
+// 	    {
+// 	      break;
+// 	    }
 	  
-	  for (k = C.begin (); C.end () != k; ++k)
-	    {
-	      FW new_val;
-	      label v;
+// 	  for (k = C.begin (); C.end () != k; ++k)
+// 	    {
+// 	      FW new_val;
+// 	      label v;
 	      
-	      v = *k;
-	      if (comparator (source, w)
-		  && internalAreConnected (w, v)
-		  && paths[v].getValue () > (new_val = min_value + val))
-	        {
-		  paths[v] = paths[w];
-		  paths[v].push_back (v);
-		  paths[v].setValue (new_val);
-		}
-	    }
-	}
-    }
+// 	      v = *k;
+// 	      if (comparator (source, w)
+// 		  && internalAreConnected (w, v)
+// 		  && paths[v].getValue () > (new_val = min_value + val))
+// 	        {
+// 		  paths[v] = paths[w];
+// 		  paths[v].push_back (v);
+// 		  paths[v].setValue (new_val);
+// 		}
+// 	    }
+// 	}
+//     }
     
     /**
      * Uses the Gaussian Elimination algorithm to find non linearly
@@ -856,7 +856,7 @@ namespace mccore
 	  vector< Path< label, size_type > > tmp;
 	  typename EV2ELabel::const_iterator ecIt;
 
-	  sptDijkstraTiernan (i, tmp, less< size_type > ());
+	  sptDijkstraTiernan (i, tmp, less< label > ());
 	  for (ecIt = this->ev2elabel.begin (); this->ev2elabel.end () != ecIt; ++ecIt)
 	    {
 	      label j;
@@ -895,7 +895,7 @@ namespace mccore
 	}
       
       std::sort (cycles.begin (), cycles.end ());
-      gOut (3) << "Found " << cycles.size () << " potential cycles before elimination" << endl;
+      gOut (3) << "Found " << cycles.size () << " potential cycles before elimination" << endl << cycles << endl;
       cycles = gaussianElimination (cycles);
       std::sort (cycles.begin (), cycles.end ());
       gOut (3) << "Found " << cycles.size () << " cycles." << endl;
@@ -1035,7 +1035,7 @@ namespace mccore
 	  label y;
 	  OrientedGraph< label, bool, bool, size_type > &Dr = D[r];
 	  
-	  sptDijkstraTiernan (r, spt, greater< size_type > ());
+	  sptDijkstraTiernan (r, spt, greater< label > ());
 	  for (y = 0; this->size () > y && y < r; ++y)
 	    {
 	      Path< label, size_type > &py = spt[y];
@@ -1059,7 +1059,7 @@ namespace mccore
 			    {
 			      Dr.addReversePath (py, 1);
 			      Dr.addReversePath (pz, 1);
-			      Dr.connect (y, *z, 1);
+			      Dr.connect (y, *z, true, 1);
 			      S.push_back (*z);
 			    }
 			  else if (pz.getValue () != py.getValue () + 1 && *z < y)
@@ -1094,42 +1094,44 @@ namespace mccore
 		    }
 		}
 	      for (p = S.begin (); S.end () != p; ++p)
-		for (q = S.begin (); S.end () != q; ++q)
-		  {
-		    if (p != q)
-		      {
-			Path< label, size_type > &pp = spt[*p];
-			Path< label, size_type > &pq = spt[*q];
-			set< label > sp;
-			set< label > sq;
-			vector< label > inter;
+		{
+		  for (q = S.begin (); S.end () != q; ++q)
+		    {
+		      if (p != q)
+			{
+			  Path< label, size_type > &pp = spt[*p];
+			  Path< label, size_type > &pq = spt[*q];
+			  set< label > sp;
+			  set< label > sq;
+			  vector< label > inter;
 
-			sp.insert (pp.begin (), pp.end ());
-			sq.insert (pq.begin (), pq.end ());
-			set_intersection (sp.begin (), sp.end (),
-					  sq.begin (), sq.end (),
-					  inserter (inter, inter.begin ()));
+			  sp.insert (pp.begin (), pp.end ());
+			  sq.insert (pq.begin (), pq.end ());
+			  set_intersection (sp.begin (), sp.end (),
+					    sq.begin (), sq.end (),
+					    inserter (inter, inter.begin ()));
 			
-			if (1 == inter.size () && inter.front () == r)
-			  {
-			    if (*p < *q)
-			      {
-				prototypes.push_back (pp);
-				Cycle< label, size_type > &cycle = prototypes.back ();
+			  if (1 == inter.size () && inter.front () == r)
+			    {
+			      if (*p < *q)
+				{
+				  prototypes.push_back (pp);
+				  Cycle< label, size_type > &cycle = prototypes.back ();
 
-				cycle.setP (cycle.size () - 1);
-				cycle.setQ (cycle.size () + 1);
-				cycle.push_back (y);
-				cycle.insert (cycle.end (), pq.rbegin (), pq.rend () - 1);
-				cycle.setValue (cycle.getValue () + pq.getValue () + 2);
-				gOut (4) << cycle << " r = " << cycle.getR ()
-					 << " p = " << cycle.getP ()
-					 << " y = " << cycle.getY ()
-					 << " q = " << cycle.getQ () << endl;
-			      }
-			  }
-		      }
-		  }
+				  cycle.setP (cycle.size () - 1);
+				  cycle.setQ (cycle.size () + 1);
+				  cycle.push_back (y);
+				  cycle.insert (cycle.end (), pq.rbegin (), pq.rend () - 1);
+				  cycle.setValue (cycle.getValue () + pq.getValue () + 2);
+				  gOut (4) << cycle << " r = " << cycle.getR ()
+					   << " p = " << cycle.getP ()
+					   << " y = " << cycle.getY ()
+					   << " q = " << cycle.getQ () << endl;
+				}
+			    }
+			}
+		    }
+		}
 	    }
 	}
       std::sort (prototypes.begin (), prototypes.end ());
@@ -1163,7 +1165,7 @@ namespace mccore
 		{
 		  CR.push_back (*pPathIterator);
 		  Path< label, size_type > &cycle = CR.back ();
-		
+
 		  if (0 == prototype.size () % 2)
 		    {
 		      size_type y;
@@ -1181,7 +1183,9 @@ namespace mccore
 		}
 	    }
 	}
+      std::sort (CR.begin (), CR.end ());
       gOut (3) << "Found " << CR.size () << " cycles" << endl;
+      gOut (4) << CR << endl;
     }
     
     /**

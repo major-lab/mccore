@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.16.2.5 $
-// $Id: GraphModel.cc,v 1.16.2.5 2006-07-03 23:48:49 larosem Exp $
+// $Revision: 1.16.2.6 $
+// $Id: GraphModel.cc,v 1.16.2.6 2006-07-05 23:17:19 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -59,7 +59,7 @@ namespace mccore
    * Unary negate function.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.cc,v 1.16.2.5 2006-07-03 23:48:49 larosem Exp $
+   * @version $Id: GraphModel.cc,v 1.16.2.6 2006-07-05 23:17:19 larosem Exp $
    */
   template < class V , class VC >
   class negate : public unary_function< V, bool >
@@ -502,6 +502,7 @@ namespace mccore
 			   true, 1);
 	  }
       }
+    gOut (0) << graph << endl;
     graph.internalMinimumCycleBasis (cycles);
     fillMoleculeWithCycles (molecule, cycles);
   }

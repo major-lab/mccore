@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu May 10 14:49:18 2001
-// $Revision: 1.7.2.3 $
+// $Revision: 1.7.2.4 $
 // 
 // This file is part of mccore.
 // 
@@ -44,7 +44,7 @@ namespace mccore
    * Directed graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: OrientedGraph.h,v 1.7.2.3 2006-07-03 23:48:55 larosem Exp $
+   * @version $Id: OrientedGraph.h,v 1.7.2.4 2006-07-05 23:17:22 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -412,38 +412,37 @@ namespace mccore
     /**
      * Finds the all the paths from the label q to the root.  Must be a non
      * cyclic graph.  edge weights must implement operator+.
-     * @param Dr the oriented graph (with no cycles).
      * @param q the starting label.
-     * @return a collection of Paths from q to the root in Dr.
+     * @return a collection of Paths from q to the root in the OrientedGraph.
      */
-    vector< Path< V, EW > > breadthFirstPaths (label q) const
+    vector< Path< V, EW > > breadthFirstPaths (V &q)
     {
       vector< Path< V, EW> > result;
-      list< Path< label, EW > > lst (1, Path< label, EW > ());
-      Path< label, EW > &tmp = lst.front ();
+      list< Path< V, EW > > lst (1, Path< V, EW > ());
+      Path< V, EW > &tmp = lst.front ();
       
       tmp.push_back (q);
       tmp.setValue (0);
       while (! lst.empty ())
 	{
-	  Path< label, EW > &front = lst.front ();
-	  label endNode;
-	  list< label > neighbors;
-	  typename list< label >::iterator neighborsIt;
+	  Path< V, EW > &front = lst.front ();
+	  V endNode;
+	  list< V > neighbors;
+	  typename list< V >::iterator neighborsIt;
 
 	  endNode = front.back ();
-	  neighbors = internalOutNeighborhood (endNode);
+	  neighbors = outNeighborhood (endNode);
 	  neighborsIt = neighbors.begin ();
 	  if (neighbors.end () == neighborsIt)
 	    {
-	      typename Path< label, EW >::reverse_iterator rIt;
+	      typename Path< V, EW >::reverse_iterator rIt;
 
 	      result.push_back (Path< V, EW > ());
 	      Path< V, EW > &tmp = result.back ();
 	      
 	      for (rIt = front.rbegin (); front.rend () != rIt; ++rIt)
 		{
-		  tmp.push_back (internalGetVertex (*rIt));
+		  tmp.push_back (*rIt);
 		}
 	      tmp.setValue (front.getValue ());
 	    }
@@ -452,10 +451,10 @@ namespace mccore
 	      for (; neighbors.end () != neighborsIt; ++neighborsIt)
 		{
 		  lst.push_back (front);
-		  Path< label, EW > &tmp = lst.back ();
+		  Path< V, EW > &tmp = lst.back ();
 
 		  tmp.push_back (*neighborsIt);
-		  tmp.setValue (tmp.getValue () + internalGetEdgeWeight (endNode, *neighborsIt));
+		  tmp.setValue (tmp.getValue () + getEdgeWeight (endNode, *neighborsIt));
 		}
 	    }
 	  lst.pop_front ();
@@ -487,7 +486,7 @@ namespace mccore
 	    }
 	  if (! areConnected (*lit, *fit))
 	    {
-	      connect (*lit, *fit, val);
+	      connect (*lit, *fit, true, val);
 	    }
 	}
     }
