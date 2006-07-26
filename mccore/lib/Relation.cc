@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.58 $
-// $Id: Relation.cc,v 1.58 2006-05-15 19:52:23 thibaup Exp $
+// $Revision: 1.59 $
+// $Id: Relation.cc,v 1.59 2006-07-26 15:58:56 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -226,6 +226,31 @@ namespace mccore
     return type_aspb & Relation::pairing_mask;
   }
 
+
+  unsigned char
+  Relation::parseAnnotationMask (const string& mask_str) throw (IntLibException)
+  {
+    unsigned char bit_mask = 0;
+    string::const_iterator it;
+    
+    for (it = mask_str.begin (); it != mask_str.end (); ++it)
+      switch (*it)
+      {
+      case 'A': case 'a': bit_mask |= Relation::adjacent_mask; break;
+      case 'S': case 's': bit_mask |= Relation::stacking_mask; break;
+      case 'P': case 'p': bit_mask |= Relation::pairing_mask; break;
+      case 'B': case 'b': bit_mask |= Relation::backbone_mask; break;
+      default:
+	{
+	  IntLibException ex ("", __FILE__, __LINE__);
+	  ex << "invalid mask \'" << *it << "\' in annotation mask string \"" 
+	     << mask_str << "\"";
+	  throw ex;
+	}
+      }
+
+    return bit_mask;
+  }
 
   void
   Relation::reassignResiduePointers (const set< const Residue*, less_deref< Residue> > &resSet) throw (NoSuchElementException)

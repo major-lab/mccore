@@ -3,7 +3,7 @@
 // Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.26 $
+// $Revision: 1.27 $
 // 
 // This file is part of mccore.
 // 
@@ -76,7 +76,7 @@ namespace mccore
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.26 2006-05-15 18:10:21 thibaup Exp $
+   * @version $Id: Relation.h,v 1.27 2006-07-26 15:58:56 thibaup Exp $
    */
   class Relation
   {
@@ -327,6 +327,23 @@ namespace mccore
      * Return True only if the annotated relation is from the pairing family.
      */
     bool isPairing () const;
+
+    /**
+     * Parse an annotation mask string into a bitmask. The string is composed by the 
+     * concatenation of characters A, S, P or B (case-insensitive):
+     * 
+     *   A  annotate adjacency (phosphodiester linkage)
+     *   S  annotate base stacking
+     *   P  annotate base pairing
+     *   B  annotate hydrogen-bonding with backbone
+     *
+     * Throws an @ref IntLibException for any other character.
+     *
+     * @param mask_str The annotation mask string.
+     * @return The parsed annotation bitmask.
+     * @exception IntLibException
+     */
+    static unsigned char parseAnnotationMask (const string& mask_str) throw (IntLibException);
 
     /**
      * Resets the relation's annotation data and set it up from two new residues.
