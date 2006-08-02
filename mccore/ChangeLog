@@ -1,3 +1,76 @@
+2006-08-02  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/GraphModel.cc, lib/GraphModel.h, lib/HomogeneousTransfo.cc, lib/HomogeneousTransfo.h, lib/Makefile.in, lib/OrientedGraph.h, lib/Path.h, lib/Rmsd.h, lib/UndirectedGraph.h, Makefile.in, docs/Makefile.in, lib/Cycle.h, lib/Graph.h:
+	Final merge from 1.5.
+
+2006-07-26  Philippe Thibault  <thibaup@garlando.iro.umontreal.ca>
+
+	* lib/Pdbstream.h: removed class namespace in header prototype.
+
+	* lib/Relation.cc, lib/Relation.h: New static method
+	parseAnnotationMask() that parses a string into a bitmask.
+
+2006-07-05  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/UndirectedGraph.h, lib/Path.h, lib/OrientedGraph.h, lib/GraphModel.cc, lib/Cycle.h [rel-1-5]: Cycles update.
+
+2006-07-03  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/UndirectedGraph.h, lib/OrientedGraph.h, lib/GraphModel.h, lib/GraphModel.cc, lib/Graph.h [rel-1-5]: Unstable release.
+
+2006-06-29  Philippe Thibault  <thibaup@garlando.iro.umontreal.ca>
+
+	* ChangeLog, Makefile.in, NEWS, configure, configure.in, docs/Makefile.in, lib/HomogeneousTransfo.cc, lib/HomogeneousTransfo.h, lib/Makefile.in, lib/Residue.cc, lib/Rmsd.h, test/Makefile.in:
+	* Version 1.6.1
+
+
+	** HomogeneousTransfo class reimplemented
+
+	New implementation of HomogeneousTransfo class. Replaced the 16 float
+	array by 12 independent float variables for first three row of the 4X4
+	matrix. Last row is implicit (always {0,0,0,1}). The interface is
+	unchanged.
+
+	Using default gcc optimization (-O2), matrix multiplication is now
+	100X faster and matrix inversion is near 200X faster. Multiplication
+	by a 3D point (Vector3D) at same speed, however.
+
+	New implementation of matrix inversion. Previous implementation was
+	using the analytical simplification applicable to rigid body
+	transformation. However, this method shows unstable numerical
+	error. Therefore it was replaced by a general inversion method
+	applicable to any invertible matrix. This method isn't more precise
+	than the latter method as a one-shot, but numerical errors are
+	stable. Even if more floating point operations are needed to do so,
+	performance with default gcc optimization (-O2) is not
+	affected. Previous implementation was still conserved and renamed
+	invert_unstable().
+
+2006-06-22  Philippe Thibault  <thibaup@garlando.iro.umontreal.ca>
+
+	* Makefile.in: [rel-1-5] Added logo.jpg to dist files
+
+	* Makefile.in: Added logo.jpg to dist files
+
+	* Makefile.in, docs/Makefile.in, lib/Makefile.in:
+	  Tag: rel-1-5 (patch-6)
+	 	Makefile.in docs/Makefile.in lib/Makefile.in
+
+	Updated 'dist' rule
+	Removed 'release' rule
+
+	* Makefile.in: Makefile.in
+
+	* lib/Makefile.in, test/Makefile.in: removed rule 'release'
+
+	* Makefile.in, docs/Makefile.in, lib/Makefile.in: Updated rule 'dist'
+	Removed rule 'release'
+
+2006-06-22  Martin Larose  <larosem@iro.umontreal.ca>
+
+	* lib/GraphModel.h, lib/GraphModel.cc, configure.in, configure:
+	annotate and reannotate now use the backbone flag.
+
 2006-06-22  Philippe Thibault  <philippe.thibault@umontreal.ca>
 
 	* Makefile.in: Added logo.jpg to dist files
