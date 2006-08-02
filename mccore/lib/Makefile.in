@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.70 $
-# $Id: Makefile.in,v 1.70 2006-08-02 18:01:22 larosem Exp $
+# $Revision: 1.71 $
+# $Id: Makefile.in,v 1.71 2006-08-02 18:29:54 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -243,7 +243,7 @@ release: static
 dist:
 	@ for file in $(DISTFILES); do \
 	   ln $(srcdir)/$$file ../$(PACKAGE)-$(VERSION)/lib 2> /dev/null \
-	    || cp -p $(srcdir)/$$file ../$(PACKAGE)$(VERSION)/lib; \
+	    || cp -p $(srcdir)/$$file ../$(PACKAGE)-$(VERSION)/lib; \
 	  done
 
 Makefile: $(srcdir)/Makefile.in ../config.status
