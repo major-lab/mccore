@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // HomogeneousTransfo.h
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.22 $
-// $Id: HomogeneousTransfo.h,v 1.22 2006-06-29 19:12:07 thibaup Exp $
+// $Revision: 1.23 $
+// $Id: HomogeneousTransfo.h,v 1.23 2006-08-02 18:01:22 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -439,6 +439,16 @@ namespace mccore
     {
       return (this->invert () * m).strength ();
     }
+
+    /**
+     * Computes the squared distance between two transfo.  For more details,
+     * see a discussion of the metric used in P. Gendron, S. Lemieuxs
+     * and F. Major (2001) Quantitative analysis of nucleic acid
+     * three-dimensional structures, J. Mol. Biol. 308(5):919-936
+     * @param m the other transfo.
+     * @return the computed distance.
+     */
+    float squareDistance (const HomogeneousTransfo &m) const;
 
     /**
      * Same as distance() method, but using unstable invert() method.

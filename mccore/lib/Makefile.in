@@ -1,11 +1,11 @@
 #                            -*- Mode: Makefile -*-
 # Makefile.in
-# Copyright © 2000-05 Laboratoire de Biologie Informatique et Théorique.
+# Copyright © 2000-06 Laboratoire de Biologie Informatique et Théorique.
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.69 $
-# $Id: Makefile.in,v 1.69 2006-06-29 19:12:07 thibaup Exp $
+# $Revision: 1.70 $
+# $Id: Makefile.in,v 1.70 2006-08-02 18:01:22 larosem Exp $
 # 
 # This file is part of mccore.
 # 
@@ -76,20 +76,21 @@ HAVE_LIBMYSQL = @HAVE_LIBMYSQL@
 % : %.o
 
 
-RNAML_SOURCES = 
 RNAML_DIST_SOURCES = RnamlReader.cc RnamlWriter.cc
-
-ifeq ($(HAVE_LIBRNAML),1)
-        RNAML_SOURCES := $(RNAML_DIST_SOURCES)
-	RNAML_DIST_SOURCES =
-endif
-
-MYSQL_SOURCES =
 MYSQL_DIST_SOURCES = SqlReader.cc SqlExtrac.cc
 
+ifeq ($(HAVE_LIBRNAML),1)
+        RNAML_SOURCES = RnamlReader.cc \
+		   	 RnamlWriter.cc
+else
+	RNAML_SOURCES =
+endif
+
 ifeq ($(HAVE_LIBMYSQL),1)
-        MYSQL_SOURCES := $(MYSQL_DIST_SOURCES)
-	MYSQL_DIST_SOURCES = 
+        MYSQL_SOURCES = SqlReader.cc \
+		   	 SqlExtrac.cc
+else
+	MYSQL_SOURCES =
 endif
 
 SOURCES = $(RNAML_SOURCES) \
@@ -143,12 +144,8 @@ OBJECTS = $(SOURCES:.cc=.o)
 
 LIBRARY = lib$(PACKAGE)
 
-DISTFILES = Makefile.in $(SOURCES) \
-	    $(RNAML_DIST_SOURCES) \
-	    $(MYSQL_DIST_SOURCES) \
-	    $(HEADERS) \
-	    $(RNAML_DIST_SOURCES:.cc=.h) \
-	    $(MYSQL_DIST_SOURCES:.cc=.h)
+DISTFILES = Makefile.in $(SOURCES) $(HEADERS) $(RNAML_DIST_SOURCES) \
+$(MYSQL_DIST_SOURCES)
 
 
 all: $(LIBRARY).$(LIBEXT).$(VERSION) TAGS
@@ -241,10 +238,12 @@ distclean: clean
 topclean: distclean
 	@ echo "The project is getting _top_ clean\!"
 
+release: static
+
 dist:
 	@ for file in $(DISTFILES); do \
 	   ln $(srcdir)/$$file ../$(PACKAGE)-$(VERSION)/lib 2> /dev/null \
-	    || cp -p $(srcdir)/$$file ../$(PACKAGE)-$(VERSION)/lib; \
+	    || cp -p $(srcdir)/$$file ../$(PACKAGE)$(VERSION)/lib; \
 	  done
 
 Makefile: $(srcdir)/Makefile.in ../config.status

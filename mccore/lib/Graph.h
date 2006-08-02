@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // Graph.h
-// Copyright © 2004-05 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2004-06 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 00:05:15 2004
-// $Revision: 1.27 $
+// $Revision: 1.28 $
 // 
 // This file is part of mccore.
 // 
@@ -48,7 +48,7 @@ namespace mccore
    * costly.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Graph.h,v 1.27 2005-08-05 15:53:53 larosem Exp $
+   * @version $Id: Graph.h,v 1.28 2006-08-02 18:01:21 larosem Exp $
    */
   template< class V,
 	    class E,

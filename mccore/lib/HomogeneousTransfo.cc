@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // HomogeneousTransfo.cc
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.25 $
-// $Id: HomogeneousTransfo.cc,v 1.25 2006-06-29 19:12:07 thibaup Exp $
+// $Revision: 1.26 $
+// $Id: HomogeneousTransfo.cc,v 1.26 2006-08-02 18:01:22 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -350,6 +350,16 @@ namespace mccore
 
     return sqrtf ((tvalue2 = m03*m03 + m13*m13 + m23*m23) + 
 		  (rvalue2 = HomogeneousTransfo::alpha_square * theta_rad * theta_rad));
+  }
+
+  
+  float
+  HomogeneousTransfo::squareDistance (const HomogeneousTransfo &m) const
+  {
+    float val;
+
+    val = distance (m);
+    return val * val;
   }
 
   

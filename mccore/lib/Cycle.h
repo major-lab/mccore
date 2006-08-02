@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // Cycle.h
-// Copyright © 2005 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
+// Copyright © 2005-06 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Wed Feb  2 15:34:32 2005
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 //
 // This file is part of mccore.
 // 
@@ -107,6 +107,33 @@ namespace mccore
 	}
       return *this;
     }
+
+    /**
+     * Determines if this cycle is shorter that the other.
+     * @param other another path.
+     * @return true if this path is shorter.
+     */
+    bool operator< (const Cycle &right) const
+    {
+      return Path< V, W >::operator< (right);
+    }
+      
+    /**
+     * Compares two cycles to determine if they are equal.  They are
+     * compared in both directions and are rotated, i.e. it is to be
+     * used with cycles.
+     */
+    bool operator== (const Cycle &right) const
+    {
+      return (Path< V, W >::operator== (right) && p == right.p && q == right.q);
+    }
+
+    /**
+     * Compares two cycles to determine if they differs.
+     * @param right the Cycle to compare with this.
+     * @return whether the cycles differs.
+     */
+    bool operator!= (const Cycle &right) const { return ! operator== (right); }
 
     // ACCESS ---------------------------------------------------------------
 

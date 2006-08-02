@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // Rmsd.h
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 24 20:17:50 2003
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 // 
 // This file is part of mccore.
 // 
@@ -39,7 +39,7 @@ namespace mccore
    * algorithm by Kabsch, 1976.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Rmsd.h,v 1.9 2006-06-29 19:12:07 thibaup Exp $
+   * @version $Id: Rmsd.h,v 1.10 2006-08-02 18:01:22 larosem Exp $
    */
   class Rmsd 
   {
@@ -250,10 +250,9 @@ namespace mccore
 	}
       }
     
-      HomogeneousTransfo rot ((float) u[0*3+0], (float) u[0*3+1], (float) u[0*3+2], 0,
-			      (float) u[1*3+0], (float) u[1*3+1], (float) u[1*3+2], 0,
-			      (float) u[2*3+0], (float) u[2*3+1], (float) u[2*3+2], 0,
-			      0, 0, 0, 1);
+      HomogeneousTransfo rot ((float) u[0*3+0], (float) u[0*3+1], (float) u[0*3+2], (float) 0,
+			      (float) u[1*3+0], (float) u[1*3+1], (float) u[1*3+2], (float) 0,
+			      (float) u[2*3+0], (float) u[2*3+1], (float) u[2*3+2], (float) 0);
     
       t = HomogeneousTransfo().translate(center_b) 
 	* rot 

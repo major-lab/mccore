@@ -1,11 +1,11 @@
 #                            -*- Mode: Makefile -*-
 # Makefile.in
-# Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique.
+# Copyright © 2000-06 Laboratoire de Biologie Informatique et Théorique.
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:10:38 2000
-# $Revision: 1.24 $
-# $Id: Makefile.in,v 1.24 2006-06-29 19:12:07 thibaup Exp $
+# $Revision: 1.25 $
+# $Id: Makefile.in,v 1.25 2006-08-02 18:01:21 larosem Exp $
 #
 #  This file is part of mccore.
 #  
@@ -49,8 +49,8 @@ SUBDIRS = lib test docs
 RELEASESUBDIRS = $(SUBDIRS)
 
 DISTFILES = COPYING ChangeLog INSTALL Makefile.in NEWS README config.guess \
-config.h.in config.sub configure.in configure mccore-config.in install-sh mkinstalldirs \
-stamp-h.in logo.jpg
+config.h.in config.sub configure.in configure mccore-config.in install-sh \
+mkinstalldirs stamp-h.in logo.jpg
 
 
 .SUFFIXES:
@@ -118,6 +118,26 @@ mostlyclean-recursive clean-recursive distclean-recursive topclean-recursive:
 	   (cd $$subdir && $(MAKE) $$target) || exit 1; \
 	  done
 
+release:
+	@ rm -fr $(PACKAGE)-$(VERSION)
+	@ rm -f $(PACKAGE)-$(VERSION).tar.gz
+	@ mkdir $(PACKAGE)-$(VERSION)
+	@ chmod 777 $(PACKAGE)-$(VERSION)
+	@ for file in INSTALL NEWS README; do \
+	   ln -s ../$(srcdir)/$$file $(PACKAGE)-$(VERSION)/$$file; \
+	  done
+	@ for subdir in $(RELEASESUBDIRS); do \
+	   mkdir $(PACKAGE)-$(VERSION)/$$subdir; \
+	   chmod 777 $(PACKAGE)-$(VERSION)/$$subdir; \
+	  done
+	@ for subdir in $(SUBDIRS); do \
+	   (cd $$subdir && $(MAKE) $@) || exit 1; \
+	  done
+	@ chmod -R a+r $(PACKAGE)-$(VERSION)
+	@ tar chof $(PACKAGE)-$(VERSION).tar $(PACKAGE)-$(VERSION)
+	@ gzip -9 $(PACKAGE)-$(VERSION).tar
+	@ rm -fr $(PACKAGE)-$(VERSION)
+
 dist:
 	@ rm -fr $(PACKAGE)-$(VERSION)
 	@ mkdir $(PACKAGE)-$(VERSION)
@@ -135,7 +155,7 @@ dist:
 	  done
 	@ chmod -R a+r $(PACKAGE)-$(VERSION)
 	@ tar chof $(PACKAGE)-$(VERSION).tar $(PACKAGE)-$(VERSION)
-	@ gzip -9f $(PACKAGE)-$(VERSION).tar
+	@ gzip -9 $(PACKAGE)-$(VERSION).tar
 	@ rm -fr $(PACKAGE)-$(VERSION)
 
 
