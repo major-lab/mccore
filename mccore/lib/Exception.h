@@ -4,7 +4,7 @@
 //                           Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 16:27:35 1999
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 //
 // This file is part of mccore.
 // 
@@ -30,6 +30,9 @@
 #include <exception>
 #include <string>
 
+#include <string.h>
+#include <errno.h>
+
 using namespace std;
 
 
@@ -44,7 +47,7 @@ namespace mccore
    * libraries.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Exception.h,v 1.9 2006-05-31 13:32:10 thibaup Exp $
+   * @version $Id: Exception.h,v 1.10 2006-08-14 14:43:56 thibaup Exp $
    */
   class Exception : public exception
   {
@@ -532,6 +535,8 @@ namespace mccore
    */
   class FileNotFoundException : public IntLibException
   {
+    string syserr_msg;
+
   public:
 
     // LIFECYCLE ------------------------------------------------------------
@@ -540,7 +545,8 @@ namespace mccore
      * Initializes the exception.
      */
     FileNotFoundException () 
-      : IntLibException ("FileNotFoundException: ") 
+      : IntLibException ("FileNotFoundException: "),
+	syserr_msg (strerror (errno))
     { }
 
     /**
@@ -548,7 +554,8 @@ namespace mccore
      * @param message the message string.
      */
     FileNotFoundException (const string &message)
-      : IntLibException ("FileNotFoundException: " + message) 
+      : IntLibException ("FileNotFoundException: " + message),
+	syserr_msg (strerror (errno))
     { }
 
     /**
@@ -558,7 +565,8 @@ namespace mccore
      * @param line the line number where the exception occured (default = -1).
      */
     FileNotFoundException (const string &message, const string &file = "", int line = -1)
-      : IntLibException ("FileNotFoundException: " + message, file, line)
+      : IntLibException ("FileNotFoundException: " + message, file, line),
+	syserr_msg (strerror (errno))
     { }
 
     /**
@@ -566,7 +574,8 @@ namespace mccore
      * @param right the exception to copy.
      */
     FileNotFoundException (const FileNotFoundException &right)
-      : IntLibException (right)
+      : IntLibException (right),
+	syserr_msg (right.syserr_msg)
     { }
 
     /**
@@ -590,6 +599,8 @@ namespace mccore
 
     // I/O ------------------------------------------------------------------
 
+    virtual ostream& output (ostream &os) const;
+
   };
 
 
@@ -597,7 +608,7 @@ namespace mccore
    * Exception for invalid access requests.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Exception.h,v 1.9 2006-05-31 13:32:10 thibaup Exp $
+   * @version $Id: Exception.h,v 1.10 2006-08-14 14:43:56 thibaup Exp $
    */
   class NoSuchElementException : public IntLibException
   {
