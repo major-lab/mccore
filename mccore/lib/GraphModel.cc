@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.19 $
-// $Id: GraphModel.cc,v 1.19 2006-08-02 18:01:22 larosem Exp $
+// $Revision: 1.20 $
+// $Id: GraphModel.cc,v 1.20 2006-08-18 16:26:59 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -58,7 +58,7 @@ namespace mccore
    * Unary negate function.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.cc,v 1.19 2006-08-02 18:01:22 larosem Exp $
+   * @version $Id: GraphModel.cc,v 1.20 2006-08-18 16:26:59 larosem Exp $
    */
   template < class V , class VC >
   class negate : public unary_function< V, bool >
@@ -399,7 +399,6 @@ namespace mccore
   GraphModel::fillMoleculeWithCycles (Molecule &molecule, const vector< Path< GraphModel::label, GraphModel::size_type > > &cycles) const
   {
     vector< Path< GraphModel::label, GraphModel::size_type > >::const_iterator cit;
-    set< const Residue*, less_deref< Residue > > resCopies;
     AbstractModel *tmp;
 
     tmp = molecule.getModelFM ()->createModel ();
@@ -408,33 +407,49 @@ namespace mccore
 	const Path< GraphModel::label, GraphModel::size_type > &cycle = *cit;
 	GraphModel *gm;
 	Path< GraphModel::label, GraphModel::size_type >::const_iterator pit;
-	AbstractModel::iterator mit;
-	Residue *ref;
-	label refl;
-
-	molecule.insert (*tmp);
-	AbstractModel &model = molecule.back ();
-	gm = dynamic_cast< GraphModel* > (&model);
-	refl = cycle.back ();
-	ref = &*(mit = model.insert (*internalGetVertex (refl)));
-	resCopies.insert (ref);
+	AbstractModel &model = *molecule.insert (*tmp);
+	
 	for (pit = cycle.begin (); cycle.end () != pit; ++pit)
 	  {
-	    GraphModel::label resl;
-	    Residue *res;
+	    model.insert (*internalGetVertex (*pit));
+	  }
+	if (0 != (gm = dynamic_cast< GraphModel* > (&model)))
+	  {
+	    Residue *ref;
+	    Residue *tmp;
+	    Relation *rel;
+	    Relation *reli;
+	    GraphModel::iterator mit;
+	    set< const Residue*, less_deref< Residue > > resCopies;
+
+	    ref = tmp = &*(mit = gm->begin ());
+	    ++mit;
+	    resCopies.insert (ref);
 	    
-	    resl = *pit;
-	    res = &*(mit = model.insert (*internalGetVertex (resl)));
-	    if (0 != gm)
+	    for (; gm->end () != mit; ++mit)
 	      {
-		Relation *rel;
-		
-		rel = internalGetEdge (refl, resl)->clone ();
+		Residue *res;
+	    
+		res = &*mit;
+		resCopies.insert (res);
+		rel = getEdge ((Residue*) &*find (ref->getResId ()),
+			       (Residue*) &*find (res->getResId ()))->clone ();
+		reli = rel->clone ();
+		reli->invert ();
 		rel->reassignResiduePointers (resCopies);
+		reli->reassignResiduePointers (resCopies);
 		gm->connect (ref, res, rel);
+		gm->connect (res, ref, reli);
+		ref = res;
 	      }
-	    refl = resl;
-	    ref = res;
+	    rel = getEdge ((Residue*) &*find (ref->getResId ()),
+			   (Residue*) &*find (tmp->getResId ()))->clone ();
+	    reli = rel->clone ();
+	    reli->invert ();
+	    rel->reassignResiduePointers (resCopies);
+	    reli->reassignResiduePointers (resCopies);
+	    gm->connect (ref, tmp, rel);	    
+	    gm->connect (tmp, ref, reli);	    
 	  }
       }
     delete tmp;
@@ -465,7 +480,6 @@ namespace mccore
 			   true, 1);
 	  }
       }
-    gOut (0) << graph << endl;
     graph.internalMinimumCycleBasis (cycles);
     fillMoleculeWithCycles (molecule, cycles);
   }
