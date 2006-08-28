@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 // 
 // This file is part of mccore.
 // 
@@ -54,7 +54,7 @@ namespace mccore
    * between any two atoms.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: HBond.h,v 1.8 2005-08-18 18:07:02 larosem Exp $
+   * @version $Id: HBond.h,v 1.9 2006-08-28 17:50:31 thibaup Exp $
    */
   class HBond
   {
@@ -253,11 +253,11 @@ namespace mccore
      * Replaces the Residue pointers with those coming from the set.  It
      * is used by the Relation class to do a deep copy without doing a full
      * re-annotation.
+     * Throws a @ref NoSuchElementException if either resA or resD isn't found in target set.
      * @param resSet a set of Residue pointers.
-     * @exception IntLibException is thrown when resA or resD is not found
-     * in resSet.
+     * @exception NoSuchElementException
      */
-    void reassignResiduePointers (const set< const Residue*, less_deref < Residue > > &resSet) throw (IntLibException);
+    void reassignResiduePointers (const set< const Residue*, less_deref < Residue > > &resSet) throw (NoSuchElementException);
 
   public:
       

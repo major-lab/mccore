@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu Mar 20 18:05:28 2003
-// $Revision: 1.16 $
-// $Id: HBond.cc,v 1.16 2005-11-15 16:09:39 thibaup Exp $
+// $Revision: 1.17 $
+// $Id: HBond.cc,v 1.17 2006-08-28 17:50:31 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -249,19 +249,23 @@ namespace mccore
   
   
   void
-  HBond::reassignResiduePointers (const set< const Residue*, less_deref< Residue > > &resSet) throw (IntLibException)
+  HBond::reassignResiduePointers (const set< const Residue*, less_deref< Residue > > &resSet) throw (NoSuchElementException)
   {
     set< const Residue* >::iterator resIt;
 
     if (resSet.end () == (resIt = resSet.find (resA)))
-      {
-	throw IntLibException ("Residue not found", __FILE__, __LINE__);
-      }
+    {
+      NoSuchElementException ex ("", __FILE__, __LINE__);
+      ex << "HBond's acceptor residue " << *resA << " not found in reassign target set.";
+      throw ex;
+    }
     resA = *resIt;
     if (resSet.end () == (resIt = resSet.find (resD)))
-      {
-	throw IntLibException ("Residue not found", __FILE__, __LINE__);
-      }
+    {
+      NoSuchElementException ex ("", __FILE__, __LINE__);
+      ex << "HBond's donor residue " << *resD << " not found in reassign target set.";
+      throw ex;
+    }
     resD = *resIt;
   }
 
