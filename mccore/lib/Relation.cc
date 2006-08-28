@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.59 $
-// $Id: Relation.cc,v 1.59 2006-07-26 15:58:56 thibaup Exp $
+// $Revision: 1.60 $
+// $Id: Relation.cc,v 1.60 2006-08-28 17:51:35 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -252,30 +252,62 @@ namespace mccore
     return bit_mask;
   }
 
+
+  void
+  Relation::reassignResiduePointers (const Residue* target_ref, const Residue* target_res) throw (NoSuchElementException)
+  {
+    if (*target_ref != *this->ref)
+    {
+      NoSuchElementException ex ("", __FILE__, __LINE__);
+      ex << "Relation's 'ref' residue " << *res << " mismatched to target " << *target_ref;
+      throw ex;
+    }
+
+    if (*target_res != *this->res)
+    {
+      NoSuchElementException ex ("", __FILE__, __LINE__);
+      ex << "Relation's 'res' residue " << *res << " mismatched to target " << *target_res;
+      throw ex;
+    }
+
+    this->_reassignResiduePointers (target_ref, target_res);
+  }
+
+
   void
   Relation::reassignResiduePointers (const set< const Residue*, less_deref< Residue> > &resSet) throw (NoSuchElementException)
   {
-    set< const Residue* >::iterator resIt;
+    set< const Residue* >::iterator refit, resit;
+
+    if (resSet.end () == (refit = resSet.find (this->ref)))
+    {
+      NoSuchElementException ex ("", __FILE__, __LINE__);
+      ex << "Relation's 'ref' residue " << *res << " not found in reassign target set.";
+      throw ex;
+    }
+
+    if (resSet.end () == (resit = resSet.find (this->res)))
+    {
+      NoSuchElementException ex ("", __FILE__, __LINE__);
+      ex << "Relation's 'res' residue " << *res << " not found in reassign target set.";
+      throw ex;
+    }
+
+    this->_reassignResiduePointers (*refit, *resit);
+  }
+
+
+  void
+  Relation::_reassignResiduePointers (const Residue* target_ref, const Residue* target_res)
+  {
     vector< HBondFlow >::iterator hbfIt;
     set< const Residue*, less_deref< Residue > > newSet;
-    
-    if (resSet.end () == (resIt = resSet.find (ref)))
-      {
-	throw NoSuchElementException ("Residue not found", __FILE__, __LINE__);
-      }
-    ref = *resIt;
-    newSet.insert (ref);
-    if (resSet.end () == (resIt = resSet.find (res)))
-      {
-	throw NoSuchElementException ("Residue not found", __FILE__, __LINE__);
-      }
-    res = *resIt;
-    newSet.insert (res);
-    
+
+    newSet.insert (this->ref = target_ref);
+    newSet.insert (this->res = target_res);
+
     for (hbfIt = hbonds.begin (); hbonds.end () != hbfIt; ++hbfIt)
-      {
-	hbfIt->hbond.reassignResiduePointers (newSet);
-      }
+      hbfIt->hbond.reassignResiduePointers (newSet);
   }
 
 

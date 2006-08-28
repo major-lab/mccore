@@ -3,7 +3,7 @@
 // Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.27 $
+// $Revision: 1.28 $
 // 
 // This file is part of mccore.
 // 
@@ -76,7 +76,7 @@ namespace mccore
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.27 2006-07-26 15:58:56 thibaup Exp $
+   * @version $Id: Relation.h,v 1.28 2006-08-28 17:51:35 thibaup Exp $
    */
   class Relation
   {
@@ -292,7 +292,11 @@ namespace mccore
      * @exception NoSuchElementException is thrown when ref or res is not found
      * in resSet.
      */
+    void reassignResiduePointers (const Residue* target_ref, const Residue* target_res) throw (NoSuchElementException);
     void reassignResiduePointers (const set< const Residue*, less_deref< Residue > > &resSet) throw (NoSuchElementException);
+  private:
+    void _reassignResiduePointers (const Residue* target_ref, const Residue* target_res);
+  public:
 
     // METHODS --------------------------------------------------------------
 
