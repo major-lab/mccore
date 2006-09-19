@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 00:05:15 2004
-// $Revision: 1.28 $
+// $Revision: 1.29 $
 // 
 // This file is part of mccore.
 // 
@@ -48,7 +48,7 @@ namespace mccore
    * costly.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Graph.h,v 1.28 2006-08-02 18:01:21 larosem Exp $
+   * @version $Id: Graph.h,v 1.29 2006-09-19 22:47:00 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -1236,7 +1236,7 @@ namespace mccore
 
       return (v2vlabel.end () != (ith = v2vlabel.find (&h))
 	      && v2vlabel.end () != (itt = v2vlabel.find (&t))
-	      ? uncheckedInternalDisconnect (h, t)
+	      ? uncheckedInternalDisconnect (ith->second, itt->second)
 	      : false);
     }
     
