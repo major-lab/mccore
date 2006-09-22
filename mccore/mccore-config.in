@@ -6,8 +6,8 @@
 #                  Université de Montréal.
 # Author           : Philippe Thibault <philippe.thibault@umontreal.ca>
 # Created On       : Wed May  3 11:42:31 2006
-# $Revision: 1.2 $
-# $Id: mccore-config.in,v 1.2 2006-09-22 15:45:47 thibaup Exp $
+# $Revision: 1.3 $
+# $Id: mccore-config.in,v 1.3 2006-09-22 18:12:56 thibaup Exp $
 # 
 # This file is part of mccore.
 # 
@@ -30,21 +30,29 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 exec_prefix_set=no
 
+#usage="\
+#Usage: mccore-config [--prefix[=DIR]] [--exec-prefix[=DIR]] [--version] [--libs] [--libs-static] [--cflags]"
+
 usage="\
-Usage: mccore-config [--prefix[=DIR]] [--exec-prefix[=DIR]] [--version] [--libs] [--libs-static] [--cflags]"
+Usage: mccore-config [--prefix[=DIR]] [--exec-prefix[=DIR]] [--version] [--libs[=CLASS]] [--cflags]\n\n\
+CLASS: mccore, ext, std, or all (default)."
+
+
 
 if test $# -eq 0; then
-      echo "${usage}" 1>&2
+      echo -e ${usage} 1>&2
       exit 1
 fi
 
 wrnaml=@HAVE_LIBRNAML@
 
-libraries=-lmccore
-std_libraries=-lz
+libs=""
+mccore_libs=-lmccore
+std_libs=-lz
+ext_libs=""
 
 if test $wrnaml -eq 1; then
-  libraries=$libraries" "-lrnamlc++
+  ext_libs=$ext_libs" "-lrnamlc++
 fi
 
 while test $# -gt 0; do
@@ -79,16 +87,31 @@ while test $# -gt 0; do
       fi
       echo $includes
       ;;
+    --libs=*)
+      case $optarg in
+	  all)
+	      libs=$libs" "$mccore_libs" "$ext_libs" "$std_libs
+	      ;;
+	  mccore)
+	      libs=$libs" "$mccore_libs
+	      ;;
+	  ext)
+	      libs=$libs" "$ext_libs
+	      ;;
+	  std)
+	      libs=$libs" "$std_libs
+	      ;;
+      esac
+      ;;
     --libs)
       libdirs=-L@libdir@
-      echo $libdirs $libraries $std_libraries
-      ;;
-    --libs-static)
-      libdirs=-L@libdir@
-      echo $libdirs -Wl,-Bstatic $libraries -Wl,-Bdynamic $std_libraries
+      if test -z "$libs"; then
+	  libs=$libs" "$mccore_libs" "$ext_libs" "$std_libs
+      fi
+      echo $libdirs $libs
       ;;
     *)
-      echo "${usage}" 1>&2
+      echo -e ${usage} 1>&2
       exit 1
       ;;
   esac
