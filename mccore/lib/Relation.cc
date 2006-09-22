@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.60 $
-// $Id: Relation.cc,v 1.60 2006-08-28 17:51:35 thibaup Exp $
+// $Revision: 1.61 $
+// $Id: Relation.cc,v 1.61 2006-09-22 15:42:34 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -133,7 +133,7 @@ namespace mccore
     reset (rA, rB);  
   }
 
-  
+
   Relation::Relation (const Relation &other)
     : ref (other.ref),
       res (other.res),
@@ -147,6 +147,36 @@ namespace mccore
       sum_flow (other.sum_flow),
       pairedFaces (other.pairedFaces)
   { }
+
+
+  Relation*
+  Relation::createSymbolic (const Residue* res1, 
+			    const Residue* res2,
+			    const PropertyType* face1,
+			    const PropertyType* face2,
+			    const set< const PropertyType* >& props)
+  {
+    Relation* rel = new Relation;
+    set< const PropertyType* >::const_iterator it;
+
+    rel->ref = res1;
+    rel->res = res2;
+    rel->refFace = face1;
+    rel->resFace = face2;
+    rel->labels = props;
+    
+    // set ASPB (backbone not handled!)
+    if (rel->refFace != PropertyType::pNull)
+      rel->type_aspb |= Relation::pairing_mask;
+
+    for (it = rel->labels.begin (); it != rel->labels.end (); ++it)
+      if ((*it)->isAdjacent ())
+	rel->type_aspb |= Relation::adjacent_mask;
+      else if ((*it)->isStack ())
+	rel->type_aspb |= Relation::stacking_mask;
+
+    return rel;
+  }
 
 
   Relation& 

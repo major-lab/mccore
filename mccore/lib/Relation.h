@@ -3,7 +3,7 @@
 // Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.28 $
+// $Revision: 1.29 $
 // 
 // This file is part of mccore.
 // 
@@ -76,7 +76,7 @@ namespace mccore
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.28 2006-08-28 17:51:35 thibaup Exp $
+   * @version $Id: Relation.h,v 1.29 2006-09-22 15:42:34 thibaup Exp $
    */
   class Relation
   {
@@ -193,6 +193,16 @@ namespace mccore
     Relation (const Residue *rA, const Residue *rB);
 
     /**
+     * Initializes a symbolic Relation object. It should stay constant
+     * or else behavior is undeterminded.
+     */
+    Relation (const Residue* res1, 
+	      const Residue* res2,
+	      const PropertyType* face1,
+	      const PropertyType* face2,
+	      const set< const PropertyType* >& props);
+
+    /**
      * Initializes the object with the other's content.
      * @param other the object to copy.
      */
@@ -203,6 +213,24 @@ namespace mccore
      * @return a copy of the object.
      */
     virtual Relation* clone () const { return new Relation (*this); }
+
+
+    /**
+     * Creates a new symbolic Relation object. It should stay constant
+     * or else behavior is undeterminded. ASPB bitfield is adjusted
+     * according to input (backbone not yet handled).
+     * @param res1 First residue.
+     * @param res2 Second residue.
+     * @param face1 Contact face on first residue if paired.
+     * @param face2 Contact face on second residue if paired.
+     * @param props Property labels. 
+     * @return New object.
+     */
+    static Relation* createSymbolic (const Residue* res1, 
+				     const Residue* res2,
+				     const PropertyType* face1,
+				     const PropertyType* face2,
+				     const set< const PropertyType* >& props);
     
     /**
      * Destroys the object.
