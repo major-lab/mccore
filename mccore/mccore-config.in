@@ -6,8 +6,8 @@
 #                  Université de Montréal.
 # Author           : Philippe Thibault <philippe.thibault@umontreal.ca>
 # Created On       : Wed May  3 11:42:31 2006
-# $Revision: 1.1 $
-# $Id: mccore-config.in,v 1.1 2006-05-04 13:59:36 thibaup Exp $
+# $Revision: 1.2 $
+# $Id: mccore-config.in,v 1.2 2006-09-22 15:45:47 thibaup Exp $
 # 
 # This file is part of mccore.
 # 
@@ -31,11 +31,20 @@ exec_prefix=@exec_prefix@
 exec_prefix_set=no
 
 usage="\
-Usage: mccore-config [--prefix[=DIR]] [--exec-prefix[=DIR]] [--version] [--libs] [--cflags]"
+Usage: mccore-config [--prefix[=DIR]] [--exec-prefix[=DIR]] [--version] [--libs] [--libs-static] [--cflags]"
 
 if test $# -eq 0; then
       echo "${usage}" 1>&2
       exit 1
+fi
+
+wrnaml=@HAVE_LIBRNAML@
+
+libraries=-lmccore
+std_libraries=-lz
+
+if test $wrnaml -eq 1; then
+  libraries=$libraries" "-lrnamlc++
 fi
 
 while test $# -gt 0; do
@@ -72,7 +81,11 @@ while test $# -gt 0; do
       ;;
     --libs)
       libdirs=-L@libdir@
-      echo $libdirs -lmccore -lz
+      echo $libdirs $libraries $std_libraries
+      ;;
+    --libs-static)
+      libdirs=-L@libdir@
+      echo $libdirs -Wl,-Bstatic $libraries -Wl,-Bdynamic $std_libraries
       ;;
     *)
       echo "${usage}" 1>&2
