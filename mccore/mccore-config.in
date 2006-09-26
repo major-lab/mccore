@@ -6,8 +6,8 @@
 #                  Université de Montréal.
 # Author           : Philippe Thibault <philippe.thibault@umontreal.ca>
 # Created On       : Wed May  3 11:42:31 2006
-# $Revision: 1.3 $
-# $Id: mccore-config.in,v 1.3 2006-09-22 18:12:56 thibaup Exp $
+# $Revision: 1.4 $
+# $Id: mccore-config.in,v 1.4 2006-09-26 12:31:05 thibaup Exp $
 # 
 # This file is part of mccore.
 # 
@@ -51,7 +51,7 @@ mccore_libs=-lmccore
 std_libs=-lz
 ext_libs=""
 
-if test $wrnaml -eq 1; then
+if !(test -z $wrnaml); then
   ext_libs=$ext_libs" "-lrnamlc++
 fi
 
