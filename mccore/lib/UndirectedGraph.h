@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Dec 10 19:09:13 2004
-// $Revision: 1.19 $
+// $Revision: 1.20 $
 // 
 // This file is part of mccore.
 // 
@@ -51,7 +51,7 @@ namespace mccore
    * Undirected graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: UndirectedGraph.h,v 1.19 2006-08-02 18:01:22 larosem Exp $
+   * @version $Id: UndirectedGraph.h,v 1.20 2006-10-04 14:57:51 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -494,11 +494,13 @@ namespace mccore
 	  min_value = paths[*min_iter].getValue ();
 	  
 	  for  (k = C.begin (); k != C.end (); ++k)
-	    if  (paths[*k].getValue () < min_value)
-	      {
-		min_value = paths[*k].getValue ();
-		min_iter = k;
-	      }
+	    {
+	      if  (paths[*k].getValue () < min_value)
+		{
+		  min_value = paths[*k].getValue ();
+		  min_iter = k;
+		}
+	    }
 	  w = *min_iter;
 	  C.erase (min_iter);
 	  
@@ -526,127 +528,6 @@ namespace mccore
 	    }
 	}
     }
-    
-//     /**
-//      * Dijkstra's algorithm for the shortest path in a directed graph.  The
-//      * SPT is optimized for graphs with non-negative edge weights.  A path
-//      * P(x,y) is pruned if there is a z in P(x,y) so that z < x.  The path's
-//      * value is reset to the max value of the Path's value type.  The source
-//      * (x) is at the beginning of the path.  The value of the edge weights is
-//      * fixed and given by value.
-//      * <pre>
-//      * NODE v, w;
-//      * SET V, S;             both V and S are SETS
-//      * int Dist[MAX][MAX];   distance from node v to w
-//      * int D[MAX];           current distance from the root
-//      * int P[MAX];           backward path towards root
-//      * 
-//      * S = {ROOT}; 
-//      * for (all other nodes w in V-S) {
-//      *   if (areConnected (ROOT, w) and ROOT < w) {
-//      *     D[w] = Dist[ROOT][w];
-//      *     P[w] = ROOT;
-//      * }
-//      * while (S is not yet V) {
-//      *   choose node w in V-S such that D[w] is minimum;
-//      *   S = S union {w};
-//      *   for (each node v in V-S)
-//      *     if (D[v] > D[w] + Dist[w][v] and areConnected (w, v) and ROOT < v) {
-//      *       D[v] = D[w] + Dist[w][v];
-//      *       P[v] = w;
-//      *     }
-//      * }
-//      * </pre>
-//      * @param source the source node id of the paths.
-//      * @param paths a collection of Path to fill with the SPT.
-//      * @param val the fixed value of edge weights.
-//      * @param comparator the node comparator.
-//      */
-//     template< class FW, class Compare >
-//     void sptDijkstraTiernanWithFixedValues (label source, vector< Path< label, FW > > &paths, const FW &val) const
-//     {
-//       const FW MAXVAL = numeric_limits< FW >::max ();
-//       label w;
-//       size_type graphsize;
-//       vector< label > C;
-// // <<<<<<< UndirectedGraph.h
-// //       Compare comparator;
-// // =======
-//       const unsigned int MAXUIVALUE = numeric_limits< unsigned int >::max ();
-// // >>>>>>> 1.16
-      
-//       graphsize = this->size ();
-//       paths.clear ();
-//       paths.resize (graphsize);
-      
-//       // Initialize ---
-//       for  (w = 0; w < graphsize; ++w)
-// 	{
-// 	  int value;
-	  
-// 	  paths[w].push_back (source);
-// 	  if  (w == source)
-// 	    {
-// 	      value = MAXVAL;
-// 	    }
-// 	  else
-// 	    {
-// 	      if (internalAreConnected (source, w))
-// 		{
-// 		  value = val;
-// 		  paths[w].push_back (w);
-// 		}
-// 	      else
-// 		{
-// 		  value = MAXVAL;
-// 		}
-// 	      C.push_back (w);
-// 	    }
-// 	  paths[w].setValue (value);
-// 	}
-      
-//       while (! C.empty ())
-// 	{
-// 	  typename vector< label >::iterator min_iter;
-// 	  typename vector< label >::iterator k;
-// 	  FW min_value;
-	  
-// 	  min_iter = C.begin ();
-// 	  min_value = paths[*min_iter].getValue ();
-	  
-// 	  for  (k = C.begin (); k != C.end (); ++k)
-// 	    if  (paths[*k].getValue () < min_value)
-// 	      {
-// 		min_value = paths[*k].getValue ();
-// 		min_iter = k;
-// 	      }
-// 	  w = *min_iter;
-// 	  C.erase (min_iter);
-	  
-// 	  // Break if the elements remaining in C are not connected to the
-// 	  // source.
-// 	  if  (min_value == MAXVAL)
-// 	    {
-// 	      break;
-// 	    }
-	  
-// 	  for (k = C.begin (); C.end () != k; ++k)
-// 	    {
-// 	      FW new_val;
-// 	      label v;
-	      
-// 	      v = *k;
-// 	      if (comparator (source, w)
-// 		  && internalAreConnected (w, v)
-// 		  && paths[v].getValue () > (new_val = min_value + val))
-// 	        {
-// 		  paths[v] = paths[w];
-// 		  paths[v].push_back (v);
-// 		  paths[v].setValue (new_val);
-// 		}
-// 	    }
-// 	}
-//     }
     
     /**
      * Uses the Gaussian Elimination algorithm to find non linearly
