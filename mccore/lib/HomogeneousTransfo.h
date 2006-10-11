@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.23 $
-// $Id: HomogeneousTransfo.h,v 1.23 2006-08-02 18:01:22 larosem Exp $
+// $Revision: 1.24 $
+// $Id: HomogeneousTransfo.h,v 1.24 2006-10-11 17:55:56 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -59,7 +59,7 @@ namespace mccore
     /**
      * The squared scale ratio between angle and distance (Ang^2 / rad^2)
      */ 
-    static const float alpha_square = 6.927424; // 2.632^2
+    static const float alpha_square; // 2.632^2
  
   public:
    

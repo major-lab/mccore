@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 14:10:00 2003
-// $Revision: 1.26 $
-// $Id: HomogeneousTransfo.cc,v 1.26 2006-08-02 18:01:22 larosem Exp $
+// $Revision: 1.27 $
+// $Id: HomogeneousTransfo.cc,v 1.27 2006-10-11 17:55:56 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -37,6 +37,8 @@
 
 namespace mccore 
 {
+
+  const float HomogeneousTransfo::alpha_square = 6.927424;
 
 #define sgn( x ) ( ( ( x ) >= 0.0f ) ? +1 : -1 )
 
