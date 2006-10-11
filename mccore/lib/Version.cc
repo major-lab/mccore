@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Philippe Thibault <philippe.thibault@umontreal.ca>
 // Created On       : Wed May 11 10:07:28 2005
-// $Revision: 1.7 $
-// $Id: Version.cc,v 1.7 2006-05-02 19:32:07 larosem Exp $
+// $Revision: 1.8 $
+// $Id: Version.cc,v 1.8 2006-10-11 17:35:37 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -56,7 +56,35 @@ namespace mccore
     this->timestamp += " ";
     this->timestamp += __TIME__;
   }
-  
+
+  Version::Version (const string& strv)
+    : major_no (-1),
+      minor_no (-1),
+      revision_no (-1),
+      cpu (VERSION_CPU),
+      vendor (VERSION_VENDOR),
+      os (VERSION_OS)
+  {
+    istringstream iss;
+    char dot;
+
+    iss.exceptions (ios::failbit | ios::badbit);
+
+    try
+    {
+      iss.str (strv);
+      iss >> this->major_no >> dot 
+	  >> this->minor_no >> dot 
+	  >> this->revision_no;
+    }
+    catch (ios::failure& ioex)
+    {
+      IntLibException ex ("", __FILE__, __LINE__);
+      ex << "failed to initialize version to \"" << strv << "\": " << ioex.what ();
+      throw ex;
+    }
+  }
+
 
   Version::Version (const Version& v)
     : major_no (v.major_no),
@@ -102,6 +130,23 @@ namespace mccore
   }
 
 
+  bool 
+  Version::equals (const Version& v) const
+  {
+    return 
+      this->major_no == v.major_no && 
+      this->minor_no == v.minor_no && 
+      this->revision_no == v.revision_no;
+  }
+
+
+  bool
+  Version::compatibleWith (const Version& v) const
+  {
+    return this->major_no == v.major_no && this->minor_no == v.minor_no;
+  }
+
+
   string
   Version::toString () const
   {
@@ -112,6 +157,15 @@ namespace mccore
 	<< this->vendor << " "
 	<< this->os << " "
 	<< this->timestamp;
+    return oss.str ();
+  }
+
+
+  string
+  Version::version () const
+  {
+    ostringstream oss;
+    oss << this->major_no << "." << this->minor_no << "." << this->revision_no;
     return oss.str ();
   }
 

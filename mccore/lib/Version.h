@@ -4,8 +4,8 @@
 //                  Université de Montréal.
 // Author           : Philippe Thibault <philippe.thibault@umontreal.ca>
 // Created On       : Wed May 11 10:07:28 2005
-// $Revision: 1.6 $
-// $Id: Version.h,v 1.6 2006-05-02 19:32:07 larosem Exp $
+// $Revision: 1.7 $
+// $Id: Version.h,v 1.7 2006-10-11 17:35:37 thibaup Exp $
 // 
 // This file is part of mccore.
 // 
@@ -92,6 +92,8 @@ namespace mccore
 
     Version (const Version& v);
 
+    Version (const string& strv);
+
     /**
      * Destructs the object.
      */
@@ -127,7 +129,13 @@ namespace mccore
 
     // METHODS --------------------------------------------------------------
 
+    bool equals (const Version& v) const;
+
+    bool compatibleWith (const Version& v) const;
+
     string toString () const;
+
+    string version () const;
 
     // I/O  -----------------------------------------------------------------
 
