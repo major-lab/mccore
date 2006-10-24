@@ -38,6 +38,7 @@ namespace mccore
 
   ResidueTypeStore* ResidueType::rtstore = new ResidueTypeStore ();
 
+  const ResidueType* ResidueType::rResidue = 0;
   const ResidueType* ResidueType::rNull = 0;
   const ResidueType* ResidueType::rUnknown = 0;
   
@@ -217,7 +218,7 @@ namespace mccore
       return rAminoAcid;
     }
     
-    return 0;
+    return rResidue;
   }
   
 

@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.26 $
+// $Revision: 1.27 $
 // 
 // This file is part of mccore.
 // 
@@ -40,6 +40,7 @@ namespace mccore
   {
     string strs, strl;
 
+    ResidueType::rResidue = *repository.insert (new ResidueType ((strs = "RESIDUE"), (strl = "Residue"))).first;
     ResidueType::rNull = *repository.insert (new Null ((strs = ""), (strl = "null"))).first;
     ResidueType::rUnknown = *repository.insert (new Unknown ((strs = "UNKNOWN"), (strl = "Unknown"))).first;
     
