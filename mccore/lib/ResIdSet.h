@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // ResIdSet.h
-// Copyright © 2000-04 Laboratoire de Biologie Informatique et Théorique,
+// Copyright © 2000-04, 06 Laboratoire de Biologie Informatique et Théorique,
 //                     Université de Montréal
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Oct 26 10:24:02 2000
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 // 
 // This file is part of mccore.
 // 
@@ -157,13 +157,11 @@ namespace mccore
      * Inserts a range of residue number and chain id in the set via the
      * string defined in _parse_and_insert.
      * @param str the string description of the range.
+     * @exception IntLibException
      */
-    void insert (const char *str) { 
-      try {
-	_parse_and_insert (str); 
-      } catch (IntLibException &e) {
-	gOut (2) << e << endl;
-      }
+    void insert (const char *str)
+    {
+      _parse_and_insert (str); 
     }
     
     /**
