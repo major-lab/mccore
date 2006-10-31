@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:10:38 2000
-# $Revision: 1.26 $
-# $Id: Makefile.in,v 1.26 2006-10-11 17:33:13 thibaup Exp $
+# $Revision: 1.27 $
+# $Id: Makefile.in,v 1.27 2006-10-31 20:11:25 thibaup Exp $
 #
 #  This file is part of mccore.
 #  
@@ -58,7 +58,7 @@ mkinstalldirs stamp-h.in logo.jpg
 
 
 
-all static doc test:
+all static doc test: mccore-config
 	@ for subdir in $(SUBDIRS); do \
 	   echo "Building $@ in $$subdir"; \
 	   (cd $$subdir && $(MAKE) $@) || exit 1; \
@@ -167,7 +167,7 @@ $(srcdir)/config.h.in: $(srcdir)/stamp-h.in
 $(srcdir)/stamp-h.in: $(srcdir)/configure.in
 	@ echo timestamp > $@
 
-config.h: stamp-h
+config.h: stamp-h k
 
 stamp-h: $(srcdir)/config.h.in config.status
 	@ CONFIG_FILES= CONFIG_HEADERS=config.h ./config.status
@@ -179,7 +179,7 @@ Makefile: $(srcdir)/Makefile.in config.status stamp-h
 config.status: $(srcdir)/configure
 	@ ./config.status --recheck
 
-mccore-config: config.status $(srcdir)/mccore-config.in
+mccore-config: $(srcdir)/mccore-config.in
 	@ ./config.status $@
 
 # Tell versions [3.59,3.63) of GNU make not to export all variables.
