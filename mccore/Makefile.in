@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:10:38 2000
-# $Revision: 1.27 $
-# $Id: Makefile.in,v 1.27 2006-10-31 20:11:25 thibaup Exp $
+# $Revision: 1.28 $
+# $Id: Makefile.in,v 1.28 2006-11-08 14:25:52 thibaup Exp $
 #
 #  This file is part of mccore.
 #  
@@ -52,13 +52,15 @@ DISTFILES = COPYING ChangeLog INSTALL Makefile.in NEWS README config.guess \
 config.h.in config.sub configure.in configure mccore-config.in install-sh \
 mkinstalldirs stamp-h.in logo.jpg
 
+SCRIPTS = mccore-config
+
 
 .SUFFIXES:
 .PHONY: test doc
 
 
 
-all static doc test: mccore-config
+all static doc test: $(SCRIPTS)
 	@ for subdir in $(SUBDIRS); do \
 	   echo "Building $@ in $$subdir"; \
 	   (cd $$subdir && $(MAKE) $@) || exit 1; \
