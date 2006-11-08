@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.73 $
-# $Id: Makefile.in,v 1.73 2006-11-08 14:42:52 thibaup Exp $
+# $Revision: 1.74 $
+# $Id: Makefile.in,v 1.74 2006-11-08 20:43:10 thibaup Exp $
 # 
 # This file is part of mccore.
 # 
@@ -61,6 +61,7 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 HAVE_LIBRNAML = @HAVE_LIBRNAML@
 HAVE_LIBMYSQL = @HAVE_LIBMYSQL@
 
+buildcmd = $(CXX) $(CXXFLAGS) $(DEFS) -I.. -I$(srcdir) -c
 
 .SUFFIXES:
 
@@ -70,7 +71,7 @@ HAVE_LIBMYSQL = @HAVE_LIBMYSQL@
 	      [ -s $@ ] || rm -f $@'
 
 %.o: %.cc
-	$(CXX) $(CXXFLAGS) $(DEFS) -I.. -I$(srcdir) -c $<
+	$(buildcmd) $<
 
 % : %.cc
 % : %.o
@@ -152,10 +153,12 @@ all: $(LIBRARY).$(LIBEXT).$(VERSION) TAGS
 static: $(LIBRARY).a TAGS
 
 $(LIBRARY).$(LIBEXT).$(VERSION): $(OBJECTS)
+	$(buildcmd) $(srcdir)/Version.cc
 	$(LD) $(LINKOPTIONS) -o $@ $(LDNAMEPARAM)$@ $^ $(LDFLAGS) $(LIBS)
 	@ ln -sf $(LIBRARY).$(LIBEXT).$(VERSION) $(LIBRARY).$(LIBEXT)
 
 $(LIBRARY).a: $(OBJECTS)
+	$(buildcmd) $(srcdir)/Version.cc
 	$(ARXX) $(AROPTIONS) $@ $^
 
 TAGS: $(SOURCES) $(HEADERS)
