@@ -4,8 +4,8 @@
 #                     Université de Montréal.
 # Author           : Martin Larose <larosem@iro.umontreal.ca>
 # Created On       : Tue Sep 19 18:57:11 2000
-# $Revision: 1.72 $
-# $Id: Makefile.in,v 1.72 2006-11-08 14:24:23 thibaup Exp $
+# $Revision: 1.73 $
+# $Id: Makefile.in,v 1.73 2006-11-08 14:42:52 thibaup Exp $
 # 
 # This file is part of mccore.
 # 
@@ -147,12 +147,9 @@ LIBRARY = lib$(PACKAGE)
 DISTFILES = Makefile.in $(SOURCES) $(HEADERS) $(RNAML_DIST_SOURCES) \
 $(MYSQL_DIST_SOURCES)
 
-before-all:
-	@ $(RM) Version.o
+all: $(LIBRARY).$(LIBEXT).$(VERSION) TAGS
 
-all: before-all $(LIBRARY).$(LIBEXT).$(VERSION) TAGS
-
-static: before-all $(LIBRARY).a TAGS
+static: $(LIBRARY).a TAGS
 
 $(LIBRARY).$(LIBEXT).$(VERSION): $(OBJECTS)
 	$(LD) $(LINKOPTIONS) -o $@ $(LDNAMEPARAM)$@ $^ $(LDFLAGS) $(LIBS)
