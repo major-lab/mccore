@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // Algo.h
-// Copyright © 2001-04 Laboratoire de Biologie Informatique et Théorique.
-//                     Université de Montréal.
+// Copyright Â© 2001-06 Laboratoire de Biologie Informatique et ThÃ©orique.
+//                     UniversitÃ© de MontrÃ©al.
 // Author           : Sebastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : Wed Feb 14 15:33:58 2001
 // $Revision $
@@ -48,7 +48,7 @@ namespace mccore
    * Comparator that dereferences the argument before applying the comparator.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Algo.h,v 1.21 2005-01-03 22:49:24 larosem Exp $
+   * @version $Id: Algo.h,v 1.22 2006-11-14 18:58:53 larosem Exp $
    */
   template < class V , class VC = less< V > >
   class less_deref : public binary_function< V, V, bool >
@@ -80,7 +80,7 @@ namespace mccore
    * the functions may be called with const_iterator and iterator types.
    *
    * @author Sebastien Lemieux
-   * @version $Id: Algo.h,v 1.21 2005-01-03 22:49:24 larosem Exp $
+   * @version $Id: Algo.h,v 1.22 2006-11-14 18:58:53 larosem Exp $
    */
   class Algo
   {
@@ -90,16 +90,16 @@ namespace mccore
     /**
      * Using the Axis Aligned Bounding Box for collision detection, this
      * method calculates the possible contacts between residues.
+     * @param coll a vector of pair of iterators on residues that will contain
+     * the results.
      * @param begin an iterator on a collection of Residue.
      * @param end an iterator on a collection of Residue.
      * @param cutoff on the minimum distance for a contact (default = 5.0 Angstroms).
-     * @return a vector of pair of iterators on residues in contact.
      */
     template< class iter_type >
-    static vector< pair< iter_type, iter_type > > 
-    extractContacts (iter_type begin, iter_type end, float cutoff = 5.0) 
+    static void
+    extractContacts (vector< pair< iter_type, iter_type > > &result, iter_type begin, iter_type end, float cutoff = 5.0) 
     {
-      vector< pair< iter_type, iter_type > > result;
       vector< ResidueRange< iter_type > > X_range;
       vector< ResidueRange< iter_type > > Y_range;
       vector< ResidueRange< iter_type > > Z_range;
@@ -158,12 +158,31 @@ namespace mccore
       ExtractContact_OneDim (Z_range, contact, cutoff);
       
       for (cont_i = contact.begin (); cont_i != contact.end (); ++cont_i)
-	if (cont_i->second == 3) {
-	  result.push_back (cont_i->first);
+	{
+	  if (cont_i->second == 3)
+	    {
+	      result.push_back (cont_i->first);
+	    }
 	}
-      return result;
     }
     
+    /**
+     * Using the Axis Aligned Bounding Box for collision detection, this
+     * method calculates the possible contacts between residues.
+     * @param begin an iterator on a collection of Residue.
+     * @param end an iterator on a collection of Residue.
+     * @param cutoff on the minimum distance for a contact (default = 5.0 Angstroms).
+     * @return a vector of pair of iterators on residues in contact.
+     */
+    template< class iter_type >
+    static vector< pair< iter_type, iter_type > > 
+    extractContacts (iter_type begin, iter_type end, float cutoff = 5.0) 
+    {
+      vector< pair< iter_type, iter_type > > result;
+
+      extractContacts (result, begin, end, cutoff);
+      return result;
+    }
     
   private:
     
