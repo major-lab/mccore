@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // Molecule.cc
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:35 2003
-// $Revision: 1.17 $
-// $Id: Molecule.cc,v 1.17 2005-08-19 20:22:52 thibaup Exp $
+// $Revision: 1.18 $
+// $Id: Molecule.cc,v 1.18 2006-11-14 19:01:30 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -156,6 +156,13 @@ namespace mccore
     cloned = modelFM->createModel (model);
 
     return (iterator)models.insert (models.end (), cloned);
+  }
+  
+    
+  Molecule::iterator
+  Molecule::insert (AbstractModel* model)
+  {
+    return (iterator)models.insert (models.end (), model);
   }
   
     

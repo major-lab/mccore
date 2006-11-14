@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // Molecule.h
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
-//                     Université de Montréal.
+// Copyright Â© 2003-06 Laboratoire de Biologie Informatique et ThÃ©orique
+//                     UniversitÃ© de MontrÃ©al.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:36 2003
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 // 
 // This file is part of mccore.
 // 
@@ -51,7 +51,7 @@ namespace mccore
    * This is a collection of mccore Models in a simple STL list.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Molecule.h,v 1.11 2005-06-07 19:58:45 larosem Exp $
+   * @version $Id: Molecule.h,v 1.12 2006-11-14 19:01:43 larosem Exp $
    */
   class Molecule
   {
@@ -335,6 +335,13 @@ namespace mccore
      */
     iterator insert (const AbstractModel& model);
     
+    /**
+     * Inserts a model at the end.
+     * @param model the model to insert.
+     * @return the position where the residue was inserted.
+     */
+    iterator insert (AbstractModel* model);
+
     /**
      * Inserts the model range before pos.  It calls the list<> method.
      * @param pos the iterator where the model will be placed.
