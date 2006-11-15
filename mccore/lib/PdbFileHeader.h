@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // PdbFileHeader.h
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 16:01:52 2003
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 // 
 // This file is part of mccore.
 // 
@@ -30,6 +30,7 @@
 #include <string>
 #include <list>
 #include <map>
+#include <utility>
 
 
 using namespace std;
@@ -112,7 +113,7 @@ namespace mccore
    * </pre>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: PdbFileHeader.h,v 1.8 2005-04-13 16:04:14 thibaup Exp $
+   * @version $Id: PdbFileHeader.h,v 1.9 2006-11-15 19:44:50 larosem Exp $
    */
   class PdbFileHeader
   {
@@ -153,6 +154,11 @@ namespace mccore
      */
     float resolution;
 
+    /**
+     * Remark lines. Written as "REMARK" remnum record.
+     */
+    list< pair< unsigned int, string > > remarks;
+    
     /**
      * Unclassified remark lines (unlimited). Written as "REMARK 99" record.
      */
@@ -340,6 +346,27 @@ namespace mccore
      */
     void setUnclassified (const list< string >& ulist);
     
+    /**
+     * Gets the REMARK list.
+     * @return the REMARK list.
+     */
+    list< pair< unsigned int, string > >& getRemarks () { return remarks; }
+
+    /**
+     * Gets the REMARK list.
+     * @return the REMARK list.
+     */
+    const list< pair< unsigned int, string > >& getRemarks () const
+    {
+      return remarks;
+    }
+
+    /**
+     * Sets the REMARK list.
+     * @param remlist the new REMARK list.
+     */
+    void setRemarks (const list< pair< unsigned int, string > >& remlist);
+    
     // METHODS --------------------------------------------------------------
 
     /**
@@ -366,7 +393,14 @@ namespace mccore
      * Adds a new unclassified remark entry.
      * @param str the unclassified remark text.
      */
-    void addUnclassified (const string& str);
+    void addUnclassified (const string &str);
+
+    /**
+     * Adds a new REMARK entry.
+     * @param no the REMARK number.
+     * @param str the REMARK text.
+     */
+    void addRemark (unsigned int no, const string &str);
 
     /**
      * Clears all content.

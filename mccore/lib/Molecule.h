@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:36 2003
-// $Revision: 1.12 $
+// $Revision: 1.13 $
 // 
 // This file is part of mccore.
 // 
@@ -32,6 +32,7 @@
 #include <string>
 
 #include "Exception.h"
+#include "PdbFileHeader.h"
 
 using namespace std;
 
@@ -51,7 +52,7 @@ namespace mccore
    * This is a collection of mccore Models in a simple STL list.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Molecule.h,v 1.12 2006-11-14 19:01:43 larosem Exp $
+   * @version $Id: Molecule.h,v 1.13 2006-11-15 19:44:41 larosem Exp $
    */
   class Molecule
   {
@@ -60,6 +61,11 @@ namespace mccore
     typedef unsigned int size_type;
 
   protected:
+
+    /**
+     * Pdb file header.
+     */
+    PdbFileHeader header;
     
     /**
      * Container for Models.
@@ -230,6 +236,14 @@ namespace mccore
     Molecule (const ModelFactoryMethod *fm = 0);
     
     /**
+     * Initializes the object.
+     * @param h the PdbFileHeader to copy.
+     */
+    Molecule (const PdbFileHeader &h)
+      : header (h)
+    { }
+    
+    /**
      * Initializes the object with the right's content.
      * @param right the object to copy.
      */
@@ -256,6 +270,24 @@ namespace mccore
     Molecule& operator= (const Molecule &right);
 
     // ACCESS ---------------------------------------------------------------
+
+    /**
+     * Gets the PDB file header.
+     * @return the PDB file header.
+     */
+    PdbFileHeader& getHeader () { return header; }
+    
+    /**
+     * Gets the PDB file header.
+     * @return the PDB file header.
+     */
+    const PdbFileHeader& getHeader () const { return header; }
+
+    /**
+     * Sets the PDB file header.
+     * @param h the PDB file header.
+     */
+    void setHeader (const PdbFileHeader &h) { header = h; }
     
     /**
      * Gets the property value of the key.

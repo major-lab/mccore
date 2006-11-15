@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // PdbFileHeader.cc
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Tue Mar 11 18:45:58 2003
-// $Revision: 1.12 $
-// $Id: PdbFileHeader.cc,v 1.12 2005-09-14 16:57:12 thibaup Exp $
+// $Revision: 1.13 $
+// $Id: PdbFileHeader.cc,v 1.13 2006-11-15 19:44:45 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -68,6 +68,7 @@ namespace mccore
       methods (other.methods),
       authors (other.authors),
       resolution (other.resolution),
+      remarks (other.remarks),
       unclassified (other.unclassified)
   {
 
@@ -87,6 +88,7 @@ namespace mccore
       methods = other.methods;
       authors = other.authors;
       resolution = other.resolution;
+      remarks = other.remarks;
       unclassified = other.unclassified;
     }
     return *this;
@@ -172,12 +174,6 @@ namespace mccore
   void
   PdbFileHeader::setAuthors (const list< string >& alist)
   {
-//     list< string >::const_iterator it;
-
-//     authors.clear ();
-//     for (it = alist.begin (); it != alist.end (); ++it)
-//       addAuthor (*it);
-
     authors = alist;
   }
 
@@ -192,17 +188,16 @@ namespace mccore
   void
   PdbFileHeader::setUnclassified (const list< string >& ulist)
   {
-//     list< string >::const_iterator it;
-
-//     unclassified.clear ();
-//     for (it = ulist.begin (); it != ulist.end (); ++it)
-//       addUnclassified (*it);
-
     unclassified = ulist;
   }
 
  
-  // METHODS --------------------------------------------------------------
+  void
+  PdbFileHeader::setRemarks (const list< pair< unsigned int, string > >& remlist)
+  {
+    remarks = remlist;
+  }
+
 
   void 
   PdbFileHeader::addMethod (const string& n)
@@ -236,49 +231,57 @@ namespace mccore
   }
 
 
+  void
+  PdbFileHeader::addRemark (unsigned int no, const string &str)
+  {
+    remarks.push_back (make_pair (no, str));
+  }
+
+
   void 
   PdbFileHeader::clear (bool reset)
   {
     title.clear ();
     methods.clear ();
     authors.clear ();
+    remarks.clear ();
     unclassified.clear ();
     resolution = -1.0;
 
     if (reset)
-    {
-      setClassification ("Unclassified");
-      setDate ();
-      setPdbId ("Void");
+      {
+	setClassification ("Unclassified");
+	setDate ();
+	setPdbId ("Void");
       
-      string com = "File generated using ";
-      com += PACKAGE;
-      com += " ";
-      com += VERSION;
-      com += " by ";
-      const char* cs = getenv ("USER");
-      com += 0 == cs ? "anonymous" : cs;
-      cs = getenv ("HOST");
-      com += "@";
-      com += 0 == cs ? "nohost" : cs;
-      addUnclassified (com);
-    }
+	string com = "File generated using ";
+	com += PACKAGE;
+	com += " ";
+	com += VERSION;
+	com += " by ";
+	const char* cs = getenv ("USER");
+	com += 0 == cs ? "anonymous" : cs;
+	cs = getenv ("HOST");
+	com += "@";
+	com += 0 == cs ? "nohost" : cs;
+	addUnclassified (com);
+      }
     else
-    {
-      string es;
-      setClassification (es);
-      setDate (es);
-      setPdbId (es);
-    }
+      {
+	string es;
+	setClassification (es);
+	setDate (es);
+	setPdbId (es);
+      }
   }
 
-  // I/O  -----------------------------------------------------------------
 
   ostream& 
   PdbFileHeader::write (ostream& os) const
   {
     map< string, string >::const_iterator psit;
     list< string >::const_iterator sit;
+    list< pair< unsigned int, string > >::const_iterator rit;
 
     os << "Classification: " << classification << endl
        << "PDB ID: " << pdbId <<  endl
@@ -300,14 +303,21 @@ namespace mccore
     for (sit = unclassified.begin (); sit != unclassified.end (); ++sit)
       os << "\t- " << *sit << endl;
 
+    for (rit = remarks.begin (); remarks.end () != rit; ++rit)
+      {
+	os << rit->first << "\t" << rit->second << endl;
+      }
+
     return os;
   }
 
+  
   oPdbstream&
   PdbFileHeader::write (oPdbstream& ops) const
   {
     map< string, string >::const_iterator psit;
     list< string >::const_iterator sit;
+    list< pair< unsigned int, string > >::const_iterator rit;
     string es, rectext;
 
     // -- header
@@ -389,6 +399,11 @@ namespace mccore
     
     for (sit = unclassified.begin (); sit != unclassified.end (); ++sit)
       ops.writeRemark (*sit, 99);
+
+    for (rit = remarks.begin (); remarks.end () != rit; ++rit)
+      {
+	ops.writeRemark (rit->second, rit->first);
+      }
 
     return ops;
   }
@@ -497,7 +512,7 @@ namespace mccore
 	else if ("REMARK" == rectype)
 	  {
 	    string remline = Pdbstream::trim (line.substr (11, 59));
-
+	    
 	    if (remline.empty ()) // new remark
 	      {
 		if (! remtext.empty ()) // save if not first remark read
@@ -582,7 +597,7 @@ namespace mccore
 	    break;
 
 	  default:
-	    addUnclassified (it->first);
+	    remarks.push_back (make_pair (it->second, it->first));
 	    break;
 	  }
       }    

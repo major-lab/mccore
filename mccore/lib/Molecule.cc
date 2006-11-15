@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Mon Jul  7 15:59:35 2003
-// $Revision: 1.18 $
-// $Id: Molecule.cc,v 1.18 2006-11-14 19:01:30 larosem Exp $
+// $Revision: 1.19 $
+// $Id: Molecule.cc,v 1.19 2006-11-15 19:44:37 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -78,7 +78,8 @@ namespace mccore
 
   
   Molecule::Molecule (const Molecule &right)
-    : properties (right.properties),
+    : header (right.header),
+      properties (right.properties),
       modelFM (right.modelFM->clone ())
   {
     insert (right.begin (), right.end ());
@@ -104,14 +105,12 @@ namespace mccore
       {
 	const_iterator it;
 
-	// clear all
-	this->clear ();
-	delete this->modelFM;
-
-	// copy 
-	this->modelFM = right.modelFM->clone ();
-	this->properties = right.properties;
-	this->insert (right.begin (), right.end ());
+	clear ();
+	delete modelFM;
+	header = right.header;
+	properties = right.properties;
+	modelFM = right.modelFM->clone ();
+	insert (right.begin (), right.end ());
       }
     return *this;
   }
@@ -195,6 +194,7 @@ namespace mccore
     const_iterator mit;
     
     os << "MOLECULE:" << endl;
+    os << header << endl;
     for (pit = properties.begin (); pit != properties.end (); ++pit)
       {
 	os << "  " << pit->first.c_str () << " = " << pit->second.c_str ()
@@ -214,6 +214,7 @@ namespace mccore
     const_iterator mit;
     bool modelHeaders = size () > 1;
 
+    ops.setHeader (header);
     for (mit = begin (); mit != end (); ++mit)
     {
       if (modelHeaders)
@@ -246,6 +247,7 @@ namespace mccore
 	    models.push_back (model);
 	  }
       }
+    setHeader (ips.getHeader ());
     return ips;
   }
 
