@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.21 $
-// $Id: GraphModel.cc,v 1.21 2006-08-28 18:06:26 thibaup Exp $
+// $Revision: 1.22 $
+// $Id: GraphModel.cc,v 1.22 2006-11-15 19:43:18 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -58,7 +58,7 @@ namespace mccore
    * Unary negate function.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.cc,v 1.21 2006-08-28 18:06:26 thibaup Exp $
+   * @version $Id: GraphModel.cc,v 1.22 2006-11-15 19:43:18 larosem Exp $
    */
   template < class V , class VC >
   class negate : public unary_function< V, bool >
@@ -367,7 +367,7 @@ namespace mccore
 
 	addHLP ();
 	
-	contacts = Algo::extractContacts (begin (), end (), 5.0);
+	Algo::extractContacts (contacts, begin (), end (), 3.0);
 	gErr (3) << "Found " << contacts.size () << " possible contacts " << endl;
   
 	for (l = contacts.begin (); contacts.end () != l; ++l)
