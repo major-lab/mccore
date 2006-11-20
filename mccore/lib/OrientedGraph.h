@@ -4,7 +4,7 @@
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Thu May 10 14:49:18 2001
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 // 
 // This file is part of mccore.
 // 
@@ -44,7 +44,7 @@ namespace mccore
    * Directed graph implementation.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: OrientedGraph.h,v 1.9 2006-10-04 14:46:24 larosem Exp $
+   * @version $Id: OrientedGraph.h,v 1.10 2006-11-20 18:33:15 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -480,7 +480,7 @@ namespace mccore
 	  insert (*fit);
 	  if (! areConnected (*lit, *fit))
 	    {
-	      connect (*lit, *fit, true, val);
+	      super::connect (*lit, *fit, true, val);
 	    }
 	}
     }
