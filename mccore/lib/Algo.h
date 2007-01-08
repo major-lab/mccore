@@ -48,7 +48,7 @@ namespace mccore
    * Comparator that dereferences the argument before applying the comparator.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Algo.h,v 1.22 2006-11-14 18:58:53 larosem Exp $
+   * @version $Id: Algo.h,v 1.23 2007-01-08 23:33:28 larosem Exp $
    */
   template < class V , class VC = less< V > >
   class less_deref : public binary_function< V, V, bool >
@@ -70,6 +70,27 @@ namespace mccore
       return VC ().operator() (*left, *right);
     }
   };
+
+
+  /**
+   * Residue type filter, it identifies RNA, DNA and Amino Acids from Residue
+   * iterators.
+   *
+   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
+   * @version $Id: Algo.h,v 1.23 2007-01-08 23:33:28 larosem Exp $
+   */
+  template< class iter_type >
+  class RDATypeFilter : public unary_function< iter_type, bool >
+  {
+  public:
+    
+    bool operator() (const iter_type &i) const
+    {
+      return (i->getType ()->isRNA ()
+	      || i->getType ()->isDNA ()
+	      || i->getType ()->isAminoAcid ());
+    }
+  };
   
 
   /**
@@ -80,7 +101,7 @@ namespace mccore
    * the functions may be called with const_iterator and iterator types.
    *
    * @author Sebastien Lemieux
-   * @version $Id: Algo.h,v 1.22 2006-11-14 18:58:53 larosem Exp $
+   * @version $Id: Algo.h,v 1.23 2007-01-08 23:33:28 larosem Exp $
    */
   class Algo
   {
@@ -98,7 +119,7 @@ namespace mccore
      */
     template< class iter_type >
     static void
-    extractContacts (vector< pair< iter_type, iter_type > > &result, iter_type begin, iter_type end, float cutoff = 5.0) 
+    extractContacts (vector< pair< iter_type, iter_type > > &result, iter_type begin, iter_type end, const RDATypeFilter< iter_type > &filter, float cutoff = 5.0) 
     {
       vector< ResidueRange< iter_type > > X_range;
       vector< ResidueRange< iter_type > > Y_range;
@@ -108,25 +129,28 @@ namespace mccore
       
       for (i = begin; i != end; ++i) 
 	{
-	  Residue::const_iterator j;
-	  
-	  float minX, minY, minZ, maxX, maxY, maxZ;
-	  minX = minY = minZ = numeric_limits<float>::max ();
-	  maxX = maxY = maxZ = numeric_limits<float>::min ();
-	  
-	  for (j = i->begin (as_nopse); j != i->end (); ++j)
+	  if (filter (i))
 	    {
-	      minX = min (minX, j->getX ());
-	      minY = min (minY, j->getY ());
-	      minZ = min (minZ, j->getZ ());
-	      maxX = max (maxX, j->getX ());
-	      maxY = max (maxY, j->getY ());
-	      maxZ = max (maxZ, j->getZ ());
-	    }
+	      Residue::const_iterator j;
+	  
+	      float minX, minY, minZ, maxX, maxY, maxZ;
+	      minX = minY = minZ = numeric_limits<float>::max ();
+	      maxX = maxY = maxZ = numeric_limits<float>::min ();
+	  
+	      for (j = i->begin (as_nopse); j != i->end (); ++j)
+		{
+		  minX = min (minX, j->getX ());
+		  minY = min (minY, j->getY ());
+		  minZ = min (minZ, j->getZ ());
+		  maxX = max (maxX, j->getX ());
+		  maxY = max (maxY, j->getY ());
+		  maxZ = max (maxZ, j->getZ ());
+		}
 	
-	  X_range.push_back (ResidueRange< iter_type > (i, minX, maxX));
-	  Y_range.push_back (ResidueRange< iter_type > (i, minY, maxY));
-	  Z_range.push_back (ResidueRange< iter_type > (i, minZ, maxZ));
+	      X_range.push_back (ResidueRange< iter_type > (i, minX, maxX));
+	      Y_range.push_back (ResidueRange< iter_type > (i, minY, maxY));
+	      Z_range.push_back (ResidueRange< iter_type > (i, minZ, maxZ));
+	    }
 	}
       
       sort (X_range.begin (), X_range.end ());
@@ -179,8 +203,9 @@ namespace mccore
     extractContacts (iter_type begin, iter_type end, float cutoff = 5.0) 
     {
       vector< pair< iter_type, iter_type > > result;
+      RDATypeFilter< iter_type > filter;
 
-      extractContacts (result, begin, end, cutoff);
+      extractContacts (result, begin, end, filter, cutoff);
       return result;
     }
     
