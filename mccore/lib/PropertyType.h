@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // PropertyType.h
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.18 $
+// $Revision: 1.19 $
 // 
 // This file is part of mccore.
 // 
@@ -47,7 +47,7 @@ namespace mccore
    * General property types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: PropertyType.h,v 1.18 2005-11-17 19:26:38 thibaup Exp $
+   * @version $Id: PropertyType.h,v 1.19 2007-01-08 23:57:11 larosem Exp $
    */
   class PropertyType
   {
@@ -55,7 +55,7 @@ namespace mccore
      * Container for string to type associations.
      */
     static PropertyTypeStore ptstore;
-    
+
     /**
      * The type key string.
      */
@@ -68,13 +68,13 @@ namespace mccore
     /**
      * Initializes the object.
      */
-    PropertyType ();
+    PropertyType () { }
     
     /**
      * Initializes the object.
      * @param ks the string representation of the type key.
      */
-    PropertyType (const string& ks);
+    PropertyType (const string &ks) : key (ks) { }
     
     /**
      * Initializes the object with the other's content.
@@ -85,7 +85,7 @@ namespace mccore
     /**
      * Destroys the object.
      */
-    virtual ~PropertyType ();
+    virtual ~PropertyType () { }
     
     /**
      * PropertyTypeStore is a friend since the destructor is private.
@@ -125,7 +125,7 @@ namespace mccore
      */
     bool operator== (const PropertyType &other) const
     {
-      return this->key == other.key;
+      return key == other.key;
     }
       
     
@@ -166,10 +166,7 @@ namespace mccore
      * Converts the property type into a string.
      * @return the string.
      */
-    virtual operator const char* () const
-    {
-      return this->key.c_str ();
-    }
+    virtual operator const char* () const { return key.c_str (); }
     
     // METHODS --------------------------------------------------------------
 
@@ -177,31 +174,28 @@ namespace mccore
      * Converts the residuetype into a stl string.
      * @return the string.
      */
-    virtual const string& toString () const
-    {
-      return this->key;
-    }
+    virtual const string& toString () const { return key; }
     
     /**
      * Identifies the type of property stored in a string.
      * @param str the c string.
      * @return a property type for the string.
      */
-    static const PropertyType* parseType (const char* str);
+    static const PropertyType* parseType (const char *str);
 
     /**
      * Identifies the type of property stored in a string.
      * @param str the stl string.
      * @return a property type for the string.
      */
-    static const PropertyType* parseType (const string& str);
+    static const PropertyType* parseType (const string &str);
 
     /**
      * Gets the property corresponding to the inverted relation.
      * @param t The property type for a relation.
      * @return The property type corresponding to the inverted relation.
      */
-    static const PropertyType* invert (const PropertyType* t);
+    static const PropertyType* invert (const PropertyType *t);
     
     /**
      * Tests whether the type this is same as or derived from t.
@@ -407,6 +401,11 @@ namespace mccore
     static const PropertyType* pUnknown;
     
     /**
+     * Global Hydrogen Bond type.
+     */
+    static const PropertyType* pHbond;
+    
+    /**
      * Global theo type.
      */
     static const PropertyType* pTheo;
@@ -441,6 +440,11 @@ namespace mccore
      */
     static const PropertyType* pPairing;
 
+    /**
+     * Global backbone Hydrogen Bond type.
+     */
+    static const PropertyType* pBHbond;
+    
     /**
      * Global parallel type.
      */
