@@ -6,8 +6,8 @@
 #                  Université de Montréal.
 # Author           : Philippe Thibault <philippe.thibault@umontreal.ca>
 # Created On       : Wed May  3 11:42:31 2006
-# $Revision: 1.5 $
-# $Id: mccore-config.in,v 1.5 2006-10-31 20:11:25 thibaup Exp $
+# $Revision: 1.6 $
+# $Id: mccore-config.in,v 1.6 2007-01-08 19:19:57 thibaup Exp $
 # 
 # This file is part of mccore.
 # 
@@ -45,6 +45,7 @@ fi
 
 wrnaml=@HAVE_LIBRNAML@
 
+libdirs=""
 libs=""
 mccore_libs=-lmccore
 std_libs=-lz
@@ -89,9 +90,11 @@ while test $# -gt 0; do
     --libs=*)
       case $optarg in
 	  all)
+              libdirs=-L@libdir@
 	      libs=$libs" "$mccore_libs" "$ext_libs" "$std_libs
 	      ;;
 	  mccore)
+	      libdirs=-L@libdir@
 	      libs=$libs" "$mccore_libs
 	      ;;
 	  ext)
@@ -103,8 +106,8 @@ while test $# -gt 0; do
       esac
       ;;
     --libs)
-      libdirs=-L@libdir@
       if test -z "$libs"; then
+          libdirs=-L@libdir@
 	  libs=$libs" "$mccore_libs" "$ext_libs" "$std_libs
       fi
       echo $libdirs $libs
