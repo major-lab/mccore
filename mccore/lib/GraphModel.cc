@@ -4,8 +4,8 @@
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:34:11 2004
-// $Revision: 1.22 $
-// $Id: GraphModel.cc,v 1.22 2006-11-15 19:43:18 larosem Exp $
+// $Revision: 1.23 $
+// $Id: GraphModel.cc,v 1.23 2007-01-08 23:46:36 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -33,6 +33,7 @@
 #include <list>
 #include <map>
 #include <set>
+#include <time.h>
 #include <utility>
 #include <vector>
 
@@ -58,7 +59,7 @@ namespace mccore
    * Unary negate function.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: GraphModel.cc,v 1.22 2006-11-15 19:43:18 larosem Exp $
+   * @version $Id: GraphModel.cc,v 1.23 2007-01-08 23:46:36 larosem Exp $
    */
   template < class V , class VC >
   class negate : public unary_function< V, bool >
@@ -356,6 +357,8 @@ namespace mccore
 	vector< Relation* >::iterator eIt;
 	vector< pair< AbstractModel::iterator, AbstractModel::iterator > > contacts;
 	vector< pair< AbstractModel::iterator, AbstractModel::iterator > >::iterator l;
+// 	time_t t;
+	RDATypeFilter< iterator > filter;
 
 	for (eIt = edges.begin (); edges.end () != eIt; ++eIt)
 	  {
@@ -367,9 +370,12 @@ namespace mccore
 
 	addHLP ();
 	
-	Algo::extractContacts (contacts, begin (), end (), 3.0);
+// 	time (&t);
+	Algo::extractContacts (contacts, begin (), end (), filter, 3.0);
+// 	gOut (0) << "Extract contacts " << time (0) - t << "s" << endl;
 	gErr (3) << "Found " << contacts.size () << " possible contacts " << endl;
   
+// 	time (&t);
 	for (l = contacts.begin (); contacts.end () != l; ++l)
 	  {
 	    Residue *i = &*l->first;
@@ -390,6 +396,7 @@ namespace mccore
 		delete rel;
 	      }
 	  }
+// 	gOut (0) << "Annotation " << time (0) - t << "s" << endl;
 	annotated = true;
       }
   }
@@ -595,6 +602,8 @@ namespace mccore
   GraphModel::input (iPdbstream &ips)
   {
     int currNb;
+    vector< Residue* > vres;
+//     time_t t;
 
     clear ();
     if (! ips)
@@ -602,6 +611,7 @@ namespace mccore
 	return ips;
       }
     currNb = ips.getModelNb ();
+//     time (&t);
     while (! ips.eof () && currNb == ips.getModelNb ())
       {
 	Residue *res = getResidueFM ()->createResidue ();
@@ -609,13 +619,17 @@ namespace mccore
 	ips >> *res;
  	if (0 != res->size ())
 	  {
-	    graphsuper::insert (res, 0); 
+	    vres.push_back (res);
 	  }
 	else
 	  {
 	    delete res;
 	  }
-      }    
+      }
+//     gOut (0) << "residue creation " << time (0) - t << "s" << endl;
+//     time (&t);
+    insertRange (vres.begin (), vres.end ());
+//     gOut (0) << "insert in graph " << time (0) - t << "s" << endl;
     return ips;
   }
   
