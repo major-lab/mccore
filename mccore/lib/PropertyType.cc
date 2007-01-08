@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // PropertyType.cc
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.17 $
-// $Id: PropertyType.cc,v 1.17 2005-11-17 19:26:38 thibaup Exp $
+// $Revision: 1.18 $
+// $Id: PropertyType.cc,v 1.18 2007-01-08 23:57:54 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -44,6 +44,7 @@ namespace mccore
 
   const PropertyType* PropertyType::pNull = 0;
   const PropertyType* PropertyType::pUnknown = 0;
+  const PropertyType* PropertyType::pHbond = 0;
   const PropertyType* PropertyType::pTheo = 0;
 
   const PropertyType* PropertyType::pAdjacent = 0;
@@ -57,6 +58,7 @@ namespace mccore
   const PropertyType* PropertyType::pOutward = 0;
 
   const PropertyType* PropertyType::pPairing = 0;
+  const PropertyType* PropertyType::pBHbond = 0;
   const PropertyType* PropertyType::pParallel = 0;
   const PropertyType* PropertyType::pAntiparallel = 0;
   const PropertyType* PropertyType::pCis = 0;
@@ -251,19 +253,6 @@ namespace mccore
   const PropertyType* PropertyType::pAlpha_D_Xylofuranoside = 0;
   const PropertyType* PropertyType::pBeta_D_Xylofuranoside = 0;
 
-  // LIFECYCLE -----------------------------------------------------------------
-
-  PropertyType::PropertyType () 
-  {
-    
-  }
-
-
-  PropertyType::PropertyType (const string& ks)
-    : key (ks)
-  {
-    
-  }
   
 
   PropertyType::PropertyType (const PropertyType &other)
@@ -274,15 +263,6 @@ namespace mccore
   }
 
 
-  PropertyType::~PropertyType () 
-  {
-    
-  }
- 
- 
-  // METHODS -------------------------------------------------------------------
-
-  
   const PropertyType* 
   PropertyType::parseType (const char* str) 
   {
@@ -292,14 +272,14 @@ namespace mccore
 
   
   const PropertyType* 
-  PropertyType::parseType (const string& str) 
+  PropertyType::parseType (const string &str) 
   {
     return ptstore.get (str);
   }
 
 
   const PropertyType*
-  PropertyType::invert (const PropertyType* t)
+  PropertyType::invert (const PropertyType *t)
   {
     if (PropertyType::pUpward == t)     return PropertyType::pDownward;
     if (PropertyType::pDownward == t)   return PropertyType::pUpward;
@@ -309,20 +289,17 @@ namespace mccore
   }
 
   
-  // I/O -----------------------------------------------------------------------
-
-
-  ostream &
+  ostream&
   PropertyType::output (ostream &out) const
   {
-    return out << key.c_str ();
+    return out << key;
   }
   
 
-  oBinstream &
+  oBinstream&
   PropertyType::output (oBinstream &out) const
   {
-    return out << key.c_str ();
+    return out << key;
   }
 
 

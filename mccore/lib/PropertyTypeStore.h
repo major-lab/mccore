@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // PropertyTypeStore.h
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:42:25 2003
-// $Revision: 1.13 $
+// $Revision: 1.14 $
 // 
 // This file is part of mccore.
 // 
@@ -42,7 +42,7 @@ namespace mccore
    *
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: PropertyTypeStore.h,v 1.13 2005-11-17 19:26:38 thibaup Exp $
+   * @version $Id: PropertyTypeStore.h,v 1.14 2007-01-08 23:59:05 larosem Exp $
    */
   class PropertyTypeStore
   {
@@ -89,7 +89,7 @@ namespace mccore
     class Null : public virtual PropertyType {
     public:      
       Null () {}
-      Null (const string& ks) : PropertyType (ks) {}
+      Null (const string &ks) : PropertyType (ks) {}
       
       virtual bool isNull () const { return true; }
       virtual bool describe (const PropertyType* t) const {
@@ -103,7 +103,7 @@ namespace mccore
     class Unknown : public virtual PropertyType {
     public:      
       Unknown () {}
-      Unknown (const string& ks) : PropertyType (ks) {}
+      Unknown (const string &ks) : PropertyType (ks) {}
       
       virtual bool isUnknown () const { return true; }
       virtual bool describe (const PropertyType* t) const {
@@ -117,19 +117,34 @@ namespace mccore
     class Theo : public virtual PropertyType {
     public:
       Theo () {}
-      Theo (const string& ks) : PropertyType (ks) {}
+      Theo (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const Theo* > (t); 
       }
     };
     
     /**
+     * Public class for Hydrogen Bond.
+     */
+    class Hbond : public virtual PropertyType {
+    public:
+      Hbond () {}
+      Hbond (const string &ks) : PropertyType (ks) { }
+      
+      virtual bool describe (const PropertyType *t) const
+      {
+	return dynamic_cast< const Hbond* > (t);
+      }
+    };
+
+    
+    /**
      * Public class for pairing.
      */
-    class Pairing : public virtual PropertyType {
+    class Pairing : public virtual Hbond {
     public:
       Pairing () {}
-      Pairing (const string& ks) : PropertyType (ks) {}
+      Pairing (const string &ks) { key = ks; }
       
       virtual bool isPairing () const
       {
@@ -140,7 +155,21 @@ namespace mccore
       {
 	return dynamic_cast< const Pairing* > (t); 
       }
+    };
+
+    
+    /**
+     * Public class for backbone hydrogen bond.
+     */
+    class BHbond : public virtual Hbond {
+    public:
+      BHbond () {}
+      BHbond (const string &ks) { key = ks; }
       
+      virtual bool describe (const PropertyType *t) const
+      {
+	return dynamic_cast< const BHbond* > (t); 
+      }
     };
 
     
@@ -150,7 +179,7 @@ namespace mccore
     class Cis : public virtual PropertyType {
     public:
       Cis () {}
-      Cis (const string& ks) : PropertyType (ks) {}
+      Cis (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const Cis* > (t); 
       }
@@ -162,7 +191,7 @@ namespace mccore
     class Trans : public virtual PropertyType {
     public:
       Trans () {}
-      Trans (const string& ks) : PropertyType (ks) {}
+      Trans (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const Trans* > (t); 
       }
@@ -174,7 +203,7 @@ namespace mccore
     class Straight : public virtual PropertyType {
     public:
       Straight () {}
-      Straight (const string& ks) : PropertyType (ks) {}
+      Straight (const string &ks) : PropertyType (ks) {}
 
       virtual bool isStraight () const
       {
@@ -193,7 +222,7 @@ namespace mccore
     class Reverse : public virtual PropertyType {
     public:
       Reverse () {}
-      Reverse (const string& ks) : PropertyType (ks) {}
+      Reverse (const string &ks) : PropertyType (ks) {}
 
       virtual bool isReverse () const
       {
@@ -212,7 +241,7 @@ namespace mccore
     class Parallel : public virtual Pairing, public virtual Straight {
     public:
       Parallel () {}
-      Parallel (const string& ks) : PropertyType (ks) {}
+      Parallel (const string &ks) : PropertyType (ks) { }
       
       virtual bool describe (const PropertyType *t) const
       {
@@ -226,7 +255,7 @@ namespace mccore
     class Antiparallel : public virtual Pairing, public virtual Reverse {
     public:
       Antiparallel () {}
-      Antiparallel (const string& ks) : PropertyType (ks) {}
+      Antiparallel (const string &ks) : PropertyType (ks) {}
       
       virtual bool describe (const PropertyType *t) const
       {
@@ -240,7 +269,7 @@ namespace mccore
     class Stack : public virtual PropertyType {
     public:
       Stack () {}
-      Stack (const string& ks) : PropertyType (ks) {}
+      Stack (const string &ks) : PropertyType (ks) {}
 
       virtual bool isStack () const
       {
@@ -260,7 +289,7 @@ namespace mccore
     class Up : public virtual Stack {
     public:
       Up () {}
-      Up (const string& ks) : PropertyType (ks) {}
+      Up (const string &ks) : PropertyType (ks) {}
 
       virtual bool isUp () const
       {
@@ -279,7 +308,7 @@ namespace mccore
     class Down : public virtual Stack {
     public:
       Down () {}
-      Down (const string& ks) : PropertyType (ks) {}
+      Down (const string &ks) : PropertyType (ks) {}
 
       virtual bool isDown () const
       {
@@ -298,7 +327,7 @@ namespace mccore
     class Upward : public virtual Up, public virtual Straight {
     public:
       Upward () {}
-      Upward (const string& ks) : PropertyType (ks) {}
+      Upward (const string &ks) : PropertyType (ks) {}
       
       virtual bool describe (const PropertyType *t) const
       {
@@ -312,7 +341,7 @@ namespace mccore
     class Downward : public virtual Down, public virtual Straight {
     public:
       Downward () {}
-      Downward (const string& ks) : PropertyType (ks) {}
+      Downward (const string &ks) : PropertyType (ks) {}
       
       virtual bool describe (const PropertyType *t) const
       {
@@ -326,7 +355,7 @@ namespace mccore
     class Inward : public virtual Up, public virtual Reverse {
     public:
       Inward () {}
-      Inward (const string& ks) : PropertyType (ks) {}
+      Inward (const string &ks) : PropertyType (ks) {}
       
       virtual bool describe (const PropertyType *t) const
       {
@@ -340,7 +369,7 @@ namespace mccore
     class Outward : public virtual Down, public virtual Reverse {
     public:
       Outward () {}
-      Outward (const string& ks) : PropertyType (ks) {}
+      Outward (const string &ks) : PropertyType (ks) {}
       
       virtual bool describe (const PropertyType *t) const
       {
@@ -354,7 +383,7 @@ namespace mccore
     class Adjacent : public virtual PropertyType {
     public:
       Adjacent () {}
-      Adjacent (const string& ks) : PropertyType (ks) {}
+      Adjacent (const string &ks) : PropertyType (ks) {}
 
       virtual bool isAdjacent () const
       {
@@ -373,7 +402,7 @@ namespace mccore
     class Adjacent5p : public virtual Adjacent {
     public:
       Adjacent5p () {}
-      Adjacent5p (const string& ks) : PropertyType (ks) {}
+      Adjacent5p (const string &ks) : PropertyType (ks) {}
 
       virtual bool isAdjacent5p () const
       {
@@ -392,7 +421,7 @@ namespace mccore
     class Adjacent3p : public virtual Adjacent {
     public:
       Adjacent3p () {}
-      Adjacent3p (const string& ks) : PropertyType (ks) {}
+      Adjacent3p (const string &ks) : PropertyType (ks) {}
 
       virtual bool isAdjacent3p () const
       {
@@ -411,7 +440,7 @@ namespace mccore
     class PuckeringMode : public virtual PropertyType {
     public:
       PuckeringMode () {}
-      PuckeringMode (const string& ks) : PropertyType (ks) {}
+      PuckeringMode (const string &ks) : PropertyType (ks) {}
 
       virtual bool isPuckeringMode () const
       {
@@ -431,7 +460,7 @@ namespace mccore
     class C1p_endo : public virtual PuckeringMode {
     public:
       C1p_endo () {}
-      C1p_endo (const string& ks) : PropertyType (ks) {}
+      C1p_endo (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const C1p_endo* > (t); 
       }
@@ -443,7 +472,7 @@ namespace mccore
     class C1p_exo : public virtual PuckeringMode {
     public:
       C1p_exo () {}
-      C1p_exo (const string& ks) : PropertyType (ks) {}
+      C1p_exo (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const C1p_exo* > (t); 
       }
@@ -455,7 +484,7 @@ namespace mccore
     class C2p_endo : public virtual PuckeringMode {
     public:
       C2p_endo () {}
-      C2p_endo (const string& ks) : PropertyType (ks) {}
+      C2p_endo (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const C2p_endo* > (t); 
       }
@@ -467,7 +496,7 @@ namespace mccore
     class C2p_exo : public virtual PuckeringMode {
     public:
       C2p_exo () {}
-      C2p_exo (const string& ks) : PropertyType (ks) {}
+      C2p_exo (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const C2p_exo* > (t); 
       }
@@ -479,7 +508,7 @@ namespace mccore
     class C3p_endo : public virtual PuckeringMode {
     public:
       C3p_endo () {}
-      C3p_endo (const string& ks) : PropertyType (ks) {}
+      C3p_endo (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const C3p_endo* > (t); 
       }
@@ -491,7 +520,7 @@ namespace mccore
     class C3p_exo : public virtual PuckeringMode {
     public:
       C3p_exo () {}
-      C3p_exo (const string& ks) : PropertyType (ks) {}
+      C3p_exo (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const C3p_exo* > (t); 
       }
@@ -503,7 +532,7 @@ namespace mccore
     class C4p_endo : public virtual PuckeringMode {
     public:
       C4p_endo () {}
-      C4p_endo (const string& ks) : PropertyType (ks) {}
+      C4p_endo (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const C4p_endo* > (t); 
       }
@@ -515,7 +544,7 @@ namespace mccore
     class C4p_exo : public virtual PuckeringMode {
     public:
       C4p_exo () {}
-      C4p_exo (const string& ks) : PropertyType (ks) {}
+      C4p_exo (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const C4p_exo* > (t); 
       }
@@ -527,7 +556,7 @@ namespace mccore
     class O4p_endo : public virtual PuckeringMode {
     public:
       O4p_endo () {}
-      O4p_endo (const string& ks) : PropertyType (ks) {}
+      O4p_endo (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const O4p_endo* > (t); 
       }
@@ -539,7 +568,7 @@ namespace mccore
     class O4p_exo : public virtual PuckeringMode {
     public:
       O4p_exo () {}
-      O4p_exo (const string& ks) : PropertyType (ks) {}
+      O4p_exo (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const O4p_exo* > (t); 
       }
@@ -551,7 +580,7 @@ namespace mccore
     class RiboseOrientation : public virtual PropertyType {
     public:
       RiboseOrientation () {}
-      RiboseOrientation (const string& ks) : PropertyType (ks) {}
+      RiboseOrientation (const string &ks) : PropertyType (ks) {}
 
       virtual bool isRiboseOrientation () const
       {
@@ -570,7 +599,7 @@ namespace mccore
     class Anti : public virtual RiboseOrientation {
     public:
       Anti () {}
-      Anti (const string& ks) : PropertyType (ks) {}
+      Anti (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const Anti* > (t); 
       }
@@ -582,7 +611,7 @@ namespace mccore
     class Syn : public virtual RiboseOrientation {
     public:
       Syn () {}
-      Syn (const string& ks) : PropertyType (ks) {}
+      Syn (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const Syn* > (t); 
       }
@@ -594,7 +623,7 @@ namespace mccore
     class Saenger : public virtual Pairing {
     public:
       Saenger () {}
-      Saenger (const string& ks) : PropertyType (ks) {}
+      Saenger (const string &ks) : PropertyType (ks) {}
 
       virtual bool isSaenger () const
       {
@@ -613,7 +642,7 @@ namespace mccore
     class WC : public virtual Saenger {
     public:
       WC () {}
-      WC (const string& ks) : PropertyType (ks) {}
+      WC (const string &ks) : PropertyType (ks) {}
 
       virtual bool isWC () const
       {
@@ -632,7 +661,7 @@ namespace mccore
     class Wobble : public virtual Saenger {
     public:
       Wobble () {}
-      Wobble (const string& ks) : PropertyType (ks) {}
+      Wobble (const string &ks) : PropertyType (ks) {}
 
       virtual bool isWobble () const
       {
@@ -651,7 +680,7 @@ namespace mccore
     class PI : public virtual Saenger {
     public:
       PI () {}
-      PI (const string& ks) : PropertyType (ks) {}
+      PI (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PI* > (t); 
       }
@@ -663,7 +692,7 @@ namespace mccore
     class PII : public virtual Saenger {
     public:
       PII () {}
-      PII (const string& ks) : PropertyType (ks) {}
+      PII (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PII* > (t); 
       }
@@ -675,7 +704,7 @@ namespace mccore
     class PIII : public virtual Saenger {
     public:
       PIII () {}
-      PIII (const string& ks) : PropertyType (ks) {}
+      PIII (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PIII* > (t); 
       }
@@ -687,7 +716,7 @@ namespace mccore
     class PIV : public virtual Saenger {
     public:
       PIV () {}
-      PIV (const string& ks) : PropertyType (ks) {}
+      PIV (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PIV* > (t); 
       }
@@ -699,7 +728,7 @@ namespace mccore
     class PV : public virtual Saenger {
     public:
       PV () {}
-      PV (const string& ks) : PropertyType (ks) {}
+      PV (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PV* > (t); 
       }
@@ -711,7 +740,7 @@ namespace mccore
     class PVI : public virtual Saenger {
     public:
       PVI () {}
-      PVI (const string& ks) : PropertyType (ks) {}
+      PVI (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PVI* > (t); 
       }
@@ -723,7 +752,7 @@ namespace mccore
     class PVII : public virtual Saenger {
     public:
       PVII () {}
-      PVII (const string& ks) : PropertyType (ks) {}
+      PVII (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PVII* > (t); 
       }
@@ -735,7 +764,7 @@ namespace mccore
     class PVIII : public virtual Saenger {
     public:
       PVIII () {}
-      PVIII (const string& ks) : PropertyType (ks) {}
+      PVIII (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PVIII* > (t); 
       }
@@ -747,7 +776,7 @@ namespace mccore
     class PIX : public virtual Saenger {
     public:
       PIX () {}
-      PIX (const string& ks) : PropertyType (ks) {}
+      PIX (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PIX* > (t); 
       }
@@ -759,7 +788,7 @@ namespace mccore
     class PX : public virtual Saenger {
     public:
       PX () {}
-      PX (const string& ks) : PropertyType (ks) {}
+      PX (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PX* > (t); 
       }
@@ -771,7 +800,7 @@ namespace mccore
     class PXI : public virtual Saenger {
     public:
       PXI () {}
-      PXI (const string& ks) : PropertyType (ks) {}
+      PXI (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PXI* > (t); 
       }
@@ -783,7 +812,7 @@ namespace mccore
     class PXII : public virtual Saenger {
     public:
       PXII () {}
-      PXII (const string& ks) : PropertyType (ks) {}
+      PXII (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PXII* > (t); 
       }
@@ -795,7 +824,7 @@ namespace mccore
     class PXIII : public virtual Saenger {
     public:
       PXIII () {}
-      PXIII (const string& ks) : PropertyType (ks) {}
+      PXIII (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PXIII* > (t); 
       }
@@ -807,7 +836,7 @@ namespace mccore
     class PXIV : public virtual Saenger {
     public:
       PXIV () {}
-      PXIV (const string& ks) : PropertyType (ks) {}
+      PXIV (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PXIV* > (t); 
       }
@@ -819,7 +848,7 @@ namespace mccore
     class PXV : public virtual Saenger {
     public:
       PXV () {}
-      PXV (const string& ks) : PropertyType (ks) {}
+      PXV (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PXV* > (t); 
       }
@@ -831,7 +860,7 @@ namespace mccore
     class PXVI : public virtual Saenger {
     public:
       PXVI () {}
-      PXVI (const string& ks) : PropertyType (ks) {}
+      PXVI (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PXVI* > (t); 
       }
@@ -843,7 +872,7 @@ namespace mccore
     class PXVII : public virtual Saenger {
     public:
       PXVII () {}
-      PXVII (const string& ks) : PropertyType (ks) {}
+      PXVII (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PXVII* > (t); 
       }
@@ -855,7 +884,7 @@ namespace mccore
     class PXVIII : public virtual Saenger {
     public:
       PXVIII () {}
-      PXVIII (const string& ks) : PropertyType (ks) {}
+      PXVIII (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PXVIII* > (t); 
       }
@@ -867,7 +896,7 @@ namespace mccore
     class PXIX : public virtual WC {
     public:
       PXIX () {}
-      PXIX (const string& ks) : PropertyType (ks) {}
+      PXIX (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PXIX* > (t); 
       }
@@ -879,7 +908,7 @@ namespace mccore
     class PXX : public virtual WC {
     public:
       PXX () {}
-      PXX (const string& ks) : PropertyType (ks) {}
+      PXX (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PXX* > (t); 
       }
@@ -891,7 +920,7 @@ namespace mccore
     class PXXI : public virtual Saenger {
     public:
       PXXI () {}
-      PXXI (const string& ks) : PropertyType (ks) {}
+      PXXI (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PXXI* > (t); 
       }
@@ -903,7 +932,7 @@ namespace mccore
     class PXXII : public virtual Saenger {
     public:
       PXXII () {}
-      PXXII (const string& ks) : PropertyType (ks) {}
+      PXXII (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PXXII* > (t); 
       }
@@ -915,7 +944,7 @@ namespace mccore
     class PXXIII : public virtual Saenger {
     public:
       PXXIII () {}
-      PXXIII (const string& ks) : PropertyType (ks) {}
+      PXXIII (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PXXIII* > (t); 
       }
@@ -927,7 +956,7 @@ namespace mccore
     class PXXIV : public virtual Saenger {
     public:
       PXXIV () {}
-      PXXIV (const string& ks) : PropertyType (ks) {}
+      PXXIV (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PXXIV* > (t); 
       }
@@ -939,7 +968,7 @@ namespace mccore
     class PXXV : public virtual Saenger {
     public:
       PXXV () {}
-      PXXV (const string& ks) : PropertyType (ks) {}
+      PXXV (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PXXV* > (t); 
       }
@@ -951,7 +980,7 @@ namespace mccore
     class PXXVI : public virtual Saenger {
     public:
       PXXVI () {}
-      PXXVI (const string& ks) : PropertyType (ks) {}
+      PXXVI (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PXXVI* > (t); 
       }
@@ -963,7 +992,7 @@ namespace mccore
     class PXXVII : public virtual Saenger {
     public:
       PXXVII () {}
-      PXXVII (const string& ks) : PropertyType (ks) {}
+      PXXVII (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PXXVII* > (t); 
       }
@@ -975,7 +1004,7 @@ namespace mccore
     class PXXVIII : public virtual Wobble {
     public:
       PXXVIII () {}
-      PXXVIII (const string& ks) : PropertyType (ks) {}
+      PXXVIII (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PXXVIII* > (t); 
       }
@@ -987,7 +1016,7 @@ namespace mccore
     class OneHbond : public virtual Pairing {
     public:
       OneHbond () {}
-      OneHbond (const string& ks) : PropertyType (ks) {}
+      OneHbond (const string &ks) : PropertyType (ks) {}
 
       virtual bool isOneHbond () const
       {
@@ -1006,7 +1035,7 @@ namespace mccore
     class P29 : public virtual OneHbond {
     public:
       P29 () {}
-      P29 (const string& ks) : PropertyType (ks) {}
+      P29 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P29* > (t); 
       }
@@ -1018,7 +1047,7 @@ namespace mccore
     class P30 : public virtual OneHbond {
     public:
       P30 () {}
-      P30 (const string& ks) : PropertyType (ks) {}
+      P30 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P30* > (t); 
       }
@@ -1030,7 +1059,7 @@ namespace mccore
     class P31 : public virtual OneHbond {
     public:
       P31 () {}
-      P31 (const string& ks) : PropertyType (ks) {}
+      P31 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P31* > (t); 
       }
@@ -1042,7 +1071,7 @@ namespace mccore
     class P32 : public virtual OneHbond {
     public:
       P32 () {}
-      P32 (const string& ks) : PropertyType (ks) {}
+      P32 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P32* > (t); 
       }
@@ -1054,7 +1083,7 @@ namespace mccore
     class P33 : public virtual OneHbond {
     public:
       P33 () {}
-      P33 (const string& ks) : PropertyType (ks) {}
+      P33 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P33* > (t); 
       }
@@ -1066,7 +1095,7 @@ namespace mccore
     class P34 : public virtual OneHbond {
     public:
       P34 () {}
-      P34 (const string& ks) : PropertyType (ks) {}
+      P34 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P34* > (t); 
       }
@@ -1078,7 +1107,7 @@ namespace mccore
     class P35 : public virtual OneHbond {
     public:
       P35 () {}
-      P35 (const string& ks) : PropertyType (ks) {}
+      P35 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P35* > (t); 
       }
@@ -1090,7 +1119,7 @@ namespace mccore
     class P36 : public virtual OneHbond {
     public:
       P36 () {}
-      P36 (const string& ks) : PropertyType (ks) {}
+      P36 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P36* > (t); 
       }
@@ -1102,7 +1131,7 @@ namespace mccore
     class P37 : public virtual OneHbond {
     public:
       P37 () {}
-      P37 (const string& ks) : PropertyType (ks) {}
+      P37 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P37* > (t); 
       }
@@ -1114,7 +1143,7 @@ namespace mccore
     class P38 : public virtual OneHbond {
     public:
       P38 () {}
-      P38 (const string& ks) : PropertyType (ks) {}
+      P38 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P38* > (t); 
       }
@@ -1126,7 +1155,7 @@ namespace mccore
     class P39 : public virtual OneHbond {
     public:
       P39 () {}
-      P39 (const string& ks) : PropertyType (ks) {}
+      P39 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P39* > (t); 
       }
@@ -1138,7 +1167,7 @@ namespace mccore
     class P40 : public virtual OneHbond {
     public:
       P40 () {}
-      P40 (const string& ks) : PropertyType (ks) {}
+      P40 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P40* > (t); 
       }
@@ -1150,7 +1179,7 @@ namespace mccore
     class P41 : public virtual OneHbond {
     public:
       P41 () {}
-      P41 (const string& ks) : PropertyType (ks) {}
+      P41 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P41* > (t); 
       }
@@ -1162,7 +1191,7 @@ namespace mccore
     class P42 : public virtual OneHbond {
     public:
       P42 () {}
-      P42 (const string& ks) : PropertyType (ks) {}
+      P42 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P42* > (t); 
       }
@@ -1174,7 +1203,7 @@ namespace mccore
     class P43 : public virtual OneHbond {
     public:
       P43 () {}
-      P43 (const string& ks) : PropertyType (ks) {}
+      P43 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P43* > (t); 
       }
@@ -1186,7 +1215,7 @@ namespace mccore
     class P44 : public virtual OneHbond {
     public:
       P44 () {}
-      P44 (const string& ks) : PropertyType (ks) {}
+      P44 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P44* > (t); 
       }
@@ -1198,7 +1227,7 @@ namespace mccore
     class P45 : public virtual OneHbond {
     public:
       P45 () {}
-      P45 (const string& ks) : PropertyType (ks) {}
+      P45 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P45* > (t); 
       }
@@ -1210,7 +1239,7 @@ namespace mccore
     class P46 : public virtual OneHbond {
     public:
       P46 () {}
-      P46 (const string& ks) : PropertyType (ks) {}
+      P46 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P46* > (t); 
       }
@@ -1222,7 +1251,7 @@ namespace mccore
     class P47 : public virtual OneHbond {
     public:
       P47 () {}
-      P47 (const string& ks) : PropertyType (ks) {}
+      P47 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P47* > (t); 
       }
@@ -1234,7 +1263,7 @@ namespace mccore
     class P48 : public virtual OneHbond {
     public:
       P48 () {}
-      P48 (const string& ks) : PropertyType (ks) {}
+      P48 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P48* > (t); 
       }
@@ -1246,7 +1275,7 @@ namespace mccore
     class P49 : public virtual OneHbond {
     public:
       P49 () {}
-      P49 (const string& ks) : PropertyType (ks) {}
+      P49 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P49* > (t); 
       }
@@ -1258,7 +1287,7 @@ namespace mccore
     class P50 : public virtual OneHbond {
     public:
       P50 () {}
-      P50 (const string& ks) : PropertyType (ks) {}
+      P50 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P50* > (t); 
       }
@@ -1270,7 +1299,7 @@ namespace mccore
     class P51 : public virtual OneHbond {
     public:
       P51 () {}
-      P51 (const string& ks) : PropertyType (ks) {}
+      P51 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P51* > (t); 
       }
@@ -1282,7 +1311,7 @@ namespace mccore
     class P52 : public virtual OneHbond {
     public:
       P52 () {}
-      P52 (const string& ks) : PropertyType (ks) {}
+      P52 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P52* > (t); 
       }
@@ -1294,7 +1323,7 @@ namespace mccore
     class P53 : public virtual OneHbond {
     public:
       P53 () {}
-      P53 (const string& ks) : PropertyType (ks) {}
+      P53 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P53* > (t); 
       }
@@ -1306,7 +1335,7 @@ namespace mccore
     class P54 : public virtual OneHbond {
     public:
       P54 () {}
-      P54 (const string& ks) : PropertyType (ks) {}
+      P54 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P54* > (t); 
       }
@@ -1318,7 +1347,7 @@ namespace mccore
     class P55 : public virtual OneHbond {
     public:
       P55 () {}
-      P55 (const string& ks) : PropertyType (ks) {}
+      P55 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P55* > (t); 
       }
@@ -1330,7 +1359,7 @@ namespace mccore
     class P56 : public virtual OneHbond {
     public:
       P56 () {}
-      P56 (const string& ks) : PropertyType (ks) {}
+      P56 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P56* > (t); 
       }
@@ -1342,7 +1371,7 @@ namespace mccore
     class P57 : public virtual OneHbond {
     public:
       P57 () {}
-      P57 (const string& ks) : PropertyType (ks) {}
+      P57 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P57* > (t); 
       }
@@ -1354,7 +1383,7 @@ namespace mccore
     class P58 : public virtual OneHbond {
     public:
       P58 () {}
-      P58 (const string& ks) : PropertyType (ks) {}
+      P58 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P58* > (t); 
       }
@@ -1366,7 +1395,7 @@ namespace mccore
     class P59 : public virtual OneHbond {
     public:
       P59 () {}
-      P59 (const string& ks) : PropertyType (ks) {}
+      P59 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P59* > (t); 
       }
@@ -1378,7 +1407,7 @@ namespace mccore
     class P60 : public virtual OneHbond {
     public:
       P60 () {}
-      P60 (const string& ks) : PropertyType (ks) {}
+      P60 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P60* > (t); 
       }
@@ -1390,7 +1419,7 @@ namespace mccore
     class P61 : public virtual OneHbond {
     public:
       P61 () {}
-      P61 (const string& ks) : PropertyType (ks) {}
+      P61 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P61* > (t); 
       }
@@ -1402,7 +1431,7 @@ namespace mccore
     class P62 : public virtual OneHbond {
     public:
       P62 () {}
-      P62 (const string& ks) : PropertyType (ks) {}
+      P62 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P62* > (t); 
       }
@@ -1414,7 +1443,7 @@ namespace mccore
     class P63 : public virtual OneHbond {
     public:
       P63 () {}
-      P63 (const string& ks) : PropertyType (ks) {}
+      P63 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P63* > (t); 
       }
@@ -1426,7 +1455,7 @@ namespace mccore
     class P64 : public virtual OneHbond {
     public:
       P64 () {}
-      P64 (const string& ks) : PropertyType (ks) {}
+      P64 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P64* > (t); 
       }
@@ -1438,7 +1467,7 @@ namespace mccore
     class P65 : public virtual OneHbond {
     public:
       P65 () {}
-      P65 (const string& ks) : PropertyType (ks) {}
+      P65 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P65* > (t); 
       }
@@ -1450,7 +1479,7 @@ namespace mccore
     class P66 : public virtual OneHbond {
     public:
       P66 () {}
-      P66 (const string& ks) : PropertyType (ks) {}
+      P66 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P66* > (t); 
       }
@@ -1462,7 +1491,7 @@ namespace mccore
     class P67 : public virtual OneHbond {
     public:
       P67 () {}
-      P67 (const string& ks) : PropertyType (ks) {}
+      P67 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P67* > (t); 
       }
@@ -1474,7 +1503,7 @@ namespace mccore
     class P68 : public virtual OneHbond {
     public:
       P68 () {}
-      P68 (const string& ks) : PropertyType (ks) {}
+      P68 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P68* > (t); 
       }
@@ -1486,7 +1515,7 @@ namespace mccore
     class P69 : public virtual OneHbond {
     public:
       P69 () {}
-      P69 (const string& ks) : PropertyType (ks) {}
+      P69 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P69* > (t); 
       }
@@ -1498,7 +1527,7 @@ namespace mccore
     class P70 : public virtual OneHbond {
     public:
       P70 () {}
-      P70 (const string& ks) : PropertyType (ks) {}
+      P70 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P70* > (t); 
       }
@@ -1510,7 +1539,7 @@ namespace mccore
     class P71 : public virtual OneHbond {
     public:
       P71 () {}
-      P71 (const string& ks) : PropertyType (ks) {}
+      P71 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P71* > (t); 
       }
@@ -1522,7 +1551,7 @@ namespace mccore
     class P72 : public virtual OneHbond {
     public:
       P72 () {}
-      P72 (const string& ks) : PropertyType (ks) {}
+      P72 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P72* > (t); 
       }
@@ -1534,7 +1563,7 @@ namespace mccore
     class P73 : public virtual OneHbond {
     public:
       P73 () {}
-      P73 (const string& ks) : PropertyType (ks) {}
+      P73 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P73* > (t); 
       }
@@ -1546,7 +1575,7 @@ namespace mccore
     class P74 : public virtual OneHbond {
     public:
       P74 () {}
-      P74 (const string& ks) : PropertyType (ks) {}
+      P74 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P74* > (t); 
       }
@@ -1558,7 +1587,7 @@ namespace mccore
     class P75 : public virtual OneHbond {
     public:
       P75 () {}
-      P75 (const string& ks) : PropertyType (ks) {}
+      P75 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P75* > (t); 
       }
@@ -1570,7 +1599,7 @@ namespace mccore
     class P76 : public virtual OneHbond {
     public:
       P76 () {}
-      P76 (const string& ks) : PropertyType (ks) {}
+      P76 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P76* > (t); 
       }
@@ -1582,7 +1611,7 @@ namespace mccore
     class P77 : public virtual OneHbond {
     public:
       P77 () {}
-      P77 (const string& ks) : PropertyType (ks) {}
+      P77 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P77* > (t); 
       }
@@ -1594,7 +1623,7 @@ namespace mccore
     class P78 : public virtual OneHbond {
     public:
       P78 () {}
-      P78 (const string& ks) : PropertyType (ks) {}
+      P78 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P78* > (t); 
       }
@@ -1606,7 +1635,7 @@ namespace mccore
     class P79 : public virtual OneHbond {
     public:
       P79 () {}
-      P79 (const string& ks) : PropertyType (ks) {}
+      P79 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P79* > (t); 
       }
@@ -1618,7 +1647,7 @@ namespace mccore
     class P80 : public virtual OneHbond {
     public:
       P80 () {}
-      P80 (const string& ks) : PropertyType (ks) {}
+      P80 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P80* > (t); 
       }
@@ -1630,7 +1659,7 @@ namespace mccore
     class P81 : public virtual OneHbond {
     public:
       P81 () {}
-      P81 (const string& ks) : PropertyType (ks) {}
+      P81 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P81* > (t); 
       }
@@ -1642,7 +1671,7 @@ namespace mccore
     class P82 : public virtual OneHbond {
     public:
       P82 () {}
-      P82 (const string& ks) : PropertyType (ks) {}
+      P82 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P82* > (t); 
       }
@@ -1654,7 +1683,7 @@ namespace mccore
     class P83 : public virtual OneHbond {
     public:
       P83 () {}
-      P83 (const string& ks) : PropertyType (ks) {}
+      P83 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P83* > (t); 
       }
@@ -1666,7 +1695,7 @@ namespace mccore
     class P84 : public virtual OneHbond {
     public:
       P84 () {}
-      P84 (const string& ks) : PropertyType (ks) {}
+      P84 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P84* > (t); 
       }
@@ -1678,7 +1707,7 @@ namespace mccore
     class P85 : public virtual OneHbond {
     public:
       P85 () {}
-      P85 (const string& ks) : PropertyType (ks) {}
+      P85 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P85* > (t); 
       }
@@ -1690,7 +1719,7 @@ namespace mccore
     class P86 : public virtual OneHbond {
     public:
       P86 () {}
-      P86 (const string& ks) : PropertyType (ks) {}
+      P86 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P86* > (t); 
       }
@@ -1702,7 +1731,7 @@ namespace mccore
     class P87 : public virtual OneHbond {
     public:
       P87 () {}
-      P87 (const string& ks) : PropertyType (ks) {}
+      P87 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P87* > (t); 
       }
@@ -1714,7 +1743,7 @@ namespace mccore
     class P88 : public virtual OneHbond {
     public:
       P88 () {}
-      P88 (const string& ks) : PropertyType (ks) {}
+      P88 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P88* > (t); 
       }
@@ -1726,7 +1755,7 @@ namespace mccore
     class P89 : public virtual OneHbond {
     public:
       P89 () {}
-      P89 (const string& ks) : PropertyType (ks) {}
+      P89 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P89* > (t); 
       }
@@ -1738,7 +1767,7 @@ namespace mccore
     class P90 : public virtual OneHbond {
     public:
       P90 () {}
-      P90 (const string& ks) : PropertyType (ks) {}
+      P90 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P90* > (t); 
       }
@@ -1750,7 +1779,7 @@ namespace mccore
     class P91 : public virtual OneHbond {
     public:
       P91 () {}
-      P91 (const string& ks) : PropertyType (ks) {}
+      P91 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P91* > (t); 
       }
@@ -1762,7 +1791,7 @@ namespace mccore
     class P92 : public virtual OneHbond {
     public:
       P92 () {}
-      P92 (const string& ks) : PropertyType (ks) {}
+      P92 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P92* > (t); 
       }
@@ -1774,7 +1803,7 @@ namespace mccore
     class P93 : public virtual OneHbond {
     public:
       P93 () {}
-      P93 (const string& ks) : PropertyType (ks) {}
+      P93 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P93* > (t); 
       }
@@ -1786,7 +1815,7 @@ namespace mccore
     class P94 : public virtual OneHbond {
     public:
       P94 () {}
-      P94 (const string& ks) : PropertyType (ks) {}
+      P94 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P94* > (t); 
       }
@@ -1798,7 +1827,7 @@ namespace mccore
     class P95 : public virtual OneHbond {
     public:
       P95 () {}
-      P95 (const string& ks) : PropertyType (ks) {}
+      P95 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P95* > (t); 
       }
@@ -1810,7 +1839,7 @@ namespace mccore
     class P96 : public virtual OneHbond {
     public:
       P96 () {}
-      P96 (const string& ks) : PropertyType (ks) {}
+      P96 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P96* > (t); 
       }
@@ -1822,7 +1851,7 @@ namespace mccore
     class P97 : public virtual OneHbond {
     public:
       P97 () {}
-      P97 (const string& ks) : PropertyType (ks) {}
+      P97 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P97* > (t); 
       }
@@ -1834,7 +1863,7 @@ namespace mccore
     class P98 : public virtual OneHbond {
     public:
       P98 () {}
-      P98 (const string& ks) : PropertyType (ks) {}
+      P98 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P98* > (t); 
       }
@@ -1846,7 +1875,7 @@ namespace mccore
     class P99 : public virtual OneHbond {
     public:
       P99 () {}
-      P99 (const string& ks) : PropertyType (ks) {}
+      P99 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P99* > (t); 
       }
@@ -1858,7 +1887,7 @@ namespace mccore
     class P100 : public virtual OneHbond {
     public:
       P100 () {}
-      P100 (const string& ks) : PropertyType (ks) {}
+      P100 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P100* > (t); 
       }
@@ -1870,7 +1899,7 @@ namespace mccore
     class P101 : public virtual OneHbond {
     public:
       P101 () {}
-      P101 (const string& ks) : PropertyType (ks) {}
+      P101 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P101* > (t); 
       }
@@ -1882,7 +1911,7 @@ namespace mccore
     class P102 : public virtual OneHbond {
     public:
       P102 () {}
-      P102 (const string& ks) : PropertyType (ks) {}
+      P102 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P102* > (t); 
       }
@@ -1894,7 +1923,7 @@ namespace mccore
     class P103 : public virtual OneHbond {
     public:
       P103 () {}
-      P103 (const string& ks) : PropertyType (ks) {}
+      P103 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P103* > (t); 
       }
@@ -1906,7 +1935,7 @@ namespace mccore
     class P104 : public virtual OneHbond {
     public:
       P104 () {}
-      P104 (const string& ks) : PropertyType (ks) {}
+      P104 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P104* > (t); 
       }
@@ -1918,7 +1947,7 @@ namespace mccore
     class P105 : public virtual OneHbond {
     public:
       P105 () {}
-      P105 (const string& ks) : PropertyType (ks) {}
+      P105 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P105* > (t); 
       }
@@ -1930,7 +1959,7 @@ namespace mccore
     class P106 : public virtual OneHbond {
     public:
       P106 () {}
-      P106 (const string& ks) : PropertyType (ks) {}
+      P106 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P106* > (t); 
       }
@@ -1942,7 +1971,7 @@ namespace mccore
     class P108 : public virtual OneHbond {
     public:
       P108 () {}
-      P108 (const string& ks) : PropertyType (ks) {}
+      P108 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P108* > (t); 
       }
@@ -1954,7 +1983,7 @@ namespace mccore
     class P109 : public virtual OneHbond {
     public:
       P109 () {}
-      P109 (const string& ks) : PropertyType (ks) {}
+      P109 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P109* > (t); 
       }
@@ -1966,7 +1995,7 @@ namespace mccore
     class P110 : public virtual OneHbond {
     public:
       P110 () {}
-      P110 (const string& ks) : PropertyType (ks) {}
+      P110 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P110* > (t); 
       }
@@ -1978,7 +2007,7 @@ namespace mccore
     class P111 : public virtual OneHbond {
     public:
       P111 () {}
-      P111 (const string& ks) : PropertyType (ks) {}
+      P111 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P111* > (t); 
       }
@@ -1990,7 +2019,7 @@ namespace mccore
     class P112 : public virtual OneHbond {
     public:
       P112 () {}
-      P112 (const string& ks) : PropertyType (ks) {}
+      P112 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P112* > (t); 
       }
@@ -2002,7 +2031,7 @@ namespace mccore
     class P113 : public virtual OneHbond {
     public:
       P113 () {}
-      P113 (const string& ks) : PropertyType (ks) {}
+      P113 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P113* > (t); 
       }
@@ -2014,7 +2043,7 @@ namespace mccore
     class P114 : public virtual OneHbond {
     public:
       P114 () {}
-      P114 (const string& ks) : PropertyType (ks) {}
+      P114 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P114* > (t); 
       }
@@ -2026,7 +2055,7 @@ namespace mccore
     class P115 : public virtual OneHbond {
     public:
       P115 () {}
-      P115 (const string& ks) : PropertyType (ks) {}
+      P115 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P115* > (t); 
       }
@@ -2038,7 +2067,7 @@ namespace mccore
     class P116 : public virtual OneHbond {
     public:
       P116 () {}
-      P116 (const string& ks) : PropertyType (ks) {}
+      P116 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P116* > (t); 
       }
@@ -2050,7 +2079,7 @@ namespace mccore
     class P117 : public virtual OneHbond {
     public:
       P117 () {}
-      P117 (const string& ks) : PropertyType (ks) {}
+      P117 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P117* > (t); 
       }
@@ -2062,7 +2091,7 @@ namespace mccore
     class P118 : public virtual OneHbond {
     public:
       P118 () {}
-      P118 (const string& ks) : PropertyType (ks) {}
+      P118 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P118* > (t); 
       }
@@ -2074,7 +2103,7 @@ namespace mccore
     class P119 : public virtual OneHbond {
     public:
       P119 () {}
-      P119 (const string& ks) : PropertyType (ks) {}
+      P119 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P119* > (t); 
       }
@@ -2086,7 +2115,7 @@ namespace mccore
     class P120 : public virtual OneHbond {
     public:
       P120 () {}
-      P120 (const string& ks) : PropertyType (ks) {}
+      P120 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P120* > (t); 
       }
@@ -2098,7 +2127,7 @@ namespace mccore
     class P121 : public virtual OneHbond {
     public:
       P121 () {}
-      P121 (const string& ks) : PropertyType (ks) {}
+      P121 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P121* > (t); 
       }
@@ -2110,7 +2139,7 @@ namespace mccore
     class P122 : public virtual OneHbond {
     public:
       P122 () {}
-      P122 (const string& ks) : PropertyType (ks) {}
+      P122 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P122* > (t); 
       }
@@ -2122,7 +2151,7 @@ namespace mccore
     class P123 : public virtual OneHbond {
     public:
       P123 () {}
-      P123 (const string& ks) : PropertyType (ks) {}
+      P123 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P123* > (t); 
       }
@@ -2134,7 +2163,7 @@ namespace mccore
     class P124 : public virtual OneHbond {
     public:
       P124 () {}
-      P124 (const string& ks) : PropertyType (ks) {}
+      P124 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P124* > (t); 
       }
@@ -2146,7 +2175,7 @@ namespace mccore
     class P125 : public virtual OneHbond {
     public:
       P125 () {}
-      P125 (const string& ks) : PropertyType (ks) {}
+      P125 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P125* > (t); 
       }
@@ -2158,7 +2187,7 @@ namespace mccore
     class P126 : public virtual OneHbond {
     public:
       P126 () {}
-      P126 (const string& ks) : PropertyType (ks) {}
+      P126 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P126* > (t); 
       }
@@ -2170,7 +2199,7 @@ namespace mccore
     class P127 : public virtual OneHbond {
     public:
       P127 () {}
-      P127 (const string& ks) : PropertyType (ks) {}
+      P127 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P127* > (t); 
       }
@@ -2182,7 +2211,7 @@ namespace mccore
     class P128 : public virtual OneHbond {
     public:
       P128 () {}
-      P128 (const string& ks) : PropertyType (ks) {}
+      P128 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P128* > (t); 
       }
@@ -2194,7 +2223,7 @@ namespace mccore
     class P129 : public virtual OneHbond {
     public:
       P129 () {}
-      P129 (const string& ks) : PropertyType (ks) {}
+      P129 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P129* > (t); 
       }
@@ -2206,7 +2235,7 @@ namespace mccore
     class P130 : public virtual OneHbond {
     public:
       P130 () {}
-      P130 (const string& ks) : PropertyType (ks) {}
+      P130 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P130* > (t); 
       }
@@ -2218,7 +2247,7 @@ namespace mccore
     class P131 : public virtual OneHbond {
     public:
       P131 () {}
-      P131 (const string& ks) : PropertyType (ks) {}
+      P131 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P131* > (t); 
       }
@@ -2230,7 +2259,7 @@ namespace mccore
     class P132 : public virtual OneHbond {
     public:
       P132 () {}
-      P132 (const string& ks) : PropertyType (ks) {}
+      P132 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P132* > (t); 
       }
@@ -2242,7 +2271,7 @@ namespace mccore
     class P133 : public virtual OneHbond {
     public:
       P133 () {}
-      P133 (const string& ks) : PropertyType (ks) {}
+      P133 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P133* > (t); 
       }
@@ -2254,7 +2283,7 @@ namespace mccore
     class P134 : public virtual OneHbond {
     public:
       P134 () {}
-      P134 (const string& ks) : PropertyType (ks) {}
+      P134 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P134* > (t); 
       }
@@ -2266,7 +2295,7 @@ namespace mccore
     class P135 : public virtual OneHbond {
     public:
       P135 () {}
-      P135 (const string& ks) : PropertyType (ks) {}
+      P135 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P135* > (t); 
       }
@@ -2278,7 +2307,7 @@ namespace mccore
     class P136 : public virtual OneHbond {
     public:
       P136 () {}
-      P136 (const string& ks) : PropertyType (ks) {}
+      P136 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P136* > (t); 
       }
@@ -2290,7 +2319,7 @@ namespace mccore
     class P137 : public virtual OneHbond {
     public:
       P137 () {}
-      P137 (const string& ks) : PropertyType (ks) {}
+      P137 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const P137* > (t); 
       }
@@ -2302,7 +2331,7 @@ namespace mccore
     class Face : public virtual PropertyType {
     public:
       Face () {}
-      Face (const string& ks) : PropertyType (ks) {}
+      Face (const string &ks) : PropertyType (ks) {}
 
       virtual bool isFace () const
       {
@@ -2321,7 +2350,7 @@ namespace mccore
     class PW : public virtual Face {
     public:
       PW () {}
-      PW (const string& ks) : PropertyType (ks) {}
+      PW (const string &ks) : PropertyType (ks) {}
 
       virtual bool isW () const
       {
@@ -2340,7 +2369,7 @@ namespace mccore
     class PS : public virtual Face {
     public:
       PS () {}
-      PS (const string& ks) : PropertyType (ks) {}
+      PS (const string &ks) : PropertyType (ks) {}
 
       virtual bool isS () const
       {
@@ -2359,7 +2388,7 @@ namespace mccore
     class PH : public virtual Face {
     public:
       PH () {}
-      PH (const string& ks) : PropertyType (ks) {}
+      PH (const string &ks) : PropertyType (ks) {}
 
       virtual bool isH () const
       {
@@ -2378,7 +2407,7 @@ namespace mccore
     class PWs : public PW {
     public:
       PWs () {}
-      PWs (const string& ks) : PropertyType (ks) {}
+      PWs (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PWs* > (t); 
       }
@@ -2390,7 +2419,7 @@ namespace mccore
     class PWw : public PW {
     public:
       PWw () {}
-      PWw (const string& ks) : PropertyType (ks) {}
+      PWw (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PWw* > (t); 
       }
@@ -2402,7 +2431,7 @@ namespace mccore
     class PWh : public PW {
     public:
       PWh () {}
-      PWh (const string& ks) : PropertyType (ks) {}
+      PWh (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PWh* > (t); 
       }
@@ -2414,7 +2443,7 @@ namespace mccore
     class PSw : public PS {
     public:
       PSw () {}
-      PSw (const string& ks) : PropertyType (ks) {}
+      PSw (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PSw* > (t); 
       }
@@ -2426,7 +2455,7 @@ namespace mccore
     class PSs : public PS {
     public:
       PSs () {}
-      PSs (const string& ks) : PropertyType (ks) {}
+      PSs (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PSs* > (t); 
       }
@@ -2438,7 +2467,7 @@ namespace mccore
     class PHw : public PH {
     public:
       PHw () {}
-      PHw (const string& ks) : PropertyType (ks) {}
+      PHw (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PHw* > (t); 
       }
@@ -2450,7 +2479,7 @@ namespace mccore
     class PHh : public PH {
     public:
       PHh () {}
-      PHh (const string& ks) : PropertyType (ks) {}
+      PHh (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PHh* > (t); 
       }
@@ -2462,7 +2491,7 @@ namespace mccore
     class PC8 : public PH {
     public:
       PC8 () {}
-      PC8 (const string& ks) : PropertyType (ks) {}
+      PC8 (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PC8* > (t); 
       }
@@ -2474,7 +2503,7 @@ namespace mccore
     class PBs : public Face {
     public:
       PBs () {}
-      PBs (const string& ks) : PropertyType (ks) {}
+      PBs (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PBs* > (t); 
       }
@@ -2486,7 +2515,7 @@ namespace mccore
     class PBh : public Face {
     public:
       PBh () {}
-      PBh (const string& ks) : PropertyType (ks) {}
+      PBh (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PBh* > (t); 
       }
@@ -2498,7 +2527,7 @@ namespace mccore
     class PPhosphate : public Face {
     public:
       PPhosphate () {}
-      PPhosphate (const string& ks) : PropertyType (ks) {}
+      PPhosphate (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PPhosphate* > (t); 
       }
@@ -2510,7 +2539,7 @@ namespace mccore
     class PRibose : public Face {
     public:
       PRibose () {}
-      PRibose (const string& ks) : PropertyType (ks) {}
+      PRibose (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const PRibose* > (t); 
       }
@@ -2522,7 +2551,7 @@ namespace mccore
     class Furanose : public virtual PropertyType {
     public:
       Furanose () {}
-      Furanose (const string& ks) : PropertyType (ks) {}
+      Furanose (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const Furanose* > (t); 
       }
@@ -2534,7 +2563,7 @@ namespace mccore
     class Alpha : public Furanose {
     public:
       Alpha () {}
-      Alpha (const string& ks) : PropertyType (ks) {}
+      Alpha (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const Alpha* > (t); 
       }
@@ -2546,7 +2575,7 @@ namespace mccore
     class Beta : public Furanose {
     public:
       Beta () {}
-      Beta (const string& ks) : PropertyType (ks) {}
+      Beta (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const Beta* > (t); 
       }
@@ -2558,7 +2587,7 @@ namespace mccore
     class L : public Furanose {
     public:
       L () {}
-      L (const string& ks) : PropertyType (ks) {}
+      L (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const L* > (t); 
       }
@@ -2570,7 +2599,7 @@ namespace mccore
     class D : public Furanose {
     public:
       D () {}
-      D (const string& ks) : PropertyType (ks) {}
+      D (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const D* > (t); 
       }
@@ -2582,7 +2611,7 @@ namespace mccore
     class Lyxofuranoside : public virtual Furanose {
     public:
       Lyxofuranoside () {}
-      Lyxofuranoside (const string& ks) : PropertyType (ks) {}
+      Lyxofuranoside (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
         return dynamic_cast< const Lyxofuranoside* > (t);
       }
@@ -2594,7 +2623,7 @@ namespace mccore
     class Ribofuranoside : public virtual Furanose {
     public:
       Ribofuranoside () {}
-      Ribofuranoside (const string& ks) : PropertyType (ks) {}
+      Ribofuranoside (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
         return dynamic_cast< const Ribofuranoside* > (t);
       }
@@ -2606,7 +2635,7 @@ namespace mccore
     class Arabinofuranoside : public virtual Furanose {
     public:
       Arabinofuranoside () {}
-      Arabinofuranoside (const string& ks) : PropertyType (ks) {}
+      Arabinofuranoside (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
         return dynamic_cast< const Arabinofuranoside* > (t);
       }
@@ -2618,7 +2647,7 @@ namespace mccore
     class Xylofuranoside : public virtual Furanose {
     public:
       Xylofuranoside () {}
-      Xylofuranoside (const string& ks) : PropertyType (ks) {}
+      Xylofuranoside (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
         return dynamic_cast< const Xylofuranoside* > (t);
       }
@@ -2630,7 +2659,7 @@ namespace mccore
     class Alpha_L_Lyxofuranoside : public virtual Alpha, public virtual L, public virtual Lyxofuranoside {
     public:
       Alpha_L_Lyxofuranoside () {}
-      Alpha_L_Lyxofuranoside (const string& ks) : PropertyType (ks) {}
+      Alpha_L_Lyxofuranoside (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
         return dynamic_cast< const Alpha_L_Lyxofuranoside* > (t);
       }
@@ -2642,7 +2671,7 @@ namespace mccore
     class Beta_L_Lyxofuranoside : public virtual Beta, public virtual L, public virtual Lyxofuranoside {
     public:
       Beta_L_Lyxofuranoside () {}
-      Beta_L_Lyxofuranoside (const string& ks) : PropertyType (ks) {}
+      Beta_L_Lyxofuranoside (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
         return dynamic_cast< const Beta_L_Lyxofuranoside* > (t);
       }
@@ -2654,7 +2683,7 @@ namespace mccore
     class Alpha_D_Lyxofuranoside : public virtual Alpha, public virtual D, public virtual Lyxofuranoside {
     public:
       Alpha_D_Lyxofuranoside () {}
-      Alpha_D_Lyxofuranoside (const string& ks) : PropertyType (ks) {}
+      Alpha_D_Lyxofuranoside (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
         return dynamic_cast< const Alpha_D_Lyxofuranoside* > (t);
       }
@@ -2666,7 +2695,7 @@ namespace mccore
     class Beta_D_Lyxofuranoside : public virtual Beta, public virtual D, public virtual Lyxofuranoside {
     public:
       Beta_D_Lyxofuranoside () {}
-      Beta_D_Lyxofuranoside (const string& ks) : PropertyType (ks) {}
+      Beta_D_Lyxofuranoside (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
         return dynamic_cast< const Beta_D_Lyxofuranoside* > (t);
       }
@@ -2678,7 +2707,7 @@ namespace mccore
     class Alpha_L_Ribofuranoside : public virtual Alpha, public virtual L, public virtual Ribofuranoside {
     public:
       Alpha_L_Ribofuranoside () {}
-      Alpha_L_Ribofuranoside (const string& ks) : PropertyType (ks) {}
+      Alpha_L_Ribofuranoside (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
         return dynamic_cast< const Alpha_L_Ribofuranoside* > (t);
       }
@@ -2690,7 +2719,7 @@ namespace mccore
     class Beta_L_Ribofuranoside : public virtual Beta, public virtual L, public virtual Ribofuranoside {
     public:
       Beta_L_Ribofuranoside () {}
-      Beta_L_Ribofuranoside (const string& ks) : PropertyType (ks) {}
+      Beta_L_Ribofuranoside (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
         return dynamic_cast< const Beta_L_Ribofuranoside* > (t);
       }
@@ -2702,7 +2731,7 @@ namespace mccore
     class Alpha_D_Ribofuranoside : public virtual Alpha, public virtual D, public virtual Ribofuranoside {
     public:
       Alpha_D_Ribofuranoside () {}
-      Alpha_D_Ribofuranoside (const string& ks) : PropertyType (ks) {}
+      Alpha_D_Ribofuranoside (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
         return dynamic_cast< const Alpha_D_Ribofuranoside* > (t);
       }
@@ -2714,7 +2743,7 @@ namespace mccore
     class Beta_D_Ribofuranoside : public virtual Beta, public virtual D, public virtual Ribofuranoside {
     public:
       Beta_D_Ribofuranoside () {}
-      Beta_D_Ribofuranoside (const string& ks) : PropertyType (ks) {}
+      Beta_D_Ribofuranoside (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
         return dynamic_cast< const Beta_D_Ribofuranoside* > (t);
       }
@@ -2726,7 +2755,7 @@ namespace mccore
     class Alpha_L_Arabinofuranoside : public virtual Alpha, public virtual L, public virtual Arabinofuranoside {
     public:
       Alpha_L_Arabinofuranoside () {}
-      Alpha_L_Arabinofuranoside (const string& ks) : PropertyType (ks) {}
+      Alpha_L_Arabinofuranoside (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
         return dynamic_cast< const Alpha_L_Arabinofuranoside* > (t);
       }
@@ -2738,7 +2767,7 @@ namespace mccore
     class Beta_L_Arabinofuranoside : public virtual Beta, public virtual L, public virtual Arabinofuranoside {
     public:
       Beta_L_Arabinofuranoside () {}
-      Beta_L_Arabinofuranoside (const string& ks) : PropertyType (ks) {}
+      Beta_L_Arabinofuranoside (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
         return dynamic_cast< const Beta_L_Arabinofuranoside* > (t);
       }
@@ -2750,7 +2779,7 @@ namespace mccore
     class Alpha_D_Arabinofuranoside : public virtual Alpha, public virtual D, public virtual Arabinofuranoside {
     public:
       Alpha_D_Arabinofuranoside () {}
-      Alpha_D_Arabinofuranoside (const string& ks) : PropertyType (ks) {}
+      Alpha_D_Arabinofuranoside (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
         return dynamic_cast< const Alpha_D_Arabinofuranoside* > (t);
       }
@@ -2762,7 +2791,7 @@ namespace mccore
     class Beta_D_Arabinofuranoside : public virtual Beta, public virtual D, public virtual Arabinofuranoside {
     public:
       Beta_D_Arabinofuranoside () {}
-      Beta_D_Arabinofuranoside (const string& ks) : PropertyType (ks) {}
+      Beta_D_Arabinofuranoside (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
         return dynamic_cast< const Beta_D_Arabinofuranoside* > (t);
       }
@@ -2774,7 +2803,7 @@ namespace mccore
     class Alpha_L_Xylofuranoside : public virtual Alpha, public virtual L, public virtual Xylofuranoside {
     public:
       Alpha_L_Xylofuranoside () {}
-      Alpha_L_Xylofuranoside (const string& ks) : PropertyType (ks) {}
+      Alpha_L_Xylofuranoside (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
         return dynamic_cast< const Alpha_L_Xylofuranoside* > (t);
       }
@@ -2786,7 +2815,7 @@ namespace mccore
     class Beta_L_Xylofuranoside : public virtual Beta, public virtual L, public virtual Xylofuranoside {
     public:
       Beta_L_Xylofuranoside () {}
-      Beta_L_Xylofuranoside (const string& ks) : PropertyType (ks) {}
+      Beta_L_Xylofuranoside (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
         return dynamic_cast< const Beta_L_Xylofuranoside* > (t);
       }
@@ -2798,7 +2827,7 @@ namespace mccore
     class Alpha_D_Xylofuranoside : public virtual Alpha, public virtual D, public virtual Xylofuranoside {
     public:
       Alpha_D_Xylofuranoside () {}
-      Alpha_D_Xylofuranoside (const string& ks) : PropertyType (ks) {}
+      Alpha_D_Xylofuranoside (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
         return dynamic_cast< const Alpha_D_Xylofuranoside* > (t);
       }
@@ -2810,7 +2839,7 @@ namespace mccore
     class Beta_D_Xylofuranoside : public virtual Beta, public virtual D, public virtual Xylofuranoside {
     public:
       Beta_D_Xylofuranoside () {}
-      Beta_D_Xylofuranoside (const string& ks) : PropertyType (ks) {}
+      Beta_D_Xylofuranoside (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
         return dynamic_cast< const Beta_D_Xylofuranoside* > (t);
       }
@@ -2822,7 +2851,7 @@ namespace mccore
     class Type_A : public virtual PropertyType {
     public:
       Type_A () {}
-      Type_A (const string& ks) : PropertyType (ks) {}
+      Type_A (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const Type_A* > (t); 
       }
@@ -2834,7 +2863,7 @@ namespace mccore
     class Type_B : public virtual PropertyType {
     public:
       Type_B () {}
-      Type_B (const string& ks) : PropertyType (ks) {}
+      Type_B (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const Type_B* > (t); 
       }
@@ -2846,7 +2875,7 @@ namespace mccore
     class Helix : public virtual Stack {
     public:
       Helix () {}
-      Helix (const string& ks) : PropertyType (ks) {}
+      Helix (const string &ks) : PropertyType (ks) {}
       virtual bool describe (const PropertyType *t) const {
 	return dynamic_cast< const Helix* > (t); 
       }

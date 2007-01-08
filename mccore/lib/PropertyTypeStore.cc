@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // PropertyTypeStore.cc
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:42:25 2003
-// $Revision: 1.15 $
-// $Id: PropertyTypeStore.cc,v 1.15 2005-11-17 19:26:38 thibaup Exp $
+// $Revision: 1.16 $
+// $Id: PropertyTypeStore.cc,v 1.16 2007-01-08 23:59:42 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -42,6 +42,7 @@ namespace mccore
     PropertyType::pNull = *this->repository.insert (new Null ((str = ""))).first;
     PropertyType::pUnknown = *this->repository.insert (new Unknown ((str = "unknown"))).first;
 
+    PropertyType::pHbond = *this->repository.insert (new Hbond ((str = "hbond"))).first;
     PropertyType::pAdjacent = *this->repository.insert (new Adjacent ((str = "adjacent"))).first;
     PropertyType::pAdjacent5p = *this->repository.insert (new Adjacent5p ((str = "adjacent_5p"))).first;
     PropertyType::pAdjacent3p = *this->repository.insert (new Adjacent3p ((str = "adjacent_3p"))).first;
@@ -51,8 +52,9 @@ namespace mccore
     PropertyType::pDownward = *this->repository.insert (new Downward ((str = "downward"))).first;
     PropertyType::pInward = *this->repository.insert (new Inward ((str = "inward"))).first;
     PropertyType::pOutward = *this->repository.insert (new Outward ((str = "outward"))).first;
-    
+
     PropertyType::pPairing = *this->repository.insert (new Pairing ((str = "pairing"))).first;
+    PropertyType::pBHbond = *this->repository.insert (new BHbond ((str = "bhbond"))).first;
     PropertyType::pParallel = *this->repository.insert (new Parallel ((str = "parallel"))).first;
     PropertyType::pAntiparallel = *this->repository.insert (new Antiparallel ((str = "antiparallel"))).first;
     PropertyType::pCis = *this->repository.insert (new Cis ((str = "cis"))).first;
