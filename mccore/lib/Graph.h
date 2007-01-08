@@ -4,7 +4,7 @@
 //                     Université de Montréal
 // Author           : Martin Larose
 // Created On       : Fri Dec 10 00:05:15 2004
-// $Revision: 1.29 $
+// $Revision: 1.30 $
 // 
 // This file is part of mccore.
 // 
@@ -26,6 +26,7 @@
 #ifndef _mccore_Graph_h_
 #define _mccore_Graph_h_
 
+#include <algorithm>
 #include <iomanip>
 #include <iostream>
 #include <list>
@@ -48,7 +49,7 @@ namespace mccore
    * costly.
    *
    * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Graph.h,v 1.29 2006-09-19 22:47:00 larosem Exp $
+   * @version $Id: Graph.h,v 1.30 2007-01-08 23:39:39 larosem Exp $
    */
   template< class V,
 	    class E,
@@ -1016,8 +1017,13 @@ namespace mccore
     {
       for (; l != f; ++f)
 	{
-	  insert (*f);
+	  if (vertices.end () == std::find (vertices.begin (), vertices.end (), *f))
+	    {
+	      vertices.push_back (*f);
+	    }
 	}
+      vertexWeights.resize (vertices.size ());
+      rebuildV2VLabel ();
     }
 
   protected:
