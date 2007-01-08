@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.86 $
-// $Id: Residue.cc,v 1.86 2006-06-29 19:12:07 thibaup Exp $
+// $Revision: 1.87 $
+// $Id: Residue.cc,v 1.87 2007-01-08 19:19:30 thibaup Exp $
 //
 // This file is part of mccore.
 // 
@@ -2114,8 +2114,8 @@ namespace mccore
     }
     else
     {
-      p_min[1] = Residue::getMinChi (pucker);
-      p_max[1] = Residue::getMaxChi (pucker);
+      p_min[1] = Residue::getMinChi (glycosyl);
+      p_max[1] = Residue::getMaxChi (glycosyl);
     }
     
     for (i = 0; i < 2; ++i)
