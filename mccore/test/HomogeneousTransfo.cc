@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // test/HomogeneousTransfo.cc
-// Copyright © 2005 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
+// Copyright © 2005-06 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal.
 // Author           : Philippe Thibault <thibaup@yoda.iro.umontreal.ca>
 // Created On       : Tue Jan 11 13:24:06 2005
-// $Revision: 1.1 $
-// $Id: HomogeneousTransfo.cc,v 1.1 2005-01-11 19:51:22 thibaup Exp $
+// $Revision: 1.2 $
+// $Id: HomogeneousTransfo.cc,v 1.2 2007-01-09 00:15:33 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -121,7 +121,7 @@ int main (int argc, char** argv)
 	throw Exception ("binary reference file corrupted");
 
       for (it1 = tfos.begin (), it2 = ref.begin (); it1 != tfos.end (); ++it1, ++it2)
-	if ((d = it1->rmsd (*it2)) > 0.001)
+	if ((d = it1->euclidianRMSD (*it2)) > 0.001)
 	  cout << d << endl;
 	else
 	  cout << "ok" << endl;
