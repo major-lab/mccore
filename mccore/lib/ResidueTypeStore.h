@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // ResidueTypeStore.h
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-07 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.15 $
+// $Revision: 1.16 $
 // 
 // This file is part of mccore.
 // 
@@ -41,7 +41,7 @@ namespace mccore
    * Repository of residue types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueTypeStore.h,v 1.15 2005-08-05 16:00:47 larosem Exp $
+   * @version $Id: ResidueTypeStore.h,v 1.16 2007-01-09 00:08:35 larosem Exp $
    */
   class ResidueTypeStore
   {
@@ -78,7 +78,7 @@ namespace mccore
      * @param key string key representing the residue type.
      * @return the matching residue type.
      */
-    const ResidueType* get (const string& key);
+    const ResidueType* get (const string &key);
 
     /**
      * Gets an unknown residue type with same key and definition as
@@ -87,7 +87,7 @@ namespace mccore
      * @param irtype the residue type to be copied into an unknown residue type.
      * @return the copied unknown residue type.
      */
-    const ResidueType* getInvalid (const ResidueType* irtype);
+    const ResidueType* getInvalid (const ResidueType *irtype);
 
     
   private:
@@ -98,12 +98,12 @@ namespace mccore
      * Public abstract class to wrap null pointer (no type)
      */
     class Null : public virtual ResidueType {
-    public:      
+    public:
       Null () {}
-      Null (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      Null (const string &ks, const string &ls) : ResidueType (ks, ls) {}
       
       virtual bool isNull () const { return true; }
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const Null* > (t);
       }
     };
@@ -112,12 +112,12 @@ namespace mccore
      * Public abstract class for unknown residues.
      */
     class Unknown : public virtual ResidueType {
-    public:      
+    public:
       Unknown () {}
-      Unknown (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      Unknown (const string &ks, const string &ls) : ResidueType (ks, ls) {}
       
       virtual bool isUnknown () const { return true; }
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const Unknown* > (t);
       }
     };
@@ -126,12 +126,12 @@ namespace mccore
      * Public abstract class for nucleic acid residues.
      */
     class NucleicAcid : public virtual ResidueType {
-    public:      
+    public:
       NucleicAcid () {}
-      NucleicAcid (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      NucleicAcid (const string &ks, const string &ls) : ResidueType (ks, ls) {}
       
       virtual bool isNucleicAcid () const { return true; }
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const NucleicAcid* > (t);
       }
     };
@@ -140,12 +140,12 @@ namespace mccore
      * Public abstract class for amino acid residues.
      */
     class AminoAcid : public virtual ResidueType {
-    public:      
+    public:
       AminoAcid () {}
-      AminoAcid (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      AminoAcid (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
       virtual bool isAminoAcid () const { return true; }
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const AminoAcid* > (t);
       }
     };
@@ -157,10 +157,10 @@ namespace mccore
     {
     public:
       RNA () { }
-      RNA (const string& ks, const string& ls) : ResidueType (ks, ls) { }
+      RNA (const string &ks, const string &ls) : ResidueType (ks, ls) { }
 
       virtual bool isRNA () const { return true; }
-      virtual bool describe (const ResidueType* t) const
+      virtual bool describe (const ResidueType *t) const
       { return dynamic_cast< const RNA* > (t); }
     };
 
@@ -169,12 +169,12 @@ namespace mccore
      */
     class DNA : public virtual ResidueType
     {
-    public:      
+    public:
       DNA () {}
-      DNA (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      DNA (const string &ks, const string &ls) : ResidueType (ks, ls) {}
       
       virtual bool isDNA () const { return true; }
-      virtual bool describe (const ResidueType* t) const
+      virtual bool describe (const ResidueType *t) const
       { return dynamic_cast< const DNA* > (t); }
     };
 
@@ -185,10 +185,10 @@ namespace mccore
     {
     public:
       Phosphate () { }
-      Phosphate (const string& ks, const string& ls) : ResidueType (ks, ls) { }
+      Phosphate (const string &ks, const string &ls) : ResidueType (ks, ls) { }
 
       virtual bool isPhosphate () const { return true; }
-      virtual bool describe (const ResidueType* t) const
+      virtual bool describe (const ResidueType *t) const
       { return dynamic_cast< const Phosphate* > (t); }
     };    
 
@@ -199,10 +199,10 @@ namespace mccore
     {
     public:
       Ribose () { }
-      Ribose (const string& ks, const string& ls) : ResidueType (ks, ls) { }
+      Ribose (const string &ks, const string &ls) : ResidueType (ks, ls) { }
 
       virtual bool isRibose () const { return true; }
-      virtual bool describe (const ResidueType* t) const
+      virtual bool describe (const ResidueType *t) const
       { return dynamic_cast< const Ribose* > (t); }
     };
 
@@ -213,10 +213,10 @@ namespace mccore
     {
     public:
       Ribose5 () { }
-      Ribose5 (const string& ks, const string& ls) : ResidueType (ks, ls) { }
+      Ribose5 (const string &ks, const string &ls) : ResidueType (ks, ls) { }
 
       virtual bool isRibose5 () const { return true; }
-      virtual bool describe (const ResidueType* t) const
+      virtual bool describe (const ResidueType *t) const
       { return dynamic_cast< const Ribose5* > (t); }
     };
 
@@ -227,10 +227,10 @@ namespace mccore
     {
     public:
       Ribose3 () { }
-      Ribose3 (const string& ks, const string& ls) : ResidueType (ks, ls) { }
+      Ribose3 (const string &ks, const string &ls) : ResidueType (ks, ls) { }
 
       virtual bool isRibose3 () const { return true; }
-      virtual bool describe (const ResidueType* t) const
+      virtual bool describe (const ResidueType *t) const
       { return dynamic_cast< const Ribose3* > (t); }
     };
 
@@ -241,10 +241,10 @@ namespace mccore
     {
     public:
       Ribose53 () { }
-      Ribose53 (const string& ks, const string& ls) : ResidueType (ks, ls) { }
+      Ribose53 (const string &ks, const string &ls) : ResidueType (ks, ls) { }
 
       virtual bool isRibose53 () const { return true; }
-      virtual bool describe (const ResidueType* t) const
+      virtual bool describe (const ResidueType *t) const
       { return dynamic_cast< const Ribose53* > (t); }
     };
 
@@ -256,10 +256,10 @@ namespace mccore
     {
     public:
       Amber () { }
-      Amber (const string& ks, const string& ls) : ResidueType (ks, ls) { }
+      Amber (const string &ks, const string &ls) : ResidueType (ks, ls) { }
 
       virtual bool isAmber () const { return true; }
-      virtual bool describe (const ResidueType* t) const
+      virtual bool describe (const ResidueType *t) const
       { return dynamic_cast< const Amber* > (t); }
     };
 
@@ -270,9 +270,9 @@ namespace mccore
     {
     public:
       DPhosphate () { }
-      DPhosphate (const string& ks, const string& ls) : ResidueType (ks, ls) { }
+      DPhosphate (const string &ks, const string &ls) : ResidueType (ks, ls) { }
 
-      virtual bool describe (const ResidueType* t) const
+      virtual bool describe (const ResidueType *t) const
       { return dynamic_cast< const DPhosphate* > (t); }
     };
 
@@ -283,9 +283,9 @@ namespace mccore
     {
     public:
       RPhosphate () { }
-      RPhosphate (const string& ks, const string& ls) : ResidueType (ks, ls) { }
+      RPhosphate (const string &ks, const string &ls) : ResidueType (ks, ls) { }
 
-      virtual bool describe (const ResidueType* t) const
+      virtual bool describe (const ResidueType *t) const
       { return dynamic_cast< const RPhosphate* > (t); }
     };
 
@@ -296,9 +296,9 @@ namespace mccore
     {
     public:
       DRibose () { }
-      DRibose (const string& ks, const string& ls) : ResidueType (ks, ls) { }
+      DRibose (const string &ks, const string &ls) : ResidueType (ks, ls) { }
 
-      virtual bool describe (const ResidueType* t) const
+      virtual bool describe (const ResidueType *t) const
       { return dynamic_cast< const DRibose* > (t); }
     };
 
@@ -309,9 +309,9 @@ namespace mccore
     {
     public:
       DRibose5 () { }
-      DRibose5 (const string& ks, const string& ls) : ResidueType (ks, ls) { }
+      DRibose5 (const string &ks, const string &ls) : ResidueType (ks, ls) { }
 
-      virtual bool describe (const ResidueType* t) const
+      virtual bool describe (const ResidueType *t) const
       { return dynamic_cast< const DRibose5* > (t); }
     };
 
@@ -322,9 +322,9 @@ namespace mccore
     {
     public:
       DRibose3 () { }
-      DRibose3 (const string& ks, const string& ls) : ResidueType (ks, ls) { }
+      DRibose3 (const string &ks, const string &ls) : ResidueType (ks, ls) { }
 
-      virtual bool describe (const ResidueType* t) const
+      virtual bool describe (const ResidueType *t) const
       { return dynamic_cast< const DRibose3* > (t); }
     };
 
@@ -335,9 +335,9 @@ namespace mccore
     {
     public:
       DRibose53 () { }
-      DRibose53 (const string& ks, const string& ls) : ResidueType (ks, ls) { }
+      DRibose53 (const string &ks, const string &ls) : ResidueType (ks, ls) { }
 
-      virtual bool describe (const ResidueType* t) const
+      virtual bool describe (const ResidueType *t) const
       { return dynamic_cast< const DRibose53* > (t); }
     };
 
@@ -348,9 +348,9 @@ namespace mccore
     {
     public:
       RRibose () { }
-      RRibose (const string& ks, const string& ls) : ResidueType (ks, ls) { }
+      RRibose (const string &ks, const string &ls) : ResidueType (ks, ls) { }
 
-      virtual bool describe (const ResidueType* t) const
+      virtual bool describe (const ResidueType *t) const
       { return dynamic_cast< const RRibose* > (t); }
     };
     
@@ -361,9 +361,9 @@ namespace mccore
     {
     public:
       RRibose5 () { }
-      RRibose5 (const string& ks, const string& ls) : ResidueType (ks, ls) { }
+      RRibose5 (const string &ks, const string &ls) : ResidueType (ks, ls) { }
 
-      virtual bool describe (const ResidueType* t) const
+      virtual bool describe (const ResidueType *t) const
       { return dynamic_cast< const RRibose5* > (t); }
     };
 
@@ -374,9 +374,9 @@ namespace mccore
     {
     public:
       RRibose3 () { }
-      RRibose3 (const string& ks, const string& ls) : ResidueType (ks, ls) { }
+      RRibose3 (const string &ks, const string &ls) : ResidueType (ks, ls) { }
 
-      virtual bool describe (const ResidueType* t) const
+      virtual bool describe (const ResidueType *t) const
       { return dynamic_cast< const RRibose3* > (t); }
     };
 
@@ -387,9 +387,9 @@ namespace mccore
     {
     public:
       RRibose53 () { }
-      RRibose53 (const string& ks, const string& ls) : ResidueType (ks, ls) { }
+      RRibose53 (const string &ks, const string &ls) : ResidueType (ks, ls) { }
 
-      virtual bool describe (const ResidueType* t) const
+      virtual bool describe (const ResidueType *t) const
       { return dynamic_cast< const RRibose53* > (t); }
     };
     
@@ -400,10 +400,10 @@ namespace mccore
     {
     public:
       N () { }
-      N (const string& ks, const string& ls) : ResidueType (ks, ls) { }
+      N (const string &ks, const string &ls) : ResidueType (ks, ls) { }
 
       virtual bool isN () const { return true; }
-      virtual bool describe (const ResidueType* t) const
+      virtual bool describe (const ResidueType *t) const
       { return dynamic_cast< const N* > (t); }
     };
     
@@ -411,11 +411,11 @@ namespace mccore
      * Public abstract class for B residues (C || G || U || S || Y || K)
      */
     class B : public virtual N {
-    public:      
+    public:
       B () {}
-      B (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      B (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const B* > (t);
       }
     };
@@ -424,11 +424,11 @@ namespace mccore
      * Public abstract class for D residues (A || G || U || R || W || K)
      */
     class D : public virtual N {
-    public:      
+    public:
       D () {}
-      D (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      D (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const D* > (t);
       }    
     };
@@ -437,11 +437,11 @@ namespace mccore
      * Public abstract class for H residues (A || C || U || M || W || Y)
      */
     class H : public virtual N {
-    public:      
+    public:
       H () {}
-      H (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      H (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const H* > (t);
       }    
     };
@@ -450,11 +450,11 @@ namespace mccore
      * Public abstract class for V residues (A || C || G || M || R || S)
      */
     class V : public virtual N {
-    public:      
+    public:
       V () {}
-      V (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      V (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const V* > (t);
       }
     };
@@ -463,12 +463,12 @@ namespace mccore
      * Public abstract class for purine residues. (R = A || G)
      */
     class Purine : public virtual D, public virtual V {
-    public:      
+    public:
       Purine () {}
-      Purine (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      Purine (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
       virtual bool isPurine () const { return true; }
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const Purine* > (t);
       }
     };
@@ -477,12 +477,12 @@ namespace mccore
      * Public abstract class for pyrimidine residues. (Y = C || U)
      */
     class Pyrimidine : public virtual B, public virtual H {
-    public:      
+    public:
       Pyrimidine () {}
-      Pyrimidine (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      Pyrimidine (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
       virtual bool isPyrimidine () const { return true; }
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const Pyrimidine* > (t);
       }
     };
@@ -491,11 +491,11 @@ namespace mccore
      * Public abstract class for W residues. (A || U)
      */
     class W : public virtual D, public virtual H {
-    public:      
+    public:
       W () {}
-      W (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      W (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const W* > (t);
       }
     };
@@ -504,11 +504,11 @@ namespace mccore
      * Public abstract class for S residues. (C || G)
      */
     class S : public virtual B, public virtual V {
-    public:      
+    public:
       S () {}
-      S (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      S (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const S* > (t);
       }      
    };
@@ -517,11 +517,11 @@ namespace mccore
      * Public abstract class for M residues. (A || C)
      */
     class M : public virtual H, public virtual V {
-    public:      
+    public:
       M () {}
-      M (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      M (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const M* > (t);
       }
     };
@@ -530,11 +530,11 @@ namespace mccore
      * Public abstract class for K residues. (G || U)
      */
     class K : public virtual B, public virtual D {
-    public:      
+    public:
       K () {}
-      K (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      K (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const K* > (t);
       }
     };
@@ -543,13 +543,26 @@ namespace mccore
      * Public abstract class for A residues.
      */
     class A : public virtual Purine, public virtual W, public virtual M {
-    public:      
+    public:
       A () {}
-      A (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      A (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
       virtual bool isA () const { return true; }
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const A* > (t);
+      }
+    };
+
+    /**
+     * Public abstract class for Modified Adenine residues.
+     */
+    class MA : public virtual Purine {
+    public:
+      MA () {}
+      MA (const string &ks, const string &ls) : ResidueType (ks, ls) { }
+
+      virtual bool describe (const ResidueType *t) const {
+	return dynamic_cast< const MA* > (t);
       }
     };
 
@@ -557,13 +570,26 @@ namespace mccore
      * Public abstract class for C residues.
      */
     class C : public virtual Pyrimidine, public virtual S, public virtual M {
-    public:      
+    public:
       C () {}
-      C (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      C (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
       virtual bool isC () const { return true; }
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const C* > (t);
+      }
+    };
+
+    /**
+     * Public abstract class for Modified Cytosine residues.
+     */
+    class MC : public virtual Pyrimidine {
+    public:
+      MC () {}
+      MC (const string &ks, const string &ls) : ResidueType (ks, ls) {}
+
+      virtual bool describe (const ResidueType *t) const {
+	return dynamic_cast< const MC* > (t);
       }
     };
 
@@ -571,13 +597,52 @@ namespace mccore
      * Public abstract class for G residues.
      */
     class G : public virtual Purine, public virtual S, public virtual K {
-    public:      
+    public:
       G () {}
-      G (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      G (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
       virtual bool isG () const { return true; }
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const G* > (t);
+      }
+    };
+
+    /**
+     * Public abstract class for Modified guanine residues.
+     */
+    class MG : public virtual Purine {
+    public:
+      MG () {}
+      MG (const string &ks, const string &ls) : ResidueType (ks, ls) {}
+
+      virtual bool describe (const ResidueType *t) const {
+	return dynamic_cast< const MG* > (t);
+      }
+    };
+
+    /**
+     * Public abstract class for I residues.
+     */
+    class I : public virtual Purine {
+    public:
+      I () {}
+      I (const string &ks, const string &ls) : ResidueType (ks, ls) {}
+      
+      virtual bool describe (const ResidueType *t) const {
+	return dynamic_cast< const I* > (t);
+      }
+    };
+
+    /**
+     * Public abstract class for Modified inosine residues.
+     */
+    class MI : public virtual Purine {
+    public:
+      MI () {}
+      MI (const string &ks, const string &ls) : ResidueType (ks, ls) {}
+      
+      virtual bool describe (const ResidueType *t) const {
+	return dynamic_cast< const MI* > (t);
       }
     };
 
@@ -585,13 +650,26 @@ namespace mccore
      * Public abstract class for U residues.
      */
     class U : public virtual Pyrimidine, public virtual W, public virtual K {
-    public:      
+    public:
       U () {}
-      U (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      U (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
       virtual bool isU () const { return true; }
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const U* > (t);
+      }
+    };
+
+    /**
+     * Public abstract class for Modified uracil residues.
+     */
+    class MU : public virtual Pyrimidine {
+    public:
+      MU () {}
+      MU (const string &ks, const string &ls) : ResidueType (ks, ls) {}
+
+      virtual bool describe (const ResidueType *t) const {
+	return dynamic_cast< const MU* > (t);
       }
     };
 
@@ -599,13 +677,26 @@ namespace mccore
      * Public abstract class for T residues.
      */
     class T : public virtual Pyrimidine, public virtual W, public virtual K {
-    public:      
+    public:
       T () {}
-      T (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      T (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
       virtual bool isT () const { return true; }
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const T* > (t);
+      }
+    };
+    
+    /**
+     * Public abstract class for Modified thymine residues.
+     */
+    class MT : public virtual Pyrimidine {
+    public:
+      MT () {}
+      MT (const string &ks, const string &ls) : ResidueType (ks, ls) {}
+
+      virtual bool describe (const ResidueType *t) const {
+	return dynamic_cast< const MT* > (t);
       }
     };
     
@@ -619,9 +710,9 @@ namespace mccore
     {
     public:
       RN () { }
-      RN (const string& ks, const string& ls) : ResidueType (ks, ls) { }
+      RN (const string &ks, const string &ls) : ResidueType (ks, ls) { }
 
-      virtual bool describe (const ResidueType* t) const
+      virtual bool describe (const ResidueType *t) const
       { return dynamic_cast< const RN* > (t); }
     };
     
@@ -631,9 +722,9 @@ namespace mccore
     class RB : public virtual B, public virtual RN {
     public:
       RB () {}
-      RB (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      RB (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const RB* > (t); 
       }
     };
@@ -644,9 +735,9 @@ namespace mccore
     class RD : public virtual D, public virtual RN {
     public:
       RD () {}
-      RD (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      RD (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const RD* > (t); 
       }
     };
@@ -657,9 +748,9 @@ namespace mccore
     class RH : public virtual H, public virtual RN {
     public:
       RH () {}
-      RH (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      RH (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const RH* > (t); 
       }
     };
@@ -670,9 +761,9 @@ namespace mccore
     class RV : public virtual V, public virtual RN {
     public:
       RV () {}
-      RV (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      RV (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const RV* > (t); 
       }
     };
@@ -683,9 +774,9 @@ namespace mccore
     class RPurine : public virtual Purine, public virtual RD, public virtual RV {
     public:
       RPurine () {}
-      RPurine (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      RPurine (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const RPurine* > (t); 
       }
     };
@@ -696,9 +787,9 @@ namespace mccore
     class RPyrimidine : public virtual Pyrimidine, public virtual RB, public virtual RH {
     public:
       RPyrimidine () {}
-      RPyrimidine (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      RPyrimidine (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const RPyrimidine* > (t); 
       }
     };
@@ -709,9 +800,9 @@ namespace mccore
     class RW : public virtual W, public virtual RD, public virtual RH {
     public:
       RW () {}
-      RW (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      RW (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const RW* > (t); 
       }
     };
@@ -722,9 +813,9 @@ namespace mccore
     class RS : public virtual S, public virtual RB, public virtual RV {
     public:
       RS () {}
-      RS (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      RS (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const RS* > (t); 
       }
     };
@@ -735,9 +826,9 @@ namespace mccore
     class RM : public virtual M, public virtual RH, public virtual RV {
     public:
       RM () {}
-      RM (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      RM (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const RM* > (t); 
       }
     };
@@ -748,9 +839,9 @@ namespace mccore
     class RK : public virtual K, public virtual RB, public virtual RD {
     public:
       RK () {}
-      RK (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      RK (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const RK* > (t); 
       }
     };
@@ -761,10 +852,23 @@ namespace mccore
     class RA : public virtual A, public virtual RW, public virtual RM, public virtual RPurine {
     public:
       RA () {}
-      RA (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      RA (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const RA* > (t); 
+      }
+    };
+
+    /**
+     * Public Modified adenosine RNA residue type class.
+     */
+    class RMA : public virtual MA, public virtual RNA {
+    public:
+      RMA () {}
+      RMA (const string &ks, const string &ls) : ResidueType (ks, ls) {}
+
+      virtual bool describe (const ResidueType *t) const {
+	return dynamic_cast< const RMA* > (t); 
       }
     };
 
@@ -775,9 +879,9 @@ namespace mccore
     {
     public:
       RRA5 () {}
-      RRA5 (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      RRA5 (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const RRA5* > (t); 
       }
     };
@@ -789,9 +893,9 @@ namespace mccore
     {
     public:
       RRA3 () {}
-      RRA3 (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      RRA3 (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const RRA3* > (t); 
       }
     };
@@ -802,10 +906,23 @@ namespace mccore
     class RC : public virtual C, public virtual RS, public virtual RM, public virtual RPyrimidine {
     public:
       RC () {}
-      RC (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      RC (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const RC* > (t); 
+      }
+    };
+
+    /**
+     * Public Modified cytidine RNA residue type class.
+     */
+    class RMC : public virtual MC, public virtual RNA {
+    public:
+      RMC () {}
+      RMC (const string &ks, const string &ls) : ResidueType (ks, ls) {}
+
+      virtual bool describe (const ResidueType *t) const {
+	return dynamic_cast< const RMC* > (t); 
       }
     };
 
@@ -816,9 +933,9 @@ namespace mccore
     {
     public:
       RRC5 () {}
-      RRC5 (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      RRC5 (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const RRC5* > (t); 
       }
     };
@@ -830,9 +947,9 @@ namespace mccore
     {
     public:
       RRC3 () {}
-      RRC3 (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      RRC3 (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const RRC3* > (t); 
       }
     };
@@ -843,10 +960,23 @@ namespace mccore
     class RG : public virtual G, public virtual RS, public virtual RK, public virtual RPurine {
     public:
       RG () {}
-      RG (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      RG (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const RG* > (t); 
+      }
+    };
+
+    /**
+     * Public Modified guanosine RNA residue type class.
+     */
+    class RMG : public virtual MG, public virtual RNA {
+    public:
+      RMG () {}
+      RMG (const string &ks, const string &ls) : ResidueType (ks, ls) {}
+
+      virtual bool describe (const ResidueType *t) const {
+	return dynamic_cast< const RMG* > (t); 
       }
     };
 
@@ -857,9 +987,9 @@ namespace mccore
     {
     public:
       RRG5 () {}
-      RRG5 (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      RRG5 (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const RRG5* > (t); 
       }
     };
@@ -871,10 +1001,36 @@ namespace mccore
     {
     public:
       RRG3 () {}
-      RRG3 (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      RRG3 (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const RRG3* > (t); 
+      }
+    };
+
+    /**
+     * Public I RNA residue type class.
+     */
+    class RI : public virtual I, public virtual RNA {
+    public:
+      RI () {}
+      RI (const string &ks, const string &ls) : ResidueType (ks, ls) {}
+
+      virtual bool describe (const ResidueType *t) const {
+	return dynamic_cast< const RI* > (t); 
+      }
+    };
+
+    /**
+     * Public Modified inosine RNA residue type class.
+     */
+    class RMI : public virtual MI, public virtual RNA {
+    public:
+      RMI () {}
+      RMI (const string &ks, const string &ls) : ResidueType (ks, ls) {}
+
+      virtual bool describe (const ResidueType *t) const {
+	return dynamic_cast< const RMI* > (t); 
       }
     };
 
@@ -884,10 +1040,23 @@ namespace mccore
     class RU : public virtual U, public virtual RW, public virtual RK, public virtual RPyrimidine  {
     public:
       RU () {}
-      RU (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      RU (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const RU* > (t); 
+      }
+    };
+
+    /**
+     * Public Modified uridine RNA residue type class.
+     */
+    class RMU : public virtual MU, public virtual RNA  {
+    public:
+      RMU () {}
+      RMU (const string &ks, const string &ls) : ResidueType (ks, ls) {}
+
+      virtual bool describe (const ResidueType *t) const {
+	return dynamic_cast< const RMU* > (t); 
       }
     };
 
@@ -898,9 +1067,9 @@ namespace mccore
     {
     public:
       RRU5 () {}
-      RRU5 (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      RRU5 (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const RRU5* > (t); 
       }
     };
@@ -912,9 +1081,9 @@ namespace mccore
     {
     public:
       RRU3 () {}
-      RRU3 (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      RRU3 (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const RRU3* > (t); 
       }
     };
@@ -926,10 +1095,10 @@ namespace mccore
     {
     public:
       DN () { }
-      DN (const string& ks, const string& ls) : ResidueType (ks, ls) { }
+      DN (const string &ks, const string &ls) : ResidueType (ks, ls) { }
 
       virtual bool isDN () const { return true; }
-      virtual bool describe (const ResidueType* t) const
+      virtual bool describe (const ResidueType *t) const
       { return dynamic_cast< const DN* > (t); }
     };
     
@@ -939,9 +1108,9 @@ namespace mccore
     class DB : public virtual B, public virtual DN {
     public:
       DB () {}
-      DB (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      DB (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const DB* > (t); 
       }
     };
@@ -952,9 +1121,9 @@ namespace mccore
     class DD : public virtual D, public virtual DN {
     public:
       DD () {}
-      DD (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      DD (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const DD* > (t); 
       }
     };
@@ -965,9 +1134,9 @@ namespace mccore
     class DH : public virtual H, public virtual DN {
     public:
       DH () {}
-      DH (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      DH (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const DH* > (t); 
       }
     };
@@ -978,9 +1147,9 @@ namespace mccore
     class DV : public virtual V, public virtual DN {
     public:
       DV () {}
-      DV (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      DV (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const DV* > (t); 
       }
     };
@@ -992,9 +1161,9 @@ namespace mccore
     class DPurine : public virtual Purine, public virtual DD, public virtual DV {
     public:
       DPurine () {}
-      DPurine (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      DPurine (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const DPurine* > (t); 
       }
     };
@@ -1005,9 +1174,9 @@ namespace mccore
     class DPyrimidine : public virtual Pyrimidine, public virtual DB, public virtual DH {
     public:
       DPyrimidine () {}
-      DPyrimidine (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      DPyrimidine (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const DPyrimidine* > (t); 
       }
     };
@@ -1018,9 +1187,9 @@ namespace mccore
     class DW : public virtual W, public virtual DD, public virtual DH {
     public:
       DW () {}
-      DW (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      DW (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const DW* > (t); 
       }
     };
@@ -1031,9 +1200,9 @@ namespace mccore
     class DS : public virtual S, public virtual DB, public virtual DV {
     public:
       DS () {}
-      DS (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      DS (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const DS* > (t); 
       }
     };
@@ -1044,9 +1213,9 @@ namespace mccore
     class DM : public virtual M, public virtual DH, public virtual DV {
     public:
       DM () {}
-      DM (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      DM (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const DM* > (t); 
       }
     };
@@ -1057,9 +1226,9 @@ namespace mccore
     class DK : public virtual K, public virtual DB, public virtual DD {
     public:
       DK () {}
-      DK (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      DK (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const DK* > (t); 
       }
     };
@@ -1070,10 +1239,23 @@ namespace mccore
     class DA : public virtual A, public virtual DW, public virtual DM, public virtual DPurine {
     public:
       DA () {}
-      DA (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      DA (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const DA* > (t); 
+      }
+    };
+
+    /**
+     * Public Modified adenosine DNA residue type class.
+     */
+    class DMA : public virtual MA, public virtual DNA {
+    public:
+      DMA () {}
+      DMA (const string &ks, const string &ls) : ResidueType (ks, ls) {}
+
+      virtual bool describe (const ResidueType *t) const {
+	return dynamic_cast< const DMA* > (t); 
       }
     };
 
@@ -1084,9 +1266,9 @@ namespace mccore
     {
     public:
       DDA5 () {}
-      DDA5 (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      DDA5 (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const DDA5* > (t); 
       }
     };
@@ -1098,9 +1280,9 @@ namespace mccore
     {
     public:
       DDA3 () {}
-      DDA3 (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      DDA3 (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const DDA3* > (t); 
       }
     };
@@ -1111,10 +1293,23 @@ namespace mccore
     class DC : public virtual C, public virtual DS, public virtual DM, public virtual DPyrimidine {
     public:
       DC () {}
-      DC (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      DC (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const DC* > (t); 
+      }
+    };
+
+    /**
+     * Public Modified cytidine DNA residue type class.
+     */
+    class DMC : public virtual MC, public virtual DNA {
+    public:
+      DMC () {}
+      DMC (const string &ks, const string &ls) : ResidueType (ks, ls) {}
+
+      virtual bool describe (const ResidueType *t) const {
+	return dynamic_cast< const DMC* > (t); 
       }
     };
 
@@ -1125,9 +1320,9 @@ namespace mccore
     {
     public:
       DDC5 () {}
-      DDC5 (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      DDC5 (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const DDC5* > (t); 
       }
     };
@@ -1139,9 +1334,9 @@ namespace mccore
     {
     public:
       DDC3 () {}
-      DDC3 (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      DDC3 (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const DDC3* > (t); 
       }
     };
@@ -1152,10 +1347,23 @@ namespace mccore
     class DG : public virtual G, public virtual DS, public virtual DK, public virtual DPurine {
     public:
       DG () {}
-      DG (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      DG (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const DG* > (t); 
+      }
+    };
+
+    /**
+     * Public Modified guanosine DNA residue type class.
+     */
+    class DMG : public virtual MG, public virtual DNA {
+    public:
+      DMG () {}
+      DMG (const string &ks, const string &ls) : ResidueType (ks, ls) {}
+
+      virtual bool describe (const ResidueType *t) const {
+	return dynamic_cast< const DMG* > (t); 
       }
     };
 
@@ -1166,9 +1374,9 @@ namespace mccore
     {
     public:
       DDG5 () {}
-      DDG5 (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      DDG5 (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const DDG5* > (t); 
       }
     };
@@ -1180,23 +1388,62 @@ namespace mccore
     {
     public:
       DDG3 () {}
-      DDG3 (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      DDG3 (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const DDG3* > (t); 
       }
     };
 
+    /**
+     * Public I DNA residue type class.
+     */
+    class DI : public virtual I, public virtual DNA {
+    public:
+      DI () {}
+      DI (const string &ks, const string &ls) : ResidueType (ks, ls) {}
+
+      virtual bool describe (const ResidueType *t) const {
+	return dynamic_cast< const DI* > (t); 
+      }
+    };
+
+    /**
+     * Public I DNA residue type class.
+     */
+    class DMI : public virtual MI, public virtual DNA {
+    public:
+      DMI () {}
+      DMI (const string &ks, const string &ls) : ResidueType (ks, ls) {}
+
+      virtual bool describe (const ResidueType *t) const {
+	return dynamic_cast< const DMI* > (t); 
+      }
+    };
+    
     /**
      * Public T DNA residue type class.
      */
     class DT : public virtual T, public virtual DW, public virtual DK, public virtual DPyrimidine {
     public:
       DT () {}
-      DT (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      DT (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const DT* > (t); 
+      }
+    };
+
+    /**
+     * Public Modified thymidine DNA residue type class.
+     */
+    class DMT : public virtual MT, public virtual DNA {
+    public:
+      DMT () {}
+      DMT (const string &ks, const string &ls) : ResidueType (ks, ls) {}
+
+      virtual bool describe (const ResidueType *t) const {
+	return dynamic_cast< const DMT* > (t); 
       }
     };
 
@@ -1207,9 +1454,9 @@ namespace mccore
     {
     public:
       DDT5 () {}
-      DDT5 (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      DDT5 (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const DDT5* > (t); 
       }
     };
@@ -1221,9 +1468,9 @@ namespace mccore
     {
     public:
       DDT3 () {}
-      DDT3 (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      DDT3 (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const DDT3* > (t); 
       }
     };
@@ -1234,9 +1481,9 @@ namespace mccore
     class ALA : public virtual AminoAcid {
     public:
       ALA () {}
-      ALA (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      ALA (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const ALA* > (t); 
       }
     };
@@ -1247,9 +1494,9 @@ namespace mccore
     class ARG : public virtual AminoAcid {
     public:
       ARG () {}
-      ARG (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      ARG (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const ARG* > (t); 
       }
     };
@@ -1260,9 +1507,9 @@ namespace mccore
     class ASN : public virtual AminoAcid {
     public:
       ASN () {}
-      ASN (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      ASN (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const ASN* > (t); 
       }
     };
@@ -1273,9 +1520,9 @@ namespace mccore
     class ASP : public virtual AminoAcid {
     public:
       ASP () {}
-      ASP (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      ASP (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const ASP* > (t); 
       }
     };
@@ -1286,9 +1533,9 @@ namespace mccore
     class ASX : public virtual ASN, public virtual ASP {
     public:
       ASX () {}
-      ASX (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      ASX (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const ASX* > (t); 
       }
     };
@@ -1299,9 +1546,9 @@ namespace mccore
     class CYS : public virtual AminoAcid {
     public:
       CYS () {}
-      CYS (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      CYS (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const CYS* > (t); 
       }
     };
@@ -1312,9 +1559,9 @@ namespace mccore
     class GLN : public virtual AminoAcid {
     public:
       GLN () {}
-      GLN (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      GLN (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const GLN* > (t); 
       }
     };
@@ -1325,9 +1572,9 @@ namespace mccore
     class GLU : public virtual AminoAcid {
     public:
       GLU () {}
-      GLU (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      GLU (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const GLU* > (t); 
       }
     };
@@ -1338,9 +1585,9 @@ namespace mccore
     class GLX : public virtual GLN, public virtual GLU {
     public:
       GLX () {}
-      GLX (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      GLX (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const GLX* > (t); 
       }
     };
@@ -1351,9 +1598,9 @@ namespace mccore
     class GLY : public virtual AminoAcid {
     public:
       GLY () {}
-      GLY (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      GLY (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const GLY* > (t); 
       }
     };
@@ -1364,9 +1611,9 @@ namespace mccore
     class HIS : public virtual AminoAcid {
     public:
       HIS () {}
-      HIS (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      HIS (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const HIS* > (t); 
       }
     };
@@ -1377,9 +1624,9 @@ namespace mccore
     class ILE : public virtual AminoAcid {
     public:
       ILE () {}
-      ILE (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      ILE (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const ILE* > (t); 
       }
     };
@@ -1390,9 +1637,9 @@ namespace mccore
     class LEU : public virtual AminoAcid {
     public:
       LEU () {}
-      LEU (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      LEU (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const LEU* > (t); 
       }
     };
@@ -1403,9 +1650,9 @@ namespace mccore
     class LYS : public virtual AminoAcid {
     public:
       LYS () {}
-      LYS (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      LYS (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const LYS* > (t); 
       }
     };
@@ -1416,9 +1663,9 @@ namespace mccore
     class MET : public virtual AminoAcid {
     public:
       MET () {}
-      MET (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      MET (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const MET* > (t); 
       }
     };
@@ -1429,9 +1676,9 @@ namespace mccore
     class PHE : public virtual AminoAcid {
     public:
       PHE () {}
-      PHE (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      PHE (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const PHE* > (t); 
       }
     };
@@ -1442,9 +1689,9 @@ namespace mccore
     class PRO : public virtual AminoAcid {
     public:
       PRO () {}
-      PRO (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      PRO (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const PRO* > (t); 
       }
     };
@@ -1455,9 +1702,9 @@ namespace mccore
     class SER : public virtual AminoAcid {
     public:
       SER () {}
-      SER (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      SER (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const SER* > (t); 
       }
     };
@@ -1468,9 +1715,9 @@ namespace mccore
     class THR : public virtual AminoAcid {
     public:
       THR () {}
-      THR (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      THR (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const THR* > (t); 
       }
     };
@@ -1481,9 +1728,9 @@ namespace mccore
     class TRP : public virtual AminoAcid {
     public:
       TRP () {}
-      TRP (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      TRP (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const TRP* > (t); 
       }
     };
@@ -1494,9 +1741,9 @@ namespace mccore
     class TYR : public virtual AminoAcid {
     public:
       TYR () {}
-      TYR (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      TYR (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const TYR* > (t); 
       }
     };
@@ -1507,9 +1754,9 @@ namespace mccore
     class VAL : public virtual AminoAcid {
     public:
       VAL () {}
-      VAL (const string& ks, const string& ls) : ResidueType (ks, ls) {}
+      VAL (const string &ks, const string &ls) : ResidueType (ks, ls) {}
 
-      virtual bool describe (const ResidueType* t) const {
+      virtual bool describe (const ResidueType *t) const {
 	return dynamic_cast< const VAL* > (t); 
       }
     };

@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // ResidueType.h
-// Copyright © 2000-05 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2000-07 Laboratoire de Biologie Informatique et Théorique.
 //                     Université de Montréal.
 // Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
-// $Revision: 1.34 $
-// $Id: ResidueType.h,v 1.34 2006-10-24 19:11:45 thibaup Exp $
+// $Revision: 1.35 $
+// $Id: ResidueType.h,v 1.35 2007-01-09 00:07:41 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -53,7 +53,7 @@ namespace mccore
    *   - The nature of a type (nucleic acid (pur/pyr) or amino acid)<br>
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: ResidueType.h,v 1.34 2006-10-24 19:11:45 thibaup Exp $
+   * @version $Id: ResidueType.h,v 1.35 2007-01-09 00:07:41 larosem Exp $
    */
   class ResidueType
   {    
@@ -478,16 +478,35 @@ namespace mccore
     static const ResidueType* rA;
     static const ResidueType* rC;
     static const ResidueType* rG;
+    static const ResidueType* rI;
     static const ResidueType* rU;
     static const ResidueType* rT;
+    static const ResidueType* rMA;
+    static const ResidueType* rMC;
+    static const ResidueType* rMG;
+    static const ResidueType* rMI;
+    static const ResidueType* rMU;
+    static const ResidueType* rMT;
     static const ResidueType* rRA;
     static const ResidueType* rRC;
     static const ResidueType* rRG;
+    static const ResidueType* rRI;
     static const ResidueType* rRU;
+    static const ResidueType* rRMA;
+    static const ResidueType* rRMC;
+    static const ResidueType* rRMG;
+    static const ResidueType* rRMI;
+    static const ResidueType* rRMU;
     static const ResidueType* rDA;
     static const ResidueType* rDC;
     static const ResidueType* rDG;
+    static const ResidueType* rDI;
     static const ResidueType* rDT;
+    static const ResidueType* rDMA;
+    static const ResidueType* rDMC;
+    static const ResidueType* rDMG;
+    static const ResidueType* rDMI;
+    static const ResidueType* rDMT;
 
     static const ResidueType* rALA;
     static const ResidueType* rARG;

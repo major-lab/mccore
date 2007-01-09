@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // ResidueTypeStore.cc
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-07 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:40:10 2003
-// $Revision: 1.27 $
+// $Revision: 1.28 $
 // 
 // This file is part of mccore.
 // 
@@ -56,16 +56,35 @@ namespace mccore
     ResidueType::rA  = *repository.insert (new A  ((strs = "N:A"), (strl ="Adenine"))).first;
     ResidueType::rRA = *repository.insert (new RA ((strs = "R:A"), (strl ="RNA_Adenine"))).first;
     ResidueType::rDA = *repository.insert (new DA ((strs = "D:A"), (strl ="DNA_Adenine"))).first;
+    ResidueType::rMA = *repository.insert (new MA  ((strs = "N:+A"), (strl ="Modified Adenine"))).first;
+    ResidueType::rRMA = *repository.insert (new RMA ((strs = "R:+A"), (strl ="RNA Modified Adenine"))).first;
+    ResidueType::rDMA = *repository.insert (new DMA ((strs = "D:+A"), (strl ="DNA Modified Adenine"))).first;
     ResidueType::rC  = *repository.insert (new C  ((strs = "N:C"), (strl ="Cytosine"))).first;
     ResidueType::rRC = *repository.insert (new RC ((strs = "R:C"), (strl ="RNA_Cytosine"))).first;
     ResidueType::rDC = *repository.insert (new DC ((strs = "D:C"), (strl ="DNA_Cytosine"))).first;
+    ResidueType::rMC = *repository.insert (new MC  ((strs = "N:+C"), (strl ="Modified Cytosine"))).first;
+    ResidueType::rRMC = *repository.insert (new RMC ((strs = "R:+C"), (strl ="RNA Modified Cytosine"))).first;
+    ResidueType::rDMC = *repository.insert (new DMC ((strs = "D:+C"), (strl ="DNA Modified Cytosine"))).first;
     ResidueType::rG  = *repository.insert (new G  ((strs = "N:G"), (strl ="Guanine"))).first;
     ResidueType::rRG = *repository.insert (new RG ((strs = "R:G"), (strl ="RNA_Guanine"))).first;
     ResidueType::rDG = *repository.insert (new DG ((strs = "D:G"), (strl ="DNA_Guanine"))).first;
+    ResidueType::rMG = *repository.insert (new MG ((strs = "N:+G"), (strl ="Modified Guanine"))).first;
+    ResidueType::rRMG = *repository.insert (new RMG ((strs = "R:+G"), (strl ="RNA Modified Guanine"))).first;
+    ResidueType::rDMG = *repository.insert (new DMG ((strs = "D:+G"), (strl ="DNA Modified Guanine"))).first;
+    ResidueType::rI  = *repository.insert (new I  ((strs = "N:I"), (strl ="Inosine"))).first;
+    ResidueType::rRI = *repository.insert (new RI ((strs = "R:I"), (strl ="RNA_Inosine"))).first;
+    ResidueType::rDI = *repository.insert (new DI ((strs = "D:I"), (strl ="DNA_Inosine"))).first;
+    ResidueType::rMI = *repository.insert (new MI ((strs = "N:+I"), (strl ="Modified Inosine"))).first;
+    ResidueType::rRMI = *repository.insert (new RMI ((strs = "R:+I"), (strl ="RNA Modified Inosine"))).first;
+    ResidueType::rDMI = *repository.insert (new DMI ((strs = "D:+I"), (strl ="DNA Modified Inosine"))).first;
     ResidueType::rT  = *repository.insert (new T  ((strs = "N:T"), (strl ="Thymine"))).first;
     ResidueType::rDT = *repository.insert (new DT ((strs = "D:T"), (strl ="DNA_Thymine"))).first;
+    ResidueType::rMT = *repository.insert (new MT ((strs = "N:+T"), (strl ="Modified Thymine"))).first;
+    ResidueType::rDMT = *repository.insert (new DMT ((strs = "D:+T"), (strl ="DNA Modified Thymine"))).first;
     ResidueType::rU  = *repository.insert (new U  ((strs = "N:U"), (strl ="Uracil"))).first;
     ResidueType::rRU = *repository.insert (new RU ((strs = "R:U"), (strl ="RNA_Uracil"))).first;
+    ResidueType::rMU = *repository.insert (new MU ((strs = "N:+U"), (strl ="Modified Uracil"))).first;
+    ResidueType::rRMU = *repository.insert (new RMU ((strs = "R:+U"), (strl ="RNA Modified Uracil"))).first;
     
     ResidueType::rK  = *repository.insert (new K  ((strs = "N:K"), (strl ="K"))).first;
     ResidueType::rRK = *repository.insert (new RK ((strs = "R:K"), (strl ="RNA_K"))).first;

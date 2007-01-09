@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // TypeRepresentationTables.cc
-// Copyright © 2004, 2005 Laboratoire de Biologie Informatique et Théorique.
+// Copyright © 2004, 2005, 2007 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct  1 14:45:13 2004
-// $Revision: 1.8 $
-// $Id: TypeRepresentationTables.cc,v 1.8 2005-10-19 14:52:50 thibaup Exp $
+// $Revision: 1.9 $
+// $Id: TypeRepresentationTables.cc,v 1.9 2007-01-09 00:09:27 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -808,15 +808,22 @@ namespace mccore
   {
     typeTable["A"] = ResidueType::rRA;
     typeTable["ADE"] = ResidueType::rRA;
+    typeTable["+A"] = ResidueType::rRMA;
     typeTable["C"] = ResidueType::rRC;
     typeTable["CYT"] = ResidueType::rRC;
+    typeTable["+C"] = ResidueType::rRMC;
     typeTable["G"] = ResidueType::rRG;
     typeTable["GUA"] = ResidueType::rRG;
+    typeTable["+G"] = ResidueType::rRMG;
+    typeTable["I"] = ResidueType::rRI;
+    typeTable["+I"] = ResidueType::rRMI;
     typeTable["U"] = ResidueType::rRU;
     typeTable["URI"] = ResidueType::rRU;
     typeTable["URA"] = ResidueType::rRU;
+    typeTable["+U"] = ResidueType::rRMU;
     typeTable["T"] = ResidueType::rDT;
     typeTable["TYM"] = ResidueType::rDT;
+    typeTable["+T"] = ResidueType::rDMT;
 
     typeTable["PO4"] = ResidueType::rRPhosphate;
 
@@ -863,12 +870,24 @@ namespace mccore
 
     representationTable[ResidueType::rRA] = "A";
     representationTable[ResidueType::rDA] = "A";
+    representationTable[ResidueType::rDMA] = "+A";
+    representationTable[ResidueType::rRMA] = "+A";
     representationTable[ResidueType::rRC] = "C";
     representationTable[ResidueType::rDC] = "C";
+    representationTable[ResidueType::rDMC] = "+C";
+    representationTable[ResidueType::rRMC] = "+C";
     representationTable[ResidueType::rRG] = "G";
     representationTable[ResidueType::rDG] = "G";
+    representationTable[ResidueType::rRMG] = "+G";
+    representationTable[ResidueType::rDMG] = "+G";
+    representationTable[ResidueType::rRI] = "I";
+    representationTable[ResidueType::rDI] = "I";
+    representationTable[ResidueType::rRMI] = "+I";
+    representationTable[ResidueType::rDMI] = "+I";
     representationTable[ResidueType::rRU] = "U";
+    representationTable[ResidueType::rRMU] = "+U";
     representationTable[ResidueType::rDT] = "T";
+    representationTable[ResidueType::rDMT] = "+T";
 
     representationTable[ResidueType::rPhosphate] = "PO4";
     representationTable[ResidueType::rRPhosphate] = "PO4";

@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // ResidueType.cc
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-07 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:32:49 2003
@@ -99,16 +99,35 @@ namespace mccore
   const ResidueType* ResidueType::rA = 0;
   const ResidueType* ResidueType::rC = 0;
   const ResidueType* ResidueType::rG = 0;
+  const ResidueType* ResidueType::rI = 0;
   const ResidueType* ResidueType::rU = 0;
   const ResidueType* ResidueType::rT = 0;
+  const ResidueType* ResidueType::rMA = 0;
+  const ResidueType* ResidueType::rMC = 0;
+  const ResidueType* ResidueType::rMG = 0;
+  const ResidueType* ResidueType::rMI = 0;
+  const ResidueType* ResidueType::rMU = 0;
+  const ResidueType* ResidueType::rMT = 0;
   const ResidueType* ResidueType::rRA = 0;
   const ResidueType* ResidueType::rRC = 0;
   const ResidueType* ResidueType::rRG = 0;
+  const ResidueType* ResidueType::rRI = 0;
   const ResidueType* ResidueType::rRU = 0;
+  const ResidueType* ResidueType::rRMA = 0;
+  const ResidueType* ResidueType::rRMC = 0;
+  const ResidueType* ResidueType::rRMG = 0;
+  const ResidueType* ResidueType::rRMI = 0;
+  const ResidueType* ResidueType::rRMU = 0;
   const ResidueType* ResidueType::rDA = 0;
   const ResidueType* ResidueType::rDC = 0;
   const ResidueType* ResidueType::rDG = 0;
+  const ResidueType* ResidueType::rDI = 0;
   const ResidueType* ResidueType::rDT = 0;
+  const ResidueType* ResidueType::rDMA = 0;
+  const ResidueType* ResidueType::rDMC = 0;
+  const ResidueType* ResidueType::rDMG = 0;
+  const ResidueType* ResidueType::rDMI = 0;
+  const ResidueType* ResidueType::rDMT = 0;
   
   const ResidueType* ResidueType::rALA = 0;
   const ResidueType* ResidueType::rARG = 0;
