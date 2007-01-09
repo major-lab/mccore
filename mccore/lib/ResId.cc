@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // ResId.cc
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal.
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:45:21 2003
-// $Revision: 1.10 $
-// $Id: ResId.cc,v 1.10 2005-08-19 20:22:52 thibaup Exp $
+// $Revision: 1.11 $
+// $Id: ResId.cc,v 1.11 2007-01-09 00:03:22 larosem Exp $
 //
 // This file is part of mccore.
 // 
@@ -29,6 +29,7 @@
 #endif
 
 #include <string.h>
+#include <sstream>
 
 #include "ResId.h"
 #include "Binstream.h"
@@ -138,25 +139,27 @@ namespace mccore
   ostream&
   ResId::write (ostream &os) const
   {
+    ostringstream oss;
+
     if (chain == ' ')
       {
-	os << no;
+	oss << no;
       }
     else if (! isalpha (chain))
       {
-	os << '\'' << chain << '\'' << no;
+	oss << '\'' << chain << '\'' << no;
       }
     else
       {
-	os << chain << no;
+	oss << chain << no;
       }
     
     if (iCode != ' ')
       {
-	os << '.' << iCode;
+	oss << '.' << iCode;
       }
     
-    return os;
+    return os << oss.str ();
   }
 
     
