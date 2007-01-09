@@ -1,11 +1,11 @@
 //                              -*- Mode: C++ -*- 
 // GraphModel.cc
-// Copyright © 2004-05 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2004-06 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Martin Larose
 // Created On       : Wed Dec 29 00:44:53 2004
-// $Revision: 1.4 $
-// $Id: GraphModel.cc,v 1.4 2005-01-14 20:23:10 larosem Exp $
+// $Revision: 1.5 $
+// $Id: GraphModel.cc,v 1.5 2007-01-09 00:13:14 larosem Exp $
 //
 // This file is part of mccore.
 //
@@ -63,8 +63,6 @@ main (int argc, char *argv[])
       ifs >> model;
       ifs.close ();
 
-      model.removeWater ();
-      model.addHLP ();
       model.annotate ();
       gOut (0) << "Size: " << model.size ()
 	       << " Edge size: " << model.edgeSize ()
