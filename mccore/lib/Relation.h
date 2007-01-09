@@ -3,7 +3,7 @@
 // Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.29 $
+// $Revision: 1.30 $
 // 
 // This file is part of mccore.
 // 
@@ -76,7 +76,7 @@ namespace mccore
    * @short A relation between two residues.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: Relation.h,v 1.29 2006-09-22 15:42:34 thibaup Exp $
+   * @version $Id: Relation.h,v 1.30 2007-01-09 00:02:22 larosem Exp $
    */
   class Relation
   {
@@ -161,9 +161,9 @@ namespace mccore
     static const unsigned char pairing_mask = 2;
 
     /**
-     * The backbone type mask (0001).
+     * The backbone hydrogen bond type mask (0001).
      */
-    static const unsigned char backbone_mask = 1;
+    static const unsigned char bhbond_mask = 1;
 
   protected:
 
@@ -331,43 +331,51 @@ namespace mccore
     /**
      * Check if a label or its children is in the annotation.
      * @param t The property type label to find.
-     * @return True only if the label or its children is in the annotation.
+     * @return true only if the label or its children is in the annotation.
      */
     bool is (const PropertyType* t) const;
 
     /**
      * Check if a label is in the annotation (not its children).
      * @param t The property type label to find.
-     * @return True only if the label is in the annotation.
+     * @return true only if the label is in the annotation.
      */
     bool has (const PropertyType* t) const;
 
     /**
      * Tells is the annotated relation is from the adjacent family.
-     * Return True only if the annotated relation is from the adjacent family.
+     * @return true only if the annotated relation is from the adjacent family.
      */
-    bool isAdjacent () const;
+    bool isAdjacent () const { return type_aspb & Relation::adjacent_mask; }
 
     /**
      * Tells is the annotated relation is from the stacking family.
-     * Return True only if the annotated relation is from the stacking family.
+     * @return true only if the annotated relation is from the stacking family.
      */
-    bool isStacking () const;
+    bool isStacking () const { return type_aspb & Relation::stacking_mask; }
 
     /**
      * Tells is the annotated relation is from the pairing family.
-     * Return True only if the annotated relation is from the pairing family.
+     * @return true only if the annotated relation is from the pairing family.
      */
-    bool isPairing () const;
+    bool isPairing () const { return type_aspb & Relation::pairing_mask; }
 
     /**
-     * Parse an annotation mask string into a bitmask. The string is composed by the 
-     * concatenation of characters A, S, P or B (case-insensitive):
+     * Tells is the annotated relation is from the hbond family.
+     * @return true only if the annotated relation is from the hydrogen bond
+     * family.
+     */
+    bool isBHbond () const { return type_aspb & Relation::bhbond_mask; }
+
+    /**
+     * Parse an annotation mask string into a bitmask. The string is
+     * composed by the concatenation of characters A, S, P or B
+     * (case-insensitive):
      * 
      *   A  annotate adjacency (phosphodiester linkage)
      *   S  annotate base stacking
      *   P  annotate base pairing
-     *   B  annotate hydrogen-bonding with backbone
+     *   B  annotate hydrogen-bonding
      *
      * Throws an @ref IntLibException for any other character.
      *
@@ -390,7 +398,7 @@ namespace mccore
      *        stacking, pairing and pairing with backbone (default: all).
      * @return true if there is indeed a relation between the bases.
      */
-    bool annotate (unsigned char aspb = adjacent_mask|pairing_mask|stacking_mask|backbone_mask);
+    bool annotate (unsigned char aspb = adjacent_mask|pairing_mask|stacking_mask|bhbond_mask);
     
     /**
      * Tests for adjacency relation.
@@ -398,9 +406,9 @@ namespace mccore
     void areAdjacent ();
 
     /**
-     * Tests for h-bonded relation.
+     * Tests for backbone hydrogen bonded relation.
      */
-    void areHBonded ();
+    void areBHBonded ();
 
     /**
      * Test for pairing relation.
@@ -475,7 +483,7 @@ namespace mccore
      * possible between the two residues, regardless of the position
      * of the donors and acceptors.
      */
-    static set< const PropertyType* > areHBonded (const Residue *ra, const Residue *rb);
+    static set< const PropertyType* > areBHBonded (const Residue *ra, const Residue *rb);
     
 
     // PRIVATE METHODS ------------------------------------------------------

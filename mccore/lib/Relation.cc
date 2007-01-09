@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
-// $Revision: 1.61 $
-// $Id: Relation.cc,v 1.61 2006-09-22 15:42:34 thibaup Exp $
+// $Revision: 1.62 $
+// $Id: Relation.cc,v 1.62 2007-01-09 00:02:22 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -34,8 +34,6 @@
 #include <limits>
 #include <string>
 
-#include "Relation.h"
-
 #include "Atom.h"
 #include "AtomSet.h"
 #include "AtomType.h"
@@ -45,8 +43,11 @@
 #include "MaximumFlowGraph.h"
 #include "PairingPattern.h"
 #include "PropertyType.h"
+#include "Relation.h"
 #include "ResidueType.h"
 #include "Messagestream.h"
+
+
 
 namespace mccore
 {
@@ -200,9 +201,6 @@ namespace mccore
   }
 
   
-  // METHODS --------------------------------------------------------------
-
-
   bool
   Relation::is (const PropertyType* t) const
   {
@@ -236,27 +234,6 @@ namespace mccore
   }
 
 
-  bool
-  Relation::isAdjacent () const
-  {
-    return type_aspb & Relation::adjacent_mask;
-  }
-
-  
-  bool
-  Relation::isStacking () const
-  {
-    return type_aspb & Relation::stacking_mask;
-  }
-
-  
-  bool
-  Relation::isPairing () const
-  {
-    return type_aspb & Relation::pairing_mask;
-  }
-
-
   unsigned char
   Relation::parseAnnotationMask (const string& mask_str) throw (IntLibException)
   {
@@ -264,21 +241,35 @@ namespace mccore
     string::const_iterator it;
     
     for (it = mask_str.begin (); it != mask_str.end (); ++it)
-      switch (*it)
       {
-      case 'A': case 'a': bit_mask |= Relation::adjacent_mask; break;
-      case 'S': case 's': bit_mask |= Relation::stacking_mask; break;
-      case 'P': case 'p': bit_mask |= Relation::pairing_mask; break;
-      case 'B': case 'b': bit_mask |= Relation::backbone_mask; break;
-      default:
-	{
-	  IntLibException ex ("", __FILE__, __LINE__);
-	  ex << "invalid mask \'" << *it << "\' in annotation mask string \"" 
-	     << mask_str << "\"";
-	  throw ex;
-	}
+	switch (*it)
+	  {
+	  case 'A':
+	  case 'a':
+	    bit_mask |= Relation::adjacent_mask;
+	    break;
+	  case 'S':
+	  case 's':
+	    bit_mask |= Relation::stacking_mask;
+	    break;
+	  case 'P':
+	  case 'p':
+	    bit_mask |= Relation::pairing_mask;
+	    break;
+	  case 'B':
+	  case 'b':
+	    bit_mask |= Relation::bhbond_mask;
+	    break;
+	  default:
+	    {
+	      IntLibException ex ("", __FILE__, __LINE__);
+	      
+	      ex << "invalid mask \'" << *it << "\' in annotation mask string \"" 
+		 << mask_str << "\"";
+	      throw ex;
+	    }
+	  }
       }
-
     return bit_mask;
   }
 
@@ -345,17 +336,21 @@ namespace mccore
   Relation::annotate (unsigned char aspb) 
   {
     if (0 != (aspb & Relation::adjacent_mask))
-      areAdjacent ();
-
+      {
+	areAdjacent ();
+      }
     if (0 != (aspb & Relation::stacking_mask))
-      areStacked ();
-
+      {
+	areStacked ();
+      }
     if (0 != (aspb & Relation::pairing_mask))
-      arePaired ();
-
-    if (0 != (aspb & Relation::backbone_mask))
-      areHBonded ();
-
+      {
+	arePaired ();
+      }
+    if (0 != (aspb & Relation::bhbond_mask))
+      {
+	areBHBonded ();
+      }
     return ! empty ();
   }
   
@@ -442,23 +437,18 @@ namespace mccore
 
 
   void
-  Relation::areHBonded ()
+  Relation::areBHBonded ()
   {
     Residue::const_iterator i;
     Residue::const_iterator j;
     Residue::const_iterator k;
     Residue::const_iterator l;
-    //     vector< Residue::const_iterator > ref_at;
-    //     vector< Residue::const_iterator > refn_at;
-    //     vector< Residue::const_iterator > res_at;
-    //     vector< Residue::const_iterator > resn_at;
     AtomSetOr as (new AtomSetSideChain (),
 		  new AtomSetOr (new AtomSetAtom (AtomType::aO2p),
 				 new AtomSetOr (new AtomSetAtom (AtomType::aO2P),
 						new AtomSetAtom (AtomType::aO1P))));
 
-    if (ref->getType ()->isNucleicAcid ()
-	&& res->getType ()->isNucleicAcid ())
+    if (ref->getType ()->isNucleicAcid () && res->getType ()->isNucleicAcid ())
       {
 	for (i = ref->begin (as); ref->end () != i; ++i)
 	  {
@@ -478,8 +468,8 @@ namespace mccore
 			const AtomType *refType;
 			const AtomType *resType;
 		    
-			labels.insert (PropertyType::pPairing);
-			type_aspb |= Relation::pairing_mask;
+			labels.insert (PropertyType::pBHbond);
+			type_aspb |= Relation::bhbond_mask;
 			refType = i->getType ();
 			resType = j->getType ();
 			refface = (refType->isNitrogen ()
@@ -499,6 +489,11 @@ namespace mccore
 	  }
       }
 
+    //     vector< Residue::const_iterator > ref_at;
+    //     vector< Residue::const_iterator > refn_at;
+    //     vector< Residue::const_iterator > res_at;
+    //     vector< Residue::const_iterator > resn_at;
+    
     // TODO: This is experimental and is a tentative to identify as
     // precisely as possible the presence of H-bonds on unindentified
     // residues, between amino-nucleic acids, or when hydrogens are
@@ -1212,21 +1207,17 @@ namespace mccore
   {
     if (ref != 0 && res != 0)
       {
+	vector< pair< const PropertyType*, const PropertyType* > >::const_iterator it;
+	
 	os << "{" 
 	   << ref->getResId () << ref->getType () << " -> " 
 	   << res->getResId () << res->getType () << ": ";
 	copy (labels.begin (), labels.end (), ostream_iterator< const PropertyType* > (os, " "));
-	if (is (PropertyType::pPairing))
+	for (it = pairedFaces.begin (); pairedFaces.end () != it; ++it)
 	  {
-	    vector< pair< const PropertyType*, const PropertyType* > >::const_iterator it;
-
-	    for (it = pairedFaces.begin (); pairedFaces.end () != it; ++it)
-	      {
-		os << *it->first << "/" << *it->second << ' ';
-	      }
+	    os << *it->first << "/" << *it->second << ' ';
 	  }
 	os << "}";
-
       }
     return os;
   }
@@ -1268,11 +1259,11 @@ namespace mccore
   
 
   set< const PropertyType* > 
-  Relation::areHBonded (const Residue* ra, const Residue *rb)
+  Relation::areBHBonded (const Residue* ra, const Residue *rb)
   {
     Relation rel (ra, rb);
     
-    rel.areHBonded ();
+    rel.areBHBonded ();
     return rel.getLabels ();
   }
     
@@ -1350,123 +1341,123 @@ namespace mccore
 
 	A.setTheoretical ();
 	ta = *A.safeFind (AtomType::aH8);	
-	Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("C8")));
+	Relation::faces_A.push_back (make_pair (ta, PropertyType::pC8));
 	ta = (*A.safeFind (AtomType::aH8) + *A.safeFind (AtomType::aLP7)) / 2;	
-	Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+	Relation::faces_A.push_back (make_pair (ta, PropertyType::pHh));
 	ta = (*A.safeFind (AtomType::a2H6) + *A.safeFind (AtomType::aLP7)) / 2;
-	Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+	Relation::faces_A.push_back (make_pair (ta, PropertyType::pHh));
 	ta = *A.safeFind (AtomType::a2H6);
-	Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
+	Relation::faces_A.push_back (make_pair (ta, PropertyType::pHw));
 	ta = (*A.safeFind (AtomType::a1H6) + *A.safeFind (AtomType::a2H6)) / 2;
-	Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
+	Relation::faces_A.push_back (make_pair (ta, PropertyType::pBh));
 	ta = *A.safeFind (AtomType::a1H6);
-	Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
+	Relation::faces_A.push_back (make_pair (ta, PropertyType::pWh));
 	ta = (*A.safeFind (AtomType::aLP1) + *A.safeFind (AtomType::a1H6)) / 2;
-	Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+	Relation::faces_A.push_back (make_pair (ta, PropertyType::pWw));
 	ta = (*A.safeFind (AtomType::aLP1) + *A.safeFind (AtomType::aH2)) / 2;
-	Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+	Relation::faces_A.push_back (make_pair (ta, PropertyType::pWw));
 	ta = *A.safeFind (AtomType::aH2);
-	Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
+	Relation::faces_A.push_back (make_pair (ta, PropertyType::pBs));
 	ta = (*A.safeFind (AtomType::aH2) + *A.safeFind (AtomType::aLP3)) / 2;
-	Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
+	Relation::faces_A.push_back (make_pair (ta, PropertyType::pSs));
 	ta = *A.safeFind (AtomType::aLP3);
-	Relation::faces_A.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
+	Relation::faces_A.push_back (make_pair (ta, PropertyType::pSs));
 
 	C.setTheoretical ();
 	ta = *C.safeFind (AtomType::aH6);
-	Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+	Relation::faces_C.push_back (make_pair (ta, PropertyType::pHh));
 	ta = (*C.safeFind (AtomType::a1H4) + *C.safeFind (AtomType::aH5)) / 2;
-	Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+	Relation::faces_C.push_back (make_pair (ta, PropertyType::pHh));
 	ta = *C.safeFind (AtomType::a1H4);
-	Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
+	Relation::faces_C.push_back (make_pair (ta, PropertyType::pHw));
 	ta = (*C.safeFind (AtomType::a1H4) + *C.safeFind (AtomType::a2H4)) / 2;
-	Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
+	Relation::faces_C.push_back (make_pair (ta, PropertyType::pBh));
 	ta = *C.safeFind (AtomType::a2H4);
-	Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
+	Relation::faces_C.push_back (make_pair (ta, PropertyType::pWh));
 	ta = (*C.safeFind (AtomType::a2H4) + *C.safeFind (AtomType::aLP3)) / 2;
-	Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+	Relation::faces_C.push_back (make_pair (ta, PropertyType::pWw));
 	ta = (*C.safeFind (AtomType::aLP3) + *C.safeFind (AtomType::a2LP2)) / 2;
-	Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+	Relation::faces_C.push_back (make_pair (ta, PropertyType::pWw));
 	ta = *C.safeFind (AtomType::a2LP2);
-	Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
+	Relation::faces_C.push_back (make_pair (ta, PropertyType::pWs));
 	ta = (*C.safeFind (AtomType::a2LP2) + *C.safeFind (AtomType::a1LP2)) / 2;
-	Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
+	Relation::faces_C.push_back (make_pair (ta, PropertyType::pBs));
 	ta = *C.safeFind (AtomType::a1LP2);
-	Relation::faces_C.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
+	Relation::faces_C.push_back (make_pair (ta, PropertyType::pSs));
 
 	G.setTheoretical ();
 	ta = *G.safeFind (AtomType::aH8);
-	Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("C8")));
+	Relation::faces_G.push_back (make_pair (ta, PropertyType::pC8));
 	ta = (*G.safeFind (AtomType::aH8) + *G.safeFind (AtomType::aLP7)) / 2;
-	Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+	Relation::faces_G.push_back (make_pair (ta, PropertyType::pHh));
 	ta = (*G.safeFind (AtomType::a1LP6) + *G.safeFind (AtomType::aLP7)) / 2;
-	Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+	Relation::faces_G.push_back (make_pair (ta, PropertyType::pHh));
 	ta = *G.safeFind (AtomType::a1LP6);
-	Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
+	Relation::faces_G.push_back (make_pair (ta, PropertyType::pHw));
 	ta = (*G.safeFind (AtomType::a1LP6) + *G.safeFind (AtomType::a2LP6)) / 2;
-	Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
+	Relation::faces_G.push_back (make_pair (ta, PropertyType::pBh));
 	ta = *G.safeFind (AtomType::a2LP6);
-	Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
+	Relation::faces_G.push_back (make_pair (ta, PropertyType::pWh));
 	ta = (*G.safeFind (AtomType::a2LP6) + *G.safeFind (AtomType::aH1)) / 2;
-	Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+	Relation::faces_G.push_back (make_pair (ta, PropertyType::pWw));
 	ta = (*G.safeFind (AtomType::aH1) + *G.safeFind (AtomType::a2H2)) / 2;
-	Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+	Relation::faces_G.push_back (make_pair (ta, PropertyType::pWw));
 	ta = *G.safeFind (AtomType::a2H2);
-	Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
+	Relation::faces_G.push_back (make_pair (ta, PropertyType::pWs));
 	ta = (*G.safeFind (AtomType::a2H2) + *G.safeFind (AtomType::a1H2)) / 2;
-	Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
+	Relation::faces_G.push_back (make_pair (ta, PropertyType::pBs));
 	ta = *G.safeFind (AtomType::a1H2);
-	Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Sw")));
+	Relation::faces_G.push_back (make_pair (ta, PropertyType::pSw));
 	ta = (*G.safeFind (AtomType::a1H2) + *G.safeFind (AtomType::aLP3)) / 2;
-	Relation::faces_G.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
+	Relation::faces_G.push_back (make_pair (ta, PropertyType::pSs));
     
 	U.setTheoretical ();
 	ta = *U.safeFind (AtomType::aH6);
-	Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+	Relation::faces_U.push_back (make_pair (ta, PropertyType::pHh));
 	ta = (*U.safeFind (AtomType::a1LP4) + *U.safeFind (AtomType::aH5)) / 2;
-	Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+	Relation::faces_U.push_back (make_pair (ta, PropertyType::pHh));
 	ta = *U.safeFind (AtomType::a1LP4);
-	Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
+	Relation::faces_U.push_back (make_pair (ta, PropertyType::pHw));
 	ta = (*U.safeFind (AtomType::a1LP4) + *U.safeFind (AtomType::a2LP4)) / 2;
-	Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
+	Relation::faces_U.push_back (make_pair (ta, PropertyType::pBh));
 	ta = *U.safeFind (AtomType::a2LP4);
-	Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
+	Relation::faces_U.push_back (make_pair (ta, PropertyType::pWh));
 	ta = (*U.safeFind (AtomType::a2LP4) + *U.safeFind (AtomType::aH3)) / 2;
-	Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+	Relation::faces_U.push_back (make_pair (ta, PropertyType::pWw));
 	ta = *U.safeFind (AtomType::aH3);
-	Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+	Relation::faces_U.push_back (make_pair (ta, PropertyType::pWw));
 	ta = (*U.safeFind (AtomType::a2LP2) + *U.safeFind (AtomType::aH3)) / 2;
-	Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
+	Relation::faces_U.push_back (make_pair (ta, PropertyType::pWs));
 	ta = *U.safeFind (AtomType::a2LP2);
-	Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
+	Relation::faces_U.push_back (make_pair (ta, PropertyType::pWs));
 	ta = (*U.safeFind (AtomType::a2LP2) + *U.safeFind (AtomType::a1LP2)) / 2;
-	Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
+	Relation::faces_U.push_back (make_pair (ta, PropertyType::pBs));
 	ta = *U.safeFind (AtomType::a1LP2);
-	Relation::faces_U.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
+	Relation::faces_U.push_back (make_pair (ta, PropertyType::pSs));
     
 	T.setTheoretical ();
 	ta = *T.safeFind (AtomType::aH6);
-	Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+	Relation::faces_T.push_back (make_pair (ta, PropertyType::pHh));
 	ta = (*T.safeFind (AtomType::a1LP4) + *T.safeFind (AtomType::aC5M)) / 2;
-	Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Hh")));
+	Relation::faces_T.push_back (make_pair (ta, PropertyType::pHh));
 	ta = *T.safeFind (AtomType::a1LP4);
-	Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Hw")));
+	Relation::faces_T.push_back (make_pair (ta, PropertyType::pHw));
 	ta = (*T.safeFind (AtomType::a1LP4) + *T.safeFind (AtomType::a2LP4)) / 2;
-	Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Bh")));
+	Relation::faces_T.push_back (make_pair (ta, PropertyType::pBh));
 	ta = *T.safeFind (AtomType::a2LP4);
-	Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Wh")));
+	Relation::faces_T.push_back (make_pair (ta, PropertyType::pWh));
 	ta = (*T.safeFind (AtomType::a2LP4) + *T.safeFind (AtomType::aH3)) / 2;
-	Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+	Relation::faces_T.push_back (make_pair (ta, PropertyType::pWw));
 	ta = *T.safeFind (AtomType::aH3);
-	Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ww")));
+	Relation::faces_T.push_back (make_pair (ta, PropertyType::pWw));
 	ta = (*T.safeFind (AtomType::a2LP2) + *T.safeFind (AtomType::aH3)) / 2;
-	Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
+	Relation::faces_T.push_back (make_pair (ta, PropertyType::pWs));
 	ta = *T.safeFind (AtomType::a2LP2);
-	Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ws")));
+	Relation::faces_T.push_back (make_pair (ta, PropertyType::pWs));
 	ta = (*T.safeFind (AtomType::a2LP2) + *T.safeFind (AtomType::a1LP2)) / 2;
-	Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Bs")));
+	Relation::faces_T.push_back (make_pair (ta, PropertyType::pBs));
 	ta = *T.safeFind (AtomType::a1LP2);
-	Relation::faces_T.push_back (make_pair (ta, PropertyType::parseType ("Ss")));
+	Relation::faces_T.push_back (make_pair (ta, PropertyType::pSs));
  
 	Relation::face_init = true;
       }
