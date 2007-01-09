@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // PropertyType.h
-// Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-07 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
-// $Revision: 1.19 $
+// $Revision: 1.20 $
 // 
 // This file is part of mccore.
 // 
@@ -47,7 +47,7 @@ namespace mccore
    * General property types.
    *
    * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: PropertyType.h,v 1.19 2007-01-08 23:57:11 larosem Exp $
+   * @version $Id: PropertyType.h,v 1.20 2007-01-09 01:07:10 larosem Exp $
    */
   class PropertyType
   {
@@ -56,12 +56,12 @@ namespace mccore
      */
     static PropertyTypeStore ptstore;
 
+  protected:
+    
     /**
      * The type key string.
      */
     string key;
-    
-  protected:
     
     // LIFECYCLE ------------------------------------------------------------
     
@@ -284,6 +284,14 @@ namespace mccore
      * isPairing?
      */
     virtual bool isPairing () const
+    {
+      return false;
+    }
+
+    /**
+     * is backbone h-bond?
+     */
+    virtual bool isBHbond () const
     {
       return false;
     }

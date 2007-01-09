@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // PropertyTypeStore.h
-// Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-07 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:42:25 2003
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 // 
 // This file is part of mccore.
 // 
@@ -42,7 +42,7 @@ namespace mccore
    *
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: PropertyTypeStore.h,v 1.14 2007-01-08 23:59:05 larosem Exp $
+   * @version $Id: PropertyTypeStore.h,v 1.15 2007-01-09 01:07:10 larosem Exp $
    */
   class PropertyTypeStore
   {
@@ -166,6 +166,8 @@ namespace mccore
       BHbond () {}
       BHbond (const string &ks) { key = ks; }
       
+      virtual bool isBHbond () const { return true; }
+
       virtual bool describe (const PropertyType *t) const
       {
 	return dynamic_cast< const BHbond* > (t); 
