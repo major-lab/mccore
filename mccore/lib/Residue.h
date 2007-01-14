@@ -1,10 +1,10 @@
 //                              -*- Mode: C++ -*- 
 // Residue.h
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
+// Copyright © 2003-07 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.42 $
+// $Revision: 1.43 $
 //
 // This file is part of mccore.
 // 
@@ -62,7 +62,7 @@ namespace mccore
    * the atom types.
    *
    * @author Patrick Gendron (<a href="gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: Residue.h,v 1.42 2006-05-15 17:59:40 thibaup Exp $
+   * @version $Id: Residue.h,v 1.43 2007-01-14 18:21:04 larosem Exp $
    */
   class Residue
   {
@@ -820,6 +820,21 @@ namespace mccore
      * Removes all optional atoms.
      */
     virtual void removeOptionals ();
+    
+    /**
+     * Adds the h hydrogen to the residue.
+     */
+    void putH (const AtomType *a1, const AtomType *a, const AtomType *a2, const AtomType *h, float dist);
+    
+    /**
+     * Adds the a1h6 and a2h6 hydrogens to the residue.
+     */
+    void putH6 (const AtomType *a1, const AtomType *a6, const AtomType *a5, const AtomType *an6, const AtomType *a1h6, const AtomType *a2h6);
+
+    /**
+     * Adds the 1HM, 2HM and 3HM hydrogens to the methyl group on the residue.
+     */
+    void putMethylH (const AtomType *a1, const AtomType *a2, const AtomType *ac, const AtomType *a1h, const AtomType *a2h, const AtomType *a3h);
     
     /**
      * Adds the hydrogens to the residue.  Hydrogens from the

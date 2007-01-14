@@ -4,8 +4,8 @@
 //                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Tue Mar 11 13:56:50 2003
-// $Revision: 1.18 $
-// $Id: AtomTypeStore.cc,v 1.18 2007-01-10 04:17:57 larosem Exp $
+// $Revision: 1.19 $
+// $Id: AtomTypeStore.cc,v 1.19 2007-01-14 18:21:02 larosem Exp $
 // 
 // This file is part of mccore.
 // 
@@ -318,8 +318,6 @@ namespace mccore
 //     AtomType::a*HN7 = *repository.insert (new A*HN7 ((str = "*HN7"))).first;
 //     AtomType::a*HN8 = *repository.insert (new A*HN8 ((str = "*HN8"))).first;
 //     AtomType::a*HO1 = *repository.insert (new A*HO1 ((str = "*HO1"))).first;
-//     AtomType::a*HO2 = *repository.insert (new A*HO2 ((str = "*HO2"))).first;
-//     AtomType::a*HO3 = *repository.insert (new A*HO3 ((str = "*HO3"))).first;
 //     AtomType::a*HO4 = *repository.insert (new A*HO4 ((str = "*HO4"))).first;
 //     AtomType::a*HO5 = *repository.insert (new A*HO5 ((str = "*HO5"))).first;
 //     AtomType::a*HO6 = *repository.insert (new A*HO6 ((str = "*HO6"))).first;
@@ -419,6 +417,7 @@ namespace mccore
 //     AtomType::a1D14 = *repository.insert (new A1D14 ((str = "1D14"))).first;
 //     AtomType::a1D2 = *repository.insert (new A1D2 ((str = "1D2"))).first;
 //     AtomType::a1D3 = *repository.insert (new A1D3 ((str = "1D3"))).first;
+//     AtomType::a1H = *repository.insert (new A1H ((str = "1H"))).first;
 //     AtomType::a1H" = *repository.insert (new A1H" ((str = "1H""))).first;
 //     AtomType::a1H* = *repository.insert (new A1H* ((str = "1H*"))).first;
 //     AtomType::a1H** = *repository.insert (new A1H** ((str = "1H**"))).first;
@@ -506,7 +505,9 @@ namespace mccore
 //     AtomType::a1H1V = *repository.insert (new A1H1V ((str = "1H1V"))).first;
 //     AtomType::a1H1X = *repository.insert (new A1H1X ((str = "1H1X"))).first;
 //     AtomType::a1H1Y = *repository.insert (new A1H1Y ((str = "1H1Y"))).first;
+//     AtomType::a1H2 = *repository.insert (new A1H2 ((str = "1H2"))).first;
 //     AtomType::a1H2" = *repository.insert (new A1H2" ((str = "1H2""))).first;
+//     AtomType::a1H2* = *repository.insert (new A1H2* ((str = "1H2*"))).first;
 //     AtomType::a1H20 = *repository.insert (new A1H20 ((str = "1H20"))).first;
 //     AtomType::a1H21 = *repository.insert (new A1H21 ((str = "1H21"))).first;
 //     AtomType::a1H22 = *repository.insert (new A1H22 ((str = "1H22"))).first;
@@ -573,7 +574,9 @@ namespace mccore
 //     AtomType::a1H3R = *repository.insert (new A1H3R ((str = "1H3R"))).first;
 //     AtomType::a1H3S = *repository.insert (new A1H3S ((str = "1H3S"))).first;
 //     AtomType::a1H3T = *repository.insert (new A1H3T ((str = "1H3T"))).first;
+//     AtomType::a1H3U = *repository.insert (new A1H3U ((str = "1H3U"))).first;
 //     AtomType::a1H3X = *repository.insert (new A1H3X ((str = "1H3X"))).first;
+//     AtomType::a1H4 = *repository.insert (new A1H4 ((str = "1H4"))).first;
 //     AtomType::a1H4" = *repository.insert (new A1H4" ((str = "1H4""))).first;
 //     AtomType::a1H4* = *repository.insert (new A1H4* ((str = "1H4*"))).first;
 //     AtomType::a1H40 = *repository.insert (new A1H40 ((str = "1H40"))).first;
@@ -623,6 +626,7 @@ namespace mccore
 //     AtomType::a1H5F = *repository.insert (new A1H5F ((str = "1H5F"))).first;
 //     AtomType::a1H5G = *repository.insert (new A1H5G ((str = "1H5G"))).first;
 //     AtomType::a1H5J = *repository.insert (new A1H5J ((str = "1H5J"))).first;
+//     AtomType::a1H5M = *repository.insert (new A1H5M ((str = "1H5M"))).first;
 //     AtomType::a1H5N = *repository.insert (new A1H5N ((str = "1H5N"))).first;
 //     AtomType::a1H5P = *repository.insert (new A1H5P ((str = "1H5P"))).first;
 //     AtomType::a1H5R = *repository.insert (new A1H5R ((str = "1H5R"))).first;
@@ -630,6 +634,7 @@ namespace mccore
 //     AtomType::a1H5T = *repository.insert (new A1H5T ((str = "1H5T"))).first;
 //     AtomType::a1H5U = *repository.insert (new A1H5U ((str = "1H5U"))).first;
 //     AtomType::a1H5X = *repository.insert (new A1H5X ((str = "1H5X"))).first;
+//     AtomType::a1H6 = *repository.insert (new A1H6 ((str = "1H6"))).first;
 //     AtomType::a1H6" = *repository.insert (new A1H6" ((str = "1H6""))).first;
 //     AtomType::a1H6* = *repository.insert (new A1H6* ((str = "1H6*"))).first;
 //     AtomType::a1H60 = *repository.insert (new A1H60 ((str = "1H60"))).first;
@@ -864,6 +869,8 @@ namespace mccore
 //     AtomType::a1HD" = *repository.insert (new A1HD" ((str = "1HD""))).first;
 //     AtomType::a1HD* = *repository.insert (new A1HD* ((str = "1HD*"))).first;
 //     AtomType::a1HD0 = *repository.insert (new A1HD0 ((str = "1HD0"))).first;
+//     AtomType::a1HD1 = *repository.insert (new A1HD1 ((str = "1HD1"))).first;
+//     AtomType::a1HD2 = *repository.insert (new A1HD2 ((str = "1HD2"))).first;
 //     AtomType::a1HD3 = *repository.insert (new A1HD3 ((str = "1HD3"))).first;
 //     AtomType::a1HD4 = *repository.insert (new A1HD4 ((str = "1HD4"))).first;
 //     AtomType::a1HD5 = *repository.insert (new A1HD5 ((str = "1HD5"))).first;
@@ -887,6 +894,7 @@ namespace mccore
 //     AtomType::a1HE* = *repository.insert (new A1HE* ((str = "1HE*"))).first;
 //     AtomType::a1HE0 = *repository.insert (new A1HE0 ((str = "1HE0"))).first;
 //     AtomType::a1HE1 = *repository.insert (new A1HE1 ((str = "1HE1"))).first;
+//     AtomType::a1HE2 = *repository.insert (new A1HE2 ((str = "1HE2"))).first;
 //     AtomType::a1HE3 = *repository.insert (new A1HE3 ((str = "1HE3"))).first;
 //     AtomType::a1HE4 = *repository.insert (new A1HE4 ((str = "1HE4"))).first;
 //     AtomType::a1HE6 = *repository.insert (new A1HE6 ((str = "1HE6"))).first;
@@ -909,6 +917,8 @@ namespace mccore
 //     AtomType::a1HFM = *repository.insert (new A1HFM ((str = "1HFM"))).first;
 //     AtomType::a1HG" = *repository.insert (new A1HG" ((str = "1HG""))).first;
 //     AtomType::a1HG* = *repository.insert (new A1HG* ((str = "1HG*"))).first;
+//     AtomType::a1HG1 = *repository.insert (new A1HG1 ((str = "1HG1"))).first;
+//     AtomType::a1HG2 = *repository.insert (new A1HG2 ((str = "1HG2"))).first;
 //     AtomType::a1HG3 = *repository.insert (new A1HG3 ((str = "1HG3"))).first;
 //     AtomType::a1HG4 = *repository.insert (new A1HG4 ((str = "1HG4"))).first;
 //     AtomType::a1HG5 = *repository.insert (new A1HG5 ((str = "1HG5"))).first;
@@ -927,6 +937,8 @@ namespace mccore
 //     AtomType::a1HH = *repository.insert (new A1HH ((str = "1HH"))).first;
 //     AtomType::a1HH" = *repository.insert (new A1HH" ((str = "1HH""))).first;
 //     AtomType::a1HH* = *repository.insert (new A1HH* ((str = "1HH*"))).first;
+//     AtomType::a1HH1 = *repository.insert (new A1HH1 ((str = "1HH1"))).first;
+//     AtomType::a1HH2 = *repository.insert (new A1HH2 ((str = "1HH2"))).first;
 //     AtomType::a1HH3 = *repository.insert (new A1HH3 ((str = "1HH3"))).first;
 //     AtomType::a1HH4 = *repository.insert (new A1HH4 ((str = "1HH4"))).first;
 //     AtomType::a1HH5 = *repository.insert (new A1HH5 ((str = "1HH5"))).first;
@@ -951,6 +963,7 @@ namespace mccore
 //     AtomType::a1HJ1 = *repository.insert (new A1HJ1 ((str = "1HJ1"))).first;
 //     AtomType::a1HJ2 = *repository.insert (new A1HJ2 ((str = "1HJ2"))).first;
 //     AtomType::a1HJ6 = *repository.insert (new A1HJ6 ((str = "1HJ6"))).first;
+//     AtomType::a1HJC = *repository.insert (new A1HJC ((str = "1HJC"))).first;
 //     AtomType::a1HK = *repository.insert (new A1HK ((str = "1HK"))).first;
 //     AtomType::a1HK* = *repository.insert (new A1HK* ((str = "1HK*"))).first;
 //     AtomType::a1HK1 = *repository.insert (new A1HK1 ((str = "1HK1"))).first;
@@ -959,6 +972,7 @@ namespace mccore
 //     AtomType::a1HK4 = *repository.insert (new A1HK4 ((str = "1HK4"))).first;
 //     AtomType::a1HK5 = *repository.insert (new A1HK5 ((str = "1HK5"))).first;
 //     AtomType::a1HK6 = *repository.insert (new A1HK6 ((str = "1HK6"))).first;
+//     AtomType::a1HKC = *repository.insert (new A1HKC ((str = "1HKC"))).first;
 //     AtomType::a1HKY = *repository.insert (new A1HKY ((str = "1HKY"))).first;
 //     AtomType::a1HL = *repository.insert (new A1HL ((str = "1HL"))).first;
 //     AtomType::a1HL* = *repository.insert (new A1HL* ((str = "1HL*"))).first;
@@ -976,7 +990,7 @@ namespace mccore
 //     AtomType::a1HM" = *repository.insert (new A1HM" ((str = "1HM""))).first;
 //     AtomType::a1HM* = *repository.insert (new A1HM* ((str = "1HM*"))).first;
 //     AtomType::a1HM0 = *repository.insert (new A1HM0 ((str = "1HM0"))).first;
-//     AtomType::a1HM1 = *repository.insert (new A1HM1 ((str = "1HM1"))).first;
+    AtomType::a1HM1 = *repository.insert (new A1HM1 ((str = "1HM1"))).first;
 //     AtomType::a1HM2 = *repository.insert (new A1HM2 ((str = "1HM2"))).first;
 //     AtomType::a1HM3 = *repository.insert (new A1HM3 ((str = "1HM3"))).first;
 //     AtomType::a1HM4 = *repository.insert (new A1HM4 ((str = "1HM4"))).first;
@@ -1002,7 +1016,7 @@ namespace mccore
 //     AtomType::a1HN3 = *repository.insert (new A1HN3 ((str = "1HN3"))).first;
 //     AtomType::a1HN4 = *repository.insert (new A1HN4 ((str = "1HN4"))).first;
 //     AtomType::a1HN5 = *repository.insert (new A1HN5 ((str = "1HN5"))).first;
-//     AtomType::a1HN6 = *repository.insert (new A1HN6 ((str = "1HN6"))).first;
+    AtomType::a1HN6 = *repository.insert (new A1HN6 ((str = "1HN6"))).first;
 //     AtomType::a1HN7 = *repository.insert (new A1HN7 ((str = "1HN7"))).first;
 //     AtomType::a1HN8 = *repository.insert (new A1HN8 ((str = "1HN8"))).first;
 //     AtomType::a1HN9 = *repository.insert (new A1HN9 ((str = "1HN9"))).first;
@@ -1185,6 +1199,7 @@ namespace mccore
 //     AtomType::a1OP = *repository.insert (new A1OP ((str = "1OP"))).first;
 //     AtomType::a1OP* = *repository.insert (new A1OP* ((str = "1OP*"))).first;
 //     AtomType::a1OP3 = *repository.insert (new A1OP3 ((str = "1OP3"))).first;
+//     AtomType::a1OP5 = *repository.insert (new A1OP5 ((str = "1OP5"))).first;
 //     AtomType::a1OXT = *repository.insert (new A1OXT ((str = "1OXT"))).first;
 //     AtomType::a2BH = *repository.insert (new A2BH ((str = "2BH"))).first;
 //     AtomType::a2C = *repository.insert (new A2C ((str = "2C"))).first;
@@ -1228,6 +1243,7 @@ namespace mccore
 //     AtomType::a2D14 = *repository.insert (new A2D14 ((str = "2D14"))).first;
 //     AtomType::a2D2 = *repository.insert (new A2D2 ((str = "2D2"))).first;
 //     AtomType::a2D3 = *repository.insert (new A2D3 ((str = "2D3"))).first;
+//     AtomType::a2H = *repository.insert (new A2H ((str = "2H"))).first;
 //     AtomType::a2H" = *repository.insert (new A2H" ((str = "2H""))).first;
 //     AtomType::a2H* = *repository.insert (new A2H* ((str = "2H*"))).first;
 //     AtomType::a2H** = *repository.insert (new A2H** ((str = "2H**"))).first;
@@ -1311,7 +1327,9 @@ namespace mccore
 //     AtomType::a2H1V = *repository.insert (new A2H1V ((str = "2H1V"))).first;
 //     AtomType::a2H1X = *repository.insert (new A2H1X ((str = "2H1X"))).first;
 //     AtomType::a2H1Y = *repository.insert (new A2H1Y ((str = "2H1Y"))).first;
+//     AtomType::a2H2 = *repository.insert (new A2H2 ((str = "2H2"))).first;
 //     AtomType::a2H2" = *repository.insert (new A2H2" ((str = "2H2""))).first;
+//     AtomType::a2H2* = *repository.insert (new A2H2* ((str = "2H2*"))).first;
 //     AtomType::a2H20 = *repository.insert (new A2H20 ((str = "2H20"))).first;
 //     AtomType::a2H21 = *repository.insert (new A2H21 ((str = "2H21"))).first;
 //     AtomType::a2H22 = *repository.insert (new A2H22 ((str = "2H22"))).first;
@@ -1375,7 +1393,9 @@ namespace mccore
 //     AtomType::a2H3R = *repository.insert (new A2H3R ((str = "2H3R"))).first;
 //     AtomType::a2H3S = *repository.insert (new A2H3S ((str = "2H3S"))).first;
 //     AtomType::a2H3T = *repository.insert (new A2H3T ((str = "2H3T"))).first;
+//     AtomType::a2H3U = *repository.insert (new A2H3U ((str = "2H3U"))).first;
 //     AtomType::a2H3X = *repository.insert (new A2H3X ((str = "2H3X"))).first;
+//     AtomType::a2H4 = *repository.insert (new A2H4 ((str = "2H4"))).first;
 //     AtomType::a2H4" = *repository.insert (new A2H4" ((str = "2H4""))).first;
 //     AtomType::a2H4* = *repository.insert (new A2H4* ((str = "2H4*"))).first;
 //     AtomType::a2H40 = *repository.insert (new A2H40 ((str = "2H40"))).first;
@@ -1424,6 +1444,7 @@ namespace mccore
 //     AtomType::a2H5F = *repository.insert (new A2H5F ((str = "2H5F"))).first;
 //     AtomType::a2H5G = *repository.insert (new A2H5G ((str = "2H5G"))).first;
 //     AtomType::a2H5J = *repository.insert (new A2H5J ((str = "2H5J"))).first;
+//     AtomType::a2H5M = *repository.insert (new A2H5M ((str = "2H5M"))).first;
 //     AtomType::a2H5N = *repository.insert (new A2H5N ((str = "2H5N"))).first;
 //     AtomType::a2H5P = *repository.insert (new A2H5P ((str = "2H5P"))).first;
 //     AtomType::a2H5R = *repository.insert (new A2H5R ((str = "2H5R"))).first;
@@ -1431,6 +1452,7 @@ namespace mccore
 //     AtomType::a2H5T = *repository.insert (new A2H5T ((str = "2H5T"))).first;
 //     AtomType::a2H5U = *repository.insert (new A2H5U ((str = "2H5U"))).first;
 //     AtomType::a2H5X = *repository.insert (new A2H5X ((str = "2H5X"))).first;
+//     AtomType::a2H6 = *repository.insert (new A2H6 ((str = "2H6"))).first;
 //     AtomType::a2H6" = *repository.insert (new A2H6" ((str = "2H6""))).first;
 //     AtomType::a2H6* = *repository.insert (new A2H6* ((str = "2H6*"))).first;
 //     AtomType::a2H60 = *repository.insert (new A2H60 ((str = "2H60"))).first;
@@ -1657,6 +1679,8 @@ namespace mccore
 //     AtomType::a2HD" = *repository.insert (new A2HD" ((str = "2HD""))).first;
 //     AtomType::a2HD* = *repository.insert (new A2HD* ((str = "2HD*"))).first;
 //     AtomType::a2HD0 = *repository.insert (new A2HD0 ((str = "2HD0"))).first;
+//     AtomType::a2HD1 = *repository.insert (new A2HD1 ((str = "2HD1"))).first;
+//     AtomType::a2HD2 = *repository.insert (new A2HD2 ((str = "2HD2"))).first;
 //     AtomType::a2HD3 = *repository.insert (new A2HD3 ((str = "2HD3"))).first;
 //     AtomType::a2HD4 = *repository.insert (new A2HD4 ((str = "2HD4"))).first;
 //     AtomType::a2HD5 = *repository.insert (new A2HD5 ((str = "2HD5"))).first;
@@ -1680,6 +1704,7 @@ namespace mccore
 //     AtomType::a2HE* = *repository.insert (new A2HE* ((str = "2HE*"))).first;
 //     AtomType::a2HE0 = *repository.insert (new A2HE0 ((str = "2HE0"))).first;
 //     AtomType::a2HE1 = *repository.insert (new A2HE1 ((str = "2HE1"))).first;
+//     AtomType::a2HE2 = *repository.insert (new A2HE2 ((str = "2HE2"))).first;
 //     AtomType::a2HE3 = *repository.insert (new A2HE3 ((str = "2HE3"))).first;
 //     AtomType::a2HE4 = *repository.insert (new A2HE4 ((str = "2HE4"))).first;
 //     AtomType::a2HE6 = *repository.insert (new A2HE6 ((str = "2HE6"))).first;
@@ -1702,6 +1727,8 @@ namespace mccore
 //     AtomType::a2HFM = *repository.insert (new A2HFM ((str = "2HFM"))).first;
 //     AtomType::a2HG" = *repository.insert (new A2HG" ((str = "2HG""))).first;
 //     AtomType::a2HG* = *repository.insert (new A2HG* ((str = "2HG*"))).first;
+//     AtomType::a2HG1 = *repository.insert (new A2HG1 ((str = "2HG1"))).first;
+//     AtomType::a2HG2 = *repository.insert (new A2HG2 ((str = "2HG2"))).first;
 //     AtomType::a2HG3 = *repository.insert (new A2HG3 ((str = "2HG3"))).first;
 //     AtomType::a2HG4 = *repository.insert (new A2HG4 ((str = "2HG4"))).first;
 //     AtomType::a2HG5 = *repository.insert (new A2HG5 ((str = "2HG5"))).first;
@@ -1720,6 +1747,8 @@ namespace mccore
 //     AtomType::a2HH = *repository.insert (new A2HH ((str = "2HH"))).first;
 //     AtomType::a2HH" = *repository.insert (new A2HH" ((str = "2HH""))).first;
 //     AtomType::a2HH* = *repository.insert (new A2HH* ((str = "2HH*"))).first;
+//     AtomType::a2HH1 = *repository.insert (new A2HH1 ((str = "2HH1"))).first;
+//     AtomType::a2HH2 = *repository.insert (new A2HH2 ((str = "2HH2"))).first;
 //     AtomType::a2HH3 = *repository.insert (new A2HH3 ((str = "2HH3"))).first;
 //     AtomType::a2HH4 = *repository.insert (new A2HH4 ((str = "2HH4"))).first;
 //     AtomType::a2HH5 = *repository.insert (new A2HH5 ((str = "2HH5"))).first;
@@ -1744,6 +1773,7 @@ namespace mccore
 //     AtomType::a2HJ1 = *repository.insert (new A2HJ1 ((str = "2HJ1"))).first;
 //     AtomType::a2HJ2 = *repository.insert (new A2HJ2 ((str = "2HJ2"))).first;
 //     AtomType::a2HJ6 = *repository.insert (new A2HJ6 ((str = "2HJ6"))).first;
+//     AtomType::a2HJC = *repository.insert (new A2HJC ((str = "2HJC"))).first;
 //     AtomType::a2HK = *repository.insert (new A2HK ((str = "2HK"))).first;
 //     AtomType::a2HK* = *repository.insert (new A2HK* ((str = "2HK*"))).first;
 //     AtomType::a2HK1 = *repository.insert (new A2HK1 ((str = "2HK1"))).first;
@@ -1752,6 +1782,7 @@ namespace mccore
 //     AtomType::a2HK4 = *repository.insert (new A2HK4 ((str = "2HK4"))).first;
 //     AtomType::a2HK5 = *repository.insert (new A2HK5 ((str = "2HK5"))).first;
 //     AtomType::a2HK6 = *repository.insert (new A2HK6 ((str = "2HK6"))).first;
+//     AtomType::a2HKC = *repository.insert (new A2HKC ((str = "2HKC"))).first;
 //     AtomType::a2HKY = *repository.insert (new A2HKY ((str = "2HKY"))).first;
 //     AtomType::a2HL = *repository.insert (new A2HL ((str = "2HL"))).first;
 //     AtomType::a2HL* = *repository.insert (new A2HL* ((str = "2HL*"))).first;
@@ -1769,7 +1800,7 @@ namespace mccore
 //     AtomType::a2HM" = *repository.insert (new A2HM" ((str = "2HM""))).first;
 //     AtomType::a2HM* = *repository.insert (new A2HM* ((str = "2HM*"))).first;
 //     AtomType::a2HM0 = *repository.insert (new A2HM0 ((str = "2HM0"))).first;
-//     AtomType::a2HM1 = *repository.insert (new A2HM1 ((str = "2HM1"))).first;
+    AtomType::a2HM1 = *repository.insert (new A2HM1 ((str = "2HM1"))).first;
 //     AtomType::a2HM2 = *repository.insert (new A2HM2 ((str = "2HM2"))).first;
 //     AtomType::a2HM3 = *repository.insert (new A2HM3 ((str = "2HM3"))).first;
 //     AtomType::a2HM4 = *repository.insert (new A2HM4 ((str = "2HM4"))).first;
@@ -1795,7 +1826,7 @@ namespace mccore
 //     AtomType::a2HN3 = *repository.insert (new A2HN3 ((str = "2HN3"))).first;
 //     AtomType::a2HN4 = *repository.insert (new A2HN4 ((str = "2HN4"))).first;
 //     AtomType::a2HN5 = *repository.insert (new A2HN5 ((str = "2HN5"))).first;
-//     AtomType::a2HN6 = *repository.insert (new A2HN6 ((str = "2HN6"))).first;
+    AtomType::a2HN6 = *repository.insert (new A2HN6 ((str = "2HN6"))).first;
 //     AtomType::a2HN7 = *repository.insert (new A2HN7 ((str = "2HN7"))).first;
 //     AtomType::a2HN8 = *repository.insert (new A2HN8 ((str = "2HN8"))).first;
 //     AtomType::a2HN9 = *repository.insert (new A2HN9 ((str = "2HN9"))).first;
@@ -1839,7 +1870,6 @@ namespace mccore
 //     AtomType::a2HOG = *repository.insert (new A2HOG ((str = "2HOG"))).first;
 //     AtomType::a2HOJ = *repository.insert (new A2HOJ ((str = "2HOJ"))).first;
 //     AtomType::a2HON = *repository.insert (new A2HON ((str = "2HON"))).first;
-//     AtomType::a2HOP = *repository.insert (new A2HOP ((str = "2HOP"))).first;
 //     AtomType::a2HOR = *repository.insert (new A2HOR ((str = "2HOR"))).first;
 //     AtomType::a2HOS = *repository.insert (new A2HOS ((str = "2HOS"))).first;
 //     AtomType::a2HOW = *repository.insert (new A2HOW ((str = "2HOW"))).first;
@@ -1967,6 +1997,7 @@ namespace mccore
 //     AtomType::a2O21 = *repository.insert (new A2O21 ((str = "2O21"))).first;
 //     AtomType::a2O22 = *repository.insert (new A2O22 ((str = "2O22"))).first;
 //     AtomType::a2O3 = *repository.insert (new A2O3 ((str = "2O3"))).first;
+//     AtomType::a2O4 = *repository.insert (new A2O4 ((str = "2O4"))).first;
 //     AtomType::a2O4* = *repository.insert (new A2O4* ((str = "2O4*"))).first;
 //     AtomType::a2O7 = *repository.insert (new A2O7 ((str = "2O7"))).first;
 //     AtomType::a2OE1 = *repository.insert (new A2OE1 ((str = "2OE1"))).first;
@@ -1974,6 +2005,7 @@ namespace mccore
 //     AtomType::a2OP = *repository.insert (new A2OP ((str = "2OP"))).first;
 //     AtomType::a2OP* = *repository.insert (new A2OP* ((str = "2OP*"))).first;
 //     AtomType::a2OP3 = *repository.insert (new A2OP3 ((str = "2OP3"))).first;
+//     AtomType::a2OP5 = *repository.insert (new A2OP5 ((str = "2OP5"))).first;
 //     AtomType::a2OXT = *repository.insert (new A2OXT ((str = "2OXT"))).first;
 //     AtomType::a31HO = *repository.insert (new A31HO ((str = "31HO"))).first;
 //     AtomType::a33HO = *repository.insert (new A33HO ((str = "33HO"))).first;
@@ -2006,6 +2038,7 @@ namespace mccore
 //     AtomType::a3CL3 = *repository.insert (new A3CL3 ((str = "3CL3"))).first;
 //     AtomType::a3D = *repository.insert (new A3D ((str = "3D"))).first;
 //     AtomType::a3D14 = *repository.insert (new A3D14 ((str = "3D14"))).first;
+//     AtomType::a3H = *repository.insert (new A3H ((str = "3H"))).first;
 //     AtomType::a3H* = *repository.insert (new A3H* ((str = "3H*"))).first;
 //     AtomType::a3H** = *repository.insert (new A3H** ((str = "3H**"))).first;
 //     AtomType::a3H*7 = *repository.insert (new A3H*7 ((str = "3H*7"))).first;
@@ -2104,6 +2137,7 @@ namespace mccore
 //     AtomType::a3H3N = *repository.insert (new A3H3N ((str = "3H3N"))).first;
 //     AtomType::a3H3P = *repository.insert (new A3H3P ((str = "3H3P"))).first;
 //     AtomType::a3H3T = *repository.insert (new A3H3T ((str = "3H3T"))).first;
+//     AtomType::a3H3U = *repository.insert (new A3H3U ((str = "3H3U"))).first;
 //     AtomType::a3H4 = *repository.insert (new A3H4 ((str = "3H4"))).first;
 //     AtomType::a3H4" = *repository.insert (new A3H4" ((str = "3H4""))).first;
 //     AtomType::a3H4* = *repository.insert (new A3H4* ((str = "3H4*"))).first;
@@ -2139,6 +2173,7 @@ namespace mccore
 //     AtomType::a3H59 = *repository.insert (new A3H59 ((str = "3H59"))).first;
 //     AtomType::a3H5B = *repository.insert (new A3H5B ((str = "3H5B"))).first;
 //     AtomType::a3H5C = *repository.insert (new A3H5C ((str = "3H5C"))).first;
+//     AtomType::a3H5M = *repository.insert (new A3H5M ((str = "3H5M"))).first;
 //     AtomType::a3H5N = *repository.insert (new A3H5N ((str = "3H5N"))).first;
 //     AtomType::a3H5P = *repository.insert (new A3H5P ((str = "3H5P"))).first;
 //     AtomType::a3H5S = *repository.insert (new A3H5S ((str = "3H5S"))).first;
@@ -2304,6 +2339,7 @@ namespace mccore
 //     AtomType::a3HCI = *repository.insert (new A3HCI ((str = "3HCI"))).first;
 //     AtomType::a3HCM = *repository.insert (new A3HCM ((str = "3HCM"))).first;
 //     AtomType::a3HCN = *repository.insert (new A3HCN ((str = "3HCN"))).first;
+//     AtomType::a3HCO = *repository.insert (new A3HCO ((str = "3HCO"))).first;
 //     AtomType::a3HCP = *repository.insert (new A3HCP ((str = "3HCP"))).first;
 //     AtomType::a3HCS = *repository.insert (new A3HCS ((str = "3HCS"))).first;
 //     AtomType::a3HCT = *repository.insert (new A3HCT ((str = "3HCT"))).first;
@@ -2312,6 +2348,8 @@ namespace mccore
 //     AtomType::a3HD = *repository.insert (new A3HD ((str = "3HD"))).first;
 //     AtomType::a3HD* = *repository.insert (new A3HD* ((str = "3HD*"))).first;
 //     AtomType::a3HD0 = *repository.insert (new A3HD0 ((str = "3HD0"))).first;
+//     AtomType::a3HD1 = *repository.insert (new A3HD1 ((str = "3HD1"))).first;
+//     AtomType::a3HD2 = *repository.insert (new A3HD2 ((str = "3HD2"))).first;
 //     AtomType::a3HD3 = *repository.insert (new A3HD3 ((str = "3HD3"))).first;
 //     AtomType::a3HD4 = *repository.insert (new A3HD4 ((str = "3HD4"))).first;
 //     AtomType::a3HD5 = *repository.insert (new A3HD5 ((str = "3HD5"))).first;
@@ -2341,6 +2379,8 @@ namespace mccore
 //     AtomType::a3HFM = *repository.insert (new A3HFM ((str = "3HFM"))).first;
 //     AtomType::a3HG = *repository.insert (new A3HG ((str = "3HG"))).first;
 //     AtomType::a3HG* = *repository.insert (new A3HG* ((str = "3HG*"))).first;
+//     AtomType::a3HG1 = *repository.insert (new A3HG1 ((str = "3HG1"))).first;
+//     AtomType::a3HG2 = *repository.insert (new A3HG2 ((str = "3HG2"))).first;
 //     AtomType::a3HG3 = *repository.insert (new A3HG3 ((str = "3HG3"))).first;
 //     AtomType::a3HG4 = *repository.insert (new A3HG4 ((str = "3HG4"))).first;
 //     AtomType::a3HG5 = *repository.insert (new A3HG5 ((str = "3HG5"))).first;
@@ -2383,7 +2423,7 @@ namespace mccore
 //     AtomType::a3HM" = *repository.insert (new A3HM" ((str = "3HM""))).first;
 //     AtomType::a3HM* = *repository.insert (new A3HM* ((str = "3HM*"))).first;
 //     AtomType::a3HM0 = *repository.insert (new A3HM0 ((str = "3HM0"))).first;
-//     AtomType::a3HM1 = *repository.insert (new A3HM1 ((str = "3HM1"))).first;
+    AtomType::a3HM1 = *repository.insert (new A3HM1 ((str = "3HM1"))).first;
 //     AtomType::a3HM2 = *repository.insert (new A3HM2 ((str = "3HM2"))).first;
 //     AtomType::a3HM3 = *repository.insert (new A3HM3 ((str = "3HM3"))).first;
 //     AtomType::a3HM4 = *repository.insert (new A3HM4 ((str = "3HM4"))).first;
@@ -2436,7 +2476,6 @@ namespace mccore
 //     AtomType::a3HOG = *repository.insert (new A3HOG ((str = "3HOG"))).first;
 //     AtomType::a3HOJ = *repository.insert (new A3HOJ ((str = "3HOJ"))).first;
 //     AtomType::a3HOM = *repository.insert (new A3HOM ((str = "3HOM"))).first;
-//     AtomType::a3HOP = *repository.insert (new A3HOP ((str = "3HOP"))).first;
 //     AtomType::a3HOR = *repository.insert (new A3HOR ((str = "3HOR"))).first;
 //     AtomType::a3HOS = *repository.insert (new A3HOS ((str = "3HOS"))).first;
 //     AtomType::a3HOU = *repository.insert (new A3HOU ((str = "3HOU"))).first;
@@ -2514,6 +2553,7 @@ namespace mccore
 //     AtomType::a3OP = *repository.insert (new A3OP ((str = "3OP"))).first;
 //     AtomType::a3OP* = *repository.insert (new A3OP* ((str = "3OP*"))).first;
 //     AtomType::a3OP3 = *repository.insert (new A3OP3 ((str = "3OP3"))).first;
+//     AtomType::a3OP5 = *repository.insert (new A3OP5 ((str = "3OP5"))).first;
 //     AtomType::a3OXT = *repository.insert (new A3OXT ((str = "3OXT"))).first;
 //     AtomType::a3P = *repository.insert (new A3P ((str = "3P"))).first;
 //     AtomType::a4C = *repository.insert (new A4C ((str = "4C"))).first;
@@ -3002,6 +3042,7 @@ namespace mccore
 //     AtomType::aBRAI = *repository.insert (new ABRAI ((str = "BRAI"))).first;
 //     AtomType::aBRB = *repository.insert (new ABRB ((str = "BRB"))).first;
 //     AtomType::aBRC = *repository.insert (new ABRC ((str = "BRC"))).first;
+//     AtomType::aC = *repository.insert (new AC ((str = "C"))).first;
 //     AtomType::aC" = *repository.insert (new AC" ((str = "C""))).first;
 //     AtomType::aC* = *repository.insert (new AC* ((str = "C*"))).first;
 //     AtomType::aC*0 = *repository.insert (new AC*0 ((str = "C*0"))).first;
@@ -3049,6 +3090,7 @@ namespace mccore
 //     AtomType::aC0X = *repository.insert (new AC0X ((str = "C0X"))).first;
 //     AtomType::aC1 = *repository.insert (new AC1 ((str = "C1"))).first;
 //     AtomType::aC1" = *repository.insert (new AC1" ((str = "C1""))).first;
+//     AtomType::aC1* = *repository.insert (new AC1* ((str = "C1*"))).first;
 //     AtomType::aC1** = *repository.insert (new AC1** ((str = "C1**"))).first;
 //     AtomType::aC1*A = *repository.insert (new AC1*A ((str = "C1*A"))).first;
 //     AtomType::aC1*B = *repository.insert (new AC1*B ((str = "C1*B"))).first;
@@ -3124,7 +3166,9 @@ namespace mccore
 //     AtomType::aC1X = *repository.insert (new AC1X ((str = "C1X"))).first;
 //     AtomType::aC1Y = *repository.insert (new AC1Y ((str = "C1Y"))).first;
 //     AtomType::aC1Z = *repository.insert (new AC1Z ((str = "C1Z"))).first;
+//     AtomType::aC2 = *repository.insert (new AC2 ((str = "C2"))).first;
 //     AtomType::aC2" = *repository.insert (new AC2" ((str = "C2""))).first;
+//     AtomType::aC2* = *repository.insert (new AC2* ((str = "C2*"))).first;
 //     AtomType::aC2** = *repository.insert (new AC2** ((str = "C2**"))).first;
 //     AtomType::aC2*A = *repository.insert (new AC2*A ((str = "C2*A"))).first;
 //     AtomType::aC2*B = *repository.insert (new AC2*B ((str = "C2*B"))).first;
@@ -3178,6 +3222,7 @@ namespace mccore
 //     AtomType::aC2Z = *repository.insert (new AC2Z ((str = "C2Z"))).first;
 //     AtomType::aC3 = *repository.insert (new AC3 ((str = "C3"))).first;
 //     AtomType::aC3" = *repository.insert (new AC3" ((str = "C3""))).first;
+//     AtomType::aC3* = *repository.insert (new AC3* ((str = "C3*"))).first;
 //     AtomType::aC3** = *repository.insert (new AC3** ((str = "C3**"))).first;
 //     AtomType::aC3*A = *repository.insert (new AC3*A ((str = "C3*A"))).first;
 //     AtomType::aC3*B = *repository.insert (new AC3*B ((str = "C3*B"))).first;
@@ -3216,11 +3261,14 @@ namespace mccore
 //     AtomType::aC3R = *repository.insert (new AC3R ((str = "C3R"))).first;
 //     AtomType::aC3S = *repository.insert (new AC3S ((str = "C3S"))).first;
 //     AtomType::aC3T = *repository.insert (new AC3T ((str = "C3T"))).first;
+//     AtomType::aC3U = *repository.insert (new AC3U ((str = "C3U"))).first;
 //     AtomType::aC3W = *repository.insert (new AC3W ((str = "C3W"))).first;
 //     AtomType::aC3X = *repository.insert (new AC3X ((str = "C3X"))).first;
 //     AtomType::aC3Y = *repository.insert (new AC3Y ((str = "C3Y"))).first;
 //     AtomType::aC3Z = *repository.insert (new AC3Z ((str = "C3Z"))).first;
+//     AtomType::aC4 = *repository.insert (new AC4 ((str = "C4"))).first;
 //     AtomType::aC4" = *repository.insert (new AC4" ((str = "C4""))).first;
+//     AtomType::aC4* = *repository.insert (new AC4* ((str = "C4*"))).first;
 //     AtomType::aC4** = *repository.insert (new AC4** ((str = "C4**"))).first;
 //     AtomType::aC4*A = *repository.insert (new AC4*A ((str = "C4*A"))).first;
 //     AtomType::aC4*B = *repository.insert (new AC4*B ((str = "C4*B"))).first;
@@ -3265,7 +3313,9 @@ namespace mccore
 //     AtomType::aC4X = *repository.insert (new AC4X ((str = "C4X"))).first;
 //     AtomType::aC4Y = *repository.insert (new AC4Y ((str = "C4Y"))).first;
 //     AtomType::aC4Z = *repository.insert (new AC4Z ((str = "C4Z"))).first;
+//     AtomType::aC5 = *repository.insert (new AC5 ((str = "C5"))).first;
 //     AtomType::aC5" = *repository.insert (new AC5" ((str = "C5""))).first;
+//     AtomType::aC5* = *repository.insert (new AC5* ((str = "C5*"))).first;
 //     AtomType::aC5** = *repository.insert (new AC5** ((str = "C5**"))).first;
 //     AtomType::aC5*A = *repository.insert (new AC5*A ((str = "C5*A"))).first;
 //     AtomType::aC5*B = *repository.insert (new AC5*B ((str = "C5*B"))).first;
@@ -3295,6 +3345,7 @@ namespace mccore
 //     AtomType::aC5J = *repository.insert (new AC5J ((str = "C5J"))).first;
 //     AtomType::aC5K = *repository.insert (new AC5K ((str = "C5K"))).first;
 //     AtomType::aC5L = *repository.insert (new AC5L ((str = "C5L"))).first;
+//     AtomType::aC5M = *repository.insert (new AC5M ((str = "C5M"))).first;
 //     AtomType::aC5N = *repository.insert (new AC5N ((str = "C5N"))).first;
 //     AtomType::aC5O = *repository.insert (new AC5O ((str = "C5O"))).first;
 //     AtomType::aC5P = *repository.insert (new AC5P ((str = "C5P"))).first;
@@ -3307,7 +3358,9 @@ namespace mccore
 //     AtomType::aC5X = *repository.insert (new AC5X ((str = "C5X"))).first;
 //     AtomType::aC5Y = *repository.insert (new AC5Y ((str = "C5Y"))).first;
 //     AtomType::aC5Z = *repository.insert (new AC5Z ((str = "C5Z"))).first;
+//     AtomType::aC6 = *repository.insert (new AC6 ((str = "C6"))).first;
 //     AtomType::aC6" = *repository.insert (new AC6" ((str = "C6""))).first;
+//     AtomType::aC6* = *repository.insert (new AC6* ((str = "C6*"))).first;
 //     AtomType::aC6** = *repository.insert (new AC6** ((str = "C6**"))).first;
 //     AtomType::aC6*A = *repository.insert (new AC6*A ((str = "C6*A"))).first;
 //     AtomType::aC6*B = *repository.insert (new AC6*B ((str = "C6*B"))).first;
@@ -3344,7 +3397,6 @@ namespace mccore
 //     AtomType::aC6X = *repository.insert (new AC6X ((str = "C6X"))).first;
 //     AtomType::aC6Y = *repository.insert (new AC6Y ((str = "C6Y"))).first;
 //     AtomType::aC6Z = *repository.insert (new AC6Z ((str = "C6Z"))).first;
-//     AtomType::aC6p = *repository.insert (new AC6p ((str = "C6*"))).first;
 //     AtomType::aC7 = *repository.insert (new AC7 ((str = "C7"))).first;
 //     AtomType::aC7" = *repository.insert (new AC7" ((str = "C7""))).first;
 //     AtomType::aC7* = *repository.insert (new AC7* ((str = "C7*"))).first;
@@ -3377,6 +3429,7 @@ namespace mccore
 //     AtomType::aC7T = *repository.insert (new AC7T ((str = "C7T"))).first;
 //     AtomType::aC7X = *repository.insert (new AC7X ((str = "C7X"))).first;
 //     AtomType::aC7Z = *repository.insert (new AC7Z ((str = "C7Z"))).first;
+//     AtomType::aC8 = *repository.insert (new AC8 ((str = "C8"))).first;
 //     AtomType::aC8" = *repository.insert (new AC8" ((str = "C8""))).first;
 //     AtomType::aC8* = *repository.insert (new AC8* ((str = "C8*"))).first;
 //     AtomType::aC80 = *repository.insert (new AC80 ((str = "C80"))).first;
@@ -3435,6 +3488,7 @@ namespace mccore
 //     AtomType::aC9R = *repository.insert (new AC9R ((str = "C9R"))).first;
 //     AtomType::aC9S = *repository.insert (new AC9S ((str = "C9S"))).first;
 //     AtomType::aC9X = *repository.insert (new AC9X ((str = "C9X"))).first;
+//     AtomType::aCA = *repository.insert (new ACA ((str = "CA"))).first;
 //     AtomType::aCA" = *repository.insert (new ACA" ((str = "CA""))).first;
 //     AtomType::aCA* = *repository.insert (new ACA* ((str = "CA*"))).first;
 //     AtomType::aCA0 = *repository.insert (new ACA0 ((str = "CA0"))).first;
@@ -3473,6 +3527,7 @@ namespace mccore
 //     AtomType::aCAX = *repository.insert (new ACAX ((str = "CAX"))).first;
 //     AtomType::aCAY = *repository.insert (new ACAY ((str = "CAY"))).first;
 //     AtomType::aCAZ = *repository.insert (new ACAZ ((str = "CAZ"))).first;
+//     AtomType::aCB = *repository.insert (new ACB ((str = "CB"))).first;
 //     AtomType::aCB* = *repository.insert (new ACB* ((str = "CB*"))).first;
 //     AtomType::aCB0 = *repository.insert (new ACB0 ((str = "CB0"))).first;
 //     AtomType::aCB1 = *repository.insert (new ACB1 ((str = "CB1"))).first;
@@ -3552,9 +3607,12 @@ namespace mccore
 //     AtomType::aCCX = *repository.insert (new ACCX ((str = "CCX"))).first;
 //     AtomType::aCCY = *repository.insert (new ACCY ((str = "CCY"))).first;
 //     AtomType::aCCZ = *repository.insert (new ACCZ ((str = "CCZ"))).first;
+//     AtomType::aCD = *repository.insert (new ACD ((str = "CD"))).first;
 //     AtomType::aCD* = *repository.insert (new ACD* ((str = "CD*"))).first;
 //     AtomType::aCD0 = *repository.insert (new ACD0 ((str = "CD0"))).first;
+//     AtomType::aCD1 = *repository.insert (new ACD1 ((str = "CD1"))).first;
 //     AtomType::aCD1T = *repository.insert (new ACD1T ((str = "CD1T"))).first;
+//     AtomType::aCD2 = *repository.insert (new ACD2 ((str = "CD2"))).first;
 //     AtomType::aCD2T = *repository.insert (new ACD2T ((str = "CD2T"))).first;
 //     AtomType::aCD3 = *repository.insert (new ACD3 ((str = "CD3"))).first;
 //     AtomType::aCD31 = *repository.insert (new ACD31 ((str = "CD31"))).first;
@@ -3583,9 +3641,13 @@ namespace mccore
 //     AtomType::aCDP = *repository.insert (new ACDP ((str = "CDP"))).first;
 //     AtomType::aCDQ = *repository.insert (new ACDQ ((str = "CDQ"))).first;
 //     AtomType::aCDY = *repository.insert (new ACDY ((str = "CDY"))).first;
+//     AtomType::aCE = *repository.insert (new ACE ((str = "CE"))).first;
 //     AtomType::aCE* = *repository.insert (new ACE* ((str = "CE*"))).first;
 //     AtomType::aCE0 = *repository.insert (new ACE0 ((str = "CE0"))).first;
+//     AtomType::aCE1 = *repository.insert (new ACE1 ((str = "CE1"))).first;
+//     AtomType::aCE2 = *repository.insert (new ACE2 ((str = "CE2"))).first;
 //     AtomType::aCE2T = *repository.insert (new ACE2T ((str = "CE2T"))).first;
+//     AtomType::aCE3 = *repository.insert (new ACE3 ((str = "CE3"))).first;
 //     AtomType::aCE31 = *repository.insert (new ACE31 ((str = "CE31"))).first;
 //     AtomType::aCE32 = *repository.insert (new ACE32 ((str = "CE32"))).first;
 //     AtomType::aCE3T = *repository.insert (new ACE3T ((str = "CE3T"))).first;
@@ -3613,8 +3675,11 @@ namespace mccore
 //     AtomType::aCFM = *repository.insert (new ACFM ((str = "CFM"))).first;
 //     AtomType::aCFM4 = *repository.insert (new ACFM4 ((str = "CFM4"))).first;
 //     AtomType::aCFM7 = *repository.insert (new ACFM7 ((str = "CFM7"))).first;
+//     AtomType::aCG = *repository.insert (new ACG ((str = "CG"))).first;
 //     AtomType::aCG* = *repository.insert (new ACG* ((str = "CG*"))).first;
 //     AtomType::aCG0 = *repository.insert (new ACG0 ((str = "CG0"))).first;
+//     AtomType::aCG1 = *repository.insert (new ACG1 ((str = "CG1"))).first;
+//     AtomType::aCG2 = *repository.insert (new ACG2 ((str = "CG2"))).first;
 //     AtomType::aCG3 = *repository.insert (new ACG3 ((str = "CG3"))).first;
 //     AtomType::aCG4 = *repository.insert (new ACG4 ((str = "CG4"))).first;
 //     AtomType::aCG5 = *repository.insert (new ACG5 ((str = "CG5"))).first;
@@ -3661,6 +3726,7 @@ namespace mccore
 //     AtomType::aCH1R = *repository.insert (new ACH1R ((str = "CH1R"))).first;
 //     AtomType::aCH1T = *repository.insert (new ACH1T ((str = "CH1T"))).first;
 //     AtomType::aCH1X = *repository.insert (new ACH1X ((str = "CH1X"))).first;
+//     AtomType::aCH2 = *repository.insert (new ACH2 ((str = "CH2"))).first;
 //     AtomType::aCH2* = *repository.insert (new ACH2* ((str = "CH2*"))).first;
 //     AtomType::aCH20 = *repository.insert (new ACH20 ((str = "CH20"))).first;
 //     AtomType::aCH21 = *repository.insert (new ACH21 ((str = "CH21"))).first;
@@ -3841,7 +3907,7 @@ namespace mccore
 //     AtomType::aCM" = *repository.insert (new ACM" ((str = "CM""))).first;
 //     AtomType::aCM* = *repository.insert (new ACM* ((str = "CM*"))).first;
 //     AtomType::aCM0 = *repository.insert (new ACM0 ((str = "CM0"))).first;
-//     AtomType::aCM1 = *repository.insert (new ACM1 ((str = "CM1"))).first;
+    AtomType::aCM1 = *repository.insert (new ACM1 ((str = "CM1"))).first;
 //     AtomType::aCM2 = *repository.insert (new ACM2 ((str = "CM2"))).first;
 //     AtomType::aCM3 = *repository.insert (new ACM3 ((str = "CM3"))).first;
 //     AtomType::aCM3* = *repository.insert (new ACM3* ((str = "CM3*"))).first;
@@ -4028,6 +4094,7 @@ namespace mccore
 //     AtomType::aCY7 = *repository.insert (new ACY7 ((str = "CY7"))).first;
 //     AtomType::aCYH = *repository.insert (new ACYH ((str = "CYH"))).first;
 //     AtomType::aCYT = *repository.insert (new ACYT ((str = "CYT"))).first;
+//     AtomType::aCZ = *repository.insert (new ACZ ((str = "CZ"))).first;
 //     AtomType::aCZ* = *repository.insert (new ACZ* ((str = "CZ*"))).first;
 //     AtomType::aCZ1 = *repository.insert (new ACZ1 ((str = "CZ1"))).first;
 //     AtomType::aCZ10 = *repository.insert (new ACZ10 ((str = "CZ10"))).first;
@@ -4036,7 +4103,9 @@ namespace mccore
 //     AtomType::aCZ13 = *repository.insert (new ACZ13 ((str = "CZ13"))).first;
 //     AtomType::aCZ14 = *repository.insert (new ACZ14 ((str = "CZ14"))).first;
 //     AtomType::aCZ15 = *repository.insert (new ACZ15 ((str = "CZ15"))).first;
+//     AtomType::aCZ2 = *repository.insert (new ACZ2 ((str = "CZ2"))).first;
 //     AtomType::aCZ2T = *repository.insert (new ACZ2T ((str = "CZ2T"))).first;
+//     AtomType::aCZ3 = *repository.insert (new ACZ3 ((str = "CZ3"))).first;
 //     AtomType::aCZ3T = *repository.insert (new ACZ3T ((str = "CZ3T"))).first;
 //     AtomType::aCZ4 = *repository.insert (new ACZ4 ((str = "CZ4"))).first;
 //     AtomType::aCZ5 = *repository.insert (new ACZ5 ((str = "CZ5"))).first;
@@ -4283,6 +4352,7 @@ namespace mccore
 //     AtomType::aGO4* = *repository.insert (new AGO4* ((str = "GO4*"))).first;
 //     AtomType::aGO5* = *repository.insert (new AGO5* ((str = "GO5*"))).first;
 //     AtomType::aGO6 = *repository.insert (new AGO6 ((str = "GO6"))).first;
+//     AtomType::aH = *repository.insert (new AH ((str = "H"))).first;
 //     AtomType::aH* = *repository.insert (new AH* ((str = "H*"))).first;
 //     AtomType::aH*1 = *repository.insert (new AH*1 ((str = "H*1"))).first;
 //     AtomType::aH*6 = *repository.insert (new AH*6 ((str = "H*6"))).first;
@@ -4308,7 +4378,9 @@ namespace mccore
 //     AtomType::aH0K1 = *repository.insert (new AH0K1 ((str = "H0K1"))).first;
 //     AtomType::aH0P2 = *repository.insert (new AH0P2 ((str = "H0P2"))).first;
 //     AtomType::aH0P3 = *repository.insert (new AH0P3 ((str = "H0P3"))).first;
+//     AtomType::aH1 = *repository.insert (new AH1 ((str = "H1"))).first;
 //     AtomType::aH1" = *repository.insert (new AH1" ((str = "H1""))).first;
+//     AtomType::aH1* = *repository.insert (new AH1* ((str = "H1*"))).first;
 //     AtomType::aH1*1 = *repository.insert (new AH1*1 ((str = "H1*1"))).first;
 //     AtomType::aH1*2 = *repository.insert (new AH1*2 ((str = "H1*2"))).first;
 //     AtomType::aH1*A = *repository.insert (new AH1*A ((str = "H1*A"))).first;
@@ -4410,7 +4482,9 @@ namespace mccore
 //     AtomType::aH1Y = *repository.insert (new AH1Y ((str = "H1Y"))).first;
 //     AtomType::aH1Z = *repository.insert (new AH1Z ((str = "H1Z"))).first;
 //     AtomType::aH1ZA = *repository.insert (new AH1ZA ((str = "H1ZA"))).first;
+//     AtomType::aH2 = *repository.insert (new AH2 ((str = "H2"))).first;
 //     AtomType::aH2" = *repository.insert (new AH2" ((str = "H2""))).first;
+//     AtomType::aH2* = *repository.insert (new AH2* ((str = "H2*"))).first;
 //     AtomType::aH2** = *repository.insert (new AH2** ((str = "H2**"))).first;
 //     AtomType::aH2*A = *repository.insert (new AH2*A ((str = "H2*A"))).first;
 //     AtomType::aH20 = *repository.insert (new AH20 ((str = "H20"))).first;
@@ -4485,7 +4559,9 @@ namespace mccore
 //     AtomType::aH2Y = *repository.insert (new AH2Y ((str = "H2Y"))).first;
 //     AtomType::aH2Z = *repository.insert (new AH2Z ((str = "H2Z"))).first;
 //     AtomType::aH2ZA = *repository.insert (new AH2ZA ((str = "H2ZA"))).first;
+//     AtomType::aH3 = *repository.insert (new AH3 ((str = "H3"))).first;
 //     AtomType::aH3" = *repository.insert (new AH3" ((str = "H3""))).first;
+//     AtomType::aH3* = *repository.insert (new AH3* ((str = "H3*"))).first;
 //     AtomType::aH3** = *repository.insert (new AH3** ((str = "H3**"))).first;
 //     AtomType::aH3*1 = *repository.insert (new AH3*1 ((str = "H3*1"))).first;
 //     AtomType::aH3*2 = *repository.insert (new AH3*2 ((str = "H3*2"))).first;
@@ -4551,6 +4627,7 @@ namespace mccore
 //     AtomType::aH3R = *repository.insert (new AH3R ((str = "H3R"))).first;
 //     AtomType::aH3S = *repository.insert (new AH3S ((str = "H3S"))).first;
 //     AtomType::aH3SA = *repository.insert (new AH3SA ((str = "H3SA"))).first;
+//     AtomType::aH3T = *repository.insert (new AH3T ((str = "H3T"))).first;
 //     AtomType::aH3U = *repository.insert (new AH3U ((str = "H3U"))).first;
 //     AtomType::aH3V = *repository.insert (new AH3V ((str = "H3V"))).first;
 //     AtomType::aH3W = *repository.insert (new AH3W ((str = "H3W"))).first;
@@ -4559,6 +4636,7 @@ namespace mccore
 //     AtomType::aH3Z = *repository.insert (new AH3Z ((str = "H3Z"))).first;
 //     AtomType::aH4 = *repository.insert (new AH4 ((str = "H4"))).first;
 //     AtomType::aH4" = *repository.insert (new AH4" ((str = "H4""))).first;
+//     AtomType::aH4* = *repository.insert (new AH4* ((str = "H4*"))).first;
 //     AtomType::aH4** = *repository.insert (new AH4** ((str = "H4**"))).first;
 //     AtomType::aH4*1 = *repository.insert (new AH4*1 ((str = "H4*1"))).first;
 //     AtomType::aH4*2 = *repository.insert (new AH4*2 ((str = "H4*2"))).first;
@@ -4609,7 +4687,9 @@ namespace mccore
 //     AtomType::aH4X = *repository.insert (new AH4X ((str = "H4X"))).first;
 //     AtomType::aH4Y = *repository.insert (new AH4Y ((str = "H4Y"))).first;
 //     AtomType::aH4Z = *repository.insert (new AH4Z ((str = "H4Z"))).first;
+//     AtomType::aH5 = *repository.insert (new AH5 ((str = "H5"))).first;
 //     AtomType::aH5" = *repository.insert (new AH5" ((str = "H5""))).first;
+//     AtomType::aH5* = *repository.insert (new AH5* ((str = "H5*"))).first;
 //     AtomType::aH5** = *repository.insert (new AH5** ((str = "H5**"))).first;
 //     AtomType::aH50 = *repository.insert (new AH50 ((str = "H50"))).first;
 //     AtomType::aH51 = *repository.insert (new AH51 ((str = "H51"))).first;
@@ -4643,11 +4723,13 @@ namespace mccore
 //     AtomType::aH5P = *repository.insert (new AH5P ((str = "H5P"))).first;
 //     AtomType::aH5R = *repository.insert (new AH5R ((str = "H5R"))).first;
 //     AtomType::aH5S = *repository.insert (new AH5S ((str = "H5S"))).first;
+//     AtomType::aH5T = *repository.insert (new AH5T ((str = "H5T"))).first;
 //     AtomType::aH5U = *repository.insert (new AH5U ((str = "H5U"))).first;
 //     AtomType::aH5W = *repository.insert (new AH5W ((str = "H5W"))).first;
 //     AtomType::aH5X = *repository.insert (new AH5X ((str = "H5X"))).first;
 //     AtomType::aH5Y = *repository.insert (new AH5Y ((str = "H5Y"))).first;
 //     AtomType::aH5Z = *repository.insert (new AH5Z ((str = "H5Z"))).first;
+//     AtomType::aH6 = *repository.insert (new AH6 ((str = "H6"))).first;
 //     AtomType::aH6" = *repository.insert (new AH6" ((str = "H6""))).first;
 //     AtomType::aH6* = *repository.insert (new AH6* ((str = "H6*"))).first;
 //     AtomType::aH6** = *repository.insert (new AH6** ((str = "H6**"))).first;
@@ -4682,6 +4764,7 @@ namespace mccore
 //     AtomType::aH6U = *repository.insert (new AH6U ((str = "H6U"))).first;
 //     AtomType::aH6X = *repository.insert (new AH6X ((str = "H6X"))).first;
 //     AtomType::aH6Z = *repository.insert (new AH6Z ((str = "H6Z"))).first;
+//     AtomType::aH7 = *repository.insert (new AH7 ((str = "H7"))).first;
 //     AtomType::aH7" = *repository.insert (new AH7" ((str = "H7""))).first;
 //     AtomType::aH7* = *repository.insert (new AH7* ((str = "H7*"))).first;
 //     AtomType::aH70 = *repository.insert (new AH70 ((str = "H70"))).first;
@@ -4710,6 +4793,7 @@ namespace mccore
 //     AtomType::aH7R = *repository.insert (new AH7R ((str = "H7R"))).first;
 //     AtomType::aH7X = *repository.insert (new AH7X ((str = "H7X"))).first;
 //     AtomType::aH7Z = *repository.insert (new AH7Z ((str = "H7Z"))).first;
+//     AtomType::aH8 = *repository.insert (new AH8 ((str = "H8"))).first;
 //     AtomType::aH8" = *repository.insert (new AH8" ((str = "H8""))).first;
 //     AtomType::aH8* = *repository.insert (new AH8* ((str = "H8*"))).first;
 //     AtomType::aH8** = *repository.insert (new AH8** ((str = "H8**"))).first;
@@ -4759,9 +4843,12 @@ namespace mccore
 //     AtomType::aH9C = *repository.insert (new AH9C ((str = "H9C"))).first;
 //     AtomType::aH9D = *repository.insert (new AH9D ((str = "H9D"))).first;
 //     AtomType::aH9R = *repository.insert (new AH9R ((str = "H9R"))).first;
+//     AtomType::aHA = *repository.insert (new AHA ((str = "HA"))).first;
 //     AtomType::aHA* = *repository.insert (new AHA* ((str = "HA*"))).first;
 //     AtomType::aHA0 = *repository.insert (new AHA0 ((str = "HA0"))).first;
+//     AtomType::aHA1 = *repository.insert (new AHA1 ((str = "HA1"))).first;
 //     AtomType::aHA1* = *repository.insert (new AHA1* ((str = "HA1*"))).first;
+//     AtomType::aHA2 = *repository.insert (new AHA2 ((str = "HA2"))).first;
 //     AtomType::aHA2* = *repository.insert (new AHA2* ((str = "HA2*"))).first;
 //     AtomType::aHA21 = *repository.insert (new AHA21 ((str = "HA21"))).first;
 //     AtomType::aHA22 = *repository.insert (new AHA22 ((str = "HA22"))).first;
@@ -4801,12 +4888,16 @@ namespace mccore
 //     AtomType::aHAX = *repository.insert (new AHAX ((str = "HAX"))).first;
 //     AtomType::aHAY = *repository.insert (new AHAY ((str = "HAY"))).first;
 //     AtomType::aHAZ = *repository.insert (new AHAZ ((str = "HAZ"))).first;
+//     AtomType::aHB = *repository.insert (new AHB ((str = "HB"))).first;
 //     AtomType::aHB* = *repository.insert (new AHB* ((str = "HB*"))).first;
 //     AtomType::aHB0 = *repository.insert (new AHB0 ((str = "HB0"))).first;
+//     AtomType::aHB1 = *repository.insert (new AHB1 ((str = "HB1"))).first;
 //     AtomType::aHB1* = *repository.insert (new AHB1* ((str = "HB1*"))).first;
 //     AtomType::aHB11 = *repository.insert (new AHB11 ((str = "HB11"))).first;
 //     AtomType::aHB12 = *repository.insert (new AHB12 ((str = "HB12"))).first;
+//     AtomType::aHB2 = *repository.insert (new AHB2 ((str = "HB2"))).first;
 //     AtomType::aHB2* = *repository.insert (new AHB2* ((str = "HB2*"))).first;
+//     AtomType::aHB3 = *repository.insert (new AHB3 ((str = "HB3"))).first;
 //     AtomType::aHB4 = *repository.insert (new AHB4 ((str = "HB4"))).first;
 //     AtomType::aHB41 = *repository.insert (new AHB41 ((str = "HB41"))).first;
 //     AtomType::aHB42 = *repository.insert (new AHB42 ((str = "HB42"))).first;
@@ -4990,17 +5081,23 @@ namespace mccore
 //     AtomType::aHCR = *repository.insert (new AHCR ((str = "HCR"))).first;
 //     AtomType::aHCS = *repository.insert (new AHCS ((str = "HCS"))).first;
 //     AtomType::aHCT = *repository.insert (new AHCT ((str = "HCT"))).first;
+//     AtomType::aHCU = *repository.insert (new AHCU ((str = "HCU"))).first;
 //     AtomType::aHCV2 = *repository.insert (new AHCV2 ((str = "HCV2"))).first;
 //     AtomType::aHCV7 = *repository.insert (new AHCV7 ((str = "HCV7"))).first;
+//     AtomType::aHCW = *repository.insert (new AHCW ((str = "HCW"))).first;
+//     AtomType::aHCX = *repository.insert (new AHCX ((str = "HCX"))).first;
 //     AtomType::aHCX1 = *repository.insert (new AHCX1 ((str = "HCX1"))).first;
 //     AtomType::aHCX2 = *repository.insert (new AHCX2 ((str = "HCX2"))).first;
 //     AtomType::aHCX3 = *repository.insert (new AHCX3 ((str = "HCX3"))).first;
 //     AtomType::aHCX4 = *repository.insert (new AHCX4 ((str = "HCX4"))).first;
 //     AtomType::aHCX5 = *repository.insert (new AHCX5 ((str = "HCX5"))).first;
+//     AtomType::aHCY = *repository.insert (new AHCY ((str = "HCY"))).first;
 //     AtomType::aHCZ = *repository.insert (new AHCZ ((str = "HCZ"))).first;
 //     AtomType::aHD = *repository.insert (new AHD ((str = "HD"))).first;
 //     AtomType::aHD* = *repository.insert (new AHD* ((str = "HD*"))).first;
+//     AtomType::aHD1 = *repository.insert (new AHD1 ((str = "HD1"))).first;
 //     AtomType::aHD1* = *repository.insert (new AHD1* ((str = "HD1*"))).first;
+//     AtomType::aHD2 = *repository.insert (new AHD2 ((str = "HD2"))).first;
 //     AtomType::aHD2* = *repository.insert (new AHD2* ((str = "HD2*"))).first;
 //     AtomType::aHD3 = *repository.insert (new AHD3 ((str = "HD3"))).first;
 //     AtomType::aHD4 = *repository.insert (new AHD4 ((str = "HD4"))).first;
@@ -5037,8 +5134,12 @@ namespace mccore
 //     AtomType::aHDK1 = *repository.insert (new AHDK1 ((str = "HDK1"))).first;
 //     AtomType::aHDM = *repository.insert (new AHDM ((str = "HDM"))).first;
 //     AtomType::aHDT = *repository.insert (new AHDT ((str = "HDT"))).first;
+//     AtomType::aHE = *repository.insert (new AHE ((str = "HE"))).first;
 //     AtomType::aHE* = *repository.insert (new AHE* ((str = "HE*"))).first;
+//     AtomType::aHE1 = *repository.insert (new AHE1 ((str = "HE1"))).first;
+//     AtomType::aHE2 = *repository.insert (new AHE2 ((str = "HE2"))).first;
 //     AtomType::aHE2* = *repository.insert (new AHE2* ((str = "HE2*"))).first;
+//     AtomType::aHE3 = *repository.insert (new AHE3 ((str = "HE3"))).first;
 //     AtomType::aHE3* = *repository.insert (new AHE3* ((str = "HE3*"))).first;
 //     AtomType::aHE4 = *repository.insert (new AHE4 ((str = "HE4"))).first;
 //     AtomType::aHE4* = *repository.insert (new AHE4* ((str = "HE4*"))).first;
@@ -5066,11 +5167,14 @@ namespace mccore
 //     AtomType::aHFM1 = *repository.insert (new AHFM1 ((str = "HFM1"))).first;
 //     AtomType::aHFM2 = *repository.insert (new AHFM2 ((str = "HFM2"))).first;
 //     AtomType::aHFM3 = *repository.insert (new AHFM3 ((str = "HFM3"))).first;
+//     AtomType::aHG = *repository.insert (new AHG ((str = "HG"))).first;
 //     AtomType::aHG* = *repository.insert (new AHG* ((str = "HG*"))).first;
+//     AtomType::aHG1 = *repository.insert (new AHG1 ((str = "HG1"))).first;
 //     AtomType::aHG1* = *repository.insert (new AHG1* ((str = "HG1*"))).first;
 //     AtomType::aHG11 = *repository.insert (new AHG11 ((str = "HG11"))).first;
 //     AtomType::aHG12 = *repository.insert (new AHG12 ((str = "HG12"))).first;
 //     AtomType::aHG13 = *repository.insert (new AHG13 ((str = "HG13"))).first;
+//     AtomType::aHG2 = *repository.insert (new AHG2 ((str = "HG2"))).first;
 //     AtomType::aHG2* = *repository.insert (new AHG2* ((str = "HG2*"))).first;
 //     AtomType::aHG21 = *repository.insert (new AHG21 ((str = "HG21"))).first;
 //     AtomType::aHG22 = *repository.insert (new AHG22 ((str = "HG22"))).first;
@@ -5088,10 +5192,12 @@ namespace mccore
 //     AtomType::aHGM = *repository.insert (new AHGM ((str = "HGM"))).first;
 //     AtomType::aHGT = *repository.insert (new AHGT ((str = "HGT"))).first;
 //     AtomType::aHGY = *repository.insert (new AHGY ((str = "HGY"))).first;
+//     AtomType::aHH = *repository.insert (new AHH ((str = "HH"))).first;
 //     AtomType::aHH* = *repository.insert (new AHH* ((str = "HH*"))).first;
 //     AtomType::aHH1 = *repository.insert (new AHH1 ((str = "HH1"))).first;
 //     AtomType::aHH11 = *repository.insert (new AHH11 ((str = "HH11"))).first;
 //     AtomType::aHH12 = *repository.insert (new AHH12 ((str = "HH12"))).first;
+//     AtomType::aHH2 = *repository.insert (new AHH2 ((str = "HH2"))).first;
 //     AtomType::aHH21 = *repository.insert (new AHH21 ((str = "HH21"))).first;
 //     AtomType::aHH22 = *repository.insert (new AHH22 ((str = "HH22"))).first;
 //     AtomType::aHH3 = *repository.insert (new AHH3 ((str = "HH3"))).first;
@@ -5612,6 +5718,7 @@ namespace mccore
 //     AtomType::aHXD = *repository.insert (new AHXD ((str = "HXD"))).first;
 //     AtomType::aHXE = *repository.insert (new AHXE ((str = "HXE"))).first;
 //     AtomType::aHXF = *repository.insert (new AHXF ((str = "HXF"))).first;
+//     AtomType::aHXT = *repository.insert (new AHXT ((str = "HXT"))).first;
 //     AtomType::aHXU = *repository.insert (new AHXU ((str = "HXU"))).first;
 //     AtomType::aHXV = *repository.insert (new AHXV ((str = "HXV"))).first;
 //     AtomType::aHY = *repository.insert (new AHY ((str = "HY"))).first;
@@ -5622,7 +5729,11 @@ namespace mccore
 //     AtomType::aHY5 = *repository.insert (new AHY5 ((str = "HY5"))).first;
 //     AtomType::aHY6 = *repository.insert (new AHY6 ((str = "HY6"))).first;
 //     AtomType::aHY7 = *repository.insert (new AHY7 ((str = "HY7"))).first;
+//     AtomType::aHZ = *repository.insert (new AHZ ((str = "HZ"))).first;
 //     AtomType::aHZ* = *repository.insert (new AHZ* ((str = "HZ*"))).first;
+//     AtomType::aHZ1 = *repository.insert (new AHZ1 ((str = "HZ1"))).first;
+//     AtomType::aHZ2 = *repository.insert (new AHZ2 ((str = "HZ2"))).first;
+//     AtomType::aHZ3 = *repository.insert (new AHZ3 ((str = "HZ3"))).first;
 //     AtomType::aHZ4 = *repository.insert (new AHZ4 ((str = "HZ4"))).first;
 //     AtomType::aHZ5 = *repository.insert (new AHZ5 ((str = "HZ5"))).first;
 //     AtomType::aHZ6 = *repository.insert (new AHZ6 ((str = "HZ6"))).first;
@@ -5671,7 +5782,6 @@ namespace mccore
 //     AtomType::aIHO5 = *repository.insert (new AIHO5 ((str = "IHO5"))).first;
 //     AtomType::aIHO6 = *repository.insert (new AIHO6 ((str = "IHO6"))).first;
 //     AtomType::aIN1 = *repository.insert (new AIN1 ((str = "IN1"))).first;
-//     AtomType::aINCHI = *repository.insert (new AINCHI ((str = "INCHI"))).first;
 //     AtomType::aIO1 = *repository.insert (new AIO1 ((str = "IO1"))).first;
 //     AtomType::aIO2 = *repository.insert (new AIO2 ((str = "IO2"))).first;
 //     AtomType::aIR = *repository.insert (new AIR ((str = "IR"))).first;
@@ -5686,6 +5796,7 @@ namespace mccore
 //     AtomType::aLHO1 = *repository.insert (new ALHO1 ((str = "LHO1"))).first;
 //     AtomType::aLHO2 = *repository.insert (new ALHO2 ((str = "LHO2"))).first;
 //     AtomType::aLHO3 = *repository.insert (new ALHO3 ((str = "LHO3"))).first;
+//     AtomType::aMG = *repository.insert (new AMG ((str = "MG"))).first;
 //     AtomType::aMG1 = *repository.insert (new AMG1 ((str = "MG1"))).first;
 //     AtomType::aMN = *repository.insert (new AMN ((str = "MN"))).first;
 //     AtomType::aMN1 = *repository.insert (new AMN1 ((str = "MN1"))).first;
@@ -5701,6 +5812,7 @@ namespace mccore
 //     AtomType::aMO6 = *repository.insert (new AMO6 ((str = "MO6"))).first;
 //     AtomType::aMO7 = *repository.insert (new AMO7 ((str = "MO7"))).first;
 //     AtomType::aMOM1 = *repository.insert (new AMOM1 ((str = "MOM1"))).first;
+//     AtomType::aN = *repository.insert (new AN ((str = "N"))).first;
 //     AtomType::aN" = *repository.insert (new AN" ((str = "N""))).first;
 //     AtomType::aN* = *repository.insert (new AN* ((str = "N*"))).first;
 //     AtomType::aN*0 = *repository.insert (new AN*0 ((str = "N*0"))).first;
@@ -5716,6 +5828,7 @@ namespace mccore
 //     AtomType::aN07 = *repository.insert (new AN07 ((str = "N07"))).first;
 //     AtomType::aN08 = *repository.insert (new AN08 ((str = "N08"))).first;
 //     AtomType::aN09 = *repository.insert (new AN09 ((str = "N09"))).first;
+//     AtomType::aN1 = *repository.insert (new AN1 ((str = "N1"))).first;
 //     AtomType::aN1" = *repository.insert (new AN1" ((str = "N1""))).first;
 //     AtomType::aN1* = *repository.insert (new AN1* ((str = "N1*"))).first;
 //     AtomType::aN10 = *repository.insert (new AN10 ((str = "N10"))).first;
@@ -5750,6 +5863,7 @@ namespace mccore
 //     AtomType::aN1T = *repository.insert (new AN1T ((str = "N1T"))).first;
 //     AtomType::aN1U = *repository.insert (new AN1U ((str = "N1U"))).first;
 //     AtomType::aN1X = *repository.insert (new AN1X ((str = "N1X"))).first;
+//     AtomType::aN2 = *repository.insert (new AN2 ((str = "N2"))).first;
 //     AtomType::aN2* = *repository.insert (new AN2* ((str = "N2*"))).first;
 //     AtomType::aN2** = *repository.insert (new AN2** ((str = "N2**"))).first;
 //     AtomType::aN20 = *repository.insert (new AN20 ((str = "N20"))).first;
@@ -5773,6 +5887,7 @@ namespace mccore
 //     AtomType::aN2I = *repository.insert (new AN2I ((str = "N2I"))).first;
 //     AtomType::aN2T = *repository.insert (new AN2T ((str = "N2T"))).first;
 //     AtomType::aN2X = *repository.insert (new AN2X ((str = "N2X"))).first;
+//     AtomType::aN3 = *repository.insert (new AN3 ((str = "N3"))).first;
 //     AtomType::aN3" = *repository.insert (new AN3" ((str = "N3""))).first;
 //     AtomType::aN3* = *repository.insert (new AN3* ((str = "N3*"))).first;
 //     AtomType::aN30 = *repository.insert (new AN30 ((str = "N30"))).first;
@@ -5798,6 +5913,7 @@ namespace mccore
 //     AtomType::aN3T = *repository.insert (new AN3T ((str = "N3T"))).first;
 //     AtomType::aN3U = *repository.insert (new AN3U ((str = "N3U"))).first;
 //     AtomType::aN3X = *repository.insert (new AN3X ((str = "N3X"))).first;
+//     AtomType::aN4 = *repository.insert (new AN4 ((str = "N4"))).first;
 //     AtomType::aN4* = *repository.insert (new AN4* ((str = "N4*"))).first;
 //     AtomType::aN40 = *repository.insert (new AN40 ((str = "N40"))).first;
 //     AtomType::aN41 = *repository.insert (new AN41 ((str = "N41"))).first;
@@ -5837,6 +5953,7 @@ namespace mccore
 //     AtomType::aN5F = *repository.insert (new AN5F ((str = "N5F"))).first;
 //     AtomType::aN5G = *repository.insert (new AN5G ((str = "N5G"))).first;
 //     AtomType::aN5X = *repository.insert (new AN5X ((str = "N5X"))).first;
+//     AtomType::aN6 = *repository.insert (new AN6 ((str = "N6"))).first;
 //     AtomType::aN6* = *repository.insert (new AN6* ((str = "N6*"))).first;
 //     AtomType::aN60 = *repository.insert (new AN60 ((str = "N60"))).first;
 //     AtomType::aN61 = *repository.insert (new AN61 ((str = "N61"))).first;
@@ -5857,6 +5974,7 @@ namespace mccore
 //     AtomType::aN6R = *repository.insert (new AN6R ((str = "N6R"))).first;
 //     AtomType::aN6S = *repository.insert (new AN6S ((str = "N6S"))).first;
 //     AtomType::aN6X = *repository.insert (new AN6X ((str = "N6X"))).first;
+//     AtomType::aN7 = *repository.insert (new AN7 ((str = "N7"))).first;
 //     AtomType::aN7* = *repository.insert (new AN7* ((str = "N7*"))).first;
 //     AtomType::aN70 = *repository.insert (new AN70 ((str = "N70"))).first;
 //     AtomType::aN71 = *repository.insert (new AN71 ((str = "N71"))).first;
@@ -5889,6 +6007,7 @@ namespace mccore
 //     AtomType::aN8C = *repository.insert (new AN8C ((str = "N8C"))).first;
 //     AtomType::aN8M = *repository.insert (new AN8M ((str = "N8M"))).first;
 //     AtomType::aN8P = *repository.insert (new AN8P ((str = "N8P"))).first;
+//     AtomType::aN9 = *repository.insert (new AN9 ((str = "N9"))).first;
 //     AtomType::aN9* = *repository.insert (new AN9* ((str = "N9*"))).first;
 //     AtomType::aN90 = *repository.insert (new AN90 ((str = "N90"))).first;
 //     AtomType::aN91 = *repository.insert (new AN91 ((str = "N91"))).first;
@@ -5986,11 +6105,16 @@ namespace mccore
 //     AtomType::aNCL = *repository.insert (new ANCL ((str = "NCL"))).first;
 //     AtomType::aND = *repository.insert (new AND ((str = "ND"))).first;
 //     AtomType::aND* = *repository.insert (new AND* ((str = "ND*"))).first;
+//     AtomType::aND1 = *repository.insert (new AND1 ((str = "ND1"))).first;
+//     AtomType::aND2 = *repository.insert (new AND2 ((str = "ND2"))).first;
 //     AtomType::aND3 = *repository.insert (new AND3 ((str = "ND3"))).first;
 //     AtomType::aND4 = *repository.insert (new AND4 ((str = "ND4"))).first;
 //     AtomType::aNDC = *repository.insert (new ANDC ((str = "NDC"))).first;
+//     AtomType::aNE = *repository.insert (new ANE ((str = "NE"))).first;
 //     AtomType::aNE* = *repository.insert (new ANE* ((str = "NE*"))).first;
+//     AtomType::aNE1 = *repository.insert (new ANE1 ((str = "NE1"))).first;
 //     AtomType::aNE1T = *repository.insert (new ANE1T ((str = "NE1T"))).first;
+//     AtomType::aNE2 = *repository.insert (new ANE2 ((str = "NE2"))).first;
 //     AtomType::aNE3 = *repository.insert (new ANE3 ((str = "NE3"))).first;
 //     AtomType::aNEO = *repository.insert (new ANEO ((str = "NEO"))).first;
 //     AtomType::aNF = *repository.insert (new ANF ((str = "NF"))).first;
@@ -6005,6 +6129,7 @@ namespace mccore
 //     AtomType::aNGB = *repository.insert (new ANGB ((str = "NGB"))).first;
 //     AtomType::aNH = *repository.insert (new ANH ((str = "NH"))).first;
 //     AtomType::aNH09 = *repository.insert (new ANH09 ((str = "NH09"))).first;
+//     AtomType::aNH1 = *repository.insert (new ANH1 ((str = "NH1"))).first;
 //     AtomType::aNH1* = *repository.insert (new ANH1* ((str = "NH1*"))).first;
 //     AtomType::aNH10 = *repository.insert (new ANH10 ((str = "NH10"))).first;
 //     AtomType::aNH11 = *repository.insert (new ANH11 ((str = "NH11"))).first;
@@ -6016,6 +6141,7 @@ namespace mccore
 //     AtomType::aNH17 = *repository.insert (new ANH17 ((str = "NH17"))).first;
 //     AtomType::aNH19 = *repository.insert (new ANH19 ((str = "NH19"))).first;
 //     AtomType::aNH1B = *repository.insert (new ANH1B ((str = "NH1B"))).first;
+//     AtomType::aNH2 = *repository.insert (new ANH2 ((str = "NH2"))).first;
 //     AtomType::aNH2* = *repository.insert (new ANH2* ((str = "NH2*"))).first;
 //     AtomType::aNH21 = *repository.insert (new ANH21 ((str = "NH21"))).first;
 //     AtomType::aNH22 = *repository.insert (new ANH22 ((str = "NH22"))).first;
@@ -6132,6 +6258,7 @@ namespace mccore
 //     AtomType::aNXT = *repository.insert (new ANXT ((str = "NXT"))).first;
 //     AtomType::aNY = *repository.insert (new ANY ((str = "NY"))).first;
 //     AtomType::aNY4 = *repository.insert (new ANY4 ((str = "NY4"))).first;
+//     AtomType::aNZ = *repository.insert (new ANZ ((str = "NZ"))).first;
 //     AtomType::aNZ* = *repository.insert (new ANZ* ((str = "NZ*"))).first;
 //     AtomType::aNZ1 = *repository.insert (new ANZ1 ((str = "NZ1"))).first;
 //     AtomType::aNZ2 = *repository.insert (new ANZ2 ((str = "NZ2"))).first;
@@ -6140,6 +6267,7 @@ namespace mccore
 //     AtomType::aNZK = *repository.insert (new ANZK ((str = "NZK"))).first;
 //     AtomType::aN_1 = *repository.insert (new AN_1 ((str = "N_1"))).first;
 //     AtomType::aN_2 = *repository.insert (new AN_2 ((str = "N_2"))).first;
+//     AtomType::aO = *repository.insert (new AO ((str = "O"))).first;
 //     AtomType::aO" = *repository.insert (new AO" ((str = "O""))).first;
 //     AtomType::aO* = *repository.insert (new AO* ((str = "O*"))).first;
 //     AtomType::aO*12 = *repository.insert (new AO*12 ((str = "O*12"))).first;
@@ -6210,6 +6338,7 @@ namespace mccore
 //     AtomType::aO1L = *repository.insert (new AO1L ((str = "O1L"))).first;
 //     AtomType::aO1M = *repository.insert (new AO1M ((str = "O1M"))).first;
 //     AtomType::aO1N = *repository.insert (new AO1N ((str = "O1N"))).first;
+//     AtomType::aO1P = *repository.insert (new AO1P ((str = "O1P"))).first;
 //     AtomType::aO1P* = *repository.insert (new AO1P* ((str = "O1P*"))).first;
 //     AtomType::aO1PA = *repository.insert (new AO1PA ((str = "O1PA"))).first;
 //     AtomType::aO1PN = *repository.insert (new AO1PN ((str = "O1PN"))).first;
@@ -6223,7 +6352,9 @@ namespace mccore
 //     AtomType::aO1W = *repository.insert (new AO1W ((str = "O1W"))).first;
 //     AtomType::aO1X = *repository.insert (new AO1X ((str = "O1X"))).first;
 //     AtomType::aO1Y = *repository.insert (new AO1Y ((str = "O1Y"))).first;
+//     AtomType::aO2 = *repository.insert (new AO2 ((str = "O2"))).first;
 //     AtomType::aO2" = *repository.insert (new AO2" ((str = "O2""))).first;
+//     AtomType::aO2* = *repository.insert (new AO2* ((str = "O2*"))).first;
 //     AtomType::aO2** = *repository.insert (new AO2** ((str = "O2**"))).first;
 //     AtomType::aO2*A = *repository.insert (new AO2*A ((str = "O2*A"))).first;
 //     AtomType::aO2*B = *repository.insert (new AO2*B ((str = "O2*B"))).first;
@@ -6260,6 +6391,7 @@ namespace mccore
 //     AtomType::aO2L = *repository.insert (new AO2L ((str = "O2L"))).first;
 //     AtomType::aO2M = *repository.insert (new AO2M ((str = "O2M"))).first;
 //     AtomType::aO2N = *repository.insert (new AO2N ((str = "O2N"))).first;
+//     AtomType::aO2P = *repository.insert (new AO2P ((str = "O2P"))).first;
 //     AtomType::aO2P* = *repository.insert (new AO2P* ((str = "O2P*"))).first;
 //     AtomType::aO2PA = *repository.insert (new AO2PA ((str = "O2PA"))).first;
 //     AtomType::aO2PN = *repository.insert (new AO2PN ((str = "O2PN"))).first;
@@ -6276,6 +6408,7 @@ namespace mccore
 //     AtomType::aO2Z = *repository.insert (new AO2Z ((str = "O2Z"))).first;
 //     AtomType::aO3 = *repository.insert (new AO3 ((str = "O3"))).first;
 //     AtomType::aO3" = *repository.insert (new AO3" ((str = "O3""))).first;
+//     AtomType::aO3* = *repository.insert (new AO3* ((str = "O3*"))).first;
 //     AtomType::aO3*A = *repository.insert (new AO3*A ((str = "O3*A"))).first;
 //     AtomType::aO3*B = *repository.insert (new AO3*B ((str = "O3*B"))).first;
 //     AtomType::aO3*G = *repository.insert (new AO3*G ((str = "O3*G"))).first;
@@ -6308,6 +6441,7 @@ namespace mccore
 //     AtomType::aO3L = *repository.insert (new AO3L ((str = "O3L"))).first;
 //     AtomType::aO3M = *repository.insert (new AO3M ((str = "O3M"))).first;
 //     AtomType::aO3N = *repository.insert (new AO3N ((str = "O3N"))).first;
+//     AtomType::aO3P = *repository.insert (new AO3P ((str = "O3P"))).first;
 //     AtomType::aO3P* = *repository.insert (new AO3P* ((str = "O3P*"))).first;
 //     AtomType::aO3Q = *repository.insert (new AO3Q ((str = "O3Q"))).first;
 //     AtomType::aO3R = *repository.insert (new AO3R ((str = "O3R"))).first;
@@ -6319,7 +6453,9 @@ namespace mccore
 //     AtomType::aO3X = *repository.insert (new AO3X ((str = "O3X"))).first;
 //     AtomType::aO3Y = *repository.insert (new AO3Y ((str = "O3Y"))).first;
 //     AtomType::aO3Z = *repository.insert (new AO3Z ((str = "O3Z"))).first;
+//     AtomType::aO4 = *repository.insert (new AO4 ((str = "O4"))).first;
 //     AtomType::aO4" = *repository.insert (new AO4" ((str = "O4""))).first;
+//     AtomType::aO4* = *repository.insert (new AO4* ((str = "O4*"))).first;
 //     AtomType::aO4*A = *repository.insert (new AO4*A ((str = "O4*A"))).first;
 //     AtomType::aO4*B = *repository.insert (new AO4*B ((str = "O4*B"))).first;
 //     AtomType::aO4*G = *repository.insert (new AO4*G ((str = "O4*G"))).first;
@@ -6362,6 +6498,7 @@ namespace mccore
 //     AtomType::aO4Z = *repository.insert (new AO4Z ((str = "O4Z"))).first;
 //     AtomType::aO5 = *repository.insert (new AO5 ((str = "O5"))).first;
 //     AtomType::aO5" = *repository.insert (new AO5" ((str = "O5""))).first;
+//     AtomType::aO5* = *repository.insert (new AO5* ((str = "O5*"))).first;
 //     AtomType::aO5*A = *repository.insert (new AO5*A ((str = "O5*A"))).first;
 //     AtomType::aO5*B = *repository.insert (new AO5*B ((str = "O5*B"))).first;
 //     AtomType::aO5*G = *repository.insert (new AO5*G ((str = "O5*G"))).first;
@@ -6399,6 +6536,7 @@ namespace mccore
 //     AtomType::aO5X = *repository.insert (new AO5X ((str = "O5X"))).first;
 //     AtomType::aO5Y = *repository.insert (new AO5Y ((str = "O5Y"))).first;
 //     AtomType::aO5Z = *repository.insert (new AO5Z ((str = "O5Z"))).first;
+//     AtomType::aO6 = *repository.insert (new AO6 ((str = "O6"))).first;
 //     AtomType::aO6" = *repository.insert (new AO6" ((str = "O6""))).first;
 //     AtomType::aO6* = *repository.insert (new AO6* ((str = "O6*"))).first;
 //     AtomType::aO6*1 = *repository.insert (new AO6*1 ((str = "O6*1"))).first;
@@ -6599,14 +6737,18 @@ namespace mccore
 //     AtomType::aOCN = *repository.insert (new AOCN ((str = "OCN"))).first;
 //     AtomType::aOCP = *repository.insert (new AOCP ((str = "OCP"))).first;
 //     AtomType::aOCQ = *repository.insert (new AOCQ ((str = "OCQ"))).first;
+//     AtomType::aOCR = *repository.insert (new AOCR ((str = "OCR"))).first;
 //     AtomType::aOCS = *repository.insert (new AOCS ((str = "OCS"))).first;
 //     AtomType::aOCT = *repository.insert (new AOCT ((str = "OCT"))).first;
 //     AtomType::aOCV = *repository.insert (new AOCV ((str = "OCV"))).first;
 //     AtomType::aOCW = *repository.insert (new AOCW ((str = "OCW"))).first;
+//     AtomType::aOCX = *repository.insert (new AOCX ((str = "OCX"))).first;
 //     AtomType::aOCY = *repository.insert (new AOCY ((str = "OCY"))).first;
 //     AtomType::aOCZ = *repository.insert (new AOCZ ((str = "OCZ"))).first;
 //     AtomType::aOD = *repository.insert (new AOD ((str = "OD"))).first;
 //     AtomType::aOD* = *repository.insert (new AOD* ((str = "OD*"))).first;
+//     AtomType::aOD1 = *repository.insert (new AOD1 ((str = "OD1"))).first;
+//     AtomType::aOD2 = *repository.insert (new AOD2 ((str = "OD2"))).first;
 //     AtomType::aOD3 = *repository.insert (new AOD3 ((str = "OD3"))).first;
 //     AtomType::aOD4 = *repository.insert (new AOD4 ((str = "OD4"))).first;
 //     AtomType::aOD5 = *repository.insert (new AOD5 ((str = "OD5"))).first;
@@ -6615,6 +6757,7 @@ namespace mccore
 //     AtomType::aODA = *repository.insert (new AODA ((str = "ODA"))).first;
 //     AtomType::aODB = *repository.insert (new AODB ((str = "ODB"))).first;
 //     AtomType::aODC = *repository.insert (new AODC ((str = "ODC"))).first;
+//     AtomType::aODD = *repository.insert (new AODD ((str = "ODD"))).first;
 //     AtomType::aODE = *repository.insert (new AODE ((str = "ODE"))).first;
 //     AtomType::aODF = *repository.insert (new AODF ((str = "ODF"))).first;
 //     AtomType::aODI = *repository.insert (new AODI ((str = "ODI"))).first;
@@ -6624,9 +6767,11 @@ namespace mccore
 //     AtomType::aODR = *repository.insert (new AODR ((str = "ODR"))).first;
 //     AtomType::aOE = *repository.insert (new AOE ((str = "OE"))).first;
 //     AtomType::aOE* = *repository.insert (new AOE* ((str = "OE*"))).first;
+//     AtomType::aOE1 = *repository.insert (new AOE1 ((str = "OE1"))).first;
 //     AtomType::aOE11 = *repository.insert (new AOE11 ((str = "OE11"))).first;
 //     AtomType::aOE12 = *repository.insert (new AOE12 ((str = "OE12"))).first;
 //     AtomType::aOE13 = *repository.insert (new AOE13 ((str = "OE13"))).first;
+//     AtomType::aOE2 = *repository.insert (new AOE2 ((str = "OE2"))).first;
 //     AtomType::aOE23 = *repository.insert (new AOE23 ((str = "OE23"))).first;
 //     AtomType::aOE3 = *repository.insert (new AOE3 ((str = "OE3"))).first;
 //     AtomType::aOE4 = *repository.insert (new AOE4 ((str = "OE4"))).first;
@@ -6644,7 +6789,9 @@ namespace mccore
 //     AtomType::aOF1 = *repository.insert (new AOF1 ((str = "OF1"))).first;
 //     AtomType::aOF2 = *repository.insert (new AOF2 ((str = "OF2"))).first;
 //     AtomType::aOF3 = *repository.insert (new AOF3 ((str = "OF3"))).first;
+//     AtomType::aOG = *repository.insert (new AOG ((str = "OG"))).first;
 //     AtomType::aOG* = *repository.insert (new AOG* ((str = "OG*"))).first;
+//     AtomType::aOG1 = *repository.insert (new AOG1 ((str = "OG1"))).first;
 //     AtomType::aOG2 = *repository.insert (new AOG2 ((str = "OG2"))).first;
 //     AtomType::aOG3 = *repository.insert (new AOG3 ((str = "OG3"))).first;
 //     AtomType::aOG4 = *repository.insert (new AOG4 ((str = "OG4"))).first;
@@ -6653,6 +6800,7 @@ namespace mccore
 //     AtomType::aOGL = *repository.insert (new AOGL ((str = "OGL"))).first;
 //     AtomType::aOGS = *repository.insert (new AOGS ((str = "OGS"))).first;
 //     AtomType::aOGT = *repository.insert (new AOGT ((str = "OGT"))).first;
+//     AtomType::aOH = *repository.insert (new AOH ((str = "OH"))).first;
 //     AtomType::aOH*A = *repository.insert (new AOH*A ((str = "OH*A"))).first;
 //     AtomType::aOH1 = *repository.insert (new AOH1 ((str = "OH1"))).first;
 //     AtomType::aOH10 = *repository.insert (new AOH10 ((str = "OH10"))).first;
@@ -6858,6 +7006,7 @@ namespace mccore
 //     AtomType::aOXC = *repository.insert (new AOXC ((str = "OXC"))).first;
 //     AtomType::aOXD = *repository.insert (new AOXD ((str = "OXD"))).first;
 //     AtomType::aOXH = *repository.insert (new AOXH ((str = "OXH"))).first;
+//     AtomType::aOXT = *repository.insert (new AOXT ((str = "OXT"))).first;
 //     AtomType::aOY = *repository.insert (new AOY ((str = "OY"))).first;
 //     AtomType::aOY2 = *repository.insert (new AOY2 ((str = "OY2"))).first;
 //     AtomType::aOY3 = *repository.insert (new AOY3 ((str = "OY3"))).first;
@@ -6873,6 +7022,7 @@ namespace mccore
 //     AtomType::aOZ5 = *repository.insert (new AOZ5 ((str = "OZ5"))).first;
 //     AtomType::aOZA = *repository.insert (new AOZA ((str = "OZA"))).first;
 //     AtomType::aO_1 = *repository.insert (new AO_1 ((str = "O_1"))).first;
+//     AtomType::aP = *repository.insert (new AP ((str = "P"))).first;
 //     AtomType::aP* = *repository.insert (new AP* ((str = "P*"))).first;
 //     AtomType::aP1 = *repository.insert (new AP1 ((str = "P1"))).first;
 //     AtomType::aP10 = *repository.insert (new AP10 ((str = "P10"))).first;
@@ -6975,6 +7125,9 @@ namespace mccore
 //     AtomType::aPHO3 = *repository.insert (new APHO3 ((str = "PHO3"))).first;
 //     AtomType::aPHO4 = *repository.insert (new APHO4 ((str = "PHO4"))).first;
 //     AtomType::aPHO5 = *repository.insert (new APHO5 ((str = "PHO5"))).first;
+//     AtomType::aPHO6 = *repository.insert (new APHO6 ((str = "PHO6"))).first;
+//     AtomType::aPHO7 = *repository.insert (new APHO7 ((str = "PHO7"))).first;
+//     AtomType::aPHO8 = *repository.insert (new APHO8 ((str = "PHO8"))).first;
 //     AtomType::aPHS* = *repository.insert (new APHS* ((str = "PHS*"))).first;
 //     AtomType::aPM = *repository.insert (new APM ((str = "PM"))).first;
 //     AtomType::aPN = *repository.insert (new APN ((str = "PN"))).first;
@@ -7144,6 +7297,7 @@ namespace mccore
 //     AtomType::aSBI = *repository.insert (new ASBI ((str = "SBI"))).first;
 //     AtomType::aSC = *repository.insert (new ASC ((str = "SC"))).first;
 //     AtomType::aSCC = *repository.insert (new ASCC ((str = "SCC"))).first;
+//     AtomType::aSD = *repository.insert (new ASD ((str = "SD"))).first;
 //     AtomType::aSD1 = *repository.insert (new ASD1 ((str = "SD1"))).first;
 //     AtomType::aSDD = *repository.insert (new ASDD ((str = "SDD"))).first;
 //     AtomType::aSDE = *repository.insert (new ASDE ((str = "SDE"))).first;
@@ -7157,6 +7311,7 @@ namespace mccore
 //     AtomType::aSE4 = *repository.insert (new ASE4 ((str = "SE4"))).first;
 //     AtomType::aSEG = *repository.insert (new ASEG ((str = "SEG"))).first;
 //     AtomType::aSEL = *repository.insert (new ASEL ((str = "SEL"))).first;
+//     AtomType::aSG = *repository.insert (new ASG ((str = "SG"))).first;
 //     AtomType::aSG* = *repository.insert (new ASG* ((str = "SG*"))).first;
 //     AtomType::aSG1 = *repository.insert (new ASG1 ((str = "SG1"))).first;
 //     AtomType::aSG2 = *repository.insert (new ASG2 ((str = "SG2"))).first;
@@ -7312,8 +7467,6 @@ namespace mccore
 //     AtomType::aZR1 = *repository.insert (new AZR1 ((str = "ZR1"))).first;
 //     AtomType::aZR2 = *repository.insert (new AZR2 ((str = "ZR2"))).first;
 //     AtomType::aZR3 = *repository.insert (new AZR3 ((str = "ZR3"))).first;
-//     Atomtype::a2O4 = *repository.insert (new A2O4 ((str = "2O4"))).first;
-    
   }
 
   
