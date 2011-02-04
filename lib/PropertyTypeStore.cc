@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // PropertyTypeStore.cc
-// Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
-//                     Université de Montréal
+// Copyright ï¿½ 2003-06 Laboratoire de Biologie Informatique et Thï¿½orique
+//                     Universitï¿½ de Montrï¿½al
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:42:25 2003
 // $Revision: 1.16 $
@@ -24,9 +24,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifdef HAVE_CONFIG_H
+// cmake generated defines
 #include <config.h>
-#endif
 
 #include "PropertyTypeStore.h"
 

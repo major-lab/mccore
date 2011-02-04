@@ -23,18 +23,14 @@
 // License along with mccore; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-
-#ifdef HAVE_CONFIG_H
+// cmake generated defines
 #include <config.h>
-#endif
 
 #include <sstream>
 
 #include "Binstream.h"
 #include "Messagestream.h"
 #include "Version.h"
-
-
 
 namespace mccore
 {
@@ -44,10 +40,9 @@ namespace mccore
       minor_no (-1),
       revision_no (-1),
       cpu (VERSION_CPU),
-      vendor (VERSION_VENDOR),
       os (VERSION_OS)
   {
-    istringstream iss (VERSION);
+    istringstream iss (PACKAGE_VERSION_STRING);
     char dot;
 
     iss >> this->major_no >> dot >> this->minor_no >> dot >> this->revision_no;
@@ -62,7 +57,6 @@ namespace mccore
       minor_no (-1),
       revision_no (-1),
       cpu (VERSION_CPU),
-      vendor (VERSION_VENDOR),
       os (VERSION_OS)
   {
     istringstream iss;
@@ -91,7 +85,6 @@ namespace mccore
       minor_no (v.minor_no),
       revision_no (v.revision_no),
       cpu (v.cpu),
-      vendor (v.vendor),
       os (v.os),
       timestamp (v.timestamp)
   {
@@ -108,7 +101,6 @@ namespace mccore
       this->minor_no = v.minor_no;
       this->revision_no = v.revision_no;
       this->cpu = v.cpu;
-      this->vendor = v.vendor;
       this->os = v.os;
       this->timestamp = v.timestamp;
     }
@@ -124,7 +116,6 @@ namespace mccore
       this->minor_no == v.minor_no &&
       this->revision_no == v.revision_no &&
       this->cpu == v.cpu &&
-      this->vendor == v.vendor &&
       this->os == v.os &&
       this->timestamp == v.timestamp;
   }
@@ -151,10 +142,9 @@ namespace mccore
   Version::toString () const
   {
     ostringstream oss;
-    oss << PACKAGE << " " 
+    oss << PACKAGE_NAME << " "
 	<< this->major_no << "." << this->minor_no << "." << this->revision_no << " "
 	<< this->cpu << " "
-	<< this->vendor << " "
 	<< this->os << " "
 	<< this->timestamp;
     return oss.str ();
@@ -182,7 +172,6 @@ namespace mccore
   {
     return obs << this->major_no << this->minor_no << this->revision_no
 	       << this->cpu
-	       << this->vendor
 	       << this->os
 	       << this->timestamp;
   }
@@ -193,11 +182,10 @@ namespace mccore
   {
     Version saved = *this;
 
-    this->cpu = this->vendor = this->os = this->timestamp = "unread";
+    this->cpu = this->os = this->timestamp = "unread";
     this->major_no = this->minor_no = this->revision_no = -1;
     ibs >> this->major_no >> this->minor_no >> this->revision_no
 	>> this->cpu 
-	>> this->vendor 
 	>> this->os
 	>> this->timestamp;
 

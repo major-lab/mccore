@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // Exception.cc
-// Copyright © 1999, 2000-04 Laboratoire de Biologie Informatique et Théorique.
-//                           Université de Montréal.
+// Copyright ï¿½ 1999, 2000-04 Laboratoire de Biologie Informatique et Thï¿½orique.
+//                           Universitï¿½ de Montrï¿½al.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : 
 // $Revision: 1.10 $
@@ -24,9 +24,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifdef HAVE_CONFIG_H
+// cmake generated defines
 #include <config.h>
-#endif
 
 #include <sstream>
 

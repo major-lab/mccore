@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // ModelFactoryMethod.cc
-// Copyright © 2005 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
+// Copyright ï¿½ 2005 Laboratoire de Biologie Informatique et Thï¿½orique
+//                  Universitï¿½ de Montrï¿½al.
 // Author           : Martin Larose
 // Created On       : Wed Jan  5 17:20:53 2005
 // $Revision: 1.5 $
@@ -23,10 +23,8 @@
 // License along with mccore; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-
-#ifdef HAVE_CONFIG_H
+// cmake generated defines
 #include <config.h>
-#endif
 
 #include "AbstractModel.h"
 #include "GraphModel.h"

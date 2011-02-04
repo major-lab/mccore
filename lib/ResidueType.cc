@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // ResidueType.cc
-// Copyright © 2003-07 Laboratoire de Biologie Informatique et Théorique
-//                     Université de Montréal
+// Copyright ï¿½ 2003-07 Laboratoire de Biologie Informatique et Thï¿½orique
+//                     Universitï¿½ de Montrï¿½al
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:32:49 2003
 //
@@ -21,10 +21,8 @@
 // License along with mccore; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-
-#ifdef HAVE_CONFIG_H
+// cmake generated defines
 #include <config.h>
-#endif
 
 #include "Binstream.h"
 #include "Exception.h"

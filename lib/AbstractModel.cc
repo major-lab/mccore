@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // AbstractModel.cc
-// Copyright © 2004-05 Laboratoire de Biologie Informatique et Théorique
-//                     Université de Montréal.
+// Copyright ï¿½ 2004-05 Laboratoire de Biologie Informatique et Thï¿½orique
+//                     Universitï¿½ de Montrï¿½al.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 16:46:03 2004
 // $Revision: 1.5 $
@@ -23,10 +23,8 @@
 // License along with mccore; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-
-#ifdef HAVE_CONFIG_H
+// cmake generated defines
 #include <config.h>
-#endif
 
 #include <algorithm>
 #include <string.h>

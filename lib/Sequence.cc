@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // Sequence.cc
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
-//                     Université de Montréal
+// Copyright ï¿½ 2003-04 Laboratoire de Biologie Informatique et Thï¿½orique
+//                     Universitï¿½ de Montrï¿½al
 // Author           : Patrick Gendron
 // Created On       : Fri Apr 25 10:12:06 2003
 // $Revision: 1.5 $
@@ -23,10 +23,8 @@
 // License along with mccore; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-
-#ifdef HAVE_CONFIG_H
+// cmake generated defines
 #include <config.h>
-#endif
 
 #include <cctype>
 #include <cassert>

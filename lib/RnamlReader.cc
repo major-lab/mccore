@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // RnamlReader.cc
-// Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
-//                     Université de Montréal.
+// Copyright ï¿½ï¿½ 2003-06 Laboratoire de Biologie Informatique et Thï¿½ï¿½orique
+//                     Universitï¿½ï¿½ de Montrï¿½ï¿½al.
 // Author           : Martin Larose
 // Created On       : Tue Jul 15 12:56:11 2003
 // $Revision: 1.12 $
@@ -23,10 +23,8 @@
 // License along with mccore; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-
-#ifdef HAVE_CONFIG_H
+// cmake generated defines
 #include <config.h>
-#endif
 
 #include <string.h>
 #include <errno.h>

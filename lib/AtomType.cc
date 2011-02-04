@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // AtomType.cc
-// Copyright © 2003-07 Laboratoire de Biologie Informatique et Théorique
-//                     Univesité de Montréal
+// Copyright ï¿½ 2003-07 Laboratoire de Biologie Informatique et Thï¿½orique
+//                     Univesitï¿½ de Montrï¿½al
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 15:00:09 2003
 // $Revision: 1.23 $
@@ -24,9 +24,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifdef HAVE_CONFIG_H
+// cmake generated defines
 #include <config.h>
-#endif
 
 #include "AtomType.h"
 #include "AtomTypeStore.h"
