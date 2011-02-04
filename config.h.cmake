@@ -1,5 +1,5 @@
 /* mccore is a computer program that predicts RNA secondary structures from sequence
- * Copyright (C) 2008,2009,2010 Institut de recherche en immunologie et en cancérologie
+ * Copyright (C) 2008,2009,2010,2011 Institut de recherche en immunologie et en cancérologie
  *
  * This file is part of mccore.
  *
