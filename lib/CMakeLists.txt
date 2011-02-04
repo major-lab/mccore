@@ -24,7 +24,7 @@ cmake_minimum_required (VERSION 2.6)
 #include_directories ("${PROJECT_BINARY_DIR}")
 
 # liste de tous les fichiers source
-FILE(GLOB MCFOLD_SOURCES_CC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}  AbstractModel.cc 
+FILE(GLOB MCCORE_SOURCES_CC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}  AbstractModel.cc 
   Atom.cc 
   AtomSet.cc 
   AtomType.cc  
@@ -65,17 +65,17 @@ FILE(GLOB MCFOLD_SOURCES_CC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}  AbstractModel.
 
 # support RNAML
 if(WITH-RNAML)
-  set(MCFOLD_SOURCES_CC ${MCFOLD_SOURCES_CC} RnamlReader.cc  RnamlWriter.cc)
+  set(MCCORE_SOURCES_CC ${MCCORE_SOURCES_CC} RnamlReader.cc  RnamlWriter.cc)
 endif()
 
 #support MySQL
 if(WITH-MYSQL)
-  set(MCFOLD_SOURCES_CC ${MCFOLD_SOURCES_CC} SqlReader.cc SqlExtrac.cc)
+  set(MCCORE_SOURCES_CC ${MCCORE_SOURCES_CC} SqlReader.cc SqlExtrac.cc)
 endif()
 
 # ajoute la librarie
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-add_library (mccore ${MCFOLD_SOURCES_CC})
+add_library (mccore ${MCCORE_SOURCES_CC})
 
 # ajoute le target d'installation
 install (TARGETS mccore DESTINATION lib${LIB_SUFFIX})

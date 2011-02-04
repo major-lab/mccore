@@ -2,7 +2,7 @@
 ##
 ## mccore is a bioinformatics data structures and tools library for efficient 
 ## analysis and manipulation of RNA, DNA and protein 3D structures
-## Copyright (C) 2008,2009,2010 Institut de recherche en immunologie et en cancérologie
+## Copyright (C) 2008,2009,2010,2011 Institut de recherche en immunologie et en cancérologie
 ##
 ## mccore is free software: you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
