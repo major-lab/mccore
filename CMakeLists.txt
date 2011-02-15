@@ -34,6 +34,9 @@ set (MCCORE_VERSION_MINOR 0)
 set (MCCORE_VERSION_PATCH 0)
 set (MCCORE_VERSION_STRING ${MCCORE_VERSION_MAJOR}.${MCCORE_VERSION_MINOR}.${MCCORE_VERSION_PATCH})
 
+# nom complet avec version
+set (MCCORE_COMPLETE_PACKAGE_NAME ${PACKAGE_NAME}-${MCCORE_VERSION_STRING})
+
 ############################################################
 # Options de build                                         #
 ############################################################
@@ -104,19 +107,6 @@ endif()
 
 ############################################################
 
-############################################################
-# Ajout d'un target pour le uninstall                      #
-############################################################
-configure_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
-    IMMEDIATE @ONLY)
-
-add_custom_target(uninstall
-    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
-
-############################################################
-
 # convertis le fichier de configuration cmake en .h standard
 configure_file (
   "${PROJECT_SOURCE_DIR}/config.h.cmake"
@@ -140,7 +130,7 @@ set (CPACK_PACKAGE_VERSION_MINOR ${MCCORE_VERSION_MINOR})
 set (CPACK_PACKAGE_VERSION_PATCH ${MCCORE_VERSION_PATCH})
 set (CPACK_PACKAGE_VENDOR "Laboratoire d'ingénierie des ARN")
 set (CPACK_PACKAGE_CONTACT "Jonathan Roy <TO_BE_DECIDED@kekchose.com>")
-set (CPACK_PACKAGE_FILE_NAME ${PACKAGE_NAME}-${CPACK_PACKAGE_VERSION})
+set (CPACK_PACKAGE_FILE_NAME ${MCCORE_COMPLETE_PACKAGE_NAME})
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   # The OS X PackageMaker doesn't seem to like files with no extension
