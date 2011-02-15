@@ -1,7 +1,8 @@
-/* mccore is a computer program that predicts RNA secondary structures from sequence
- * Copyright (C) 2008,2009,2010,2011 Institut de recherche en immunologie et en cancérologie
+/* This file is part of mccore.
  *
- * This file is part of mccore.
+ * mccore is a bioinformatics data structures and tools library for efficient
+ * analysis and manipulation of RNA, DNA and protein 3D structures
+ * Copyright (C) 2008,2009,2010,2011 Institut de recherche en immunologie et en cancérologie
  *
  * mccore is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with mccore.  If not, see <http://www.gnu.org/licenses/>.
  */   
+
 
 #ifndef CONFIG_H
 #define CONFIG_H
