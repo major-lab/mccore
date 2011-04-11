@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // zstream.cc
-// Copyright © 2004 Laboratoire de Biologie Informatique et Théorique
-//                  Université de Montréal.
+// Copyright ï¿½ 2004 Laboratoire de Biologie Informatique et Thï¿½orique
+//                  Universitï¿½ de Montrï¿½al.
 // Author           : Martin Larose
 // Created On       : Fri Jan  9 14:06:32 2004
 // $Revision: 1.2 $
@@ -22,10 +22,8 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with mccore; if not, write to the Free Software
 
-
-#ifdef HAVE_CONFIG_H
+// cmake generated defines
 #include <config.h>
-#endif
 
 #include <cstdio>
 #include <cstring>

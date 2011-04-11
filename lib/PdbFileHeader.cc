@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // PdbFileHeader.cc
-// Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
-//                     Université de Montréal
+// Copyright ï¿½ 2003-06 Laboratoire de Biologie Informatique et Thï¿½orique
+//                     Universitï¿½ de Montrï¿½al
 // Author           : Patrick Gendron
 // Created On       : Tue Mar 11 18:45:58 2003
 // $Revision: 1.13 $
@@ -24,10 +24,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifdef HAVE_CONFIG_H
+// cmake generated defines
 #include <config.h>
-#endif
-
 
 #include <stdlib.h>
 #include <time.h>
@@ -255,9 +253,9 @@ namespace mccore
 	setPdbId ("Void");
       
 	string com = "File generated using ";
-	com += PACKAGE;
+	com += PACKAGE_NAME;
 	com += " ";
-	com += VERSION;
+	com += PACKAGE_VERSION_STRING;
 	com += " by ";
 	const char* cs = getenv ("USER");
 	com += 0 == cs ? "anonymous" : cs;

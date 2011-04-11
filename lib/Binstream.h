@@ -1,7 +1,7 @@
 //                         -*- Mode: C++ -*-
 // Binstream.h
-// Copyright © 1999, 2000-04 Laboratoire de Biologie Informatique et Théorique.
-//                           Université de Montréal.
+// Copyright ï¿½ 1999, 2000-04 Laboratoire de Biologie Informatique et Thï¿½orique.
+//                           Universitï¿½ de Montrï¿½al.
 // Author           : Martin Larose <larosem@IRO.UMontreal.CA>
 // Created On       : jeu 24 jun 1999 18:11:41 EDT
 // $Revision: 1.19 $
@@ -26,9 +26,8 @@
 #ifndef _mccore_Binstream_h_
 #define _mccore_Binstream_h_
 
-#ifdef HAVE_CONFIG_H
+// cmake generated defines
 #include <config.h>
-#endif
 
 #include <iostream>
 #include <fstream>

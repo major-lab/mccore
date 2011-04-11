@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // HBond.cc
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
-//                     Université de Montréal.
+// Copyright ï¿½ 2003-05 Laboratoire de Biologie Informatique et Thï¿½orique
+//                     Universitï¿½ de Montrï¿½al.
 // Author           : Patrick Gendron
 // Created On       : Thu Mar 20 18:05:28 2003
 // $Revision: 1.17 $
@@ -23,10 +23,8 @@
 // License along with mccore; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-
-#ifdef HAVE_CONFIG_H
+// cmake generated defines
 #include <config.h>
-#endif
 
 #ifdef __APPLE_CC__
 #define _GLIBCPP_USE_C99 1
@@ -68,7 +66,7 @@ namespace mccore
 
   
   const float HBond::sWeight[7] = {
-    // Optimisé sur level1
+    // Optimisï¿½ sur level1
     0.00752508,
     0.00989524,
     0.0259051,
