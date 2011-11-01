@@ -1,4 +1,4 @@
-//                              -*- Mode: C++ -*- 
+//                              -*- Mode: C++ -*-
 // TypeRepresentationTables.cc
 // Copyright © 2004, 2005, 2007 Laboratoire de Biologie Informatique et Théorique.
 //                  Université de Montréal.
@@ -6,19 +6,19 @@
 // Created On       : Fri Oct  1 14:45:13 2004
 // $Revision: 1.10 $
 // $Id: TypeRepresentationTables.cc,v 1.10 2007-01-14 18:21:13 larosem Exp $
-// 
+//
 // This file is part of mccore.
-// 
+//
 // mccore is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
 // License as published by the Free Software Foundation; either
 // version 2.1 of the License, or (at your option) any later version.
-// 
+//
 // mccore is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 // Lesser General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Lesser General Public
 // License along with mccore; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -34,7 +34,7 @@
 
 namespace mccore
 {
-  
+
   AmberAtomTypeRepresentationTable::AmberAtomTypeRepresentationTable ()
   {
     typeTable[""] = AtomType::aNull;
@@ -193,7 +193,7 @@ namespace mccore
     typeTable["HG13"] = AtomType::a3HG1;
     typeTable["HG23"] = AtomType::a3HG2;
     typeTable["PSAZ"] = AtomType::aPSAZ;
-    
+
     representationTable[AtomType::aNull] = "";
     representationTable[AtomType::aC] = "C";
     representationTable[AtomType::aH] = "H";
@@ -384,8 +384,10 @@ namespace mccore
     typeTable["HO*3"] = AtomType::aHO3p;
     typeTable["*HO3"] = AtomType::aHO3p;
     typeTable["O1P"] = AtomType::aO1P;
+    typeTable["OP1"] = AtomType::aO1P;
     typeTable["O2*"] = AtomType::aO2p;
     typeTable["O2P"] = AtomType::aO2P;
+    typeTable["OP2"] = AtomType::aO2P;
     typeTable["O3*"] = AtomType::aO3p;
     typeTable["O3T"] = AtomType::aO3p;
     typeTable["O3P"] = AtomType::aO3P;
