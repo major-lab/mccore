@@ -1,23 +1,23 @@
-//                              -*- Mode: C++ -*- 
+//                              -*- Mode: C++ -*-
 // Residue.h
-// Copyright © 2003-07 Laboratoire de Biologie Informatique et Théorique
-//                     Université de Montréal
+// Copyright ï¿½ 2003-07 Laboratoire de Biologie Informatique et Thï¿½orique
+//                     Universitï¿½ de Montrï¿½al
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
 // $Revision: 1.43 $
 //
 // This file is part of mccore.
-// 
+//
 // mccore is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
 // License as published by the Free Software Foundation; either
 // version 2.1 of the License, or (at your option) any later version.
-// 
+//
 // mccore is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 // Lesser General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Lesser General Public
 // License along with mccore; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -51,7 +51,7 @@ namespace mccore
   class oBinstream;
   class oPdbstream;
 
-  
+
   /**
    * @short A basic residue.
    *
@@ -67,33 +67,33 @@ namespace mccore
   class Residue
   {
   public:
-    
+
     /**
      * The size type of the abstract residue container.
      */
     typedef unsigned int size_type;
-    
+
     /**
      * Definition of the sorted mapping.
      */
     typedef map< const AtomType*, size_type > AtomMap;
-    
+
     /**
-     * Constants used in hydrogens and lone pairs insertion. 
+     * Constants used in hydrogens and lone pairs insertion.
      */
 //     static const float C_H_DIST_CYC = 1.08;     // C-H distance for aromatic C
 //     static const float C_H_DIST     = 1.09;     // C-H distance for SP3 C
-//     static const float N_H_DIST     = 1.01;     // N-H distance for NH2 confo  
+//     static const float N_H_DIST     = 1.01;     // N-H distance for NH2 confo
 //     static const float O_H_DIST     = 0.96;
 //     static const float O_LP_DIST    = 1.00;
 //     static const float N_LP_DIST    = 1.00;
-//     static const float TAN19        = 0.3443276;  // O2' H 
+//     static const float TAN19        = 0.3443276;  // O2' H
 //     static const float TAN30        = 0.57735027;
 //     static const float TAN54        = 1.3763819;
 //     static const float TAN60        = 1.7320508;  // For NH2-like conformations
 //     static const float TAN70        = 2.7474774;  // For CH3-like conformations
 //     static const float TAN71        = 2.9042109;
-    
+
   protected:
 
     /**
@@ -105,7 +105,7 @@ namespace mccore
      * The residue id.
      */
     ResId resId;
-  
+
     /**
      * The container for atoms expressed in the global referential.
      */
@@ -114,7 +114,7 @@ namespace mccore
     /**
      * The associative array between atom types and atom container positions.
      */
-    AtomMap atomIndex;  
+    AtomMap atomIndex;
 
     /**
      * Ribose's atom aliases used in the theoretical building method.
@@ -122,7 +122,7 @@ namespace mccore
     Atom *rib_C1p, *rib_C2p, *rib_C3p, *rib_C4p, *rib_C5p, *rib_O2p, *rib_O3p, *rib_O4p, *rib_O5p, *rib_O1P, *rib_O2P, *rib_P;
 
     /**
-     * Flag asserting ribose's atoms pointer validity. 
+     * Flag asserting ribose's atoms pointer validity.
      * Any methods modifying the atoms' container must raise this flag.
      */
     bool rib_dirty_ref;
@@ -136,9 +136,9 @@ namespace mccore
      * Ribose building counter.
      */
     unsigned int rib_built_count;
-    
+
   public:
-    
+
     /**
      * Default parameter values for the ribose theoretical building by optimization.
      */
@@ -162,36 +162,36 @@ namespace mccore
       friend class ExtendedResidue;
 
     public:
-      
+
       typedef random_access_iterator_tag iterator_category;
       typedef Atom value_type;
       typedef ptrdiff_t difference_type;
       typedef Atom* pointer;
       typedef Atom& reference;
-      
+
     private:
-      
+
       /**
        * The pointer over the residue.
        */
       Residue *res;
-      
+
       /**
        * The position of the iterator.  It is given by the ResMap iterator.
        */
       AtomMap::iterator pos;
-      
+
       /**
        * The filter function over the atom types.  Will be destroyed here.
        */
       AtomSet *filter;
-      
-   
-      
+
+
+
       // LIFECYCLE ------------------------------------------------------------
 
     public:
-      
+
       /**
        * Initializes the iterator.
        */
@@ -203,7 +203,7 @@ namespace mccore
        * @param p the position of the iterator.
        */
       ResidueIterator (Residue *r, AtomMap::iterator p);
-      
+
       /**
        * Initializes the iterator.
        * @param r the residue owning the iterator.
@@ -211,59 +211,59 @@ namespace mccore
        * @param f the filter function.
        */
       ResidueIterator (Residue *r, AtomMap::iterator p, const AtomSet& f);
-      
+
       /**
        * Initializes the iterator with the right's contents.
        * @param right the iterator to copy.
        */
       ResidueIterator (const ResidueIterator &right);
-      
+
       /**
        * Destroys the iterator.
        */
       ~ResidueIterator ();
-      
+
       // OPERATORS ------------------------------------------------------------
-      
+
       /**
        * Assigns the iterator with the right's content.
        * @param right the object to copy.
        * @return itself.
        */
       ResidueIterator& operator= (const ResidueIterator &right);
-      
+
       /**
        * Advances and assigns the iterator of k positions.
        * @param k the number of positions to advance.
        * @return itself.
        */
       ResidueIterator& operator+= (difference_type k);
-      
+
       /**
        * Gets the atom pointed by the current iterator.
        * @return a pointer over the atom placed by the transfo.
        */
       pointer operator-> () const { return &(res->_get (pos->second)); }
-      
+
       /**
        * Dereferences the iterator.
        * @return an atom reference.
        */
       reference operator* () const { return res->_get (pos->second); }
-  
+
       /**
        * Pre-advances the iterator to the next atom.
        * @return the iterator over the next atom.
        */
       ResidueIterator& operator++ ();
-      
+
       /**
        * Post-advances the iterator to the next atom.
        * @param ign ignored parameter.
        * @return the iterator over the current atom.
        */
       ResidueIterator operator++ (int ign);
-      
+
       /**
        * Adds the iterator to a distance type k.  The result may points to the
        * end of the residue.
@@ -275,7 +275,7 @@ namespace mccore
 	ResidueIterator it = *this;
 	return  it += k;
       }
-      
+
       /**
        * Tests whether the iterators are equal.
        * @param right the right iterator.
@@ -285,7 +285,7 @@ namespace mccore
       {
 	return res == right.res && pos == right.pos;
       }
-    
+
       /**
        * Tests whether the iterators are different.
        * @param right the right iterator.
@@ -295,7 +295,7 @@ namespace mccore
       {
 	return !operator== (right);
       }
-      
+
       /**
        * Tests whether the current iterator is less than the right.
        * @param right the right iterator.
@@ -304,9 +304,9 @@ namespace mccore
       bool operator< (const ResidueIterator &right) const
       {
 	return (res < right.res ||
-		res == right.res && pos->first < right.pos->first);
+		(res == right.res && pos->first < right.pos->first));
       }
-      
+
       /**
        * Casts the iterator to a residue.
        * @return the residue pointed by the iterator.
@@ -314,7 +314,7 @@ namespace mccore
       operator Residue* () { return res; }
 
     };
-    
+
 
 
     /**
@@ -341,17 +341,17 @@ namespace mccore
       typedef const Atom& reference;
 
     private:
-    
+
       /**
        * The pointer over the residue.
        */
       const Residue *res;
-    
+
       /**
        * The residue index where the const_residue_iterator points to.
        */
       AtomMap::const_iterator pos;
-    
+
       /**
        * The filter function over the atom types.
        */
@@ -360,7 +360,7 @@ namespace mccore
       // LIFECYCLE ------------------------------------------------------------
 
     public:
-      
+
       /**
        * Initializes the iterator.
        */
@@ -372,7 +372,7 @@ namespace mccore
        * @param p the position of the iterator.
        */
       ResidueConstIterator (const Residue *r, AtomMap::const_iterator p);
-      
+
       /**
        * Initializes the iterator.
        * @param r the residue owning the iterator.
@@ -386,10 +386,10 @@ namespace mccore
        * @param right the ResidueConstIterator to copy.
        */
       ResidueConstIterator (const ResidueConstIterator &right);
-    
-    
+
+
       /**
-       * Initializes the ResidueConstIterator with the right's contents. 
+       * Initializes the ResidueConstIterator with the right's contents.
        * Adding constness is allowed.
        * @param right the ResidueConstIterator to copy.
        */
@@ -399,16 +399,16 @@ namespace mccore
        * Destroys the object.
        */
       ~ResidueConstIterator ();
-    
+
       // OPERATORS ------------------------------------------------------------
-    
+
       /**
        * Assigns the ResidueConstIterator with the right's content.
        * @param right the object to copy.
        * @return itself.
        */
       ResidueConstIterator& operator= (const ResidueConstIterator &right);
-    
+
       /**
        * Assigns the ResidueConstIterator with the right's content.
        * Adding constness is allowed.
@@ -416,39 +416,39 @@ namespace mccore
        * @return itself.
        */
       ResidueConstIterator& operator= (const ResidueIterator &right);
-    
+
       /**
        * Advances and assigns the const_iterator of k positions.
        * @param k the number of positions to advance.
        * @return itself.
        */
       ResidueConstIterator& operator+= (difference_type k);
-    
+
       /**
        * Gets the atom pointed by the current iterator.
        * @return the atom pointer.
        */
       pointer operator-> () const { return &(res->_get (pos->second)); }
-    
+
       /**
        * Dereferences the iterator.
        * @return an atom reference.
        */
       reference operator* () const { return res->_get (pos->second); }
-    
+
       /**
        * Pre-advances the iterator to the next atom.
        * @return the iterator over the next atom.
        */
       ResidueConstIterator& operator++ ();
-    
+
       /**
        * Post-advances the iterator to the next atom.
        * @param ign ignored parameter.
        * @return the iterator over the current atom.
        */
       ResidueConstIterator operator++ (int ign);
-    
+
       /**
        * Adds the const_iterator to a distance type k.  The result may points
        * to the end of the residue.
@@ -459,7 +459,7 @@ namespace mccore
       {
 	return ResidueConstIterator (*this) += k;
       }
-    
+
       /**
        * Tests whether the iterators are equal.
        * @param right the right iterator.
@@ -469,7 +469,7 @@ namespace mccore
       {
 	return res == right.res && pos == right.pos;
       }
-    
+
       /**
        * Tests whether the iterators are different.
        * @param right the right iterator.
@@ -479,7 +479,7 @@ namespace mccore
       {
 	return !operator== (right);
       }
-    
+
       /**
        * Tests whether the current iterator is less than the right.
        * @param right the right iterator.
@@ -488,9 +488,9 @@ namespace mccore
       bool operator< (const ResidueConstIterator &right) const
       {
 	return (res < right.res ||
-		res == right.res && pos->first < right.pos->first);
+		(res == right.res && pos->first < right.pos->first));
       }
-    
+
       /**
        * Casts the iterator to a residue.
        * @return the residue pointed by the iterator.
@@ -498,31 +498,31 @@ namespace mccore
       operator const Residue* () const { return res; }
 
     };
-         
+
   public:
 
     typedef ResidueIterator iterator;
     typedef ResidueConstIterator const_iterator;
-    
+
 
     float omega;
     unsigned short estrho;
 
 
     // LIFECYCLE ---------------------------------------------------------------
-    
+
     /**
      * Initializes the object.
      */
     Residue ();
-    
+
     /**
      * Initializes the object.
      * @param t the residue type.
      * @param id the residue id.
      */
     Residue (const ResidueType *t, const ResId &i);
-    
+
     /**
      * Initializes the residue with type, atom container and id.
      * @param type the residue type.
@@ -541,9 +541,9 @@ namespace mccore
      * Clones the residue.
      * @return the copy of the object.
      */
-    virtual Residue* clone () const 
-    { 
-      return new Residue (*this); 
+    virtual Residue* clone () const
+    {
+      return new Residue (*this);
     }
 
     /**
@@ -575,7 +575,7 @@ namespace mccore
     // OPERATORS ------------------------------------------------------------
 
     /**
-     * Assigns this object's content with another's by calling the virtual 
+     * Assigns this object's content with another's by calling the virtual
      * assignation method. Kept for compatibility reason.
      * @param res the other object from which to copy content.
      * @return itself.
@@ -592,7 +592,7 @@ namespace mccore
      * false otherwise.
      */
     virtual bool operator== (const Residue &other) const;
-    
+
     /**
      * Indicates whether some other residue is "not equal to" this one.
      * @param other the reference object with which to compare.
@@ -608,8 +608,8 @@ namespace mccore
      * @return true if this residue is less than the other.
      */
     virtual bool operator< (const Residue &other) const
-    { 
-      return resId < other.resId; 
+    {
+      return resId < other.resId;
     }
 
     // ACCESS ------------------------------------------------------------------
@@ -619,25 +619,25 @@ namespace mccore
      * @return the residue id.
      */
     const ResId& getResId () const;
-  
+
     /**
      * Sets the residue id.
      * @param id the new residue id.
      */
     void setResId (const ResId& id);
-  
+
     /**
      * Gets the residue type.
      * @return the residue type.
      */
     const ResidueType* getType() const;
-    
+
     /**
      * Sets the residue type.
      * @param type the new residue type.
      */
     void setType (const ResidueType* t);
-        
+
     /**
      * Gets the iterator begin.
      * @return the iterator over the first element.
@@ -650,7 +650,7 @@ namespace mccore
      * @return the iterator over the first element.
      */
     virtual iterator begin (const AtomSet& atomset);
-    
+
     /**
      * Gets the end iterator.
      * @return the iterator past the last element.
@@ -663,14 +663,14 @@ namespace mccore
      * @return the const_iterator over the first element.
      */
     virtual const_iterator begin () const;
-    
+
     /**
      * Gets the const_iterator begin.
      * @param atomset the atom filter.
      * @return the const_iterator over the first element.
      */
     virtual const_iterator begin (const AtomSet& atomset) const;
-    
+
     /**
      * Gets the end const_iterator.
      * @return the const_iterator past the last element.
@@ -683,7 +683,7 @@ namespace mccore
      * @return the iterator to the element or end () if it is not found.
      */
     iterator find (const AtomType *k);
-    
+
     /**
      * Finds an element whose key is k.
      * @param k the atom type key.
@@ -699,7 +699,7 @@ namespace mccore
      * @exception NoSuchAtomException
      */
     iterator safeFind (const AtomType *k);
-    
+
     /**
      * Finds an element whose key is k.
      * @param k the atom type key.
@@ -707,7 +707,7 @@ namespace mccore
      * @exception NoSuchAtomException is thrown is atom is not found.
      */
     const_iterator safeFind (const AtomType *k) const;
-    
+
     /**
      * Check if an element with key k exists in this residue.
      * @param k the atom type key.
@@ -727,7 +727,7 @@ namespace mccore
      * @return The ribose theoretical building iteration count.
      */
     unsigned int getRiboseBuiltCount () const;
-    
+
     // METHODS -----------------------------------------------------------------
 
     /**
@@ -742,7 +742,7 @@ namespace mccore
      * @param m the new referential.
      */
     virtual void setReferential (const HomogeneousTransfo& m);
-  
+
     /**
      * Applies a tfo over each atoms.
      * @param m the transfo to apply.
@@ -757,7 +757,7 @@ namespace mccore
 
     /**
      * Inserts an atom in the residue.  It crushes the existing atom if it
-     * exists.  
+     * exists.
      * @param atom the atom to insert.
      */
     virtual void insert (const Atom &atom);
@@ -768,7 +768,7 @@ namespace mccore
      * @return the iterator to the atom that follows the one that was erased.
      */
     virtual iterator erase (const AtomType* atype);
-    
+
     /**
      * Erases the atom at position pos.
      * @param rit the residue iterator wrapping the atom position.
@@ -781,7 +781,7 @@ namespace mccore
      * @return the number of atoms.
      */
     virtual unsigned int size () const;
-  
+
     /**
      * Tells if there is no atoms in the residue.
      * @return whether the residue is empty.
@@ -789,7 +789,7 @@ namespace mccore
     virtual bool empty () const;
 
     /**
-     * Removes all of the atoms from the residue.  
+     * Removes all of the atoms from the residue.
      */
     virtual void clear();
 
@@ -817,15 +817,21 @@ namespace mccore
     virtual void validate ();
 
     /**
+     * Check that a residue contains all the obligatory atoms for its type.
+     * @return false if some obligatory atoms are missing.
+     */
+    bool isValid() const;
+
+    /**
      * Removes all optional atoms.
      */
     virtual void removeOptionals ();
-    
+
     /**
      * Adds the h hydrogen to the residue.
      */
     void putH (const AtomType *a1, const AtomType *a, const AtomType *a2, const AtomType *h, float dist);
-    
+
     /**
      * Adds the a1h6 and a2h6 hydrogens to the residue.
      */
@@ -835,7 +841,7 @@ namespace mccore
      * Adds the 1HM, 2HM and 3HM hydrogens to the methyl group on the residue.
      */
     void putMethylH (const AtomType *a1, const AtomType *a2, const AtomType *ac, const AtomType *a1h, const AtomType *a2h, const AtomType *a3h);
-    
+
     /**
      * Adds the hydrogens to the residue.  Hydrogens from the
      * sidechain will always be placed since their position is quite
@@ -876,7 +882,7 @@ namespace mccore
      * @exception LibException
      */
     float getRho (float& theta0, float& theta1, float& theta2, float& theta3, float& theta4) const;
-    
+
     /**
      * Determines the pucker mode of the NucleicAcid backbone.
      * @return The property type label.
@@ -889,13 +895,13 @@ namespace mccore
      * @exception LibException
      */
     float getChi () const;
-    
+
     /**
      * Determines the glycosidic angle classification.
      * @return The property type label.
      */
     const PropertyType* getGlycosyl () const;
-    
+
     /**
      * Returns the amplitude of the furanose as the maximal torsion value for
      * any of the furanose's five torsions. Throws an exception if needed atoms
@@ -906,10 +912,10 @@ namespace mccore
     float getFuranoseAmplitude () const throw (IntLibException);
 
     /**
-     * Returns the furanose's type as labeled to the 16 possible stereochemical 
-     * arrangments of the four exocyclic composites linked to the ring: 
+     * Returns the furanose's type as labeled to the 16 possible stereochemical
+     * arrangments of the four exocyclic composites linked to the ring:
      *
-     * @return furanose's type 
+     * @return furanose's type
      * @throws IntLibException FatalIntLibException
      */
     const PropertyType* getFuranoseType () const throw (IntLibException, FatalIntLibException);
@@ -925,7 +931,7 @@ namespace mccore
      * For more details, see a discussion of the metric used in
      * P. Gendron, S. Lemieuxs and F. Major (2001) Quantitative
      * analysis of nucleic acid three-dimensional structures,
-     * J. Mol. Biol. 308(5):919-936 
+     * J. Mol. Biol. 308(5):919-936
      * @param m the other residue.
      * @return the computed distance.
      * @throws IntLibException NoSuchAtomException
@@ -935,7 +941,7 @@ namespace mccore
     /**
      * Builds a theoretical ribose onto a nucleic acid's nitrogen base.
      * The ribose's conformation is parameterized by symbolic types, while
-     * its 5' branch is optionnaly parameterized by gamma and beta torsion values. 
+     * its 5' branch is optionnaly parameterized by gamma and beta torsion values.
      * @param pucker Pucker conformation type.
      * @param glycosyl Glycosyl torsion type.
      * @param build5p Flag to enable 5' branch construction (O5' and P atoms).
@@ -949,7 +955,7 @@ namespace mccore
     /**
      * Builds a theoretical ribose onto a nucleic acid's nitrogen base.
      * The ribose's conformation is parameterized by symbolic types, while
-     * its 5' branch is optionnaly parameterized by gamma and beta torsion values. 
+     * its 5' branch is optionnaly parameterized by gamma and beta torsion values.
      * @param pucker Pucker conformation type.
      * @param glycosyl Glycosyl torsion type.
      * @param build5p Flag to enable 5' branch construction (O5' and P atoms).
@@ -964,7 +970,7 @@ namespace mccore
     /**
      * Builds a theoretical ribose onto a nucleic acid's nitrogen base.
      * The ribose's conformation is parameterized by the pseudorotation (rho) and the glycosyl torsion (chi), while
-     * its 5' branch is optionnaly parameterized by gamma and beta torsions. 
+     * its 5' branch is optionnaly parameterized by gamma and beta torsions.
      * @param pucker Pucker pseudorotation (rad).
      * @param glycosyl Glycosyl torsion (rad).
      * @param gamma Gamma torsion (rad).
@@ -1018,9 +1024,9 @@ namespace mccore
      * position of two adjacent phosphates (toward 5' and 3'). A constant step cyclic
      * coordinates method solves the optimization problem in the 2D torsion space created
      * by rho and chi. Both pucker and glycosyl types can be forced, otherwise
-     * the best geometrical fit is favored. Fitting is quantified by the rms deviation between 
-     * length of implicit C5'-O5' and C3'-O3' bonds and their theoretical length (1.440 and 
-     * 1.431 Angstroms respectively). Any of the two phosphates can be ommited by setting them 
+     * the best geometrical fit is favored. Fitting is quantified by the rms deviation between
+     * length of implicit C5'-O5' and C3'-O3' bonds and their theoretical length (1.440 and
+     * 1.431 Angstroms respectively). Any of the two phosphates can be ommited by setting them
      * to NULL, resulting in the unconstrained building of the corresponding ribose branch.
      * Default optimization parameters are used.
      *
@@ -1039,9 +1045,9 @@ namespace mccore
      * position of two adjacent phosphates (toward 5' and 3'). A constant step cyclic
      * coordinates method solves the optimization problem in the 2D torsion space created
      * by rho and chi. Both pucker and glycosyl types can be forced, otherwise
-     * the best geometrical fit is favored. Fitting is quantified by the rms deviation between 
-     * length of implicit C5'-O5' and C3'-O3' bonds and their theoretical length (1.440 and 
-     * 1.431 Angstroms respectively). Any of the two phosphates can be ommited by setting them 
+     * the best geometrical fit is favored. Fitting is quantified by the rms deviation between
+     * length of implicit C5'-O5' and C3'-O3' bonds and their theoretical length (1.440 and
+     * 1.431 Angstroms respectively). Any of the two phosphates can be ommited by setting them
      * to NULL, resulting in the unconstrained building of the corresponding ribose branch.
      * Default optimization parameters are used.
      *
@@ -1056,15 +1062,15 @@ namespace mccore
     float buildRiboseByCCM (const Residue* po4_5p, const Residue* po4_3p,
 			    const HomogeneousTransfo& ref_override,
 			    const PropertyType* pucker = 0, const PropertyType* glycosyl = 0);
-    
+
     /**
      * Builds a theoretical ribose onto a nucleic acid's nitrogen base that fits the global
      * position of two adjacent phosphates (toward 5' and 3'). A constant step cyclic
      * coordinates method solves the optimization problem in the 2D torsion space created
      * by rho and chi. Both pucker and glycosyl types can be forced, otherwise
-     * the best geometrical fit is favored. Fitting is quantified by the rms deviation between 
-     * length of implicit C5'-O5' and C3'-O3' bonds and their theoretical length (1.440 and 
-     * 1.431 Angstroms respectively). Any of the two phosphates can be ommited by setting them 
+     * the best geometrical fit is favored. Fitting is quantified by the rms deviation between
+     * length of implicit C5'-O5' and C3'-O3' bonds and their theoretical length (1.440 and
+     * 1.431 Angstroms respectively). Any of the two phosphates can be ommited by setting them
      * to NULL, resulting in the unconstrained building of the corresponding ribose branch.
      * Default optimization parameters are used.
      *
@@ -1081,7 +1087,7 @@ namespace mccore
      */
     float buildRiboseByCCM (const Residue* po4_5p, const Residue* po4_3p,
 			    const HomogeneousTransfo& ref_override,
-			    float minshift, float mindrop, float shiftrate,			    
+			    float minshift, float mindrop, float shiftrate,
 			    const PropertyType* pucker = 0, const PropertyType* glycosyl = 0);
 
     /**
@@ -1113,7 +1119,7 @@ namespace mccore
      * @throws TypeException
      */
     static const AtomType* carbonType68 (const ResidueType* rtype) throw (TypeException);
-    
+
     /**
      * Gets the pucker type associated with the specified pseudorotation (rho) value.
      * @param rho The pseudorotation (rho) value (rad).
@@ -1163,7 +1169,7 @@ namespace mccore
      * @exception TypeException
      */
     static float getMaxChi (const PropertyType* glycosyl) throw (TypeException);
-    
+
     // INTERNAL METHODS ------------------------------------------------------
 
   protected:
@@ -1224,13 +1230,13 @@ namespace mccore
      * @exception LibException is thrown if an atom is missing or type isn't handled.
      */
     HomogeneousTransfo _compute_referential () const;
-    
+
     /**
      * @internal
      * Adds backbone's hydrogens only if they aren't already in the residue.
      */
     void _add_ribose_hydrogens (bool overwrite = true);
-    
+
     /**
      * @internal
      * Preprocesses ribose building. Setups atom pointers if needed. Fetches, copies
@@ -1283,7 +1289,7 @@ namespace mccore
      */
     void _transform_ribose (const HomogeneousTransfo& tfo,
 			    bool build5p, bool build3p);
-    
+
     /**
      * @internal
      * Computes the sum of the implicit C5'-O5' and C3'-O3' squared bond lengths.
@@ -1303,11 +1309,11 @@ namespace mccore
      * Internal method used for ribose building. Assumes that the ribose's atom pointers are set!
      * @param referential Residue's saved referential.
      * @param build5p Flag to enable 5' branch construction (O5' and P atoms).
-     * @param build3p Flag to enable 3' branch construction (O3' atom).    
+     * @param build3p Flag to enable 3' branch construction (O3' atom).
      */
     virtual void _build_ribose_postprocess (const HomogeneousTransfo& referential,
 					    bool build5p, bool build3p);
-    
+
   public:
 
     // I/O  --------------------------------------------------------------------
@@ -1318,7 +1324,7 @@ namespace mccore
      * @return the used output stream.
      */
     virtual ostream& output (ostream &os) const;
-    
+
 
     /**
      * Displays debugging information to the output stream.
@@ -1364,7 +1370,7 @@ namespace mccore
    * @return the used exception stream.
    */
   Exception& operator<< (Exception& ex, const Residue &r);
-  
+
   /**
    * Inputs the residue from the binary stream.
    * @param ibs the input binary stream.
@@ -1372,8 +1378,8 @@ namespace mccore
    * @return the input binary stream used.
    */
   iBinstream& operator>> (iBinstream &ibs, Residue &res);
-  
-  
+
+
   /**
    * Outputs the Residue to the binary stream.
    * @param obs the output binary stream.
@@ -1389,8 +1395,8 @@ namespace mccore
    * @return the input pdb stream used.
    */
   iPdbstream& operator>> (iPdbstream &ibs, Residue &res);
-  
-  
+
+
   /**
    * Outputs the Residue to the pdb stream.
    * @param obs the output pdb stream.
@@ -1404,7 +1410,7 @@ namespace mccore
 
 namespace std
 {
-  
+
   /**
    * Ouputs the residue to the stream.
    * @param os the output stream.
@@ -1412,7 +1418,7 @@ namespace std
    * @return the used output stream.
    */
   ostream& operator<< (ostream &os, const mccore::Residue &r);
-  
+
 }
-  
+
 #endif
