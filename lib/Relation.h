@@ -1,6 +1,6 @@
 //                              -*- Mode: C++ -*- 
 // Relation.h
-// Copyright © 2003-06 Laboratoire de Biologie Informatique et Théorique
+// Copyright ï¿½ 2003-06 Laboratoire de Biologie Informatique et Thï¿½orique
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 14:47:53 2003
 // $Revision: 1.30 $
@@ -350,7 +350,7 @@ namespace mccore
 
     /**
      * Tells is the annotated relation is from the stacking family.
-     * @return true only if the annotated relation is from the stacking family.
+     * Return true only if the annotated relation is from the stacking family.
      */
     bool isStacking () const { return type_aspb & Relation::stacking_mask; }
 
@@ -359,8 +359,8 @@ namespace mccore
      * @return true only if the annotated relation is from the pairing family.
      */
     bool isPairing () const { return type_aspb & Relation::pairing_mask; }
-
-    /**
+    
+   /**
      * Tells is the annotated relation is from the hbond family.
      * @return true only if the annotated relation is from the hydrogen bond
      * family.
@@ -375,7 +375,7 @@ namespace mccore
      *   A  annotate adjacency (phosphodiester linkage)
      *   S  annotate base stacking
      *   P  annotate base pairing
-     *   B  annotate hydrogen-bonding
+     *   B  annotate hydrogen-bonding with backbone
      *
      * Throws an @ref IntLibException for any other character.
      *
