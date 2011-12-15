@@ -17,10 +17,25 @@ set (PACKAGE_NAME "mccore")
 set (PACKAGE_DESCRIPTION  "mccore is a bioinformatics data structures and tools library for efficient analysis and manipulation of RNA, DNA and protein 3D structures")
 
 # version
+
+include(FindSubversion)
+if(Subversion_FOUND)
+  Subversion_WC_INFO(${CMAKE_SOURCE_DIR} MCCORE)
+  set(MCCORE_SVN_REVISION ${MCCORE_WC_REVISION})
+  add_custom_target(revisiontag ALL)  
+else()
+  set (MCCORE_SVN_REVISION "")
+endif()
+
+
 set (MCCORE_VERSION_MAJOR 2)
 set (MCCORE_VERSION_MINOR 0)
 set (MCCORE_VERSION_PATCH 0)
 set (MCCORE_VERSION_STRING ${MCCORE_VERSION_MAJOR}.${MCCORE_VERSION_MINOR}.${MCCORE_VERSION_PATCH})
+
+if (MCCORE_SVN_REVISION)
+  set (MCCORE_VERSION_STRING ${MCCORE_VERSION_STRING}-r${MCCORE_SVN_REVISION})
+endif()
 
 # nom complet avec version
 set (MCCORE_COMPLETE_PACKAGE_NAME ${PACKAGE_NAME}-${MCCORE_VERSION_STRING})
