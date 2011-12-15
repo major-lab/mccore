@@ -20,9 +20,18 @@ set (PACKAGE_DESCRIPTION  "mccore is a bioinformatics data structures and tools 
 
 include(FindSubversion)
 if(Subversion_FOUND)
+  message(STATUS "Subversion found - Enabling version string with revision number")
   Subversion_WC_INFO(${CMAKE_SOURCE_DIR} MCCORE)
   set(MCCORE_SVN_REVISION ${MCCORE_WC_REVISION})
+  
+  # création d'un fichier pour gérer la dépendance, mais le fichier lui-même n'est pas utilisé par mccore (config.h est suffisant)
   add_custom_target(revisiontag ALL)  
+  add_custom_command(TARGET revisiontag COMMAND ${CMAKE_COMMAND}
+                     -DSOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR} 
+                     -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/GetSVN.cmake)  
+  set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/svnversion.h
+                              PROPERTIES GENERATED TRUE
+                              HEADER_FILE_ONLY TRUE)                     
 else()
   set (MCCORE_SVN_REVISION "")
 endif()
