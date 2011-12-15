@@ -23,15 +23,6 @@ if(Subversion_FOUND)
   message(STATUS "Subversion found - Enabling version string with revision number")
   Subversion_WC_INFO(${CMAKE_SOURCE_DIR} MCCORE)
   set(MCCORE_SVN_REVISION ${MCCORE_WC_REVISION})
-  
-  # création d'un fichier pour gérer la dépendance, mais le fichier lui-même n'est pas utilisé par mccore (config.h est suffisant)
-  add_custom_target(revisiontag ALL)  
-  add_custom_command(TARGET revisiontag COMMAND ${CMAKE_COMMAND}
-                     -DSOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR} 
-                     -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/GetSVN.cmake)  
-  set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/svnversion.h
-                              PROPERTIES GENERATED TRUE
-                              HEADER_FILE_ONLY TRUE)                     
 else()
   set (MCCORE_SVN_REVISION "")
 endif()
@@ -132,6 +123,10 @@ configure_file (
   "${PROJECT_SOURCE_DIR}/config.h.cmake"
   "${PROJECT_BINARY_DIR}/config.h"
   )
+  
+set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/config.h
+                            PROPERTIES GENERATED TRUE
+                            HEADER_FILE_ONLY TRUE)  
 
 # ajoute le répertoire de build à la liste des "include_directories"
 # pour que config.h puisse être trouvé
