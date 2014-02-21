@@ -18,14 +18,14 @@ set (PACKAGE_DESCRIPTION  "mccore is a bioinformatics data structures and tools 
 
 # version
 
-include(FindSubversion)
-if(Subversion_FOUND)
-  message(STATUS "Subversion found - Enabling version string with revision number")
-  Subversion_WC_INFO(${CMAKE_SOURCE_DIR} MCCORE)
-  set(MCCORE_SVN_REVISION ${MCCORE_WC_REVISION})
-else()
-  set (MCCORE_SVN_REVISION "")
-endif()
+#include(FindSubversion)
+#if(Subversion_FOUND)
+#  message(STATUS "Subversion found - Enabling version string with revision number")
+#  Subversion_WC_INFO(${CMAKE_SOURCE_DIR} MCCORE)
+#  set(MCCORE_SVN_REVISION ${MCCORE_WC_REVISION})
+#else()
+#  set (MCCORE_SVN_REVISION "")
+#endif()
 
 
 set (MCCORE_VERSION_MAJOR 2)
@@ -33,9 +33,9 @@ set (MCCORE_VERSION_MINOR 0)
 set (MCCORE_VERSION_PATCH 0)
 set (MCCORE_VERSION_STRING ${MCCORE_VERSION_MAJOR}.${MCCORE_VERSION_MINOR}.${MCCORE_VERSION_PATCH})
 
-if (MCCORE_SVN_REVISION)
-  set (MCCORE_VERSION_STRING ${MCCORE_VERSION_STRING}-r${MCCORE_SVN_REVISION})
-endif()
+#if (MCCORE_SVN_REVISION)
+#  set (MCCORE_VERSION_STRING ${MCCORE_VERSION_STRING}-r${MCCORE_SVN_REVISION})
+#endif()
 
 # nom complet avec version
 set (MCCORE_COMPLETE_PACKAGE_NAME ${PACKAGE_NAME}-${MCCORE_VERSION_STRING})

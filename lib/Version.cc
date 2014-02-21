@@ -36,7 +36,8 @@ namespace mccore
 {
 
   Version::Version ()
-    : major_no (-1),
+    : package_name (PACKAGE_NAME),
+      major_no (-1),
       minor_no (-1),
       revision_no (-1),
       cpu (VERSION_CPU),
@@ -52,8 +53,33 @@ namespace mccore
     this->timestamp += __TIME__;
   }
 
+  Version::Version (
+	const std::string& astrPackageName,
+	const std::string& astrPackageVersion,
+	const std::string& astrCPU,
+	const std::string& astrOS,
+	const std::string& astrDate,
+	const std::string& astrTime)
+    : package_name (astrPackageName),
+      major_no (-1),
+      minor_no (-1),
+      revision_no (-1),
+      cpu (astrCPU),
+      os (astrOS)
+  {
+    istringstream iss (astrPackageVersion);
+    char dot;
+
+    iss >> this->major_no >> dot >> this->minor_no >> dot >> this->revision_no;
+
+    this->timestamp = astrDate;
+    this->timestamp += " ";
+    this->timestamp += astrTime;
+  }
+
   Version::Version (const string& strv)
-    : major_no (-1),
+    : package_name (PACKAGE_NAME),
+      major_no (-1),
       minor_no (-1),
       revision_no (-1),
       cpu (VERSION_CPU),
@@ -81,7 +107,8 @@ namespace mccore
 
 
   Version::Version (const Version& v)
-    : major_no (v.major_no),
+    : package_name (v.package_name),
+      major_no (v.major_no),
       minor_no (v.minor_no),
       revision_no (v.revision_no),
       cpu (v.cpu),
@@ -97,6 +124,7 @@ namespace mccore
   {
     if (this != &v)
     {
+      this->package_name = v.package_name;
       this->major_no = v.major_no;
       this->minor_no = v.minor_no;
       this->revision_no = v.revision_no;
@@ -112,6 +140,7 @@ namespace mccore
   Version::operator== (const Version& v) const
   {
     return 
+      this->package_name == v.package_name &&
       this->major_no == v.major_no &&
       this->minor_no == v.minor_no &&
       this->revision_no == v.revision_no &&
@@ -142,7 +171,7 @@ namespace mccore
   Version::toString () const
   {
     ostringstream oss;
-    oss << PACKAGE_NAME << " "
+    oss << this->package_name << " "
 	<< this->major_no << "." << this->minor_no << "." << this->revision_no << " "
 	<< this->cpu << " "
 	<< this->os << " "

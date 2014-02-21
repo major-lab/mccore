@@ -46,6 +46,12 @@ namespace mccore
    */
   class Version 
   {
+  protected:
+	/**
+	 * Name of the package being versioned
+	 */
+	std::string package_name;
+
     /**
      * Major version number: <major>.<minor>.<revision>
      */
@@ -81,6 +87,20 @@ namespace mccore
      */
     string timestamp;
     
+
+    // LIFECYCLE
+
+    /**
+     * Initialize the object specifying all parameters ( for subclasses )
+     */
+    Version (
+		const std::string& astrPackageName,
+		const std::string& astrPackageVersion,
+		const std::string& astrCPU,
+		const std::string& astrOS,
+		const std::string& astrDate,
+		const std::string& astrTime);
+
   public:
 
     // LIFECYCLE ------------------------------------------------------------
