@@ -253,6 +253,18 @@ namespace mccore
   const PropertyType* PropertyType::pBeta_D_Xylofuranoside = 0;
 
   
+  // LIFECYCLE -----------------------------------------------------------------
+
+  PropertyType::PropertyType () 
+  {
+    
+  }
+
+  PropertyType::PropertyType (const string& ks)
+    : key (ks)
+  {
+    
+  }
 
   PropertyType::PropertyType (const PropertyType &other)
   {
@@ -261,6 +273,13 @@ namespace mccore
     throw ex;
   }
 
+  PropertyType::~PropertyType () 
+  {
+    
+  }
+ 
+ 
+  // METHODS -------------------------------------------------------------------
 
   const PropertyType* 
   PropertyType::parseType (const char* str) 
@@ -287,18 +306,19 @@ namespace mccore
     return t;
   }
 
+  // I/O -----------------------------------------------------------------------
   
   ostream&
   PropertyType::output (ostream &out) const
   {
-    return out << key;
+    return out << key.c_str ();
   }
   
 
   oBinstream&
   PropertyType::output (oBinstream &out) const
   {
-    return out << key;
+    return out << key.c_str ();
   }
 
 

@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // PropertyType.h
-// Copyright © 2003-07 Laboratoire de Biologie Informatique et Théorique
-//                     Université de Montréal
+// Copyright ï¿½ 2003-07 Laboratoire de Biologie Informatique et Thï¿½orique
+//                     Universitï¿½ de Montrï¿½al
 // Author           : Patrick Gendron
 // Created On       : Fri Apr  4 11:17:11 2003
 // $Revision: 1.20 $
@@ -68,13 +68,13 @@ namespace mccore
     /**
      * Initializes the object.
      */
-    PropertyType () { }
+    PropertyType ();
     
     /**
      * Initializes the object.
      * @param ks the string representation of the type key.
      */
-    PropertyType (const string &ks) : key (ks) { }
+    PropertyType (const string& ks);
     
     /**
      * Initializes the object with the other's content.
@@ -85,7 +85,7 @@ namespace mccore
     /**
      * Destroys the object.
      */
-    virtual ~PropertyType () { }
+    virtual ~PropertyType ();
     
     /**
      * PropertyTypeStore is a friend since the destructor is private.
@@ -125,7 +125,7 @@ namespace mccore
      */
     bool operator== (const PropertyType &other) const
     {
-      return key == other.key;
+      return this->key == other.key;
     }
       
     
@@ -166,7 +166,10 @@ namespace mccore
      * Converts the property type into a string.
      * @return the string.
      */
-    virtual operator const char* () const { return key.c_str (); }
+    virtual operator const char* () const
+    {
+      return this->key.c_str ();
+    }
     
     // METHODS --------------------------------------------------------------
 
@@ -174,7 +177,10 @@ namespace mccore
      * Converts the residuetype into a stl string.
      * @return the string.
      */
-    virtual const string& toString () const { return key; }
+    virtual const string& toString () const
+    {
+      return this->key;
+    }
     
     /**
      * Identifies the type of property stored in a string.
