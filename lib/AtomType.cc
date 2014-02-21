@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // AtomType.cc
-// Copyright � 2003-07 Laboratoire de Biologie Informatique et Th�orique
-//                     Univesit� de Montr�al
+// Copyright © 2003-07 Laboratoire de Biologie Informatique et Théorique
+//                     Univesité de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar  7 15:00:09 2003
 // $Revision: 1.23 $
@@ -36,7 +36,7 @@
 
 namespace mccore
 {
-  AtomTypeStore *AtomType::atstore = new AtomTypeStore ();
+  std::auto_ptr<AtomTypeStore> AtomType::atstore(new AtomTypeStore());
   const AtomType* AtomType::aNull = 0;
   const AtomType* AtomType::aUnknown = 0;
   const AtomType* AtomType::aC1p = 0;
@@ -226,6 +226,11 @@ namespace mccore
   AtomType::parseType (const string& str)  
   {
     return atstore->get (str);
+  }
+
+  void AtomType::AddMapping(const std::string& key, const AtomType* apType)
+  {
+	  atstore->addMapping(key, apType);
   }
 
   

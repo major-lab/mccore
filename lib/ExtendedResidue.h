@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // ExtendedResidue.h
-// Copyright © 2001-05 Laboratoire de Biologie Informatique et Théorique.
-//                     Université de Montréal
+// Copyright Â© 2001-05 Laboratoire de Biologie Informatique et ThÃ©orique.
+//                     UniversitÃ© de MontrÃ©al
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
 // $Revision: 1.21 $
@@ -91,8 +91,8 @@ namespace mccore
     /**
      * Initializes the object.
      */
-    ExtendedResidue () 
-      : Residue (), placed (true) 
+    ExtendedResidue ()
+      : Residue (), placed (true)
     { 
     }
 

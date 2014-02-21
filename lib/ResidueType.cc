@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // ResidueType.cc
-// Copyright � 2003-07 Laboratoire de Biologie Informatique et Th�orique
-//                     Universit� de Montr�al
+// Copyright © 2003-07 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Wed Mar 12 10:32:49 2003
 //
@@ -29,12 +29,14 @@
 #include "ResidueType.h"
 #include "ResidueTypeStore.h"
 
+#include <memory>
+
 
 
 namespace mccore
 {
 
-  ResidueTypeStore *ResidueType::rtstore = new ResidueTypeStore ();
+  std::auto_ptr<ResidueTypeStore> ResidueType::rtstore(new ResidueTypeStore());
 
   const ResidueType* ResidueType::rResidue = 0;
   const ResidueType* ResidueType::rNull = 0;

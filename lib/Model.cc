@@ -141,7 +141,9 @@ namespace mccore
     iterator found;
 
     if (end () == (found = find (res.getResId ())))
+    {
       found = this->residues.insert (this->residues.end (), this->residueFM->createResidue (res));
+    }
     else
     {
       gErr (4) << "Warning: model's residue " << *found << " was overwritten by " << res << endl;

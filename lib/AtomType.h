@@ -1,8 +1,8 @@
 //                              -*- Mode: C++ -*- 
 // AtomType.h
-// Copyright © 2000-07 Laboratoire de Biologie Informatique et Théorique.
-//                     Université de Montréal.
-// Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
+// Copyright Â© 2000-07 Laboratoire de Biologie Informatique et ThÃ©orique.
+//                     UniversitÃ© de MontrÃ©al.
+// Author           : SÃ©bastien Lemieux <lemieuxs@iro.umontreal.ca>
 // Created On       : 
 // $Revision: 1.37 $
 // 
@@ -28,6 +28,7 @@
 
 
 #include <iostream>
+#include <memory>
 #include <string>
 
 #include "Vector3D.h"
@@ -63,8 +64,9 @@ namespace mccore
   {
     /**
      * Container for string to type associations.
+     * TODO : replace by std::unique_ptr when a C++2011 compiler is available
      */
-    static AtomTypeStore *atstore;
+    static std::auto_ptr<AtomTypeStore> atstore;
 
     /**
      * The type key string.
@@ -383,6 +385,15 @@ namespace mccore
     oBinstream &output (oBinstream &out) const;
 
   public:
+  
+  
+    /**
+     * Add mapping for atom name to defined atom named. To support non standard 
+     * atom naming.
+     * @param key The alternate name of the atom.
+     * @param apType The already defined AtomType to which to map the name.
+     */
+    static void AddMapping(const std::string& key, const AtomType* apType);
 
     // TYPE POINTERS -----------------------------------------------------------
 

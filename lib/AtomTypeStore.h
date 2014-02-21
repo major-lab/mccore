@@ -25,6 +25,7 @@
 #ifndef _mccore_AtomTypeStore_h_
 #define _mccore_AtomTypeStore_h_
 
+#include <map>
 #include <set>
 
 #include "AtomType.h"
@@ -51,7 +52,8 @@ namespace mccore
     /**
      * The type repository
      */
-    set< AtomType*, AtomType::less_deref > repository;
+    std::set< AtomType*, AtomType::less_deref > repository;
+    std::map< std::string, const AtomType* > mapping;
     
   public:
 
@@ -75,6 +77,14 @@ namespace mccore
      * @return the matching atom type or a new one if none existed.
      */
     const AtomType* get (const string& key);
+
+    /**
+     * Add mapping for atom name to defined atom named. To support non standard 
+     * atom naming.
+     * @param key The alternate name of the atom.
+     * @param apType The already defined AtomType to which to map the name.
+     */
+    void addMapping(const string& key, const AtomType* apType);
 
   private:
     

@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // ExtendedResidue.cc
-// Copyright � 2001-05 Laboratoire de Biologie Informatique et Th�orique.
-//                     Universit� de Montr�al
+// Copyright © 2001-05 Laboratoire de Biologie Informatique et Théorique.
+//                     Université de Montréal
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Tue Oct  9 15:58:22 2001
 // $Revision: 1.34 $
@@ -41,13 +41,15 @@ namespace mccore
   // LIFECYCLE ---------------------------------------------------------------
 
   ExtendedResidue::ExtendedResidue (const ResidueType *t, const ResId &i, vector< Atom > &vec)
-      : Residue (t, i, vec), 
+      : Residue (t, i, vec),
 	placed (true)
   {
     vector< Atom* >::const_iterator cit;
     
     for (this->atomGlobal.begin (); cit != this->atomGlobal.end (); ++cit)
-      this->atomLocal.push_back ((*cit)->clone ());
+    {
+    	this->atomLocal.push_back ((*cit)->clone ());
+    }
   }
 
 
@@ -64,7 +66,9 @@ namespace mccore
 
     // harden atoms
     for (cit = this->atomLocal.begin (); cit != this->atomLocal.end (); ++cit)
+    {
       *cit = (*cit)->clone ();
+    }
   }
 
 
@@ -80,7 +84,9 @@ namespace mccore
       vector< Atom* >::const_iterator cit;
 
       for (cit = this->atomGlobal.begin (); cit != this->atomGlobal.end (); ++cit)
-	this->atomLocal.push_back ((*cit)->clone ());
+      {
+         this->atomLocal.push_back ((*cit)->clone ());
+      }
 
       this->placed = true; // because referential is identity
     }
@@ -94,7 +100,9 @@ namespace mccore
     vector< Atom* >::iterator it;
 
     for (it = this->atomLocal.begin (); it != this->atomLocal.end (); ++it)
+    {
       delete *it;
+    }
   }
 
   // VIRTUAL ASSIGNATION --------------------------------------------------
@@ -117,7 +125,9 @@ namespace mccore
 	this->atomLocal.clear ();
 
 	for (cit = this->atomGlobal.begin (); cit != this->atomGlobal.end (); ++cit)
+	{
 	  this->atomLocal.push_back ((*cit)->clone ());
+	}
 
 	this->referential.setIdentity ();
 	this->placed = true;
@@ -138,7 +148,9 @@ namespace mccore
     this->atomLocal.clear ();
 
     for (cit = exres.atomLocal.begin (); cit != exres.atomLocal.end (); ++cit)
+    {
       this->atomLocal.push_back ((*cit)->clone ());
+    }
 
     this->referential = exres.referential;
     this->placed = exres.placed;
@@ -192,8 +204,8 @@ namespace mccore
       }
     else
       {
-	*atomGlobal[inserted.first->second] = atom;
-	*atomLocal[inserted.first->second] = atom;
+    	*atomGlobal[inserted.first->second] = atom;
+    	*atomLocal[inserted.first->second] = atom;
       }
 
     atomLocal[inserted.first->second]->transform (referential.invert ());

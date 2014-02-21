@@ -31,7 +31,6 @@
 #include "ResidueType.h"
 #include "Messagestream.h"
 
-
 namespace mccore
 {
 
@@ -213,9 +212,12 @@ namespace mccore
   
   AtomTypeStore::~AtomTypeStore () 
   {
+	  mapping.clear();
     set< AtomType*, AtomType::less_deref >::iterator it;
     for (it = repository.begin (); it != repository.end (); ++it)
+    {
       delete *it;
+    }
   }
 
   
@@ -224,6 +226,7 @@ namespace mccore
   const AtomType* 
   AtomTypeStore::get (const string& key) 
   {
+	  const AtomType* atype = 0;
     string key2 = key;
     string::iterator sit;
 
@@ -235,19 +238,38 @@ namespace mccore
 	*sit = toupper (*sit);
     }
 
-    AtomType* atype = new Unknown (key2);    
-    pair< set< AtomType*, AtomType::less_deref >::iterator, bool > inserted =
-      repository.insert (atype);
+    AtomType* aNewType = new Unknown (key2);
+    set< AtomType*, AtomType::less_deref >::iterator itFind = repository.find(aNewType);
 
-    if (!inserted.second) // no unique insertion => key exists
+    if (itFind != repository.end()) // no unique insertion => key exists
     {
-      delete atype;
-      atype = *inserted.first;
+      delete aNewType;
+      atype = *itFind;
     }
     else
-      gOut (4) << endl << "... created unknown atom type \'" << atype << "\'" << endl;
+    {
+    	// Look into the mapping for equivalence
+    	std::map<std::string, const AtomType*>::const_iterator itMap;
+    	itMap = mapping.find(key);
+    	if(itMap != mapping.end())
+    	{
+    		delete aNewType;
+    		atype = itMap->second;
+    	}else
+    	{
+    		pair< set< AtomType*, AtomType::less_deref >::iterator, bool > inserted;
+    		inserted = repository.insert (aNewType);
+    		atype = aNewType;
+    		gOut (4) << endl << "... created unknown atom type \'" << atype << "\'" << endl;
+    	}
+    }
 
     return atype;
+  }
+
+  void AtomTypeStore::addMapping(const string& key, const AtomType* apType)
+  {
+	  mapping[key] = apType;
   }
 
 

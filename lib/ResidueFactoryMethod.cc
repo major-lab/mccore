@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // ResidueFactoryMethod.cc
-// Copyright � 2003-04 Laboratoire de Biologie Informatique et Th�orique
-//                     Universit� de Montr�al.
+// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal.
 // Author           : Martin Larose
 // Created On       : Thu Mar 20 16:21:52 2003
 // $Revision: 1.5 $
@@ -40,6 +40,15 @@
 namespace mccore
 {
 
+  ResidueFactoryMethod::ResidueFactoryMethod ()
+  {
+  }
+
+
+  ResidueFactoryMethod::ResidueFactoryMethod (const ResidueFactoryMethod &right)
+  {
+  }
+
   ResidueFactoryMethod*
   ResidueFactoryMethod::read (iBinstream& ibs)
   {
@@ -52,7 +61,7 @@ namespace mccore
     case _TAG_ResidueFM:
       return new ResidueFM ();
     case _TAG_ExtendedResidueFM:
-      return new ExtendedResidueFM (); 
+      return new ExtendedResidueFM ();
     default:
       FatalIntLibException ex ("", __FILE__, __LINE__);
       ex << "Unknown ResidueFactoryMethod tag '" << tag << "' in binary stream.";

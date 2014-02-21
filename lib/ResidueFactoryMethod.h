@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // ResidueFactoryMethod.h
-// Copyright © 2001-04 Laboratoire de Biologie Informatique et Théorique.
-//                     Université de Montréal.
+// Copyright Â© 2001-04 Laboratoire de Biologie Informatique et ThÃ©orique.
+//                     UniversitÃ© de MontrÃ©al.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Fri Oct 12 14:31:19 2001
 // $Revision: 1.7 $
@@ -53,7 +53,13 @@ namespace mccore
     /**
      * Initializes the object.
      */
-    ResidueFactoryMethod () { }
+    ResidueFactoryMethod ();
+
+    /**
+     * Initializes the object with the right content.
+     * @param right the object to copy.
+     */
+    ResidueFactoryMethod (const ResidueFactoryMethod &right);
 
     /**
      * Copies the object.
@@ -124,7 +130,7 @@ namespace mccore
     /**
      * Initializes the object.
      */
-    ResidueFM () { }
+    ResidueFM () : ResidueFactoryMethod() { }
 
     /**
      * Clones the object.
@@ -187,7 +193,7 @@ namespace mccore
     /**
      * Initializes the object.
      */
-    ExtendedResidueFM () { }
+    ExtendedResidueFM () : ResidueFactoryMethod() { }
 
     /**
      * Clones the object.
