@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // Atom.h
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
-//                     Université de Montréal
+// Copyright Â© 2003-05 Laboratoire de Biologie Informatique et ThÃ©orique
+//                     UniversitÃ© de MontrÃ©al
 // Author           : Patrick Gendron
 // Created On       : Mon Mar 10 14:00:09 2003
 // $Revision: 1.12 $
@@ -32,8 +32,6 @@
 #include "AtomType.h"
 
 using namespace std;
-
-
 
 namespace mccore
 {
@@ -68,7 +66,8 @@ namespace mccore
     Atom ()
     : Vector3D (),
       type (AtomType::aNull)
-    { }
+    {
+    }
 
     /**
      * Initializes the atom with coordinates and a type.
@@ -78,43 +77,42 @@ namespace mccore
      * @param aType the atom type.
      */
     Atom (float x, float y, float z, const AtomType *aType)
-      : Vector3D (x, y, z),
-	type (aType)
-    { }
+      : Vector3D (x, y, z), type (aType)
+    {}
     
     /**
      * Initializes the atom with a point and a type.
      * @param aPoint the coordinates
      * @param aType the atom type.
      */
-    Atom (Vector3D aPoint, const AtomType *aType)
-      : Vector3D (aPoint),
-	type (aType)
-    { }
+    Atom (Vector3D aPoint, const AtomType *aType) 
+    : Vector3D (aPoint), type (aType)
+    {}
 
     /**
      * Initializes the object with the other's content.
      * @param other the object to copy.
      */
     Atom (const Atom &other)
-      : Vector3D (other),
-	type (other.type)
-    { }
+      : Vector3D (other), type (other.type)
+    {}
 
     /**
      * Initializes the object with the other's content.
      * @param other the object to copy.
      */
     Atom (const Vector3D &other)
-      : Vector3D (other),
-	type (AtomType::aNull)
-    { }
+      : Vector3D (other), type (AtomType::aNull)
+    {}
     
     /**
      * Clones the atom.
      * @return a copy of itself.
      */
-    virtual Atom* clone () const { return new Atom (*this); }
+    virtual Atom* clone () const
+    {
+    	return new Atom (*this);
+    }
 
     /**
      * Destroys the object.

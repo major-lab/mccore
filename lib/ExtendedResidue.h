@@ -91,8 +91,8 @@ namespace mccore
     /**
      * Initializes the object.
      */
-    ExtendedResidue ()
-      : Residue (), placed (true)
+    ExtendedResidue (const AtomFactoryMethod *fm = 0)
+      : Residue (fm), placed (true)
     { 
     }
 
@@ -101,8 +101,8 @@ namespace mccore
      * @param t the residue type.
      * @param i the residue id.
      */
-    ExtendedResidue (const ResidueType *t, const ResId &i)
-      : Residue (t, i), placed (true)
+    ExtendedResidue (const ResidueType *t, const ResId &i, const AtomFactoryMethod *fm = 0)
+      : Residue (t, i, fm), placed (true)
     { 
     }
     
@@ -112,20 +112,20 @@ namespace mccore
      * @param i the residue id.
      * @param vec the atom container.
      */
-    ExtendedResidue (const ResidueType *t, const ResId &i, vector< Atom > &vec);
+    ExtendedResidue (const ResidueType *t, const ResId &i, vector< Atom > &vec, const AtomFactoryMethod *fm = 0);
     
     /**
      * Initializes this object's content with another's.
      * @param exres the other object from which to copy content.
      */
-    ExtendedResidue (const ExtendedResidue& exres);
+    ExtendedResidue (const ExtendedResidue& exres, const AtomFactoryMethod *fm = 0);
 
     /**
      * Initializes this object's content with another's by resolving
      * its polymorphic type.
      * @param res the polymorphic object from which to copy content.
      */
-    ExtendedResidue (const Residue& res);
+    ExtendedResidue (const Residue& res, const AtomFactoryMethod *fm = 0);
 
     /**
      * Clones the residue.

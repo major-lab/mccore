@@ -78,12 +78,6 @@ namespace mccore
      */
     const AtomType* get (const string& key);
 
-    /**
-     * Add mapping for atom name to defined atom named. To support non standard 
-     * atom naming.
-     * @param key The alternate name of the atom.
-     * @param apType The already defined AtomType to which to map the name.
-     */
     void addMapping(const string& key, const AtomType* apType);
 
   private:

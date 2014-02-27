@@ -31,6 +31,9 @@
 #include "ResidueType.h"
 #include "Messagestream.h"
 
+#include <cassert>
+
+
 namespace mccore
 {
 
@@ -259,6 +262,7 @@ namespace mccore
     	{
     		pair< set< AtomType*, AtomType::less_deref >::iterator, bool > inserted;
     		inserted = repository.insert (aNewType);
+    		assert(inserted.second);
     		atype = aNewType;
     		gOut (4) << endl << "... created unknown atom type \'" << atype << "\'" << endl;
     	}

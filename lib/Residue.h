@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*-
 // Residue.h
-// Copyright � 2003-07 Laboratoire de Biologie Informatique et Th�orique
-//                     Universit� de Montr�al
+// Copyright © 2003-07 Laboratoire de Biologie Informatique et Théorique
+//                     Université de Montréal
 // Author           : Patrick Gendron
 // Created On       : Fri Mar 14 16:44:35 2003
 // $Revision: 1.43 $
@@ -45,7 +45,7 @@ using namespace std;
 namespace mccore
 {
   class PropertyType;
-  class ResidueFactoryMethod;
+  class AtomFactoryMethod;
   class iBinstream;
   class iPdbstream;
   class oBinstream;
@@ -66,6 +66,11 @@ namespace mccore
    */
   class Residue
   {
+  protected:
+	/**
+	 * Factory method for creating new residues.
+	 */
+	AtomFactoryMethod *mpAtomFM;
   public:
 
     /**
@@ -513,29 +518,37 @@ namespace mccore
 
     /**
      * Initializes the object.
+     * @param fm the atom factory methods that will instanciate new
+     * atoms (default is @ref AtomFM).
      */
-    Residue ();
+    Residue (const AtomFactoryMethod *fm = 0);
 
     /**
      * Initializes the object.
      * @param t the residue type.
      * @param id the residue id.
+     * @param fm the atom factory methods that will instanciate new
+     * atoms (default is @ref AtomFM).
      */
-    Residue (const ResidueType *t, const ResId &i);
+    Residue (const ResidueType *t, const ResId &i, const AtomFactoryMethod *fm = 0);
 
     /**
      * Initializes the residue with type, atom container and id.
      * @param type the residue type.
      * @param i the residue id.
      * @param vec the atom container.
+     * @param fm the atom factory methods that will instanciate new
+     * atoms (default is @ref AtomFM).
      */
-    Residue (const ResidueType *t, const ResId &i, const vector< Atom > &vec);
+    Residue (const ResidueType *t, const ResId &i, const vector< Atom > &vec, const AtomFactoryMethod *fm = 0);
 
     /**
      * Initializes this object's content with another's
      * @param res the other object from which to copy content.
+     * @param fm the atom factory methods that will instanciate new
+     * atoms (default is @ref AtomFM).
      */
-    Residue (const Residue& res);
+    Residue (const Residue& res, const AtomFactoryMethod *fm = 0);
 
     /**
      * Clones the residue.
@@ -613,6 +626,19 @@ namespace mccore
     }
 
     // ACCESS ------------------------------------------------------------------
+
+
+	  /**
+	   * Gets the atom factory method.
+	   * @return the atom factory method.
+	   */
+	  const AtomFactoryMethod* getAtomFM () const { return mpAtomFM; }
+
+	  /**
+	   * Sets the atom factory method.
+	   * @param fm the new factory method to use.
+	   */
+	  void setAtomFM (const AtomFactoryMethod *fm = 0);
 
     /**
      * Gets the residue id.
@@ -1236,6 +1262,19 @@ namespace mccore
      * Adds backbone's hydrogens only if they aren't already in the residue.
      */
     void _add_ribose_hydrogens (bool overwrite = true);
+
+    /**
+	 * @internal
+	 * Preprocesses ribose building. Setups atom pointers if needed.
+	 * Internal method used for ribose building.
+	 * @param po4_5p Phosphate residue toward 5'.
+	 * @param po4_3p Phosphate residue toward 3'.
+	 * @param build5p Flag to enable 5' branch construction (O5' and P atoms).
+	 * @param build3p Flag to enable 3' branch construction (O3' atom).
+	 * @exception LibException is thrown if residue type is not of the nucleic acid family or if anchor atoms are missing in the phosphates.
+	 */
+	void _build_ribose_preprocess (const Residue* po4_5p, const Residue* po4_3p,
+				   bool build5p, bool build3p);
 
     /**
      * @internal

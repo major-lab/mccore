@@ -27,8 +27,10 @@
 // cmake generated defines
 #include <config.h>
 
-#include "Exception.h"
 #include "ExtendedResidue.h"
+
+#include "AtomFactoryMethod.h"
+#include "Exception.h"
 #include "Messagestream.h"
 #include "ResId.h"
 #include "ResidueType.h"
@@ -40,21 +42,21 @@ namespace mccore
 {
   // LIFECYCLE ---------------------------------------------------------------
 
-  ExtendedResidue::ExtendedResidue (const ResidueType *t, const ResId &i, vector< Atom > &vec)
-      : Residue (t, i, vec),
+  ExtendedResidue::ExtendedResidue (const ResidueType *t, const ResId &i, vector< Atom > &vec, const AtomFactoryMethod *fm)
+      : Residue (t, i, vec, fm),
 	placed (true)
   {
     vector< Atom* >::const_iterator cit;
     
     for (this->atomGlobal.begin (); cit != this->atomGlobal.end (); ++cit)
     {
-    	this->atomLocal.push_back ((*cit)->clone ());
+      this->atomLocal.push_back (mpAtomFM->createAtom(*(*cit)));
     }
   }
 
 
-  ExtendedResidue::ExtendedResidue (const ExtendedResidue& exres)
-    : Residue (exres),
+  ExtendedResidue::ExtendedResidue (const ExtendedResidue& exres, const AtomFactoryMethod *fm)
+    : Residue (exres, fm),
       referential (exres.referential),
       placed (exres.placed)
   {
@@ -67,13 +69,13 @@ namespace mccore
     // harden atoms
     for (cit = this->atomLocal.begin (); cit != this->atomLocal.end (); ++cit)
     {
-      *cit = (*cit)->clone ();
+      *cit = mpAtomFM->createAtom(*(*cit));
     }
   }
 
 
-  ExtendedResidue::ExtendedResidue (const Residue& res)
-    : Residue (res)
+  ExtendedResidue::ExtendedResidue (const Residue& res, const AtomFactoryMethod *fm)
+    : Residue (res, fm)
   {
     const ExtendedResidue* vptr = dynamic_cast< const ExtendedResidue* > (&res);
 
@@ -84,9 +86,7 @@ namespace mccore
       vector< Atom* >::const_iterator cit;
 
       for (cit = this->atomGlobal.begin (); cit != this->atomGlobal.end (); ++cit)
-      {
-         this->atomLocal.push_back ((*cit)->clone ());
-      }
+	this->atomLocal.push_back (mpAtomFM->createAtom(*(*cit)));
 
       this->placed = true; // because referential is identity
     }
@@ -126,7 +126,7 @@ namespace mccore
 
 	for (cit = this->atomGlobal.begin (); cit != this->atomGlobal.end (); ++cit)
 	{
-	  this->atomLocal.push_back ((*cit)->clone ());
+	  this->atomLocal.push_back (mpAtomFM->createAtom(*(*cit)));
 	}
 
 	this->referential.setIdentity ();
@@ -149,7 +149,7 @@ namespace mccore
 
     for (cit = exres.atomLocal.begin (); cit != exres.atomLocal.end (); ++cit)
     {
-      this->atomLocal.push_back ((*cit)->clone ());
+      this->atomLocal.push_back (mpAtomFM->createAtom(*(*cit)));
     }
 
     this->referential = exres.referential;
@@ -198,14 +198,16 @@ namespace mccore
 
     if (inserted.second)
       {
-	atomGlobal.push_back (atom.clone ());
-	atomLocal.push_back (atom.clone ());
+	atomGlobal.push_back (mpAtomFM->createAtom(atom));
+	atomLocal.push_back (mpAtomFM->createAtom(atom));
 	rib_dirty_ref = true;
       }
     else
       {
-    	*atomGlobal[inserted.first->second] = atom;
-    	*atomLocal[inserted.first->second] = atom;
+    	delete atomGlobal[inserted.first->second];
+    	delete atomLocal[inserted.first->second];
+    	atomGlobal[inserted.first->second] = mpAtomFM->createAtom(atom);
+    	atomLocal[inserted.first->second] = mpAtomFM->createAtom(atom);
       }
 
     atomLocal[inserted.first->second]->transform (referential.invert ());

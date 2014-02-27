@@ -31,6 +31,7 @@
 namespace mccore
 {
   class Residue;
+  class AtomFactoryMethod;
   class iBinstream;
   class oBinstream;
 
@@ -45,6 +46,11 @@ namespace mccore
    */
   class ResidueFactoryMethod
   {
+  protected:
+	/**
+	 * The Atom factory method to include in generated residues.
+	 */
+	AtomFactoryMethod* mpAtomFM;
 
   public:
 
@@ -53,7 +59,7 @@ namespace mccore
     /**
      * Initializes the object.
      */
-    ResidueFactoryMethod ();
+    ResidueFactoryMethod (const AtomFactoryMethod *fm = 0);
 
     /**
      * Initializes the object with the right content.
@@ -130,13 +136,13 @@ namespace mccore
     /**
      * Initializes the object.
      */
-    ResidueFM () : ResidueFactoryMethod() { }
+    ResidueFM (const AtomFactoryMethod *fm = 0) : ResidueFactoryMethod(fm) { }
 
     /**
      * Clones the object.
      * @return the copy of the object.
      */
-    virtual ResidueFactoryMethod* clone () const { return new ResidueFM (); }
+    virtual ResidueFactoryMethod* clone () const { return new ResidueFM (mpAtomFM); }
   
     /**
      * Destroys the object.
@@ -193,13 +199,13 @@ namespace mccore
     /**
      * Initializes the object.
      */
-    ExtendedResidueFM () : ResidueFactoryMethod() { }
+    ExtendedResidueFM (const AtomFactoryMethod *fm = 0) : ResidueFactoryMethod(fm) { }
 
     /**
      * Clones the object.
      * @return the copy of the object.
      */
-    virtual ResidueFactoryMethod* clone () const { return new ExtendedResidueFM (); }
+    virtual ResidueFactoryMethod* clone () const { return new ExtendedResidueFM (mpAtomFM); }
   
     /**
      * Destroys the object.

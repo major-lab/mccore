@@ -481,7 +481,6 @@ namespace mccore
     static const ResidueType *rI;
     static const ResidueType *rU;
     static const ResidueType *rT;
-
     static const ResidueType *rRA;
     static const ResidueType *rRC;
     static const ResidueType *rRG;
@@ -524,6 +523,7 @@ namespace mccore
     static const ResidueType *r5MU;
     static const ResidueType *rR5MU;
     static const ResidueType *rD5MU;
+
     static const ResidueType *rPSU;
     static const ResidueType *rRPSU;
     static const ResidueType *rDPSU;

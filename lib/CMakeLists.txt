@@ -14,6 +14,7 @@ cmake_minimum_required (VERSION 2.6)
 # liste de tous les fichiers source
 FILE(GLOB MCCORE_SOURCES_CC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}  AbstractModel.cc 
   Atom.cc 
+  AtomFactoryMethod.cc
   AtomSet.cc 
   AtomType.cc  
   AtomTypeStore.cc  

@@ -26,6 +26,7 @@
 // cmake generated defines
 #include <config.h>
 
+#include "AtomFactoryMethod.h"
 #include "ExtendedResidue.h"
 #include "ResidueFactoryMethod.h"
 #include "Residue.h"
@@ -40,12 +41,14 @@
 namespace mccore
 {
 
-  ResidueFactoryMethod::ResidueFactoryMethod ()
+  ResidueFactoryMethod::ResidueFactoryMethod (const AtomFactoryMethod *fm)
+    : mpAtomFM (fm == 0 ? new AtomFM () : fm->clone ())
   {
   }
 
 
   ResidueFactoryMethod::ResidueFactoryMethod (const ResidueFactoryMethod &right)
+    : mpAtomFM (right.mpAtomFM->clone ())
   {
   }
 
@@ -73,14 +76,14 @@ namespace mccore
   Residue* 
   ResidueFM::createResidue () const
   {
-    return new Residue ();
+    return new Residue (mpAtomFM);
   }
 
 
   Residue* 
   ResidueFM::createResidue (const Residue& res) const
   {
-    return new Residue (res);
+    return new Residue (res, mpAtomFM);
   }
 
 
@@ -94,14 +97,14 @@ namespace mccore
   Residue* 
   ExtendedResidueFM::createResidue () const
   {
-    return new ExtendedResidue ();
+    return new ExtendedResidue (mpAtomFM);
   }
 
 
   Residue* 
   ExtendedResidueFM::createResidue (const Residue& res) const
   {
-    return new ExtendedResidue (res);
+    return new ExtendedResidue (res, mpAtomFM);
   }
 
 

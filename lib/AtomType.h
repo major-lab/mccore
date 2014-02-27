@@ -384,14 +384,13 @@ namespace mccore
     oBinstream &output (oBinstream &out) const;
 
   public:
-  
-  
+
     /**
      * Add mapping for atom name to defined atom named. To support non standard 
      * atom naming.
      * @param key The alternate name of the atom.
      * @param apType The already defined AtomType to which to map the name.
-     */
+     */     
     static void AddMapping(const std::string& key, const AtomType* apType);
 
     // TYPE POINTERS -----------------------------------------------------------

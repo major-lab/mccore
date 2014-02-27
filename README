@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -*- Mode: Text -*- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; README
-;; Copyright � 2000-01 Laboratoire de Biologie Informatique et Théorique.
-;;                     Université de Montréal.
+;; Copyright � 2000-01 Laboratoire de Biologie Informatique et Th�orique.
+;;                     Universit� de Montr�al.
 ;; Author           : Martin Larose
 ;; Created On       : Tue Sep 19 18:16:58 2000
 ;; Last Modified By : Martin Larose
@@ -34,8 +34,8 @@ message.
 
 AUTHORS:
 
-S�bastien Lemieux
-Fran�ois Major,
+Sébastien Lemieux
+François Major,
 Patrick Gendron,
 Martin Larose,
 Philippe Thibault,
@@ -49,5 +49,5 @@ If you find a bug or have a suggestion please send your informations to
 mcsym-bug@iro.umontreal.ca
 
 
-Copyright � 2000 Laboratoire de Biologie Informatique et Th�orique,
-Universit� de Montr�al.
+Copyright © 2000 Laboratoire de Biologie Informatique et Théorique,
+Université de Montréal.
