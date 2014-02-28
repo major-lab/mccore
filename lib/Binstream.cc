@@ -285,6 +285,7 @@ namespace mccore
     this->read (cstr, sizeof (char)*len);
     cstr[len] = '\0';
     str = cstr;
+    delete [] cstr;
 
     return *this;
   }
