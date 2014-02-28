@@ -174,6 +174,8 @@ namespace mccore
     {
       delete *it;
     }
+    
+    delete mpAtomFM;
   }
 
   void
@@ -1936,25 +1938,6 @@ namespace mccore
     value1 = this->_evaluate_ribose (*anchor_O5p, *anchor_O3p, build5p, false);
 
     // back up this ribose
-#if 0
-    Atom sO2p, sO5p, sO1P, sO2P, sP;
-    Atom sC1p = *this->rib_C1p;
-    Atom sC2p = *this->rib_C2p;
-    Atom sC3p = *this->rib_C3p;
-    Atom sC4p = *this->rib_C4p;
-    Atom sC5p = *this->rib_C5p;
-    if (this->rib_O2p)
-      sO2p = *this->rib_O2p;
-    Atom sO4p = *this->rib_O4p;
-    if (build5p)
-    {
-      sO5p = *this->rib_O5p;
-      sO1P = *this->rib_O1P;
-      sO2P = *this->rib_O2P;
-      sP = *this->rib_P;
-    }
-#else
-//    Atom sO2p, sO5p, sO1P, sO2P, sP;
     Atom* sO2p = 0;
     Atom* sO4p = 0;
     Atom* sO5p = 0;
@@ -1976,7 +1959,6 @@ namespace mccore
       sO2P = mpAtomFM->createAtom(*this->rib_O2P);
       sP = mpAtomFM->createAtom(*this->rib_P);
     }
-#endif
 
     // build with second rho. Must build O3'!
     this->_build_ribose (erho2, 0, def_gamma, def_beta, build5p, true);
@@ -2495,6 +2477,7 @@ namespace mccore
     {
       gOut (4) << "Unknown pseudo-atoms for residue "<< *this << ": " << ex << endl;
     }
+    delete atom;
   }
 
 
@@ -2615,62 +2598,7 @@ namespace mccore
 				     Atom& o3p,
 				     const HomogeneousTransfo& referential)
   {
-#if 0
     // set reference to ribose's atoms
-
-    if (this->rib_dirty_ref ||
-	(build5p && 0 == this->rib_O5p) ||
-	(build3p && 0 == this->rib_O3p))
-    {
-      // check residue type (DNA doesn't have a O2')
-      if (this->type->isRNA ())
-	this->rib_O2p = _get_or_create (AtomType::aO2p);
-      else if (this->type->isDNA ())
-	this->rib_O2p = 0;
-      else
-      {
-	TypeException ex ("", __FILE__, __LINE__);
-	ex << "cannot build ribose on residue " << *this;
-	throw ex;
-      }
-
-      this->rib_C1p = _get_or_create (AtomType::aC1p);
-      this->rib_C2p = _get_or_create (AtomType::aC2p);
-      this->rib_C3p = _get_or_create (AtomType::aC3p);
-      this->rib_C4p = _get_or_create (AtomType::aC4p);
-      this->rib_C5p = _get_or_create (AtomType::aC5p);
-      this->rib_O4p = _get_or_create (AtomType::aO4p);
-
-      if (build5p)
-      {
-	this->rib_O5p = _get_or_create (AtomType::aO5p);
-	this->rib_P   = _get_or_create (AtomType::aP);
-	this->rib_O1P   = _get_or_create (AtomType::aO1P);
-	this->rib_O2P   = _get_or_create (AtomType::aO2P);
-      }
-
-      if (build3p)
-	this->rib_O3p = _get_or_create (AtomType::aO3p);
-
-      this->rib_dirty_ref = false;
-    }
-
-    // align anchor atoms
-
-    HomogeneousTransfo inv = referential.invert ();
-
-    if (po4_5p)
-    {
-      o5p = *po4_5p->_safe_get (AtomType::aO5p);
-      o5p.transform (inv);
-    }
-
-    if (po4_3p)
-    {
-      o3p = *po4_3p->_safe_get (AtomType::aO3p);
-      o3p.transform (inv);
-    }
-#else
     this->_build_ribose_preprocess (po4_5p, po4_3p, build5p, build3p);
 
     // align anchor atoms
@@ -2688,8 +2616,6 @@ namespace mccore
       o3p = *po4_3p->_safe_get (AtomType::aO3p);
       o3p.transform (inv);
     }
-#endif
-
   }
 
 
@@ -3219,6 +3145,9 @@ namespace mccore
 
     // Finalize
     finalize ();
+    
+    delete a;
+    
     return ibs;
   }
 

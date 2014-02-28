@@ -75,7 +75,7 @@ namespace mccore
     /**
      * Destroys the object.
      */
-    virtual ~ResidueFactoryMethod () { }
+    virtual ~ResidueFactoryMethod ();
 
     // OPERATORS ------------------------------------------------------------
 

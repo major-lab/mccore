@@ -51,6 +51,11 @@ namespace mccore
     : mpAtomFM (right.mpAtomFM->clone ())
   {
   }
+  
+  ResidueFactoryMethod::~ResidueFactoryMethod ()
+  {
+  	delete mpAtomFM;
+  }
 
   ResidueFactoryMethod*
   ResidueFactoryMethod::read (iBinstream& ibs)
