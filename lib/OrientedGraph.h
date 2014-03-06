@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // OrientedGraph.h
-// Copyright © 2001-06 Laboratoire de Biologie Informatique et Théorique.
-//                     Université de Montréal.
+// Copyright ï¿½ 2001-06 Laboratoire de Biologie Informatique et Thï¿½orique.
+//                     Universitï¿½ de Montrï¿½al.
 // Author           : Patrick Gendron
 // Created On       : Thu May 10 14:49:18 2001
 // $Revision: 1.10 $

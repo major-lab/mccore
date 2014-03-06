@@ -1,7 +1,7 @@
 //                              -*- Mode: C++ -*- 
 // MaximumFlowGraph.h
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
-//                     Université de Montréal
+// Copyright ï¿½ 2003-05 Laboratoire de Biologie Informatique et Thï¿½orique
+//                     Universitï¿½ de Montrï¿½al
 // Author           : Patrick Gendron
 // Created On       : Mon Apr  7 18:28:55 2003
 // $Revision: 1.12 $
