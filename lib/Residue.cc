@@ -1,11 +1,6 @@
-//                              -*- Mode: C++ -*-
 // Residue.cc
-// Copyright © 2003-07 Laboratoire de Biologie Informatique et Théorique
-//                     Université de Montréal
-// Author           : Patrick Gendron
-// Created On       : Fri Mar 14 16:44:35 2003
-// $Revision: 1.88 $
-// $Id: Residue.cc,v 1.88 2007-01-14 18:21:04 larosem Exp $
+// Copyright © 2003-07 Laboratoire de Biologie Informatique et Theorique
+//                     Universite de Montreal
 //
 // This file is part of mccore.
 //
@@ -23,7 +18,6 @@
 // License along with mccore; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-// cmake generated defines
 #include <config.h>
 
 #include <algorithm>

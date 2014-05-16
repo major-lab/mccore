@@ -1,23 +1,17 @@
-//                              -*- Mode: C++ -*- 
 // AtomType.h
-// Copyright © 2000-07 Laboratoire de Biologie Informatique et Théorique.
-//                     Université de Montréal.
-// Author           : Sébastien Lemieux <lemieuxs@iro.umontreal.ca>
-// Created On       : 
-// $Revision: 1.37 $
-// 
-// This file is part of mccore.
-// 
+// Copyright © 2000-07, 2014 Laboratoire de Biologie Informatique et Theorique.
+//                     Universite de Montreal.
+//
 // mccore is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
 // License as published by the Free Software Foundation; either
 // version 2.1 of the License, or (at your option) any later version.
-//  
+//
 // mccore is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 // Lesser General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Lesser General Public
 // License along with mccore; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -36,7 +30,6 @@
 using namespace std;
 
 
-
 namespace mccore
 {
   class AtomTypeStore;
@@ -44,23 +37,18 @@ namespace mccore
   class Exception;
   class iBinstream;
   class oBinstream;
-  
-  
-  
+
+
   /**
    * @short Atom types.
    *
-   * <br>
-   * Implicit information:<br>
-   *   - Mapping from string to actual type.<br>
-   *   - The chemical nature of each type.<br>
-   *   - The localization of each atom type (backbone or sidechain)<br>
-   *   - The charge and van der Waals radius<br>
-   *
-   * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>
-   * @version $Id: AtomType.h,v 1.37 2007-01-14 18:21:02 larosem Exp $ 
+   * Implicit information:
+   *   - Mapping from string to actual type.
+   *   - The chemical nature of each type.
+   *   - The localization of each atom type (backbone or sidechain)
+   *   - The charge and van der Waals radius
    */
-  class AtomType 
+  class AtomType
   {
     /**
      * Container for string to type associations.
@@ -72,10 +60,10 @@ namespace mccore
      */
     string key;
 
-  protected: 
+  protected:
 
     // LIFECYCLE ---------------------------------------------------------------
-    
+
     /**
      * Initializes the object.
      */
@@ -86,7 +74,7 @@ namespace mccore
      * @param ks the string representation of the type key.
      */
     AtomType (const string& ks) : key (ks) { }
-    
+
     /**
      * (Disallow copy constructor) Initializes the object with another atom type.
      * @param other another type.
@@ -97,7 +85,7 @@ namespace mccore
      * Destroys the object.
      */
     virtual ~AtomType () { }
-    
+
     /**
      * AtomTypeStore is a friend since the destructor is private.
      */
@@ -118,12 +106,12 @@ namespace mccore
        */
       bool operator() (const AtomType* t1, const AtomType* t2) const
       {
-	return
-	  *(0 == t1 ? AtomType::aNull : t1) <
-	  *(0 == t2 ? AtomType::aNull : t2);
+        return
+          *(0 == t1 ? AtomType::aNull : t1) <
+          *(0 == t2 ? AtomType::aNull : t2);
       }
     };
-    
+
     // OPERATORS ---------------------------------------------------------------
 
     /**
@@ -181,7 +169,7 @@ namespace mccore
     {
       return this->key.c_str ();
     }
-        
+
     // METHODS -----------------------------------------------------------------
 
     /**
@@ -192,7 +180,7 @@ namespace mccore
     {
       return this->key;
     }
-    
+
     /**
      * Identifies the type of atom stored in a string.
      * @param str the c string.
@@ -211,7 +199,8 @@ namespace mccore
      * General is method for use when both objects to compare are of
      * unknown type.
      */
-    virtual bool is (const AtomType *t) const {
+    virtual bool is (const AtomType *t) const
+    {
       return t->describe (this);
     }
 
@@ -220,137 +209,153 @@ namespace mccore
      * @param the type to test.
      * @return the truth value of the test.
      */
-    virtual bool describe (const AtomType *t) const {
+    virtual bool describe (const AtomType *t) const
+    {
       return dynamic_cast< const AtomType* > (t);
     }
-    
+
     /**
      * is Null?
      */
-    virtual bool isNull() const {
+    virtual bool isNull() const
+    {
       return false;
     }
-    
+
     /**
      * is Unknown?
      */
-    virtual bool isUnknown() const {
-      return false;
-    }
-       
-    /** 
-     * is NucleicAcid?
-     */
-    virtual bool isNucleicAcid () const {
+    virtual bool isUnknown() const
+    {
       return false;
     }
 
-    /** 
-     * is AminoAcid?
+    /**
+     * is NucleicAcid?
      */
-    virtual bool isAminoAcid () const {
+    virtual bool isNucleicAcid () const
+    {
       return false;
     }
-    
+
+    /**
+     * is AminoAcid?
+     */
+    virtual bool isAminoAcid () const
+    {
+      return false;
+    }
+
     /**
      * is Backbone?
      */
-    virtual bool isBackbone () const {
+    virtual bool isBackbone () const
+    {
       return false;
     }
 
-    /** 
+    /**
      * is Phosphate?
      */
-    virtual bool isPhosphate () const {
+    virtual bool isPhosphate () const
+    {
       return false;
     }
-    
-    
+
     /**
      * is Side Chain?
      */
-    virtual bool isSideChain () const {
+    virtual bool isSideChain () const
+    {
       return false;
     }
-    
-    /** 
+
+    /**
      * is Hydrogen?
      */
-    virtual bool isHydrogen () const {
+    virtual bool isHydrogen () const
+    {
       return false;
     }
 
-    /** 
+    /**
      * is Carbon?
      */
-    virtual bool isCarbon () const {
+    virtual bool isCarbon () const
+    {
       return false;
     }
-    
-    /** 
+
+    /**
      * is Nitrogen?
      */
-    virtual bool isNitrogen () const {
+    virtual bool isNitrogen () const
+    {
       return false;
     }
-    
-    /** 
+
+    /**
      * is Phosphorus?
      */
-    virtual bool isPhosphorus () const {
+    virtual bool isPhosphorus () const
+    {
       return false;
     }
-    
-    /** 
+
+    /**
      * is Oxygen?
      */
-    virtual bool isOxygen () const {
+    virtual bool isOxygen () const
+    {
       return false;
     }
 
-    /** 
+    /**
      * is Sulfur?
      */
-    virtual bool isSulfur () const {
-      return false;
-    }
-    
-    /** 
-     * is Lone pair?
-     */
-    virtual bool isLonePair () const {
+    virtual bool isSulfur () const
+    {
       return false;
     }
 
-    /** 
+    /**
+     * is Lone pair?
+     */
+    virtual bool isLonePair () const
+    {
+      return false;
+    }
+
+    /**
      * is Pseudo?
      */
-    virtual bool isPseudo () const {
+    virtual bool isPseudo () const
+    {
       return false;
     }
-    
-    /** 
+
+    /**
      * is Magnesium?
      */
-    virtual bool isMagnesium () const {
+    virtual bool isMagnesium () const
+    {
       return false;
     }
-            
+
     /**
      * Gets the Van Der Waals radius value for the atom.
      * @param res the residue that contains the atom.
      * @return the Van Der Waals radius value.
      */
     virtual float getVDWR (const ResidueType *r) const { return 0; }
-    
+
     /**
      * Gets the Amber epsilon value for the atom.
      * @param res the residue that contains the atom.
      * @return the Amber epsilon value.
      */
     virtual float getAmberEpsilon (const ResidueType *r) const { return 0; }
-    
+
     /**
      * Gets the Amber charge value for the atom in the given residue type.
      * @param res the residue type.
@@ -363,10 +368,11 @@ namespace mccore
      * @param type the atom type.
      * @return the Vector3D color in RGB format.
      */
-    virtual Vector3D getColor () const {
+    virtual Vector3D getColor () const
+    {
       return Vector3D (0.10, 0.10, 0.10);
     }
-    
+
     // I/O ---------------------------------------------------------------------
 
     /**
@@ -390,7 +396,7 @@ namespace mccore
      * atom naming.
      * @param key The alternate name of the atom.
      * @param apType The already defined AtomType to which to map the name.
-     */     
+     */
     static void AddMapping(const std::string& key, const AtomType* apType);
 
     // TYPE POINTERS -----------------------------------------------------------
@@ -553,9 +559,8 @@ namespace mccore
     static const AtomType *aMG;
     static const AtomType *aPSAZ;
 
-    // New AtomType (some are invalid type names due to their notation in
-    // the components.cif.gz file
-    //
+    // New AtomType (some are invalid type names due
+    // to their notation in the components.cif.gz file
     static const AtomType *a1HM1;
     static const AtomType *a1HN6;
     static const AtomType *a2HM1;
@@ -563,7 +568,7 @@ namespace mccore
     static const AtomType *a3HM1;
     static const AtomType *aCM1;
   };
-  
+
   /**
    * Outputs to an exception stream.
    * @param out the exception stream.
@@ -577,7 +582,7 @@ namespace mccore
    * @return the exception stream used.
    */
   Exception& operator<< (Exception& ex, const AtomType *t);
-  
+
   /**
    * Inputs the atom type.  The integer type is read and the type object is
    * assigned to the pointer.
@@ -586,7 +591,7 @@ namespace mccore
    * @return the input binary stream used.
    */
   iBinstream& operator>> (iBinstream &in, const AtomType *&t);
-  
+
   /**
    * Outputs the atom type through a binary stream.  The type is dumped as an
    * integer.
@@ -596,14 +601,13 @@ namespace mccore
    * @exception FatalIntLibException thrown if type is null pointed.
    */
   oBinstream& operator<< (oBinstream &out, const AtomType *t);
-  
-}
 
+}
 
 
 namespace std
 {
-  
+
   /**
    * Outputs to a stream.
    * @param out the output stream.

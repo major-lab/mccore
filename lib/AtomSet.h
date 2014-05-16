@@ -1,23 +1,17 @@
-//                              -*- Mode: C++ -*- 
 // AtomSet.h
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
-//                     Université de Montréal.
-// Author           : Patrick Gendron
-// Created On       : Thu Mar 13 13:03:07 2003
-// $Revision: 1.11 $
-// 
-// This file is part of mccore.
-// 
+// Copyright Â© 2003-05, 2014 Laboratoire de Biologie Informatique et Theorique
+//                     Universite de Montreal.
+//
 // mccore is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
 // License as published by the Free Software Foundation; either
 // version 2.1 of the License, or (at your option) any later version.
-// 
+//
 // mccore is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 // Lesser General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Lesser General Public
 // License along with mccore; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -38,16 +32,11 @@ namespace mccore {
   class iBinstream;
   class oBinstream;
 
-  
-
   /**
    * @short Base unary function for the atomset.
    *
    * Abstract class for filtering atom sets.  These classes are used in the
    * residues iterators.
-   *
-   * @author Martin Larose (<a href="larosem@IRO.UMontreal.CA">larosem@iro.umontreal.ca</a>)
-   * @version $Id: AtomSet.h,v 1.11 2005-08-19 19:00:00 thibaup Exp $
    */
   class AtomSet
   {
@@ -99,7 +88,7 @@ namespace mccore {
      * @exception IntLibException.
      */
     static AtomSet* create (const char* str);
-    
+
     // OPERATORS ------------------------------------------------------------
 
   protected:
@@ -133,7 +122,7 @@ namespace mccore {
   public:
 
     // I/O  -----------------------------------------------------------------
-  
+
     /**
      * Ouputs the set to the stream.
      * @param os the output stream.
@@ -163,15 +152,13 @@ namespace mccore {
    * @short All atom set unary function.
    *
    * No atoms are filtered.
-   *
-   * @author Martin Larose <larosem@IRO.UMontreal.CA>
    */
   class AtomSetAll : public AtomSet
   {
   public:
 
     static const char* representation;
-    
+
     // LIFECYCLE ------------------------------------------------------------
 
     /**
@@ -190,7 +177,7 @@ namespace mccore {
      * @return a copy of itself.
      */
     virtual AtomSet* clone () const { return (AtomSet*) new AtomSetAll (*this); }
-    
+
     /**
      * Destroys the object.
      */
@@ -241,14 +228,10 @@ namespace mccore {
      */
     virtual oBinstream& output (oBinstream &obs) const;
   };
- 
-
 
 
   /**
    * @short Not operator over atomset function objects.
-   *
-   * @author Martin Larose <larosem@IRO.UMontreal.CA>
    */
   class AtomSetNot : public AtomSet
   {
@@ -258,13 +241,13 @@ namespace mccore {
     AtomSet *op;
 
   public:
-    
+
     static const char* representation;
-    
+
     // LIFECYCLE ------------------------------------------------------------
 
   private:
-    
+
     /**
      * Initializes the object. Must not be used.
      */
@@ -292,7 +275,7 @@ namespace mccore {
      * @return a copy of itself.
      */
     virtual AtomSet* clone () const { return (AtomSet*) new AtomSetNot (*this); }
-    
+
     /**
      * Destroys the object.
      */
@@ -349,8 +332,6 @@ namespace mccore {
 
   /**
    * @short And operator over atomset function objects.
-   *
-   * @author Martin Larose <larosem@IRO.UMontreal.CA>
    */
   class AtomSetAnd : public AtomSet
   {
@@ -367,11 +348,11 @@ namespace mccore {
   public:
 
     static const char* representation;
-    
+
     // LIFECYCLE ------------------------------------------------------------
 
   private:
-    
+
     /**
      * Initializes the object. Must not be used.
      */
@@ -392,7 +373,7 @@ namespace mccore {
      * @param other the object to copy.
      */
     AtomSetAnd (const AtomSetAnd &other) 
-      : AtomSet (other), op1 (other.op1->clone ()), op2 (other.op2->clone ())
+    : AtomSet (other), op1 (other.op1->clone ()), op2 (other.op2->clone ())
     {}
 
     /**
@@ -400,17 +381,18 @@ namespace mccore {
      * @return a copy of itself.
      */
     virtual AtomSet* clone () const { return (AtomSet*) new AtomSetAnd (*this); }
-    
+
     /**
      * Destroys the object.
      */
-    virtual ~AtomSetAnd () {
+    virtual ~AtomSetAnd ()
+    {
       delete op1;
       delete op2;
     }
-    
+
     // OPERATORS ------------------------------------------------------------
-    
+
     /**
      * Assigns the object with the other's content.
      * @param other the object to copy.
@@ -425,28 +407,28 @@ namespace mccore {
      */
     virtual bool operator() (const Atom &atom) const
     { return op1->operator() (atom) && op2->operator() (atom); }
-    
+
     // METHODS --------------------------------------------------------------
-    
-  protected: 
-    
+
+  protected:
+
     /**
      * Gets the set number of the AtomSet.
      * @return the set number.
      */
     virtual int getSetNumber() const { return AtomSet::ATOMSET_AND; }
-    
+
   public:
-    
+
     // I/O  -----------------------------------------------------------------
-    
+
     /**
      * Ouputs the set to the stream.
      * @param os the output stream.
      * @return the used output stream.
      */
     virtual ostream& output (ostream &os) const;
-    
+
     /**
      * Ouputs the set to the stream.
      * @param os the output stream.
@@ -454,14 +436,11 @@ namespace mccore {
      */
     virtual oBinstream& output (oBinstream &obs) const;
   };
-    
-    
-    
-    
+
+
+
   /**
    * @short Or operator over atomset function objects.
-   *
-   * @author Martin Larose <larosem@IRO.UMontreal.CA>
    */
   class AtomSetOr : public AtomSet
   {
@@ -469,7 +448,7 @@ namespace mccore {
      * The left atomset function object.
      */
     AtomSet *op1;
-    
+
     /**
      * The right atomset function object.
      */
@@ -478,11 +457,11 @@ namespace mccore {
   public:
 
     static const char* representation;
-    
+
     // LIFECYCLE ------------------------------------------------------------
 
   private:
-    
+
     /**
      * Initializes the object. Must not be used.
      */
@@ -496,14 +475,14 @@ namespace mccore {
      * @param y the right function object.
      */
     AtomSetOr (AtomSet *x, AtomSet *y) 
-      : AtomSet (), op1(x), op2(y) {}
+    : AtomSet (), op1(x), op2(y) {}
 
     /**
      * Initializes the object with the other's content.
      * @param other the object to copy.
      */
     AtomSetOr (const AtomSetOr &other) 
-      : AtomSet (other), op1 (other.op1->clone ()), op2 (other.op2->clone ())
+    : AtomSet (other), op1 (other.op1->clone ()), op2 (other.op2->clone ())
     {}
 
     /**
@@ -511,7 +490,7 @@ namespace mccore {
      * @return a copy of itself.
      */
     virtual AtomSet* clone () const { return (AtomSet*) new AtomSetOr (*this); }
-  
+
     /**
      * Destroys the object.
      */
@@ -568,8 +547,6 @@ namespace mccore {
   };
 
 
-
-  
   /**
    * @short Base atom set unary function.
    *
@@ -582,7 +559,7 @@ namespace mccore {
   public:
 
     static const char* representation;
-    
+
     // LIFECYCLE ------------------------------------------------------------
 
     /**
@@ -595,7 +572,7 @@ namespace mccore {
      * @param other the object to copy.
      */
     AtomSetSideChain (const AtomSetSideChain &other) 
-      : AtomSet (other)
+    : AtomSet (other)
     {}
 
     /**
@@ -604,7 +581,7 @@ namespace mccore {
      */
     virtual AtomSet* clone () const
     { return new AtomSetSideChain (); }
-  
+
     /**
      * Destroys the object.
      */
@@ -657,21 +634,17 @@ namespace mccore {
   };
 
 
-
-  
   /**
    * @short Backbone atom set unary function.
    *
    * Filters the atoms that are located on the backbone.
-   *
-   * @author Martin Larose <larosem@IRO.UMontreal.CA>
    */
   class AtomSetBackbone : public AtomSet
   {
   public:
 
     static const char* representation;
-    
+
     // LIFECYCLE ------------------------------------------------------------
 
     /**
@@ -693,7 +666,7 @@ namespace mccore {
      */
     virtual AtomSet* clone () const
     { return new AtomSetBackbone (); }
-  
+
     /**
      * Destroys the object.
      */
@@ -758,7 +731,7 @@ namespace mccore {
   public:
 
     static const char* representation;
-    
+
     // LIFECYCLE ------------------------------------------------------------
 
     /**
@@ -771,7 +744,7 @@ namespace mccore {
      * @param other the object to copy.
      */
     AtomSetPhosphate (const AtomSetPhosphate &other) 
-      : AtomSet (other)
+    : AtomSet (other)
     {}
 
     /**
@@ -780,7 +753,7 @@ namespace mccore {
      */
     virtual AtomSet* clone () const
     { return new AtomSetPhosphate (); }
-  
+
     /**
      * Destroys the object.
      */
@@ -837,15 +810,13 @@ namespace mccore {
    * @short PSE operator over atomset function objects.
    *
    * Filters the atoms that are pseudo atoms (pivots).
-   *
-   * @author Martin Larose <larosem@IRO.UMontreal.CA>
    */
   class AtomSetPSE : public AtomSet
   {
   public:
 
     static const char* representation;
-    
+
     // LIFECYCLE ------------------------------------------------------------
 
     /**
@@ -858,7 +829,7 @@ namespace mccore {
      * @param other the object to copy.
      */
     AtomSetPSE (const AtomSetPSE &other) 
-      : AtomSet (other)
+    : AtomSet (other)
     {}
 
     /**
@@ -867,7 +838,7 @@ namespace mccore {
      */
     virtual AtomSet* clone () const
     { return new AtomSetPSE (); }
-  
+
     /**
      * Destroys the object.
      */
@@ -934,7 +905,7 @@ namespace mccore {
   public:
 
     static const char* representation;
-    
+
     // LIFECYCLE ------------------------------------------------------------
 
     /**
@@ -947,7 +918,7 @@ namespace mccore {
      * @param other the object to copy.
      */
     AtomSetLP (const AtomSetLP &other) 
-      : AtomSet (other)
+    : AtomSet (other)
     {}
 
     /**
@@ -956,7 +927,7 @@ namespace mccore {
      */
     virtual AtomSet* clone () const
     { return new AtomSetLP (); }
-  
+
     /**
      * Destroys the object.
      */
@@ -981,7 +952,7 @@ namespace mccore {
 
     // METHODS --------------------------------------------------------------
 
-  protected: 
+  protected:
 
     /**
      * Gets the set number of the AtomSet.
@@ -1013,15 +984,13 @@ namespace mccore {
 
   /**
    * @short Hydrogen operator over atomset function objects.
-   *
-   * @author Martin Larose <larosem@IRO.UMontreal.CA>
    */
   class AtomSetHydrogen : public AtomSet
   {
   public:
 
     static const char* representation;
-    
+
     // LIFECYCLE ------------------------------------------------------------
 
     /**
@@ -1034,7 +1003,7 @@ namespace mccore {
      * @param other the object to copy.
      */
     AtomSetHydrogen (const AtomSetHydrogen &other) 
-      : AtomSet (other)
+    : AtomSet (other)
     {}
 
     /**
@@ -1068,7 +1037,7 @@ namespace mccore {
 
     // METHODS --------------------------------------------------------------
 
-  protected: 
+  protected:
 
     /**
      * Gets the set number of the AtomSet.
@@ -1100,8 +1069,6 @@ namespace mccore {
 
   /**
    * @short Atom operator over atomset function objects.
-   *
-   * @author Martin Larose <larosem@IRO.UMontreal.CA>
    */
   class AtomSetAtom : public AtomSet
   {
@@ -1123,17 +1090,18 @@ namespace mccore {
      * Initializes the object.
      * @param anAtomType the AtomType.
      */
-    AtomSetAtom(const AtomType *anAtomType) {
+    AtomSetAtom(const AtomType *anAtomType)
+    {
       type = anAtomType;
     }
-    
+
     /**
      * Initializes the object with the other's content.
      * @param other the object to copy.
      */
     AtomSetAtom (const AtomSetAtom &other) 
-      : AtomSet (other),
-	type (other.type)
+    : AtomSet (other),
+    type (other.type)
     {}
 
     /**
@@ -1141,7 +1109,7 @@ namespace mccore {
      * @return a copy of itself.
      */
     virtual AtomSet* clone () const { return (AtomSet*) new AtomSetAtom (*this); }
-  
+
     /**
      * Destroys the object.
      */

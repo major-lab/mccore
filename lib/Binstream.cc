@@ -1,24 +1,17 @@
-//                              -*- mode: C++ -*- 
 // Binstream.cc
-// Copyright © 1999, 2000-05 Laboratoire de Biologie Informatique et Théorique.
-//                           Université de Montréal.
-// Author           : Martin Larose <larosem@orage.IRO.UMontreal.CA>
-// Created On       : jeu 24 jun 1999 18:18:52 EDT
-// $Revision: 1.27 $
-// $Id: Binstream.cc,v 1.27 2006-01-23 22:06:25 larosem Exp $
+// Copyright Â© 1999, 2000-05, 2014 Laboratoire de Biologie Informatique et Theorique.
+//                           Universite de Montreal.
 //
-// This file is part of mccore.
-// 
 // mccore is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
 // License as published by the Free Software Foundation; either
 // version 2.1 of the License, or (at your option) any later version.
-// 
+//
 // mccore is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 // Lesser General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Lesser General Public
 // License along with mccore; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -51,15 +44,13 @@ namespace mccore
     long long int iv;
   };
 
-  // -- class iBinstream
 
-  iBinstream&
-  iBinstream::operator>> (char& c)
+  /**
+   * input
+   */
+
+  iBinstream& iBinstream::operator>> (char& c)
   {
-//     this->read (&c, 1);
-//     return *this;
-
-
     mccore::bin_i16 data16;
 
     this->read16 (data16);
@@ -67,8 +58,8 @@ namespace mccore
     if (sizeof (c) != 1 && (data16 < BS_MIN16 || data16 > BS_MAX16))
     {
       FatalIntLibException ex ("", __FILE__, __LINE__);
-      ex << "overflow while reading 16b integer value into a " 
-	 << sizeof (c) * 8 << "b character variable.";
+      ex << "overflow while reading 16b integer value into a "
+         << sizeof (c) * 8 << "b character variable.";
       throw ex;
     }
 
@@ -78,12 +69,8 @@ namespace mccore
   }
 
 
-  iBinstream&
-  iBinstream::operator>> (unsigned char& c)
+  iBinstream& iBinstream::operator>> (unsigned char& c)
   {
-//     this->read ((char*)&c, 1);
-//     return *this;
-
     mccore::bin_ui16 data16;
 
     this->read16 (data16);
@@ -92,7 +79,7 @@ namespace mccore
     {
       FatalIntLibException ex ("", __FILE__, __LINE__);
       ex << "overflow while reading 16b unsigned integer value into a " 
-	 << sizeof (c) * 8 << "b unsigned character variable.";
+         << sizeof (c) * 8 << "b unsigned character variable.";
       throw ex;
     }
 
@@ -101,48 +88,33 @@ namespace mccore
     return *this;
   }
 
-
-  iBinstream&
-  iBinstream::operator>> (signed char& c)
+  iBinstream& iBinstream::operator>> (signed char& c)
   {
-//     this->read ((char*)&c, 1);
-//     return *this;
-
-
     *this >> (char&)c;
     return *this;
   }
 
-
-  iBinstream&
-  iBinstream::operator>> (short& s)
+  iBinstream& iBinstream::operator>> (short& s)
   {
     return this->read16 (s);
   }
 
-  iBinstream&
-  iBinstream::operator>> (unsigned short& s)
+  iBinstream& iBinstream::operator>> (unsigned short& s)
   {
     return this->read16 (s);
   }
-  
 
-  iBinstream&
-  iBinstream::operator>> (int& i)
+  iBinstream& iBinstream::operator>> (int& i)
   {
     return this->read32 (i);
   }
 
-
-  iBinstream&
-  iBinstream::operator>> (unsigned int& i)
+  iBinstream& iBinstream::operator>> (unsigned int& i)
   {
     return this->read32 (i);
   }
 
-
-  iBinstream&
-  iBinstream::operator>> (long& li)
+  iBinstream& iBinstream::operator>> (long& li)
   {
     long long lli;
     this->read64 (lli);
@@ -151,7 +123,7 @@ namespace mccore
     {
       FatalIntLibException ex ("", __FILE__, __LINE__);
       ex << "overflow while reading 64b signed integer value into a" 
-	 << sizeof (li) * 8 << " long variable.";
+         << sizeof (li) * 8 << " long variable.";
       throw ex;
     }
 
@@ -160,9 +132,7 @@ namespace mccore
     return *this;
   }
 
-
-  iBinstream&
-  iBinstream::operator>> (unsigned long& li)
+  iBinstream& iBinstream::operator>> (unsigned long& li)
   {
     unsigned long long lli;
     this->read64 (lli);
@@ -171,7 +141,7 @@ namespace mccore
     {
       FatalIntLibException ex ("", __FILE__, __LINE__);
       ex << "overflow while reading 64b unsigned integer value into a" 
-	 << sizeof (li) * 8 << " unsigned long variable.";
+         << sizeof (li) * 8 << " unsigned long variable.";
       throw ex;
     }
 
@@ -179,24 +149,18 @@ namespace mccore
 
     return *this;
   }
-  
-  
-  iBinstream&
-  iBinstream::operator>> (long long& lli)
+
+  iBinstream& iBinstream::operator>> (long long& lli)
   {
     return this->read64 (lli);
   }
 
-
-  iBinstream&
-  iBinstream::operator>> (unsigned long long& lli)
+  iBinstream& iBinstream::operator>> (unsigned long long& lli)
   {
     return this->read64 (lli);
   }
 
-
-  iBinstream&
-  iBinstream::operator>> (float& f)
+  iBinstream& iBinstream::operator>> (float& f)
   {
     f2i_32 fi;
     this->read32 (fi.iv);
@@ -204,9 +168,7 @@ namespace mccore
     return *this;
   }
 
-
-  iBinstream&
-  iBinstream::operator>> (double& d)
+  iBinstream& iBinstream::operator>> (double& d)
   {
     f2i_64 fi;
     this->read64 (fi.iv);
@@ -214,9 +176,7 @@ namespace mccore
     return *this;
   }
 
-
-  iBinstream&
-  iBinstream::operator>> (char** cstr)
+  iBinstream& iBinstream::operator>> (char** cstr)
   {
     mccore::bin_ui64 len = 0;
 
@@ -228,25 +188,19 @@ namespace mccore
     return *this;
   }
 
-
-  iBinstream&
-  iBinstream::operator>> (unsigned char** cstr)
+  iBinstream& iBinstream::operator>> (unsigned char** cstr)
   {
     *this >> (char**)cstr;
     return *this;
   }
 
-
-  iBinstream&
-  iBinstream::operator>> (signed char** cstr)
+  iBinstream& iBinstream::operator>> (signed char** cstr)
   {
     *this >> (char**)cstr;
     return *this;
   }
 
-
-  iBinstream&
-  iBinstream::operator>> (char* cstr)
+  iBinstream& iBinstream::operator>> (char* cstr)
   {
     mccore::bin_ui64 len = 0;
 
@@ -257,25 +211,19 @@ namespace mccore
     return *this;
   }
 
-
-  iBinstream&
-  iBinstream::operator>> (unsigned char* cstr)
+  iBinstream& iBinstream::operator>> (unsigned char* cstr)
   {
     *this >> (char*)cstr;
     return *this;
   }
 
-
-  iBinstream&
-  iBinstream::operator>> (signed char* cstr)
+  iBinstream& iBinstream::operator>> (signed char* cstr)
   {
     *this >> (char*)cstr;
     return *this;
   }
 
-
-  iBinstream&
-  iBinstream::operator>> (string& str)
+  iBinstream& iBinstream::operator>> (string& str)
   {
     mccore::bin_ui64 len = 0;
     char* cstr;
@@ -290,148 +238,116 @@ namespace mccore
     return *this;
   }
 
-
-  iBinstream&
-  iBinstream::operator>> (bool& b)
+  iBinstream& iBinstream::operator>> (bool& b)
   {
     char c = 0;
-    
+
     *this >> c;
 
     switch (c)
     {
-    case 'F': b = false; break;
-    case 'T': b = true; break;
-    default:
+      case 'F': b = false; break;
+      case 'T': b = true; break;
+      default:
       {
-	FatalIntLibException ex ("", __FILE__, __LINE__);
-	ex << "corrupted bool data in input binary stream";
-	throw ex;
+        FatalIntLibException ex ("", __FILE__, __LINE__);
+        ex << "corrupted bool data in input binary stream";
+        throw ex;
       }
     }
 
     return *this;
   }
 
-
-  iBinstream&
-  iBinstream::operator>> (istream& (*func)(istream&))
+  iBinstream& iBinstream::operator>> (istream& (*func)(istream&))
   {
     (*func)(*this);
     return *this;
   }
-  
-  
-  iBinstream&
-  iBinstream::operator>> (ios& (*func)(ios&))
+
+  iBinstream& iBinstream::operator>> (ios& (*func)(ios&))
   {
     (*func)(*this);
     return *this;
   }
-  
 
-  // -- class oBinstream
+  /**
+   * output
+   */
 
-
-  oBinstream&
-  oBinstream::operator<< (char c)
+  oBinstream& oBinstream::operator<< (char c)
   {
     this->write16 ((mccore::bin_i16)c);
     return *this;
   }
 
-
-  oBinstream&
-  oBinstream::operator<< (unsigned char c)
+  oBinstream& oBinstream::operator<< (unsigned char c)
   {
     this->write16 ((mccore::bin_ui16)c);
     return *this;
   }
 
-
-  oBinstream&
-  oBinstream::operator<< (signed char c)
+  oBinstream& oBinstream::operator<< (signed char c)
   {
     this->write16 ((mccore::bin_i16)c);
     return *this;
   }
 
-
-  oBinstream&
-  oBinstream::operator<< (short s)
+  oBinstream& oBinstream::operator<< (short s)
   {
     return this->write16 (s);
   }
 
-
-  oBinstream&
-  oBinstream::operator<< (unsigned short s)
+  oBinstream& oBinstream::operator<< (unsigned short s)
   {
     return this->write16 (s);
   }
 
-
-  oBinstream&
-  oBinstream::operator<< (int i)
+  oBinstream& oBinstream::operator<< (int i)
   {
     return this->write32 (i);
   }
 
-  oBinstream&
-  oBinstream::operator<< (unsigned int i)
+  oBinstream& oBinstream::operator<< (unsigned int i)
   {
     return this->write32 (i);
   }
 
-
-  oBinstream&
-  oBinstream::operator<< (long li)
+  oBinstream& oBinstream::operator<< (long li)
   {
     return this->write64 ((long long)li);
   }
 
-
-  oBinstream&
-  oBinstream::operator<< (unsigned long li)
+  oBinstream& oBinstream::operator<< (unsigned long li)
   {
     return this->write64 ((unsigned long long)li);
   }
-  
 
-  oBinstream&
-  oBinstream::operator<< (long long lli)
+  oBinstream& oBinstream::operator<< (long long lli)
   {
     return this->write64 (lli);
   }
 
-
-  oBinstream&
-  oBinstream::operator<< (unsigned long long lli)
+  oBinstream& oBinstream::operator<< (unsigned long long lli)
   {
     return this->write64 (lli);
   }
-  
 
-  oBinstream&
-  oBinstream::operator<< (float f)
+  oBinstream& oBinstream::operator<< (float f)
   {
     f2i_32 fi;
     fi.fv = f;
     return this->write32 (fi.iv);
   }
 
-
-  oBinstream&
-  oBinstream::operator<< (double d)
+  oBinstream& oBinstream::operator<< (double d)
   {
     f2i_64 fi;
     fi.fv = d;
     return this->write64 (fi.iv);
   }
 
-
-  oBinstream&
-  oBinstream::operator<< (const char* str)
+  oBinstream& oBinstream::operator<< (const char* str)
   {
     mccore::bin_ui64 len = strlen (str);
 
@@ -440,26 +356,20 @@ namespace mccore
 
     return *this;
   }
-  
 
-  oBinstream&
-  oBinstream::operator<< (const unsigned char* str)
+  oBinstream& oBinstream::operator<< (const unsigned char* str)
   {
     *this << (const char*)str;
     return *this;
   }
 
-
-  oBinstream&
-  oBinstream::operator<< (const signed char* str)
+  oBinstream& oBinstream::operator<< (const signed char* str)
   {
     *this << (const char*)str;
     return *this;
   }
 
-
-  oBinstream&
-  oBinstream::operator<< (const string& str)
+  oBinstream& oBinstream::operator<< (const string& str)
   {
     mccore::bin_ui64 len = str.size ();
 
@@ -469,27 +379,21 @@ namespace mccore
     return *this;
   }
 
-
-  oBinstream&
-  oBinstream::operator<< (bool b)
+  oBinstream& oBinstream::operator<< (bool b)
   {
     return *this << (char)(b ? 'T' : 'F');
   }
 
+  oBinstream& oBinstream::operator<< (ios& (*func)(ios&))
+  {
+    (*func)(*this);
+    return *this;
+  }
 
-  oBinstream&
-  oBinstream::operator<< (ios& (*func)(ios&))
+  oBinstream& oBinstream::operator<< (ostream& (*func)(ostream&))
   {
     (*func)(*this);
     return *this;
   }
-  
-  
-  oBinstream&
-  oBinstream::operator<< (ostream& (*func)(ostream&))
-  {
-    (*func)(*this);
-    return *this;
-  }
-  
+
 }

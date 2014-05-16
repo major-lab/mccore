@@ -1,23 +1,17 @@
-//                              -*- Mode: C++ -*- 
 // SymmetricalMatrix.h
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
-//                     Université de Montréal
-// Author           : Philippe Thibault
-// Created On       : Wed Oct 16 09:28:54 2002
-// $Revision: 1.5 $
-// 
-// This file is part of mccore.
-// 
+// Copyright Â© 2003-04, 2014 Laboratoire de Biologie Informatique et Theorique
+//                     Universite de Montreal
+//
 // mccore is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
 // License as published by the Free Software Foundation; either
 // version 2.1 of the License, or (at your option) any later version.
-// 
+//
 // mccore is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 // Lesser General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Lesser General Public
 // License along with mccore; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -41,15 +35,12 @@ namespace mccore
    * 
    * Implements a nxn symetrical matrix where (i,j) = (j,i) 
    * for each i,j in [0,n[, i != j. The diagonal is not defined.
-   *
-   * @author Philippe Thibault
-   // $Id: SymmetricalMatrix.h,v 1.5 2005-01-03 23:09:02 larosem Exp $
    */
   template< class Type >
   class SymmetricalMatrix 
   {
     /**
-     * The one-dimensional emulated nxn matrix.
+     * The one-dimensional emulated n by n matrix.
      */
     Type* matrix;
 
@@ -59,7 +50,7 @@ namespace mccore
     int oneSize;
 
     /**
-     * Size of the emulated nxn matrix
+     * Size of the emulated n by n matrix
      */
     int twoSize;
 
@@ -90,7 +81,7 @@ namespace mccore
     SymmetricalMatrix* clone () const;
 
     /**
-     * Destructs the object.
+     * Destroys the object.
      */
     ~SymmetricalMatrix ();
 
@@ -172,7 +163,7 @@ namespace mccore
     template< class Type >
     SymmetricalMatrix< Type >::SymmetricalMatrix (int n, void (*cf) (Type&))
       : twoSize (n),
-	cleanup (cf)
+        cleanup (cf)
     {
       oneSize = (int)((n / 2.0)*(n - 1));
       matrix = new Type[oneSize];
@@ -182,17 +173,18 @@ namespace mccore
     template< class Type >
     SymmetricalMatrix< Type >::SymmetricalMatrix (const SymmetricalMatrix< Type >& right)
       : oneSize (right.oneSize),
-	twoSize (right.twoSize)
+        twoSize (right.twoSize)
     {
       matrix = new Type[oneSize];
       for (int i = 0; i < oneSize; ++i)
-	matrix[i] = right.matrix[i];
+      {
+        matrix[i] = right.matrix[i];
+      }
     }
 
 
     template< class Type >
-    SymmetricalMatrix< Type >*
-    SymmetricalMatrix< Type >::clone () const
+    SymmetricalMatrix< Type >* SymmetricalMatrix< Type >::clone () const
     {
       return new SymmetricalMatrix< Type > (*this);
     }
@@ -202,53 +194,65 @@ namespace mccore
     SymmetricalMatrix< Type >::~SymmetricalMatrix ()
     {
       if (cleanup)
-	for (int i = 0; i < oneSize; ++i)
-	  (*cleanup) (matrix[i]); 
+      {
+        for (int i = 0; i < oneSize; ++i)
+        {
+          (*cleanup) (matrix[i]);
+        }
+      }
       delete[] matrix;
     }
 
 
     template< class Type >
-    SymmetricalMatrix< Type >&
+    SymmetricalMatrix< Type >& 
     SymmetricalMatrix< Type >::operator= (const SymmetricalMatrix< Type >& right)
     {
       if (this != &right)
-	{
-	  oneSize = right.oneSize;
-	  twoSize = right.twoSize;
-	  if (cleanup)
-	    for (int i = 0; i < oneSize; ++i)
-	      (*cleanup) (matrix[i]);
-	  delete[] matrix;
-	  matrix = new Type[oneSize];
-	  for (int i = 0; i < oneSize; ++i)
-	    matrix[i] = right.matrix[i];
-	}
+      {
+        oneSize = right.oneSize;
+        twoSize = right.twoSize;
+        if (cleanup)
+        {
+          for (int i = 0; i < oneSize; ++i)
+          {
+            (*cleanup) (matrix[i]);
+          }
+        }
+        delete[] matrix;
+        matrix = new Type[oneSize];
+        for (int i = 0; i < oneSize; ++i)
+        {
+          matrix[i] = right.matrix[i];
+        }
+      }
       return *this;
     }
 
 
     template< class Type >
-    Type&
-    SymmetricalMatrix< Type >::operator[] (int i) const
+    Type& SymmetricalMatrix< Type >::operator[] (int i) const
     {
       if (i < 0 || i >= oneSize)
-	{
-	  FatalIntLibException ex ("1x", __FILE__, __LINE__);
-	  ex << oneSize << " matrix index " << i << "  out of bounds.";
-	  throw ex;
-	}
+      {
+        FatalIntLibException ex ("1x", __FILE__, __LINE__);
+        ex << oneSize << " matrix index " << i << "  out of bounds.";
+        throw ex;
+      }
       return matrix[i];
     }
 
 
     template< class Type >
-    void
-    SymmetricalMatrix< Type >::clear ()
+    void SymmetricalMatrix< Type >::clear ()
     {
       if (cleanup)
-	for (int i = 0; i < oneSize; ++i)
-	  (*cleanup) (matrix[i]);
+      {
+        for (int i = 0; i < oneSize; ++i)
+        {
+          (*cleanup) (matrix[i]);
+        }
+      }
       delete[] matrix;
       oneSize = 0;
       twoSize = 0;
@@ -256,77 +260,80 @@ namespace mccore
 
 
     template< class Type >
-    Type&
-    SymmetricalMatrix< Type >::getij (int i, int j) const
+    Type& SymmetricalMatrix< Type >::getij (int i, int j) const
     {
       if (i == j || i >= twoSize || j >= twoSize)
-	{
-	  FatalIntLibException ex ("", __FILE__, __LINE__);
-	  ex << twoSize << 'x' << twoSize << " matrix indexes (" 
-	     << i << ',' << j << ") out of bounds.";
-	  throw ex;
-	}
-      return i < j ? 
-	matrix[(int)(i*twoSize - 0.5*i*(i + 3) + j - 1)] : 
-	matrix[(int)(j*twoSize - 0.5*j*(j + 3) + i - 1)];
+      {
+        FatalIntLibException ex ("", __FILE__, __LINE__);
+        ex << twoSize << 'x' << twoSize << " matrix indexes (" 
+        << i << ',' << j << ") out of bounds.";
+        throw ex;
+      }
+      return i < j ?
+             matrix[(int)(i*twoSize - 0.5*i*(i + 3) + j - 1)] : 
+             matrix[(int)(j*twoSize - 0.5*j*(j + 3) + i - 1)];
     }
 
 
     template< class Type >
-    void
-    SymmetricalMatrix< Type >::setij (int i, int j, const Type& data)
+    void SymmetricalMatrix< Type >::setij (int i, int j, const Type& data)
     {
       if (i == j || i >= twoSize || j >= twoSize)
-	{
-	  FatalIntLibException ex ("", __FILE__, __LINE__);
-	  ex << twoSize << 'x' << twoSize << " matrix indexes (" 
-	     << i << ',' << j << ") out of bounds.";
-	  throw ex;
-	}
+      {
+        FatalIntLibException ex ("", __FILE__, __LINE__);
+        ex << twoSize << 'x' << twoSize << " matrix indexes (" 
+        << i << ',' << j << ") out of bounds.";
+        throw ex;
+      }
       if (i < j)
-	matrix[(int)(i*twoSize - 0.5*i*(i + 3) + j - 1)] = data;
+      {
+        matrix[(int)(i*twoSize - 0.5*i*(i + 3) + j - 1)] = data;
+      }
       else
-	matrix[(int)(j*twoSize - 0.5*j*(j + 3) + i - 1)] = data;
+      {
+        matrix[(int)(j*twoSize - 0.5*j*(j + 3) + i - 1)] = data;
+      }
     }
 
 
     template< class Type >
-    iBinstream&
-    SymmetricalMatrix< Type >::read (iBinstream &ibs)
+    iBinstream& SymmetricalMatrix< Type >::read (iBinstream &ibs)
     {
       delete[] matrix;
       ibs >> oneSize >> twoSize;
       matrix = new Type[oneSize];
       for (int i = 0; i < oneSize; ++i)
-	ibs >> matrix[i];
+      {
+        ibs >> matrix[i];
+      }
       return ibs;
     }
-    
-    
+
     template< class Type >
-    oBinstream&
-    SymmetricalMatrix< Type >::write (oBinstream& obs) const
+    oBinstream& SymmetricalMatrix< Type >::write (oBinstream& obs) const
     {
       obs << oneSize << twoSize;
       for (int i = 0; i < oneSize; ++i)
-	obs << matrix[i];
+      {
+        obs << matrix[i];
+      }
       return obs;
     }
-    
+
   };
-  
+
   /**
    * Initialize object from a binary stream.
    * @param ibs the input binstream.
    * @param obj the object read.
-   * @return the read binstream. 
-   */ 
+   * @return the read binstream.
+   */
   template< class Type >
   iBinstream& operator>> (iBinstream &ibs, SymmetricalMatrix< Type > &obj)
   {
     return obj.read (ibs);
   }
-  
+
   /**
    * Dump object to a binary stream.
    * @param obs the output binstream.

@@ -1,12 +1,6 @@
-//                              -*- Mode: C++ -*-
 // AtomFactoryMethod.h
-// Copyright @ 2014 Laboratoire d'ingénierie des ARN.
-//                  Université de Montréal.
-// Author           : Marc-Frédérick Blanchet <marc.frederic.blanchet@umontreal.ca>
-// Created On       : Thu Feb  13 11:19:00 2014
-// $Revision: 2.0 $
-//
-// This file is part of mccore.
+// Copyright © 2014 Laboratoire d'ingenierie des ARN.
+//                  Universite de Montreal.
 //
 // mccore is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -27,153 +21,145 @@
 #define _mccore_AtomFactoryMethod_h_
 
 
-
 namespace mccore
 {
-class Atom;
-class iBinstream;
-class oBinstream;
-
-/**
- * @short Abstract class for atom factory methods.
- *
- * This class is used in Residue to generate a given type of atom on input
- * methods.
- *
- * @author Marc-Frédérick Blanchet (<a href="marc.frederic.blanchet@umontreal.ca">marc.frederic.blanchet@umontreal.ca</a>)
- * @version $Id: AtomFactoryMethod.h,v 2.0 2014-02-13 11:22:00 blanchmf Exp $
- */
-class AtomFactoryMethod
-{
-
-public:
-
-	// LIFECYCLE ------------------------------------------------------------
-
-	/**
-	 * Initializes the object.
-	 */
-	AtomFactoryMethod () { }
-
-	/**
-	 * Copies the object.
-	 */
-	virtual AtomFactoryMethod* clone () const = 0;
-
-	/**
-	 * Destroys the object.
-	 */
-	virtual ~AtomFactoryMethod () { }
-
-  // OPERATORS ------------------------------------------------------------
-
-  // ACCESS ---------------------------------------------------------------
-
-  // METHODS --------------------------------------------------------------
+  class Atom;
+  class iBinstream;
+  class oBinstream;
 
   /**
-   * Creates the atom.
-   * @return the newly created atom.
+   * @short Abstract class for atom factory methods.
+   *
+   * This class is used in Residue to generate a given type of atom on input
+   * methods.
    */
-  virtual Atom* createAtom () const = 0;
+  class AtomFactoryMethod
+  {
+
+    public:
+      // LIFECYCLE ------------------------------------------------------------
+
+      /**
+       * Initializes the object.
+       */
+      AtomFactoryMethod () { }
+
+      /**
+       * Copies the object.
+       */
+      virtual AtomFactoryMethod* clone () const = 0;
+
+      /**
+      * Destroys the object.
+      */
+      virtual ~AtomFactoryMethod () { }
+
+      // OPERATORS ------------------------------------------------------------
+
+      // ACCESS ---------------------------------------------------------------
+
+      // METHODS --------------------------------------------------------------
+
+      /**
+       * Creates the atom.
+       * @return the newly created atom.
+       */
+      virtual Atom* createAtom () const = 0;
+
+      /**
+       * Creates an atom copy.
+       * @param aAtom the atom to copy from.
+       * @return the newly created atom copy.
+       */
+      virtual Atom* createAtom (const Atom& aAtom) const = 0;
+
+      // I/O  -----------------------------------------------------------------
+
+      /**
+       * Creates a new object as read from the input binary stream. Throws a
+       * @ref FatalIntLibException if read fails.
+       * @param ibs the input binary stream
+       * @return the newly created object.
+       * @throws FatalIntLibException
+       */
+      static AtomFactoryMethod* read (iBinstream& ibs);
+
+      /**
+       * Writes the object to the output stream.
+       * @param obs the output stream.
+       * @return the written stream.
+       */
+      virtual oBinstream& write (oBinstream& obs) const = 0;
+  };
+
 
   /**
-   * Creates an atom copy.
-   * @param aAtom the atom to copy from.
-   * @return the newly created atom copy.
+   * @short AtomFactoryMethod implementation for Atom class.
+   *
+   * This is the atom factory method implementation for the Basic Atom
+   * class.
    */
-  virtual Atom* createAtom (const Atom& aAtom) const = 0;
+  class AtomFM : public AtomFactoryMethod
+  {
 
-  // I/O  -----------------------------------------------------------------
+    public:
+      // LIFECYCLE ------------------------------------------------------------
+
+      /**
+       * Initializes the object.
+       */
+      AtomFM () { }
+
+      /**
+       * Clones the object.
+       * @return the copy of the object.
+       */
+      virtual AtomFactoryMethod* clone () const { return new AtomFM (); }
+
+      /**
+       * Destroys the object.
+       */
+      virtual ~AtomFM () { }
+
+      // OPERATORS ------------------------------------------------------------
+
+      // ACCESS ---------------------------------------------------------------
+
+      // METHODS --------------------------------------------------------------
+
+      /**
+       * Creates a new atom of Atom type.
+       * @return the newly created empty atom.
+       */
+      virtual Atom* createAtom () const;
+
+      /**
+       * Creates an atom copy.
+       * @param aAtom the atom to copy from.
+       * @return the newly created atom copy.
+       */
+      virtual Atom* createAtom (const Atom& aAtom) const;
+
+      // I/O  -----------------------------------------------------------------
+
+      /**
+       * Writes the object to the output stream.
+       * @param obs the output stream.
+       * @return the written stream.
+       */
+      virtual oBinstream& write (oBinstream& obs) const;
+
+  };
+
 
   /**
-   * Creates a new object as read from the input binary stream. Throws a
-   * @ref FatalIntLibException if read fails.
-   * @param ibs the input binary stream
-   * @return the newly created object.
-   * @throws FatalIntLibException
-   */
-  static AtomFactoryMethod* read (iBinstream& ibs);
+  * Writes a @ref AtomFactoryMethod object to the output stream.
+  * @param obs the output stream.
+  * @param obj the @ref AtomFactoryMethod object to write
+  * @return the written stream.
+  */
+  oBinstream& operator<< (oBinstream& obs, const AtomFactoryMethod& obj);
 
-  /**
-   * Writes the object to the output stream.
-   * @param obs the output stream.
-   * @return the written stream.
-   */
-  virtual oBinstream& write (oBinstream& obs) const = 0;
-
-};
-
-
-/**
- * @short AtomFactoryMethod implementation for Atom class.
- *
- * This is the atom factory method implementation for the Basic Atom
- * class.
- *
- * @author Marc-Frédérick Blanchet (<a href="marc.frederic.blanchet@umontreal.ca">marc.frederic.blanchet@umontreal.ca</a>)
- * @version $Id: AtomFactoryMethod.h,v 2.0 2014-02-13 11:56:00 blanchmf Exp $
- */
-class AtomFM : public AtomFactoryMethod
-{
-
-public:
-
-	// LIFECYCLE ------------------------------------------------------------
-
-	/**
-	 * Initializes the object.
-	 */
-	AtomFM () { }
-
-  /**
-   * Clones the object.
-   * @return the copy of the object.
-   */
-  virtual AtomFactoryMethod* clone () const { return new AtomFM (); }
-
-  /**
-   * Destroys the object.
-   */
-  virtual ~AtomFM () { }
-
-  // OPERATORS ------------------------------------------------------------
-
-  // ACCESS ---------------------------------------------------------------
-
-  // METHODS --------------------------------------------------------------
-
-  /**
-   * Creates a new atom of Atom type.
-   * @return the newly created empty atom.
-   */
-  virtual Atom* createAtom () const;
-
- /**
-   * Creates an atom copy.
-   * @param aAtom the atom to copy from.
-   * @return the newly created atom copy.
-   */
-  virtual Atom* createAtom (const Atom& aAtom) const;
-
-  // I/O  -----------------------------------------------------------------
-
-  /**
-   * Writes the object to the output stream.
-   * @param obs the output stream.
-   * @return the written stream.
-   */
-  virtual oBinstream& write (oBinstream& obs) const;
-
-};
-
-/**
- * Writes a @ref AtomFactoryMethod object to the output stream.
- * @param obs the output stream.
- * @param obj the @ref AtomFactoryMethod object to write
- * @return the written stream.
- */
-oBinstream& operator<< (oBinstream& obs, const AtomFactoryMethod& obj);
 }
 
 #endif

@@ -1,23 +1,17 @@
-//                         -*- Mode: C++ -*-
 // Binstream.h
-// Copyright � 1999, 2000-04 Laboratoire de Biologie Informatique et Th�orique.
-//                           Universit� de Montr�al.
-// Author           : Martin Larose <larosem@IRO.UMontreal.CA>
-// Created On       : jeu 24 jun 1999 18:11:41 EDT
-// $Revision: 1.19 $
+// Copyright © 1999, 2000-04, 2014 Laboratoire de Biologie Informatique et Theorique.
+//                           Universite de Montreal.
 //
-// This file is part of mccore.
-// 
 // mccore is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
 // License as published by the Free Software Foundation; either
 // version 2.1 of the License, or (at your option) any later version.
-// 
+//
 // mccore is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 // Lesser General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Lesser General Public
 // License along with mccore; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -26,7 +20,6 @@
 #ifndef _mccore_Binstream_h_
 #define _mccore_Binstream_h_
 
-// cmake generated defines
 #include <config.h>
 
 #include <iostream>
@@ -99,30 +92,27 @@ namespace mccore
    *
    * char types are read from 16b data for compatibility with Java.
    * long types are read from 64b data for compatibility between 32b and 64b architectures. 
-   *
-   * @author Martin Larose (<a href="larosem@iro.umontreal.ca">larosem@iro.umontreal.ca</a>)
-   * @version $Id: Binstream.h,v 1.19 2005-05-31 20:05:40 thibaup Exp $
    */
   class iBinstream : public istream
   {
-    
+
   public:
-    
+
     // LIFECYCLE ------------------------------------------------------------
-    
+
     /**
      * Initializes the stream.  Nothing to be done.
      */
     iBinstream () : istream (0) { }
-    
+
     /**
      * Initializes the stream with a predefined stream buffer.
      * @param sb the stream buffer.
      */
     iBinstream (streambuf *sb) : istream (sb) { }
-    
+
     // OPERATORS ------------------------------------------------------------
-    
+
     /**
      * Inputs character from binary stream.
      * Value is read from 16b data.
@@ -301,14 +291,14 @@ namespace mccore
      * @return itself.
      */
     iBinstream& operator>> (ios& (*f)(ios&));
-    
+
     /**
      * Inputs istream manipulation functions.
      * @param f is the istream manip function.
      * @return itself.
      */
     iBinstream& operator>> (istream& (*f)(istream&));
-    
+
   protected:
 
     /**
@@ -322,10 +312,10 @@ namespace mccore
     {
       if (sizeof (data) != 2)
       {
-	FatalIntLibException ex ("", __FILE__, __LINE__);
-	ex << "trying to read 16 bits data in " 
-	   << sizeof (data) * 8 << " bits variable.";
-	throw ex;
+        FatalIntLibException ex ("", __FILE__, __LINE__);
+        ex << "trying to read 16 bits data in " 
+           << sizeof (data) * 8 << " bits variable.";
+         throw ex;
       }
 
       uint16_t data16;
@@ -335,7 +325,7 @@ namespace mccore
 
       return *this;
     }
-  
+
     /**
      * @internal
      * Inputs 32b integer data. Throws an exception if the parameter isn't 32b.
@@ -347,10 +337,10 @@ namespace mccore
     {
       if (sizeof (data) != 4)
       {
-	FatalIntLibException ex ("", __FILE__, __LINE__);
-	ex << "trying to read 32 bits data in " 
-	   << sizeof (data) * 8 << " bits variable.";
-	throw ex;
+        FatalIntLibException ex ("", __FILE__, __LINE__);
+        ex << "trying to read 32 bits data in " 
+           << sizeof (data) * 8 << " bits variable.";
+        throw ex;
       }
 
       uint32_t data32;
@@ -360,7 +350,7 @@ namespace mccore
 
       return *this;
     }
-  
+
     /**
      * @internal
      * Inputs 64b integer data. Throws an exception if the parameter isn't 64b.
@@ -372,10 +362,10 @@ namespace mccore
     {
       if (sizeof (data) != 8)
       {
-	FatalIntLibException ex ("", __FILE__, __LINE__);
-	ex << "trying to read 64 bits data in a " 
-	   << sizeof (data) * 8 << " bits variable.";
-	throw ex;
+        FatalIntLibException ex ("", __FILE__, __LINE__);
+        ex << "trying to read 64 bits data in a " 
+           << sizeof (data) * 8 << " bits variable.";
+        throw ex;
       }
 
       uint32_t data32;
@@ -397,24 +387,23 @@ namespace mccore
   public:
 
     // ACCESS ---------------------------------------------------------------
-    
+
     // METHODS --------------------------------------------------------------
-    
+
     /**
      * Opens the stream.
      */
     void open () { }
-    
+
     /**
      * Closes the stream.
      */
     virtual void close () { }
-    
+
     // I/O ------------------------------------------------------------------
   };
-  
-  
-  
+
+
   /**
    * @short Output binary stream for database and cache output.
    *
@@ -439,29 +428,27 @@ namespace mccore
    *
    * char types are written as 16b data for compatibility with Java.
    * long types are written as 64b data for compatibility between 32b and 64b architectures. 
-   *
-   * @author Martin Larose <larosem@iro.umontreal.ca>
    */
   class oBinstream : public ostream
   {
-    
+
   public:
-    
+
     // LIFECYCLE ------------------------------------------------------------
-    
+
     /**
      * Initializes the stream.  Nothing to be done.
      */
     oBinstream () : ostream (0) { }
-    
+
     /**
      * Initializes the stream with a predefined stream buffer.
      * @param sb the stream buffer.
      */
     oBinstream (streambuf *sb) : ostream (sb) { }
-    
+
     // OPERATORS ------------------------------------------------------------
-    
+
     /**
      * Outputs character to binary stream.
      * Value is written as 16b data.
@@ -600,21 +587,21 @@ namespace mccore
      * @return itself.
      */
     oBinstream& operator<< (bool b);
-    
+
     /**
      * Manipulates ios output.
      * @param func is the ios manip fuction.
      * @return itself.
      */
     oBinstream& operator<< (ios& (*func)(ios&));
-    
+
     /**
      * Manipulates ostream output.
      * @param func is the ostream manip function.
      * @return itself.
      */
     oBinstream& operator<< (ostream& (*func)(ostream&));
-    
+
   protected:
 
     /**
@@ -628,10 +615,10 @@ namespace mccore
     {
       if (sizeof (data) != 2)
       {
-	FatalIntLibException ex ("", __FILE__, __LINE__);
-	ex << "trying to write 16 bits data from " 
-	   << sizeof (data) * 8 << " bits variable.";
-	throw ex;
+        FatalIntLibException ex ("", __FILE__, __LINE__);
+        ex << "trying to write 16 bits data from " 
+           << sizeof (data) * 8 << " bits variable.";
+        throw ex;
       }
 
       uint16_t data16 = htons (data);
@@ -650,17 +637,17 @@ namespace mccore
     {
       if (sizeof (data) != 4)
       {
-	FatalIntLibException ex ("", __FILE__, __LINE__);
-	ex << "trying to write 32 bits data from " 
-	   << sizeof (data) * 8 << " bits variable.";
-	throw ex;
+        FatalIntLibException ex ("", __FILE__, __LINE__);
+        ex << "trying to write 32 bits data from " 
+           << sizeof (data) * 8 << " bits variable.";
+        throw ex;
       }
 
       uint32_t data32 = htonl (data);
       this->write ((char*)&data32, 4);
       return *this;
     }
-  
+
     /**
      * @internal
      * Outputs 64b integer data. Throws an exception if the parameter isn't 64b.
@@ -672,10 +659,10 @@ namespace mccore
     {
       if (sizeof (data) != 8)
       {
-	FatalIntLibException ex ("", __FILE__, __LINE__);
-	ex << "trying to write 64 bits data from " 
-	   << sizeof (data) * 8 << " bits variable.";
-	throw ex;
+        FatalIntLibException ex ("", __FILE__, __LINE__);
+        ex << "trying to write 64 bits data from " 
+           << sizeof (data) * 8 << " bits variable.";
+        throw ex;
       }
 
       uint32_t data32 = htonl (((data & BS_MS32BM) >> 32) & BS_LS32BM);
@@ -684,28 +671,27 @@ namespace mccore
       this->write ((char*)&data32, 4); // least significant 32 bits
       return *this;
     }
-  
+
   public:
 
     // ACCESS ---------------------------------------------------------------
-    
+
     // METHODS --------------------------------------------------------------
-    
+
     /**
      * Opens the stream.
      */
     void open () { }
-    
+
     /**
      * Closes the stream.
      */
     virtual void close () { }
-    
+
     // I/O ------------------------------------------------------------------
   };
-  
-  
-  
+
+
   /**
    * @short General binary stream for database and cache I/O.
    *
@@ -721,42 +707,40 @@ namespace mccore
    * which is the standard on network protocols.  Types are converted
    * from little endianness to big on read and write on system that uses
    * this encoding.
-   *
-   * @author Martin Larose <larosem@iro.umontreal.ca>
    */
   class Binstream : public iBinstream, public oBinstream
   {
   public:
-    
+
     // LIFECYCLE ------------------------------------------------------------
-    
+
     /**
      * Initializes the stream.
      */
     Binstream () : iBinstream (), oBinstream () { }
-    
+
     /**
      * Initializes the stream with a predefined stream buffer.
      * @param sb the stream buffer.
      */
     Binstream (streambuf *sb) : iBinstream (sb), oBinstream (sb) { }
-    
+
     // OPERATORS ------------------------------------------------------------
-    
+
     // ACCESS ---------------------------------------------------------------
-    
+
     // METHODS --------------------------------------------------------------
-    
+
     /**
      * Opens the stream.
      */
     void open () { }
-    
+
     /**
      * Closes the stream.
      */
     virtual void close () { }
-    
+
     // I/O ------------------------------------------------------------------
   };
 
@@ -768,8 +752,6 @@ namespace mccore
    * Binstream.  These streams are used for binary dumps in files.  The
    * general layout is based on fstream while I/O operators comes from
    * Binstream.
-   *
-   * @author Martin Larose <larosem@IRO.UMontreal.CA>
    */
   class ifBinstream : public iBinstream
   {
@@ -777,40 +759,38 @@ namespace mccore
      * The stream buffer.
      */
     mutable filebuf buf;
-    
+
   public:
-    
+
     // LIFECYCLE ------------------------------------------------------------
-    
+
     /**
      * Initializes the objet.
      */
-    ifBinstream ()
-      : iBinstream (),
-	buf ()
+    ifBinstream () : iBinstream (), buf ()
     {
       this->init (&buf);
     }
-    
+
     /**
      * Initializes the stream with file name and parameters.
      * @param name the path and file name to open.
      * @param mode the open mode (default ios_base::in).
      */
     ifBinstream (const char *name, ios_base::openmode mode = ios_base::in)
-      : iBinstream (),
-	buf ()
+    : iBinstream (),
+      buf ()
     {
       this->init (&buf);
       this->open (name, mode);
     }
-    
+
     // OPERATORS ------------------------------------------------------------
-    
+
     // ACCESS ---------------------------------------------------------------
-    
+
     // METHODS --------------------------------------------------------------
-    
+
     /**
      * Gets the file buffer.
      * @return the file buffer.
@@ -831,10 +811,10 @@ namespace mccore
     void open (const char *name, ios_base::openmode mode = ios_base::in)
     {
       if (! buf.open (name, mode))
-	this->setstate (ios::failbit);
+        this->setstate (ios::failbit);
       iBinstream::open ();
     }
-    
+
     /**
      * Closes the stream.
      */
@@ -842,13 +822,13 @@ namespace mccore
     {
       iBinstream::close ();
       if (! buf.close ())
-	this->setstate (ios::failbit);
+        this->setstate (ios::failbit);
     }
-    
+
     // I/O ------------------------------------------------------------------
   };
-  
-  
+
+
   /**
    * @short Output binary file stream.
    *
@@ -856,8 +836,6 @@ namespace mccore
    * Binstream.  These streams are used for binary dumps in files.  The
    * general layout is based on fstream while I/O operators comes from
    * Binstream.
-   *
-   * @author Martin Larose <larosem@IRO.UMontreal.CA>
    */
   class ofBinstream : public oBinstream
   {
@@ -865,40 +843,38 @@ namespace mccore
      * The stream buffer.
      */
     mutable filebuf buf;
-    
+
   public:
-    
+
     // LIFECYCLE ------------------------------------------------------------
-    
+
     /**
      * Initializes the stream.
      */
-    ofBinstream ()
-      : oBinstream (),
-	buf ()
+    ofBinstream () : oBinstream (), buf ()
     {
       this->init (&buf);
     }
-    
+
     /**
      * Initializes the stream with file name and parameters.
      * @param name the path and file name to open.
      * @param mode the open mode (default ios_base::out).
      */
     ofBinstream (const char *name, ios_base::openmode mode = ios_base::out)
-      : oBinstream (),
-	buf ()
+    : oBinstream (),
+      buf ()
     {
       this->init (&buf);
       this->open (name, mode);
     }
-    
+
     // OPERATORS ------------------------------------------------------------
-    
+
     // ACCESS ---------------------------------------------------------------
-    
+
     // METHODS --------------------------------------------------------------
-    
+
     /**
      * Gets the file buffer.
      * @return the file buffer.
@@ -919,10 +895,10 @@ namespace mccore
     void open (const char *name, ios_base::openmode mode = ios_base::out | ios_base::trunc)
     {
       if (! buf.open (name, mode | ios_base::out))
-	this->setstate (ios::failbit);
+        this->setstate (ios::failbit);
       oBinstream::open ();
     }
-    
+
     /**
      * Closes the stream.
      */
@@ -930,13 +906,13 @@ namespace mccore
     {
       oBinstream::close ();
       if (! buf.close ())
-	this->setstate (ios::failbit);
+        this->setstate (ios::failbit);
     }
-    
+
     // I/O ------------------------------------------------------------------
   };
-  
-  
+
+
   /**
    * @short General binary file stream.
    *
@@ -944,8 +920,6 @@ namespace mccore
    * Binstream.  These streams are used for binary dumps in files.  The
    * general layout is based on fstream while I/O operators comes from
    * Binstream.
-   *
-   * @author Martin Larose <larosem@IRO.UMontreal.CA>
    */
   class fBinstream : public Binstream
   {
@@ -953,40 +927,40 @@ namespace mccore
      * The stream buffer.
      */
     mutable filebuf buf;
-    
+
   public:
-    
+
     // LIFECYCLE ------------------------------------------------------------
-    
+
     /**
      * Initializes the stream.
      */
     fBinstream ()
-      : Binstream (),
-	buf ()
+    : Binstream (),
+      buf ()
     {
       this->init (&buf);
     }
-    
+
     /**
      * Initializes the stream with file name and parameters.
      * @param name the path and file name to open.
      * @param mode the open mode (default ios_base::in | ios_base::out).
      */
     fBinstream (const char *name, ios_base::openmode mode = ios_base::in | ios_base::out)
-      : Binstream (),
-	buf ()
+    : Binstream (),
+      buf ()
     {
       this->init (&buf);
       this->open (name, mode);
     }
-    
+
     // OPERATORS ------------------------------------------------------------
-    
+
     // ACCESS ---------------------------------------------------------------
-    
+
     // METHODS --------------------------------------------------------------
-    
+
     /**
      * Gets the file buffer.
      * @return the file buffer.
@@ -1007,10 +981,10 @@ namespace mccore
     void open (const char *name, ios_base::openmode mode = ios_base::in | ios_base::out)
     {
       if (! buf.open (name, mode))
-	this->setstate (ios::failbit);
+        this->setstate (ios::failbit);
       Binstream::open ();
     }
-    
+
     /**
      * Closes the stream.
      */
@@ -1018,7 +992,7 @@ namespace mccore
     {
       Binstream::close ();
       if (! buf.close ())
-	this->setstate (ios::failbit);
+        this->setstate (ios::failbit);
     }
 
     // I/O ------------------------------------------------------------------
@@ -1038,8 +1012,6 @@ namespace mccore
    * to use the fBinstream classes for uncompressed output binary streams.
    * For further details see @ref iBinstream and @ref zfstreambase.  Note that
    * the compression level is not used in input streams.
-   *
-   * @author Martin Larose <larosem@IRO.UMontreal.CA>
    */
   class izfBinstream : public iBinstream
   {
@@ -1047,40 +1019,38 @@ namespace mccore
      * The compressed stream buffer.
      */
     mutable zstreambuf buf;
-    
+
   public:
-    
+
     // LIFECYCLE ------------------------------------------------------------
-    
+
     /**
      * Initializes the stream.
      */
-    izfBinstream ()
-      : iBinstream (),
-	buf ()
+    izfBinstream () : iBinstream (), buf ()
     {
       this->init (&buf);
     }
-    
+
     /**
      * Initializes the stream with file name and parameters.
      * @param name the path and file name to open.
      * @param mode the open mode (default ios_base::in).
      */
     izfBinstream(const char *name, ios_base::openmode mode = ios_base::in)
-      : iBinstream (),
-	buf ()
+    : iBinstream (),
+      buf ()
     {
       this->init (&buf);
       this->open (name, mode);
     }
-    
+
     // OPERATORS ------------------------------------------------------------
-    
+
     // ACCESS ---------------------------------------------------------------
-    
+
     // METHODS --------------------------------------------------------------
-    
+
     /**
      * Gets the file buffer.
      * @return the file buffer.
@@ -1101,10 +1071,10 @@ namespace mccore
     void open (const char *name, ios_base::openmode mode = ios_base::in)
     {
       if (! buf.open (name, mode | ios_base::in))
-	this->setstate (ios::failbit);
+        this->setstate (ios::failbit);
       iBinstream::open ();
     }
-    
+
     /**
      * Closes the stream.
      */
@@ -1112,13 +1082,13 @@ namespace mccore
     {
       iBinstream::close ();
       if (! buf.close ())
-	this->setstate (ios::failbit);
+        this->setstate (ios::failbit);
     }
-    
+
     // I/O ------------------------------------------------------------------
   };
-  
-  
+
+
   /**
    * @short Compressed output binary stream.
    *
@@ -1131,8 +1101,6 @@ namespace mccore
    * a gzip dependent header an footer is added to the file.  It is preferable
    * to use the fBinstream classes for uncompressed output binary streams.
    * For further details see @ref oBinstream and @ref zfstreambase.
-   *
-   * @author Martin Larose <larosem@IRO.UMontreal.CA>
    */
   class ozfBinstream : public oBinstream
   {
@@ -1140,21 +1108,21 @@ namespace mccore
      * The compressed stream buffer.
      */
     mutable zstreambuf buf;
-    
+
   public:
-    
+
     // LIFECYCLE ------------------------------------------------------------
-    
+
     /**
      * Initializes the stream.
      */
     ozfBinstream ()
-      : oBinstream (),
-	buf ()
+    : oBinstream (),
+      buf ()
     {
       this->init (&buf);
     }
-    
+
     /**
      * Initializes the stream with file name and parameters.
      * @param name the path and file name to open.
@@ -1162,19 +1130,19 @@ namespace mccore
      * @param level the compression level for output.
      */
     ozfBinstream (const char *name, ios_base::openmode mode = ios_base::out, int level = Z_BEST_SPEED)
-      : oBinstream (),
-	buf()
+    : oBinstream (),
+      buf()
     {
       this->init (&buf);
       this->open (name, mode, level);
     }
-    
+
     // OPERATORS ------------------------------------------------------------
-    
+
     // ACCESS ---------------------------------------------------------------
-    
+
     // METHODS --------------------------------------------------------------
-    
+
     /**
      * Gets the file buffer.
      * @return the file buffer.
@@ -1196,10 +1164,10 @@ namespace mccore
     void open (const char *name, ios_base::openmode mode = ios_base::out | ios_base::trunc, int level = Z_BEST_SPEED)
     {
       if (! buf.open (name, mode | ios_base::out, level))
-	this->setstate (ios::failbit);
+        this->setstate (ios::failbit);
       oBinstream::open ();
     }
-    
+
     /**
      * Closes the stream.
      */
@@ -1207,21 +1175,19 @@ namespace mccore
     {
       oBinstream::close ();
       if (! buf.close ())
-	this->setstate (ios::failbit);
+        this->setstate (ios::failbit);
     }
-    
+
     // I/O ------------------------------------------------------------------
   };
-  
-  
+
+
   /**
    * @short Input binary socket streams.
    *
    * Implementation of binary socket streams.  These streams are used for
    * binary dumps in sockets.  The general layout is based on fstream while
    * I/O operators comes from Binstream.
-   *
-   * @author Martin Larose (<a href="mailto:larosem@IRO.UMontreal.CA">larosem@IRO.UMontreal.CA</a>)
    */
   class isBinstream : public iBinstream
   {
@@ -1229,51 +1195,51 @@ namespace mccore
      * The stream buffer.
      */
     mutable sockstreambuf buf;
-    
+
   public:
-    
+
     // LIFECYCLE ------------------------------------------------------------
-    
+
     /**
      * Initializes the objet.
      */
     isBinstream ()
-      : iBinstream (),
-	buf ()
+    : iBinstream (),
+      buf ()
     {
       this->init (&buf);
     }
-    
+
     /**
      * Initializes a socket stream from an existing (opened) socket id
      * @param s a socket created by accept(2) or socket(2)
      */
     isBinstream (int s)
-      : iBinstream (),
-	buf (s)
+    : iBinstream (),
+      buf (s)
     {
       this->init (&buf);
     }
-    
+
     /**
      * Initializes the stream with host name and port.
      * @param host the host name.
      * @param port the port number.
      */
     isBinstream (const char *host, unsigned int port)
-      : iBinstream (),
-	buf ()
+    : iBinstream (),
+      buf ()
     {
       this->init (&buf);
       this->open (host, port);
     }
-    
+
     // OPERATORS ------------------------------------------------------------
-    
+
     // ACCESS ---------------------------------------------------------------
-    
+
     // METHODS --------------------------------------------------------------
-    
+
     /**
      * Gets the file buffer.
      * @return the file buffer.
@@ -1294,10 +1260,10 @@ namespace mccore
     void open (const char *host, unsigned int port)
     {
       if (! buf.open (host, port))
-	this->setstate (ios::failbit);
+        this->setstate (ios::failbit);
       iBinstream::open ();
     }
-    
+
     /**
      * Closes the stream.
      */
@@ -1305,21 +1271,19 @@ namespace mccore
     {
       iBinstream::close ();
       if (! buf.close ())
-	this->setstate (ios::failbit);
+        this->setstate (ios::failbit);
     }
-    
+
     // I/O ------------------------------------------------------------------
   };
-  
-  
+
+
   /**
    * @short Output binary file stream.
    *
    * Implementation of binary socket streams These streams are used for
    * binary dumps in sockets.  The general layout is based on fstream while
    * I/O operators comes from Binstream.
-   *
-   * @author Martin Larose (<a href="mailto:larosem@IRO.UMontreal.CA">larosem@IRO.UMontreal.CA</a>)
    */
   class osBinstream : public oBinstream
   {
@@ -1327,51 +1291,51 @@ namespace mccore
      * The stream buffer.
      */
     mutable sockstreambuf buf;
-    
+
   public:
-    
+
     // LIFECYCLE ------------------------------------------------------------
-    
+
     /**
      * Initializes the stream.
      */
     osBinstream ()
-      : oBinstream (),
-	buf ()
+    : oBinstream (),
+      buf ()
     {
       this->init (&buf);
     }
-    
+
     /**
      * Initializes a socket stream from an existing (opened) socket id
      * @param s a socket created by accept(2) or socket(2)
      */
     osBinstream (int s)
-      : oBinstream (),
-	buf (s)
+    : oBinstream (),
+      buf (s)
     {
       this->init (&buf);
     }
-    
+
     /**
      * Initializes the stream with host name and port.
      * @param host the host name.
      * @param port the port number.
      */
     osBinstream (const char *host, unsigned int port)
-      : oBinstream (),
-	buf ()
+    : oBinstream (),
+      buf ()
     {
       this->init (&buf);
       this->open (host, port);
     }
-    
+
     // OPERATORS ------------------------------------------------------------
-    
+
     // ACCESS ---------------------------------------------------------------
-    
+
     // METHODS --------------------------------------------------------------
-    
+
     /**
      * Gets the file buffer.
      * @return the file buffer.
@@ -1392,10 +1356,10 @@ namespace mccore
     void open (const char *host, unsigned int port)
     {
       if (! buf.open (host, port))
-	this->setstate (ios::failbit);
+        this->setstate (ios::failbit);
       oBinstream::open ();
     }
-    
+
     /**
      * Closes the stream.
      */
@@ -1403,21 +1367,19 @@ namespace mccore
     {
       oBinstream::close ();
       if (! buf.close ())
-	this->setstate (ios::failbit);
+        this->setstate (ios::failbit);
     }
-    
+
     // I/O ------------------------------------------------------------------
   };
-  
-  
+
+
   /**
    * @short General binary socket stream.
    *
    * Implementation of binary socket streams.  These streams are used for
    * binary dumps in sockets.  The general layout is based on fstream while
    * I/O operators comes from Binstream.
-   *
-   * @author Martin Larose (<a href="mailto:larosem@IRO.UMontreal.CA">larosem@IRO.UMontreal.CA</a>)
    */
   class sBinstream : public Binstream
   {
@@ -1425,32 +1387,32 @@ namespace mccore
      * The stream buffer.
      */
     mutable sockstreambuf buf;
-    
+
   public:
-    
+
     // LIFECYCLE ------------------------------------------------------------
-    
+
     /**
      * Initializes the stream.
      */
     sBinstream ()
-      : Binstream (),
-	buf ()
+    : Binstream (),
+      buf ()
     {
       this->init (&buf);
     }
-    
+
     /**
      * Initializes a socket stream from an existing (opened) socket id
      * @param s a socket created by accept(2) or socket(2)
      */
     sBinstream (int s)
-      : Binstream (),
-	buf (s)
+    : Binstream (),
+      buf (s)
     {
       this->init (&buf);
     }
-    
+
     /**
      * Initializes the stream with host name and port.
      * @param host the host name.
@@ -1458,18 +1420,18 @@ namespace mccore
      */
     sBinstream (const char *host, unsigned int port)
       : Binstream (),
-	buf ()
+        buf ()
     {
       this->init (&buf);
       this->open (host, port);
     }
-    
+
     // OPERATORS ------------------------------------------------------------
-    
+
     // ACCESS ---------------------------------------------------------------
-    
+
     // METHODS --------------------------------------------------------------
-    
+
     /**
      * Gets the file buffer.
      * @return the file buffer.
@@ -1490,10 +1452,10 @@ namespace mccore
     void open (const char *host, unsigned int port)
     {
       if (! buf.open (host, port))
-	this->setstate (ios::failbit);
+        this->setstate (ios::failbit);
       Binstream::open ();
     }
-    
+
     /**
      * Closes the stream.
      */
@@ -1501,7 +1463,7 @@ namespace mccore
     {
       Binstream::close ();
       if (! buf.close ())
-	this->setstate (ios::failbit);
+        this->setstate (ios::failbit);
     }
 
     // I/O ------------------------------------------------------------------

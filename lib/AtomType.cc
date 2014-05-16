@@ -1,37 +1,28 @@
-//                              -*- Mode: C++ -*- 
 // AtomType.cc
-// Copyright © 2003-07 Laboratoire de Biologie Informatique et Théorique
-//                     Univesité de Montréal
-// Author           : Patrick Gendron
-// Created On       : Fri Mar  7 15:00:09 2003
-// $Revision: 1.23 $
-// $Id: AtomType.cc,v 1.23 2007-01-14 18:21:02 larosem Exp $
-// 
-// This file is part of mccore.
-// 
+// Copyright © 2003-07, 2014 Laboratoire de Biologie Informatique et Theorique
+//                     Univesite de Montreal
+//
 // mccore is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
 // License as published by the Free Software Foundation; either
 // version 2.1 of the License, or (at your option) any later version.
-// 
+//
 // mccore is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 // Lesser General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Lesser General Public
 // License along with mccore; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-// cmake generated defines
 #include <config.h>
 
 #include "AtomType.h"
 #include "AtomTypeStore.h"
 #include "Exception.h"
 #include "Binstream.h"
-
 
 
 namespace mccore
@@ -195,9 +186,8 @@ namespace mccore
   const AtomType* AtomType::aMG = 0;
   const AtomType* AtomType::aPSAZ = 0;
 
-    // New AtomType (some are invalid type names due to their notation in
-    // the components.cif.gz file
-    //
+  // New AtomType (some are invalid type names due
+  // to their notation in the components.cif.gz file
   const AtomType* AtomType::a1HM1 = 0;
   const AtomType* AtomType::a1HN6 = 0;
   const AtomType* AtomType::a2HM1 = 0;
@@ -205,7 +195,7 @@ namespace mccore
   const AtomType* AtomType::a3HM1 = 0;
   const AtomType* AtomType::aCM1 = 0;
 
-  
+
   AtomType::AtomType (const AtomType &other)
   {
     FatalIntLibException ex ("", __FILE__, __LINE__);
@@ -214,58 +204,47 @@ namespace mccore
   }
 
 
-  const AtomType* 
-  AtomType::parseType (const char* str) 
+  const AtomType* AtomType::parseType (const char* str)
   {
     string sk (str);
     return atstore->get (sk);
   }
 
 
-  const AtomType* 
-  AtomType::parseType (const string& str)  
+  const AtomType* AtomType::parseType (const string& str)
   {
     return atstore->get (str);
   }
 
   void AtomType::AddMapping(const std::string& key, const AtomType* apType)
   {
-	  atstore->addMapping(key, apType);
+    atstore->addMapping(key, apType);
   }
 
-  
+
   // I/O -----------------------------------------------------------------------
 
-  ostream &
-  AtomType::output (ostream &out) const
-  {
-    return out << key;
-  }
-  
-
-  oBinstream &
-  AtomType::output (oBinstream &out) const
+  ostream & AtomType::output (ostream &out) const
   {
     return out << key;
   }
 
+  oBinstream & AtomType::output (oBinstream &out) const
+  {
+    return out << key;
+  }
 
-  Exception&
-  operator<< (Exception& ex, const AtomType &t)
+  Exception& operator<< (Exception& ex, const AtomType &t)
   {
     return ex << (const char*)t;
   }
 
-  
-  Exception&
-  operator<< (Exception& ex, const AtomType *t)
+  Exception& operator<< (Exception& ex, const AtomType *t)
   {
     return ex << (const char*)*(0 == t ? AtomType::aNull : t);
   }
 
-  
-  oBinstream&
-  operator<< (oBinstream &obs, const AtomType *t)
+  oBinstream& operator<< (oBinstream &obs, const AtomType *t)
   {
     if (0 == t)
     {
@@ -275,10 +254,8 @@ namespace mccore
     }
     return t->output (obs);
   }
- 
 
-  iBinstream&
-  operator>> (iBinstream &ibs, const AtomType *&t)
+  iBinstream& operator>> (iBinstream &ibs, const AtomType *&t)
   {
     char* str;
     ibs >> &str;
@@ -290,19 +267,14 @@ namespace mccore
 }
 
 
-
 namespace std
 {
-
-  ostream &
-  operator<< (ostream &out, const mccore::AtomType &a)
+  ostream & operator<< (ostream &out, const mccore::AtomType &a)
   {
     return a.output (out);
   }
-  
 
-  ostream &
-  operator<< (ostream &out, const mccore::AtomType* a)
+  ostream & operator<< (ostream &out, const mccore::AtomType* a)
   {
     return (0 == a ? mccore::AtomType::aNull : a)->output (out);
   }

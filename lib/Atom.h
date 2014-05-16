@@ -1,23 +1,17 @@
-//                              -*- Mode: C++ -*- 
 // Atom.h
-// Copyright © 2003-05 Laboratoire de Biologie Informatique et Théorique
-//                     Université de Montréal
-// Author           : Patrick Gendron
-// Created On       : Mon Mar 10 14:00:09 2003
-// $Revision: 1.12 $
-// 
-// This file is part of mccore.
-// 
+// Copyright © 2003-05 Laboratoire de Biologie Informatique et Theorique
+//                     Universite de Montreal
+//
 // mccore is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
 // License as published by the Free Software Foundation; either
 // version 2.1 of the License, or (at your option) any later version.
-// 
+//
 // mccore is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 // Lesser General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Lesser General Public
 // License along with mccore; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -45,9 +39,6 @@ namespace mccore
    *
    * Derived from Vector3D, this class adds the type of the atom.
    * Warning: nothing is done to prevents slicing when assigning from a Vector*.
-   *
-   * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: Atom.h,v 1.12 2006-04-13 18:02:58 thibaup Exp $
    */
   class Atom : public Vector3D
   {
@@ -55,7 +46,7 @@ namespace mccore
      * The type of the atom.
      */
     const AtomType *type;
-    
+
     // LIFECYCLE ------------------------------------------------------------
 
   public:
@@ -66,8 +57,7 @@ namespace mccore
     Atom ()
     : Vector3D (),
       type (AtomType::aNull)
-    {
-    }
+    { }
 
     /**
      * Initializes the atom with coordinates and a type.
@@ -77,9 +67,9 @@ namespace mccore
      * @param aType the atom type.
      */
     Atom (float x, float y, float z, const AtomType *aType)
-      : Vector3D (x, y, z), type (aType)
-    {}
-    
+    : Vector3D (x, y, z), type (aType)
+    { }
+
     /**
      * Initializes the atom with a point and a type.
      * @param aPoint the coordinates
@@ -87,31 +77,31 @@ namespace mccore
      */
     Atom (Vector3D aPoint, const AtomType *aType) 
     : Vector3D (aPoint), type (aType)
-    {}
+    { }
 
     /**
      * Initializes the object with the other's content.
      * @param other the object to copy.
      */
     Atom (const Atom &other)
-      : Vector3D (other), type (other.type)
-    {}
+    : Vector3D (other), type (other.type)
+    { }
 
     /**
      * Initializes the object with the other's content.
      * @param other the object to copy.
      */
     Atom (const Vector3D &other)
-      : Vector3D (other), type (AtomType::aNull)
-    {}
-    
+    : Vector3D (other), type (AtomType::aNull)
+    { }
+
     /**
      * Clones the atom.
      * @return a copy of itself.
      */
     virtual Atom* clone () const
     {
-    	return new Atom (*this);
+      return new Atom (*this);
     }
 
     /**
@@ -130,8 +120,8 @@ namespace mccore
     {
       if (&other != this)
       {
-	Vector3D::operator= (other);
-	type = other.type;
+        Vector3D::operator= (other);
+        type = other.type;
       }
       return *this;
     }
@@ -144,7 +134,9 @@ namespace mccore
     Atom& operator= (const Vector3D &other)
     {
       if (this != &other)
-	this->Vector3D::operator= (other);
+      {
+        this->Vector3D::operator= (other);
+      }
       return *this;
     }
 
@@ -180,13 +172,13 @@ namespace mccore
      * @return the atom type.
      */
     const AtomType* getType () const { return type; }
-    
+
     /**
      * Sets the atom type.
      * @param type the new atom type.
      */
     void setType (const AtomType *t) { type = t; }
-    
+
     /**
      * Sets the atom's coordinates and type.
      * @param ax the x coordinate.
@@ -241,8 +233,8 @@ namespace mccore
      * Returns the color of the given atom as a Vector3D in RGB space.
      * @return the atom color.
      */
-    Vector3D getColor () const;    
-    
+    Vector3D getColor () const;
+
 
     // I/O  -----------------------------------------------------------------
 
@@ -270,7 +262,7 @@ namespace mccore
    * @return the Pdbstream.
    */
   iPdbstream& operator>> (iPdbstream &ips, Atom &at);
-    
+
   /**
    * Writes an atom to the pdb stream.
    * @param at the atom to write.
@@ -284,7 +276,7 @@ namespace mccore
 
 namespace std
 {
-  
+
   /**
    * Ouputs the atom to the stream.
    * @param os the output stream.
@@ -292,7 +284,7 @@ namespace std
    * @return the used output stream.
    */
   ostream& operator<< (ostream &os, const mccore::Atom &atom);
-  
+
 }
 
 #endif

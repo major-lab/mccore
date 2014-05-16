@@ -1,22 +1,17 @@
 // AtomTypeStore.h
-// Copyright @ 2003-07 Laboratoire de Biologie Informatique et Th�orique
-//                     Université de Montréal.
-// Author           : Patrick Gendron
-// Created On       : Mon Mar 10 12:30:39 2003
-// $Revision: 1.17 $
-// 
-//  This file is part of mccore.
-//  
+// Copyright © 2003-07, 2014 Laboratoire de Biologie Informatique et Theorique
+//                     Universite de Montreal.
+//
 //  mccore is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
 //  License as published by the Free Software Foundation; either
 //  version 2.1 of the License, or (at your option) any later version.
-//  
+//
 //  mccore is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 //  Lesser General Public License for more details.
-//  
+//
 //  You should have received a copy of the GNU Lesser General Public
 //  License along with mccore; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -33,28 +28,22 @@
 using namespace std;
 
 
-
 namespace mccore
 {
   class ResidueType;
 
-  
-
   /**
    * @short Repository of atomtypes.
-   *
-   * @author Patrick Gendron (<a href="mailto:gendrop@iro.umontreal.ca">gendrop@iro.umontreal.ca</a>)
-   * @version $Id: AtomTypeStore.h,v 1.17 2007-01-14 18:21:02 larosem Exp $
    */
   class AtomTypeStore
   {
-  
+
     /**
      * The type repository
      */
     std::set< AtomType*, AtomType::less_deref > repository;
     std::map< std::string, const AtomType* > mapping;
-    
+
   public:
 
     // LIFECYCLE ---------------------------------------------------------------
@@ -63,14 +52,14 @@ namespace mccore
      * Initializes the object.
      */
     AtomTypeStore ();
-    
+
     /**
-     * Destroys the object. 
+     * Destroys the object.
      */
     ~AtomTypeStore ();
 
     // METHODS -----------------------------------------------------------------
-    
+
     /**
      * Gets the atomtype represented by the string if one exists.
      * @param key string key representing the atom type.
@@ -81,20 +70,22 @@ namespace mccore
     void addMapping(const string& key, const AtomType* apType);
 
   private:
-    
+
     // TYPES -------------------------------------------------------------------
 
-    class Null : public virtual AtomType {
-    public:      
+    class Null : public virtual AtomType 
+    {
+    public:
       Null () {}
       Null (const string& ks) : AtomType (ks) {}
-      
+
       virtual bool isNull () const { return true; }
-      virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const Null* > (t);
+      virtual bool describe (const AtomType* t) const
+      {
+        return dynamic_cast< const Null* > (t);
       }
     };
-    
+
     /**
      * Public abstract class for unknown residues.
      */

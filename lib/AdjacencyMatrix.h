@@ -1,23 +1,19 @@
-//                              -*- Mode: C++ -*- 
 // AdjacencyMatrix.h
-// Copyright © 2003-04 Laboratoire de Biologie Informatique et Théorique
-//                     Université de Montréal
-// Author           : Patrick Gendron
-// Created On       : Wed Aug 13 18:24:14 2003
-// $Revision: 1.3 $
-// 
+// Copyright Â© 2003-04, 2014 Laboratoire de Biologie Informatique et Theorique
+//                     Universite de Montreal
+//
 // This file is part of mccore.
-// 
+//
 // mccore is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
 // License as published by the Free Software Foundation; either
 // version 2.1 of the License, or (at your option) any later version.
-// 
+//
 // mccore is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 // Lesser General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Lesser General Public
 // License along with mccore; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -33,40 +29,36 @@
 
 using namespace std;
 
-namespace mccore {
+namespace mccore
+{
 
-  
   /**
-   * Abstract base clas for an adjacency matrix.
-   *
-   * @author Patrick Gendron (gendrop@iro.umontreal.ca)
-   * @version $Id: AdjacencyMatrix.h,v 1.3 2005-01-03 22:49:13 larosem Exp $
+   * Abstract base class for an adjacency matrix.
    */
-  class AdjacencyMatrix 
+  class AdjacencyMatrix
   {
 
     // LIFECYCLE ---------------------------------------------------------------
 
     AdjacencyMatrix (const AdjacencyMatrix& other) {}
     AdjacencyMatrix& operator= (const AdjacencyMatrix &other) { return *this; }
-    
-  public:   
+
+  public:
 
     AdjacencyMatrix () {}
     virtual ~AdjacencyMatrix () {}
+
 
     // ACCESS ------------------------------------------------------------------
 
     virtual int get (int o, int p) const = 0;
     virtual int& elem (int o, int p) = 0;
 
-    // METHODS -----------------------------------------------------------------
 
-    //    virtual list< int > erase (int n) = 0;
+    // METHODS -----------------------------------------------------------------
 
     virtual int connect (int o, int p, int e) = 0;
     virtual int disconnect (int o, int p) = 0;
-
 
     virtual void resize (int size) = 0;
     virtual int size () const = 0;
@@ -74,38 +66,42 @@ namespace mccore {
 
     virtual list< int > neighbors (int n) const = 0;
 
-    bool contains (int n) const {
+    bool contains (int n) const 
+    {
       return n<size ();
     }
 
-    bool areConnected (int o, int p) const {
+    bool areConnected (int o, int p) const 
+    {
       return get (o, p) != -1;
     }
+
 
     // I/O ---------------------------------------------------------------------
 
     virtual ostream& output (ostream& os) const
     {
-      for (int i=0; i!=size (); ++i) {
-	os << i << " : "; 
-	for (int j=0; j!=size (); ++j) {
-	  if (get (i, j) == -1) os << "- ";
-	  else os << get (i, j) << " ";
-	}
-	os << endl;
+      for (int i=0; i!=size (); ++i)
+      {
+        os << i << " : ";
+        for (int j=0; j!=size (); ++j)
+        {
+          if (get (i, j) == -1) os << "- ";
+          else os << get (i, j) << " ";
+        }
+        os << endl;
       }
       return os;
     }
+
   };
 
 
 
   /**
    * Implementation of an adjacency matrix using an array.
-   *
-   * @author Patrick Gendron (gendrop@iro.umontreal.ca)
    */
-  class ArrayMatrix : public AdjacencyMatrix 
+  class ArrayMatrix : public AdjacencyMatrix
   {
     int *array;
     int msize;
@@ -114,7 +110,8 @@ namespace mccore {
 
   public:
 
-    ArrayMatrix () {
+    ArrayMatrix ()
+    {
       array = new int[0];
       msize = 0;
     }
@@ -123,21 +120,24 @@ namespace mccore {
 
     // ACCESS ------------------------------------------------------------------
 
-    int get (int o, int p) const {
-      return array[o*msize + p]; 
+    int get (int o, int p) const
+    {
+      return array[o*msize + p];
     }
 
-    int& elem (int o, int p) { 
-      return array[o*msize + p]; 
+    int& elem (int o, int p)
+    {
+      return array[o*msize + p];
     }
-    
+
     // METHODS -----------------------------------------------------------------
 
-    //    list< int > erase (int n) { return list< int> (); }
 
-    int connect (int o, int p, int e) {
+
+    int connect (int o, int p, int e) 
+    {
       if (o>=size() || p>=size()) resize (max (o+1, p+1));
-      
+
       elem (o, p) = e;
       return e;
     }
@@ -178,31 +178,27 @@ namespace mccore {
   };
 
 
-
-
-
   /**
    * Implementation of an adjacency matrix using a map of maps.
-   *
-   * @author Patrick Gendron (gendrop@iro.umontreal.ca)
    */
-  class MapMatrix : public AdjacencyMatrix 
+  class MapMatrix : public AdjacencyMatrix
   {
   public:
     map< int, map< int, int > > array;
-    
+
     // LIFECYCLE ---------------------------------------------------------------
 
   public:
-    
+
     MapMatrix () {}
-    
+
     virtual ~MapMatrix () { array.clear (); }
 
 
     // ACCESS ------------------------------------------------------------------
 
-    int get (int o, int p) const {
+    int get (int o, int p) const
+    {
       map< int, map< int, int > >::const_iterator row;
       map< int, int >::const_iterator col;
       if ((row = array.find (o)) == array.end ()) return -1;
@@ -210,66 +206,58 @@ namespace mccore {
       return col->second;
     }
 
-    int& elem (int o, int p) { 
+    int& elem (int o, int p)
+    {
       return array[o][p];
-    }   
+    }
 
     // METHODS -----------------------------------------------------------------
 
-//     list< int > erase (int n) { 
-//       list< int > l;
-//       map< int, map< int, int > >::iterator i;
-//       map< int, int >::iterator j;
 
-//       i = array.find (n);
-      
-//       for (j=i->second.begin (); j!=i->second.end (); ++j) {
-// 	l.push_back (j->second);
-//       }
-//       array.erase (i);
-
-//       for (i=array.begin (); i!=array.end (); ++i) {
-// 	for (j=i->second.begin (); j!=i->second.end (); ++j) {
-// 	  if (j->first == n) {
-// 	    l.push_back (j->second);
-// 	  }
-// 	}
-// 	i->second.erase (n);
-//       }
-
-//       return l; 
-//     }
-
-    int connect (int o, int p, int e) {
-      if (o>=size() || p>=size()) resize (max (o+1, p+1));
-      
+    int connect (int o, int p, int e)
+    {
+      if (o>=size() || p>=size())
+      {
+        resize (max (o+1, p+1));
+      }
       elem (o, p) = e;
       return e; 
     }
-    
-    int disconnect (int o, int p) { 
+
+    int disconnect (int o, int p)
+    {
       int e = elem (o, p);
       elem (o, p) = -1;
 
       map< int, map< int, int > >::iterator i;
       map< int, int >::iterator j;
 
-      for (i=array.begin (); i!=array.end (); ++i) {
-	for (j=i->second.begin (); j!=i->second.end (); ++j) {
-	  if (j->second > e) j->second--;
-	}
+      for (i=array.begin (); i!=array.end (); ++i)
+      {
+        for (j=i->second.begin (); j!=i->second.end (); ++j)
+        {
+          if (j->second > e)
+          {
+            j->second--;
+          }
+        }
       }
 
-      return e; 
+      return e;
     }
 
-    void resize (int s) {
+    void resize (int s)
+    {
       int current_size = size ();
 
-      if (s <= current_size) return;
+      if (s <= current_size)
+      {
+        return;
+      }
 
-      while (s-->current_size) {
-	array[s] = map< int, int > ();
+      while (s-->current_size)
+      {
+        array[s] = map< int, int > ();
       }
     }
 
@@ -277,14 +265,16 @@ namespace mccore {
 
     void clear () { array.clear (); }
 
-    list< int > neighbors (int n) const {
+    list< int > neighbors (int n) const
+    {
       list< int > l;
       map< int, map< int, int > >::const_iterator i;
       map< int, int >::const_iterator j;
 
       i = array.find (n);
-      for (j=i->second.begin (); j!=i->second.end (); ++j) {
-	l.push_back (j->first);
+      for (j=i->second.begin (); j!=i->second.end (); ++j)
+      {
+        l.push_back (j->first);
       }
       return l;
     }

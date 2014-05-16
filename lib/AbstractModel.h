@@ -1,10 +1,6 @@
-//                              -*- Mode: C++ -*- 
 // AbstractModel.h
-// Copyright © 2004-06 Laboratoire de Biologie Informatique et Théorique
-//                     Université de Montréal.
-// Author           : Martin Larose <larosem@iro.umontreal.ca>
-// Created On       : Thu Dec  9 16:12:42 2004
-// $Revision: 1.8 $
+// Copyright Â© 2004-06, 2014 Laboratoire de Biologie Informatique et Theorique
+//                     Universite de Montreal.
 //
 // This file is part of mccore.
 // 
@@ -34,7 +30,6 @@
 using namespace std;
 
 
-
 namespace mccore
 {
   class ResId;
@@ -47,18 +42,14 @@ namespace mccore
   class oPdbstream;
 
 
-
   /**
    * Abstract class for Models.
-   *
-   * @author Martin Larose <larosem@iro.umontreal.ca>
-   * @version $Id: AbstractModel.h,v 1.8 2006-02-24 15:38:07 larosem Exp $
    */
   class AbstractModel
   {
-    
+
   public:
-    
+
     typedef vector< Residue* >::size_type size_type;
 
   protected:
@@ -74,8 +65,6 @@ namespace mccore
 
     /**
      * @short Iterator class for AbstractModel.
-     *
-     * @author Martin Larose <larosem@iro.umontreal.ca>
      */
     class model_iterator : public vector< Residue* >::iterator
     {
@@ -87,13 +76,13 @@ namespace mccore
        * Initializes the iterator.
        */
       model_iterator () : vector< Residue* >::iterator () { }
-    
+
       /**
        * Initializes the iterator with the list iterator.
        * @param lIt the list iterator.
        */
       model_iterator (const vector< Residue* >::iterator &lIt)
-	: vector< Residue* >::iterator (lIt)
+      : vector< Residue* >::iterator (lIt)
       { }
 
       // OPERATORS ------------------------------------------------------------
@@ -103,8 +92,8 @@ namespace mccore
        * @return the referenced residue.
        */
       Residue& operator* () const
-      { 
-	return *vector< Residue* >::iterator::operator* (); 
+      {
+        return *vector< Residue* >::iterator::operator* (); 
       }
 
       /**
@@ -113,11 +102,9 @@ namespace mccore
        */
       Residue* operator-> () const { return &(operator* ()); }
     };
-  
+
     /**
      * @short Const iterator class for AbstractModel.
-     *
-     * @author Martin Larose <larosem@iro.umontreal.ca>
      */
     class model_const_iterator : public vector< Residue* >::const_iterator
     {
@@ -127,13 +114,13 @@ namespace mccore
        * Initializes the const iterator.
        */
       model_const_iterator () : vector< Residue* >::const_iterator () { }
-    
+
       /**
        * Initializes the iterator with the list iterator.
        * @param lIt the list iterator.
        */
       model_const_iterator (const vector< Residue* >::const_iterator &lIt)
-	: vector< Residue* >::const_iterator (lIt)
+      : vector< Residue* >::const_iterator (lIt)
       { }
 
       /**
@@ -141,11 +128,11 @@ namespace mccore
        * @param it the model iterator.
        */
       model_const_iterator (const model_iterator& it)
-	: vector< Residue* >::const_iterator (it)
+      : vector< Residue* >::const_iterator (it)
       { }
 
       // OPERATORS ------------------------------------------------------------
-      
+
       /**
        * Redefines the access operator* to get the dereferenced residue.
        * @return the referenced residue.
@@ -164,7 +151,7 @@ namespace mccore
 
     typedef model_iterator iterator;
     typedef model_const_iterator const_iterator;
-  
+
     // LIFECYCLE ------------------------------------------------------------
 
   private:
@@ -175,7 +162,7 @@ namespace mccore
     AbstractModel () { }
 
   protected:
-    
+
     /**
      * Initializes the object.
      * @param fm the residue factory methods that will instanciate new
@@ -190,7 +177,7 @@ namespace mccore
     AbstractModel (const AbstractModel &right);
 
   public:
-    
+
     /**
      * Clones the model.
      * @return a copy of the model.
@@ -205,7 +192,7 @@ namespace mccore
     // OPERATORS ------------------------------------------------------------
 
   protected:
-    
+
     /**
      * Assigns the object with the right's content.
      * @param right the object to copy.
@@ -238,13 +225,13 @@ namespace mccore
      * @return the residue factory method.
      */
     const ResidueFactoryMethod* getResidueFM () const { return residueFM; }
-  
+
     /**
      * Sets the residue factory method.
      * @param fm the new factory method to use.
      */
     void setResidueFM (const ResidueFactoryMethod *fm = 0);
-  
+
     /**
      * Gets the iterator pointing to the beginning of the model.
      * @return the iterator.
@@ -274,7 +261,7 @@ namespace mccore
      * @return the first element of the model or end if the model is empty.
      */
     Residue& front () { return *begin (); }
-    
+
     /**
      * Gets the first element of the model or end if the model is empty.
      * @return the first element of the model or end if the model is empty.
@@ -312,10 +299,10 @@ namespace mccore
     void insert (InputIterator f, InputIterator l)
     {
       while (f != l)
-	{
-	  insert (*f);
-	  ++f;
-	}
+      {
+        insert (*f);
+        ++f;
+      }
     }
 
     /**
@@ -324,7 +311,7 @@ namespace mccore
      * @return an iterator on the next residue.
      */ 
     virtual iterator erase (iterator pos) = 0;
-    
+
     /**
      * Finds a residue given it's residue id.  Returns an iterator
      * pointing to the residue or the end of the container if the residue was
@@ -362,12 +349,12 @@ namespace mccore
      * @exception NoSuchElementException
      */
     const_iterator safeFind (const ResId &id) const throw (NoSuchElementException);
-    
+
     /**
      * Sorts the model according to the Residue::operator<
      */ 
     virtual void sort () = 0;
-    
+
     /**
      * Returns the number of residues present in the model.
      * @return a number of residues.
@@ -398,7 +385,7 @@ namespace mccore
      * it's already there (default: true)
      */
     void addHLP (bool overwrite = true);
-    
+
     /**
      * Removes the optional atoms within the residues.
      */
@@ -493,8 +480,8 @@ namespace mccore
   iPdbstream& operator>> (iPdbstream &ips, AbstractModel &obj);
 
   /**
-   * Outputs the model to a pdb stream.  Termination between residue
-   * chains are made.
+   * Outputs the model to a pdb stream.
+   * Termination between residue chains are made.
    * @param ops the output pdb stream.
    * @param obj the model to output.
    * @return the output pdb stream.
@@ -539,7 +526,7 @@ namespace mccore
 
 namespace std
 {
-  
+
   /**
    * Outputs the model to an output stream.
    * @param obs the output stream.
