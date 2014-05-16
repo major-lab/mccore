@@ -1,1 +1,0 @@
-/home/gab/mccore/build/lib/CMakeFiles/mccore.dir
