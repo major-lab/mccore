@@ -32,8 +32,6 @@
 #include <iomanip>
 #include <sstream>
 #include <stdio.h>
-#include <unistd.h>
-
 #include "Atom.h"
 #include "AtomType.h"
 #include "Model.h"
