@@ -25,10 +25,13 @@
 
 
 
-#include <string>
 
 #include "Binstream.h"
 
+#include <string>
+#ifdef _MSC_VER
+#include <WinSock2.h>
+#endif
 
 namespace mccore
 {
@@ -328,6 +331,18 @@ namespace mccore
     (*func)(*this);
     return *this;
   }
+
+  uint16_t 
+  iBinstream::netToHostFormat(uint16_t& data)
+  {
+	  return ntohs(data);
+
+  }
+  uint32_t
+  iBinstream::netToHostFormat(uint32_t& data)
+  {
+	  return ntohl(data);
+  }
   
 
   // -- class oBinstream
@@ -490,6 +505,16 @@ namespace mccore
   {
     (*func)(*this);
     return *this;
+  }
+
+  uint16_t oBinstream::hostToNetFormat(uint16_t& data)
+  {
+	  return htons(data);
+  }
+  
+  uint32_t oBinstream::hostToNetFormat(uint32_t& data)
+  {
+	  return htonl(data);
   }
   
 }
