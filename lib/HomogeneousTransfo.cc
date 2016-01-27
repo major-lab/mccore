@@ -27,6 +27,13 @@
 // cmake generated defines
 #include <config.h>
 
+#ifdef _MSC_VER
+#define _USE_MATH_DEFINES // for C++
+#include <cmath>
+#else
+#include <cmath>
+#endif
+
 #include <iomanip>
 
 #include "Binstream.h"

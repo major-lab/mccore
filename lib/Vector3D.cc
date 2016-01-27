@@ -28,6 +28,13 @@
 
 #include <iomanip>
 
+#if defined(_MSC_VER)
+#define _USE_MATH_DEFINES // for C++
+#include <cmath>
+#else
+#include <cmath>
+#endif
+
 #include "Binstream.h"
 #include "HomogeneousTransfo.h"
 #include "Vector3D.h"

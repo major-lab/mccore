@@ -30,7 +30,12 @@
 #define _GLIBCPP_USE_C99 1
 #endif
 
+#ifdef _MSC_VER
+#define _USE_MATH_DEFINES
 #include <cmath>
+#else
+#include <cmath>
+#endif
 #include <iomanip>
 
 #include "Atom.h"

@@ -27,7 +27,14 @@
 #include <config.h>
 
 #include <algorithm>
+#if defined(_MSC_VER)
+#define _USE_MATH_DEFINES // for C++
 #include <cmath>
+#else
+#include <cmath>
+#endif
+
+#include <iterator>
 #include <set>
 
 #include "Binstream.h"
