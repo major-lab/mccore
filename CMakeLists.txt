@@ -96,13 +96,19 @@ endif()
 # Dépendance  (fonctions, libs, etc)                       #
 ############################################################
 include (CheckFunctionExists)
-check_function_exists(strsep HAVE_STRSEP) 
-check_function_exists(isfdtype HAVE_ISFDTYPE) 
+#check_function_exists(strsep HAVE_STRSEP) 
+#check_function_exists(isfdtype HAVE_ISFDTYPE) 
 
-find_package(ZLIB REQUIRED)
+message("ZLIB_LIBRARIES: ${ZLIB_LIBRARIES}")
+message("ZLIB_INCLUDE_DIRS: ${ZLIB_INCLUDE_DIRS}")
+
+if(NOT ZLIB_FOUND)
+	message("ZLib find package")
+	find_package(ZLIB REQUIRED)
+endif()
 if (ZLIB_FOUND)
   include_directories(${ZLIB_INCLUDE_DIRS})
-  set (EXT_LIBS ${EXT_LIBS} ${ZLIB_LIBRARIES})
+  set (${PROJECT_NAME}_EXT_LIBS ${${PROJECT_NAME}_EXT_LIBS} ${ZLIB_LIBRARIES})
 endif()
 
 if(WITH-MYSQL)
@@ -111,7 +117,7 @@ if(WITH-MYSQL)
   if(MYSQLPP_FOUND)
     message(STATUS "Using MySQL++: YES") 
     include_directories(${MYSQLPP_INCLUDE_DIR})
-    set (EXT_LIBS ${EXT_LIBS} ${MYSQLPP_LIBRARIES})
+    set (${PROJECT_NAME}_EXT_LIBS ${${PROJECT_NAME}_EXT_LIBS} ${MYSQLPP_LIBRARIES})
   else(MYSQLPP_FOUND)
     message(STATUS "Using MySQL++: NO")
   endif(MYSQLPP_FOUND)
@@ -132,6 +138,9 @@ set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/config.h
 # ajoute le répertoire de build à la liste des "include_directories"
 # pour que config.h puisse être trouvé
 include_directories ("${PROJECT_BINARY_DIR}")
+
+set(MCCORE_PUBLIC_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/mccore")
+include_directories (${MCCORE_PUBLIC_INCLUDE_DIRS})
 
 # ajoute le sous-répertoire de la librarie pour que le CMakeList.txt soit exécuter
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/lib")
@@ -177,3 +186,8 @@ INCLUDE(CPack)
 
 # enable dashboard scripting
 #include (CTest)
+
+# Expose mccore public includes to other subprojects through cache variable.
+set(${PROJECT_NAME}_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}
+	CACHE INTERNAL "${PROJECT_NAME}: Include Directories" FORCE)
+set(${PROJECT_NAME}_LIBRARIES ${PACKAGE_NAME} CACHE INTERNAL "${PROJECT_NAME}: Library")
