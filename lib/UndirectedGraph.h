@@ -28,6 +28,7 @@
 
 #include <algorithm>
 #include <functional>
+#include <iterator>
 #include <limits>
 #include <list>
 #include <set>
@@ -831,7 +832,7 @@ namespace mccore
 	      // Reduce candidate
 	      for (cIt = candidate.begin (), mIt = row->begin (); candidate.end () != cIt; ++cIt, ++mIt)
 		{
-		  *cIt = *cIt xor *mIt;
+			*cIt = *cIt ^ *mIt;
 		}
 	      continue;
 	    }
@@ -903,7 +904,7 @@ namespace mccore
      */
     void internalUnionMinimumCycleBases (vector< Path< label, size_type > > &CR) const
     {
-      const size_type MAXUIVALUE = numeric_limits< size_type >::max ();
+      const size_type MAXUIVALUE = std::numeric_limits< size_type >::max ();
       label r;
       vector< Cycle< label, size_type > > prototypes;
       typename vector< Cycle< label, size_type > >::iterator protIt;
