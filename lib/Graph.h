@@ -625,7 +625,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    V& internalGetVertex (Graph::label l) throw (NoSuchElementException)
+    V& internalGetVertex (label l) throw (NoSuchElementException)
     {
       if (vertices.size () <= l)
 	{
@@ -641,7 +641,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    const V& internalGetVertex (Graph::label l) const throw (NoSuchElementException)
+    const V& internalGetVertex (label l) const throw (NoSuchElementException)
     {
       if (vertices.size () <= l)
 	{
@@ -657,7 +657,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    VW& internalGetVertexWeight (Graph::label l) throw (NoSuchElementException)
+    VW& internalGetVertexWeight (label l) throw (NoSuchElementException)
     {
       if (vertexWeights.size () <= l)
 	{
@@ -673,7 +673,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    const VW& internalGetVertexWeight (Graph::label l) const throw (NoSuchElementException)
+    const VW& internalGetVertexWeight (label l) const throw (NoSuchElementException)
     {
       if (vertexWeights.size () <= l)
 	{
@@ -689,7 +689,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    void internalSetVertexWeight (Graph::label l, const VW &w) throw (NoSuchElementException)
+    void internalSetVertexWeight (label l, const VW &w) throw (NoSuchElementException)
     {
       if (vertexWeights.size () <= l)
 	{
@@ -705,7 +705,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    E& internalGetEdge (Graph::edge_label l) throw (NoSuchElementException)
+    E& internalGetEdge (edge_label l) throw (NoSuchElementException)
     {
       if (edges.size () <= l)
 	{
@@ -721,7 +721,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    const E& internalGetEdge (Graph::edge_label l) const throw (NoSuchElementException)
+    const E& internalGetEdge (edge_label l) const throw (NoSuchElementException)
     {
       if (edges.size () <= l)
 	{
@@ -738,7 +738,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    const E& internalGetEdge (Graph::label h, Graph::label t) const throw (NoSuchElementException)
+    const E& internalGetEdge (label h, label t) const throw (NoSuchElementException)
     {
       typename EV2ELabel::const_iterator evit;
       EndVertices ev (h, t);
@@ -782,7 +782,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * labels or the vertices are not connected.
      */
-    EW& internalGetEdgeWeight (Graph::label h, Graph::label t) throw (NoSuchElementException)
+    EW& internalGetEdgeWeight (label h, label t) throw (NoSuchElementException)
     {
       typename EV2ELabel::iterator evit;
       EndVertices ev (h, t);
@@ -804,7 +804,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * labels or the vertices are not connected.
      */
-    const EW& internalGetEdgeWeight (Graph::label h, Graph::label t) const throw (NoSuchElementException)
+    const EW& internalGetEdgeWeight (label h, label t) const throw (NoSuchElementException)
     {
       typename EV2ELabel::const_iterator evit;
       EndVertices ev (h, t);
@@ -825,7 +825,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    EW& internalGetEdgeWeight (Graph::edge_label l) throw (NoSuchElementException)
+    EW& internalGetEdgeWeight (edge_label l) throw (NoSuchElementException)
     {
       if (edgeWeights.size () <= l)
 	{
@@ -841,7 +841,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    const EW& internalGetEdgeWeight (Graph::edge_label l) const throw (NoSuchElementException)
+    const EW& internalGetEdgeWeight (edge_label l) const throw (NoSuchElementException)
     {
       if (edgeWeights.size () <= l)
 	{
@@ -858,7 +858,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * labels or the vertices are not connected.
      */
-    void internalSetEdgeWeight (Graph::label h, Graph::label t, const EW w) throw (NoSuchElementException)
+    void internalSetEdgeWeight (label h, label t, const EW w) throw (NoSuchElementException)
     {
       typename EV2ELabel::iterator evit;
       EndVertices ev (h, t);
@@ -877,7 +877,7 @@ namespace mccore
      * @param l the vertex label to find.
      * @return whether the label is within the range of vertices.
      */
-    bool internalContains (Graph::label l) const
+    bool internalContains (label l) const
     {
       return vertices.size () > l;
     }
@@ -888,7 +888,7 @@ namespace mccore
      * @param t the tail label of the edge.
      * @return true if there exists an edge between vertices h and t.
      */
-    bool internalAreConnected (Graph::label h, Graph::label t) const
+    bool internalAreConnected (label h, label t) const
     {
       if (vertices.size () > h
 	  && vertices.size () > t)
@@ -1135,7 +1135,7 @@ namespace mccore
      * @param e the edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool uncheckedInternalConnect (Graph::label h, Graph::label t, const E &e) = 0;
+    virtual bool uncheckedInternalConnect (label h, label t, const E &e) = 0;
     
     /**
      * Connects two vertices of the graph with an edge and weight.  No check
@@ -1146,7 +1146,7 @@ namespace mccore
      * @param w the weight of this edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool uncheckedInternalConnect (Graph::label h, Graph::label t, const E &e, const EW &w) = 0;
+    virtual bool uncheckedInternalConnect (label h, label t, const E &e, const EW &w) = 0;
     
   public:
     
@@ -1194,7 +1194,7 @@ namespace mccore
      * @param e the edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool internalConnect (Graph::label h, Graph::label t, const E &e)
+    virtual bool internalConnect (label h, label t, const E &e)
     {
       return (vertices.size () > h && vertices.size () > t
 	      ? uncheckedInternalConnect (h, t, e)
@@ -1209,7 +1209,7 @@ namespace mccore
      * @param w the weight of this edge.
      * @return true if the connect operation succeeded.
      */
-    virtual bool internalConnect (Graph::label h, Graph::label t, const E &e, const EW &w)
+    virtual bool internalConnect (label h, label t, const E &e, const EW &w)
     {
       return (vertices.size () > h && vertices.size () > t
 	      ? uncheckedInternalConnect (h, t, e, w)
@@ -1225,7 +1225,7 @@ namespace mccore
      * @param t the tail vertex of the edge.
      * @return true if the vertices were disconnected.
      */
-    virtual bool uncheckedInternalDisconnect (Graph::label h, Graph::label t) = 0;
+    virtual bool uncheckedInternalDisconnect (label h, label t) = 0;
     
   public:
     
@@ -1252,7 +1252,7 @@ namespace mccore
      * @param t the tail vertex of the edge.
      * @return true if the vertices were disconnected.
      */
-    bool internalDisconnect (Graph::label h, Graph::label t)
+    bool internalDisconnect (label h, label t)
     {
       return (vertices.size () > h && vertices.size () > t
 	      ? uncheckedInternalDisconnect (h, t)
