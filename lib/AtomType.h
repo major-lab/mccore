@@ -64,9 +64,8 @@ namespace mccore
   {
     /**
      * Container for string to type associations.
-     * TODO : replace by std::unique_ptr when a C++2011 compiler is available
      */
-    static std::auto_ptr<AtomTypeStore> atstore;
+    static std::unique_ptr<AtomTypeStore> atstore;
 
     /**
      * The type key string.

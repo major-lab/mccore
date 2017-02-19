@@ -36,7 +36,7 @@
 namespace mccore
 {
 
-  std::auto_ptr<ResidueTypeStore> ResidueType::rtstore(new ResidueTypeStore());
+  std::unique_ptr<ResidueTypeStore> ResidueType::rtstore(new ResidueTypeStore());
 
   const ResidueType* ResidueType::rResidue = 0;
   const ResidueType* ResidueType::rNull = 0;
