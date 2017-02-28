@@ -61,7 +61,7 @@ namespace mccore
     /**
      * Container for string to type associations.
      */
-	  static std::auto_ptr<ResidueTypeStore> rtstore;
+	  static std::unique_ptr<ResidueTypeStore> rtstore;
 
     /**
      * The type key string.

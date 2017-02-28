@@ -454,7 +454,7 @@ namespace mccore
 		  Path< V, EW > &tmp = lst.back ();
 
 		  tmp.push_back (*neighborsIt);
-		  tmp.setValue (tmp.getValue () + getEdgeWeight (endNode, *neighborsIt));
+		  tmp.setValue (tmp.getValue () + this->getEdgeWeight (endNode, *neighborsIt));
 		}
 	    }
 	  lst.pop_front ();
@@ -474,11 +474,11 @@ namespace mccore
       typename Path< V, EW >::reverse_iterator lit;
       
       fit = p.rbegin ();
-      insert (*fit);
+      this->insert (*fit);
       for (lit = fit++; p.rend () != fit; ++fit, ++lit)
 	{
-	  insert (*fit);
-	  if (! areConnected (*lit, *fit))
+	  this->insert (*fit);
+	  if (! this->areConnected (*lit, *fit))
 	    {
 	      super::connect (*lit, *fit, true, val);
 	    }

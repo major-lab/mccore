@@ -193,7 +193,7 @@ namespace mccore
      */
     void preFlowPush (const V &source, const V &sink)
     {
-      if (contains (source) && contains (sink))
+      if (this->contains (source) && this->contains (sink))
 	{
 	  label sourceid;
 	  label sinkid;
@@ -205,8 +205,8 @@ namespace mccore
 	  list< label > neighborhood;
 	  typename list< label >:: iterator it;
 
-	  sourceid = getVertexLabel (source);
-	  sinkid = getVertexLabel (sink);
+	  sourceid = this->getVertexLabel (source);
+	  sinkid = this->getVertexLabel (sink);
       
 	  // Compute the initial distance labels
 	  labels.insert (labels.end (), this->size (), numeric_limits< int >::max ());
@@ -223,8 +223,8 @@ namespace mccore
 	      list < label > tmp;
 
 	      distance = labels[q.front ()] + 1;
-	      neighborhood = internalOutNeighborhood (q.front ());
-	      tmp = internalInNeighborhood (q.front ());
+	      neighborhood = this->internalOutNeighborhood (q.front ());
+	      tmp = this->internalInNeighborhood (q.front ());
 	      neighborhood.insert (neighborhood.end (), tmp.begin (), tmp.end ());
 	      for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
 		{
@@ -240,11 +240,11 @@ namespace mccore
 	  gOut (5) << "Labels " << labels << endl;
 
 	  // Flood from the source
-	  neighborhood = internalOutNeighborhood (sourceid);
+	  neighborhood = this->internalOutNeighborhood (sourceid);
 	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
 	    {
-	      internalSetEdgeWeight (sourceid, *it, internalGetEdge (sourceid, *it).getValue ());
-	      excess[*it] = internalGetEdgeWeight (sourceid, *it);
+	      this->internalSetEdgeWeight (sourceid, *it, this->internalGetEdge (sourceid, *it).getValue ());
+	      excess[*it] = this->internalGetEdgeWeight (sourceid, *it);
 	      excess[sourceid] -= excess[*it];
 	      active.push_back (*it);
 	    }
@@ -287,14 +287,14 @@ namespace mccore
 	  vector< float > cap;
 	  float eq;
 
-	  neighborhood = internalOutNeighborhood (front);
+	  neighborhood = this->internalOutNeighborhood (front);
 	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
 	    {
 	      if (labels[*it] > labels[front]
-		  && internalGetEdgeWeight (front, *it) < internalGetEdge (front, *it).getValue ())
+		  && this->internalGetEdgeWeight (front, *it) < this->internalGetEdge (front, *it).getValue ())
 		{
-		  cap.push_back (internalGetEdge (front, *it).getValue ()
-				 - internalGetEdgeWeight (front, *it));
+		  cap.push_back (this->internalGetEdge (front, *it).getValue ()
+				 - this->internalGetEdgeWeight (front, *it));
 		}
 	    }
 	  eq = equilibrateFlow (cap, excess[front]);
@@ -302,16 +302,16 @@ namespace mccore
 	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
 	    {
 	      if (labels[*it] > labels[front]
-		  && internalGetEdgeWeight (front, *it) < internalGetEdge (front, *it).getValue ())
+		  && this->internalGetEdgeWeight (front, *it) < this->internalGetEdge (front, *it).getValue ())
 		{
 		  float push_delta;
 
-		  push_delta = min (eq, internalGetEdge (front, *it).getValue () - internalGetEdgeWeight (front, *it));
+		  push_delta = min (eq, this->internalGetEdge (front, *it).getValue () - this->internalGetEdgeWeight (front, *it));
 		  
 		  gOut (5) << "Pushing " << push_delta << " from " << front
 			   << " to " << *it << endl;
 		  
-		  internalSetEdgeWeight (front, *it, internalGetEdgeWeight (front, *it) + push_delta);
+		  this->internalSetEdgeWeight (front, *it, this->internalGetEdgeWeight (front, *it) + push_delta);
 		  excess[front] -= push_delta;
 		  if (fabs (excess[front]) < 1e-5)
 		    {
@@ -334,13 +334,13 @@ namespace mccore
 	  vector< float > cap;
 	  float eq;
 
-	  neighborhood = internalInNeighborhood (front);
+	  neighborhood = this->internalInNeighborhood (front);
 	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
 	    {
 	      if (labels[*it] > labels[front]
-		  && 0 < internalGetEdgeWeight (*it, front))
+		  && 0 < this->internalGetEdgeWeight (*it, front))
 		{
-		  cap.push_back (internalGetEdgeWeight (*it, front));
+		  cap.push_back (this->internalGetEdgeWeight (*it, front));
 		}
 	    }
 	  eq = equilibrateFlow (cap, excess[front]);
@@ -348,16 +348,16 @@ namespace mccore
 	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
 	    {
 	      if (labels[*it] > labels[front]
-		  && 0 < internalGetEdgeWeight (*it, front))
+		  && 0 < this->internalGetEdgeWeight (*it, front))
 		{
 		  float push_delta;
 
-		  push_delta = min (eq, internalGetEdgeWeight (*it, front));
+		  push_delta = min (eq, this->internalGetEdgeWeight (*it, front));
 		  
 		  gOut (5) << "Pushing back " << push_delta << " from " << front
 			   << " to " << *it << endl;
 		  
-		  internalSetEdgeWeight (*it, front, internalGetEdgeWeight (*it, front) - push_delta);
+		  this->internalSetEdgeWeight (*it, front, this->internalGetEdgeWeight (*it, front) - push_delta);
 		  excess[front] -= push_delta;
 		  if (fabs (excess[front]) < 1e-5)
 		    {
@@ -381,28 +381,28 @@ namespace mccore
 
 	  gOut (5) << "Residual" << endl;
 	  max_dist = -2 * this->size ();
-	  neighborhood = internalOutNeighborhood (front);
+	  neighborhood = this->internalOutNeighborhood (front);
 	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
 	    {
-	      if (0 < internalGetEdge (front, *it).getValue () - internalGetEdgeWeight (front, *it)
+	      if (0 < this->internalGetEdge (front, *it).getValue () - this->internalGetEdgeWeight (front, *it)
 		  && labels[*it] > max_dist)
 		{
 		  max_dist = labels[*it];
 		  gOut (5) << "  max_dist forward residual = " 
-			   << internalGetEdgeWeight (front, *it) - internalGetEdgeWeight (front, *it)
+			   << this->internalGetEdgeWeight (front, *it) - this->internalGetEdgeWeight (front, *it)
 			   << endl;
 		}
 	    }
 
-	  neighborhood = internalInNeighborhood (front);
+	  neighborhood = this->internalInNeighborhood (front);
 	  for (it = neighborhood.begin (); neighborhood.end () != it; ++it)
 	    {
-	      if (0 < internalGetEdgeWeight (*it, front)
+	      if (0 < this->internalGetEdgeWeight (*it, front)
 		  && labels[*it] > max_dist)
 		{
 		  max_dist = labels[*it];
 		  gOut (5) << "  max_dist back residual = " 
-			   << internalGetEdgeWeight (*it, front) << endl;
+			   << this->internalGetEdgeWeight (*it, front) << endl;
 		}
 	    }
 

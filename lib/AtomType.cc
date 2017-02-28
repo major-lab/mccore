@@ -36,7 +36,7 @@
 
 namespace mccore
 {
-  std::auto_ptr<AtomTypeStore> AtomType::atstore(new AtomTypeStore());
+  std::unique_ptr<AtomTypeStore> AtomType::atstore(new AtomTypeStore());
   const AtomType* AtomType::aNull = 0;
   const AtomType* AtomType::aUnknown = 0;
   const AtomType* AtomType::aC1p = 0;

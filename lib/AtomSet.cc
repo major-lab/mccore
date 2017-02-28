@@ -130,8 +130,9 @@ namespace mccore {
   AtomSet*
   AtomSet::create (const char* str)
   {
-    unsigned int i, sz = strlen (str);
-    char lstr[sz + 1];
+	  unsigned int i;
+	  size_t sz = strlen(str);
+	  char* lstr = reinterpret_cast<char*>(alloca(sz + 1));
 
     for (i = 0; i < sz; ++i)
       lstr[i] = tolower (str[i]);

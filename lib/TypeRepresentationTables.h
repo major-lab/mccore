@@ -95,7 +95,7 @@ namespace mccore
     {
       pair< typename map< string, const T* >::iterator, bool > inserted;
 
-      inserted = typeTable.insert (make_pair< string, const T*> (str, 0));
+      inserted = typeTable.insert (std::pair< string, const T*> (str, 0));
       if (inserted.second)
 	{
 	  const T *type;
@@ -103,7 +103,7 @@ namespace mccore
 
 	  type = T::parseType (str);
 	  inserted.first->second = type;
-	  p = make_pair< const T*, string > (type, str);
+	  p = std::pair< const T*, string > (type, str);
 	  representationTable.insert (p);
 	}
       return inserted.first->second;

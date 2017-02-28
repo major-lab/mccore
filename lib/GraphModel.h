@@ -1,23 +1,23 @@
-//                              -*- Mode: C++ -*- 
+//                              -*- Mode: C++ -*-
 // GraphModel.h
 // Copyright © 2004-06 Laboratoire de Biologie Informatique et Théorique
 //                     Université de Montréal.
 // Author           : Martin Larose <larosem@iro.umontreal.ca>
 // Created On       : Thu Dec  9 19:31:01 2004
 // $Revision: 1.17 $
-// 
+//
 // This file is part of mccore.
-// 
+//
 // mccore is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
 // License as published by the Free Software Foundation; either
 // version 2.1 of the License, or (at your option) any later version.
-// 
+//
 // mccore is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 // Lesser General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Lesser General Public
 // License along with mccore; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -47,8 +47,8 @@ namespace mccore
   class ResidueFactoryMethod;
   class ResidueType;
 
-  
-  
+
+
   /**
    * The GraphModel class is a graph container for Residue pointers as
    * vertices and Relation pointers as edges.  It uses the AbstractModel
@@ -61,9 +61,9 @@ namespace mccore
   {
 
   protected:
-    
+
     typedef OrientedGraph< Residue*, Relation*, int, int, less_deref< Residue > > graphsuper;
-    
+
   public:
 
     typedef AbstractModel::iterator iterator;
@@ -76,7 +76,7 @@ namespace mccore
     typedef int edge_weight;
 
   protected:
-    
+
     typedef graphsuper::V2VLabel V2VLabel;
     typedef graphsuper::EV2ELabel EV2ELabel;
     typedef graphsuper::EndVertices EndVertices;
@@ -89,7 +89,7 @@ namespace mccore
     bool annotated;
 
   public:
-    
+
     /**
      * Initializes the object.
      * @param fm the residue factory methods that will instanciate new
@@ -136,7 +136,7 @@ namespace mccore
     // OPERATORS ------------------------------------------------------------
 
   public:
-    
+
     /**
      * Assigns the object with the right's content (deep copy).
      * @param right the object to copy.
@@ -249,7 +249,7 @@ namespace mccore
     virtual bool insert (const Residue *&v, const int &w) { return false; }
 
   public:
-    
+
     /**
      * Inserts a residue at the end.  The annotated flag is turned to false.
      * @param res the residue to insert.
@@ -259,7 +259,7 @@ namespace mccore
     {
       return insert (res, 0);
     }
-    
+
     /**
      * Inserts a residue at the end.  The annotated flag is turned to false.
      * @param res the residue to insert.
@@ -267,12 +267,12 @@ namespace mccore
      * @return the position where the residue was inserted.
      */
     virtual iterator insert (const Residue &res, int w);
-      
+
     /**
      * Erases a residue from the model.
      * @param pos the position to erase.
      * @return an iterator on the next residue.
-     */ 
+     */
     virtual iterator erase (AbstractModel::iterator pos);
 
     /**
@@ -298,19 +298,19 @@ namespace mccore
     {
       return AbstractModel::find (id);
     }
-    
+
     /**
      * Sorts the model according to the Residue::operator<.  If the
      * GraphModel is already annotated, it rearrange the adjacency graph.
-     */ 
+     */
     virtual void sort ();
-    
+
     /**
      * Removes the amino acids from the model.  If the
      * GraphModel is already annotated, it rearrange the adjacency graph.
      * The edge order may change.
      */
-    virtual void removeAminoAcid ();    
+    virtual void removeAminoAcid ();
 
     /**
      * Removes the nucleic acids from the model.  If the
@@ -434,13 +434,13 @@ namespace mccore
     }
 
     /**
-     * Removes all of the residues from the model.  
+     * Removes all of the residues from the model.
      */
     virtual void clear ();
 
     /**
      * Annotates the GraphModel.  It builds edges in the graph.
-     * @param asbp Bit mask controlling annotation tasks: adjacency, 
+     * @param asbp Bit mask controlling annotation tasks: adjacency,
      *        stacking, pairing and pairing with backbone (default: all).
      */
     void annotate (unsigned char aspb = Relation::adjacent_mask|Relation::pairing_mask|Relation::stacking_mask|Relation::bhbond_mask);
@@ -448,7 +448,7 @@ namespace mccore
 
     /**
      * Reannotates the GraphModel.
-     * @param asbp Bit mask controlling annotation tasks: adjacency, 
+     * @param asbp Bit mask controlling annotation tasks: adjacency,
      *        stacking, pairing and pairing with backbone (default: all).
      */
     void reannotate (unsigned char aspb = Relation::adjacent_mask|Relation::pairing_mask|Relation::stacking_mask|Relation::bhbond_mask)
@@ -458,7 +458,7 @@ namespace mccore
     }
 
   private:
-    
+
     /**
      * Fills the Molecule with the elements from this identified with the
      * Path vector.
@@ -468,7 +468,7 @@ namespace mccore
     void fillMoleculeWithCycles (Molecule &molecule, const vector< Path< GraphModel::label, GraphModel::size_type > > &cycles) const;
 
   public:
-    
+
     /**
      * Finds a minimum cycle basis from this GraphModel.
      * @param molecule the container to fill with the cycles.
@@ -480,8 +480,8 @@ namespace mccore
      * @param molecule the container to fill with the cycles.
      */
     void unionMinimumCycleBases (Molecule &molecule);
-    
-    
+
+
     // I/O  -----------------------------------------------------------------
 
     /**
@@ -497,7 +497,7 @@ namespace mccore
      * @return the consumed pdb stream.
      */
     virtual iPdbstream& input (iPdbstream &ips);
-  
+
     /**
      * Writes the model to a binary output stream.
      * @param obs the binary data stream.
@@ -531,5 +531,5 @@ namespace mccore
   oBinstream& operator<< (oBinstream &os, const GraphModel &model);
 
 }
-    
+
 #endif
