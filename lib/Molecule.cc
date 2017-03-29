@@ -115,7 +115,7 @@ namespace mccore
   
   
   const string&
-  Molecule::getProperty (const string &key) const throw (NoSuchElementException)
+  Molecule::getProperty (const string &key) const
   {
     map< string, string >::const_iterator it;
 

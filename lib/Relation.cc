@@ -241,7 +241,7 @@ namespace mccore
 
 
   unsigned char
-  Relation::parseAnnotationMask (const string& mask_str) throw (IntLibException)
+  Relation::parseAnnotationMask (const string& mask_str)
   {
     unsigned char bit_mask = 0;
     string::const_iterator it;
@@ -281,7 +281,7 @@ namespace mccore
 
 
   void
-  Relation::reassignResiduePointers (const Residue* target_ref, const Residue* target_res) throw (NoSuchElementException)
+  Relation::reassignResiduePointers (const Residue* target_ref, const Residue* target_res)
   {
     if (*target_ref != *this->ref)
     {
@@ -302,7 +302,7 @@ namespace mccore
 
 
   void
-  Relation::reassignResiduePointers (const set< const Residue*, less_deref< Residue> > &resSet) throw (NoSuchElementException)
+  Relation::reassignResiduePointers (const set< const Residue*, less_deref< Residue> > &resSet)
   {
     set< const Residue* >::iterator refit, resit;
 
@@ -1504,7 +1504,7 @@ namespace mccore
 
 
   iBinstream&
-  Relation::read (iBinstream &is, const map< ResId, const Residue* > &resMap) throw (NoSuchElementException)
+  Relation::read (iBinstream &is, const map< ResId, const Residue* > &resMap)
   {
     ResId id;
     map<ResId, const Residue* >::const_iterator rmIt;

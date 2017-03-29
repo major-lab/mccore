@@ -101,7 +101,6 @@ check_function_exists(isfdtype HAVE_ISFDTYPE)
 
 find_package(ZLIB REQUIRED)
 if (ZLIB_FOUND)
-  message(STATUS "ZLIB library: ${ZLIB_LIBRARIES}")
   include_directories(${ZLIB_INCLUDE_DIRS})
   set (EXT_LIBS ${EXT_LIBS} ${ZLIB_LIBRARIES})
 endif()

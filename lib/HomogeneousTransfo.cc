@@ -58,7 +58,7 @@ namespace mccore
 
   
   float
-  HomogeneousTransfo::elementAt (unsigned i, unsigned j) const throw (ArrayIndexOutOfBoundsException)
+  HomogeneousTransfo::elementAt (unsigned i, unsigned j) const
   {
     // emulate random access ...
     switch (i)

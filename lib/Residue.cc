@@ -1582,7 +1582,7 @@ namespace mccore
 
 
   float
-  Residue::getFuranoseAmplitude () const throw (IntLibException)
+  Residue::getFuranoseAmplitude () const
   {
     try
       {
@@ -1604,7 +1604,7 @@ namespace mccore
 
 
   const PropertyType*
-  Residue::getFuranoseType () const throw (IntLibException, FatalIntLibException)
+  Residue::getFuranoseType () const
   {
     /*
       4 bits unsigned value:

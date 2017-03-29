@@ -113,7 +113,7 @@ namespace mccore
   
   
   Residue&
-  Model::operator[] (size_type nth) throw (ArrayIndexOutOfBoundsException)
+  Model::operator[] (size_type nth)
   {
     if (nth < size ())
       {
@@ -125,7 +125,7 @@ namespace mccore
 
 
   const Residue&
-  Model::operator[] (size_type nth) const throw (ArrayIndexOutOfBoundsException)
+  Model::operator[] (size_type nth) const
   {
     if (nth < size ())
       {

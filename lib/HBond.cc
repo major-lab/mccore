@@ -181,7 +181,7 @@ namespace mccore
 
 
   const Atom& 
-  HBond::getDonor () const throw (NullPointerException)
+  HBond::getDonor () const
   {
     if (resD == 0)
       {
@@ -198,7 +198,7 @@ namespace mccore
   
   
   const Atom&
-  HBond::getHydrogen () const throw (NullPointerException)
+  HBond::getHydrogen () const
   {
     if (resD == 0)
       {
@@ -216,7 +216,7 @@ namespace mccore
 
   
   const Atom&
-  HBond::getAcceptor () const throw (NullPointerException)
+  HBond::getAcceptor () const
   {
     if (resA == 0)
       {
@@ -234,7 +234,7 @@ namespace mccore
 
   
   const Atom&
-  HBond::getLonePair () const throw (NullPointerException)
+  HBond::getLonePair () const
   {
     if (resA == 0)
       {
@@ -252,7 +252,7 @@ namespace mccore
   
   
   void
-  HBond::reassignResiduePointers (const set< const Residue*, less_deref< Residue > > &resSet) throw (NoSuchElementException)
+  HBond::reassignResiduePointers (const set< const Residue*, less_deref< Residue > > &resSet)
   {
     set< const Residue* >::iterator resIt;
 
