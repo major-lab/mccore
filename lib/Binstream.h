@@ -32,7 +32,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <zlib.h>
 
 // TODO : Verify if these files could be only included in 
 // the source file.
@@ -1182,7 +1181,7 @@ namespace mccore
      * @param mode the open mode (default ios_base::out).
      * @param level the compression level for output.
      */
-    ozfBinstream (const char *name, ios_base::openmode mode = ios_base::out, int level = DEFAULT_COMPRESSION_LEVEL)
+    ozfBinstream (const char *name, ios_base::openmode mode = ios_base::out, int level = 1 /* Z_BEST_SPEED */)
       : oBinstream (),
 	buf()
     {
@@ -1214,7 +1213,7 @@ namespace mccore
      * @param mode the open mode (default ios_base::out | ios_base::trunc).
      * @param level the compression level for output (default Z_BEST_SPEED).
      */
-    void open (const char *name, ios_base::openmode mode = ios_base::out | ios_base::trunc, int level = DEFAULT_COMPRESSION_LEVEL)
+    void open (const char *name, ios_base::openmode mode = ios_base::out | ios_base::trunc, int level = 1 /*Z_BEST_SPEED*/)
     {
       if (! buf.open (name, mode | ios_base::out, level))
 	this->setstate (ios::failbit);

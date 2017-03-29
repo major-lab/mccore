@@ -30,7 +30,6 @@
 #include <algorithm>
 #include <fstream>
 #include <string>
-#include <zlib.h>
 
 #include "PdbFileHeader.h"
 #include "ResId.h"
@@ -1292,7 +1291,7 @@ namespace mccore
      * @param mode the ios mode (default = ios_base::out).
      * @param level the compression level (default = Z_BEST_SPEED).
      */
-    ozfPdbstream (const char *name, ios_base::openmode mode = ios_base::out, int level = DEFAULT_COMPRESSION_LEVEL)
+    ozfPdbstream (const char *name, ios_base::openmode mode = ios_base::out, int level = 1 /* Z_BEST_SPEED */)
       : oPdbstream (),
 	buf()
     {
@@ -1325,7 +1324,7 @@ namespace mccore
      * @param mode the ios mode (default = ios_base::out | ios_base::trunc).
      * @param level the compression level (default = Z_BEST_SPEED).
      */
-    void open (const char *name, ios_base::openmode mode = ios_base::out | ios_base::trunc, int level = DEFAULT_COMPRESSION_LEVEL)
+    void open (const char *name, ios_base::openmode mode = ios_base::out | ios_base::trunc, int level = 1 /* Z_BEST_SPEED */)
     {
       if (! buf.open (name, mode | ios_base::out, level))
 	this->setstate (ios::failbit);

@@ -32,6 +32,7 @@
 #ifdef _MSC_VER
 #include <WinSock2.h>
 #endif
+#include <zlib.h>
 
 namespace mccore
 {
@@ -516,5 +517,6 @@ namespace mccore
   {
 	  return htonl(data);
   }
+
   
 }

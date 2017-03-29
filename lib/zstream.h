@@ -27,11 +27,8 @@
 #define _mccore_zstream_h_
 
 #include <iostream>
-#include <zlib.h>
 
 using namespace std;
-
-
 
 namespace mccore
 {
@@ -48,7 +45,7 @@ namespace mccore
     /**
      * The compressed file pointer used in gzread, gzwrite, etc.
      */
-    gzFile file;
+    struct gzFile_s *file;
     
     /**
      * The size of the input/output buffer. 
@@ -94,7 +91,7 @@ namespace mccore
      * @param level the compression level (default Z_BEST_SPEED).
      * @return itself if the operation went successfull, 0 otherwise.
      */
-    zstreambuf* open (const char* name, int mode, int level = Z_BEST_SPEED);
+    zstreambuf* open (const char* name, int mode, int level = 1 /* Z_BEST_SPEED */);
     
     /**
      * Closes the zipped files.  The buffer is first synched so that the
@@ -239,7 +236,7 @@ namespace mccore
      * @param mode the file mode.
      * @param level the compression level (default Z_BEST_SPEED).
      */
-    ozfstream (const char* name, int mode = ios::out, int level = Z_BEST_SPEED)
+    ozfstream (const char* name, int mode = ios::out, int level = 1 /* Z_BEST_SPEED*/)
       : ostream (0),
 	buf ()
     {
@@ -265,7 +262,7 @@ namespace mccore
      * @param mode the file mode.
      * @param level the compression level (default Z_BEST_SPEED).
      */
-    void open (const char* name, int mode = ios::out | ios::trunc, int level = Z_BEST_SPEED)
+    void open (const char* name, int mode = ios::out | ios::trunc, int level = 1 /* Z_BEST_SPEED*/)
     {
       if (! buf.open (name, mode | ios::out, level))
 	this->setstate (ios::failbit);
