@@ -35,7 +35,11 @@
 
 using namespace std;
 
-
+#ifdef _MSC_VER
+// Disable some warnings for visual C
+#pragma warning(push)
+#pragma warning(disable: 4100) // Unreferenced formal parameter
+#endif
 
 namespace mccore
 {
@@ -221,7 +225,7 @@ namespace mccore
      * @return the truth value of the test.
      */
     virtual bool describe (const AtomType *t) const {
-      return dynamic_cast< const AtomType* > (t);
+      return (nullptr != dynamic_cast< const AtomType* > (t));
     }
     
     /**
@@ -364,7 +368,7 @@ namespace mccore
      * @return the Vector3D color in RGB format.
      */
     virtual Vector3D getColor () const {
-      return Vector3D (0.10, 0.10, 0.10);
+      return Vector3D (0.10f, 0.10f, 0.10f);
     }
     
     // I/O ---------------------------------------------------------------------
@@ -620,5 +624,9 @@ namespace std
   ostream &operator<< (ostream &out, const mccore::AtomType *a);
 
 }
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 #endif

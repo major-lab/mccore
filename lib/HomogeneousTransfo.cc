@@ -36,7 +36,7 @@
 namespace mccore 
 {
 
-  const float HomogeneousTransfo::alpha_square = 6.927424;
+  const float HomogeneousTransfo::alpha_square = 6.927424f;
 
 #define sgn( x ) ( ( ( x ) >= 0.0f ) ? +1 : -1 )
 

@@ -24,7 +24,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 // cmake generated defines
-#include <config.h>
+#include "config.h"
 
 #include <algorithm>
 #include <string.h>
@@ -107,7 +107,7 @@ namespace mccore
   
 
   AbstractModel::iterator
-  AbstractModel::safeFind (const ResId &id) throw (NoSuchElementException)
+  AbstractModel::safeFind (const ResId &id)
   {
     iterator it;
 
@@ -124,7 +124,7 @@ namespace mccore
 
 
   AbstractModel::const_iterator
-  AbstractModel::safeFind (const ResId &id) const throw (NoSuchElementException)
+  AbstractModel::safeFind (const ResId &id) const
   {
     const_iterator it;
 

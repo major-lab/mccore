@@ -240,7 +240,7 @@ namespace mccore
      */
     virtual bool describe (const ResidueType *t) const
     {
-      return dynamic_cast< const ResidueType* > (t);
+      return nullptr != dynamic_cast< const ResidueType* > (t);
     }
 
     /**

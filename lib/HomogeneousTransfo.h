@@ -241,7 +241,7 @@ namespace mccore
      * @return the element[i,j].
      * @throws ArrayIndexOutOfBoundsException
      */
-    float elementAt (unsigned i, unsigned j) const throw (ArrayIndexOutOfBoundsException);
+    float elementAt (unsigned i, unsigned j) const;
 
     /**
      * Gets a transfo containing the rotation part of this transfo.

@@ -53,11 +53,11 @@ namespace mccore
   /**
    * Pairing annotation cutoffs.
    */
-  const float PAIRING_CUTOFF = 0.8;
-  const float TWO_BONDS_CUTOFF = 1.5;
-  const float THREE_BONDS_CUTOFF = 2.1;
+  const float PAIRING_CUTOFF = 0.8f;
+  const float TWO_BONDS_CUTOFF = 1.5f;
+  const float THREE_BONDS_CUTOFF = 2.1f;
   //const float HBOND_DIST_MAX = 4;
-  const float HBOND_DIST_MAX = 1.7;
+  const float HBOND_DIST_MAX = 1.7f;
 
   /**
    * Other annotation cutoffs, respectively:
@@ -67,10 +67,10 @@ namespace mccore
    * - nitrogen base plane tilt cutoff for a stacking (radian).
    * - nitrogen base plane overlap cutoff for a stacking (radian).
    */
-  const float gc_adjacency_distance_cutoff_square = 4.00;  // 2.0 Ang
-  const float gc_stack_distance_cutoff_square     = 20.25; // 4.5 Ang
-  const float gc_stack_tilt_cutoff                = 0.61;  // 35 deg
-  const float gc_stack_overlap_cutoff             = 0.61;  // 35 deg
+  const float gc_adjacency_distance_cutoff_square = 4.00f;  // 2.0 Ang
+  const float gc_stack_distance_cutoff_square     = 20.25f; // 4.5 Ang
+  const float gc_stack_tilt_cutoff                = 0.61f;  // 35 deg
+  const float gc_stack_overlap_cutoff             = 0.61f;  // 35 deg
 
   // STATIC MEMBER  ---------------------------------------------------------
 
@@ -949,10 +949,10 @@ namespace mccore
 		   ((*(res.safeFind (AtomType::aC5)) - center) * -0.5) +
 		   ((*(res.safeFind (AtomType::aC6)) - center) * 0.5));
 
-    Vector3D r2 = (((*(res.safeFind (AtomType::aC2)) - center) * 0.8660254) +
-		   ((*(res.safeFind (AtomType::aN3)) - center) * 0.8660254) +
-		   ((*(res.safeFind (AtomType::aC5)) - center) * -0.8660254) +
-		   ((*(res.safeFind (AtomType::aC6)) - center) * -0.8660254));
+    Vector3D r2 = (((*(res.safeFind (AtomType::aC2)) - center) * 0.8660254f) +
+		   ((*(res.safeFind (AtomType::aN3)) - center) * 0.8660254f) +
+		   ((*(res.safeFind (AtomType::aC5)) - center) * -0.8660254f) +
+		   ((*(res.safeFind (AtomType::aC6)) - center) * -0.8660254f));
 
     if (res.getType ()->isPurine ())
       return -(r1.cross (r2).normalize ());
@@ -965,15 +965,15 @@ namespace mccore
   Relation::_imidazole_ring_normal (const Residue& res, const Vector3D& center)
   {
     Vector3D r1 = (((*(res.safeFind (AtomType::aC4)) - center) * 1) +
-		   ((*(res.safeFind (AtomType::aC5)) - center) * 0.30901699) +
-		   ((*(res.safeFind (AtomType::aN7)) - center) * -0.80901699) +
-		   ((*(res.safeFind (AtomType::aC8)) - center) * -0.80901699) +
-		   ((*(res.safeFind (AtomType::aN9)) - center) * 0.30901699));
+		   ((*(res.safeFind (AtomType::aC5)) - center) * 0.30901699f) +
+		   ((*(res.safeFind (AtomType::aN7)) - center) * -0.80901699f) +
+		   ((*(res.safeFind (AtomType::aC8)) - center) * -0.80901699f) +
+		   ((*(res.safeFind (AtomType::aN9)) - center) * 0.30901699f));
 
-    Vector3D r2 = (((*(res.safeFind (AtomType::aC5)) - center) * 0.95105652) +
-		   ((*(res.safeFind (AtomType::aN7)) - center) * 0.58778525) +
-		   ((*(res.safeFind (AtomType::aC8)) - center) * -0.58778525) +
-		   ((*(res.safeFind (AtomType::aN9)) - center) * -0.95105652));
+    Vector3D r2 = (((*(res.safeFind (AtomType::aC5)) - center) * 0.95105652f) +
+		   ((*(res.safeFind (AtomType::aN7)) - center) * 0.58778525f) +
+		   ((*(res.safeFind (AtomType::aC8)) - center) * -0.58778525f) +
+		   ((*(res.safeFind (AtomType::aN9)) - center) * -0.95105652f));
 
     return r1.cross (r2).normalize ();
   }

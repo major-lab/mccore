@@ -32,6 +32,12 @@
 #include "Atom.h"
 #include "AtomType.h"
 
+#ifdef _MSC_VER
+// Disable some warnings for visual C
+#pragma warning(push)
+#pragma warning(disable: 4100) // Unreferenced formal parameter
+#endif
+
 namespace mccore {
 
   class AtomType;
@@ -1210,5 +1216,9 @@ namespace std
   ostream& operator<< (ostream &os, const mccore::AtomSet &as);
 
 }
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 #endif

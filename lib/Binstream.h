@@ -318,7 +318,7 @@ namespace mccore
      * @exception FatalIntLibException
      */
     template< class t16 >
-    iBinstream& read16 (t16& data) throw (FatalIntLibException)
+    iBinstream& read16 (t16& data)
     {
       if (sizeof (data) != 2)
       {
@@ -343,7 +343,7 @@ namespace mccore
      * @exception FatalIntLibException
      */
     template< class t32 >
-    iBinstream& read32 (t32& data) throw (FatalIntLibException)
+    iBinstream& read32 (t32& data)
     {
       if (sizeof (data) != 4)
       {
@@ -368,7 +368,7 @@ namespace mccore
      * @exception FatalIntLibException
      */
     template< class t64 >
-    iBinstream& read64 (t64& data) throw (FatalIntLibException)
+    iBinstream& read64 (t64& data)
     {
       if (sizeof (data) != 8)
       {
@@ -624,7 +624,7 @@ namespace mccore
      * @exception FatalIntLibException
      */
     template< class t16 >
-    oBinstream& write16 (t16 data) throw (FatalIntLibException)
+    oBinstream& write16 (t16 data)
     {
       if (sizeof (data) != 2)
       {
@@ -646,7 +646,7 @@ namespace mccore
      * @exception FatalIntLibException
      */
     template< class t32 >
-    oBinstream& write32 (t32 data) throw (FatalIntLibException)
+    oBinstream& write32 (t32 data)
     {
       if (sizeof (data) != 4)
       {
@@ -1161,7 +1161,7 @@ namespace mccore
      * @param mode the open mode (default ios_base::out).
      * @param level the compression level for output.
      */
-    ozfBinstream (const char *name, ios_base::openmode mode = ios_base::out, int level = Z_BEST_SPEED)
+    ozfBinstream (const char *name, ios_base::openmode mode = ios_base::out, int level = DEFAULT_COMPRESSION_LEVEL)
       : oBinstream (),
 	buf()
     {
@@ -1193,7 +1193,7 @@ namespace mccore
      * @param mode the open mode (default ios_base::out | ios_base::trunc).
      * @param level the compression level for output (default Z_BEST_SPEED).
      */
-    void open (const char *name, ios_base::openmode mode = ios_base::out | ios_base::trunc, int level = Z_BEST_SPEED)
+    void open (const char *name, ios_base::openmode mode = ios_base::out | ios_base::trunc, int level = DEFAULT_COMPRESSION_LEVEL)
     {
       if (! buf.open (name, mode | ios_base::out, level))
 	this->setstate (ios::failbit);

@@ -206,7 +206,7 @@ namespace mccore
   const AtomType* AtomType::aCM1 = 0;
 
   
-  AtomType::AtomType (const AtomType &other)
+  AtomType::AtomType (const AtomType &)
   {
     FatalIntLibException ex ("", __FILE__, __LINE__);
     ex << "Use of copy constructor for class AtomType is prohibited.";

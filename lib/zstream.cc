@@ -25,6 +25,8 @@
 // cmake generated defines
 #include <config.h>
 
+#include <zlib.h>
+
 #include <cstdio>
 #include <cstring>
 

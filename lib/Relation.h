@@ -320,8 +320,8 @@ namespace mccore
      * @exception NoSuchElementException is thrown when ref or res is not found
      * in resSet.
      */
-    void reassignResiduePointers (const Residue* target_ref, const Residue* target_res) throw (NoSuchElementException);
-    void reassignResiduePointers (const set< const Residue*, less_deref< Residue > > &resSet) throw (NoSuchElementException);
+    void reassignResiduePointers (const Residue* target_ref, const Residue* target_res);
+    void reassignResiduePointers (const set< const Residue*, less_deref< Residue > > &resSet);
   private:
     void _reassignResiduePointers (const Residue* target_ref, const Residue* target_res);
   public:
@@ -346,26 +346,26 @@ namespace mccore
      * Tells is the annotated relation is from the adjacent family.
      * @return true only if the annotated relation is from the adjacent family.
      */
-    bool isAdjacent () const { return type_aspb & Relation::adjacent_mask; }
+    bool isAdjacent () const { return 0 != (type_aspb & Relation::adjacent_mask); }
 
     /**
      * Tells is the annotated relation is from the stacking family.
      * Return true only if the annotated relation is from the stacking family.
      */
-    bool isStacking () const { return type_aspb & Relation::stacking_mask; }
+    bool isStacking () const { return 0 != (type_aspb & Relation::stacking_mask); }
 
     /**
      * Tells is the annotated relation is from the pairing family.
      * @return true only if the annotated relation is from the pairing family.
      */
-    bool isPairing () const { return type_aspb & Relation::pairing_mask; }
+    bool isPairing () const { return 0 != (type_aspb & Relation::pairing_mask); }
     
    /**
      * Tells is the annotated relation is from the hbond family.
      * @return true only if the annotated relation is from the hydrogen bond
      * family.
      */
-    bool isBHbond () const { return type_aspb & Relation::bhbond_mask; }
+    bool isBHbond () const { return 0 != (type_aspb & Relation::bhbond_mask); }
 
     /**
      * Parse an annotation mask string into a bitmask. The string is
@@ -383,7 +383,7 @@ namespace mccore
      * @return The parsed annotation bitmask.
      * @exception IntLibException
      */
-    static unsigned char parseAnnotationMask (const string& mask_str) throw (IntLibException);
+    static unsigned char parseAnnotationMask (const string& mask_str);
 
     /**
      * Resets the relation's annotation data and set it up from two new residues.
@@ -575,7 +575,7 @@ namespace mccore
      * @exception NoSuchElementException is thrown when ref or res is not found
      * within resMap.
      */
-    virtual iBinstream& read (iBinstream &is, const map< ResId, const Residue* > &resMap) throw (NoSuchElementException);
+    virtual iBinstream& read (iBinstream &is, const map< ResId, const Residue* > &resMap);
     
     /**
      * Writes the relation to a binary stream.

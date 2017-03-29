@@ -1292,7 +1292,7 @@ namespace mccore
      * @param mode the ios mode (default = ios_base::out).
      * @param level the compression level (default = Z_BEST_SPEED).
      */
-    ozfPdbstream (const char *name, ios_base::openmode mode = ios_base::out, int level = Z_BEST_SPEED)
+    ozfPdbstream (const char *name, ios_base::openmode mode = ios_base::out, int level = DEFAULT_COMPRESSION_LEVEL)
       : oPdbstream (),
 	buf()
     {
@@ -1325,7 +1325,7 @@ namespace mccore
      * @param mode the ios mode (default = ios_base::out | ios_base::trunc).
      * @param level the compression level (default = Z_BEST_SPEED).
      */
-    void open (const char *name, ios_base::openmode mode = ios_base::out | ios_base::trunc, int level = Z_BEST_SPEED)
+    void open (const char *name, ios_base::openmode mode = ios_base::out | ios_base::trunc, int level = DEFAULT_COMPRESSION_LEVEL)
     {
       if (! buf.open (name, mode | ios_base::out, level))
 	this->setstate (ios::failbit);

@@ -155,7 +155,7 @@ namespace mccore
       throw ex;
     }
 
-    li = lli;
+    li = static_cast<long>(lli);
 
     return *this;
   }
@@ -175,7 +175,7 @@ namespace mccore
       throw ex;
     }
 
-    li = lli;
+    li = static_cast<unsigned long>(lli);
 
     return *this;
   }

@@ -63,12 +63,12 @@ endif()
 
 # ajoute la librarie
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-add_library (mccore ${MCCORE_SOURCES_CC})
-set_target_properties(mccore PROPERTIES VERSION ${MCCORE_VERSION_STRING})
-target_link_libraries(mccore ${EXT_LIBS})
+add_library (${PACKAGE_NAME} ${MCCORE_SOURCES_CC})
+set_target_properties(${PACKAGE_NAME} PROPERTIES VERSION ${MCCORE_VERSION_STRING})
+target_link_libraries(${PACKAGE_NAME} ${${PROJECT_NAME}_EXT_LIBS} wsock32 ws2_32)
 
 # ajoute le target d'installation
-install (TARGETS mccore DESTINATION lib${LIB_SUFFIX})
+install (TARGETS ${PACKAGE_NAME} DESTINATION lib${LIB_SUFFIX})
 install(DIRECTORY ./ DESTINATION include/${MCCORE_COMPLETE_PACKAGE_NAME} FILES_MATCHING PATTERN "*.h" PATTERN ".svn" EXCLUDE)
 
 # wrap dans un install(CODE) pour que la commande soit exécuter à l'installation
