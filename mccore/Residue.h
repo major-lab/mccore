@@ -909,7 +909,7 @@ namespace mccore
      * @return furanose's maximal torsion value (rad).
      * @throws IntLibException
      */
-    float getFuranoseAmplitude () const throw (IntLibException);
+    float getFuranoseAmplitude () const;
 
     /**
      * Returns the furanose's type as labeled to the 16 possible stereochemical
@@ -918,7 +918,7 @@ namespace mccore
      * @return furanose's type
      * @throws IntLibException FatalIntLibException
      */
-    const PropertyType* getFuranoseType () const throw (IntLibException, FatalIntLibException);
+    const PropertyType* getFuranoseType () const;
 
     /**
      * Finalizes the residue. Computes the referential's pseudo-atoms.
@@ -1098,7 +1098,7 @@ namespace mccore
      * @return The appropriate nitrogen atom type.
      * @throws TypeException
      */
-    static const AtomType* nitrogenType19 (const ResidueType* rtype) throw (TypeException);
+    static const AtomType* nitrogenType19 (const ResidueType* rtype);
 
     /**
      * Utility method to find appropriate terminus right hand side carbon in
@@ -1108,7 +1108,7 @@ namespace mccore
      * @return The appropriate carbon atom type.
      * @throws TypeException
      */
-    static const AtomType* carbonType24 (const ResidueType* rtype) throw (TypeException);
+    static const AtomType* carbonType24 (const ResidueType* rtype);
 
     /**
      * Utility method to find appropriate terminus left hand side carbon in
@@ -1118,7 +1118,7 @@ namespace mccore
      * @return The appropriate carbon atom type.
      * @throws TypeException
      */
-    static const AtomType* carbonType68 (const ResidueType* rtype) throw (TypeException);
+    static const AtomType* carbonType68 (const ResidueType* rtype);
 
     /**
      * Gets the pucker type associated with the specified pseudorotation (rho) value.
@@ -1141,7 +1141,7 @@ namespace mccore
      * @return The minimal pseudorotation (rho) value (rad).
      * @exception TypeException
      */
-    static float getMinRho (const PropertyType* pucker) throw (TypeException);
+    static float getMinRho (const PropertyType* pucker);
 
     /**
      * Gets the maximal range of pseudorotation (rho) values associated with the specified pucker type.
@@ -1150,7 +1150,7 @@ namespace mccore
      * @return The maximal pseudorotation (rho) value (rad).
      * @exception TypeException
      */
-    static float getMaxRho (const PropertyType* pucker) throw (TypeException);
+    static float getMaxRho (const PropertyType* pucker);
 
     /**
      * Gets the minimal range of glycosyl torsion (chi) values associated with the specified glycosyl torsion type.
@@ -1159,7 +1159,7 @@ namespace mccore
      * @return The minimal glycosyl torsion (chi) value (rad).
      * @exception TypeException
      */
-    static float getMinChi (const PropertyType* glycosyl) throw (TypeException);
+    static float getMinChi (const PropertyType* glycosyl);
 
     /**
      * Gets the maximal range of glycosyl torsion (chi) values associated with the specified glycosyl torsion type.
@@ -1168,7 +1168,7 @@ namespace mccore
      * @return The maximal glycosyl torsion (chi) value (rad).
      * @exception TypeException
      */
-    static float getMaxChi (const PropertyType* glycosyl) throw (TypeException);
+    static float getMaxChi (const PropertyType* glycosyl);
 
     // INTERNAL METHODS ------------------------------------------------------
 

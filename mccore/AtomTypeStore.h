@@ -32,7 +32,15 @@
 
 using namespace std;
 
+#ifdef _MSC_VER
+// Disable some warnings for visual C
+#pragma warning(push)
 
+// This file relies heavily on multiple inheritence and dominance mechanism 
+// and would require an important reword to avoid the warning.
+#pragma warning(disable: 4250) // Disable the warning about dominance
+#pragma warning(disable: 4100) // Unreferenced formal parameter
+#endif
 
 namespace mccore
 {
@@ -97,7 +105,7 @@ namespace mccore
       
       virtual bool isNull () const { return true; }
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const Null* > (t);
+	return nullptr != dynamic_cast< const Null* > (t);
       }
     };
     
@@ -111,7 +119,7 @@ namespace mccore
       
       virtual bool isUnknown () const { return true; }
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const Unknown* > (t);
+	return nullptr != dynamic_cast< const Unknown* > (t);
       }
     };
     
@@ -125,7 +133,7 @@ namespace mccore
 
       virtual bool isAminoAcid () const { return true; }
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AminoAcid* > (t);
+	return nullptr != dynamic_cast< const AminoAcid* > (t);
       }
 
     };
@@ -140,7 +148,7 @@ namespace mccore
 
       virtual bool isNucleicAcid () const { return true; }
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const NucleicAcid* > (t);
+	return nullptr != dynamic_cast< const NucleicAcid* > (t);
       }
 
     };
@@ -155,7 +163,7 @@ namespace mccore
 
       virtual bool isBackbone () const { return true; }
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const Backbone* > (t);
+	return nullptr != dynamic_cast< const Backbone* > (t);
       }
 
 
@@ -172,7 +180,7 @@ namespace mccore
 
       virtual bool isPhosphate () const { return true; }
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const Phosphate* > (t);
+	return nullptr != dynamic_cast< const Phosphate* > (t);
       }
 
 
@@ -189,7 +197,7 @@ namespace mccore
 
       virtual bool isSideChain () const { return true; }
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const SideChain* > (t);
+	return nullptr != dynamic_cast< const SideChain* > (t);
       }
 
 
@@ -206,10 +214,10 @@ namespace mccore
 
       virtual bool isCarbon () const { return true; }
       virtual bool describe (const AtomType* t) const {
-       return dynamic_cast< const Carbon* > (t);
+       return nullptr != dynamic_cast< const Carbon* > (t);
       }
       virtual Vector3D getColor () const {
-	return Vector3D (0.60, 0.60, 0.60);
+	return Vector3D (0.60f, 0.60f, 0.60f);
       }
       
     };
@@ -224,10 +232,10 @@ namespace mccore
 
       virtual bool isHydrogen () const { return true; }
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const Hydrogen* > (t);
+	return nullptr != dynamic_cast< const Hydrogen* > (t);
       }
       virtual Vector3D getColor () const {
-	return Vector3D (1.00, 1.00, 1.00);
+	return Vector3D (1.00f, 1.00f, 1.00f);
       }
       
     };
@@ -242,10 +250,10 @@ namespace mccore
 
       virtual bool isLonePair () const { return true; }
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const LonePair* > (t);
+	return nullptr != dynamic_cast< const LonePair* > (t);
       }
       virtual Vector3D getColor () const {
-	return Vector3D (0.00, 0.80, 0.00);
+	return Vector3D (0.00f, 0.80f, 0.00f);
       }
 
       
@@ -261,10 +269,10 @@ namespace mccore
 
       virtual bool isMagnesium () const { return true; }
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const Magnesium* > (t);
+	return nullptr != dynamic_cast< const Magnesium* > (t);
       }
       virtual Vector3D getColor () const {
-	return Vector3D (0.13, 0.54, 0.13);
+	return Vector3D (0.13f, 0.54f, 0.13f);
       }
       
     };
@@ -279,10 +287,10 @@ namespace mccore
 
       virtual bool isNitrogen () const { return true; }
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const Nitrogen* > (t);
+	return nullptr != dynamic_cast< const Nitrogen* > (t);
       }
       virtual Vector3D getColor () const {
-	return Vector3D (0.20, 0.15, 0.80);
+	return Vector3D (0.20f, 0.15f, 0.80f);
       }
       
     };
@@ -297,10 +305,10 @@ namespace mccore
 
       virtual bool isOxygen () const { return true; }
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const Oxygen* > (t);
+	return nullptr != dynamic_cast< const Oxygen* > (t);
       }
       virtual Vector3D getColor () const {
-	return Vector3D (0.76, 0.00, 0.00);
+	return Vector3D (0.76f, 0.00f, 0.00f);
       }
 
       
@@ -316,10 +324,10 @@ namespace mccore
 
       virtual bool isPhosphorus () const { return true; }
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const Phosphorus* > (t);
+	return nullptr != dynamic_cast< const Phosphorus* > (t);
       }
       virtual Vector3D getColor () const {
-	return Vector3D (0.82, 0.53, 0.00);
+	return Vector3D (0.82f, 0.53f, 0.00f);
       }
 
       
@@ -335,7 +343,7 @@ namespace mccore
 
       virtual bool isPseudo () const { return true; }
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const Pseudo* > (t);
+	return nullptr != dynamic_cast< const Pseudo* > (t);
       }
 
 
@@ -352,10 +360,10 @@ namespace mccore
 
       virtual bool isSulfur () const { return true; }
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const Sulfur* > (t);
+	return nullptr != dynamic_cast< const Sulfur* > (t);
       }
       virtual Vector3D getColor () const {
-	return Vector3D (0.80, 0.80, 0.00);
+	return Vector3D (0.80f, 0.80f, 0.00f);
       }
 
       
@@ -371,7 +379,7 @@ namespace mccore
       AC1p (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AC1p* > (t);
+	return nullptr != dynamic_cast< const AC1p* > (t);
       }
       
       /**
@@ -379,14 +387,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
       
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1094.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094f; }
       
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -409,7 +417,7 @@ namespace mccore
       AC2p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AC2p* > (t);
+	return nullptr != dynamic_cast< const AC2p* > (t);
       }
       
       /**
@@ -417,14 +425,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1094.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -448,7 +456,7 @@ namespace mccore
       AC3p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AC3p* > (t);
+	return nullptr != dynamic_cast< const AC3p* > (t);
       }
       
       /**
@@ -456,14 +464,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1094.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -486,7 +494,7 @@ namespace mccore
       AC4p (const string& ks) : AtomType (ks) {}
  
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AC4p* > (t);
+	return nullptr != dynamic_cast< const AC4p* > (t);
       }
       
       /**
@@ -494,14 +502,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1094.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -524,7 +532,7 @@ namespace mccore
       AC5p (const string& ks) : AtomType (ks) {}
  
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AC5p* > (t);
+	return nullptr != dynamic_cast< const AC5p* > (t);
       }
       
       /**
@@ -532,14 +540,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1094.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -562,7 +570,7 @@ namespace mccore
       AH1p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AH1p* > (t);
+	return nullptr != dynamic_cast< const AH1p* > (t);
       }
       
       /**
@@ -570,14 +578,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.2870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.2870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.2870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -600,7 +608,7 @@ namespace mccore
       AH2p (const string& ks) : AtomType (ks) {}
   
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AH2p* > (t);
+	return nullptr != dynamic_cast< const AH2p* > (t);
       }
 
       /**
@@ -608,14 +616,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.3870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.3870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.3870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -638,7 +646,7 @@ namespace mccore
       AH3p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AH3p* > (t);
+	return nullptr != dynamic_cast< const AH3p* > (t);
       }
       
       /**
@@ -646,14 +654,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.3870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.3870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.3870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -676,7 +684,7 @@ namespace mccore
       AH4p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AH4p* > (t);
+	return nullptr != dynamic_cast< const AH4p* > (t);
       }
       
       /**
@@ -684,14 +692,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.3870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.3870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.3870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -714,7 +722,7 @@ namespace mccore
       AH5p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AH5p* > (t);
+	return nullptr != dynamic_cast< const AH5p* > (t);
       }
       
       /**
@@ -722,14 +730,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.3870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.3870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.3870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -752,7 +760,7 @@ namespace mccore
       AO1P (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AO1P* > (t);
+	return nullptr != dynamic_cast< const AO1P* > (t);
       }
       
       /**
@@ -760,14 +768,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.6612.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.6612; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.6612f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2100.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -790,7 +798,7 @@ namespace mccore
       AO2p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AO2p* > (t);
+	return nullptr != dynamic_cast< const AO2p* > (t);
       }
       
       /**
@@ -798,14 +806,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.7210.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.7210; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.7210f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2104.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2104; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2104f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -828,7 +836,7 @@ namespace mccore
       AO2P (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AO2P* > (t);
+	return nullptr != dynamic_cast< const AO2P* > (t);
       }
       
       /**
@@ -836,14 +844,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.6612.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.6612; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.6612f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2100.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -866,7 +874,7 @@ namespace mccore
       AO3p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AO3p* > (t);
+	return nullptr != dynamic_cast< const AO3p* > (t);
       }
       
       /**
@@ -904,7 +912,7 @@ namespace mccore
       AO3P (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AO3P* > (t);
+	return nullptr != dynamic_cast< const AO3P* > (t);
       }
       
       /**
@@ -912,14 +920,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.6612.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.6612; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.6612f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2100.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -942,7 +950,7 @@ namespace mccore
       AO4p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AO4p* > (t);
+	return nullptr != dynamic_cast< const AO4p* > (t);
       }
       
       /**
@@ -950,14 +958,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.6837.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.6837; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.6837f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -980,7 +988,7 @@ namespace mccore
       AO5p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AO5p* > (t);
+	return nullptr != dynamic_cast< const AO5p* > (t);
       }
       
       /**
@@ -1018,7 +1026,7 @@ namespace mccore
       AP (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AP* > (t);
+	return nullptr != dynamic_cast< const AP* > (t);
       }
       
       /**
@@ -1026,14 +1034,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 2.1000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 2.1000; }
+      virtual float getVDWR (const ResidueType *r) const { return 2.1000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2000.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2000; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2000f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -1057,7 +1065,7 @@ namespace mccore
       A1H2p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A1H2p* > (t);
+	return nullptr != dynamic_cast< const A1H2p* > (t);
       }
       
       /**
@@ -1065,14 +1073,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -1095,7 +1103,7 @@ namespace mccore
       A1H5p (const string& ks) : AtomType (ks) {}
  
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A1H5p* > (t);
+	return nullptr != dynamic_cast< const A1H5p* > (t);
       }
       
       /**
@@ -1103,14 +1111,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.3870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.3870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.3870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -1133,7 +1141,7 @@ namespace mccore
       A2H2p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A2H2p* > (t);
+	return nullptr != dynamic_cast< const A2H2p* > (t);
       }
       
       /**
@@ -1141,14 +1149,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -1171,7 +1179,7 @@ namespace mccore
       A2H5p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A2H5p* > (t);
+	return nullptr != dynamic_cast< const A2H5p* > (t);
       }
       
       /**
@@ -1179,14 +1187,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.3870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.3870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.3870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -1209,7 +1217,7 @@ namespace mccore
       AHO2p (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHO2p* > (t);
+	return nullptr != dynamic_cast< const AHO2p* > (t);
       }
 
       /**
@@ -1218,7 +1226,7 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.f; }
 
       /**
        * Gets the Amber epsilon value for the atom.  The value is not defined
@@ -1226,7 +1234,7 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -1249,7 +1257,7 @@ namespace mccore
       AHO3p (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHO3p* > (t);
+	return nullptr != dynamic_cast< const AHO3p* > (t);
       }
       
       /**
@@ -1258,7 +1266,7 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.f; }
 
       /**
        * Gets the Amber epsilon value for the atom.  The value is not defined
@@ -1266,7 +1274,7 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -1274,7 +1282,7 @@ namespace mccore
        * @param res the residue type.
        * @return 0.
        */
-      virtual float getAmberCharge (const ResidueType *r) const { return 0; }
+      virtual float getAmberCharge (const ResidueType *r) const { return 0.f; }
 
 
       
@@ -1290,7 +1298,7 @@ namespace mccore
       AC2 (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AC2* > (t);
+	return nullptr != dynamic_cast< const AC2* > (t);
       }
       
       /**
@@ -1298,14 +1306,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -1328,7 +1336,7 @@ namespace mccore
       AC4 (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AC4* > (t);
+	return nullptr != dynamic_cast< const AC4* > (t);
       }
       
       /**
@@ -1336,14 +1344,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -1366,7 +1374,7 @@ namespace mccore
       AC5 (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AC5* > (t);
+	return nullptr != dynamic_cast< const AC5* > (t);
       }
       
       /**
@@ -1374,14 +1382,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -1404,7 +1412,7 @@ namespace mccore
       AC5M (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AC5M* > (t);
+	return nullptr != dynamic_cast< const AC5M* > (t);
       }
       
       /**
@@ -1412,21 +1420,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const ResidueType *r) const { return -0.2269; }
+      virtual float getAmberCharge (const ResidueType *r) const { return -0.2269f; }
 
 
       
@@ -1442,7 +1450,7 @@ namespace mccore
       AC6 (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AC6* > (t);
+	return nullptr != dynamic_cast< const AC6* > (t);
       }
       
       /**
@@ -1450,14 +1458,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -1480,7 +1488,7 @@ namespace mccore
       AC8 (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AC8* > (t);
+	return nullptr != dynamic_cast< const AC8* > (t);
       }
       
       /**
@@ -1488,14 +1496,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -1518,7 +1526,7 @@ namespace mccore
       AH1 (const string& ks) : AtomType (ks) {}
 
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AH1* > (t);
+	return nullptr != dynamic_cast< const AH1* > (t);
       }
       
       /**
@@ -1526,14 +1534,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -1556,7 +1564,7 @@ namespace mccore
       AH2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AH2* > (t);
+	return nullptr != dynamic_cast< const AH2* > (t);
       }
       
       /**
@@ -1564,14 +1572,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.3590.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.3590; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.3590f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0150.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0150; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0150f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -1594,7 +1602,7 @@ namespace mccore
       AH3 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AH3* > (t);
+	return nullptr != dynamic_cast< const AH3* > (t);
       }
       
       /**
@@ -1602,14 +1610,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -1632,7 +1640,7 @@ namespace mccore
       AH5 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AH5* > (t);
+	return nullptr != dynamic_cast< const AH5* > (t);
       }
       
       /**
@@ -1640,14 +1648,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4590.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.4590; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4590f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0150.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0150; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0150f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -1670,7 +1678,7 @@ namespace mccore
       AH6 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AH6* > (t);
+	return nullptr != dynamic_cast< const AH6* > (t);
       }
       
       /**
@@ -1678,14 +1686,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4090.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.4090; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4090f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0150.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0150; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0150f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -1708,7 +1716,7 @@ namespace mccore
       AH7 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AH7* > (t);
+	return nullptr != dynamic_cast< const AH7* > (t);
       }
       
       /**
@@ -1716,21 +1724,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const ResidueType *r) const { return 0.0770; }
+      virtual float getAmberCharge (const ResidueType *r) const { return 0.0770f; }
 
 
       
@@ -1746,7 +1754,7 @@ namespace mccore
       AH8 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AH8* > (t);
+	return nullptr != dynamic_cast< const AH8* > (t);
       }
       
       /**
@@ -1754,14 +1762,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.3590.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.3590; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.3590f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0150.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0150; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0150f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -1784,7 +1792,7 @@ namespace mccore
       AN1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AN1* > (t);
+	return nullptr != dynamic_cast< const AN1* > (t);
       }
       
       /**
@@ -1792,14 +1800,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -1822,7 +1830,7 @@ namespace mccore
       AN2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AN2* > (t);
+	return nullptr != dynamic_cast< const AN2* > (t);
       }
       
       /**
@@ -1830,14 +1838,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -1860,7 +1868,7 @@ namespace mccore
       AN3 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AN3* > (t);
+	return nullptr != dynamic_cast< const AN3* > (t);
       }
       
       /**
@@ -1868,14 +1876,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -1898,7 +1906,7 @@ namespace mccore
       AN4 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AN4* > (t);
+	return nullptr != dynamic_cast< const AN4* > (t);
       }
       
       /**
@@ -1906,14 +1914,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -1936,7 +1944,7 @@ namespace mccore
       AN6 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AN6* > (t);
+	return nullptr != dynamic_cast< const AN6* > (t);
       }
       
       /**
@@ -1944,14 +1952,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -1974,7 +1982,7 @@ namespace mccore
       AN7 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AN7* > (t);
+	return nullptr != dynamic_cast< const AN7* > (t);
       }
       
       /**
@@ -1982,14 +1990,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -2012,7 +2020,7 @@ namespace mccore
       AN9 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AN9* > (t);
+	return nullptr != dynamic_cast< const AN9* > (t);
       }
       
       /**
@@ -2020,14 +2028,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -2050,7 +2058,7 @@ namespace mccore
       AO2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AO2* > (t);
+	return nullptr != dynamic_cast< const AO2* > (t);
       }
       
       /**
@@ -2058,14 +2066,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.6612.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.6612; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.6612f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2100.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -2088,7 +2096,7 @@ namespace mccore
       AO4 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AO4* > (t);
+	return nullptr != dynamic_cast< const AO4* > (t);
       }
       
       /**
@@ -2096,14 +2104,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.6612.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.6612; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.6612f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2100.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -2126,7 +2134,7 @@ namespace mccore
       AO6 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AO6* > (t);
+	return nullptr != dynamic_cast< const AO6* > (t);
       }
       
       /**
@@ -2134,14 +2142,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.6612.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.6612; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.6612f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2100.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -2164,7 +2172,7 @@ namespace mccore
       A1H2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A1H2* > (t);
+	return nullptr != dynamic_cast< const A1H2* > (t);
       }
       
       /**
@@ -2172,14 +2180,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -2202,7 +2210,7 @@ namespace mccore
       A1H4 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A1H4* > (t);
+	return nullptr != dynamic_cast< const A1H4* > (t);
       }
       
       /**
@@ -2210,14 +2218,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -2240,7 +2248,7 @@ namespace mccore
       A1H5M (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A1H5M* > (t);
+	return nullptr != dynamic_cast< const A1H5M* > (t);
       }
       
       /**
@@ -2248,14 +2256,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -2278,7 +2286,7 @@ namespace mccore
       A1H6 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A1H6* > (t);
+	return nullptr != dynamic_cast< const A1H6* > (t);
       }
       
       /**
@@ -2286,14 +2294,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -2316,7 +2324,7 @@ namespace mccore
       A2H2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A2H2* > (t);
+	return nullptr != dynamic_cast< const A2H2* > (t);
       }
       
       /**
@@ -2324,14 +2332,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -2354,7 +2362,7 @@ namespace mccore
       A2H4 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A2H4* > (t);
+	return nullptr != dynamic_cast< const A2H4* > (t);
       }
       
       /**
@@ -2362,14 +2370,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -2392,7 +2400,7 @@ namespace mccore
       A2H5M (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A2H5M* > (t);
+	return nullptr != dynamic_cast< const A2H5M* > (t);
       }
       
       /**
@@ -2400,14 +2408,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -2430,7 +2438,7 @@ namespace mccore
       A2H6 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A2H6* > (t);
+	return nullptr != dynamic_cast< const A2H6* > (t);
       }
       
       /**
@@ -2438,14 +2446,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -2468,7 +2476,7 @@ namespace mccore
       A3H5M (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A3H5M* > (t);
+	return nullptr != dynamic_cast< const A3H5M* > (t);
       }
       
       /**
@@ -2476,14 +2484,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -2507,7 +2515,7 @@ namespace mccore
       APSX (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const APSX* > (t);
+	return nullptr != dynamic_cast< const APSX* > (t);
       }
 
       /**
@@ -2549,7 +2557,7 @@ namespace mccore
       APSY (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const APSY* > (t);
+	return nullptr != dynamic_cast< const APSY* > (t);
       }
 
       /**
@@ -2590,7 +2598,7 @@ namespace mccore
       APSZ (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const APSZ* > (t);
+	return nullptr != dynamic_cast< const APSZ* > (t);
       }
 
       /**
@@ -2632,7 +2640,7 @@ namespace mccore
       APSO (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const APSO* > (t);
+	return nullptr != dynamic_cast< const APSO* > (t);
       }
 
       /**
@@ -2673,7 +2681,7 @@ namespace mccore
       ALP1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ALP1* > (t);
+	return nullptr != dynamic_cast< const ALP1* > (t);
       }
 
       /**
@@ -2714,7 +2722,7 @@ namespace mccore
       ALP3 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ALP3* > (t);
+	return nullptr != dynamic_cast< const ALP3* > (t);
       }
 
       /**
@@ -2755,7 +2763,7 @@ namespace mccore
       ALP7 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ALP7* > (t);
+	return nullptr != dynamic_cast< const ALP7* > (t);
       }
 
       /**
@@ -2796,7 +2804,7 @@ namespace mccore
       A1LP2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A1LP2* > (t);
+	return nullptr != dynamic_cast< const A1LP2* > (t);
       }
 
       /**
@@ -2837,7 +2845,7 @@ namespace mccore
       A1LP4 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A1LP4* > (t);
+	return nullptr != dynamic_cast< const A1LP4* > (t);
       }
 
       /**
@@ -2878,7 +2886,7 @@ namespace mccore
       A1LP6 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A1LP6* > (t);
+	return nullptr != dynamic_cast< const A1LP6* > (t);
       }
 
       /**
@@ -2919,7 +2927,7 @@ namespace mccore
       A2LP2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A2LP2* > (t);
+	return nullptr != dynamic_cast< const A2LP2* > (t);
       }
 
       /**
@@ -2960,7 +2968,7 @@ namespace mccore
       A2LP4 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A2LP4* > (t);
+	return nullptr != dynamic_cast< const A2LP4* > (t);
       }
 
       /**
@@ -3001,7 +3009,7 @@ namespace mccore
       A2LP6 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A2LP6* > (t);
+	return nullptr != dynamic_cast< const A2LP6* > (t);
       }
 
       /**
@@ -3042,7 +3050,7 @@ namespace mccore
       AH3T (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AH3T* > (t);
+	return nullptr != dynamic_cast< const AH3T* > (t);
       }
 
       /**
@@ -3080,7 +3088,7 @@ namespace mccore
       AH5T (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AH5T* > (t);
+	return nullptr != dynamic_cast< const AH5T* > (t);
       }
 
       /**
@@ -3118,7 +3126,7 @@ namespace mccore
       AC (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AC* > (t);
+	return nullptr != dynamic_cast< const AC* > (t);
       }
       
       /**
@@ -3126,14 +3134,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -3156,7 +3164,7 @@ namespace mccore
       ACA (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ACA* > (t);
+	return nullptr != dynamic_cast< const ACA* > (t);
       }
 
       /**
@@ -3164,14 +3172,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1094.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -3194,7 +3202,7 @@ namespace mccore
       ACB (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ACB* > (t);
+	return nullptr != dynamic_cast< const ACB* > (t);
       }
 
       /**
@@ -3202,14 +3210,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1094.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -3232,7 +3240,7 @@ namespace mccore
       ACD (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ACD* > (t);
+	return nullptr != dynamic_cast< const ACD* > (t);
       }
 
       /**
@@ -3240,7 +3248,7 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
@@ -3270,7 +3278,7 @@ namespace mccore
       ACD1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ACD1* > (t);
+	return nullptr != dynamic_cast< const ACD1* > (t);
       }
 
       /**
@@ -3278,7 +3286,7 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
@@ -3308,7 +3316,7 @@ namespace mccore
       ACD2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ACD2* > (t);
+	return nullptr != dynamic_cast< const ACD2* > (t);
       }
 
       /**
@@ -3316,14 +3324,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -3346,7 +3354,7 @@ namespace mccore
       ACE (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ACE* > (t);
+	return nullptr != dynamic_cast< const ACE* > (t);
       }
 
       /**
@@ -3354,14 +3362,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1094.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -3384,7 +3392,7 @@ namespace mccore
       ACE1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ACE1* > (t);
+	return nullptr != dynamic_cast< const ACE1* > (t);
       }
 
       /**
@@ -3392,14 +3400,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -3422,7 +3430,7 @@ namespace mccore
       ACE2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ACE2* > (t);
+	return nullptr != dynamic_cast< const ACE2* > (t);
       }
 
       /**
@@ -3430,14 +3438,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -3460,7 +3468,7 @@ namespace mccore
       ACE3 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ACE3* > (t);
+	return nullptr != dynamic_cast< const ACE3* > (t);
       }
 
       /**
@@ -3468,14 +3476,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -3498,7 +3506,7 @@ namespace mccore
       ACG (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ACG* > (t);
+	return nullptr != dynamic_cast< const ACG* > (t);
       }
 
       /**
@@ -3506,7 +3514,7 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
@@ -3536,7 +3544,7 @@ namespace mccore
       ACG1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ACG1* > (t);
+	return nullptr != dynamic_cast< const ACG1* > (t);
       }
 
       /**
@@ -3544,14 +3552,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1094.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -3574,7 +3582,7 @@ namespace mccore
       ACG2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ACG2* > (t);
+	return nullptr != dynamic_cast< const ACG2* > (t);
       }
 
       /**
@@ -3582,14 +3590,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1094.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1094f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -3612,7 +3620,7 @@ namespace mccore
       ACH2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ACH2* > (t);
+	return nullptr != dynamic_cast< const ACH2* > (t);
       }
 
       /**
@@ -3620,14 +3628,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -3650,7 +3658,7 @@ namespace mccore
       ACZ (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ACZ* > (t);
+	return nullptr != dynamic_cast< const ACZ* > (t);
       }
 
       /**
@@ -3658,14 +3666,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -3688,7 +3696,7 @@ namespace mccore
       ACZ2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ACZ2* > (t);
+	return nullptr != dynamic_cast< const ACZ2* > (t);
       }
 
       /**
@@ -3696,14 +3704,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -3726,7 +3734,7 @@ namespace mccore
       ACZ3 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ACZ3* > (t);
+	return nullptr != dynamic_cast< const ACZ3* > (t);
       }
       
       /**
@@ -3734,14 +3742,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.9080.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.9080; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.9080f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0860.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0860f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -3764,7 +3772,7 @@ namespace mccore
       AH (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AH* > (t);
+	return nullptr != dynamic_cast< const AH* > (t);
       }
 
       /**
@@ -3772,14 +3780,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -3802,7 +3810,7 @@ namespace mccore
       A1H (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A1H* > (t);
+	return nullptr != dynamic_cast< const A1H* > (t);
       }
 
       /**
@@ -3810,21 +3818,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.0000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.0000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0000; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0000f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const ResidueType *r) const { return 0.00000; }
+      virtual float getAmberCharge (const ResidueType *r) const { return 0.00000f; }
 
 
       
@@ -3840,7 +3848,7 @@ namespace mccore
       A2H (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A2H* > (t);
+	return nullptr != dynamic_cast< const A2H* > (t);
       }
 
       /**
@@ -3848,21 +3856,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.0000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.0000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0000; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0000f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const ResidueType *r) const { return 0.00000; }
+      virtual float getAmberCharge (const ResidueType *r) const { return 0.00000f; }
 
 
       
@@ -3878,7 +3886,7 @@ namespace mccore
       A3H (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A3H* > (t);
+	return nullptr != dynamic_cast< const A3H* > (t);
       }
 
       /**
@@ -3886,21 +3894,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.0000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.0000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0000; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0000f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const ResidueType *r) const { return 0.00000; }
+      virtual float getAmberCharge (const ResidueType *r) const { return 0.00000f; }
 
 
       
@@ -3916,7 +3924,7 @@ namespace mccore
       AHA (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHA* > (t);
+	return nullptr != dynamic_cast< const AHA* > (t);
       }
 
       /**
@@ -3924,14 +3932,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.3870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.3870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.3870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -3954,7 +3962,7 @@ namespace mccore
       AHA1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHA1* > (t);
+	return nullptr != dynamic_cast< const AHA1* > (t);
       }
 
       /**
@@ -3962,14 +3970,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.3870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.3870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.3870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -3992,7 +4000,7 @@ namespace mccore
       AHA2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHA2* > (t);
+	return nullptr != dynamic_cast< const AHA2* > (t);
       }
 
       /**
@@ -4000,14 +4008,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.3870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.3870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.3870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -4030,7 +4038,7 @@ namespace mccore
       AHB (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHB* > (t);
+	return nullptr != dynamic_cast< const AHB* > (t);
       }
 
       /**
@@ -4038,14 +4046,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -4068,7 +4076,7 @@ namespace mccore
       AHB1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHB1* > (t);
+	return nullptr != dynamic_cast< const AHB1* > (t);
       }
 
       /**
@@ -4076,14 +4084,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -4106,7 +4114,7 @@ namespace mccore
       AHB2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHB2* > (t);
+	return nullptr != dynamic_cast< const AHB2* > (t);
       }
 
       /**
@@ -4121,7 +4129,7 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -4144,7 +4152,7 @@ namespace mccore
       AHB3 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHB3* > (t);
+	return nullptr != dynamic_cast< const AHB3* > (t);
       }
 
       /**
@@ -4159,7 +4167,7 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -4182,7 +4190,7 @@ namespace mccore
       AHD1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHD1* > (t);
+	return nullptr != dynamic_cast< const AHD1* > (t);
       }
 
       /**
@@ -4220,7 +4228,7 @@ namespace mccore
       AHD2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHD2* > (t);
+	return nullptr != dynamic_cast< const AHD2* > (t);
       }
 
       /**
@@ -4258,7 +4266,7 @@ namespace mccore
       AHE (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHE* > (t);
+	return nullptr != dynamic_cast< const AHE* > (t);
       }
 
       /**
@@ -4266,14 +4274,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -4296,7 +4304,7 @@ namespace mccore
       AHE1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHE1* > (t);
+	return nullptr != dynamic_cast< const AHE1* > (t);
       }
 
       /**
@@ -4334,7 +4342,7 @@ namespace mccore
       AHE2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHE2* > (t);
+	return nullptr != dynamic_cast< const AHE2* > (t);
       }
 
       /**
@@ -4372,7 +4380,7 @@ namespace mccore
       AHE3 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHE3* > (t);
+	return nullptr != dynamic_cast< const AHE3* > (t);
       }
 
       /**
@@ -4410,7 +4418,7 @@ namespace mccore
       AHG (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHG* > (t);
+	return nullptr != dynamic_cast< const AHG* > (t);
       }
 
       /**
@@ -4418,14 +4426,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -4448,7 +4456,7 @@ namespace mccore
       AHG1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHG1* > (t);
+	return nullptr != dynamic_cast< const AHG1* > (t);
       }
 
       /**
@@ -4456,14 +4464,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.0000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.0000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0000; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0000f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -4486,7 +4494,7 @@ namespace mccore
       AHG2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHG2* > (t);
+	return nullptr != dynamic_cast< const AHG2* > (t);
       }
 
       /**
@@ -4501,7 +4509,7 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -4524,7 +4532,7 @@ namespace mccore
       AHH (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHH* > (t);
+	return nullptr != dynamic_cast< const AHH* > (t);
       }
 
       /**
@@ -4532,14 +4540,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.0000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.0000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0000; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0000f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -4562,7 +4570,7 @@ namespace mccore
       AHH2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHH2* > (t);
+	return nullptr != dynamic_cast< const AHH2* > (t);
       }
 
       /**
@@ -4570,14 +4578,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4590.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.4590; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4590f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0150.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0150; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0150f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -4600,7 +4608,7 @@ namespace mccore
       AHXT (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHXT* > (t);
+	return nullptr != dynamic_cast< const AHXT* > (t);
       }
 
       /**
@@ -4608,21 +4616,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.0000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.0000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0000; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0000f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const ResidueType *r) const { return 0.00000; }
+      virtual float getAmberCharge (const ResidueType *r) const { return 0.00000f; }
 
 
       
@@ -4638,7 +4646,7 @@ namespace mccore
       AHZ (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHZ* > (t);
+	return nullptr != dynamic_cast< const AHZ* > (t);
       }
 
       /**
@@ -4646,14 +4654,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4590.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.4590; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4590f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0150.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0150; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0150f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -4676,7 +4684,7 @@ namespace mccore
       AHZ1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHZ1* > (t);
+	return nullptr != dynamic_cast< const AHZ1* > (t);
       }
 
       /**
@@ -4684,14 +4692,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -4714,7 +4722,7 @@ namespace mccore
       AHZ2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHZ2* > (t);
+	return nullptr != dynamic_cast< const AHZ2* > (t);
       }
 
       /**
@@ -4752,7 +4760,7 @@ namespace mccore
       AHZ3 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AHZ3* > (t);
+	return nullptr != dynamic_cast< const AHZ3* > (t);
       }
 
       /**
@@ -4790,7 +4798,7 @@ namespace mccore
       AN (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AN* > (t);
+	return nullptr != dynamic_cast< const AN* > (t);
       }
 
       /**
@@ -4798,14 +4806,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -4828,7 +4836,7 @@ namespace mccore
       AND1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AND1* > (t);
+	return nullptr != dynamic_cast< const AND1* > (t);
       }
 
       /**
@@ -4836,14 +4844,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -4866,7 +4874,7 @@ namespace mccore
       AND2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AND2* > (t);
+	return nullptr != dynamic_cast< const AND2* > (t);
       }
 
       /**
@@ -4874,14 +4882,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -4904,7 +4912,7 @@ namespace mccore
       ANE (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ANE* > (t);
+	return nullptr != dynamic_cast< const ANE* > (t);
       }
 
       /**
@@ -4912,14 +4920,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -4942,7 +4950,7 @@ namespace mccore
       ANE1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ANE1* > (t);
+	return nullptr != dynamic_cast< const ANE1* > (t);
       }
 
       /**
@@ -4950,14 +4958,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -4980,7 +4988,7 @@ namespace mccore
       ANE2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ANE2* > (t);
+	return nullptr != dynamic_cast< const ANE2* > (t);
       }
 
       /**
@@ -4988,14 +4996,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5018,7 +5026,7 @@ namespace mccore
       ANH1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ANH1* > (t);
+	return nullptr != dynamic_cast< const ANH1* > (t);
       }
 
       /**
@@ -5026,14 +5034,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5056,7 +5064,7 @@ namespace mccore
       ANH2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ANH2* > (t);
+	return nullptr != dynamic_cast< const ANH2* > (t);
       }
 
       /**
@@ -5064,14 +5072,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5094,7 +5102,7 @@ namespace mccore
       ANZ (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ANZ* > (t);
+	return nullptr != dynamic_cast< const ANZ* > (t);
       }
 
       /**
@@ -5102,14 +5110,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.8240.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.8240; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.8240f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.1700.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.1700f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5132,7 +5140,7 @@ namespace mccore
       AO (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AO* > (t);
+	return nullptr != dynamic_cast< const AO* > (t);
       }
 
       /**
@@ -5140,14 +5148,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.6612.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.6612; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.6612f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2100.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5170,7 +5178,7 @@ namespace mccore
       AOD1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AOD1* > (t);
+	return nullptr != dynamic_cast< const AOD1* > (t);
       }
 
       /**
@@ -5178,14 +5186,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.6612.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.6612; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.6612f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2100.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5208,7 +5216,7 @@ namespace mccore
       AOD2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AOD2* > (t);
+	return nullptr != dynamic_cast< const AOD2* > (t);
       }
 
       /**
@@ -5216,14 +5224,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.6612.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.6612; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.6612f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2100.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5246,7 +5254,7 @@ namespace mccore
       AOE1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AOE1* > (t);
+	return nullptr != dynamic_cast< const AOE1* > (t);
       }
 
       /**
@@ -5254,14 +5262,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.6612.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.6612; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.6612f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2100.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5284,7 +5292,7 @@ namespace mccore
       AOE2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AOE2* > (t);
+	return nullptr != dynamic_cast< const AOE2* > (t);
       }
 
       /**
@@ -5292,14 +5300,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.6612.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.6612; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.6612f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2100.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2100f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5322,7 +5330,7 @@ namespace mccore
       AOG (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AOG* > (t);
+	return nullptr != dynamic_cast< const AOG* > (t);
       }
 
       /**
@@ -5330,14 +5338,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.7210.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.7210; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.7210f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2104.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2104; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2104f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5360,7 +5368,7 @@ namespace mccore
       AOG1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AOG1* > (t);
+	return nullptr != dynamic_cast< const AOG1* > (t);
       }
 
       /**
@@ -5368,14 +5376,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.7210.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.7210; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.7210f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2104.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2104; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2104f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5398,7 +5406,7 @@ namespace mccore
       AOH (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AOH* > (t);
+	return nullptr != dynamic_cast< const AOH* > (t);
       }
 
       /**
@@ -5406,14 +5414,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.7210.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.7210; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.7210f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2104.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2104; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2104f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5436,7 +5444,7 @@ namespace mccore
       AOXT (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AOXT* > (t);
+	return nullptr != dynamic_cast< const AOXT* > (t);
       }
 
       /**
@@ -5444,21 +5452,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.7210.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.7210; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.7210f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2104.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2104; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2104f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const ResidueType *r) const { return 0.00000; }
+      virtual float getAmberCharge (const ResidueType *r) const { return 0.00000f; }
 
 
       
@@ -5474,7 +5482,7 @@ namespace mccore
       ASD (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ASD* > (t);
+	return nullptr != dynamic_cast< const ASD* > (t);
       }
 
       /**
@@ -5482,14 +5490,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 2.0000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 2.0000; }
+      virtual float getVDWR (const ResidueType *r) const { return 2.0000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2500.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2500; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2500f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5512,7 +5520,7 @@ namespace mccore
       ASG (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const ASG* > (t);
+	return nullptr != dynamic_cast< const ASG* > (t);
       }
 
       /**
@@ -5520,14 +5528,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 2.0000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 2.0000; }
+      virtual float getVDWR (const ResidueType *r) const { return 2.0000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.2500.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2500; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.2500f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5550,7 +5558,7 @@ namespace mccore
       A1HD1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A1HD1* > (t);
+	return nullptr != dynamic_cast< const A1HD1* > (t);
       }
 
       /**
@@ -5558,14 +5566,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5588,7 +5596,7 @@ namespace mccore
       A1HD2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A1HD2* > (t);
+	return nullptr != dynamic_cast< const A1HD2* > (t);
       }
 
       /**
@@ -5596,14 +5604,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5626,7 +5634,7 @@ namespace mccore
       A1HE2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A1HE2* > (t);
+	return nullptr != dynamic_cast< const A1HE2* > (t);
       }
 
       /**
@@ -5634,14 +5642,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5664,7 +5672,7 @@ namespace mccore
       A1HG1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A1HG1* > (t);
+	return nullptr != dynamic_cast< const A1HG1* > (t);
       }
 
       /**
@@ -5672,14 +5680,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5702,7 +5710,7 @@ namespace mccore
       A1HG2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A1HG2* > (t);
+	return nullptr != dynamic_cast< const A1HG2* > (t);
       }
 
       /**
@@ -5710,14 +5718,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5740,7 +5748,7 @@ namespace mccore
       A1HH1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A1HH1* > (t);
+	return nullptr != dynamic_cast< const A1HH1* > (t);
       }
 
       /**
@@ -5748,14 +5756,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5778,7 +5786,7 @@ namespace mccore
       A1HH2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A1HH2* > (t);
+	return nullptr != dynamic_cast< const A1HH2* > (t);
       }
 
       /**
@@ -5786,14 +5794,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5816,7 +5824,7 @@ namespace mccore
       A2HD1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A2HD1* > (t);
+	return nullptr != dynamic_cast< const A2HD1* > (t);
       }
 
       /**
@@ -5824,14 +5832,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5854,7 +5862,7 @@ namespace mccore
       A2HD2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A2HD2* > (t);
+	return nullptr != dynamic_cast< const A2HD2* > (t);
       }
 
       /**
@@ -5862,14 +5870,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5892,7 +5900,7 @@ namespace mccore
       A2HE2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A2HE2* > (t);
+	return nullptr != dynamic_cast< const A2HE2* > (t);
       }
 
       /**
@@ -5900,14 +5908,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5930,7 +5938,7 @@ namespace mccore
       A2HG1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A2HG1* > (t);
+	return nullptr != dynamic_cast< const A2HG1* > (t);
       }
 
       /**
@@ -5938,14 +5946,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -5968,7 +5976,7 @@ namespace mccore
       A2HG2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A2HG2* > (t);
+	return nullptr != dynamic_cast< const A2HG2* > (t);
       }
 
       /**
@@ -5976,14 +5984,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -6006,7 +6014,7 @@ namespace mccore
       A2HH1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A2HH1* > (t);
+	return nullptr != dynamic_cast< const A2HH1* > (t);
       }
 
       /**
@@ -6014,14 +6022,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -6044,7 +6052,7 @@ namespace mccore
       A2HH2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A2HH2* > (t);
+	return nullptr != dynamic_cast< const A2HH2* > (t);
       }
 
       /**
@@ -6052,14 +6060,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.6000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.6000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.6000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -6082,7 +6090,7 @@ namespace mccore
       A3HD1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A3HD1* > (t);
+	return nullptr != dynamic_cast< const A3HD1* > (t);
       }
 
       /**
@@ -6090,14 +6098,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -6120,7 +6128,7 @@ namespace mccore
       A3HD2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A3HD2* > (t);
+	return nullptr != dynamic_cast< const A3HD2* > (t);
       }
 
       /**
@@ -6128,14 +6136,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -6158,7 +6166,7 @@ namespace mccore
       A3HG1 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A3HG1* > (t);
+	return nullptr != dynamic_cast< const A3HG1* > (t);
       }
 
       /**
@@ -6166,14 +6174,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -6196,7 +6204,7 @@ namespace mccore
       A3HG2 (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const A3HG2* > (t);
+	return nullptr != dynamic_cast< const A3HG2* > (t);
       }
 
       /**
@@ -6204,14 +6212,14 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 1.4870.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 1.4870; }
+      virtual float getVDWR (const ResidueType *r) const { return 1.4870f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0157.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0157f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
@@ -6234,7 +6242,7 @@ namespace mccore
       AMG (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const AMG* > (t);
+	return nullptr != dynamic_cast< const AMG* > (t);
       }
 
       /**
@@ -6242,21 +6250,21 @@ namespace mccore
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0.0000; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.0000f; }
 
       /**
        * Gets the Amber epsilon value for the atom.
        * @param res the residue that contains the atom.
        * @return 0.0000.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0000; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.0000f; }
 
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param res the residue type.
        * @return the Amber charge.
        */
-      virtual float getAmberCharge (const ResidueType *r) const { return 0.00000; }
+      virtual float getAmberCharge (const ResidueType *r) const { return 0.00000f; }
 
 
       
@@ -6272,7 +6280,7 @@ namespace mccore
       APSAZ (const string& ks) : AtomType (ks) {}
       
       virtual bool describe (const AtomType* t) const {
-	return dynamic_cast< const APSAZ* > (t);
+	return nullptr != dynamic_cast< const APSAZ* > (t);
       }
       
       /**
@@ -6315,28 +6323,28 @@ namespace mccore
       A1HN6 () {}
       A1HN6 (const string &ks) : AtomType (ks) {}
       
-      virtual bool describe (const AtomType *t) const { return dynamic_cast< const A1HN6* > (t); }
+      virtual bool describe (const AtomType *t) const { return nullptr != dynamic_cast< const A1HN6* > (t); }
       
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param r the residue that contains the atom.
        * @return 0.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.f; }
       
       /**
        * Gets the Amber epsilon value for the atom.
        * @param r the residue that contains the atom.
        * @return 0.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.f; }
       
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param r the residue type.
        * @return 0.
        */
-      virtual float getAmberCharge (const ResidueType *r) const { return 0; }
+      virtual float getAmberCharge (const ResidueType *r) const { return 0.f; }
       
     };
 
@@ -6349,28 +6357,28 @@ namespace mccore
       A2HN6 () {}
       A2HN6 (const string &ks) : AtomType (ks) {}
       
-      virtual bool describe (const AtomType *t) const { return dynamic_cast< const A2HN6* > (t); }
+      virtual bool describe (const AtomType *t) const { return nullptr != dynamic_cast< const A2HN6* > (t); }
       
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param r the residue that contains the atom.
        * @return 0.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.f; }
       
       /**
        * Gets the Amber epsilon value for the atom.
        * @param r the residue that contains the atom.
        * @return 0.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.f; }
       
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param r the residue type.
        * @return 0.
        */
-      virtual float getAmberCharge (const ResidueType *r) const { return 0; }
+      virtual float getAmberCharge (const ResidueType *r) const { return 0.f; }
       
     };
 
@@ -6383,28 +6391,28 @@ namespace mccore
       ACM1 () {}
       ACM1 (const string &ks) : AtomType (ks) {}
       
-      virtual bool describe (const AtomType *t) const { return dynamic_cast< const ACM1* > (t); }
+      virtual bool describe (const AtomType *t) const { return nullptr != dynamic_cast< const ACM1* > (t); }
       
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param r the residue that contains the atom.
        * @return 0.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.f; }
       
       /**
        * Gets the Amber epsilon value for the atom.
        * @param r the residue that contains the atom.
        * @return 0.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.f; }
       
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param r the residue type.
        * @return 0.
        */
-      virtual float getAmberCharge (const ResidueType *r) const { return 0; }
+      virtual float getAmberCharge (const ResidueType *r) const { return 0.f; }
       
     };
 
@@ -6417,28 +6425,28 @@ namespace mccore
        A2HM1 () {}
        A2HM1 (const string &ks) : AtomType (ks) {}
     
-       virtual bool describe (const AtomType *t) const { return dynamic_cast< const A2HM1* > (t); }
+       virtual bool describe (const AtomType *t) const { return nullptr != dynamic_cast< const A2HM1* > (t); }
     
        /**
         * Gets the Van Der Waals radius value for the atom.
         * @param r the residue that contains the atom.
         * @return 0.
         */
-       virtual float getVDWR (const ResidueType *r) const { return 0; }
+       virtual float getVDWR (const ResidueType *r) const { return 0.f; }
     
        /**
         * Gets the Amber epsilon value for the atom.
         * @param r the residue that contains the atom.
         * @return 0.
         */
-       virtual float getAmberEpsilon (const ResidueType *r) const { return 0; }
+       virtual float getAmberEpsilon (const ResidueType *r) const { return 0.f; }
     
        /**
         * Gets the Amber charge value for the atom in the given residue type.
         * @param r the residue type.
         * @return 0.
         */
-       virtual float getAmberCharge (const ResidueType *r) const { return 0; }
+       virtual float getAmberCharge (const ResidueType *r) const { return 0.f; }
     
      };
 
@@ -6451,28 +6459,28 @@ namespace mccore
       A1HM1 () {}
       A1HM1 (const string &ks) : AtomType (ks) {}
       
-      virtual bool describe (const AtomType *t) const { return dynamic_cast< const A1HM1* > (t); }
+      virtual bool describe (const AtomType *t) const { return nullptr != dynamic_cast< const A1HM1* > (t); }
       
       /**
        * Gets the Van Der Waals radius value for the atom.
        * @param r the residue that contains the atom.
        * @return 0.
        */
-      virtual float getVDWR (const ResidueType *r) const { return 0; }
+      virtual float getVDWR (const ResidueType *r) const { return 0.f; }
       
       /**
        * Gets the Amber epsilon value for the atom.
        * @param r the residue that contains the atom.
        * @return 0.
        */
-      virtual float getAmberEpsilon (const ResidueType *r) const { return 0; }
+      virtual float getAmberEpsilon (const ResidueType *r) const { return 0.f; }
       
       /**
        * Gets the Amber charge value for the atom in the given residue type.
        * @param r the residue type.
        * @return 0.
        */
-      virtual float getAmberCharge (const ResidueType *r) const { return 0; }
+      virtual float getAmberCharge (const ResidueType *r) const { return 0.f; }
       
     };
 
@@ -6485,32 +6493,36 @@ namespace mccore
        A3HM1 () {}
        A3HM1 (const string &ks) : AtomType (ks) {}
     
-       virtual bool describe (const AtomType *t) const { return dynamic_cast< const A3HM1* > (t); }
+       virtual bool describe (const AtomType *t) const { return nullptr != dynamic_cast< const A3HM1* > (t); }
     
        /**
         * Gets the Van Der Waals radius value for the atom.
         * @param r the residue that contains the atom.
         * @return 0.
         */
-       virtual float getVDWR (const ResidueType *r) const { return 0; }
+       virtual float getVDWR (const ResidueType *r) const { return 0.f; }
     
        /**
         * Gets the Amber epsilon value for the atom.
         * @param r the residue that contains the atom.
         * @return 0.
         */
-       virtual float getAmberEpsilon (const ResidueType *r) const { return 0; }
+       virtual float getAmberEpsilon (const ResidueType *r) const { return 0.f; }
     
        /**
         * Gets the Amber charge value for the atom in the given residue type.
         * @param r the residue type.
         * @return 0.
         */
-       virtual float getAmberCharge (const ResidueType *r) const { return 0; }
+       virtual float getAmberCharge (const ResidueType *r) const { return 0.f; }
     
      };
 
   };  
 }
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 #endif

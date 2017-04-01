@@ -181,7 +181,7 @@ namespace mccore
        * @exception NoSuchElementException if the head label is outside the
        * vertex container.
        */
-      V& getHeadVertex () throw (NoSuchElementException)
+      V& getHeadVertex ()
       {
 	if (vertices.size () <= head)
 	  {
@@ -196,7 +196,7 @@ namespace mccore
        * @exception NoSuchElementException if the head label is outside the
        * vertex container.
        */
-      const V& getHeadVertex () const throw (NoSuchElementException)
+      const V& getHeadVertex () const
       {
 	if (vertices.size () <= head)
 	  {
@@ -211,7 +211,7 @@ namespace mccore
        * @exception NoSuchElementException if the tail label is outside the
        * vertex container.
        */
-      V& getTailVertex () throw (NoSuchElementException)
+      V& getTailVertex ()
       {
 	if (vertices.size () <= tail)
 	  {
@@ -226,7 +226,7 @@ namespace mccore
        * @exception NoSuchElementException if the tail label is outside the
        * vertex container.
        */
-      const V& getTailVertex () const throw (NoSuchElementException)
+      const V& getTailVertex () const
       {
 	if (vertices.size () <= tail)
 	  {
@@ -369,7 +369,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * vertex.
      */
-    VW& getVertexWeight (const V &v) throw (NoSuchElementException)
+    VW& getVertexWeight (const V &v)
     {
       typename V2VLabel::const_iterator it;
 
@@ -387,7 +387,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * vertex.
      */
-    const VW& getVertexWeight (const V &v) const throw (NoSuchElementException)
+    const VW& getVertexWeight (const V &v) const
     {
       typename V2VLabel::const_iterator it;
 
@@ -405,7 +405,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * vertex.
      */
-    void setVertexWeight (const V &v, const VW &w) throw (NoSuchElementException)
+    void setVertexWeight (const V &v, const VW &w)
     {
       typename V2VLabel::const_iterator it;
       
@@ -424,7 +424,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * vertices or the edge.
      */
-    E& getEdge (const V &h, const V &t) throw (NoSuchElementException)
+    E& getEdge (const V &h, const V &t)
     {
       typename V2VLabel::const_iterator ith;
       typename V2VLabel::const_iterator itt;
@@ -451,7 +451,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * vertices or the edge.
      */
-    const E& getEdge (const V &h, const V &t) const throw (NoSuchElementException)
+    const E& getEdge (const V &h, const V &t) const
     {
       typename V2VLabel::const_iterator ith;
       typename V2VLabel::const_iterator itt;
@@ -478,7 +478,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * vertices or the edge.
      */
-    EW& getEdgeWeight (const V &h, const V &t) throw (NoSuchElementException)
+    EW& getEdgeWeight (const V &h, const V &t)
     {
       typename V2VLabel::const_iterator ith;
       typename V2VLabel::const_iterator itt;
@@ -505,7 +505,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * vertices or the edge.
      */
-    const EW& getEdgeWeight (const V &h, const V &t) const throw (NoSuchElementException)
+    const EW& getEdgeWeight (const V &h, const V &t) const
     {
       typename V2VLabel::const_iterator ith;
       typename V2VLabel::const_iterator itt;
@@ -532,7 +532,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * vertices or the edge.
      */
-    void setEdgeWeight (const V &h, const V &t, const EW &w) throw (NoSuchElementException)
+    void setEdgeWeight (const V &h, const V &t, const EW &w)
     {
       typename V2VLabel::const_iterator ith;
       typename V2VLabel::const_iterator itt;
@@ -558,7 +558,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * vertex.
      */
-    label getVertexLabel (const V &v) const throw (NoSuchElementException)
+    label getVertexLabel (const V &v) const
     {
       typename V2VLabel::const_iterator it;
 
@@ -625,7 +625,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    V& internalGetVertex (label l) throw (NoSuchElementException)
+    V& internalGetVertex (label l)
     {
       if (vertices.size () <= l)
 	{
@@ -641,7 +641,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    const V& internalGetVertex (label l) const throw (NoSuchElementException)
+    const V& internalGetVertex (label l) const
     {
       if (vertices.size () <= l)
 	{
@@ -657,7 +657,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    VW& internalGetVertexWeight (label l) throw (NoSuchElementException)
+    VW& internalGetVertexWeight (label l)
     {
       if (vertexWeights.size () <= l)
 	{
@@ -673,7 +673,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    const VW& internalGetVertexWeight (label l) const throw (NoSuchElementException)
+    const VW& internalGetVertexWeight (label l) const
     {
       if (vertexWeights.size () <= l)
 	{
@@ -689,7 +689,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    void internalSetVertexWeight (label l, const VW &w) throw (NoSuchElementException)
+    void internalSetVertexWeight (label l, const VW &w)
     {
       if (vertexWeights.size () <= l)
 	{
@@ -705,7 +705,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    E& internalGetEdge (edge_label l) throw (NoSuchElementException)
+    E& internalGetEdge (edge_label l)
     {
       if (edges.size () <= l)
 	{
@@ -721,7 +721,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    const E& internalGetEdge (edge_label l) const throw (NoSuchElementException)
+    const E& internalGetEdge (edge_label l) const
     {
       if (edges.size () <= l)
 	{
@@ -738,7 +738,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    const E& internalGetEdge (label h, label t) const throw (NoSuchElementException)
+    const E& internalGetEdge (label h, label t) const
     {
       typename EV2ELabel::const_iterator evit;
       EndVertices ev (h, t);
@@ -760,7 +760,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * labels or the vertices are not connected.
      */
-    edge_label internalGetEdgeLabel (label h, label t) const throw (NoSuchElementException)
+    edge_label internalGetEdgeLabel (label h, label t) const
     {
       typename EV2ELabel::const_iterator evit;
       EndVertices ev (h, t);
@@ -782,7 +782,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * labels or the vertices are not connected.
      */
-    EW& internalGetEdgeWeight (label h, label t) throw (NoSuchElementException)
+    EW& internalGetEdgeWeight (label h, label t)
     {
       typename EV2ELabel::iterator evit;
       EndVertices ev (h, t);
@@ -804,7 +804,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * labels or the vertices are not connected.
      */
-    const EW& internalGetEdgeWeight (label h, label t) const throw (NoSuchElementException)
+    const EW& internalGetEdgeWeight (label h, label t) const
     {
       typename EV2ELabel::const_iterator evit;
       EndVertices ev (h, t);
@@ -825,7 +825,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    EW& internalGetEdgeWeight (edge_label l) throw (NoSuchElementException)
+    EW& internalGetEdgeWeight (edge_label l)
     {
       if (edgeWeights.size () <= l)
 	{
@@ -841,7 +841,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * label.
      */
-    const EW& internalGetEdgeWeight (edge_label l) const throw (NoSuchElementException)
+    const EW& internalGetEdgeWeight (edge_label l) const
     {
       if (edgeWeights.size () <= l)
 	{
@@ -858,7 +858,7 @@ namespace mccore
      * @exception NoSuchElementException if the graph does not contain the
      * labels or the vertices are not connected.
      */
-    void internalSetEdgeWeight (label h, label t, const EW w) throw (NoSuchElementException)
+    void internalSetEdgeWeight (label h, label t, const EW w)
     {
       typename EV2ELabel::iterator evit;
       EndVertices ev (h, t);

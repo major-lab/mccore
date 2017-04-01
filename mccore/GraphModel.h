@@ -38,6 +38,11 @@
 
 using namespace std;
 
+#ifdef _MSC_VER
+// Disable some warnings for visual C
+#pragma warning(push)
+#pragma warning(disable: 4100) // Unreferenced formal parameter
+#endif
 
 
 namespace mccore
@@ -157,13 +162,13 @@ namespace mccore
      * @return the nth reference.
      * @exception ArrayIndexOutOfBoundsException
      */
-    virtual Residue& operator[] (size_type nth) throw (ArrayIndexOutOfBoundsException)
+    virtual Residue& operator[] (size_type nth)
     {
       try
 	{
 	  return *internalGetVertex (nth);
 	}
-      catch (NoSuchElementException &e)
+      catch (NoSuchElementException &)
 	{
 	  throw ArrayIndexOutOfBoundsException ("", __FILE__, __LINE__);
 	}
@@ -175,13 +180,13 @@ namespace mccore
      * @return the nth const_reference.
      * @exception ArrayIndexOutOfBoundsException
      */
-    virtual const Residue& operator[] (size_type nth) const throw (ArrayIndexOutOfBoundsException)
+    virtual const Residue& operator[] (size_type nth) const
     {
       try
 	{
 	  return *internalGetVertex (nth);
 	}
-      catch (NoSuchElementException &e)
+      catch (NoSuchElementException &)
 	{
 	  throw ArrayIndexOutOfBoundsException ("", __FILE__, __LINE__);
 	}
@@ -531,5 +536,9 @@ namespace mccore
   oBinstream& operator<< (oBinstream &os, const GraphModel &model);
 
 }
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 #endif

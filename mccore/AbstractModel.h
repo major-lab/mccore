@@ -221,7 +221,7 @@ namespace mccore
      * @return the nth reference.
      * @exception ArrayIndexOutOfBoundsException
      */
-    virtual Residue& operator[] (size_type nth) throw (ArrayIndexOutOfBoundsException) = 0;
+    virtual Residue& operator[] (size_type nth) = 0;
 
     /**
      * Gets the model const_reference at nth position.
@@ -229,7 +229,7 @@ namespace mccore
      * @return the nth const_reference.
      * @exception ArrayIndexOutOfBoundsException
      */
-    virtual const Residue& operator[] (size_type nth) const throw (ArrayIndexOutOfBoundsException) = 0;
+    virtual const Residue& operator[] (size_type nth) const = 0;
 
     // ACCESS ---------------------------------------------------------------
 
@@ -351,7 +351,7 @@ namespace mccore
      * @return a AbstractModel iterator.
      * @exception NoSuchElementException
      */
-    iterator safeFind (const ResId &id) throw (NoSuchElementException);
+    iterator safeFind (const ResId &id);
 
     /**
      * Finds a residue given it's residue id.  Returns a AbstractModel iterator
@@ -361,7 +361,7 @@ namespace mccore
      * @return a AbstractModel iterator.
      * @exception NoSuchElementException
      */
-    const_iterator safeFind (const ResId &id) const throw (NoSuchElementException);
+    const_iterator safeFind (const ResId &id) const;
     
     /**
      * Sorts the model according to the Residue::operator<

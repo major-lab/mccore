@@ -61,7 +61,7 @@ namespace mccore
      * @return whether left is less than right.
      * @exception NullPointerException is thrown if any of the pointers are null.
      */
-    bool operator() (const V *left, const V *right) const throw (NullPointerException)
+    bool operator() (const V *left, const V *right) const
     {
       if (0 == left || 0 == right)
 	{

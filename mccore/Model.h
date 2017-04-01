@@ -128,7 +128,7 @@ namespace mccore
      * @return the nth reference.
      * @exception ArrayIndexOutOfBoundsException
      */
-    virtual Residue& operator[] (size_type nth) throw (ArrayIndexOutOfBoundsException);
+    virtual Residue& operator[] (size_type nth);
 
     /**
      * Gets the model const_reference at nth position.
@@ -136,7 +136,7 @@ namespace mccore
      * @return the nth const_reference.
      * @exception ArrayIndexOutOfBoundsException
      */
-    virtual const Residue& operator[] (size_type nth) const throw (ArrayIndexOutOfBoundsException);
+    virtual const Residue& operator[] (size_type nth) const;
 
     // ACCESS ---------------------------------------------------------------
 

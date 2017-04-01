@@ -43,12 +43,10 @@ FILE(GLOB MCCORE_SOURCES_CC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}  AbstractModel.
   ResidueType.cc  
   ResidueTypeStore.cc  
   Rmsd.cc  
-  ServerSocket.cc  
   Sequence.cc  
   TypeRepresentationTables.cc  
   Vector3D.cc  
-  Version.cc  
-  sockstream.cc  
+  Version.cc    
   zstream.cc)
 
 # support RNAML
@@ -61,14 +59,24 @@ if(WITH-MYSQL)
   set(MCCORE_SOURCES_CC ${MCCORE_SOURCES_CC} SqlReader.cc SqlExtrac.cc)
 endif()
 
+# support for unix socket
+if(UNIX)
+  set(MCCORE_SOURCES_CC ${MCCORE_SOURCES_CC} ServerSocket.cc sockstream.cc)
+endif(UNIX)
+
+
 # ajoute la librarie
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-add_library (mccore ${MCCORE_SOURCES_CC})
-set_target_properties(mccore PROPERTIES VERSION ${MCCORE_VERSION_STRING})
-target_link_libraries(mccore ${EXT_LIBS})
+add_library (${PACKAGE_NAME} ${MCCORE_SOURCES_CC})
+set_target_properties(${PACKAGE_NAME} PROPERTIES VERSION ${MCCORE_VERSION_STRING})
+if(WIN32)
+target_link_libraries(${PACKAGE_NAME} ${${PROJECT_NAME}_EXT_LIBS} wsock32 ws2_32)
+else()
+target_link_libraries(${PACKAGE_NAME} ${${PROJECT_NAME}_EXT_LIBS})
+endif(WIN32)
 
 # ajoute le target d'installation
-install (TARGETS mccore DESTINATION lib${LIB_SUFFIX})
+install (TARGETS ${PACKAGE_NAME} DESTINATION lib${LIB_SUFFIX})
 install(DIRECTORY ./ DESTINATION include/${MCCORE_COMPLETE_PACKAGE_NAME} FILES_MATCHING PATTERN "*.h" PATTERN ".svn" EXCLUDE)
 
 # wrap dans un install(CODE) pour que la commande soit exécuter à l'installation

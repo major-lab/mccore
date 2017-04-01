@@ -27,7 +27,14 @@
 #include <config.h>
 
 #include <algorithm>
+#if defined(_MSC_VER)
+#define _USE_MATH_DEFINES // for C++
 #include <cmath>
+#else
+#include <cmath>
+#endif
+
+#include <iterator>
 #include <set>
 
 #include "Binstream.h"
@@ -1575,7 +1582,7 @@ namespace mccore
 
 
   float
-  Residue::getFuranoseAmplitude () const throw (IntLibException)
+  Residue::getFuranoseAmplitude () const
   {
     try
       {
@@ -1597,7 +1604,7 @@ namespace mccore
 
 
   const PropertyType*
-  Residue::getFuranoseType () const throw (IntLibException, FatalIntLibException)
+  Residue::getFuranoseType () const
   {
     /*
       4 bits unsigned value:
@@ -2095,7 +2102,7 @@ namespace mccore
 
 
   const AtomType*
-  Residue::nitrogenType19 (const ResidueType* rtype) throw (TypeException)
+  Residue::nitrogenType19 (const ResidueType* rtype)
   {
     if (rtype)
     {
@@ -2111,7 +2118,7 @@ namespace mccore
 
 
   const AtomType*
-  Residue::carbonType24 (const ResidueType* rtype) throw (TypeException)
+  Residue::carbonType24 (const ResidueType* rtype)
   {
     if (rtype)
     {
@@ -2127,7 +2134,7 @@ namespace mccore
 
 
   const AtomType*
-  Residue::carbonType68 (const ResidueType* rtype) throw (TypeException)
+  Residue::carbonType68 (const ResidueType* rtype)
   {
     if (rtype)
     {
@@ -2190,7 +2197,7 @@ namespace mccore
 
 
   float
-  Residue::getMinRho (const PropertyType* pucker) throw (TypeException)
+  Residue::getMinRho (const PropertyType* pucker)
   {
     if (pucker == PropertyType::pC3p_endo)
       return 0.0;
@@ -2222,7 +2229,7 @@ namespace mccore
 
 
   float
-  Residue::getMaxRho (const PropertyType* pucker) throw (TypeException)
+  Residue::getMaxRho (const PropertyType* pucker)
   {
     if (pucker == PropertyType::pC3p_endo)
       return RAD_36;
@@ -2254,7 +2261,7 @@ namespace mccore
 
 
   float
-  Residue::getMinChi (const PropertyType* glycosyl) throw (TypeException)
+  Residue::getMinChi (const PropertyType* glycosyl)
   {
     if (glycosyl == PropertyType::pSyn)
       return -RAD_90;
@@ -2270,7 +2277,7 @@ namespace mccore
 
 
   float
-  Residue::getMaxChi (const PropertyType* glycosyl) throw (TypeException)
+  Residue::getMaxChi (const PropertyType* glycosyl)
   {
     if (glycosyl == PropertyType::pSyn)
       return RAD_90;

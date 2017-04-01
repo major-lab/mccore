@@ -171,7 +171,7 @@ namespace mccore
      * @return the donor atom. 
      * @exception NullPointerException is thrown when the residue was assigned.
      */
-    const Atom& getDonor () const throw (NullPointerException);
+    const Atom& getDonor () const;
     const Atom& getDonor (const Residue &r) const;
 
     /**
@@ -188,7 +188,7 @@ namespace mccore
      * @return the hydrogen atom. 
      * @exception NullPointerException is thrown when the residue was assigned.
      */
-    const Atom& getHydrogen () const throw (NullPointerException);
+    const Atom& getHydrogen () const;
     const Atom& getHydrogen (const Residue &r) const;
 
     /**
@@ -205,7 +205,7 @@ namespace mccore
      * @return the acceptor atom. 
      * @exception NullPointerException is thrown when the residue was assigned.
      */
-    const Atom& getAcceptor () const throw (NullPointerException);
+    const Atom& getAcceptor () const;
     const Atom& getAcceptor (const Residue &r) const;
       
     /**
@@ -222,7 +222,7 @@ namespace mccore
      * @return the lonepair atom.
      * @exception NullPointerException is thrown when the residue was assigned.
      */
-    const Atom& getLonePair () const throw (NullPointerException);
+    const Atom& getLonePair () const;
     const Atom& getLonePair (const Residue &r) const;
       
     /**
@@ -257,7 +257,7 @@ namespace mccore
      * @param resSet a set of Residue pointers.
      * @exception NoSuchElementException
      */
-    void reassignResiduePointers (const set< const Residue*, less_deref < Residue > > &resSet) throw (NoSuchElementException);
+    void reassignResiduePointers (const set< const Residue*, less_deref < Residue > > &resSet);
 
   public:
       
@@ -303,7 +303,7 @@ namespace mccore
      * within resMap.
      * @return the binary input stream.
      */
-    virtual iBinstream& read (iBinstream &is, const map< ResId, const Residue* > &resMap) throw (NoSuchElementException);
+    virtual iBinstream& read (iBinstream &is, const map< ResId, const Residue* > &resMap);
     
     /**
      * Writes the HBond to a binary stream.

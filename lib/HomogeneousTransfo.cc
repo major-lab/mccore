@@ -27,6 +27,13 @@
 // cmake generated defines
 #include <config.h>
 
+#ifdef _MSC_VER
+#define _USE_MATH_DEFINES // for C++
+#include <cmath>
+#else
+#include <cmath>
+#endif
+
 #include <iomanip>
 
 #include "Binstream.h"
@@ -36,7 +43,7 @@
 namespace mccore 
 {
 
-  const float HomogeneousTransfo::alpha_square = 6.927424;
+  const float HomogeneousTransfo::alpha_square = 6.927424f;
 
 #define sgn( x ) ( ( ( x ) >= 0.0f ) ? +1 : -1 )
 
@@ -51,7 +58,7 @@ namespace mccore
 
   
   float
-  HomogeneousTransfo::elementAt (unsigned i, unsigned j) const throw (ArrayIndexOutOfBoundsException)
+  HomogeneousTransfo::elementAt (unsigned i, unsigned j) const
   {
     // emulate random access ...
     switch (i)

@@ -32,10 +32,12 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <zlib.h>
 
+// TODO : Verify if these files could be only included in 
+// the source file.
 #if defined (__FreeBSD__)
 #include <sys/param.h>
+#elif defined(_MSC_VER)
 #else
 #include <netinet/in.h>
 #endif
@@ -311,6 +313,14 @@ namespace mccore
     
   protected:
 
+	/**
+	* @internal
+	* Inputs integer data in a network format, and outputs it in a host format.
+	* @param data the variable to contain the value to convert.
+	*/
+	uint16_t netToHostFormat(uint16_t& data);
+	uint32_t netToHostFormat(uint32_t& data);
+
     /**
      * @internal
      * Inputs 16b integer data. Throws an exception if the parameter isn't 16b.
@@ -318,7 +328,7 @@ namespace mccore
      * @exception FatalIntLibException
      */
     template< class t16 >
-    iBinstream& read16 (t16& data) throw (FatalIntLibException)
+    iBinstream& read16 (t16& data)
     {
       if (sizeof (data) != 2)
       {
@@ -327,15 +337,15 @@ namespace mccore
 	   << sizeof (data) * 8 << " bits variable.";
 	throw ex;
       }
-
       uint16_t data16;
 
       this->read ((char*)&data16, 2);
-      data = ntohs (data16);
+      data = netToHostFormat(data16);
+
 
       return *this;
     }
-  
+
     /**
      * @internal
      * Inputs 32b integer data. Throws an exception if the parameter isn't 32b.
@@ -343,7 +353,7 @@ namespace mccore
      * @exception FatalIntLibException
      */
     template< class t32 >
-    iBinstream& read32 (t32& data) throw (FatalIntLibException)
+    iBinstream& read32 (t32& data)
     {
       if (sizeof (data) != 4)
       {
@@ -353,10 +363,10 @@ namespace mccore
 	throw ex;
       }
 
-      uint32_t data32;
+	  uint32_t data32;
 
-      this->read ((char*)&data32, 4);
-      data = ntohl (data32);
+	  this->read((char*)&data32, 4);
+	  data = netToHostFormat(data32);
 
       return *this;
     }
@@ -368,7 +378,7 @@ namespace mccore
      * @exception FatalIntLibException
      */
     template< class t64 >
-    iBinstream& read64 (t64& data) throw (FatalIntLibException)
+    iBinstream& read64 (t64& data)
     {
       if (sizeof (data) != 8)
       {
@@ -383,13 +393,13 @@ namespace mccore
 
       // -- most significant 32 bits
       this->read ((char*)&data32, 4);
-      data64 = (mccore::bin_ui64)ntohl (data32) << 32;
+      data64 = (mccore::bin_ui64)netToHostFormat(data32) << 32;
 
       // -- least significant 32 bits
       this->read ((char*)&data32, 4);
 
       // -- merge
-      data = data64 | (mccore::bin_ui64)ntohl (data32);
+      data = data64 | (mccore::bin_ui64)netToHostFormat(data32);
 
       return *this;
     }
@@ -616,6 +626,13 @@ namespace mccore
     oBinstream& operator<< (ostream& (*func)(ostream&));
     
   protected:
+     /**
+	  * @internal
+	  * Convert integer data from host format to net format
+	  * @param data the value to convert.
+	  */
+	uint16_t hostToNetFormat(uint16_t& data);
+	uint32_t hostToNetFormat(uint32_t& data);
 
     /**
      * @internal
@@ -624,7 +641,7 @@ namespace mccore
      * @exception FatalIntLibException
      */
     template< class t16 >
-    oBinstream& write16 (t16 data) throw (FatalIntLibException)
+    oBinstream& write16 (t16 data)
     {
       if (sizeof (data) != 2)
       {
@@ -633,8 +650,8 @@ namespace mccore
 	   << sizeof (data) * 8 << " bits variable.";
 	throw ex;
       }
+	  uint16_t data16 = hostToNetFormat(*reinterpret_cast<uint16_t*>(&data));
 
-      uint16_t data16 = htons (data);
       this->write ((char*)&data16, 2);
       return *this;
     }
@@ -646,7 +663,7 @@ namespace mccore
      * @exception FatalIntLibException
      */
     template< class t32 >
-    oBinstream& write32 (t32 data) throw (FatalIntLibException)
+    oBinstream& write32 (t32 data)
     {
       if (sizeof (data) != 4)
       {
@@ -656,7 +673,7 @@ namespace mccore
 	throw ex;
       }
 
-      uint32_t data32 = htonl (data);
+	  uint32_t data32 = hostToNetFormat(*reinterpret_cast<uint32_t*>(&data));
       this->write ((char*)&data32, 4);
       return *this;
     }
@@ -678,11 +695,14 @@ namespace mccore
 	throw ex;
       }
 
-      uint32_t data32 = htonl (((data & BS_MS32BM) >> 32) & BS_LS32BM);
-      this->write ((char*)&data32, 4); // most significant 32 bits
-      data32 = htonl (data & BS_LS32BM); 
-      this->write ((char*)&data32, 4); // least significant 32 bits
-      return *this;
+	  uint32_t upper32 = ((data & BS_MS32BM) >> 32) & BS_LS32BM;
+	  uint32_t data32 = hostToNetFormat(upper32);
+	  this->write((char*)&data32, 4); // most significant 32 bits
+	  uint32_t lower32 = data & BS_LS32BM;
+	  data32 = hostToNetFormat(lower32);
+	  this->write((char*)&data32, 4); // least significant 32 bits
+
+	  return *this;
     }
   
   public:
@@ -1161,7 +1181,7 @@ namespace mccore
      * @param mode the open mode (default ios_base::out).
      * @param level the compression level for output.
      */
-    ozfBinstream (const char *name, ios_base::openmode mode = ios_base::out, int level = Z_BEST_SPEED)
+    ozfBinstream (const char *name, ios_base::openmode mode = ios_base::out, int level = 1 /* Z_BEST_SPEED */)
       : oBinstream (),
 	buf()
     {
@@ -1193,7 +1213,7 @@ namespace mccore
      * @param mode the open mode (default ios_base::out | ios_base::trunc).
      * @param level the compression level for output (default Z_BEST_SPEED).
      */
-    void open (const char *name, ios_base::openmode mode = ios_base::out | ios_base::trunc, int level = Z_BEST_SPEED)
+    void open (const char *name, ios_base::openmode mode = ios_base::out | ios_base::trunc, int level = 1 /*Z_BEST_SPEED*/)
     {
       if (! buf.open (name, mode | ios_base::out, level))
 	this->setstate (ios::failbit);

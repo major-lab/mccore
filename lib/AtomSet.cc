@@ -27,7 +27,9 @@
 // cmake generated defines
 #include <config.h>
 
+#include <algorithm>
 #include <ctype.h>
+#include <string>
 #include <string.h>
 
 #include "AtomSet.h"
@@ -130,27 +132,22 @@ namespace mccore {
   AtomSet*
   AtomSet::create (const char* str)
   {
-	  unsigned int i;
-	  size_t sz = strlen(str);
-	  char* lstr = reinterpret_cast<char*>(alloca(sz + 1));
-
-    for (i = 0; i < sz; ++i)
-      lstr[i] = tolower (str[i]);
-    lstr[i] = '\0';
+	  std::string lstr = str;
+	  std::transform(lstr.begin(), lstr.end(), lstr.begin(), ::tolower);
     
-    if (0 == strcmp (lstr, AtomSetAll::representation))
+    if (0 == lstr.compare (AtomSetAll::representation))
       return new AtomSetAll ();
-    else if (0 == strcmp (lstr, AtomSetBackbone::representation))
+    else if (0 == lstr.compare(AtomSetBackbone::representation))
       return new AtomSetBackbone ();
-    else if (0 == strcmp (lstr, AtomSetPhosphate::representation))
+    else if (0 == lstr.compare(AtomSetPhosphate::representation))
       return new AtomSetPhosphate ();
-    else if (0 == strcmp (lstr, AtomSetSideChain::representation))
+    else if (0 == lstr.compare(AtomSetSideChain::representation))
       return new AtomSetSideChain ();
-    else if (0 == strcmp (lstr, AtomSetPSE::representation))
+    else if (0 == lstr.compare(AtomSetPSE::representation))
       return new AtomSetPSE ();
-    else if (0 == strcmp (lstr, AtomSetLP::representation))
+    else if (0 == lstr.compare(AtomSetLP::representation))
       return new AtomSetLP ();
-    else if (0 == strcmp (lstr, AtomSetHydrogen::representation))
+    else if (0 == lstr.compare(AtomSetHydrogen::representation))
       return new AtomSetHydrogen ();
     else
     {

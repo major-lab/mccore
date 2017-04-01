@@ -25,10 +25,14 @@
 
 
 
-#include <string>
 
 #include "Binstream.h"
 
+#include <string>
+#ifdef _MSC_VER
+#include <WinSock2.h>
+#endif
+#include <zlib.h>
 
 namespace mccore
 {
@@ -155,7 +159,7 @@ namespace mccore
       throw ex;
     }
 
-    li = lli;
+    li = static_cast<long>(lli);
 
     return *this;
   }
@@ -175,7 +179,7 @@ namespace mccore
       throw ex;
     }
 
-    li = lli;
+    li = static_cast<unsigned long>(lli);
 
     return *this;
   }
@@ -327,6 +331,18 @@ namespace mccore
   {
     (*func)(*this);
     return *this;
+  }
+
+  uint16_t 
+  iBinstream::netToHostFormat(uint16_t& data)
+  {
+	  return ntohs(data);
+
+  }
+  uint32_t
+  iBinstream::netToHostFormat(uint32_t& data)
+  {
+	  return ntohl(data);
   }
   
 
@@ -491,5 +507,16 @@ namespace mccore
     (*func)(*this);
     return *this;
   }
+
+  uint16_t oBinstream::hostToNetFormat(uint16_t& data)
+  {
+	  return htons(data);
+  }
+  
+  uint32_t oBinstream::hostToNetFormat(uint32_t& data)
+  {
+	  return htonl(data);
+  }
+
   
 }

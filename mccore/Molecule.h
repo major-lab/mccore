@@ -58,7 +58,7 @@ namespace mccore
   {
   public:
     
-    typedef unsigned int size_type;
+    typedef std::size_t size_type;
 
   protected:
 
@@ -295,7 +295,7 @@ namespace mccore
      * @return the value of the key.
      * @exception NoSuchElementException if key isn't found.
      */
-    const string& getProperty (const string &key) const throw (NoSuchElementException);
+    const string& getProperty (const string &key) const;
     
     /**
      * Sets the key value pair.
